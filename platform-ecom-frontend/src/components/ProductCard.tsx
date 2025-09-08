@@ -1,14 +1,14 @@
-import { useState } from "react";
-
-interface ProductCardProps {
-  image: string;
-  productName: string;
-  description: string;
-  quantity: number;
-  price: number;
-  discount: number;
-  specialPrice: number;
-}
+import type { Product } from "../types/Product";
+import { useNavigate } from "react-router-dom";
+import {
+  Card,
+  CardAction,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+  CardContent,
+  CardFooter,
+} from "./ui/card";
 
 const ProductCard = ({
   image,
@@ -18,32 +18,41 @@ const ProductCard = ({
   price,
   discount,
   specialPrice,
-}: ProductCardProps) => {
-  const [openProductViewModal, setOpenProductViewModal] = useState(false);
-  const btnLoader = false;
-
-  const [selectedViewImage, setSelectedViewImage] = useState(image);
-
-  const isAvailable = quantity && Number(quantity) > 0;
+}: Product) => {
+  const isAvailable =
+    quantity !== undefined && quantity !== null && Number(quantity) > 0;
+  const navigate = useNavigate();
+  const handleProductView = (productName: string) => {
+    const slug = productName.toLowerCase().replace(/\s+/g, "-");
+    navigate(`/products/${slug}`);
+  };
 
   return (
-    <div className="border rounded-lg shadow-xl overflow-hidden transition-shadow duration-300">
-      <div onClick={() => {}} className="w-full overflow-hidden aspect-[3/2]">
+    <Card
+      className="rounded-none p-0 cursor-pointer hover:shadow-lg transition-shadow"
+      onClick={() => handleProductView(productName)}
+    >
+      <CardContent className="p-0">
         <img
-          className="cursor-pointer w-full h-full transition-transform duration-300 transform hover:scale-105"
           src={image}
           alt={productName}
-        ></img>
-      </div>
-      <div className="p-4">
-        <h2
-          onClick={() => {}}
-          className="text-lg font-semibold mb-2 cursor-pointer"
-        >
-          {productName}
-        </h2>
-      </div>
-    </div>
+          className="w-fullobject-cover mb-4"
+        />
+        <CardHeader className="p-4">
+          <CardTitle>{productName}</CardTitle>
+          <CardDescription>
+            <p className="text-md font-bold text-slate-800 mb-2">
+              ${specialPrice.toFixed(2)}
+              {discount > 0 && (
+                <span className="text-sm text-gray-500 line-through ml-2">
+                  ${price.toFixed(2)}
+                </span>
+              )}
+            </p>
+          </CardDescription>
+        </CardHeader>
+      </CardContent>
+    </Card>
   );
 };
 

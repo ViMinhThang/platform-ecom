@@ -1,15 +1,12 @@
-import './App.css'
-import Products from './components/Products'
+import { Routes, Route } from "react-router-dom";
+import Products from "./components/Products";
+import ProductDetail from "./screens/ProductDetails";
 
-function App() {
-
+export default function App() {
   return (
-    <div>
-      <p>
-        <Products/>
-      </p>
-    </div>
-  )
+    <Routes>
+      <Route path="/products" element={<Products />} />
+      <Route path="/products/:name" element={<ProductDetail />} />
+    </Routes>
+  );
 }
-
-export default App
