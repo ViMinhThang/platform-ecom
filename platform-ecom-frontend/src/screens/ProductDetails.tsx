@@ -1,9 +1,9 @@
 import { Button } from "@/components/ui/button";
 import { useGetProductByNameQuery } from "@/slice/productApiSlice";
 import type { Product } from "@/types/Product";
+import { capitalizeWords } from "@/util/util";
 import { useEffect } from "react";
-import { FaExclamationCircle } from "react-icons/fa";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 export default function ProductDetail() {
   const location = useLocation();
@@ -27,7 +27,12 @@ export default function ProductDetail() {
   if (!product) return <p>No product found</p>;
 
   return (
-    <div className="flex justify-between items-start flex-col md:flex-row p-4 w-[1200px] mx-auto">
+    <>
+    <div className="w-[1200px] mx-auto mb-1 px-4 flex gap-2">
+      <Link to="/" className="text-blue-600 hover:underline">Home</Link>
+      <p>/ {capitalizeWords(productName)}</p>
+    </div>
+      <div className="flex justify-between items-start flex-col md:flex-row p-4 w-[1200px] mx-auto">
       <img src={product.image} alt={product.productName} />
       <div className="flex flex-col justify-start items-start gap-4 p-4 w-full h-full py-0">
         <h1 className="font-medium p-0 m-0 text-2xl">{product.productName}</h1>
@@ -57,7 +62,7 @@ export default function ProductDetail() {
           min={1}
           max={product.quantity!}
           defaultValue={1}
-          className="border border-slate-300 rounded px-2 py-1 w-20"
+          className="border border-slate-300 rounded px-2 py-3 w-20"
         />
         <Button
           disabled={product.quantity! <= 0}
@@ -69,5 +74,7 @@ export default function ProductDetail() {
         <p>{product.description}</p>
       </div>
     </div>
+    </>
+  
   );
 }

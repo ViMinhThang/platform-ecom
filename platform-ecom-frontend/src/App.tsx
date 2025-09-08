@@ -1,12 +1,18 @@
-import { Routes, Route } from "react-router-dom";
-import Products from "./components/Products";
+import { Route, Routes } from "react-router-dom";
+import Header from "./components/Header";
+import Home from "./screens/Home";
 import ProductDetail from "./screens/ProductDetails";
+import Category from "./screens/Category";
 
 export default function App() {
   return (
-    <Routes>
-      <Route path="/products" element={<Products />} />
-      <Route path="/products/:name" element={<ProductDetail />} />
-    </Routes>
+    <>
+      <Header />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/products/:name" element={<ProductDetail />} />
+        <Route path="/category/:name" element={<Category/>} />
+      </Routes>
+    </>
   );
 }

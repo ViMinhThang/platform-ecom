@@ -104,10 +104,10 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public ProductResponse searchByCategory(Long categoryId, Integer pageNumber, Integer pageSize, String sortBy, String sortOrder) {
-        Category category = categoryRepository.findById(categoryId)
+    public ProductResponse searchByCategory(String categoryName, Integer pageNumber, Integer pageSize, String sortBy, String sortOrder) {
+        Category category = categoryRepository.findByCategoryName(categoryName)
                 .orElseThrow(() ->
-                        new ResourceNotFoundException("Category", "categoryId", categoryId));
+                        new ResourceNotFoundException("Category", "categoryId", categoryName));
 
         Sort sortByAndOrder = sortOrder.equalsIgnoreCase("asc")
                 ? Sort.by(sortBy).ascending()

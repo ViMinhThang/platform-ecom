@@ -11,7 +11,12 @@ interface ProductState {
 export const productsApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getProducts: builder.query<ProductResponse, ProductState>({
-      query: ({ pageNumber = 0, pageSize = 10, sortBy = "id", sortOrder = "asc" }) =>
+      query: ({
+        pageNumber = 0,
+        pageSize = 10,
+        sortBy = "id",
+        sortOrder = "asc",
+      }) =>
         `/public/products?pageNumber=${pageNumber}&pageSize=${pageSize}&sortBy=${sortBy}&sortOrder=${sortOrder}`,
       providesTags: ["Products"],
     }),
@@ -27,6 +32,20 @@ export const productsApiSlice = apiSlice.injectEndpoints({
       query: (name) => `/public/products/keyword/${name}`,
       providesTags: ["Products"],
     }),
+    getProductsByCategory: builder.query<
+      ProductResponse,
+      ProductState & { category: string }
+    >({
+      query: ({
+        category,
+        pageNumber = 0,
+        pageSize = 10,
+        sortBy = "id",
+        sortOrder = "asc",
+      }) =>
+        `/public/categories/${category}/products?pageNumber=${pageNumber}&pageSize=${pageSize}&sortBy=${sortBy}&sortOrder=${sortOrder}`,
+      providesTags: ["Products"],
+    }),
   }),
 });
 
@@ -34,4 +53,5 @@ export const {
   useGetProductByNameQuery,
   useGetProductsQuery,
   useAddProductMutation,
+  useGetProductsByCategoryQuery,
 } = productsApiSlice;

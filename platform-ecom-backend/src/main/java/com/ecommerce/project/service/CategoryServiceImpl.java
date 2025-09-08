@@ -15,6 +15,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CategoryServiceImpl implements CategoryService{
@@ -55,8 +56,8 @@ public class CategoryServiceImpl implements CategoryService{
     @Override
     public CategoryDTO createCategory(CategoryDTO categoryDTO) {
         Category category = modelMapper.map(categoryDTO, Category.class);
-        Category categoryFromDb = categoryRepository.findByCategoryName(category.getCategoryName());
-        if (categoryFromDb != null)
+        Optional<Category> categoryFromDb = categoryRepository.findByCategoryName(category.getCategoryName());
+        if (categoryFromDb.isPresent())
             throw new APIException("Category with the name " + category.getCategoryName() + " already exists !!!");
         Category savedCategory = categoryRepository.save(category);
         return modelMapper.map(savedCategory, CategoryDTO.class);
