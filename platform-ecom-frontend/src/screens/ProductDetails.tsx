@@ -1,17 +1,15 @@
 import { Button } from "@/components/ui/button";
 import { useGetProductByNameQuery } from "@/slice/productApiSlice";
 import type { Product } from "@/types/Product";
-import { capitalizeWords } from "@/util/util";
+import { capitalizeWords, getProductNameFromPath } from "@/util/util";
 import { useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 
 export default function ProductDetail() {
   const location = useLocation();
-  const slug = location.pathname.split("/").pop();
 
-  if (!slug) return <p>Product not found</p>;
 
-  const productName = slug.replace(/-/g, " ");
+  const productName = getProductNameFromPath(location.pathname)
 
   const { data, isLoading, error } = useGetProductByNameQuery(productName);
   useEffect(() => {
@@ -30,7 +28,7 @@ export default function ProductDetail() {
     <>
     <div className="w-[1200px] mx-auto mb-1 px-4 flex gap-2">
       <Link to="/" className="text-blue-600 hover:underline">Home</Link>
-      <p>/ {capitalizeWords(productName)}</p>
+      <p>/ {capitalizeWords(productName ?? "")}</p>
     </div>
       <div className="flex justify-between items-start flex-col md:flex-row p-4 w-[1200px] mx-auto">
       <img src={product.image} alt={product.productName} />

@@ -1,30 +1,17 @@
 import { useGetProductsByCategoryQuery } from "@/slice/productApiSlice";
-import electronicsBanner from "@/assets/electronics-banner.jpg";
-import sportsBanner from "@/assets/sport-banner.avif";
-import clothingBanner from "@/assets/clothing-banner.jpg";
+import shoesBanner from "@/assets/shoes-banner.jpg";
+import accessoriesBanner from "@/assets/accessories-banner.avif";
+import clothingBanner from "@/assets/clothing-banner.avif";
 import CategorySection from "@/components/CategorySection";
 
 const Home = () => {
-  // Electronics
+  // Shoes
   const {
-    data: electronicsProducts,
-    isLoading: isLoadingElectronics,
-    error: errorElectronics,
+    data: shoesProducts,
+    isLoading: isLoadingShoes,
+    error: errorShoes,
   } = useGetProductsByCategoryQuery({
-    category: "electronics",
-    pageNumber: 0,
-    pageSize: 4,
-    sortBy: "price",
-    sortOrder: "desc",
-  });
-
-  // Sports
-  const {
-    data: sportsProducts,
-    isLoading: isLoadingSports,
-    error: errorSports,
-  } = useGetProductsByCategoryQuery({
-    category: "sports",
+    category: "shoes",
     pageNumber: 0,
     pageSize: 4,
     sortBy: "price",
@@ -44,30 +31,43 @@ const Home = () => {
     sortOrder: "desc",
   });
 
+  // Accessories
+  const {
+    data: accessoriesProducts,
+    isLoading: isLoadingAccessories,
+    error: errorAccessories,
+  } = useGetProductsByCategoryQuery({
+    category: "accessories",
+    pageNumber: 0,
+    pageSize: 4,
+    sortBy: "price",
+    sortOrder: "desc",
+  });
+
   return (
     <div>
       <CategorySection
-        title="Electronics"
-        banner={electronicsBanner}
-        products={electronicsProducts?.content ?? []}
-        isLoading={isLoadingElectronics}
-        error={errorElectronics}
-      />
-
-      <CategorySection
-        title="Sports"
-        banner={sportsBanner}
-        products={sportsProducts?.content ?? []}
-        isLoading={isLoadingSports}
-        error={errorSports}
+        title="Shoes"
+        banner={shoesBanner}
+        products={shoesProducts}
+        isLoading={isLoadingShoes}
+        error={errorShoes}
       />
 
       <CategorySection
         title="Clothing"
         banner={clothingBanner}
-        products={clothingProducts?.content ?? []}
+        products={clothingProducts}
         isLoading={isLoadingClothing}
         error={errorClothing}
+      />
+
+      <CategorySection
+        title="Accessories"
+        banner={accessoriesBanner}
+        products={accessoriesProducts}
+        isLoading={isLoadingAccessories}
+        error={errorAccessories}
       />
     </div>
   );

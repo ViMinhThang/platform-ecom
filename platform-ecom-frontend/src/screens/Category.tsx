@@ -23,11 +23,8 @@ const Category = () => {
         {name} Products
       </h1>
 
-      <Products
-        products={products?.content ?? []}
-        isLoading={isLoading}
-        error={error}
-      />
+      <Products data={products} isLoading={isLoading} error={error} type={"CategoryPage"} />
+
     </div>
   );
 };

@@ -2,12 +2,15 @@ package com.ecommerce.project.service;
 
 import com.ecommerce.project.exceptions.APIException;
 import com.ecommerce.project.exceptions.ResourceNotFoundException;
+import com.ecommerce.project.model.Asset;
 import com.ecommerce.project.model.Cart;
 import com.ecommerce.project.model.Category;
 import com.ecommerce.project.model.Product;
+import com.ecommerce.project.payload.AssetDTO;
 import com.ecommerce.project.payload.CartDTO;
 import com.ecommerce.project.payload.ProductDTO;
 import com.ecommerce.project.payload.ProductResponse;
+import com.ecommerce.project.repositories.AssetRepository;
 import com.ecommerce.project.repositories.CartRepository;
 import com.ecommerce.project.repositories.CategoryRepository;
 import com.ecommerce.project.repositories.ProductRepository;
@@ -42,6 +45,8 @@ public class ProductServiceImpl implements ProductService {
     @Value("${project.image}")
     private String path;
 
+    @Autowired
+    private AssetRepository assetRepository;
     @Autowired
     private CartRepository cartRepository;
 
@@ -221,5 +226,15 @@ public class ProductServiceImpl implements ProductService {
         return modelMapper.map(updatedProduct, ProductDTO.class);
     }
 
+    @Override
+    public ProductDTO searchProductByName(String productName) {
+        Product product = productRepository.findProductByProductNameLikeIgnoreCase("%" + productName + "%").orElseThrow(() -> new ResourceNotFoundException("Product", "ProductName", productName));
+        ProductDTO productDTO = modelMapper.map(product, ProductDTO.class);
+        List<Asset> asset = assetRepository.findByProduct_ProductId(product.getProductId());
 
+        List<AssetDTO> assetDTOS = asset.stream().map(asset1 -> modelMapper.map(asset1, AssetDTO.class)).toList();
+        productDTO.setAssets(assetDTOS);
+
+        return productDTO;
+    }
 }

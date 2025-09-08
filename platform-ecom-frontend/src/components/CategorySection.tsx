@@ -1,10 +1,11 @@
 import Products from "@/components/Products";
+import type { Product, ProductResponse } from "@/types/Product";
 import { Link } from "react-router-dom";
 
 interface CategorySectionProps {
   title: string;
   banner: string;
-  products: any[];
+  products?: ProductResponse;
   isLoading: boolean;
   error: any;
 }
@@ -38,7 +39,7 @@ const CategorySection = ({
       </div>
 
       {/* Products */}
-      <Products products={products} isLoading={isLoading} error={error} />
+      <Products data={products} isLoading={isLoading} error={error} type={"HomePage"} />
     </div>
   );
 };

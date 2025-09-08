@@ -1,13 +1,15 @@
 import { FaExclamationCircle } from "react-icons/fa";
 import ProductCard from "./ProductCard";
+import type { ProductResponse } from "@/types/Product";
 
 interface ProductsProps {
-  products: any[];
+  data?: ProductResponse;
   isLoading: boolean;
   error: any;
+  type: string;
 }
 
-const Products = ({ products, isLoading, error }: ProductsProps) => {
+const Products = ({ data, isLoading, error, type }: ProductsProps) => {
   if (isLoading) return <p>Loading...</p>;
 
   if (error) {
@@ -28,11 +30,20 @@ const Products = ({ products, isLoading, error }: ProductsProps) => {
   return (
     <div className="w-[95%] mx-auto mb-10">
       <div className="pb-5">
+        {/* Grid danh sách products */}
         <div className="pb-6 pt-5 grid 2xl:grid-cols-4 lg:grid-cols-3 sm:grid-cols-2 gap-y-6 gap-x-6">
-          {products.map((item) => (
+          {data?.content?.map((item) => (
             <ProductCard key={item.id} {...item} />
           ))}
         </div>
+
+        {/* Pagination info */}
+        {type !== "HomePage" && data && (
+          <div className="mt-6 text-center text-slate-700">
+            Page {data.pageNumber + 1} / {data.totalPages} — Total:{" "}
+            {data.totalElements} products
+          </div>
+        )}
       </div>
     </div>
   );

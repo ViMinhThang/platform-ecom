@@ -46,6 +46,10 @@ export const productsApiSlice = apiSlice.injectEndpoints({
         `/public/categories/${category}/products?pageNumber=${pageNumber}&pageSize=${pageSize}&sortBy=${sortBy}&sortOrder=${sortOrder}`,
       providesTags: ["Products"],
     }),
+    getProductByNameEqually: builder.query({
+      query: (name) => `/public/products/name/${name}`,
+      providesTags: ["Products"],
+    }),
   }),
 });
 
@@ -54,4 +58,5 @@ export const {
   useGetProductsQuery,
   useAddProductMutation,
   useGetProductsByCategoryQuery,
+  useGetProductByNameEquallyQuery,
 } = productsApiSlice;
