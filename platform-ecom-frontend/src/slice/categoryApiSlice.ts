@@ -22,14 +22,14 @@ export const categoryApiSlice = apiSlice.injectEndpoints({
 
     updateCategoryById: builder.mutation<
       Category,
-      { categoryId: number; categoryName: string }
+      { categoryId: number; categoryName: string; isAvailable: string }
     >({
-      query: ({ categoryId, categoryName }) => ({
+      query: ({ categoryId, categoryName, isAvailable }) => ({
         url: `/public/categories/${categoryId}`,
         method: "PUT",
-        body: categoryName,
+        body: { categoryName, isAvailable },
       }),
-      invalidatesTags:["Categories"]
+      invalidatesTags: ["Categories"],
     }),
 
     // Create new category
@@ -41,11 +41,19 @@ export const categoryApiSlice = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ["Categories"],
     }),
+    deleteCategoryById: builder.mutation<string, number>({
+      query: (categoryId) => ({
+        url: `/admin/categories/${categoryId}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["Categories"],
+    }),
   }),
 });
 
 export const {
   useGetCategoriesQuery,
+  useDeleteCategoryByIdMutation,
   useGetCategoryByIdQuery,
   useUpdateCategoryByIdMutation,
   useCreateCategoryMutation,

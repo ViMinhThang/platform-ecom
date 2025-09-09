@@ -7,7 +7,12 @@ interface ProductInfoCardProps {
   control: Control<ProductFormValues>; // hoặc Control<ProductFormValues>
 }
 const ProductInfoCard = ({ control }: ProductInfoCardProps) => {
-  const { data, isLoading, error } = useGetCategoriesQuery({});
+  const { data, isLoading, error } = useGetCategoriesQuery({
+    pageNumber: 1,
+    pageSize: 10,
+    sortBy: "categoryName",
+    sortOrder: "asc",
+  });
 
   if (isLoading) {
     return <div>is Loading</div>;

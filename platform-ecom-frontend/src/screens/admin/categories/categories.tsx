@@ -1,42 +1,39 @@
-import { useLocation } from "react-router-dom";
+import { useEffect, useState, useCallback } from "react";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { toast } from "react-toastify";
 import {
   useCreateCategoryMutation,
+  useDeleteCategoryByIdMutation,
   useGetCategoriesQuery,
   useUpdateCategoryByIdMutation,
 } from "@/slice/categoryApiSlice";
-import { useEffect, useState } from "react";
-import { Input } from "@/components/ui/input";
 import { categoriesColumns } from "@/components/admin/categories/columns";
 import { DataTable } from "@/components/admin/categories/data-table";
 import {
   Dialog,
-  DialogClose,
   DialogContent,
   DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
-import { Label } from "@/components/ui/label";
 import type { Category } from "@/types/Category";
 
-interface CategoryFormValues {
-  categoryName: string;
-  categoryId: string;
-}
 const PAGE_SIZE = 10;
 
 const CategoryDetailAdmin = () => {
-  const location = useLocation();
-  const [category, setCategory] = useState<Category>({} as Category);
   const [pageNumber, setPageNumber] = useState(0);
   const [search, setSearch] = useState("");
   const [open, setOpen] = useState(false);
-  const [selectedCategory, setSelectedCategory] =
-    useState<CategoryFormValues | null>(null);
+  const [selectedCategory, setSelectedCategory] = useState<Category | null>(
+    null
+  );
+  const [formData, setFormData] = useState<{
+    categoryName: string;
+    isAvailable: "yes" | "no";
+  }>({ categoryName: "", isAvailable: "yes" });
 
   const {
     data: categories,
@@ -48,73 +45,106 @@ const CategoryDetailAdmin = () => {
     sortBy: "price",
     sortOrder: "desc",
   });
+
   const [updateCategory] = useUpdateCategoryByIdMutation();
-  const [createCategoty] = useCreateCategoryMutation();
+  const [createCategory] = useCreateCategoryMutation();
+  const [deleteCategoryById] = useDeleteCategoryByIdMutation();
+
+  // Reset page on search change
   useEffect(() => {
     setPageNumber(0);
   }, [search]);
 
-  const handleUpdateCategory = async () => {
-    if (!category || !selectedCategory) {
-      toast.error("No category selected!");
-      return;
+  // Sync form with selected category
+  useEffect(() => {
+    if (selectedCategory) {
+      setFormData({
+        categoryName: selectedCategory.categoryName,
+        isAvailable: selectedCategory.isAvailable ? "yes" : "no",
+      });
     }
-    try {
-      await updateCategory({
-        categoryId: Number(selectedCategory.categoryId),
-        categoryName: category.categoryName,
-      }).unwrap();
-      toast.success("Category updated successfully!");
-      setOpen(false);
-    } catch (err) {
-      console.error(err);
-      toast.error("Category update failed!");
-    }
-  };
+  }, [selectedCategory]);
 
-  const handleCreateCategory = async () => {
-    try {
-      await createCategoty({}).unwrap();
-      toast.success("Create category success!");
-    } catch (error) {
-      toast.error("Failed");
-    }
-  };
+  /** Helper to wrap API calls */
+  const safeAction = useCallback(
+    async <T,>(action: () => Promise<T>, successMsg: string, failMsg: string) => {
+      try {
+        await action();
+        toast.success(successMsg);
+        setOpen(false);
+      } catch (err) {
+        console.error(err);
+        toast.error(failMsg);
+      }
+    },
+    []
+  );
 
+  const handleUpdateCategory = () =>
+    selectedCategory &&
+    safeAction(
+      () =>
+        updateCategory({
+          categoryId: Number(selectedCategory.categoryId),
+          categoryName: formData.categoryName,
+          isAvailable: formData.isAvailable,
+        }).unwrap(),
+      "Category updated successfully!",
+      "Category update failed!"
+    );
+
+  const handleDeleteCategory = () =>
+    selectedCategory &&
+    safeAction(
+      () => deleteCategoryById(Number(selectedCategory.categoryId)).unwrap(),
+      "Category deleted successfully!",
+      "Delete failed!"
+    );
+
+  const handleCreateCategory = () =>
+    safeAction(
+      () =>
+        createCategory({
+          categoryName: formData.categoryName,
+          isAvailable: formData.isAvailable,
+        }).unwrap(),
+      "Category created successfully!",
+      "Failed to create category"
+    );
+
+  // Render content
   let content;
-
   if (isLoading) {
     content = <div className="text-center py-20">Loading...</div>;
   } else if (error) {
     content = (
       <div className="text-center py-20 text-red-500">
-        Error loading products
+        Error loading categories or no categories
       </div>
     );
   } else {
-    const filteredcategories = categories?.content ?? [];
-    console.log(filteredcategories);
+    const filteredCategories = categories?.content ?? [];
     content = (
       <>
         <Input
-          placeholder="Search products..."
+          placeholder="Search categories..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           className="max-w-sm"
         />
 
         <div className="bg-white p-6 rounded-lg shadow-md w-full">
-          {filteredcategories.length === 0 ? (
+          {filteredCategories.length === 0 ? (
             <div className="text-center py-20 text-gray-400">
-              No products found.
+              No categories found.
               <div className="mt-4">
-                <Button onClick={handleCreateCategory}>Create Product</Button>
+                <Button onClick={handleCreateCategory}>Create Category</Button>
               </div>
             </div>
           ) : (
             <DataTable
               columns={categoriesColumns}
-              data={filteredcategories}
+              data={filteredCategories}
               onRowClick={(row) => {
                 setSelectedCategory(row.original);
                 setOpen(true);
@@ -137,7 +167,7 @@ const CategoryDetailAdmin = () => {
             variant="outline"
             size="sm"
             onClick={() => setPageNumber((prev) => prev + 1)}
-            disabled={filteredcategories.length < PAGE_SIZE}
+            disabled={filteredCategories.length < PAGE_SIZE}
           >
             Next
           </Button>
@@ -147,11 +177,11 @@ const CategoryDetailAdmin = () => {
   }
 
   return (
-    <div className="flex flex-col gap-6 mx-5 p-4 w-[1600px] border border-stale-200 rounded-lg ">
+    <div className="flex flex-col gap-6 mx-5 p-4 w-[1600px] border border-stale-200 rounded-lg">
       {/* Top summary bar */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div className="flex flex-col">
-          <h1 className="text-2xl font-bold">Products</h1>
+          <h1 className="text-2xl font-bold">Categories</h1>
           <span className="text-sm text-gray-500">
             Total Categories: {categories?.totalElements ?? 0}
           </span>
@@ -160,7 +190,10 @@ const CategoryDetailAdmin = () => {
           Create Category
         </Button>
       </div>
+
       {content}
+
+      {/* Dialog */}
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
@@ -175,23 +208,41 @@ const CategoryDetailAdmin = () => {
             <Input
               id="name"
               name="categoryName"
-              value={category.categoryName || ""}
+              value={formData.categoryName}
               onChange={(e) =>
-                setCategory((prev) => ({
+                setFormData((prev) => ({ ...prev, categoryName: e.target.value }))
+              }
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="available">Set Available</Label>
+            <select
+              id="available"
+              className="border p-2 rounded-md"
+              value={formData.isAvailable}
+              onChange={(e) =>
+                setFormData((prev) => ({
                   ...prev,
-                  categoryName: e.target.value,
+                  isAvailable: e.target.value as "yes" | "no",
                 }))
               }
-              defaultValue={selectedCategory?.categoryName}
-            />
+            >
+              <option value="yes">Yes</option>
+              <option value="no">No</option>
+            </select>
           </div>
 
           <DialogFooter>
             <Button
               type="button"
               variant="outline"
-              onClick={() => setOpen(false)}
+              className="border-red-300"
+              onClick={handleDeleteCategory}
             >
+              Delete
+            </Button>
+            <Button type="button" variant="outline" onClick={() => setOpen(false)}>
               Cancel
             </Button>
             <Button onClick={handleUpdateCategory}>Save changes</Button>

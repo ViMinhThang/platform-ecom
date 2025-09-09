@@ -145,7 +145,7 @@ export function DataTable<T>({ columns, data }: DataTableProps<T>) {
                       key={cell.id}
                       onClick={() =>
                         handleNavigateToDetail(
-                          (row.original as Product).productName
+                          (row.original as Product).slug
                         )
                       }
                       className="cursor-pointer hover:bg-gray-100"

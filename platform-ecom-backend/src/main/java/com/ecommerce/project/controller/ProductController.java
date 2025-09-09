@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api")
@@ -82,9 +84,11 @@ public class ProductController {
     }
 
     @DeleteMapping("/admin/products/{productId}")
-    public ResponseEntity<ProductDTO> deleteProduct(@PathVariable Long productId) {
-        ProductDTO deletedProduct = productService.deleteProduct(productId);
-        return new ResponseEntity<>(deletedProduct, HttpStatus.OK);
+    public ResponseEntity<Map<String, String>> deleteProduct(@PathVariable Long productId) {
+        String status = productService.deleteProduct(productId);
+        Map<String, String> resp = new HashMap<>();
+        resp.put("status", status);
+        return new ResponseEntity<Map<String, String>>(resp, HttpStatus.OK);
     }
 
     @PutMapping("/products/{productId}/image")

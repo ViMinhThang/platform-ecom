@@ -163,6 +163,8 @@ public class ProductServiceImpl implements ProductService {
         productFromDb.setDescription(product.getDescription());
         productFromDb.setCategory(category);
         productFromDb.setQuantity(product.getQuantity());
+        productFromDb.setSlug(product.getSlug());
+        productFromDb.setType(product.getType());
         productFromDb.setDiscount(product.getDiscount());
         productFromDb.setPrice(product.getPrice());
         productFromDb.setSpecialPrice(product.getSpecialPrice());
@@ -186,7 +188,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public ProductDTO deleteProduct(Long productId) {
+    public String deleteProduct(Long productId) {
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new ResourceNotFoundException("Product", "productId", productId));
 
@@ -195,7 +197,7 @@ public class ProductServiceImpl implements ProductService {
 
 
         productRepository.delete(product);
-        return modelMapper.map(product, ProductDTO.class);
+        return "delete success";
     }
 
     @Override

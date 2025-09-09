@@ -1,23 +1,26 @@
 import {
+  useDeleteProductByIdMutation,
   useGetProductByNameEquallyQuery,
   useUpdateProductByIdMutation,
 } from "@/slice/productApiSlice";
-import type { Asset, Product, ProductFormValues } from "@/types/Product";
-import { capitalizeWords, getProductNameFromPath } from "@/util/util";
-import { useLocation } from "react-router-dom";
+import type { ProductFormValues } from "@/types/Product";
+import { getProductNameFromPath } from "@/util/util";
+import { useLocation, useNavigate} from "react-router-dom";
 import { DragDropInput } from "../../../components/admin/products/ImageDragDrop";
 import { InventoryCard } from "../../../components/admin/products/InventoryCard";
 import { useForm, Controller, FormProvider } from "react-hook-form";
 import { useEffect } from "react";
 import ProductInfoCard from "@/components/admin/products/productInfo";
 import { Button } from "@/components/ui/button";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 const ProductDetailAdmin = () => {
   const location = useLocation();
+  const navigate = useNavigate()
   const productName = getProductNameFromPath(location.pathname);
   const { data, isLoading, error } =
     useGetProductByNameEquallyQuery(productName);
   const [updateProduct] = useUpdateProductByIdMutation();
+  const [deleteProductById] = useDeleteProductByIdMutation();
   const methods = useForm<ProductFormValues>({
     defaultValues: {
       productName: "",
@@ -58,6 +61,16 @@ const ProductDetailAdmin = () => {
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error loading product</div>;
   if (!data) return <div>No product found</div>;
+
+  const handleDeleteProduct = async () => {
+    try {
+      await deleteProductById(data.productId).unwrap();
+      toast.success("Delete sucess");
+      navigate("/admin/products")
+    } catch (error) {
+      toast.error("Delete error");
+    }
+  };
 
   const onSubmit = async (formData: ProductFormValues) => {
     const { assets, ...payload } = formData; // bỏ assets
@@ -126,12 +139,22 @@ const ProductDetailAdmin = () => {
             />
           </div>
         </div>
-        <Button
-          type="submit"
-          className="bg-black text-white px-4 py-7 rounded w-[15%]"
-        >
-          Save
-        </Button>
+        <div className="flex gap-4">
+          <Button
+            type="submit"
+            className="bg-black text-white px-4 py-7 rounded-md w-[15%] cursor-pointer"
+          >
+            Save
+          </Button>
+          <Button
+          type="button"
+          onClick={handleDeleteProduct}
+            variant="outline"
+            className="border-red-500 px-4 py-7 rounded-md w-[15%] opacity-75 cursor-pointer"
+          >
+            Delete
+          </Button>
+        </div>
       </form>
     </FormProvider>
   );
