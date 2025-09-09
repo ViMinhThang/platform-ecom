@@ -1,6 +1,6 @@
 HELP.md
 platform-ecom-backend/target/
-platform-ecom-backne/images
+platform-ecom-backend/images
 platform-ecom-backend/.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
