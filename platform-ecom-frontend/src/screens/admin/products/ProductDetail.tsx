@@ -1,64 +1,139 @@
-import { useGetProductByNameEquallyQuery } from "@/slice/productApiSlice";
-import type { Product } from "@/types/Product";
+import {
+  useGetProductByNameEquallyQuery,
+  useUpdateProductByIdMutation,
+} from "@/slice/productApiSlice";
+import type { Asset, Product, ProductFormValues } from "@/types/Product";
 import { capitalizeWords, getProductNameFromPath } from "@/util/util";
-import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import ProductInfoCard from "../../../components/admin/products/productInfo";
 import { DragDropInput } from "../../../components/admin/products/ImageDragDrop";
 import { InventoryCard } from "../../../components/admin/products/InventoryCard";
-
+import { useForm, Controller, FormProvider } from "react-hook-form";
+import { useEffect } from "react";
+import ProductInfoCard from "@/components/admin/products/productInfo";
+import { Button } from "@/components/ui/button";
+import { ToastContainer, toast } from "react-toastify";
 const ProductDetailAdmin = () => {
   const location = useLocation();
-  const productName = capitalizeWords(
-    getProductNameFromPath(location.pathname) ?? ""
-  );
+  const productName = getProductNameFromPath(location.pathname);
   const { data, isLoading, error } =
     useGetProductByNameEquallyQuery(productName);
-
-  const [inStock, setInStock] = useState<boolean | null>(null);
-
+  const [updateProduct] = useUpdateProductByIdMutation();
+  const methods = useForm<ProductFormValues>({
+    defaultValues: {
+      productName: "",
+      price: 0,
+      discount: 0,
+      specialPrice: 0,
+      type: "",
+      description: "",
+      category: "",
+      quantity: 0,
+      isAvailable: "",
+      inStock: true,
+      assets: [null, null, null, null],
+    },
+  });
+  const { handleSubmit, reset, watch } = methods;
   useEffect(() => {
     if (data) {
-      setInStock(data.quantity > 0);
+      reset({
+        productName: data.productName,
+        price: data.price,
+        discount: data.discount,
+        specialPrice: data.specialPrice,
+        quantity: data.quantity,
+        type: data.type,
+        slug: data.slug,
+        category: data.category,
+        isAvailable: data.isAvailable,
+        description: data.description,
+        inStock: data.quantity > 0,
+        assets: data.assets.concat(
+          new Array(4 - data.assets.length).fill(null)
+        ),
+      });
     }
-  }, [data]);
-
+  }, [data, reset]);
+  const assets = watch("assets");
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error loading product</div>;
   if (!data) return <div>No product found</div>;
 
-  const product: Product = data;
-
+  const onSubmit = async (formData: ProductFormValues) => {
+    const { assets, ...payload } = formData; // bỏ assets
+    try {
+      await updateProduct({
+        productId: data.productId,
+        data: payload,
+      }).unwrap();
+      toast.success("Product updated successfully!");
+    } catch (err) {
+      console.error(err);
+      toast.error("Product updated failed!");
+    }
+  };
   return (
-    <div className="p-6 flex flex-col gap-6 bg-slate-100 h-full w-screen">
-      <h1 className="text-3xl font-bold">Editing Product</h1>
+    <FormProvider {...methods}>
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="p-6 flex flex-col gap-6 bg-slate-100 h-full w-screen"
+      >
+        <h1 className="text-3xl font-bold">Editing Product</h1>
 
-      <div className="flex gap-6 w-[85%]">
-        {/* Product Info Card */}
-        <div className="flex gap-6 w-[70%]">
-          <ProductInfoCard product={product} />
+        <div className="flex gap-6 w-[85%]">
+          <Controller
+            control={methods.control}
+            name="price"
+            render={({ field }) => (
+              <ProductInfoCard control={methods.control} />
+            )}
+          />
+          <Controller
+            control={methods.control}
+            name="quantity"
+            render={({ field }) => (
+              <InventoryCard
+                quantity={field.value}
+                onQuantityChange={field.onChange} // <-- pass onChange
+              />
+            )}
+          />
         </div>
-        <InventoryCard
-          quantity={product.quantity}
-          inStock={inStock}
-          onStockChange={setInStock}
-          onSave={() => console.log("Save product inventory changes")}
-        />
-      </div>
-      <div className="bg-white flex flex-col border w-[85%]">
-        <h1 className="font-bold text-xl p-4">Images</h1>
-        <div className="flex gap-4 p-4">
-          {/* Render existing images if available */}
-          {[0, 1, 2, 3].map((i) =>
-            product.assets[i] ? (
-              <DragDropInput key={i} url={product.assets[i].url} />
-            ) : (
-              <DragDropInput key={i} />
-            )
-          )}
+
+        {/* Images */}
+        <div className="bg-white flex flex-col border w-[85%]">
+          <h1 className="font-bold text-xl p-4">Images</h1>
+          <div className="flex gap-4 p-4">
+            {assets.map((_, i) => (
+              <DragDropInput key={i} index={i} />
+            ))}
+          </div>
         </div>
-      </div>
-    </div>
+        <div className="bg-white flex flex-col border w-[85%]">
+          <label className="text-gray-700 mb-1 p-4 pb-1">Description</label>
+          <div className="flex gap-4 p-4">
+            <Controller
+              name="description"
+              control={methods.control}
+              rules={{ required: "Description is required" }}
+              render={({ field }) => (
+                <textarea
+                  {...field}
+                  className="border border-slate-300 rounded-md p-3 w-full"
+                  rows={4}
+                />
+              )}
+            />
+          </div>
+        </div>
+        <Button
+          type="submit"
+          className="bg-black text-white px-4 py-7 rounded w-[15%]"
+        >
+          Save
+        </Button>
+      </form>
+    </FormProvider>
   );
 };
 

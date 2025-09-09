@@ -36,7 +36,7 @@ public class AssetServiceImpl implements AssetService {
 
     @Override
     public AssetResponse getAssetByProductName(String productName) {
-        Product product = productRepository.findProductByProductNameLikeIgnoreCase(productName)
+        Product product = productRepository.findBySlug(productName)
                 .orElseThrow(() -> new ResourceNotFoundException("Product", "ProductName", productName));
 
         List<Asset> assets = assetRepository.findByProduct_ProductId(product.getProductId());
@@ -47,7 +47,7 @@ public class AssetServiceImpl implements AssetService {
 
     @Override
     public AssetDTO upload(MultipartFile file, String productName) throws IOException {
-        Product product = productRepository.findProductByProductNameLikeIgnoreCase(productName)
+        Product product = productRepository.findBySlug(productName)
                 .orElseThrow(() -> new ResourceNotFoundException("Product", "ProductName", productName));
         String fileName = fileService.uploadImage(path, file);
 
@@ -56,5 +56,12 @@ public class AssetServiceImpl implements AssetService {
         asset.setProduct(product);
         Asset savedByDB = assetRepository.save(asset);
         return modelMapper.map(savedByDB, AssetDTO.class);
+    }
+
+    @Override
+    public String deleteAsset(Long assetId) {
+
+        assetRepository.deleteById(assetId);
+        return "sucesss";
     }
 }

@@ -20,10 +20,20 @@ public class ProductController {
     @Autowired
     ProductService productService;
 
-    @PostMapping("/admin/categories/{categoryId}/product")
-    public ResponseEntity<ProductDTO> addProduct(@Valid @RequestBody ProductDTO productDTO,
-                                                 @PathVariable Long categoryId) {
-        ProductDTO savedProductDTO = productService.addProduct(categoryId, productDTO);
+    @PostMapping("/admin/products")
+    public ResponseEntity<ProductDTO> addProduct() {
+
+        ProductDTO productDTO = new ProductDTO();
+        productDTO.setQuantity(10);
+        productDTO.setDescription("dummy Description");
+        productDTO.setDiscount(0);
+        productDTO.setPrice(0);
+        productDTO.setSpecialPrice(0);
+        productDTO.setType("shoes");
+        productDTO.setCategory("shoes");
+        productDTO.setProductName("dummy");
+        productDTO.setSlug("dummy");
+        ProductDTO savedProductDTO = productService.addProduct(productDTO);
         return new ResponseEntity<>(savedProductDTO, HttpStatus.CREATED);
     }
 

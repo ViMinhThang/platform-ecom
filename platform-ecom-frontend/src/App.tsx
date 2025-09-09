@@ -10,6 +10,7 @@ import Coupon from "./screens/admin/Coupon";
 import User from "./screens/admin/User";
 import Products from "./screens/admin/products/Products";
 import ProductDetailAdmin from "./screens/admin/products/ProductDetail";
+import { ToastContainer } from "react-toastify";
 export default function App() {
   const location = useLocation();
 
@@ -25,13 +26,25 @@ export default function App() {
         <Route path="/admin" element={<Layout />}>
           <Route path="dashboard" index element={<Dashboard />} />
           <Route path="products" element={<Products />} />
-          <Route path="products/:productName" element={<ProductDetailAdmin />} />
+          <Route
+            path="products/:productName"
+            element={<ProductDetailAdmin />}
+          />
           <Route path="orders" element={<Order />} />
           <Route path="users" element={<User />} />
           <Route path="coupons" element={<Coupon />} />
           <Route path="categories" element={<Category />} />
         </Route>
       </Routes>
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        draggable
+        pauseOnHover
+      />
     </>
   );
 }

@@ -7,6 +7,10 @@ export const productColumns: ColumnDef<Product>[] = [
     header: "Product Name",
   },
   {
+    accessorKey: "type",
+    header: "Type",
+  },
+  {
     accessorKey: "description",
     header: "Description",
   },
@@ -17,8 +21,7 @@ export const productColumns: ColumnDef<Product>[] = [
   {
     accessorKey: "price",
     header: "Price",
-    cell: ({ row }) =>
-      `$${(row.getValue("price") as number).toFixed(2)}`,
+    cell: ({ row }) => `$${(row.getValue("price") as number).toFixed(2)}`,
   },
   {
     accessorKey: "discount",
@@ -28,6 +31,7 @@ export const productColumns: ColumnDef<Product>[] = [
   {
     accessorKey: "specialPrice",
     header: "Special Price",
-    cell: ({ row }) => `$${(row.getValue("specialPrice") as number).toFixed(2)}`,
+    cell: ({ row }) =>
+      `$${(row.getValue("specialPrice") as number).toFixed(2)}`,
   },
 ];

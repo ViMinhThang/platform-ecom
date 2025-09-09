@@ -12,4 +12,6 @@ public interface AssetService {
     AssetResponse getAssetByProductName(String productName);
 
     AssetDTO upload(MultipartFile file, String productName) throws IOException;
+
+    String deleteAsset(Long assetId);
 }

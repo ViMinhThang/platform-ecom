@@ -1,22 +1,32 @@
 "use client";
-
 import * as React from "react";
+import { useFormContext } from "react-hook-form";
 import { Button } from "@/components/ui/button";
-import { capitalizeWords, getProductNameFromPath } from "@/util/util";
-import { useUploadAssetMutation } from "@/slice/assetApiSlice";
+import {
+  useDeleteAssetMutation,
+  useUploadAssetMutation,
+} from "@/slice/assetApiSlice";
 import { IMAGE_UPLOAD_PATH } from "@/constant/constant";
+import { capitalizeWords, getProductNameFromPath } from "@/util/util";
+import type { ProductFormValues, Asset } from "@/types/Product";
+import { ToastContainer, toast } from "react-toastify";
 const VITE_BACK_END_URL = import.meta.env.VITE_BACK_END_URL;
 
 interface DragDropInputProps {
-  url?: string;
+  index: number;
 }
 
-export const DragDropInput = ({ url }: DragDropInputProps) => {
+export const DragDropInput = ({ index }: DragDropInputProps) => {
+  const { watch, setValue } = useFormContext<ProductFormValues>();
+  const assets = watch("assets");
+  const asset = assets[index]; // Asset | null
+  console.log("asset", asset);
   const [file, setFile] = React.useState<File | null>(null);
   const [isDragging, setIsDragging] = React.useState(false);
   const [isUploading, setIsUploading] = React.useState(false);
-  const [uploadAsset] = useUploadAssetMutation();
 
+  const [deleteAsset] = useDeleteAssetMutation();
+  const [uploadAsset] = useUploadAssetMutation();
   const productName = capitalizeWords(
     getProductNameFromPath(window.location.pathname) ?? ""
   );
@@ -24,57 +34,54 @@ export const DragDropInput = ({ url }: DragDropInputProps) => {
   const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     setIsDragging(false);
-
     if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
       setFile(e.dataTransfer.files[0]);
       e.dataTransfer.clearData();
     }
   };
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files.length > 0) {
-      setFile(e.target.files[0]);
-    }
-  };
-
   const handleUpload = async () => {
     if (!file) return;
-
     setIsUploading(true);
+
     const formData = new FormData();
     formData.append("image", file);
     formData.append("productName", productName);
 
     try {
-      await uploadAsset(formData).unwrap();
-      alert("Upload successful!");
+      const uploaded: Asset = await uploadAsset(formData).unwrap();
+      const newAssets = [...assets];
+      newAssets[index] = uploaded; // update đúng index
+      setValue("assets", newAssets);
       setFile(null);
+      toast.success("Upload successful!");
     } catch (err) {
-      console.error("Upload failed", err);
-      alert("Upload failed");
+      console.error(err);
+      toast.error("Upload failed");
     } finally {
       setIsUploading(false);
     }
   };
 
   const handleDelete = async () => {
-    if (!url) return;
+    if (!asset) return;
     try {
-      const response = await fetch(`${VITE_BACK_END_URL}/assets/${url}`, {
-        method: "DELETE",
-      });
-      if (response.ok) {
-        alert("Image deleted successfully!");
-      } else {
-        alert("Failed to delete image");
-      }
+      await deleteAsset({ assetId: asset.assetId }).unwrap();
+      const newAssets = [...assets];
+      newAssets[index] = null; // clear đúng index
+      setValue("assets", newAssets);
+      toast.success("Delete successful!");
     } catch (err) {
       console.error(err);
-      alert("Delete failed");
+      toast.error("Delete failed");
     }
   };
 
-  const previewUrl = file ? URL.createObjectURL(file) : url ? VITE_BACK_END_URL + IMAGE_UPLOAD_PATH + url : "";
+  const previewUrl = file
+    ? URL.createObjectURL(file)
+    : asset?.url
+    ? VITE_BACK_END_URL + IMAGE_UPLOAD_PATH + asset.url
+    : "";
 
   return (
     <div className="p-2">
@@ -88,7 +95,7 @@ export const DragDropInput = ({ url }: DragDropInputProps) => {
         }}
         onDragLeave={() => setIsDragging(false)}
         onDrop={handleDrop}
-        onClick={() => document.getElementById("fileInput")?.click()}
+        onClick={() => document.getElementById(`fileInput-${index}`)?.click()}
       >
         {previewUrl ? (
           <img
@@ -103,9 +110,9 @@ export const DragDropInput = ({ url }: DragDropInputProps) => {
 
       <input
         type="file"
-        id="fileInput"
+        id={`fileInput-${index}`}
         className="hidden"
-        onChange={handleFileChange}
+        onChange={(e) => e.target.files && setFile(e.target.files[0])}
       />
 
       <div className="flex gap-2 mt-2">
@@ -115,11 +122,7 @@ export const DragDropInput = ({ url }: DragDropInputProps) => {
             {isUploading ? "Uploading..." : "Upload"}
           </Button>
         )}
-        {!file && url && (
-          <Button className="bg-white border-1 border-black text-black rounded-sm hover:text-white cursor-pointer" onClick={handleDelete}>
-            Delete
-          </Button>
-        )}
+        {!file && asset && <Button onClick={handleDelete}>Delete</Button>}
       </div>
     </div>
   );

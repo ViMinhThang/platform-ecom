@@ -9,7 +9,14 @@ export const assestApiSlice = apiSlice.injectEndpoints({
         body: data,
       }),
     }),
+    deleteAsset: builder.mutation({
+      query: ({ assetId }: { assetId: string }) => ({
+        url: `/assets/${assetId}`,
+        method: "DELETE",
+      }),
+    }),
   }),
 });
 
-export const { useUploadAssetMutation } = assestApiSlice;
+export const { useUploadAssetMutation, useDeleteAssetMutation } =
+  assestApiSlice;

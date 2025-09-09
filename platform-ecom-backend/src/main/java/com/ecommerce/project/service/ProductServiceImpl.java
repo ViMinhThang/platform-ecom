@@ -6,10 +6,7 @@ import com.ecommerce.project.model.Asset;
 import com.ecommerce.project.model.Cart;
 import com.ecommerce.project.model.Category;
 import com.ecommerce.project.model.Product;
-import com.ecommerce.project.payload.AssetDTO;
-import com.ecommerce.project.payload.CartDTO;
-import com.ecommerce.project.payload.ProductDTO;
-import com.ecommerce.project.payload.ProductResponse;
+import com.ecommerce.project.payload.*;
 import com.ecommerce.project.repositories.AssetRepository;
 import com.ecommerce.project.repositories.CartRepository;
 import com.ecommerce.project.repositories.CategoryRepository;
@@ -54,33 +51,18 @@ public class ProductServiceImpl implements ProductService {
     private CartService cartService;
 
     @Override
-    public ProductDTO addProduct(Long categoryId, ProductDTO productDTO) {
-        Category category = categoryRepository.findById(categoryId)
-                .orElseThrow(() ->
-                        new ResourceNotFoundException("Category", "categoryId", categoryId));
+    public ProductDTO addProduct(ProductDTO productDTO) {
+        Category category = categoryRepository.findByCategoryName(productDTO.getCategory())
+                .orElseThrow(() -> new ResourceNotFoundException("Category", "Category Name", productDTO.getCategory()));
 
-        boolean isProductNotPresent = true;
-
-        List<Product> products = category.getProducts();
-        for (Product value : products) {
-            if (value.getProductName().equals(productDTO.getProductName())) {
-                isProductNotPresent = false;
-                break;
-            }
-        }
-
-        if (isProductNotPresent) {
-            Product product = modelMapper.map(productDTO, Product.class);
-            product.setImage("default.png");
-            product.setCategory(category);
-            double specialPrice = product.getPrice() -
-                    ((product.getDiscount() * 0.01) * product.getPrice());
-            product.setSpecialPrice(specialPrice);
-            Product savedProduct = productRepository.save(product);
-            return modelMapper.map(savedProduct, ProductDTO.class);
-        } else {
-            throw new APIException("Product already exist!!");
-        }
+        Product product = modelMapper.map(productDTO, Product.class);
+        product.setCategory(category);
+        product.setImage("default.png");
+        double specialPrice = product.getPrice() -
+                ((product.getDiscount() * 0.01) * product.getPrice());
+        product.setSpecialPrice(specialPrice);
+        Product savedProduct = productRepository.save(product);
+        return modelMapper.map(savedProduct, ProductDTO.class);
     }
 
     @Override
@@ -173,11 +155,13 @@ public class ProductServiceImpl implements ProductService {
     public ProductDTO updateProduct(Long productId, ProductDTO productDTO) {
         Product productFromDb = productRepository.findById(productId)
                 .orElseThrow(() -> new ResourceNotFoundException("Product", "productId", productId));
-
+        Category category = categoryRepository.findByCategoryName(productDTO.getCategory())
+                .orElseThrow(() -> new ResourceNotFoundException("Category", "Category Name", productDTO.getCategory()));
         Product product = modelMapper.map(productDTO, Product.class);
 
         productFromDb.setProductName(product.getProductName());
         productFromDb.setDescription(product.getDescription());
+        productFromDb.setCategory(category);
         productFromDb.setQuantity(product.getQuantity());
         productFromDb.setDiscount(product.getDiscount());
         productFromDb.setPrice(product.getPrice());
@@ -228,10 +212,13 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ProductDTO searchProductByName(String productName) {
-        Product product = productRepository.findProductByProductNameLikeIgnoreCase("%" + productName + "%").orElseThrow(() -> new ResourceNotFoundException("Product", "ProductName", productName));
+        Product product = productRepository.findBySlug(productName).orElseThrow(() -> new ResourceNotFoundException("Product", "ProductName", productName));
+        Category category = categoryRepository.findById(product.getCategory().getCategoryId())
+                .orElseThrow(() -> new ResourceNotFoundException("Category", "Category name", product.getCategory().getCategoryName()));
         ProductDTO productDTO = modelMapper.map(product, ProductDTO.class);
         List<Asset> asset = assetRepository.findByProduct_ProductId(product.getProductId());
 
+        productDTO.setCategory(modelMapper.map(category, CategoryDTO.class).getCategoryName());
         List<AssetDTO> assetDTOS = asset.stream().map(asset1 -> modelMapper.map(asset1, AssetDTO.class)).toList();
         productDTO.setAssets(assetDTOS);
 

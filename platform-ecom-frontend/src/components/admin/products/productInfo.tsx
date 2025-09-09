@@ -1,59 +1,137 @@
-import React from "react";
-import type { Product } from "@/types/Product";
-import { Button } from "@/components/ui/button";
+import type { Product, ProductFormValues } from "@/types/Product";
+import { Controller, type Control } from "react-hook-form";
+import { IsAvailableToggle } from "./isAvailableToggle";
+import { useGetCategoriesQuery } from "@/slice/categoryApiSlice";
 
 interface ProductInfoCardProps {
-  product: Product;
+  control: Control<ProductFormValues>; // hoặc Control<ProductFormValues>
 }
+const ProductInfoCard = ({ control }: ProductInfoCardProps) => {
+  const { data, isLoading, error } = useGetCategoriesQuery({});
 
-const ProductInfoCard = ({ product }:ProductInfoCardProps) => {
+  if (isLoading) {
+    return <div>is Loading</div>;
+  }
+  if (error) {
+    return <div>Error</div>;
+  }
+
   return (
-    <div className="bg-white shadow-md border rounded-md p-6 flex flex-col gap-4 w-full">
+    <div className="bg-white shadow-md border rounded-md p-6 flex flex-col gap-4 w-[70%]">
       <div className="grid grid-cols-2 gap-4">
-        <div className="flex flex-col">
-          <label className="text-gray-700 mb-1">Product Name</label>
-          <input
-            type="text"
-            className="border border-slate-300 rounded-md p-3 w-full"
-            value={product.productName}
-            readOnly
-          />
-        </div>
-        <div className="flex flex-col">
-          <label className="text-gray-700 mb-1">Price</label>
-          <input
-            type="text"
-            className="border border-slate-300 rounded-md p-3 w-full"
-            value={product.price}
-            readOnly
-          />
-        </div>
+        <Controller
+          name="productName"
+          control={control}
+          render={({ field }) => (
+            <div className="flex flex-col">
+              <label className="text-gray-700 mb-1">Product Name</label>
+              <input
+                {...field}
+                type="text"
+                className="border border-slate-300 rounded-md p-3 w-full"
+              />
+            </div>
+          )}
+        />
+
+        <Controller
+          name="price"
+          control={control}
+          render={({ field }) => (
+            <div className="flex flex-col">
+              <label className="text-gray-700 mb-1">Price</label>
+              <input
+                {...field}
+                type="number"
+                className="border border-slate-300 rounded-md p-3 w-full"
+              />
+            </div>
+          )}
+        />
       </div>
 
-      <div className="grid grid-cols-2 gap-4">
-        <div className="flex flex-col mt-4">
-          <label className="text-gray-700 mb-1">Discount</label>
-          <input
-            type="text"
-            className="border border-slate-300 rounded-md p-2 w-full"
-            value={product.discount}
-            readOnly
-          />
-        </div>
+      <div className="grid grid-cols-2 gap-4 mt-4">
+        <Controller
+          name="discount"
+          control={control}
+          render={({ field }) => (
+            <div className="flex flex-col">
+              <label className="text-gray-700 mb-1">Discount</label>
+              <input
+                {...field}
+                type="number"
+                className="border border-slate-300 rounded-md p-2 w-full"
+              />
+            </div>
+          )}
+        />
 
-        <div className="flex flex-col mt-4">
-          <label className="text-gray-700 mb-1">Special Price</label>
-          <input
-            type="text"
-            className="border border-slate-300 rounded-md p-2 w-full"
-            value={product.specialPrice}
-            readOnly
-          />
-        </div>
+        <Controller
+          name="specialPrice"
+          control={control}
+          render={({ field }) => (
+            <div className="flex flex-col">
+              <label className="text-gray-700 mb-1">Special Price</label>
+              <input
+                {...field}
+                type="number"
+                className="border border-slate-300 rounded-md p-2 w-full"
+              />
+            </div>
+          )}
+        />
+        <Controller
+          name="type"
+          control={control}
+          render={({ field }) => (
+            <div className="flex flex-col">
+              <label className="text-gray-700 mb-1">Type</label>
+              <input
+                {...field}
+                type="text"
+                className="border border-slate-300 rounded-md p-2 w-full"
+              />
+            </div>
+          )}
+        />
+        <Controller
+          name="category"
+          control={control}
+          render={({ field }) => (
+            <div className="flex flex-col">
+              <label className="text-gray-700 mb-1">Category</label>
+              <select
+                {...field}
+                className="border border-slate-300 rounded-md p-2 w-full"
+              >
+                <option value="">Select Category</option>
+                {data?.content.map((category: any) => (
+                  <option key={category.categoryId} value={category.categoryName}>
+                    {category.categoryName}
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
+        />
+
+        <Controller
+          name="slug"
+          control={control}
+          render={({ field }) => (
+            <div className="flex flex-col">
+              <label className="text-gray-700 mb-1">Slug</label>
+              <input
+                {...field}
+                type="text"
+                placeholder="auto-generated from product name"
+                className="border border-slate-300 rounded-md p-2 w-full"
+              />
+            </div>
+          )}
+        />
+        <IsAvailableToggle control={control} />
       </div>
-      <Button className="bg-black text-white px-10 py-2 rounded-md w-[12%] mt-2">
-        Save Changes
-      </Button>
     </div>
   );
 };
