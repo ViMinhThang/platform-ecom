@@ -4,8 +4,10 @@ platform-ecom-backend/images
 platform-ecom-backend/.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
+platform-ecom-backend/src/main/java/resources/application.properties
 
 platform-ecom-frontend/node_modules/
+platform-ecom-frontend/.env
 
 ### STS ###
 .apt_generated

@@ -13,15 +13,12 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class AddressServiceImpl implements AddressService {
+public class AddressServiceImpl implements AddressService{
+    @Autowired
+    private AddressRepository addressRepository;
 
     @Autowired
-    ModelMapper modelMapper;
-
-
-    @Autowired
-    AddressRepository addressRepository;
-
+    private ModelMapper modelMapper;
 
     @Autowired
     UserRepository userRepository;
@@ -29,13 +26,10 @@ public class AddressServiceImpl implements AddressService {
     @Override
     public AddressDTO createAddress(AddressDTO addressDTO, User user) {
         Address address = modelMapper.map(addressDTO, Address.class);
-
-
-        List<Address> addressList = user.getAddresses();
-        addressList.add(address);
-        user.setAddresses(addressList);
-
         address.setUser(user);
+        List<Address> addressesList = user.getAddresses();
+        addressesList.add(address);
+        user.setAddresses(addressesList);
         Address savedAddress = addressRepository.save(address);
         return modelMapper.map(savedAddress, AddressDTO.class);
     }
@@ -49,6 +43,13 @@ public class AddressServiceImpl implements AddressService {
     }
 
     @Override
+    public AddressDTO getAddressesById(Long addressId) {
+        Address address = addressRepository.findById(addressId)
+                .orElseThrow(() -> new ResourceNotFoundException("Address", "addressId", addressId));
+        return modelMapper.map(address, AddressDTO.class);
+    }
+
+    @Override
     public List<AddressDTO> getUserAddresses(User user) {
         List<Address> addresses = user.getAddresses();
         return addresses.stream()
@@ -58,18 +59,19 @@ public class AddressServiceImpl implements AddressService {
 
     @Override
     public AddressDTO updateAddress(Long addressId, AddressDTO addressDTO) {
-
-        Address addressFromDataBase = addressRepository.findById(addressId)
+        Address addressFromDatabase = addressRepository.findById(addressId)
                 .orElseThrow(() -> new ResourceNotFoundException("Address", "addressId", addressId));
-        addressFromDataBase.setCity(addressDTO.getCity());
-        addressFromDataBase.setPincode(addressDTO.getPinCode());
-        addressFromDataBase.setCountry(addressDTO.getCountry());
-        addressFromDataBase.setStreet(addressDTO.getStreet());
-        addressFromDataBase.setBuildingName(addressDTO.getBuildingName());
 
-        Address updatedAddress = addressRepository.save(addressFromDataBase);
+        addressFromDatabase.setCity(addressDTO.getCity());
+        addressFromDatabase.setPincode(addressDTO.getPincode());
+        addressFromDatabase.setState(addressDTO.getState());
+        addressFromDatabase.setCountry(addressDTO.getCountry());
+        addressFromDatabase.setStreet(addressDTO.getStreet());
+        addressFromDatabase.setBuildingName(addressDTO.getBuildingName());
 
-        User user = addressFromDataBase.getUser();
+        Address updatedAddress = addressRepository.save(addressFromDatabase);
+
+        User user = addressFromDatabase.getUser();
         user.getAddresses().removeIf(address -> address.getAddressId().equals(addressId));
         user.getAddresses().add(updatedAddress);
         userRepository.save(user);
@@ -79,14 +81,15 @@ public class AddressServiceImpl implements AddressService {
 
     @Override
     public String deleteAddress(Long addressId) {
-
-
-        Address addressFromDataBase = addressRepository.findById(addressId)
+        Address addressFromDatabase = addressRepository.findById(addressId)
                 .orElseThrow(() -> new ResourceNotFoundException("Address", "addressId", addressId));
-        User user = addressFromDataBase.getUser();
+
+        User user = addressFromDatabase.getUser();
         user.getAddresses().removeIf(address -> address.getAddressId().equals(addressId));
         userRepository.save(user);
-        addressRepository.delete(addressFromDataBase);
+
+        addressRepository.delete(addressFromDatabase);
+
         return "Address deleted successfully with addressId: " + addressId;
     }
 }

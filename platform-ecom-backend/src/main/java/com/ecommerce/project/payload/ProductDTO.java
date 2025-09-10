@@ -1,11 +1,8 @@
 package com.ecommerce.project.payload;
 
-import com.ecommerce.project.model.Category;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -19,9 +16,4 @@ public class ProductDTO {
     private double price;
     private double discount;
     private double specialPrice;
-    private String type;
-    private String category;
-    private String slug;
-    private String isAvailable;
-    private List<AssetDTO> assets;
 }

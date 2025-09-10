@@ -1,6 +1,5 @@
 package com.ecommerce.project.model;
 
-
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -14,6 +13,7 @@ import lombok.NoArgsConstructor;
 public class OrderItem {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long orderItemId;
 
     @ManyToOne
@@ -25,9 +25,7 @@ public class OrderItem {
     private Order order;
 
     private Integer quantity;
-
     private double discount;
-
     private double orderedProductPrice;
 
 }

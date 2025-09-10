@@ -9,8 +9,7 @@ import lombok.NoArgsConstructor;
 
 import java.util.List;
 
-@Entity()
-@Table(name = "categories")
+@Entity(name = "categories")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -25,6 +24,4 @@ public class Category {
 
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
     private List<Product> products;
-
-    private String isAvailable;
 }
