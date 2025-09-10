@@ -8,8 +8,13 @@ INSERT INTO roles ( role_name) VALUES ('ROLE_USER');
 INSERT INTO roles (role_name) VALUES ('ROLE_ADMIN');
 
 -- Users (sellers)
-INSERT INTO users ( username, email, password) VALUES ('Admin A', 'AdminA@example.com', 'password123');
+INSERT INTO users ( username, email, password) VALUES ('Admin A', 'AdminA@example.com', '123');
 INSERT INTO users ( username, email, password) VALUES ('Admin B', 'AdminB@example.com', 'password123');
+
+
+INSERT INTO user_role (role_id,user_id) VALUES (1,1);
+INSERT INTO user_role (role_id,user_id) VALUES (1,2);
+
 
 INSERT INTO products ( product_name, slug, image, description, quantity, price, discount, special_price, category_id)
 VALUES ('Sony WH-1000XM5 Headphones', 'sony-wh-1000xm5-headphones', 'https://placehold.co/600x400',

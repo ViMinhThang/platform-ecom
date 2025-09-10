@@ -26,7 +26,7 @@ export function AppSidebar() {
   const isActive = (url: string) => location.pathname.startsWith(url);
 
   return (
-    <Sidebar className="border-none">
+    <Sidebar className="border-1 border-slate-300">
       <SidebarContent className="bg-white">
         <SidebarGroup>
           <SidebarGroupLabel>Admin Panel</SidebarGroupLabel>
@@ -37,8 +37,8 @@ export function AppSidebar() {
                   <SidebarMenuButton asChild>
                     <a
                       href={item.url}
-                      className={`bg-white px-5 py-8 my-1 flex items-center gap-2 rounded  ${
-                        isActive(item.url) ? "text-green-500 " : "text-black"
+                      className={`px-5 py-8 my-1 flex items-center gap-2 rounded  ${
+                        isActive(item.url) ? "text-green-500 bg-slate-100" : "text-black"
                       }`}
                     >
                       <item.icon />

@@ -23,7 +23,7 @@ import type { Category } from "@/types/Category";
 
 const PAGE_SIZE = 10;
 
-const CategoryDetailAdmin = () => {
+const CategoriesAdmin = () => {
   const [pageNumber, setPageNumber] = useState(0);
   const [search, setSearch] = useState("");
   const [open, setOpen] = useState(false);
@@ -253,4 +253,4 @@ const CategoryDetailAdmin = () => {
   );
 };
 
-export default CategoryDetailAdmin;
+export default CategoriesAdmin;
