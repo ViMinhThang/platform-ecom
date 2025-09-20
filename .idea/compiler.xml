@@ -7,6 +7,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="auth-services" />
+        <module name="gateway" />
         <module name="configserver" />
       </profile>
       <profile name="Annotation profile for user" enabled="true">
@@ -24,6 +25,7 @@
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="auth-services" options="-parameters" />
       <module name="configserver" options="-parameters" />
+      <module name="gateway" options="-parameters" />
       <module name="user" options="-parameters" />
     </option>
   </component>
