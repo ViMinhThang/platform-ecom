@@ -4,24 +4,42 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c48beeac-7758-42e4-81dd-f068fbcd38be" name="Changes" comment="setup Bff">
-      <change afterPath="$PROJECT_DIR$/platform-ecom-backend/eureka/.gitattributes" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/platform-ecom-backend/eureka/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/platform-ecom-backend/eureka/.mvn/wrapper/maven-wrapper.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/platform-ecom-backend/eureka/mvnw" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/platform-ecom-backend/eureka/mvnw.cmd" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/platform-ecom-backend/eureka/pom.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/platform-ecom-backend/eureka/src/main/java/com/ecom/eureka/EurekaApplication.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/platform-ecom-backend/eureka/src/main/resources/application.yml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/platform-ecom-backend/eureka/src/test/java/com/ecom/eureka/EurekaApplicationTests.java" afterDir="false" />
+    <list default="true" id="c48beeac-7758-42e4-81dd-f068fbcd38be" name="Changes" comment="add eureka">
+      <change afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/platform-ecom-backend/bff/src/main/resources/application.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/platform-ecom-backend/user/src/main/java/com/ecom/user/dtos/APIResponse.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/platform-ecom-backend/user/src/main/resources/application.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/logs/user-service.log" beforeDir="false" afterPath="$PROJECT_DIR$/logs/user-service.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/auth-services/.env" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/auth-services/.env" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/auth-services/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/auth-services/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/auth-services/src/main/java/com/ecom/auth/authService/AuthServiceApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/auth-services/src/main/java/com/ecom/auth/authService/AuthServiceApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/auth-services/src/main/java/com/ecom/auth/authService/security/jwt/JwtUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/auth-services/src/main/java/com/ecom/auth/authService/security/jwt/JwtUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/auth-services/src/main/java/com/ecom/auth/authService/service/AuthServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/auth-services/src/main/java/com/ecom/auth/authService/service/AuthServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/auth-services/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/auth-services/src/main/resources/application.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/bff/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/bff/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/bff/src/main/resources/application.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/gateway/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/gateway/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/gateway/src/main/java/com/ecom/gateway/GatewayApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/gateway/src/main/java/com/ecom/gateway/GatewayApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/gateway/src/main/java/com/ecom/gateway/security/GatewayConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/gateway/src/main/java/com/ecom/gateway/security/GatewayConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/gateway/src/main/java/com/ecom/gateway/security/JwtAuthFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/gateway/src/main/java/com/ecom/gateway/security/JwtAuthFilter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/gateway/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/gateway/src/main/resources/application.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/user/.env" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/user/.env" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/user/src/main/java/com/ecom/user/UserApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/user/src/main/java/com/ecom/user/UserApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/user/src/main/java/com/ecom/user/config/WebConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/user/src/main/java/com/ecom/user/config/WebConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/user/src/main/java/com/ecom/user/controller/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/user/src/main/java/com/ecom/user/controller/UserController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/user/src/main/java/com/ecom/user/exceptions/MyGlobalExceptionHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/user/src/main/java/com/ecom/user/exceptions/MyGlobalExceptionHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/user/src/main/java/com/ecom/user/service/UserServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/user/src/main/java/com/ecom/user/service/UserServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/user/src/main/resources/application.properties" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="CoverageOptionsProvider">
+    <option name="myAddOrReplace" value="2" />
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -62,7 +80,11 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "Application.auth-service.executor": "Run",
+    "Application.bff-service.executor": "Run",
     "Application.config-server.executor": "Run",
+    "Application.eureka.executor": "Run",
+    "Application.gateway.executor": "Run",
     "Application.user-service.executor": "Run",
     "ModuleVcsDetector.initialDetectionPerformed": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
@@ -71,7 +93,7 @@
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "git-widget-placeholder": "microservices-migration",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "/home/fragile/Desktop/platform-ecom/platform-ecom-backend",
+    "last_opened_file_path": "/home/fragile/Desktop/platform-ecom/platform-ecom-backend/user/src/main/resources",
     "project.structure.last.edited": "Modules",
     "project.structure.proportion": "0.15",
     "project.structure.side.proportion": "0.2",
@@ -80,13 +102,14 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/platform-ecom-backend/user/src/main/resources" />
       <recent name="$PROJECT_DIR$/platform-ecom-backend" />
       <recent name="$PROJECT_DIR$/platform-ecom-backend/user/src/main/java/com/ecom/user" />
       <recent name="$PROJECT_DIR$/platform-ecom-backend/user" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
-      <recent name="com.ecom.bff.dtos" />
       <recent name="com.ecom.user.dtos" />
+      <recent name="com.ecom.bff.dtos" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -101,14 +124,18 @@
           <value>
             <map>
               <entry key="auth-service" value="STOPPED" />
+              <entry key="bff-service" value="STOPPED" />
               <entry key="config-server" value="STOPPED" />
+              <entry key="eureka" value="FAILED" />
+              <entry key="gateway" value="FAILED" />
+              <entry key="user-service" value="STOPPED" />
             </map>
           </value>
         </entry>
       </map>
     </option>
   </component>
-  <component name="RunManager" selected="Application.auth-service">
+  <component name="RunManager" selected="Application.user-service">
     <configuration name="auth-service" type="Application" factoryName="Application">
       <option name="ALTERNATIVE_JRE_PATH" value="24" />
       <option name="envFilePaths">
@@ -120,6 +147,13 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="bff-service" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="com.ecom.bff.BffApplication" />
+      <module name="bff" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="config-server" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="com.ecom.config.configserver.ConfigserverApplication" />
       <module name="configserver" />
@@ -127,7 +161,40 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="eureka" type="Application" factoryName="Application">
+      <option name="ALTERNATIVE_JRE_PATH" value="/usr/lib/jvm/java-25-openjdk" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
+      <option name="MAIN_CLASS_NAME" value="com.ecom.eureka.EurekaApplication" />
+      <module name="eureka" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="gateway" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="com.ecom.gateway.GatewayApplication" />
+      <module name="gateway" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="user-service" type="Application" factoryName="Application">
+      <option name="ALTERNATIVE_JRE_PATH" value="/usr/lib/jvm/java-25-openjdk" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
+      <option name="envFilePaths">
+        <option value="$PROJECT_DIR$/platform-ecom-backend/user/.env" />
+      </option>
+      <option name="MAIN_CLASS_NAME" value="com.ecom.user.UserApplication" />
+      <module name="user" />
+      <option name="PROGRAM_PARAMETERS" value="-Duser.timezone=UTC" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <list>
+      <item itemvalue="Application.bff-service" />
+      <item itemvalue="Application.gateway" />
+      <item itemvalue="Application.eureka" />
+      <item itemvalue="Application.user-service" />
       <item itemvalue="Application.config-server" />
       <item itemvalue="Application.auth-service" />
     </list>
@@ -183,6 +250,22 @@
     <option name="localTasksCounter" value="6" />
     <servers />
   </component>
+  <component name="UnknownFeatures">
+    <option featureType="dependencySupport" implementationName="java:org.springframework.security:spring-security-core" />
+    <option featureType="dependencySupport" implementationName="java:org.springframework:spring-core" />
+    <option featureType="dependencySupport" implementationName="java:jakarta.validation:jakarta.validation-api" />
+    <option featureType="dependencySupport" implementationName="java:io.projectreactor:reactor-core" />
+    <option featureType="dependencySupport" implementationName="java:org.springframework.data:spring-data-commons" />
+    <option featureType="dependencySupport" implementationName="java:org.springframework.cloud:spring-cloud-context" />
+    <option featureType="dependencySupport" implementationName="java:org.hibernate.validator:hibernate-validator" />
+    <option featureType="dependencySupport" implementationName="java:org.springframework:spring-webmvc" />
+    <option featureType="dependencySupport" implementationName="java:org.projectlombok:lombok" />
+    <option featureType="dependencySupport" implementationName="executable:docker" />
+    <option featureType="dependencySupport" implementationName="java:jakarta.persistence:jakarta.persistence-api" />
+    <option featureType="dependencySupport" implementationName="java:jakarta.ws.rs:jakarta.ws.rs-api" />
+    <option featureType="dependencySupport" implementationName="java:org.springframework:spring-messaging" />
+    <option featureType="dependencySupport" implementationName="java:org.springframework.boot:spring-boot" />
+  </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="new config" />
     <MESSAGE value="setup user service" />
@@ -190,5 +273,8 @@
     <MESSAGE value="setup gateway service" />
     <MESSAGE value="setup Bff" />
     <option name="LAST_COMMIT_MESSAGE" value="setup Bff" />
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/platform_ecom$user_service.ic" NAME="user-service Coverage Results" MODIFIED="1758374933525" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true" />
   </component>
 </project>

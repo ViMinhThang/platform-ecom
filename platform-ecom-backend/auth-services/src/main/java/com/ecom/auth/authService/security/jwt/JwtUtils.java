@@ -27,7 +27,7 @@ public class JwtUtils {
 
     private SecretKey key;
 
-    @Value("${spring.ecom.app.jwtCookieName}")
+    @Value("${spring.app.jwtCookieName}")
     private String jwtCookie;
 
     private static final long EXPIRATION_TIME = 30L * 24 * 60 * 60 * 1000;

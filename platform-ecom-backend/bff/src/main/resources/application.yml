@@ -1,5 +1,6 @@
 spring:
   application:
-    name: auth-service
+    name: bff-service
+
   config:
     import: "configserver:http://localhost:8888"

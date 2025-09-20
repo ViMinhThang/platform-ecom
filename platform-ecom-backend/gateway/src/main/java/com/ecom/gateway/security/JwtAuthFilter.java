@@ -20,7 +20,7 @@ public class JwtAuthFilter implements WebFilter {
     private JwtUtils jwtUtils;
 
 
-    @Value("${spring.ecom.app.jwtCookieName}")
+    @Value("${spring.app.jwtCookieName}")
     private String jwtCookie;
 
     @Override

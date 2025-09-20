@@ -1,5 +1,5 @@
 spring:
   application:
-    name: auth-service
+    name: user-service
   config:
     import: "configserver:http://localhost:8888"
