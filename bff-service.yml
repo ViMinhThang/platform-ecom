@@ -5,4 +5,4 @@ eureka:
     register-with-eureka: true
     fetch-registry: true
 server:
-  port=8083
+  port: 8083
