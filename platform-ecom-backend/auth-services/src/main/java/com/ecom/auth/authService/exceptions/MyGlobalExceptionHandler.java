@@ -1,6 +1,6 @@
-package com.ecom.users.userService.exceptions;
+package com.ecom.auth.authService.exceptions;
 
-import com.ecom.users.userService.dtos.APIResponse;
+import com.ecom.auth.authService.dtos.APIResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;

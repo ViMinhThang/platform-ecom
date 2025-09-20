@@ -1,4 +1,4 @@
-package com.ecom.users.userService.exceptions;
+package com.ecom.auth.authService.exceptions;
 
 public class ResourceNotFoundException extends RuntimeException {
     String resourceName;
