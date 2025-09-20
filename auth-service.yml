@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/users
+    url: jdbc:postgresql://localhost:5432/users?currentSchema=public&stringtype=unspecified&serverTimezone=Asia/Ho_Chi_Minh
     username: ${DB_USER}
     password: ${DB_PASSWORD}
   rabbitmq:
