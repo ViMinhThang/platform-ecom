@@ -4,7 +4,46 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c48beeac-7758-42e4-81dd-f068fbcd38be" name="Changes" comment="user config" />
+    <list default="true" id="c48beeac-7758-42e4-81dd-f068fbcd38be" name="Changes" comment="setup user service">
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/platform-ecom-backend/user/.env" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/platform-ecom-backend/user/src/main/java/com/ecom/user/config/AppConstants.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/platform-ecom-backend/user/src/main/java/com/ecom/user/config/WebConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/platform-ecom-backend/user/src/main/java/com/ecom/user/controller/UserController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/platform-ecom-backend/user/src/main/java/com/ecom/user/dtos/MessageResponse.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/platform-ecom-backend/user/src/main/java/com/ecom/user/dtos/SignupRequest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/platform-ecom-backend/user/src/main/java/com/ecom/user/dtos/UserDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/platform-ecom-backend/user/src/main/java/com/ecom/user/dtos/UserInfoResponse.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/platform-ecom-backend/user/src/main/java/com/ecom/user/dtos/UserResponse.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/platform-ecom-backend/user/src/main/java/com/ecom/user/entity/Address.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/platform-ecom-backend/user/src/main/java/com/ecom/user/entity/AppRole.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/platform-ecom-backend/user/src/main/java/com/ecom/user/entity/Role.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/platform-ecom-backend/user/src/main/java/com/ecom/user/entity/User.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/platform-ecom-backend/user/src/main/java/com/ecom/user/repositories/RoleRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/platform-ecom-backend/user/src/main/java/com/ecom/user/repositories/UserRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/platform-ecom-backend/user/src/main/java/com/ecom/user/service/UserService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/platform-ecom-backend/user/src/main/java/com/ecom/user/service/UserServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/auth-services/src/main/java/com/ecom/users/userService/Entity/Address.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/auth-services/src/main/java/com/ecom/auth/authService/Entity/Address.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/auth-services/src/main/java/com/ecom/users/userService/Entity/AppRole.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/auth-services/src/main/java/com/ecom/auth/authService/Entity/AppRole.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/auth-services/src/main/java/com/ecom/users/userService/Entity/Role.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/auth-services/src/main/java/com/ecom/auth/authService/Entity/Role.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/auth-services/src/main/java/com/ecom/users/userService/Entity/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/auth-services/src/main/java/com/ecom/auth/authService/Entity/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/auth-services/src/main/java/com/ecom/users/userService/UserServicesApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/auth-services/src/main/java/com/ecom/auth/authService/AuthServiceApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/auth-services/src/main/java/com/ecom/users/userService/config/AppConstants.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/auth-services/src/main/java/com/ecom/auth/authService/config/AppConstants.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/auth-services/src/main/java/com/ecom/users/userService/controller/AuthController.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/auth-services/src/main/java/com/ecom/auth/authService/controller/AuthController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/auth-services/src/main/java/com/ecom/users/userService/dtos/APIResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/auth-services/src/main/java/com/ecom/auth/authService/dtos/APIResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/auth-services/src/main/java/com/ecom/users/userService/dtos/LoginRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/auth-services/src/main/java/com/ecom/auth/authService/dtos/LoginRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/auth-services/src/main/java/com/ecom/users/userService/dtos/MessageResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/auth-services/src/main/java/com/ecom/auth/authService/dtos/MessageResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/auth-services/src/main/java/com/ecom/users/userService/exceptions/MyGlobalExceptionHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/auth-services/src/main/java/com/ecom/auth/authService/exceptions/MyGlobalExceptionHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/auth-services/src/main/java/com/ecom/users/userService/exceptions/ResourceNotFoundException.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/auth-services/src/main/java/com/ecom/auth/authService/exceptions/ResourceNotFoundException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/auth-services/src/main/java/com/ecom/users/userService/repositories/UserRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/auth-services/src/main/java/com/ecom/auth/authService/repositories/AuthRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/auth-services/src/main/java/com/ecom/users/userService/security/jwt/JwtUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/auth-services/src/main/java/com/ecom/auth/authService/security/jwt/JwtUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/auth-services/src/main/java/com/ecom/users/userService/service/AuthService.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/auth-services/src/main/java/com/ecom/auth/authService/service/AuthService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/auth-services/src/main/java/com/ecom/users/userService/service/AuthServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/auth-services/src/main/java/com/ecom/auth/authService/service/AuthServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/user/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/user/pom.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -13,6 +52,7 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
+        <option value="Enum" />
         <option value="Interface" />
         <option value="Class" />
       </list>
@@ -54,9 +94,11 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
     "RunOnceActivity.git.unshallow": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "git-widget-placeholder": "microservices-migration",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "/home/fragile/Desktop/platform-ecom/platform-ecom-backend",
-    "project.structure.last.edited": "Project",
+    "last_opened_file_path": "/home/fragile/Desktop/platform-ecom/platform-ecom-backend/user",
+    "project.structure.last.edited": "Modules",
     "project.structure.proportion": "0.0",
     "project.structure.side.proportion": "0.0",
     "settings.editor.selected.configurable": "editor.preferences.tabs"
@@ -64,6 +106,7 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/platform-ecom-backend/user" />
       <recent name="$PROJECT_DIR$/platform-ecom-backend" />
     </key>
   </component>
@@ -78,15 +121,26 @@
         <entry key="Application">
           <value>
             <map>
+              <entry key="auth-service" value="STOPPED" />
               <entry key="config-server" value="STOPPED" />
-              <entry key="user-service" value="STOPPED" />
             </map>
           </value>
         </entry>
       </map>
     </option>
   </component>
-  <component name="RunManager" selected="Application.user-service">
+  <component name="RunManager" selected="Application.auth-service">
+    <configuration name="auth-service" type="Application" factoryName="Application">
+      <option name="ALTERNATIVE_JRE_PATH" value="24" />
+      <option name="envFilePaths">
+        <option value="$PROJECT_DIR$/platform-ecom-backend/auth-services/.env" />
+      </option>
+      <option name="MAIN_CLASS_NAME" value="com.ecom.auth.authService.AuthServiceApplication" />
+      <module name="auth-services" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="config-server" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="com.ecom.config.configserver.ConfigserverApplication" />
       <module name="configserver" />
@@ -94,20 +148,9 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="user-service" type="Application" factoryName="Application">
-      <option name="ALTERNATIVE_JRE_PATH" value="24" />
-      <option name="envFilePaths">
-        <option value="$PROJECT_DIR$/platform-ecom-backend/user-services/.env" />
-      </option>
-      <option name="MAIN_CLASS_NAME" value="com.ecom.users.userService.UserServicesApplication" />
-      <module name="auth-services" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <list>
       <item itemvalue="Application.config-server" />
-      <item itemvalue="Application.user-service" />
+      <item itemvalue="Application.auth-service" />
     </list>
   </component>
   <component name="TaskManager">
@@ -131,6 +174,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="new config" />
-    <option name="LAST_COMMIT_MESSAGE" value="new config" />
+    <MESSAGE value="setup user service" />
+    <option name="LAST_COMMIT_MESSAGE" value="setup user service" />
   </component>
 </project>
