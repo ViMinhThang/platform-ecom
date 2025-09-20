@@ -4,36 +4,19 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c48beeac-7758-42e4-81dd-f068fbcd38be" name="Changes" comment="setup gateway service">
-      <change afterPath="$PROJECT_DIR$/platform-ecom-backend/bff/.gitattributes" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/platform-ecom-backend/bff/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/platform-ecom-backend/bff/.mvn/wrapper/maven-wrapper.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/platform-ecom-backend/bff/mvnw" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/platform-ecom-backend/bff/mvnw.cmd" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/platform-ecom-backend/bff/pom.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/platform-ecom-backend/bff/src/main/java/com/ecom/bff/BffApplication.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/platform-ecom-backend/bff/src/main/java/com/ecom/bff/BffController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/platform-ecom-backend/bff/src/main/java/com/ecom/bff/clients/AuthServiceClient.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/platform-ecom-backend/bff/src/main/java/com/ecom/bff/clients/HttpClientConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/platform-ecom-backend/bff/src/main/java/com/ecom/bff/clients/UserServiceClient.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/platform-ecom-backend/bff/src/main/java/com/ecom/bff/dtos/AuthenticationResult.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/platform-ecom-backend/bff/src/main/java/com/ecom/bff/dtos/LoginRequest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/platform-ecom-backend/bff/src/main/java/com/ecom/bff/dtos/UserInfoResponse.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/platform-ecom-backend/bff/src/main/resources/application.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/platform-ecom-backend/bff/src/test/java/com/ecom/bff/BffApplicationTests.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/platform-ecom-backend/user/src/main/java/com/ecom/user/dtos/LoginRequest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/platform-ecom-backend/user/src/main/java/com/ecom/user/exceptions/MyGlobalExceptionHandler.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/platform-ecom-backend/user/src/main/java/com/ecom/user/exceptions/ResourceNotFoundException.java" afterDir="false" />
+    <list default="true" id="c48beeac-7758-42e4-81dd-f068fbcd38be" name="Changes" comment="setup Bff">
+      <change afterPath="$PROJECT_DIR$/platform-ecom-backend/eureka/.gitattributes" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/platform-ecom-backend/eureka/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/platform-ecom-backend/eureka/.mvn/wrapper/maven-wrapper.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/platform-ecom-backend/eureka/mvnw" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/platform-ecom-backend/eureka/mvnw.cmd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/platform-ecom-backend/eureka/pom.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/platform-ecom-backend/eureka/src/main/java/com/ecom/eureka/EurekaApplication.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/platform-ecom-backend/eureka/src/main/resources/application.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/platform-ecom-backend/eureka/src/test/java/com/ecom/eureka/EurekaApplicationTests.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/auth-services/src/main/java/com/ecom/auth/authService/controller/AuthController.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/auth-services/src/main/java/com/ecom/auth/authService/controller/AuthController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/auth-services/src/main/java/com/ecom/auth/authService/service/AuthServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/auth-services/src/main/java/com/ecom/auth/authService/service/AuthServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/user/src/main/java/com/ecom/user/controller/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/user/src/main/java/com/ecom/user/controller/UserController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/user/src/main/java/com/ecom/user/repositories/UserRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/user/src/main/java/com/ecom/user/repositories/UserRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/user/src/main/java/com/ecom/user/service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/user/src/main/java/com/ecom/user/service/UserService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/user/src/main/java/com/ecom/user/service/UserServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/user/src/main/java/com/ecom/user/service/UserServiceImpl.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -88,17 +71,17 @@
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "git-widget-placeholder": "microservices-migration",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "/home/fragile/Desktop/platform-ecom/platform-ecom-backend/user/src/main/java/com/ecom/user",
+    "last_opened_file_path": "/home/fragile/Desktop/platform-ecom/platform-ecom-backend",
     "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.0",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
     "settings.editor.selected.configurable": "editor.preferences.tabs"
   }
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/platform-ecom-backend/user/src/main/java/com/ecom/user" />
       <recent name="$PROJECT_DIR$/platform-ecom-backend" />
+      <recent name="$PROJECT_DIR$/platform-ecom-backend/user/src/main/java/com/ecom/user" />
       <recent name="$PROJECT_DIR$/platform-ecom-backend/user" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
@@ -189,7 +172,15 @@
       <option name="project" value="LOCAL" />
       <updated>1758366043651</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="setup Bff">
+      <option name="closed" value="true" />
+      <created>1758369788784</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1758369788784</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -197,6 +188,7 @@
     <MESSAGE value="setup user service" />
     <MESSAGE value="update import" />
     <MESSAGE value="setup gateway service" />
-    <option name="LAST_COMMIT_MESSAGE" value="setup gateway service" />
+    <MESSAGE value="setup Bff" />
+    <option name="LAST_COMMIT_MESSAGE" value="setup Bff" />
   </component>
 </project>

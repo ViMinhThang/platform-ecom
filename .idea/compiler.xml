@@ -9,6 +9,7 @@
         <module name="auth-services" />
         <module name="configserver" />
         <module name="gateway" />
+        <module name="eureka" />
       </profile>
       <profile name="Annotation profile for bff" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
@@ -27,6 +28,7 @@
       <module name="auth-services" options="-parameters" />
       <module name="bff" options="-parameters" />
       <module name="configserver" options="-parameters" />
+      <module name="eureka" options="-parameters" />
       <module name="gateway" options="-parameters" />
       <module name="user" options="-parameters" />
     </option>
