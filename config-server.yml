@@ -1,6 +1,4 @@
 spring:
-  application:
-    name: configserver
   rabbitmq:
     host: ${RABBITMQ_HOST:localhost}
     port: ${RABBITMQ_PORT:5672}
