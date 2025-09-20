@@ -4,6 +4,7 @@ import com.ecom.user.dtos.*;
 import com.ecom.user.entity.AppRole;
 import com.ecom.user.entity.Role;
 import com.ecom.user.entity.User;
+import com.ecom.user.exceptions.ResourceNotFoundException;
 import com.ecom.user.repositories.RoleRepository;
 import com.ecom.user.repositories.UserRepository;
 import org.modelmapper.ModelMapper;
@@ -98,6 +99,18 @@ public class UserServiceImpl implements UserService {
         response.setTotalElements(allUsers.getTotalElements());
         response.setTotalPages(allUsers.getTotalPages());
         response.setLastPage(allUsers.isLast());
+        return response;
+    }
+
+    @Override
+    public UserInfoResponse login(LoginRequest loginRequest) {
+        User user = userRepository.findByUserName(loginRequest.getUsername())
+                .orElseThrow(() -> new ResourceNotFoundException("User", "User name", loginRequest.getUsername()));
+
+        List<String> roles = user.getRoles().stream().map(role -> role.getRoleName().toString()).toList();
+
+        UserInfoResponse response = new UserInfoResponse(user.getUserId(),
+                user.getUserName(), user.getEmail(),roles);
         return response;
     }
 

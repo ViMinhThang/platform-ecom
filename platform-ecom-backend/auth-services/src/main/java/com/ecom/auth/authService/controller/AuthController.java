@@ -5,22 +5,22 @@ import com.ecom.auth.authService.dtos.MessageResponse;
 import com.ecom.auth.authService.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/auth")
+@RequestMapping("/api/auth-service")
 public class AuthController {
 
     @Autowired
     AuthService authService;
 
     @PostMapping("/signin")
-    public ResponseEntity<?> authenticateUser(@RequestBody LoginRequest loginRequest) {
+    public ResponseEntity<ResponseCookie> authenticateUser(@RequestBody LoginRequest loginRequest) {
         ResponseCookie result = authService.login(loginRequest);
-        return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE,
-                result.toString()).build();
+        return new ResponseEntity<ResponseCookie>(result, HttpStatus.OK);
     }
 
 //    @PostMapping("/signup")

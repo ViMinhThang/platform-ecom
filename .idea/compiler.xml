@@ -7,10 +7,10 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="auth-services" />
-        <module name="gateway" />
         <module name="configserver" />
+        <module name="gateway" />
       </profile>
-      <profile name="Annotation profile for user" enabled="true">
+      <profile name="Annotation profile for bff" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
@@ -18,12 +18,14 @@
           <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.40/lombok-1.18.40.jar" />
         </processorPath>
         <module name="user" />
+        <module name="bff" />
       </profile>
     </annotationProcessing>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="auth-services" options="-parameters" />
+      <module name="bff" options="-parameters" />
       <module name="configserver" options="-parameters" />
       <module name="gateway" options="-parameters" />
       <module name="user" options="-parameters" />

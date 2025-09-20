@@ -25,7 +25,7 @@ public class AuthServiceImpl implements AuthService {
         Long userId = userRepository.findUserIdByUserName(loginRequest.getUsername())
                 .orElseThrow(() -> new ResourceNotFoundException("User", "User name", loginRequest.getUsername()));
 
-        ResponseCookie jwtCookie = jwtUtils.generateJwtCookie(userId);
+        ResponseCookie jwtCookie = jwtUtils.generateJwtCookie(String.valueOf(userId));
 
         return jwtCookie;
     }
