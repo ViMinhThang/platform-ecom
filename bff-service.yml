@@ -1,6 +1,6 @@
 spring:
   app:
-    jwtSecret: "mySecret123"
+    jwtSecret: "qweqweqweqweqweqw123123131231231cfcsvcxvwdfqsd"
     jwtExpirationMs: 600000
     jwtCookieName: "ecom"
 
