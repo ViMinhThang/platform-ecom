@@ -1,3 +1,9 @@
+spring:
+  app:
+    jwtSecret: "mySecret123"
+    jwtExpirationMs: 600000
+    jwtCookieName: "ecom"
+
 eureka:
   client:
     serviceUrl:
