@@ -42,4 +42,5 @@ public class BffController {
                 .header(HttpHeaders.SET_COOKIE, authenticationResult.getJwtCookie().toString())
                 .body(authenticationResult.getResponse());
     }
+
 }

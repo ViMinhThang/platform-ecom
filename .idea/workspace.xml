@@ -4,26 +4,19 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c48beeac-7758-42e4-81dd-f068fbcd38be" name="Changes" comment="add eureka">
-      <change afterPath="$PROJECT_DIR$/platform-ecom-backend/bff/src/main/java/com/ecom/bff/jwt/JwtUtils.java" afterDir="false" />
+    <list default="true" id="c48beeac-7758-42e4-81dd-f068fbcd38be" name="Changes" comment="code login &amp; signup function">
+      <change afterPath="$PROJECT_DIR$/platform-ecom-backend/bff/src/main/java/com/ecom/bff/dtos/AddressDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/platform-ecom-backend/gateway/src/main/java/com/ecom/gateway/security/GatewayConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/platform-ecom-backend/user/src/main/java/com/ecom/user/controller/AddressController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/platform-ecom-backend/user/src/main/java/com/ecom/user/dtos/AddressDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/platform-ecom-backend/user/src/main/java/com/ecom/user/repositories/AddressRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/platform-ecom-backend/user/src/main/java/com/ecom/user/security/JwtUtils.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/platform-ecom-backend/user/src/main/java/com/ecom/user/service/AddressService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/platform-ecom-backend/user/src/main/java/com/ecom/user/service/AddressServiceImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/logs/user-service.log" beforeDir="false" afterPath="$PROJECT_DIR$/logs/user-service.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/auth-services/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/auth-services/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/auth-services/src/main/java/com/ecom/auth/authService/controller/AuthController.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/auth-services/src/main/java/com/ecom/auth/authService/controller/AuthController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/auth-services/src/main/java/com/ecom/auth/authService/security/jwt/JwtUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/auth-services/src/main/java/com/ecom/auth/authService/security/jwt/JwtUtils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/auth-services/src/main/java/com/ecom/auth/authService/service/AuthServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/auth-services/src/main/java/com/ecom/auth/authService/service/AuthServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/bff/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/bff/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/bff/src/main/java/com/ecom/bff/BffController.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/bff/src/main/java/com/ecom/bff/controller/BffController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/bff/src/main/java/com/ecom/bff/clients/AuthServiceClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/bff/src/main/java/com/ecom/bff/clients/AuthServiceClient.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/platform-ecom-backend/bff/src/main/java/com/ecom/bff/clients/UserServiceClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/bff/src/main/java/com/ecom/bff/clients/UserServiceClient.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/gateway/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/gateway/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/gateway/src/main/java/com/ecom/gateway/security/GatewayConfig.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/gateway/src/main/java/com/ecom/gateway/security/JwtAuthFilter.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/gateway/src/main/java/com/ecom/gateway/security/jwt/JwtUtils.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/user/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/user/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/user/src/main/java/com/ecom/user/controller/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/user/src/main/java/com/ecom/user/controller/UserController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/user/src/main/java/com/ecom/user/service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/user/src/main/java/com/ecom/user/service/UserService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/user/src/main/java/com/ecom/user/service/UserServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/user/src/main/java/com/ecom/user/service/UserServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/bff/src/main/java/com/ecom/bff/controller/BffController.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/bff/src/main/java/com/ecom/bff/controller/BffController.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -70,28 +63,28 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Application.auth-service.executor": "Run",
-    "Application.bff-service.executor": "Run",
-    "Application.config-server.executor": "Run",
-    "Application.eureka.executor": "Run",
-    "Application.gateway.executor": "Run",
-    "Application.user-service.executor": "Run",
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "git-widget-placeholder": "microservices-migration",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "/home/fragile/Desktop/platform-ecom/platform-ecom-backend/auth-services/src/main/java/com/ecom/auth/authService/security",
-    "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.2",
-    "settings.editor.selected.configurable": "editor.preferences.tabs"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.auth-service.executor&quot;: &quot;Run&quot;,
+    &quot;Application.bff-service.executor&quot;: &quot;Run&quot;,
+    &quot;Application.config-server.executor&quot;: &quot;Run&quot;,
+    &quot;Application.eureka.executor&quot;: &quot;Run&quot;,
+    &quot;Application.gateway.executor&quot;: &quot;Run&quot;,
+    &quot;Application.user-service.executor&quot;: &quot;Run&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;microservices-migration&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/fragile/Desktop/platform-ecom/platform-ecom-backend/auth-services/src/main/java/com/ecom/auth/authService/security&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;editor.preferences.tabs&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/platform-ecom-backend/auth-services/src/main/java/com/ecom/auth/authService/security" />
@@ -101,8 +94,8 @@
       <recent name="$PROJECT_DIR$/platform-ecom-backend/user/src/main/java/com/ecom/user" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
-      <recent name="com.ecom.user.dtos" />
       <recent name="com.ecom.bff.dtos" />
+      <recent name="com.ecom.user.dtos" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -240,7 +233,15 @@
       <option name="project" value="LOCAL" />
       <updated>1758369788784</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="code login &amp; signup function">
+      <option name="closed" value="true" />
+      <created>1758438060074</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1758438060074</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -265,7 +266,8 @@
     <MESSAGE value="update import" />
     <MESSAGE value="setup gateway service" />
     <MESSAGE value="setup Bff" />
-    <option name="LAST_COMMIT_MESSAGE" value="setup Bff" />
+    <MESSAGE value="code login &amp; signup function" />
+    <option name="LAST_COMMIT_MESSAGE" value="code login &amp; signup function" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/platform_ecom$user_service.ic" NAME="user-service Coverage Results" MODIFIED="1758374933525" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true" />
