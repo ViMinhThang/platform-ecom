@@ -15,5 +15,5 @@ public interface UserService {
     UserResponse getAllSellers(Pageable pageable);
     @Query("SELECT u.userId FROM User u WHERE u.userName = :username")
 
-    UserInfoResponse login(LoginRequest loginRequest);
+    UserInfoResponse getUserById(String userId);
 }

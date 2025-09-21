@@ -105,9 +105,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserInfoResponse login(LoginRequest loginRequest) {
-        User user = userRepository.findByUserName(loginRequest.getUsername())
-                .orElseThrow(() -> new ResourceNotFoundException("User", "User name", loginRequest.getUsername()));
+    public UserInfoResponse getUserById(String userId) {
+        User user = userRepository.findById(Long.valueOf(userId))
+                .orElseThrow(() -> new ResourceNotFoundException("User", "Userid", userId));
 
         List<String> roles = user.getRoles().stream().map(role -> role.getRoleName().toString()).toList();
 

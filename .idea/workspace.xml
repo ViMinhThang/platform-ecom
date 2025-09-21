@@ -5,33 +5,25 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c48beeac-7758-42e4-81dd-f068fbcd38be" name="Changes" comment="add eureka">
-      <change afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/platform-ecom-backend/bff/src/main/resources/application.yml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/platform-ecom-backend/user/src/main/java/com/ecom/user/dtos/APIResponse.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/platform-ecom-backend/user/src/main/resources/application.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/platform-ecom-backend/bff/src/main/java/com/ecom/bff/jwt/JwtUtils.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/logs/user-service.log" beforeDir="false" afterPath="$PROJECT_DIR$/logs/user-service.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/auth-services/.env" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/auth-services/.env" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/platform-ecom-backend/auth-services/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/auth-services/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/auth-services/src/main/java/com/ecom/auth/authService/AuthServiceApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/auth-services/src/main/java/com/ecom/auth/authService/AuthServiceApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/auth-services/src/main/java/com/ecom/auth/authService/controller/AuthController.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/auth-services/src/main/java/com/ecom/auth/authService/controller/AuthController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/platform-ecom-backend/auth-services/src/main/java/com/ecom/auth/authService/security/jwt/JwtUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/auth-services/src/main/java/com/ecom/auth/authService/security/jwt/JwtUtils.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/platform-ecom-backend/auth-services/src/main/java/com/ecom/auth/authService/service/AuthServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/auth-services/src/main/java/com/ecom/auth/authService/service/AuthServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/auth-services/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/auth-services/src/main/resources/application.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/platform-ecom-backend/bff/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/bff/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/bff/src/main/resources/application.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/bff/src/main/java/com/ecom/bff/BffController.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/bff/src/main/java/com/ecom/bff/controller/BffController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/bff/src/main/java/com/ecom/bff/clients/AuthServiceClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/bff/src/main/java/com/ecom/bff/clients/AuthServiceClient.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/bff/src/main/java/com/ecom/bff/clients/UserServiceClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/bff/src/main/java/com/ecom/bff/clients/UserServiceClient.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/platform-ecom-backend/gateway/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/gateway/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/gateway/src/main/java/com/ecom/gateway/GatewayApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/gateway/src/main/java/com/ecom/gateway/GatewayApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/gateway/src/main/java/com/ecom/gateway/security/GatewayConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/gateway/src/main/java/com/ecom/gateway/security/GatewayConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/gateway/src/main/java/com/ecom/gateway/security/JwtAuthFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/gateway/src/main/java/com/ecom/gateway/security/JwtAuthFilter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/gateway/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/gateway/src/main/resources/application.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/user/.env" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/user/.env" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/user/src/main/java/com/ecom/user/UserApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/user/src/main/java/com/ecom/user/UserApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/user/src/main/java/com/ecom/user/config/WebConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/user/src/main/java/com/ecom/user/config/WebConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/gateway/src/main/java/com/ecom/gateway/security/GatewayConfig.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/gateway/src/main/java/com/ecom/gateway/security/JwtAuthFilter.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/gateway/src/main/java/com/ecom/gateway/security/jwt/JwtUtils.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/user/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/user/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/platform-ecom-backend/user/src/main/java/com/ecom/user/controller/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/user/src/main/java/com/ecom/user/controller/UserController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/user/src/main/java/com/ecom/user/exceptions/MyGlobalExceptionHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/user/src/main/java/com/ecom/user/exceptions/MyGlobalExceptionHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/user/src/main/java/com/ecom/user/service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/user/src/main/java/com/ecom/user/service/UserService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/platform-ecom-backend/user/src/main/java/com/ecom/user/service/UserServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/user/src/main/java/com/ecom/user/service/UserServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/user/src/main/resources/application.properties" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -93,7 +85,7 @@
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "git-widget-placeholder": "microservices-migration",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "/home/fragile/Desktop/platform-ecom/platform-ecom-backend/user/src/main/resources",
+    "last_opened_file_path": "/home/fragile/Desktop/platform-ecom/platform-ecom-backend/auth-services/src/main/java/com/ecom/auth/authService/security",
     "project.structure.last.edited": "Modules",
     "project.structure.proportion": "0.15",
     "project.structure.side.proportion": "0.2",
@@ -102,10 +94,11 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/platform-ecom-backend/auth-services/src/main/java/com/ecom/auth/authService/security" />
+      <recent name="$PROJECT_DIR$/platform-ecom-backend/bff/src/main/java/com/ecom/bff/security" />
       <recent name="$PROJECT_DIR$/platform-ecom-backend/user/src/main/resources" />
       <recent name="$PROJECT_DIR$/platform-ecom-backend" />
       <recent name="$PROJECT_DIR$/platform-ecom-backend/user/src/main/java/com/ecom/user" />
-      <recent name="$PROJECT_DIR$/platform-ecom-backend/user" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
       <recent name="com.ecom.user.dtos" />
@@ -127,7 +120,7 @@
               <entry key="bff-service" value="STOPPED" />
               <entry key="config-server" value="STOPPED" />
               <entry key="eureka" value="FAILED" />
-              <entry key="gateway" value="FAILED" />
+              <entry key="gateway" value="STOPPED" />
               <entry key="user-service" value="STOPPED" />
             </map>
           </value>

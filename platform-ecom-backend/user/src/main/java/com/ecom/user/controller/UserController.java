@@ -30,9 +30,9 @@ public class UserController {
     }
 
 
-    @GetMapping("/me")
-    public ResponseEntity<UserInfoResponse> getUserInfo(@RequestBody LoginRequest loginRequest) {
-        UserInfoResponse result = userService.login(loginRequest);
+    @GetMapping("/{id}")
+    public ResponseEntity<UserInfoResponse> getUserInfo(@PathVariable("id") String userId) {
+        UserInfoResponse result = userService.getUserById(userId);
         return new ResponseEntity<UserInfoResponse>(result, HttpStatus.OK);
     }
 
