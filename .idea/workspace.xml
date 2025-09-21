@@ -4,19 +4,41 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c48beeac-7758-42e4-81dd-f068fbcd38be" name="Changes" comment="code login &amp; signup function">
-      <change afterPath="$PROJECT_DIR$/platform-ecom-backend/bff/src/main/java/com/ecom/bff/dtos/AddressDTO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/platform-ecom-backend/gateway/src/main/java/com/ecom/gateway/security/GatewayConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/platform-ecom-backend/user/src/main/java/com/ecom/user/controller/AddressController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/platform-ecom-backend/user/src/main/java/com/ecom/user/dtos/AddressDTO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/platform-ecom-backend/user/src/main/java/com/ecom/user/repositories/AddressRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/platform-ecom-backend/user/src/main/java/com/ecom/user/security/JwtUtils.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/platform-ecom-backend/user/src/main/java/com/ecom/user/service/AddressService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/platform-ecom-backend/user/src/main/java/com/ecom/user/service/AddressServiceImpl.java" afterDir="false" />
+    <list default="true" id="c48beeac-7758-42e4-81dd-f068fbcd38be" name="Changes" comment="setup gateway for address">
+      <change afterPath="$PROJECT_DIR$/platform-ecom-backend/product/.gitattributes" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/platform-ecom-backend/product/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/platform-ecom-backend/product/.mvn/wrapper/maven-wrapper.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/platform-ecom-backend/product/mvnw" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/platform-ecom-backend/product/mvnw.cmd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/platform-ecom-backend/product/pom.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/ProductApplication.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/config/AppConstants.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/controller/CategoryController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/controller/ProductController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/dtos/APIResponse.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/dtos/CategoryDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/dtos/CategoryResponse.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/dtos/ProductDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/dtos/ProductResponse.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/entity/Category.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/entity/Product.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/exceptions/APIException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/exceptions/MyGlobalExceptionHandler.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/exceptions/ResourceNotFoundException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/repositories/CategoryRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/repositories/ProductRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/service/CategoryService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/service/CategoryServiceImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/service/FileService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/service/FileServiceImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/service/ProductService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/service/ProductServiceImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/resources/application.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/platform-ecom-backend/product/src/test/java/com/ecom/product/ProductApplicationTests.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/logs/user-service.log" beforeDir="false" afterPath="$PROJECT_DIR$/logs/user-service.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/bff/src/main/java/com/ecom/bff/clients/UserServiceClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/bff/src/main/java/com/ecom/bff/clients/UserServiceClient.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/bff/src/main/java/com/ecom/bff/controller/BffController.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/bff/src/main/java/com/ecom/bff/controller/BffController.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -63,37 +85,41 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Application.auth-service.executor&quot;: &quot;Run&quot;,
-    &quot;Application.bff-service.executor&quot;: &quot;Run&quot;,
-    &quot;Application.config-server.executor&quot;: &quot;Run&quot;,
-    &quot;Application.eureka.executor&quot;: &quot;Run&quot;,
-    &quot;Application.gateway.executor&quot;: &quot;Run&quot;,
-    &quot;Application.user-service.executor&quot;: &quot;Run&quot;,
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;microservices-migration&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/home/fragile/Desktop/platform-ecom/platform-ecom-backend/auth-services/src/main/java/com/ecom/auth/authService/security&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;editor.preferences.tabs&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.auth-service.executor": "Run",
+    "Application.bff-service.executor": "Run",
+    "Application.config-server.executor": "Run",
+    "Application.eureka.executor": "Run",
+    "Application.gateway.executor": "Run",
+    "Application.user-service.executor": "Run",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "git-widget-placeholder": "microservices-migration",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "/home/fragile/Desktop/platform-ecom/platform-ecom-backend/product/src/main/java/com/ecom/product",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "editor.preferences.tabs"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product" />
+      <recent name="$PROJECT_DIR$" />
       <recent name="$PROJECT_DIR$/platform-ecom-backend/auth-services/src/main/java/com/ecom/auth/authService/security" />
       <recent name="$PROJECT_DIR$/platform-ecom-backend/bff/src/main/java/com/ecom/bff/security" />
       <recent name="$PROJECT_DIR$/platform-ecom-backend/user/src/main/resources" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/platform-ecom-backend" />
-      <recent name="$PROJECT_DIR$/platform-ecom-backend/user/src/main/java/com/ecom/user" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="com.ecom.product.dtos" />
       <recent name="com.ecom.bff.dtos" />
       <recent name="com.ecom.user.dtos" />
     </key>
@@ -241,7 +267,15 @@
       <option name="project" value="LOCAL" />
       <updated>1758438060074</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="setup gateway for address">
+      <option name="closed" value="true" />
+      <created>1758446164296</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1758446164296</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -267,7 +301,8 @@
     <MESSAGE value="setup gateway service" />
     <MESSAGE value="setup Bff" />
     <MESSAGE value="code login &amp; signup function" />
-    <option name="LAST_COMMIT_MESSAGE" value="code login &amp; signup function" />
+    <MESSAGE value="setup gateway for address" />
+    <option name="LAST_COMMIT_MESSAGE" value="setup gateway for address" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/platform_ecom$user_service.ic" NAME="user-service Coverage Results" MODIFIED="1758374933525" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true" />

@@ -12,7 +12,7 @@
         <module name="gateway" />
         <module name="eureka" />
       </profile>
-      <profile name="Annotation profile for bff" enabled="true">
+      <profile name="Annotation profile for product" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
@@ -20,6 +20,7 @@
           <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.40/lombok-1.18.40.jar" />
         </processorPath>
         <module name="user" />
+        <module name="product" />
         <module name="bff" />
       </profile>
     </annotationProcessing>
@@ -31,6 +32,7 @@
       <module name="configserver" options="-parameters" />
       <module name="eureka" options="-parameters" />
       <module name="gateway" options="-parameters" />
+      <module name="product" options="-parameters" />
       <module name="user" options="-parameters" />
     </option>
   </component>
