@@ -16,6 +16,10 @@ spring:
     hibernate:
       ddl-auto: update
     database-platform: org.hibernate.dialect.PostgreSQLDialect
+  app:
+    jwtSecret: "qweqweqweqweqweqw123123131231231cfcsvcxvwdfqsd"
+    jwtExpirationMs: 600000
+    jwtCookieName: "ecom"
 server:
   port: 8082
 
