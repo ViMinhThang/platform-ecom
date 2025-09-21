@@ -22,8 +22,8 @@ eureka:
     fetch-registry: true
 logging:
   level:
-    root: debug
-    org.springframework.cloud.gateway.route.RouteDefinitionLocator: TRACE
-    org.springframework.cloud.gateway: TRACE
+    root: info
+    org.springframework.cloud.gateway.route.RouteDefinitionLocator: DEBUG
+    org.springframework.cloud.gateway: info
     org.springframework.security: TRACE
     org.springframework.web: TRACE
