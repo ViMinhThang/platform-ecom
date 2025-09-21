@@ -25,3 +25,5 @@ logging:
     root: debug
     org.springframework.cloud.gateway.route.RouteDefinitionLocator: DEBUG
     org.springframework.cloud.gateway: debug
+    org.springframework.security: DEBUG
+    org.springframework.web: DEBUG
