@@ -23,7 +23,7 @@ eureka:
 logging:
   level:
     root: debug
-    org.springframework.cloud.gateway.route.RouteDefinitionLocator: DEBUG
-    org.springframework.cloud.gateway: debug
-    org.springframework.security: DEBUG
-    org.springframework.web: DEBUG
+    org.springframework.cloud.gateway.route.RouteDefinitionLocator: TRACE
+    org.springframework.cloud.gateway: TRACE
+    org.springframework.security: TRACE
+    org.springframework.web: TRACE
