@@ -1,0 +1,15 @@
+package com.ecom.order.dtos;
+import lombok.Data;
+
+import java.util.Map;
+
+@Data
+public class StripePaymentDto {
+    private Long amount;
+    private String currency;
+    private String email;
+    private String name;
+    private AddressDTO address;
+    private String description;
+    private Map<String, String> metadata;
+}
