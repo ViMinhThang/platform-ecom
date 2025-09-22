@@ -1,5 +1,6 @@
 package com.ecom.gateway.security;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.gateway.filter.ratelimit.KeyResolver;
 import org.springframework.cloud.gateway.filter.ratelimit.RedisRateLimiter;
 import org.springframework.context.annotation.Bean;
@@ -16,8 +17,11 @@ import java.util.Objects;
 public class GatewayConfig {
     @Bean
     public RedisRateLimiter redisRateLimiter() {
-        return new RedisRateLimiter(10,20,1);
+        return new RedisRateLimiter(10, 20, 1);
     }
+
+    @Autowired
+    private AuthenticationFilter authFilter;
     @Bean
     public KeyResolver hostNameKeyResolver() {
         return exchange -> Mono.just(
@@ -27,40 +31,29 @@ public class GatewayConfig {
     @Bean
     public RouteLocator customRouteLocator(RouteLocatorBuilder builder) {
         return builder.routes()
-//                .route("product-service", r -> r
-//                        .path("/api/products/**")
-//                        .filters(f -> f.retry(retryConfig -> retryConfig
-//                                        .setRetries(10)
-//                                        .setMethods(HttpMethod.GET)
-//                                )
-//                                .requestRateLimiter(config -> config
-//                                        .setRateLimiter(redisRateLimiter())
-//                                        .setKeyResolver(hostNameKeyResolver()))
-//                                .circuitBreaker(config -> config
-//                                        .setName("ecomBreaker")
-//                                        .setFallbackUri("forward:/fallback/products")))
-////                        .filters(f -> f.rewritePath("/products(?<segment>/?.*)",
-////                                "/api/products${segment}"))
-//                        .uri("lb://PRODUCT-SERVICE"))
-                .route("user-service", r -> r
-                        .path("/api/users/**","/api/addresses/**")
-//                        .filters(f -> f.rewritePath("/users(?<segment>/?.*)",
-//                                "/api/users${segment}"))
-                        .uri("lb://USER-SERVICE"))
+                // ---------------- PRODUCT SERVICE ----------------
+                .route("product-public", r -> r.path("/api/product/public/**")
+                        .uri("lb://product-service"))
+                .route("product-admin", r -> r.path("/api/product/admin/**")
+                        .filters(f -> f.filter(authFilter))
+                        .uri("lb://product-service"))
+                .route("product-seller", r -> r.path("/api/product/seller/**")
+                        .filters(f -> f.filter(authFilter))
+                        .uri("lb://product-service"))
+
+                // ---------------- USER SERVICE ----------------
+                .route("user-service", r -> r.path("/api/auth/**")
+                        .uri("lb://user-service"))
+                .route("user-addresses", r -> r.path("/api/addresses/**")
+                        .uri("lb://user-service"))
+
                 .route("auth-service", r -> r
-                        .path("/api/auth/**")
-//                        .filters(f -> f.rewritePath("/users(?<segment>/?.*)",
-//                                "/api/users${segment}"))
                         .uri("lb://AUTH-SERVICE"))
                 .route("bbf-service", r -> r
                         .path("/api/bff/**")
-//                        .filters(f -> f.rewritePath("/users(?<segment>/?.*)",
-//                                "/api/users${segment}"))
                         .uri("lb://BFF-SERVICE"))
                 .route("order-service", r -> r
                         .path("/api/orders/**", "/api/cart/**")
-//                        .filters(f -> f.rewritePath("/(?<segment>.*)",
-//                                "/api/${segment}"))
                         .uri("lb://ORDER-SERVICE"))
                 .route("eureka-server", r -> r
                         .path("/eureka/main")

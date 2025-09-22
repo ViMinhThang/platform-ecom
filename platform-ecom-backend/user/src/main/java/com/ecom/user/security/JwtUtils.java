@@ -6,11 +6,13 @@ import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseCookie;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 import java.nio.charset.StandardCharsets;
+import java.util.Date;
 
 @Component
 public class JwtUtils {
@@ -43,7 +45,31 @@ public class JwtUtils {
         }
         return null;
     }
-
+    public String generateToken(String userId) {
+        return Jwts.builder()
+                .subject(userId)
+                .issuedAt(new Date(System.currentTimeMillis()
+                ))
+                .expiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
+                .signWith(key)
+                .compact();
+    }
+    public ResponseCookie generateJwtCookie(String userId) {
+        String token = generateToken(userId);
+        ResponseCookie cookie = ResponseCookie.from(jwtCookie,token)
+                .path("/api")
+                .maxAge(24 * 60 * 60)
+                .httpOnly(false)
+                .secure(false)
+                .build();
+        return cookie;
+    }
+    public ResponseCookie getCleanJwtCookie() {
+        ResponseCookie cookie = ResponseCookie.from(jwtCookie, null)
+                .path("/api")
+                .build();
+        return cookie;
+    }
     public String getUserIdFromJwtToken(String token) {
         Claims claims = Jwts.parser().verifyWith(key).build().parseSignedClaims(token).getPayload();
 
