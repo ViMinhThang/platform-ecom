@@ -4,6 +4,7 @@ package com.ecom.order.controller;
 import com.ecom.order.config.AuthContext;
 import com.ecom.order.dtos.CartDTO;
 import com.ecom.order.dtos.CartItemDTO;
+import com.ecom.order.dtos.ProductDTO;
 import com.ecom.order.entity.Cart;
 import com.ecom.order.repositories.CartRepository;
 import com.ecom.order.service.CartService;
@@ -76,5 +77,17 @@ public class CartController {
         String status = cartService.deleteProductFromCart(cartId, productId);
 
         return new ResponseEntity<String>(status, HttpStatus.OK);
+    }
+
+    @PostMapping("/update-product-in-carts")
+    public ResponseEntity<String> updateProductInCarts(@RequestBody ProductDTO productDTO) {
+        String status = cartService.updateProductInCarts(productDTO);
+        return new ResponseEntity<>(status, HttpStatus.OK);
+    }
+
+    @PostMapping("delete-product-from-carts")
+    public ResponseEntity<String> deleteProductFromCarts(@RequestBody ProductDTO productDTO) {
+        String status = cartService.deleteProductFromCarts(productDTO);
+        return new ResponseEntity<>(status, HttpStatus.OK);
     }
 }

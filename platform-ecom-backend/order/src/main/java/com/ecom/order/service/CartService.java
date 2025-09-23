@@ -2,6 +2,7 @@ package com.ecom.order.service;
 
 import com.ecom.order.dtos.CartDTO;
 import com.ecom.order.dtos.CartItemDTO;
+import com.ecom.order.dtos.ProductDTO;
 import com.ecom.order.entity.Cart;
 
 import java.util.List;
@@ -20,4 +21,7 @@ public interface CartService {
 
     CartDTO getCart(Long cartId);
 
+    String deleteProductFromCarts(ProductDTO productDTO);
+
+    String updateProductInCarts(ProductDTO productDTO);
 }

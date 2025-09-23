@@ -1,5 +1,6 @@
 package com.ecom.product.service;
 
+import com.ecom.product.client.CartServiceClient;
 import com.ecom.product.dtos.ProductDTO;
 import com.ecom.product.dtos.ProductResponse;
 import com.ecom.product.dtos.ReduceStockDTO;
@@ -44,6 +45,9 @@ public class ProductServiceImpl implements ProductService {
 
     @Value("${image.base.url}")
     private String imageBaseUrl;
+
+    @Autowired
+    private CartServiceClient cartServiceClient;
 
     @Override
     public ProductDTO addProduct(Long categoryId, ProductDTO productDTO, Long userId) {
@@ -199,21 +203,8 @@ public class ProductServiceImpl implements ProductService {
 
         Product savedProduct = productRepository.save(productFromDb);
 
-        List<Cart> carts = cartRepository.findCartsByProductId(productId);
 
-        List<CartDTO> cartDTOs = carts.stream().map(cart -> {
-            CartDTO cartDTO = modelMapper.map(cart, CartDTO.class);
-
-            List<ProductDTO> products = cart.getCartItems().stream()
-                    .map(p -> modelMapper.map(p.getProduct(), ProductDTO.class)).collect(Collectors.toList());
-
-            cartDTO.setProducts(products);
-
-            return cartDTO;
-
-        }).collect(Collectors.toList());
-
-        cartDTOs.forEach(cart -> cartService.updateProductInCarts(cart.getCartId(), productId));
+        cartServiceClient.updateProductInCarts(modelMapper.map(product, ProductDTO.class));
 
         return modelMapper.map(savedProduct, ProductDTO.class);
     }
@@ -224,8 +215,7 @@ public class ProductServiceImpl implements ProductService {
                 .orElseThrow(() -> new ResourceNotFoundException("Product", "productId", productId));
 
         // DELETE
-        List<Cart> carts = cartRepository.findCartsByProductId(productId);
-        carts.forEach(cart -> cartService.deleteProductFromCart(cart.getCartId(), productId));
+        cartServiceClient.deleteProductFromCart(modelMapper.map(product, ProductDTO.class));
 
         productRepository.delete(product);
         return modelMapper.map(product, ProductDTO.class);

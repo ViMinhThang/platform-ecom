@@ -193,4 +193,60 @@ public class CartServiceImpl implements CartService {
         return cartDTO;
     }
 
+    @Override
+    @Transactional
+    public String deleteProductFromCarts(ProductDTO productDTO) {
+        Long productId = productDTO.getProductId();
+
+        List<CartItem> cartItems = cartItemRepository.findByProductId(productId);
+
+        if (cartItems.isEmpty()) {
+            throw new ResourceNotFoundException("Product", "productId", productId);
+        }
+
+        for (CartItem item : cartItems) {
+            Cart cart = item.getCart();
+            double newTotal = cart.getTotalPrice() - (item.getProductPrice() * item.getQuantity());
+            cart.setTotalPrice(Math.max(newTotal, 0));
+            cartRepository.save(cart);
+        }
+
+        cartItemRepository.deleteByProductId(productId);
+
+        return "Product removed from all carts successfully";
+    }
+
+    @Override
+    @Transactional
+    public String updateProductInCarts(ProductDTO productDTO) {
+        Long productId = productDTO.getProductId();
+
+        List<CartItem> cartItems = cartItemRepository.findByProductId(productId);
+
+        if (cartItems.isEmpty()) {
+            throw new ResourceNotFoundException("Product", "productId", productId);
+        }
+
+        for (CartItem cartItem : cartItems) {
+            Cart cart = cartItem.getCart();
+
+            double newTotal = cart.getTotalPrice()
+                    - (cartItem.getProductPrice() * cartItem.getQuantity());
+
+            cartItem.setProductPrice(productDTO.getSpecialPrice());
+            cartItem.setDiscount(productDTO.getDiscount());
+
+            newTotal += (cartItem.getProductPrice() * cartItem.getQuantity());
+
+            cart.setTotalPrice(newTotal);
+
+            cartItemRepository.save(cartItem);
+            cartRepository.save(cart);
+        }
+
+        return "Product updated in all carts successfully";
+    }
+
+
+
 }
