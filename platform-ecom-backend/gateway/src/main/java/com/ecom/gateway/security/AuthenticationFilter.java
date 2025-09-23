@@ -23,7 +23,6 @@ public class AuthenticationFilter implements GatewayFilter {
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
-
         HttpCookie cookie = exchange.getRequest().getCookies().getFirst("ecom");
 
         if (cookie == null) {
@@ -31,21 +30,21 @@ public class AuthenticationFilter implements GatewayFilter {
             return exchange.getResponse().setComplete();
         }
 
-        String cookieHeader = "ecom=" + cookie.getValue();
-        ResponseEntity<UserInfoResponse> response = authServiceClient.validate(cookieHeader);
+        String token = cookie.getValue();
 
-        if (response.getStatusCode().is2xxSuccessful() && response.getBody() != null) {
-            UserInfoResponse userInfo = response.getBody();
+        return authServiceClient.validate(token)
+                .flatMap(userInfo -> {
+                    ServerHttpRequest mutatedRequest = exchange.getRequest()
+                            .mutate()
+                            .header("X-User-Id", String.valueOf(userInfo.getId()))
+                            .header("X-Roles", String.join(",", userInfo.getRoles()))
+                            .build();
 
-            ServerHttpRequest mutatedRequest = exchange.getRequest()
-                    .mutate()
-                    .header("X-User-Id", String.valueOf(userInfo.getId()))
-                    .header("X-Roles", String.join(",", userInfo.getRoles()))
-                    .build();
-
-            return chain.filter(exchange.mutate().request(mutatedRequest).build());
-        }
-        exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
-        return exchange.getResponse().setComplete();
+                    return chain.filter(exchange.mutate().request(mutatedRequest).build());
+                })
+                .onErrorResume(ex -> {
+                    exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
+                    return exchange.getResponse().setComplete();
+                });
     }
 }

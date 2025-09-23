@@ -1,7 +1,6 @@
-package com.ecom.product.config;
+package com.ecom.user.config;
 
 import jakarta.servlet.http.HttpServletRequest;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
@@ -10,7 +9,6 @@ import java.util.List;
 
 
 @Component
-@Slf4j
 public class AuthContext {
 
     public Long getUserId(HttpServletRequest request) {
@@ -18,7 +16,6 @@ public class AuthContext {
     }
 
     public List<String> getRoles(HttpServletRequest request) {
-        log.info(request.getHeader("X-Roles"));
         String roles = request.getHeader("X-Roles");
         return roles != null ? Arrays.asList(roles.split(",")) : Collections.emptyList();
     }

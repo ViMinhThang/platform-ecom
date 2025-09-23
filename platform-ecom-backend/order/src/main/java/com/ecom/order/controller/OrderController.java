@@ -7,6 +7,7 @@ import com.ecom.order.config.AuthContext;
 import com.ecom.order.dtos.*;
 import com.ecom.order.service.OrderService;
 import com.ecom.order.service.StripeService;
+import com.stripe.exception.StripeException;
 import com.stripe.model.PaymentIntent;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,12 +27,13 @@ public class OrderController {
     @Autowired
     private StripeService stripeService;
 
-    @PostMapping("/order/users/payments/{paymentMethod}")
-    public ResponseEntity<OrderDTO> orderProducts(@PathVariable String paymentMethod, @RequestBody OrderRequestDTO orderRequestDTO) {
-        String emailId = authUtil.loggedInEmail();
+    @PostMapping("/users/payments/{paymentMethod}")
+    public ResponseEntity<OrderDTO> orderProducts(@PathVariable String paymentMethod, @RequestBody OrderRequestDTO orderRequestDTO,
+                                                  HttpServletRequest request) {
+        Long userId = authContext.getUserId(request);
         System.out.println("orderRequestDTO DATA: " + orderRequestDTO);
         OrderDTO order = orderService.placeOrder(
-                emailId,
+                userId,
                 orderRequestDTO.getAddressId(),
                 paymentMethod,
                 orderRequestDTO.getPgName(),
@@ -43,7 +45,7 @@ public class OrderController {
     }
 
     @PostMapping("/order/stripe-client-secret")
-    public ResponseEntity<String> createStripeClientSecret(@RequestBody StripePaymentDto stripePaymentDto) throws StripeException {
+    public ResponseEntity<String> createStripeClientSecret(@RequestBody StripePaymentDto stripePaymentDto) throws StripeException, StripeException {
         System.out.println("StripePaymentDTO Received " + stripePaymentDto);
         PaymentIntent paymentIntent = stripeService.paymentIntent(stripePaymentDto);
         return new ResponseEntity<>(paymentIntent.getClientSecret(), HttpStatus.CREATED);

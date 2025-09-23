@@ -11,6 +11,7 @@ import com.ecom.product.exceptions.APIException;
 import com.ecom.product.service.ProductService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
@@ -23,7 +24,8 @@ import java.util.Arrays;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/product")
+@RequestMapping("/api/products")
+@Slf4j
 public class ProductController {
 
     @Autowired
@@ -90,6 +92,7 @@ public class ProductController {
     @RequireRole("ROLE_ADMIN")
     public ResponseEntity<ProductDTO> updateProduct(@Valid @RequestBody ProductDTO productDTO,
                                                     @PathVariable Long productId, HttpServletRequest request) {
+        log.info("productId"+ productId);
         ProductDTO updatedProductDTO = productService.updateProduct(productId, productDTO);
         return new ResponseEntity<>(updatedProductDTO, HttpStatus.OK);
     }

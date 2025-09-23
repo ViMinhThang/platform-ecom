@@ -1,8 +1,7 @@
 package com.ecom.order.aspect;
 
-import com.ecom.product.aspect.RequireRole;
-import com.ecom.product.config.AuthContext;
-import com.ecom.product.exceptions.APIException;
+import com.ecom.order.config.AuthContext;
+import com.ecom.order.exception.APIException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;

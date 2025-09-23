@@ -7,9 +7,12 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.cloud.gateway.route.RouteLocator;
 import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.reactive.CorsWebFilter;
+import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
 import reactor.core.publisher.Mono;
 
+import java.util.List;
 import java.util.Objects;
 
 
@@ -29,31 +32,52 @@ public class GatewayConfig {
     }
 
     @Bean
+    public CorsWebFilter corsWebFilter() {
+        CorsConfiguration config = new CorsConfiguration();
+        config.setAllowedOriginPatterns(List.of("*"));
+        config.addAllowedHeader("*");
+        config.addAllowedMethod("*");
+        config.setAllowCredentials(true);
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", config);
+
+        return new CorsWebFilter(source);
+    }
+
+
+    @Bean
     public RouteLocator customRouteLocator(RouteLocatorBuilder builder) {
         return builder.routes()
                 // ---------------- PRODUCT SERVICE ----------------
-                .route("product-public", r -> r.path("/api/product/public/**")
+                .route("product-public", r -> r.path("/api/products/public/**")
                         .uri("lb://product-service"))
-                .route("product-admin", r -> r.path("/api/product/admin/**")
+                .route("product-admin", r -> r.path("/api/products/admin/**")
                         .filters(f -> f.filter(authFilter))
                         .uri("lb://product-service"))
-                .route("product-seller", r -> r.path("/api/product/seller/**")
+                .route("product-seller", r -> r.path("/api/products/seller/**")
                         .filters(f -> f.filter(authFilter))
                         .uri("lb://product-service"))
-
                 // ---------------- USER SERVICE ----------------
                 .route("user-service", r -> r.path("/api/auth/**")
                         .uri("lb://user-service"))
-                .route("user-addresses", r -> r.path("/api/addresses/**")
+                .route("user-addresses-private", r -> r.path(
+                                "/api/addresses/",
+                                "/api/addresses/user",
+                                "/api/addresses/*",
+                                "/api/addresses/*/"
+                        )
+                        .and().method("POST", "PUT", "DELETE", "GET")
+                        .filters(f -> f.filter(authFilter))
                         .uri("lb://user-service"))
-
-                .route("auth-service", r -> r
-                        .uri("lb://AUTH-SERVICE"))
-                .route("bbf-service", r -> r
-                        .path("/api/bff/**")
-                        .uri("lb://BFF-SERVICE"))
+                .route("user-addresses-public", r -> r.path(
+                                "/api/addresses/",
+                                "/api/addresses/{id}"
+                        )
+                        .and().method("GET")
+                        .uri("lb://user-service"))
                 .route("order-service", r -> r
-                        .path("/api/orders/**", "/api/cart/**")
+                        .path("/api/orders/**", "/api/carts/**")
                         .uri("lb://ORDER-SERVICE"))
                 .route("eureka-server", r -> r
                         .path("/eureka/main")

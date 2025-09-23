@@ -1,5 +1,6 @@
 package com.ecom.user.controller;
 
+import com.ecom.user.config.AuthContext;
 import com.ecom.user.dtos.AddressDTO;
 import com.ecom.user.dtos.UserInfoResponse;
 import com.ecom.user.entity.User;
@@ -28,13 +29,13 @@ public class AddressController {
     UserRepository userRepository;
 
     @Autowired
-    JwtUtils jwtUtils;
+    AuthContext authContext;
 
     @PostMapping("/")
     public ResponseEntity<AddressDTO> createAddress(@Valid @RequestBody AddressDTO addressDTO,
                                                     HttpServletRequest request) {
-        String userId = jwtUtils.extractUserIdFromRequest(request);
-        User user = userRepository.findById(Long.valueOf(userId))
+        Long userId = authContext.getUserId(request);
+        User user = userRepository.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("User", "UserId", userId));
 
         AddressDTO savedAddressDTO = addressService.createAddress(addressDTO, user);
@@ -49,8 +50,8 @@ public class AddressController {
 
     @GetMapping("/user")
     public ResponseEntity<List<AddressDTO>> getUserAddresses(HttpServletRequest request) {
-        String userId = jwtUtils.extractUserIdFromRequest(request);
-        User user = userRepository.findById(Long.valueOf(userId))
+        Long userId = authContext.getUserId(request);
+        User user = userRepository.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("User", "UserId", userId));
         List<AddressDTO> addressList = addressService.getUserAddresses(user);
         return new ResponseEntity<>(addressList, HttpStatus.OK);

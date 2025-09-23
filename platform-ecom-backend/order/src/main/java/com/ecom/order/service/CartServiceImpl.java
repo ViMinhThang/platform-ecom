@@ -59,7 +59,7 @@ public class CartServiceImpl implements CartService {
             existingCart.setUserId(userId);
             existingCart = cartRepository.save(existingCart);
         } else {
-            cartItemRepository.deleteAllByCartId(existingCart.getCartId());
+            cartItemRepository.deleteAllByCart_CartId(existingCart.getCartId());
         }
 
         double totalPrice = 0.00;
@@ -97,7 +97,7 @@ public class CartServiceImpl implements CartService {
 
         ProductDTO product = productServiceClient.getProductById(productId).getBody();
 
-        CartItem cartItem = cartItemRepository.findCartItemByProductIdAndCartId(cart.getCartId(), productId);
+        CartItem cartItem = cartItemRepository.findCartItemByProductIdAndCart_CartId(cart.getCartId(), productId);
 
         if (cartItem != null) {
             throw new APIException("Product " + product.getProductName() + " already exists in the cart");
@@ -159,7 +159,7 @@ public class CartServiceImpl implements CartService {
         Cart cart = cartRepository.findById(cartId)
                 .orElseThrow(() -> new ResourceNotFoundException("Cart", "cartId", cartId));
 
-        CartItem cartItem = cartItemRepository.findCartItemByProductIdAndCartId(cartId, productId);
+        CartItem cartItem = cartItemRepository.findCartItemByProductIdAndCart_CartId(cartId, productId);
 
         if (cartItem == null) {
             throw new ResourceNotFoundException("Product", "productId", productId);
@@ -168,7 +168,7 @@ public class CartServiceImpl implements CartService {
         cart.setTotalPrice(cart.getTotalPrice() -
                 (cartItem.getProductPrice() * cartItem.getQuantity()));
 
-        cartItemRepository.deleteCartItemByProductIdAndCartId(cartId, productId);
+        cartItemRepository.deleteCartItemByProductIdAndCart_CartId(cartId, productId);
 
         ProductDTO productDTO = productServiceClient.getProductById(productId).getBody();
         return "Product " + productDTO.getProductName() + " removed from the cart !!!";
@@ -201,7 +201,7 @@ public class CartServiceImpl implements CartService {
         List<CartItem> cartItems = cartItemRepository.findByProductId(productId);
 
         if (cartItems.isEmpty()) {
-            throw new ResourceNotFoundException("Product", "productId", productId);
+            return "There is no appearance of this product in carts";
         }
 
         for (CartItem item : cartItems) {
@@ -224,7 +224,7 @@ public class CartServiceImpl implements CartService {
         List<CartItem> cartItems = cartItemRepository.findByProductId(productId);
 
         if (cartItems.isEmpty()) {
-            throw new ResourceNotFoundException("Product", "productId", productId);
+            return "there is no cart with this product";
         }
 
         for (CartItem cartItem : cartItems) {
@@ -246,7 +246,6 @@ public class CartServiceImpl implements CartService {
 
         return "Product updated in all carts successfully";
     }
-
 
 
 }

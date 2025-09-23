@@ -3,9 +3,10 @@ package com.ecom.product.service;
 import com.ecom.product.dtos.CategoryDTO;
 import com.ecom.product.dtos.CategoryResponse;
 import jakarta.validation.Valid;
+import org.springframework.http.ResponseEntity;
 
 public interface CategoryService {
-    CategoryResponse getAllCategories(Integer pageNumber, Integer pageSize, String sortBy, String sortOrder);
+    ResponseEntity<?> getAllCategories(Integer pageNumber, Integer pageSize, String sortBy, String sortOrder);
 
     CategoryDTO createCategory(@Valid CategoryDTO categoryDTO);
 

@@ -3,7 +3,7 @@ import api from "../../api/api"
 export const fetchProducts = (queryString) => async (dispatch) => {
     try {
         dispatch({ type: "IS_FETCHING" });
-        const { data } = await api.get(`/public/products?${queryString}`);
+        const { data } = await api.get(`/products/public/products?${queryString}`);
         dispatch({
             type: "FETCH_PRODUCTS",
             payload: data.content,
@@ -27,7 +27,7 @@ export const fetchProducts = (queryString) => async (dispatch) => {
 export const fetchCategories = () => async (dispatch) => {
     try {
         dispatch({ type: "CATEGORY_LOADER" });
-        const { data } = await api.get(`/public/categories`);
+        const { data } = await api.get(`/products/public/categories`);
         dispatch({
             type: "FETCH_CATEGORIES",
             payload: data.content,
@@ -249,7 +249,7 @@ export const addPaymentMethod = (method) => {
 export const createUserCart = (sendCartItems) => async (dispatch, getState) => {
     try {
         dispatch({ type: "IS_FETCHING" });
-        await api.post('/cart/create', sendCartItems);
+        await api.post('/carts/create', sendCartItems);
         await dispatch(getUserCart());
     } catch (error) {
         console.log(error);
@@ -302,7 +302,7 @@ export const createStripePaymentSecret
 export const stripePaymentConfirmation 
     = (sendData, setErrorMesssage, setLoadng, toast) => async (dispatch, getState) => {
         try {
-            const response  = await api.post("/order/users/payments/online", sendData);
+            const response  = await api.post("/orders/users/payments/online", sendData);
             if (response.data) {
                 localStorage.removeItem("CHECKOUT_ADDRESS");
                 localStorage.removeItem("cartItems");
@@ -381,7 +381,7 @@ export const updateOrderStatusFromDashboard =
 export const dashboardProductsAction = (queryString, isAdmin) => async (dispatch) => {
     try {
         dispatch({ type: "IS_FETCHING" });
-        const endpoint = isAdmin ? "/admin/products" : "/seller/products";
+        const endpoint = isAdmin ? "/products/admin/products" : "/products/seller/products";
         const { data } = await api.get(`${endpoint}?${queryString}`);
         dispatch({
             type: "FETCH_PRODUCTS",
@@ -407,7 +407,7 @@ export const updateProductFromDashboard =
     (sendData, toast, reset, setLoader, setOpen, isAdmin) => async (dispatch) => {
     try {
         setLoader(true);
-        const endpoint = isAdmin ? "/admin/products/" : "/seller/products/";
+        const endpoint = isAdmin ? "/products/admin/products/" : "/products/seller/products/";
         await api.put(`${endpoint}${sendData.id}`, sendData);
         toast.success("Product update successful");
         reset();
@@ -426,7 +426,7 @@ export const addNewProductFromDashboard =
     (sendData, toast, reset, setLoader, setOpen, isAdmin) => async(dispatch, getState) => {
         try {
             setLoader(true);
-            const endpoint = isAdmin ? "/admin/categories/" : "/seller/categories/";
+            const endpoint = isAdmin ? "/products/admin/categories/" : "/products/seller/categories/";
             await api.post(`${endpoint}${sendData.categoryId}/product`,
                 sendData
             );
@@ -446,7 +446,7 @@ export const deleteProduct =
     (setLoader, productId, toast, setOpenDeleteModal, isAdmin) => async (dispatch, getState) => {
     try {
         setLoader(true)
-        const endpoint = isAdmin ? "/admin/products/" : "/seller/products/";
+        const endpoint = isAdmin ? "/products/admin/products/" : "/products/seller/products/";
         await api.delete(`${endpoint}${productId}`);
         toast.success("Product deleted successfully");
         setLoader(false);
@@ -465,7 +465,7 @@ export const updateProductImageFromDashboard =
     (formData, productId, toast, setLoader, setOpen, isAdmin) => async (dispatch) => {
     try {
         setLoader(true);
-        const endpoint = isAdmin ? "/admin/products/" : "/seller/products/";
+        const endpoint = isAdmin ? "/products/admin/products/" : "/products/seller/products/";
         await api.put(`${endpoint}${productId}/image`, formData);
         toast.success("Image upload successful");
         setLoader(false);
@@ -480,7 +480,7 @@ export const updateProductImageFromDashboard =
 export const getAllCategoriesDashboard = (queryString) => async (dispatch) => {
   dispatch({ type: "CATEGORY_LOADER" });
   try {
-    const { data } = await api.get(`/public/categories?${queryString}`);
+    const { data } = await api.get(`/products/public/categories?${queryString}`);
     dispatch({
       type: "FETCH_CATEGORIES",
       payload: data["content"],
@@ -506,7 +506,7 @@ export const createCategoryDashboardAction =
   (sendData, setOpen, reset, toast) => async (dispatch, getState) => {
     try {
       dispatch({ type: "CATEGORY_LOADER" });
-      await api.post("/admin/categories", sendData);
+      await api.post("/products/admin/categories", sendData);
       dispatch({ type: "CATEGORY_SUCCESS" });
       reset();
       toast.success("Category Created Successful");
@@ -531,7 +531,7 @@ export const updateCategoryDashboardAction =
     try {
       dispatch({ type: "CATEGORY_LOADER" });
 
-      await api.put(`/admin/categories/${categoryID}`, sendData);
+      await api.put(`/products/admin/categories/${categoryID}`, sendData);
 
       dispatch({ type: "CATEGORY_SUCCESS" });
 
@@ -557,7 +557,7 @@ export const deleteCategoryDashboardAction =
     try {
       dispatch({ type: "CATEGORY_LOADER" });
 
-      await api.delete(`/admin/categories/${categoryID}`);
+      await api.delete(`/products/admin/categories/${categoryID}`);
 
       dispatch({ type: "CATEGORY_SUCCESS" });
 
