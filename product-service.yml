@@ -21,7 +21,7 @@ spring:
     jwtExpirationMs: 600000
     jwtCookieName: "ecom"
 server:
-  port: 8082
+  port: 8084
 
 management:
   endpoints:
