@@ -19,4 +19,5 @@ public interface CartService {
     String deleteProductFromCart(Long cartId, Long productId);
 
     CartDTO getCart(Long cartId);
+
 }

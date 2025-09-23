@@ -2,12 +2,14 @@ package com.ecom.product.service;
 
 import com.ecom.product.dtos.ProductDTO;
 import com.ecom.product.dtos.ProductResponse;
+import com.ecom.product.dtos.ReduceStockDTO;
 import com.ecom.product.entity.Category;
 import com.ecom.product.entity.Product;
 import com.ecom.product.exceptions.APIException;
 import com.ecom.product.exceptions.ResourceNotFoundException;
 import com.ecom.product.repositories.CategoryRepository;
 import com.ecom.product.repositories.ProductRepository;
+import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -299,5 +301,31 @@ public class ProductServiceImpl implements ProductService {
         productResponse.setTotalPages(pageProducts.getTotalPages());
         productResponse.setLastPage(pageProducts.isLast());
         return productResponse;
+    }
+
+    @Transactional
+    @Override
+    public String reduceStocks(List<ReduceStockDTO> reduceStockDTOS) {
+        for (ReduceStockDTO rs : reduceStockDTOS) {
+            Product product = productRepository.findById(rs.getProductId())
+                    .orElseThrow(() -> new ResourceNotFoundException("Product", "productId", rs.getProductId()));
+
+            if (product.getQuantity() < rs.getQuantity()) {
+                throw new APIException("Not enough stock for productId=" + rs.getProductId());
+            }
+
+            product.setQuantity(product.getQuantity() - rs.getQuantity());
+            productRepository.save(product);
+        }
+        return "success!";
+    }
+
+    @Override
+    public List<ProductDTO> getProductBySellerId(Long sellerId) {
+        List<Product> products = productRepository.findByUserId(sellerId);
+
+        List<ProductDTO> productDTOS = products.stream()
+                .map(p -> modelMapper.map(p, ProductDTO.class)).toList();
+        return productDTOS;
     }
 }

@@ -5,6 +5,8 @@ import com.ecom.product.config.AppConstants;
 import com.ecom.product.config.AuthContext;
 import com.ecom.product.dtos.ProductDTO;
 import com.ecom.product.dtos.ProductResponse;
+import com.ecom.product.dtos.ReduceStockDTO;
+import com.ecom.product.entity.Product;
 import com.ecom.product.exceptions.APIException;
 import com.ecom.product.service.ProductService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -162,5 +164,16 @@ public class ProductController {
 
         ProductDTO updatedProduct = productService.updateProductImage(productId, image);
         return new ResponseEntity<>(updatedProduct, HttpStatus.OK);
+    }
+
+    @PostMapping("/reduce-stock")
+    public ResponseEntity<String> reduceStocks(@RequestBody List<ReduceStockDTO> reduceStockDTOS) {
+        return ResponseEntity.ok(productService.reduceStocks(reduceStockDTOS));
+    }
+
+    @GetMapping("/get-product-by-seller-id/{sellerId}")
+    public ResponseEntity<List<ProductDTO>> getProductBySellerId(@PathVariable Long sellerId) {
+        List<ProductDTO> productDTOS = productService.getProductBySellerId(sellerId);
+        return new ResponseEntity<>(productDTOS, HttpStatus.OK);
     }
 }

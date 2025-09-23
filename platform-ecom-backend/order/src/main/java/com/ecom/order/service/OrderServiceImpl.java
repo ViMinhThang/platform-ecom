@@ -1,5 +1,7 @@
 package com.ecom.order.service;
 
+import com.ecom.order.client.ProductServiceClient;
+import com.ecom.order.client.UserServiceClient;
 import com.ecom.order.dtos.*;
 import com.ecom.order.entity.*;
 import com.ecom.order.exception.ResourceNotFoundException;
@@ -16,10 +18,11 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class OrderServiceImpl implements OrderService{
+public class OrderServiceImpl implements OrderService {
 
     @Autowired
     CartRepository cartRepository;
@@ -38,6 +41,12 @@ public class OrderServiceImpl implements OrderService{
 
     @Autowired
     PaymentRepository paymentRepository;
+
+    @Autowired
+    ProductServiceClient productServiceClient;
+
+    @Autowired
+    UserServiceClient userServiceClient;
 
     @Override
     public OrderResponse getAllOrders(Integer pageNumber, Integer pageSize, String sortBy, String sortOrder) {
@@ -70,6 +79,7 @@ public class OrderServiceImpl implements OrderService{
         Pageable pageDetails = PageRequest.of(pageNumber, pageSize, sortByAndOrder);
 
         List<Long> sellerProductIds = productServiceClient.getProductsBySellerId(sellerId)
+                .getBody()
                 .stream()
                 .map(ProductDTO::getProductId)
                 .toList();
@@ -78,7 +88,7 @@ public class OrderServiceImpl implements OrderService{
             return new OrderResponse();
         }
 
-        Page<Order> pageOrders = orderRepository.findByOrderItemsProductIdIn(sellerProductIds, pageDetails);
+        Page<Order> pageOrders = orderRepository.findOrdersByProductIds(sellerProductIds, pageDetails);
 
         // 3. Map sang DTO
         List<OrderDTO> orderDTOs = pageOrders.getContent().stream()
@@ -99,7 +109,7 @@ public class OrderServiceImpl implements OrderService{
     @Override
     public OrderDTO updateOrder(Long orderId, String status) {
         Order order = orderRepository.findById(orderId)
-                .orElseThrow(() -> new ResourceNotFoundException("Order","orderId",orderId));
+                .orElseThrow(() -> new ResourceNotFoundException("Order", "orderId", orderId));
         order.setOrderStatus(status);
         orderRepository.save(order);
         return modelMapper.map(order, OrderDTO.class);
@@ -114,6 +124,7 @@ public class OrderServiceImpl implements OrderService{
 
         AddressDTO address = userServiceClient.getAddressById(addressId);
         String email = userServiceClient.getEmailById(userId);
+
         List<Long> productIds = cart.getCartItems()
                 .stream()
                 .map(CartItem::getProductId)
@@ -144,11 +155,16 @@ public class OrderServiceImpl implements OrderService{
             return orderItem;
         }).toList();
 
-        orderItems = orderItemRepository.saveAll(orderItems);
+        List<ReduceStockDTO> reduceStockDTOS = new ArrayList<>();
 
-        productServiceClient.reduceStock(orderItems);
+        orderItemRepository.saveAll(orderItems)
+                .forEach(oi -> reduceStockDTOS.add(new ReduceStockDTO(oi.getProductId(), oi.getQuantity())));
 
-        cartService.clearCart(cart);
+
+        productServiceClient.reduceStock(reduceStockDTOS);
+
+
+        cart.getCartItems().forEach(ci -> cartService.deleteProductFromCart(cart.getCartId(), ci.getProductId()));
 
         OrderDTO orderDTO = modelMapper.map(savedOrder, OrderDTO.class);
         orderItems.forEach(item -> orderDTO.getOrderItems().add(modelMapper.map(item, OrderItemDTO.class)));
