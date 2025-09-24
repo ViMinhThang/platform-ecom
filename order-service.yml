@@ -22,7 +22,9 @@ spring:
     jwtCookieName: "ecom"
 server:
   port: 8085
-
+stripe:
+  secret:
+    key: ${STRIPE_SECRET}
 management:
   endpoints:
     web:
