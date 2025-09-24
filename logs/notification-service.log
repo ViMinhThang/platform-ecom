@@ -1,0 +1,282 @@
+2025-09-24T22:19:21.780+07:00  INFO 65100 --- [notification-service] [main] [                                                 ] c.e.n.NotificationApplication            : Starting NotificationApplication using Java 25.0.1 with PID 65100 (/home/fragile/Desktop/platform-ecom/platform-ecom-backend/notification/target/classes started by fragile in /home/fragile/Desktop/platform-ecom)
+2025-09-24T22:19:21.783+07:00  INFO 65100 --- [notification-service] [main] [                                                 ] c.e.n.NotificationApplication            : No active profile set, falling back to 1 default profile: "default"
+2025-09-24T22:19:21.823+07:00  INFO 65100 --- [notification-service] [main] [                                                 ] o.s.c.c.c.ConfigServerConfigDataLoader   : Fetching config from server at : http://localhost:8888
+2025-09-24T22:19:21.824+07:00  INFO 65100 --- [notification-service] [main] [                                                 ] o.s.c.c.c.ConfigServerConfigDataLoader   : Located environment: name=notification-service, profiles=[default], label=null, version=62072f321a36bbcc3e4ce7f7e29224e9c7fa9636, state=
+2025-09-24T22:19:22.847+07:00  INFO 65100 --- [notification-service] [main] [                                                 ] o.s.cloud.context.scope.GenericScope     : BeanFactory id=67aedf64-a28b-39f7-8dd7-7732938b6f51
+2025-09-24T22:19:23.298+07:00  INFO 65100 --- [notification-service] [main] [                                                 ] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8086 (http)
+2025-09-24T22:19:23.314+07:00  INFO 65100 --- [notification-service] [main] [                                                 ] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-09-24T22:19:23.314+07:00  INFO 65100 --- [notification-service] [main] [                                                 ] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.46]
+2025-09-24T22:19:23.354+07:00  INFO 65100 --- [notification-service] [main] [                                                 ] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-09-24T22:19:23.355+07:00  INFO 65100 --- [notification-service] [main] [                                                 ] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1530 ms
+2025-09-24T22:19:23.783+07:00  WARN 65100 --- [notification-service] [main] [                                                 ] ConfigServletWebServerApplicationContext : Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'notificationController': Unsatisfied dependency expressed through field 'analyticsService': Error creating bean with name 'analyticsServiceImpl': Unsatisfied dependency expressed through field 'productServiceClient': No qualifying bean of type 'com.ecom.notification.client.ProductServiceClient' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {@org.springframework.beans.factory.annotation.Autowired(required=true)}
+2025-09-24T22:19:24.785+07:00  WARN 65100 --- [notification-service] [main] [                                                 ] z.r.i.AsyncReporter$BoundedAsyncReporter : Timed out waiting for in-flight spans to send
+2025-09-24T22:19:24.787+07:00  INFO 65100 --- [notification-service] [main] [                                                 ] o.apache.catalina.core.StandardService   : Stopping service [Tomcat]
+2025-09-24T22:19:24.809+07:00  INFO 65100 --- [notification-service] [main] [                                                 ] .s.b.a.l.ConditionEvaluationReportLogger : 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2025-09-24T22:19:24.822+07:00 ERROR 65100 --- [notification-service] [main] [                                                 ] o.s.b.d.LoggingFailureAnalysisReporter   : 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Field productServiceClient in com.ecom.notification.service.AnalyticsServiceImpl required a bean of type 'com.ecom.notification.client.ProductServiceClient' that could not be found.
+
+The injection point has the following annotations:
+	- @org.springframework.beans.factory.annotation.Autowired(required=true)
+
+
+Action:
+
+Consider defining a bean of type 'com.ecom.notification.client.ProductServiceClient' in your configuration.
+
+2025-09-24T22:21:15.841+07:00  INFO 65993 --- [notification-service] [main] [                                                 ] c.e.n.NotificationApplication            : Starting NotificationApplication using Java 25.0.1 with PID 65993 (/home/fragile/Desktop/platform-ecom/platform-ecom-backend/notification/target/classes started by fragile in /home/fragile/Desktop/platform-ecom)
+2025-09-24T22:21:15.844+07:00  INFO 65993 --- [notification-service] [main] [                                                 ] c.e.n.NotificationApplication            : No active profile set, falling back to 1 default profile: "default"
+2025-09-24T22:21:15.879+07:00  INFO 65993 --- [notification-service] [main] [                                                 ] o.s.c.c.c.ConfigServerConfigDataLoader   : Fetching config from server at : http://localhost:8888
+2025-09-24T22:21:15.880+07:00  INFO 65993 --- [notification-service] [main] [                                                 ] o.s.c.c.c.ConfigServerConfigDataLoader   : Located environment: name=notification-service, profiles=[default], label=null, version=62072f321a36bbcc3e4ce7f7e29224e9c7fa9636, state=
+2025-09-24T22:21:16.873+07:00  INFO 65993 --- [notification-service] [main] [                                                 ] o.s.cloud.context.scope.GenericScope     : BeanFactory id=f32510ce-2edc-3c6d-a549-421e0f9aac7f
+2025-09-24T22:21:17.295+07:00  INFO 65993 --- [notification-service] [main] [                                                 ] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8086 (http)
+2025-09-24T22:21:17.307+07:00  INFO 65993 --- [notification-service] [main] [                                                 ] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-09-24T22:21:17.307+07:00  INFO 65993 --- [notification-service] [main] [                                                 ] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.46]
+2025-09-24T22:21:17.361+07:00  INFO 65993 --- [notification-service] [main] [                                                 ] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-09-24T22:21:17.362+07:00  INFO 65993 --- [notification-service] [main] [                                                 ] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1481 ms
+2025-09-24T22:21:19.016+07:00  INFO 65993 --- [notification-service] [main] [                                                 ] DiscoveryClientOptionalArgsConfiguration : Eureka HTTP Client uses RestTemplate.
+2025-09-24T22:21:19.057+07:00  WARN 65993 --- [notification-service] [main] [                                                 ] iguration$LoadBalancerCaffeineWarnLogger : Spring Cloud LoadBalancer is currently working with the default cache. While this cache implementation is useful for development and tests, it's recommended to use Caffeine cache in production.You can switch to using Caffeine cache, by adding it and org.springframework.cache.caffeine.CaffeineCacheManager to the classpath.
+2025-09-24T22:21:19.069+07:00  INFO 65993 --- [notification-service] [main] [                                                 ] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 17 endpoints beneath base path '/actuator'
+2025-09-24T22:21:19.137+07:00  INFO 65993 --- [notification-service] [main] [                                                 ] o.s.c.n.eureka.InstanceInfoFactory       : Setting initial instance status as: STARTING
+2025-09-24T22:21:19.160+07:00  INFO 65993 --- [notification-service] [main] [                                                 ] com.netflix.discovery.DiscoveryClient    : Initializing Eureka in region us-east-1
+2025-09-24T22:21:19.163+07:00  INFO 65993 --- [notification-service] [main] [                                                 ] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2025-09-24T22:21:19.172+07:00  INFO 65993 --- [notification-service] [main] [                                                 ] com.netflix.discovery.DiscoveryClient    : Disable delta property : false
+2025-09-24T22:21:19.172+07:00  INFO 65993 --- [notification-service] [main] [                                                 ] com.netflix.discovery.DiscoveryClient    : Single vip registry refresh property : null
+2025-09-24T22:21:19.172+07:00  INFO 65993 --- [notification-service] [main] [                                                 ] com.netflix.discovery.DiscoveryClient    : Force full registry fetch : false
+2025-09-24T22:21:19.172+07:00  INFO 65993 --- [notification-service] [main] [                                                 ] com.netflix.discovery.DiscoveryClient    : Application is null : false
+2025-09-24T22:21:19.173+07:00  INFO 65993 --- [notification-service] [main] [                                                 ] com.netflix.discovery.DiscoveryClient    : Registered Applications size is zero : true
+2025-09-24T22:21:19.173+07:00  INFO 65993 --- [notification-service] [main] [                                                 ] com.netflix.discovery.DiscoveryClient    : Application version is -1: true
+2025-09-24T22:21:19.173+07:00  INFO 65993 --- [notification-service] [main] [                                                 ] com.netflix.discovery.DiscoveryClient    : Getting all instance registry info from the eureka server
+2025-09-24T22:21:19.336+07:00  INFO 65993 --- [notification-service] [main] [                                                 ] com.netflix.discovery.DiscoveryClient    : The response status is 200
+2025-09-24T22:21:19.337+07:00  INFO 65993 --- [notification-service] [main] [                                                 ] com.netflix.discovery.DiscoveryClient    : Starting heartbeat executor: renew interval is: 30
+2025-09-24T22:21:19.339+07:00  INFO 65993 --- [notification-service] [main] [                                                 ] c.n.discovery.InstanceInfoReplicator     : InstanceInfoReplicator onDemand update allowed rate per min is 4
+2025-09-24T22:21:19.340+07:00  INFO 65993 --- [notification-service] [main] [                                                 ] com.netflix.discovery.DiscoveryClient    : Discovery Client initialized at timestamp 1758727279340 with initial instances count: 0
+2025-09-24T22:21:19.345+07:00  INFO 65993 --- [notification-service] [main] [                                                 ] o.s.c.n.e.s.EurekaServiceRegistry        : Registering application NOTIFICATION-SERVICE with eureka with status UP
+2025-09-24T22:21:19.346+07:00  INFO 65993 --- [notification-service] [main] [                                                 ] com.netflix.discovery.DiscoveryClient    : Saw local status change event StatusChangeEvent [timestamp=1758727279346, current=UP, previous=STARTING]
+2025-09-24T22:21:19.348+07:00  INFO 65993 --- [notification-service] [DiscoveryClient-InstanceInfoReplicator-%d] [                                                 ] com.netflix.discovery.DiscoveryClient    : DiscoveryClient_NOTIFICATION-SERVICE/archlinux:notification-service:8086: registering service...
+2025-09-24T22:21:19.361+07:00  INFO 65993 --- [notification-service] [main] [                                                 ] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8086 (http) with context path '/'
+2025-09-24T22:21:19.363+07:00  INFO 65993 --- [notification-service] [main] [                                                 ] .s.c.n.e.s.EurekaAutoServiceRegistration : Updating port to 8086
+2025-09-24T22:21:19.388+07:00  INFO 65993 --- [notification-service] [main] [                                                 ] c.e.n.NotificationApplication            : Started NotificationApplication in 5.43 seconds (process running for 6.089)
+2025-09-24T22:21:19.401+07:00  INFO 65993 --- [notification-service] [DiscoveryClient-InstanceInfoReplicator-%d] [                                                 ] com.netflix.discovery.DiscoveryClient    : DiscoveryClient_NOTIFICATION-SERVICE/archlinux:notification-service:8086 - registration status: 204
+2025-09-24T22:21:49.341+07:00  INFO 65993 --- [notification-service] [DiscoveryClient-CacheRefreshExecutor-%d] [                                                 ] com.netflix.discovery.DiscoveryClient    : Disable delta property : false
+2025-09-24T22:21:49.341+07:00  INFO 65993 --- [notification-service] [DiscoveryClient-CacheRefreshExecutor-%d] [                                                 ] com.netflix.discovery.DiscoveryClient    : Single vip registry refresh property : null
+2025-09-24T22:21:49.341+07:00  INFO 65993 --- [notification-service] [DiscoveryClient-CacheRefreshExecutor-%d] [                                                 ] com.netflix.discovery.DiscoveryClient    : Force full registry fetch : false
+2025-09-24T22:21:49.341+07:00  INFO 65993 --- [notification-service] [DiscoveryClient-CacheRefreshExecutor-%d] [                                                 ] com.netflix.discovery.DiscoveryClient    : Application is null : false
+2025-09-24T22:21:49.341+07:00  INFO 65993 --- [notification-service] [DiscoveryClient-CacheRefreshExecutor-%d] [                                                 ] com.netflix.discovery.DiscoveryClient    : Registered Applications size is zero : true
+2025-09-24T22:21:49.342+07:00  INFO 65993 --- [notification-service] [DiscoveryClient-CacheRefreshExecutor-%d] [                                                 ] com.netflix.discovery.DiscoveryClient    : Application version is -1: false
+2025-09-24T22:21:49.342+07:00  INFO 65993 --- [notification-service] [DiscoveryClient-CacheRefreshExecutor-%d] [                                                 ] com.netflix.discovery.DiscoveryClient    : Getting all instance registry info from the eureka server
+2025-09-24T22:21:49.439+07:00  INFO 65993 --- [notification-service] [DiscoveryClient-CacheRefreshExecutor-%d] [                                                 ] com.netflix.discovery.DiscoveryClient    : The response status is 200
+2025-09-24T22:26:19.174+07:00  INFO 65993 --- [notification-service] [AsyncResolver-bootstrap-executor-%d] [                                                 ] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2025-09-24T22:31:19.177+07:00  INFO 65993 --- [notification-service] [AsyncResolver-bootstrap-executor-%d] [                                                 ] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2025-09-24T22:33:46.877+07:00  INFO 65993 --- [notification-service] [http-nio-8086-exec-1] [                                                 ] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-09-24T22:33:46.877+07:00  INFO 65993 --- [notification-service] [http-nio-8086-exec-1] [                                                 ] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2025-09-24T22:33:46.879+07:00  INFO 65993 --- [notification-service] [http-nio-8086-exec-1] [                                                 ] o.s.web.servlet.DispatcherServlet        : Completed initialization in 2 ms
+2025-09-24T22:35:12.251+07:00  INFO 65993 --- [notification-service] [SpringApplicationShutdownHook] [                                                 ] o.s.c.n.e.s.EurekaServiceRegistry        : Unregistering application NOTIFICATION-SERVICE with eureka with status DOWN
+2025-09-24T22:35:12.252+07:00  INFO 65993 --- [notification-service] [SpringApplicationShutdownHook] [                                                 ] com.netflix.discovery.DiscoveryClient    : Saw local status change event StatusChangeEvent [timestamp=1758728112252, current=DOWN, previous=UP]
+2025-09-24T22:35:12.252+07:00  INFO 65993 --- [notification-service] [DiscoveryClient-InstanceInfoReplicator-%d] [                                                 ] com.netflix.discovery.DiscoveryClient    : DiscoveryClient_NOTIFICATION-SERVICE/archlinux:notification-service:8086: registering service...
+2025-09-24T22:35:12.253+07:00  INFO 65993 --- [notification-service] [SpringApplicationShutdownHook] [                                                 ] o.s.b.w.e.tomcat.GracefulShutdown        : Commencing graceful shutdown. Waiting for active requests to complete
+2025-09-24T22:35:12.254+07:00  INFO 65993 --- [notification-service] [tomcat-shutdown] [                                                 ] o.s.b.w.e.tomcat.GracefulShutdown        : Graceful shutdown complete
+2025-09-24T22:35:12.257+07:00  INFO 65993 --- [notification-service] [DiscoveryClient-InstanceInfoReplicator-%d] [                                                 ] com.netflix.discovery.DiscoveryClient    : DiscoveryClient_NOTIFICATION-SERVICE/archlinux:notification-service:8086 - registration status: 204
+2025-09-24T22:35:12.711+07:00  INFO 65993 --- [notification-service] [SpringApplicationShutdownHook] [                                                 ] com.netflix.discovery.DiscoveryClient    : Shutting down DiscoveryClient ...
+2025-09-24T22:35:15.712+07:00  INFO 65993 --- [notification-service] [SpringApplicationShutdownHook] [                                                 ] com.netflix.discovery.DiscoveryClient    : Unregistering ...
+2025-09-24T22:35:15.718+07:00  INFO 65993 --- [notification-service] [SpringApplicationShutdownHook] [                                                 ] com.netflix.discovery.DiscoveryClient    : DiscoveryClient_NOTIFICATION-SERVICE/archlinux:notification-service:8086 - deregister  status: 200
+2025-09-24T22:35:15.719+07:00  INFO 65993 --- [notification-service] [SpringApplicationShutdownHook] [                                                 ] com.netflix.discovery.DiscoveryClient    : Completed shut down of DiscoveryClient
+2025-09-24T22:35:20.508+07:00  INFO 74427 --- [notification-service] [main] [                                                 ] c.e.n.NotificationApplication            : Starting NotificationApplication using Java 25.0.1 with PID 74427 (/home/fragile/Desktop/platform-ecom/platform-ecom-backend/notification/target/classes started by fragile in /home/fragile/Desktop/platform-ecom)
+2025-09-24T22:35:20.511+07:00  INFO 74427 --- [notification-service] [main] [                                                 ] c.e.n.NotificationApplication            : No active profile set, falling back to 1 default profile: "default"
+2025-09-24T22:35:20.545+07:00  INFO 74427 --- [notification-service] [main] [                                                 ] o.s.c.c.c.ConfigServerConfigDataLoader   : Fetching config from server at : http://localhost:8888
+2025-09-24T22:35:20.546+07:00  INFO 74427 --- [notification-service] [main] [                                                 ] o.s.c.c.c.ConfigServerConfigDataLoader   : Located environment: name=notification-service, profiles=[default], label=null, version=62072f321a36bbcc3e4ce7f7e29224e9c7fa9636, state=
+2025-09-24T22:35:21.719+07:00  INFO 74427 --- [notification-service] [main] [                                                 ] o.s.cloud.context.scope.GenericScope     : BeanFactory id=f32510ce-2edc-3c6d-a549-421e0f9aac7f
+2025-09-24T22:35:22.201+07:00  INFO 74427 --- [notification-service] [main] [                                                 ] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8086 (http)
+2025-09-24T22:35:22.216+07:00  INFO 74427 --- [notification-service] [main] [                                                 ] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-09-24T22:35:22.216+07:00  INFO 74427 --- [notification-service] [main] [                                                 ] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.46]
+2025-09-24T22:35:22.270+07:00  INFO 74427 --- [notification-service] [main] [                                                 ] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-09-24T22:35:22.271+07:00  INFO 74427 --- [notification-service] [main] [                                                 ] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1724 ms
+2025-09-24T22:35:23.694+07:00  INFO 74427 --- [notification-service] [main] [                                                 ] DiscoveryClientOptionalArgsConfiguration : Eureka HTTP Client uses RestTemplate.
+2025-09-24T22:35:23.752+07:00  WARN 74427 --- [notification-service] [main] [                                                 ] iguration$LoadBalancerCaffeineWarnLogger : Spring Cloud LoadBalancer is currently working with the default cache. While this cache implementation is useful for development and tests, it's recommended to use Caffeine cache in production.You can switch to using Caffeine cache, by adding it and org.springframework.cache.caffeine.CaffeineCacheManager to the classpath.
+2025-09-24T22:35:23.764+07:00  INFO 74427 --- [notification-service] [main] [                                                 ] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 17 endpoints beneath base path '/actuator'
+2025-09-24T22:35:23.843+07:00  INFO 74427 --- [notification-service] [main] [                                                 ] o.s.c.n.eureka.InstanceInfoFactory       : Setting initial instance status as: STARTING
+2025-09-24T22:35:23.869+07:00  INFO 74427 --- [notification-service] [main] [                                                 ] com.netflix.discovery.DiscoveryClient    : Initializing Eureka in region us-east-1
+2025-09-24T22:35:23.873+07:00  INFO 74427 --- [notification-service] [main] [                                                 ] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2025-09-24T22:35:23.881+07:00  INFO 74427 --- [notification-service] [main] [                                                 ] com.netflix.discovery.DiscoveryClient    : Disable delta property : false
+2025-09-24T22:35:23.881+07:00  INFO 74427 --- [notification-service] [main] [                                                 ] com.netflix.discovery.DiscoveryClient    : Single vip registry refresh property : null
+2025-09-24T22:35:23.881+07:00  INFO 74427 --- [notification-service] [main] [                                                 ] com.netflix.discovery.DiscoveryClient    : Force full registry fetch : false
+2025-09-24T22:35:23.882+07:00  INFO 74427 --- [notification-service] [main] [                                                 ] com.netflix.discovery.DiscoveryClient    : Application is null : false
+2025-09-24T22:35:23.882+07:00  INFO 74427 --- [notification-service] [main] [                                                 ] com.netflix.discovery.DiscoveryClient    : Registered Applications size is zero : true
+2025-09-24T22:35:23.882+07:00  INFO 74427 --- [notification-service] [main] [                                                 ] com.netflix.discovery.DiscoveryClient    : Application version is -1: true
+2025-09-24T22:35:23.882+07:00  INFO 74427 --- [notification-service] [main] [                                                 ] com.netflix.discovery.DiscoveryClient    : Getting all instance registry info from the eureka server
+2025-09-24T22:35:24.118+07:00  INFO 74427 --- [notification-service] [main] [                                                 ] com.netflix.discovery.DiscoveryClient    : The response status is 200
+2025-09-24T22:35:24.120+07:00  INFO 74427 --- [notification-service] [main] [                                                 ] com.netflix.discovery.DiscoveryClient    : Starting heartbeat executor: renew interval is: 30
+2025-09-24T22:35:24.121+07:00  INFO 74427 --- [notification-service] [main] [                                                 ] c.n.discovery.InstanceInfoReplicator     : InstanceInfoReplicator onDemand update allowed rate per min is 4
+2025-09-24T22:35:24.123+07:00  INFO 74427 --- [notification-service] [main] [                                                 ] com.netflix.discovery.DiscoveryClient    : Discovery Client initialized at timestamp 1758728124122 with initial instances count: 5
+2025-09-24T22:35:24.129+07:00  INFO 74427 --- [notification-service] [main] [                                                 ] o.s.c.n.e.s.EurekaServiceRegistry        : Registering application NOTIFICATION-SERVICE with eureka with status UP
+2025-09-24T22:35:24.130+07:00  INFO 74427 --- [notification-service] [main] [                                                 ] com.netflix.discovery.DiscoveryClient    : Saw local status change event StatusChangeEvent [timestamp=1758728124129, current=UP, previous=STARTING]
+2025-09-24T22:35:24.131+07:00  INFO 74427 --- [notification-service] [DiscoveryClient-InstanceInfoReplicator-%d] [                                                 ] com.netflix.discovery.DiscoveryClient    : DiscoveryClient_NOTIFICATION-SERVICE/archlinux:notification-service:8086: registering service...
+2025-09-24T22:35:24.151+07:00  INFO 74427 --- [notification-service] [main] [                                                 ] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8086 (http) with context path '/'
+2025-09-24T22:35:24.153+07:00  INFO 74427 --- [notification-service] [main] [                                                 ] .s.c.n.e.s.EurekaAutoServiceRegistration : Updating port to 8086
+2025-09-24T22:35:24.176+07:00  INFO 74427 --- [notification-service] [main] [                                                 ] c.e.n.NotificationApplication            : Started NotificationApplication in 5.508 seconds (process running for 6.298)
+2025-09-24T22:35:24.179+07:00  INFO 74427 --- [notification-service] [DiscoveryClient-InstanceInfoReplicator-%d] [                                                 ] com.netflix.discovery.DiscoveryClient    : DiscoveryClient_NOTIFICATION-SERVICE/archlinux:notification-service:8086 - registration status: 204
+2025-09-24T22:36:47.567+07:00  INFO 74427 --- [notification-service] [http-nio-8086-exec-1] [                                                 ] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-09-24T22:36:47.567+07:00  INFO 74427 --- [notification-service] [http-nio-8086-exec-1] [                                                 ] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2025-09-24T22:36:47.569+07:00  INFO 74427 --- [notification-service] [http-nio-8086-exec-1] [                                                 ] o.s.web.servlet.DispatcherServlet        : Completed initialization in 2 ms
+2025-09-24T22:36:48.082+07:00 ERROR 74427 --- [notification-service] [http-nio-8086-exec-1] [                                                 ] o.a.c.c.C.[.[.[/].[dispatcherServlet]    : Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception [Request processing failed: org.springframework.web.client.HttpClientErrorException$NotFound: 404 : "{"timestamp":"2025-09-24T15:36:48.066+00:00","status":404,"error":"Not Found","path":"/api/count-orders"}"] with root cause
+
+org.springframework.web.client.HttpClientErrorException$NotFound: 404 : "{"timestamp":"2025-09-24T15:36:48.066+00:00","status":404,"error":"Not Found","path":"/api/count-orders"}"
+	at org.springframework.web.client.HttpClientErrorException.create(HttpClientErrorException.java:112) ~[spring-web-6.2.11.jar:6.2.11]
+	at org.springframework.web.client.StatusHandler.lambda$defaultHandler$3(StatusHandler.java:86) ~[spring-web-6.2.11.jar:6.2.11]
+	at org.springframework.web.client.StatusHandler.handle(StatusHandler.java:146) ~[spring-web-6.2.11.jar:6.2.11]
+	at org.springframework.web.client.DefaultRestClient$DefaultResponseSpec.applyStatusHandlers(DefaultRestClient.java:838) ~[spring-web-6.2.11.jar:6.2.11]
+	at org.springframework.web.client.DefaultRestClient$DefaultResponseSpec.lambda$readBody$4(DefaultRestClient.java:827) ~[spring-web-6.2.11.jar:6.2.11]
+	at org.springframework.web.client.DefaultRestClient.readWithMessageConverters(DefaultRestClient.java:216) ~[spring-web-6.2.11.jar:6.2.11]
+	at org.springframework.web.client.DefaultRestClient$DefaultResponseSpec.readBody(DefaultRestClient.java:826) ~[spring-web-6.2.11.jar:6.2.11]
+	at org.springframework.web.client.DefaultRestClient$DefaultResponseSpec.lambda$toEntityInternal$2(DefaultRestClient.java:782) ~[spring-web-6.2.11.jar:6.2.11]
+	at org.springframework.web.client.DefaultRestClient$DefaultRequestBodyUriSpec.exchangeInternal(DefaultRestClient.java:586) ~[spring-web-6.2.11.jar:6.2.11]
+	at org.springframework.web.client.DefaultRestClient$DefaultRequestBodyUriSpec.exchange(DefaultRestClient.java:540) ~[spring-web-6.2.11.jar:6.2.11]
+	at org.springframework.web.client.RestClient$RequestHeadersSpec.exchange(RestClient.java:680) ~[spring-web-6.2.11.jar:6.2.11]
+	at org.springframework.web.client.DefaultRestClient$DefaultResponseSpec.executeAndExtract(DefaultRestClient.java:821) ~[spring-web-6.2.11.jar:6.2.11]
+	at org.springframework.web.client.DefaultRestClient$DefaultResponseSpec.toEntityInternal(DefaultRestClient.java:781) ~[spring-web-6.2.11.jar:6.2.11]
+	at org.springframework.web.client.DefaultRestClient$DefaultResponseSpec.toEntity(DefaultRestClient.java:777) ~[spring-web-6.2.11.jar:6.2.11]
+	at org.springframework.web.client.support.RestClientAdapter.exchangeForEntity(RestClientAdapter.java:85) ~[spring-web-6.2.11.jar:6.2.11]
+	at org.springframework.web.service.invoker.HttpServiceMethod$ExchangeResponseFunction.lambda$create$3(HttpServiceMethod.java:418) ~[spring-web-6.2.11.jar:6.2.11]
+	at org.springframework.web.service.invoker.HttpServiceMethod$ExchangeResponseFunction.execute(HttpServiceMethod.java:382) ~[spring-web-6.2.11.jar:6.2.11]
+	at org.springframework.web.service.invoker.HttpServiceMethod.invoke(HttpServiceMethod.java:133) ~[spring-web-6.2.11.jar:6.2.11]
+	at org.springframework.web.service.invoker.HttpServiceProxyFactory$HttpServiceMethodInterceptor.invoke(HttpServiceProxyFactory.java:243) ~[spring-web-6.2.11.jar:6.2.11]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184) ~[spring-aop-6.2.11.jar:6.2.11]
+	at org.springframework.aop.framework.JdkDynamicAopProxy.invoke(JdkDynamicAopProxy.java:223) ~[spring-aop-6.2.11.jar:6.2.11]
+	at jdk.proxy2/jdk.proxy2.$Proxy110.getCountOrders(Unknown Source) ~[na:na]
+	at com.ecom.notification.service.AnalyticsServiceImpl.getAnalyticsData(AnalyticsServiceImpl.java:24) ~[classes/:na]
+	at com.ecom.notification.controller.NotificationController.getAnalytics(NotificationController.java:26) ~[classes/:na]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565) ~[na:na]
+	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:360) ~[spring-aop-6.2.11.jar:6.2.11]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.invokeJoinpoint(ReflectiveMethodInvocation.java:196) ~[spring-aop-6.2.11.jar:6.2.11]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:163) ~[spring-aop-6.2.11.jar:6.2.11]
+	at org.springframework.aop.aspectj.MethodInvocationProceedingJoinPoint.proceed(MethodInvocationProceedingJoinPoint.java:89) ~[spring-aop-6.2.11.jar:6.2.11]
+	at com.ecom.notification.aspect.RoleGuardAspect.checkRole(RoleGuardAspect.java:33) ~[classes/:na]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565) ~[na:na]
+	at org.springframework.aop.aspectj.AbstractAspectJAdvice.invokeAdviceMethodWithGivenArgs(AbstractAspectJAdvice.java:649) ~[spring-aop-6.2.11.jar:6.2.11]
+	at org.springframework.aop.aspectj.AbstractAspectJAdvice.invokeAdviceMethod(AbstractAspectJAdvice.java:631) ~[spring-aop-6.2.11.jar:6.2.11]
+	at org.springframework.aop.aspectj.AspectJAroundAdvice.invoke(AspectJAroundAdvice.java:71) ~[spring-aop-6.2.11.jar:6.2.11]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:173) ~[spring-aop-6.2.11.jar:6.2.11]
+	at org.springframework.aop.interceptor.ExposeInvocationInterceptor.invoke(ExposeInvocationInterceptor.java:97) ~[spring-aop-6.2.11.jar:6.2.11]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184) ~[spring-aop-6.2.11.jar:6.2.11]
+	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:728) ~[spring-aop-6.2.11.jar:6.2.11]
+	at com.ecom.notification.controller.NotificationController$$SpringCGLIB$$0.getAnalytics(<generated>) ~[classes/:na]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565) ~[na:na]
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:258) ~[spring-web-6.2.11.jar:6.2.11]
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:191) ~[spring-web-6.2.11.jar:6.2.11]
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:118) ~[spring-webmvc-6.2.11.jar:6.2.11]
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:991) ~[spring-webmvc-6.2.11.jar:6.2.11]
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:896) ~[spring-webmvc-6.2.11.jar:6.2.11]
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87) ~[spring-webmvc-6.2.11.jar:6.2.11]
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1089) ~[spring-webmvc-6.2.11.jar:6.2.11]
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:979) ~[spring-webmvc-6.2.11.jar:6.2.11]
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1014) ~[spring-webmvc-6.2.11.jar:6.2.11]
+	at org.springframework.web.servlet.FrameworkServlet.doGet(FrameworkServlet.java:903) ~[spring-webmvc-6.2.11.jar:6.2.11]
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:564) ~[tomcat-embed-core-10.1.46.jar:6.0]
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:885) ~[spring-webmvc-6.2.11.jar:6.2.11]
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:658) ~[tomcat-embed-core-10.1.46.jar:6.0]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:195) ~[tomcat-embed-core-10.1.46.jar:10.1.46]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.46.jar:10.1.46]
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:51) ~[tomcat-embed-websocket-10.1.46.jar:10.1.46]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164) ~[tomcat-embed-core-10.1.46.jar:10.1.46]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.46.jar:10.1.46]
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100) ~[spring-web-6.2.11.jar:6.2.11]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.2.11.jar:6.2.11]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164) ~[tomcat-embed-core-10.1.46.jar:10.1.46]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.46.jar:10.1.46]
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93) ~[spring-web-6.2.11.jar:6.2.11]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.2.11.jar:6.2.11]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164) ~[tomcat-embed-core-10.1.46.jar:10.1.46]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.46.jar:10.1.46]
+	at org.springframework.web.filter.ServerHttpObservationFilter.doFilterInternal(ServerHttpObservationFilter.java:110) ~[spring-web-6.2.11.jar:6.2.11]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.2.11.jar:6.2.11]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164) ~[tomcat-embed-core-10.1.46.jar:10.1.46]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.46.jar:10.1.46]
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201) ~[spring-web-6.2.11.jar:6.2.11]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.2.11.jar:6.2.11]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164) ~[tomcat-embed-core-10.1.46.jar:10.1.46]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.46.jar:10.1.46]
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:167) ~[tomcat-embed-core-10.1.46.jar:10.1.46]
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90) ~[tomcat-embed-core-10.1.46.jar:10.1.46]
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:483) ~[tomcat-embed-core-10.1.46.jar:10.1.46]
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:116) ~[tomcat-embed-core-10.1.46.jar:10.1.46]
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93) ~[tomcat-embed-core-10.1.46.jar:10.1.46]
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74) ~[tomcat-embed-core-10.1.46.jar:10.1.46]
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:344) ~[tomcat-embed-core-10.1.46.jar:10.1.46]
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:398) ~[tomcat-embed-core-10.1.46.jar:10.1.46]
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63) ~[tomcat-embed-core-10.1.46.jar:10.1.46]
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:903) ~[tomcat-embed-core-10.1.46.jar:10.1.46]
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1776) ~[tomcat-embed-core-10.1.46.jar:10.1.46]
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52) ~[tomcat-embed-core-10.1.46.jar:10.1.46]
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:975) ~[tomcat-embed-core-10.1.46.jar:10.1.46]
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:493) ~[tomcat-embed-core-10.1.46.jar:10.1.46]
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:63) ~[tomcat-embed-core-10.1.46.jar:10.1.46]
+	at java.base/java.lang.Thread.run(Thread.java:1474) ~[na:na]
+
+2025-09-24T22:37:27.067+07:00  INFO 74427 --- [notification-service] [SpringApplicationShutdownHook] [                                                 ] o.s.c.n.e.s.EurekaServiceRegistry        : Unregistering application NOTIFICATION-SERVICE with eureka with status DOWN
+2025-09-24T22:37:27.068+07:00  INFO 74427 --- [notification-service] [SpringApplicationShutdownHook] [                                                 ] com.netflix.discovery.DiscoveryClient    : Saw local status change event StatusChangeEvent [timestamp=1758728247068, current=DOWN, previous=UP]
+2025-09-24T22:37:27.068+07:00  INFO 74427 --- [notification-service] [DiscoveryClient-InstanceInfoReplicator-%d] [                                                 ] com.netflix.discovery.DiscoveryClient    : DiscoveryClient_NOTIFICATION-SERVICE/archlinux:notification-service:8086: registering service...
+2025-09-24T22:37:27.069+07:00  INFO 74427 --- [notification-service] [SpringApplicationShutdownHook] [                                                 ] o.s.b.w.e.tomcat.GracefulShutdown        : Commencing graceful shutdown. Waiting for active requests to complete
+2025-09-24T22:37:27.071+07:00  INFO 74427 --- [notification-service] [tomcat-shutdown] [                                                 ] o.s.b.w.e.tomcat.GracefulShutdown        : Graceful shutdown complete
+2025-09-24T22:37:27.074+07:00  INFO 74427 --- [notification-service] [DiscoveryClient-InstanceInfoReplicator-%d] [                                                 ] com.netflix.discovery.DiscoveryClient    : DiscoveryClient_NOTIFICATION-SERVICE/archlinux:notification-service:8086 - registration status: 204
+2025-09-24T22:37:27.256+07:00  INFO 74427 --- [notification-service] [SpringApplicationShutdownHook] [                                                 ] com.netflix.discovery.DiscoveryClient    : Shutting down DiscoveryClient ...
+2025-09-24T22:37:30.256+07:00  INFO 74427 --- [notification-service] [SpringApplicationShutdownHook] [                                                 ] com.netflix.discovery.DiscoveryClient    : Unregistering ...
+2025-09-24T22:37:30.263+07:00  INFO 74427 --- [notification-service] [SpringApplicationShutdownHook] [                                                 ] com.netflix.discovery.DiscoveryClient    : DiscoveryClient_NOTIFICATION-SERVICE/archlinux:notification-service:8086 - deregister  status: 200
+2025-09-24T22:37:30.263+07:00  INFO 74427 --- [notification-service] [SpringApplicationShutdownHook] [                                                 ] com.netflix.discovery.DiscoveryClient    : Completed shut down of DiscoveryClient
+2025-09-24T22:37:35.104+07:00  INFO 75696 --- [notification-service] [main] [                                                 ] c.e.n.NotificationApplication            : Starting NotificationApplication using Java 25.0.1 with PID 75696 (/home/fragile/Desktop/platform-ecom/platform-ecom-backend/notification/target/classes started by fragile in /home/fragile/Desktop/platform-ecom)
+2025-09-24T22:37:35.108+07:00  INFO 75696 --- [notification-service] [main] [                                                 ] c.e.n.NotificationApplication            : No active profile set, falling back to 1 default profile: "default"
+2025-09-24T22:37:35.146+07:00  INFO 75696 --- [notification-service] [main] [                                                 ] o.s.c.c.c.ConfigServerConfigDataLoader   : Fetching config from server at : http://localhost:8888
+2025-09-24T22:37:35.146+07:00  INFO 75696 --- [notification-service] [main] [                                                 ] o.s.c.c.c.ConfigServerConfigDataLoader   : Located environment: name=notification-service, profiles=[default], label=null, version=62072f321a36bbcc3e4ce7f7e29224e9c7fa9636, state=
+2025-09-24T22:37:36.380+07:00  INFO 75696 --- [notification-service] [main] [                                                 ] o.s.cloud.context.scope.GenericScope     : BeanFactory id=f32510ce-2edc-3c6d-a549-421e0f9aac7f
+2025-09-24T22:37:36.918+07:00  INFO 75696 --- [notification-service] [main] [                                                 ] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8086 (http)
+2025-09-24T22:37:36.935+07:00  INFO 75696 --- [notification-service] [main] [                                                 ] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-09-24T22:37:36.935+07:00  INFO 75696 --- [notification-service] [main] [                                                 ] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.46]
+2025-09-24T22:37:36.996+07:00  INFO 75696 --- [notification-service] [main] [                                                 ] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-09-24T22:37:36.997+07:00  INFO 75696 --- [notification-service] [main] [                                                 ] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1849 ms
+2025-09-24T22:37:38.419+07:00  INFO 75696 --- [notification-service] [main] [                                                 ] DiscoveryClientOptionalArgsConfiguration : Eureka HTTP Client uses RestTemplate.
+2025-09-24T22:37:38.470+07:00  WARN 75696 --- [notification-service] [main] [                                                 ] iguration$LoadBalancerCaffeineWarnLogger : Spring Cloud LoadBalancer is currently working with the default cache. While this cache implementation is useful for development and tests, it's recommended to use Caffeine cache in production.You can switch to using Caffeine cache, by adding it and org.springframework.cache.caffeine.CaffeineCacheManager to the classpath.
+2025-09-24T22:37:38.483+07:00  INFO 75696 --- [notification-service] [main] [                                                 ] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 17 endpoints beneath base path '/actuator'
+2025-09-24T22:37:38.552+07:00  INFO 75696 --- [notification-service] [main] [                                                 ] o.s.c.n.eureka.InstanceInfoFactory       : Setting initial instance status as: STARTING
+2025-09-24T22:37:38.575+07:00  INFO 75696 --- [notification-service] [main] [                                                 ] com.netflix.discovery.DiscoveryClient    : Initializing Eureka in region us-east-1
+2025-09-24T22:37:38.578+07:00  INFO 75696 --- [notification-service] [main] [                                                 ] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2025-09-24T22:37:38.586+07:00  INFO 75696 --- [notification-service] [main] [                                                 ] com.netflix.discovery.DiscoveryClient    : Disable delta property : false
+2025-09-24T22:37:38.587+07:00  INFO 75696 --- [notification-service] [main] [                                                 ] com.netflix.discovery.DiscoveryClient    : Single vip registry refresh property : null
+2025-09-24T22:37:38.587+07:00  INFO 75696 --- [notification-service] [main] [                                                 ] com.netflix.discovery.DiscoveryClient    : Force full registry fetch : false
+2025-09-24T22:37:38.587+07:00  INFO 75696 --- [notification-service] [main] [                                                 ] com.netflix.discovery.DiscoveryClient    : Application is null : false
+2025-09-24T22:37:38.587+07:00  INFO 75696 --- [notification-service] [main] [                                                 ] com.netflix.discovery.DiscoveryClient    : Registered Applications size is zero : true
+2025-09-24T22:37:38.588+07:00  INFO 75696 --- [notification-service] [main] [                                                 ] com.netflix.discovery.DiscoveryClient    : Application version is -1: true
+2025-09-24T22:37:38.588+07:00  INFO 75696 --- [notification-service] [main] [                                                 ] com.netflix.discovery.DiscoveryClient    : Getting all instance registry info from the eureka server
+2025-09-24T22:37:38.897+07:00  INFO 75696 --- [notification-service] [main] [                                                 ] com.netflix.discovery.DiscoveryClient    : The response status is 200
+2025-09-24T22:37:38.901+07:00  INFO 75696 --- [notification-service] [main] [                                                 ] com.netflix.discovery.DiscoveryClient    : Starting heartbeat executor: renew interval is: 30
+2025-09-24T22:37:38.906+07:00  INFO 75696 --- [notification-service] [main] [                                                 ] c.n.discovery.InstanceInfoReplicator     : InstanceInfoReplicator onDemand update allowed rate per min is 4
+2025-09-24T22:37:38.911+07:00  INFO 75696 --- [notification-service] [main] [                                                 ] com.netflix.discovery.DiscoveryClient    : Discovery Client initialized at timestamp 1758728258911 with initial instances count: 5
+2025-09-24T22:37:38.919+07:00  INFO 75696 --- [notification-service] [main] [                                                 ] o.s.c.n.e.s.EurekaServiceRegistry        : Registering application NOTIFICATION-SERVICE with eureka with status UP
+2025-09-24T22:37:38.920+07:00  INFO 75696 --- [notification-service] [main] [                                                 ] com.netflix.discovery.DiscoveryClient    : Saw local status change event StatusChangeEvent [timestamp=1758728258920, current=UP, previous=STARTING]
+2025-09-24T22:37:38.921+07:00  INFO 75696 --- [notification-service] [DiscoveryClient-InstanceInfoReplicator-%d] [                                                 ] com.netflix.discovery.DiscoveryClient    : DiscoveryClient_NOTIFICATION-SERVICE/archlinux:notification-service:8086: registering service...
+2025-09-24T22:37:38.935+07:00  INFO 75696 --- [notification-service] [main] [                                                 ] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8086 (http) with context path '/'
+2025-09-24T22:37:38.940+07:00  INFO 75696 --- [notification-service] [main] [                                                 ] .s.c.n.e.s.EurekaAutoServiceRegistration : Updating port to 8086
+2025-09-24T22:37:38.972+07:00  INFO 75696 --- [notification-service] [main] [                                                 ] c.e.n.NotificationApplication            : Started NotificationApplication in 5.829 seconds (process running for 6.508)
+2025-09-24T22:37:38.995+07:00  INFO 75696 --- [notification-service] [DiscoveryClient-InstanceInfoReplicator-%d] [                                                 ] com.netflix.discovery.DiscoveryClient    : DiscoveryClient_NOTIFICATION-SERVICE/archlinux:notification-service:8086 - registration status: 204
+2025-09-24T22:39:38.594+07:00  INFO 75696 --- [notification-service] [http-nio-8086-exec-1] [                                                 ] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-09-24T22:39:38.595+07:00  INFO 75696 --- [notification-service] [http-nio-8086-exec-1] [                                                 ] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2025-09-24T22:39:38.596+07:00  INFO 75696 --- [notification-service] [http-nio-8086-exec-1] [                                                 ] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+2025-09-24T22:40:55.836+07:00  INFO 75696 --- [notification-service] [SpringApplicationShutdownHook] [                                                 ] o.s.c.n.e.s.EurekaServiceRegistry        : Unregistering application NOTIFICATION-SERVICE with eureka with status DOWN
+2025-09-24T22:40:55.839+07:00  INFO 75696 --- [notification-service] [SpringApplicationShutdownHook] [                                                 ] com.netflix.discovery.DiscoveryClient    : Saw local status change event StatusChangeEvent [timestamp=1758728455839, current=DOWN, previous=UP]
+2025-09-24T22:40:55.839+07:00  INFO 75696 --- [notification-service] [DiscoveryClient-InstanceInfoReplicator-%d] [                                                 ] com.netflix.discovery.DiscoveryClient    : DiscoveryClient_NOTIFICATION-SERVICE/archlinux:notification-service:8086: registering service...
+2025-09-24T22:40:55.842+07:00  INFO 75696 --- [notification-service] [SpringApplicationShutdownHook] [                                                 ] o.s.b.w.e.tomcat.GracefulShutdown        : Commencing graceful shutdown. Waiting for active requests to complete
+2025-09-24T22:40:55.846+07:00  INFO 75696 --- [notification-service] [tomcat-shutdown] [                                                 ] o.s.b.w.e.tomcat.GracefulShutdown        : Graceful shutdown complete
+2025-09-24T22:40:55.860+07:00  INFO 75696 --- [notification-service] [DiscoveryClient-InstanceInfoReplicator-%d] [                                                 ] com.netflix.discovery.DiscoveryClient    : DiscoveryClient_NOTIFICATION-SERVICE/archlinux:notification-service:8086 - registration status: 204
+2025-09-24T22:40:56.015+07:00  INFO 75696 --- [notification-service] [SpringApplicationShutdownHook] [                                                 ] com.netflix.discovery.DiscoveryClient    : Shutting down DiscoveryClient ...
+2025-09-24T22:40:59.015+07:00  INFO 75696 --- [notification-service] [SpringApplicationShutdownHook] [                                                 ] com.netflix.discovery.DiscoveryClient    : Unregistering ...
+2025-09-24T22:40:59.020+07:00  INFO 75696 --- [notification-service] [SpringApplicationShutdownHook] [                                                 ] com.netflix.discovery.DiscoveryClient    : DiscoveryClient_NOTIFICATION-SERVICE/archlinux:notification-service:8086 - deregister  status: 200
+2025-09-24T22:40:59.021+07:00  INFO 75696 --- [notification-service] [SpringApplicationShutdownHook] [                                                 ] com.netflix.discovery.DiscoveryClient    : Completed shut down of DiscoveryClient

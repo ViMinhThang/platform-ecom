@@ -5,51 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c48beeac-7758-42e4-81dd-f068fbcd38be" name="Changes" comment="fixing bugs">
-      <change afterPath="$PROJECT_DIR$/platform-ecom-backend/notification/.gitattributes" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/platform-ecom-backend/notification/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/platform-ecom-backend/notification/.mvn/wrapper/maven-wrapper.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/platform-ecom-backend/notification/mvnw" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/platform-ecom-backend/notification/mvnw.cmd" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/platform-ecom-backend/notification/pom.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/platform-ecom-backend/notification/src/main/java/com/ecom/notification/NotificationApplication.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/platform-ecom-backend/notification/src/main/java/com/ecom/notification/aspect/RequireRole.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/platform-ecom-backend/notification/src/main/java/com/ecom/notification/aspect/RoleGuardAspect.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/platform-ecom-backend/notification/src/main/java/com/ecom/notification/client/HttpClientConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/platform-ecom-backend/notification/src/main/java/com/ecom/notification/client/OrderServiceClient.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/platform-ecom-backend/notification/src/main/java/com/ecom/notification/client/ProductServiceClient.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/platform-ecom-backend/notification/src/main/java/com/ecom/notification/config/AppConstants.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/platform-ecom-backend/notification/src/main/java/com/ecom/notification/config/AuthContext.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/platform-ecom-backend/notification/src/main/java/com/ecom/notification/config/WebConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/platform-ecom-backend/notification/src/main/java/com/ecom/notification/controller/NotificationController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/platform-ecom-backend/notification/src/main/java/com/ecom/notification/dtos/APIResponse.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/platform-ecom-backend/notification/src/main/java/com/ecom/notification/dtos/AnalyticsResponse.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/platform-ecom-backend/notification/src/main/java/com/ecom/notification/exception/APIException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/platform-ecom-backend/notification/src/main/java/com/ecom/notification/exception/MyGlobalExceptionHandler.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/platform-ecom-backend/notification/src/main/java/com/ecom/notification/exception/ResourceNotFoundException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/platform-ecom-backend/notification/src/main/java/com/ecom/notification/service/AnalyticsService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/platform-ecom-backend/notification/src/main/java/com/ecom/notification/service/AnalyticsServiceImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/platform-ecom-backend/notification/src/main/resources/application.yml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/platform-ecom-backend/notification/src/test/java/com/ecom/notification/NotificationApplicationTests.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/logs/user-service.log" beforeDir="false" afterPath="$PROJECT_DIR$/logs/user-service.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/gateway/src/main/java/com/ecom/gateway/security/GatewayConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/gateway/src/main/java/com/ecom/gateway/security/GatewayConfig.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/platform-ecom-backend/order/.env" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/order/.env" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/order/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/order/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/order/src/main/java/com/ecom/order/controller/OrderController.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/order/src/main/java/com/ecom/order/controller/OrderController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/order/src/main/java/com/ecom/order/repositories/OrderRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/order/src/main/java/com/ecom/order/repositories/OrderRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/order/src/main/java/com/ecom/order/service/OrderService.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/order/src/main/java/com/ecom/order/service/OrderService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/order/src/main/java/com/ecom/order/service/OrderServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/order/src/main/java/com/ecom/order/service/OrderServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/order/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/order/src/main/resources/application.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/controller/ProductController.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/controller/ProductController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/service/ProductService.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/service/ProductService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/service/ProductServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/service/ProductServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/user/src/main/java/com/ecom/user/controller/AddressController.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/user/src/main/java/com/ecom/user/controller/AddressController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/user/src/main/java/com/ecom/user/controller/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/user/src/main/java/com/ecom/user/controller/UserController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-frontend/.env" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-frontend/.env" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-frontend/src/store/actions/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-frontend/src/store/actions/index.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -340,7 +296,15 @@
       <option name="project" value="LOCAL" />
       <updated>1758642955906</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="fixing bugs">
+      <option name="closed" value="true" />
+      <created>1758728469659</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1758728469659</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="UnknownFeatures">
