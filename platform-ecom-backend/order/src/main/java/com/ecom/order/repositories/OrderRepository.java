@@ -17,4 +17,7 @@ public interface OrderRepository extends JpaRepository<Order,Long> {
     WHERE oi.productId IN :productIds
 """)
     Page<Order> findOrdersByProductIds(@Param("productIds") List<Long> productIds, Pageable pageable);
+
+    @Query("SELECT COALESCE(SUM(o.totalAmount), 0) FROM Order o")
+    Double getTotalRevenue();
 }

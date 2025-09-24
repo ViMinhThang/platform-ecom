@@ -31,4 +31,8 @@ public interface ProductService {
     String reduceStocks(List<ReduceStockDTO> reduceStockDTOS);
 
     List<ProductDTO> getProductBySellerId(Long sellerId);
+
+    ProductDTO getProductById(Long productId);
+
+    Long getProductCounts();
 }

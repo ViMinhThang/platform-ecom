@@ -15,7 +15,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@RestController("/api/orders")
+@RestController()
+@RequestMapping("/api/orders")
 public class OrderController {
 
     @Autowired
@@ -44,7 +45,7 @@ public class OrderController {
         return new ResponseEntity<>(order, HttpStatus.CREATED);
     }
 
-    @PostMapping("/order/stripe-client-secret")
+    @PostMapping("/stripe-client-secret")
     public ResponseEntity<String> createStripeClientSecret(@RequestBody StripePaymentDto stripePaymentDto) throws StripeException, StripeException {
         System.out.println("StripePaymentDTO Received " + stripePaymentDto);
         PaymentIntent paymentIntent = stripeService.paymentIntent(stripePaymentDto);
@@ -91,4 +92,14 @@ public class OrderController {
         return new ResponseEntity<OrderDTO>(order, HttpStatus.OK);
     }
 
+    @GetMapping("/count-orders")
+    public ResponseEntity<Long> getOrdersCount(){
+        Long count = orderService.getOrdersCount();
+        return new ResponseEntity<Long>(count,HttpStatus.OK);
+    }
+    @GetMapping("/order-revenue")
+    public ResponseEntity<Double> getTotalRevenue(){
+        Double totalRevenue = orderService.getTotalRevenue();
+        return new ResponseEntity<Double>(totalRevenue,HttpStatus.OK);
+    }
 }

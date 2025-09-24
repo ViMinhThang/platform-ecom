@@ -86,7 +86,7 @@ export const increaseCartQuantity =
         if (isQuantityExist) {
             const newQuantity = currentQuantity + 1;
             setCurrentQuantity(newQuantity);
-
+            
             dispatch({
                 type: "ADD_CART",
                 payload: {...data, quantity: newQuantity + 1 },
@@ -288,7 +288,7 @@ export const createStripePaymentSecret
     = (sendData) => async (dispatch, getState) => {
         try {
             dispatch({ type: "IS_FETCHING" });
-            const { data } = await api.post("/order/stripe-client-secret", sendData);
+            const { data } = await api.post("/orders/stripe-client-secret", sendData);
             dispatch({ type: "CLIENT_SECRET", payload: data });
               localStorage.setItem("client-secret", JSON.stringify(data));
               dispatch({ type: "IS_SUCCESS" });
@@ -321,7 +321,7 @@ export const stripePaymentConfirmation
 export const analyticsAction = () => async (dispatch, getState) => {
         try {
             dispatch({ type: "IS_FETCHING"});
-            const { data } = await api.get('/admin/app/analytics');
+            const { data } = await api.get('/notification/admin/app/analytics');
             dispatch({
                 type: "FETCH_ANALYTICS",
                 payload: data,
@@ -338,7 +338,7 @@ export const analyticsAction = () => async (dispatch, getState) => {
 export const getOrdersForDashboard = (queryString, isAdmin) => async (dispatch) => {
     try {
         dispatch({ type: "IS_FETCHING" });
-        const endpoint = isAdmin ? "/admin/orders" : "/seller/orders";
+        const endpoint = isAdmin ? "/orders/admin/orders" : "/orders/seller/orders";
         const { data } = await api.get(`${endpoint}?${queryString}`);
         dispatch({
             type: "GET_ADMIN_ORDERS",
@@ -365,7 +365,7 @@ export const updateOrderStatusFromDashboard =
      (orderId, orderStatus, toast, setLoader, isAdmin) => async (dispatch, getState) => {
     try {
         setLoader(true);
-        const endpoint = isAdmin ? "/admin/orders/" : "/seller/orders/";
+        const endpoint = isAdmin ? "/orders/admin/orders/" : "/orders/seller/orders/";
         const { data } = await api.put(`${endpoint}${orderId}/status`, { status: orderStatus});
         toast.success(data.message || "Order updated successfully");
         await dispatch(getOrdersForDashboard());

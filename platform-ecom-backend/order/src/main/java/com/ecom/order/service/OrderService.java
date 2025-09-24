@@ -11,4 +11,8 @@ public interface OrderService {
     OrderDTO updateOrder(Long orderId, String status);
 
     OrderDTO placeOrder(Long userId, Long addressId, String paymentMethod, String pgName, String pgPaymentId, String pgStatus, String pgResponseMessage);
+
+    Long getOrdersCount();
+
+    Double getTotalRevenue();
 }

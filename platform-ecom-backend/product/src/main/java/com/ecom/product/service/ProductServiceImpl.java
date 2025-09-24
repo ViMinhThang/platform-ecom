@@ -320,4 +320,16 @@ public class ProductServiceImpl implements ProductService {
                 .map(p -> modelMapper.map(p, ProductDTO.class)).toList();
         return productDTOS;
     }
+
+    @Override
+    public ProductDTO getProductById(Long productId) {
+        Product p = productRepository.findById(productId)
+                .orElseThrow(() -> new ResourceNotFoundException("Product", "ProductId", productId));
+        return modelMapper.map(p, ProductDTO.class);
+    }
+
+    @Override
+    public Long getProductCounts() {
+        return productRepository.count();
+    }
 }

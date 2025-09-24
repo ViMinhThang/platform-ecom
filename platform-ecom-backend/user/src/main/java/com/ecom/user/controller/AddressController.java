@@ -31,7 +31,7 @@ public class AddressController {
     @Autowired
     AuthContext authContext;
 
-    @PostMapping("/")
+    @PostMapping("")
     public ResponseEntity<AddressDTO> createAddress(@Valid @RequestBody AddressDTO addressDTO,
                                                     HttpServletRequest request) {
         Long userId = authContext.getUserId(request);
@@ -42,7 +42,7 @@ public class AddressController {
         return new ResponseEntity<>(savedAddressDTO, HttpStatus.CREATED);
     }
 
-    @GetMapping("/")
+    @GetMapping("")
     public ResponseEntity<List<AddressDTO>> getAddresses() {
         List<AddressDTO> addressList = addressService.getAddresses();
         return new ResponseEntity<>(addressList, HttpStatus.OK);

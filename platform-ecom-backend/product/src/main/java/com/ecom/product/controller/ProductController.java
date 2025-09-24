@@ -92,7 +92,7 @@ public class ProductController {
     @RequireRole("ROLE_ADMIN")
     public ResponseEntity<ProductDTO> updateProduct(@Valid @RequestBody ProductDTO productDTO,
                                                     @PathVariable Long productId, HttpServletRequest request) {
-        log.info("productId"+ productId);
+        log.info("productId" + productId);
         ProductDTO updatedProductDTO = productService.updateProduct(productId, productDTO);
         return new ResponseEntity<>(updatedProductDTO, HttpStatus.OK);
     }
@@ -178,5 +178,17 @@ public class ProductController {
     public ResponseEntity<List<ProductDTO>> getProductBySellerId(@PathVariable Long sellerId) {
         List<ProductDTO> productDTOS = productService.getProductBySellerId(sellerId);
         return new ResponseEntity<>(productDTOS, HttpStatus.OK);
+    }
+
+    @GetMapping("/{productId}")
+    public ResponseEntity<ProductDTO> getProductById(@PathVariable Long productId) {
+        ProductDTO productDTO = productService.getProductById(productId);
+        return new ResponseEntity<ProductDTO>(productDTO, HttpStatus.OK);
+    }
+
+    @GetMapping("/count-products")
+    public ResponseEntity<Long> getProductsCount(){
+        Long counts = productService.getProductCounts();
+        return new ResponseEntity<>(counts,HttpStatus.OK);
     }
 }

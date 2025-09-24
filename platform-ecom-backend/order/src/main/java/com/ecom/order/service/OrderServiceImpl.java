@@ -173,4 +173,14 @@ public class OrderServiceImpl implements OrderService {
 
         return orderDTO;
     }
+
+    @Override
+    public Long getOrdersCount() {
+        return orderRepository.count();
+    }
+
+    @Override
+    public Double getTotalRevenue() {
+        return orderRepository.getTotalRevenue();
+    }
 }

@@ -62,22 +62,24 @@ public class GatewayConfig {
                 .route("user-service", r -> r.path("/api/auth/**")
                         .uri("lb://user-service"))
                 .route("user-addresses-private", r -> r.path(
-                                "/api/addresses/",
-                                "/api/addresses/user",
-                                "/api/addresses/*",
-                                "/api/addresses/*/"
+                                "/api/addresses/**"
                         )
-                        .and().method("POST", "PUT", "DELETE", "GET")
+                        .and().method("POST", "PUT", "DELETE")
                         .filters(f -> f.filter(authFilter))
                         .uri("lb://user-service"))
                 .route("user-addresses-public", r -> r.path(
-                                "/api/addresses/",
+                                "/api/addresses/**",
                                 "/api/addresses/{id}"
                         )
                         .and().method("GET")
                         .uri("lb://user-service"))
+                .route("notification-service", r -> r
+                        .path("/api/notification/**")
+                        .filters(f->f.filter(authFilter))
+                        .uri("lb://NOTIFICATION-SERVICE"))
                 .route("order-service", r -> r
                         .path("/api/orders/**", "/api/carts/**")
+                        .filters(f->f.filter(authFilter))
                         .uri("lb://ORDER-SERVICE"))
                 .route("eureka-server", r -> r
                         .path("/eureka/main")

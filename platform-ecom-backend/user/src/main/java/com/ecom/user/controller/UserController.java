@@ -2,6 +2,7 @@ package com.ecom.user.controller;
 
 import com.ecom.user.config.AppConstants;
 import com.ecom.user.dtos.*;
+import com.ecom.user.entity.User;
 import com.ecom.user.service.AuthService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +21,6 @@ public class UserController {
 
     @Autowired
     AuthService authService;
-
 
 
     @PostMapping("/signin")
@@ -57,5 +57,11 @@ public class UserController {
                 Integer.parseInt(AppConstants.PAGE_SIZE), sortByAndOrder);
 
         return ResponseEntity.ok(authService.getAllSellers(pageDetails));
+    }
+
+    @GetMapping("/get-email-by-user-id/{userId}")
+    public ResponseEntity<String> getEmailByUserId(@PathVariable Long userId) {
+        UserInfoResponse user = authService.getUserById(String.valueOf(userId));
+        return new ResponseEntity<String>(user.getEmail(), HttpStatus.OK);
     }
 }
