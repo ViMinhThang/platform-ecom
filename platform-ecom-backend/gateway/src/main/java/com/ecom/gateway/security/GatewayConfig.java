@@ -59,6 +59,9 @@ public class GatewayConfig {
                         .filters(f -> f.filter(authFilter))
                         .uri("lb://product-service"))
                 // ---------------- USER SERVICE ----------------
+                .route("user-service", r -> r.path("/api/auth/update-info")
+                        .filters(f->f.filter(authFilter))
+                        .uri("lb://user-service"))
                 .route("user-service", r -> r.path("/api/auth/**")
                         .uri("lb://user-service"))
                 .route("user-addresses-private", r -> r.path(

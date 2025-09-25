@@ -17,4 +17,6 @@ public interface AuthService {
     AuthenticationResult login(LoginRequest loginRequest);
 
     UserInfoResponse validate(String token);
+
+    UserInfoResponse updateUserById(UpdateUserRequest updateUserRequest,Long userId);
 }

@@ -5,7 +5,24 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c48beeac-7758-42e4-81dd-f068fbcd38be" name="Changes" comment="fixing bugs">
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/order/.env" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/order/.env" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/platform-ecom-backend/user/src/main/java/com/ecom/user/aspect/RequireRole.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/platform-ecom-backend/user/src/main/java/com/ecom/user/aspect/RoleGuardAspect.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/platform-ecom-backend/user/src/main/java/com/ecom/user/dtos/UpdateUserRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/logs/notification-service.log" beforeDir="false" afterPath="$PROJECT_DIR$/logs/notification-service.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/logs/order-service.log" beforeDir="false" afterPath="$PROJECT_DIR$/logs/order-service.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/logs/product-service.log" beforeDir="false" afterPath="$PROJECT_DIR$/logs/product-service.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/logs/user-service.log" beforeDir="false" afterPath="$PROJECT_DIR$/logs/user-service.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/gateway/src/main/java/com/ecom/gateway/security/GatewayConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/gateway/src/main/java/com/ecom/gateway/security/GatewayConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/user/src/main/java/com/ecom/user/config/AppConstants.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/user/src/main/java/com/ecom/user/config/AppConstants.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/user/src/main/java/com/ecom/user/controller/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/user/src/main/java/com/ecom/user/controller/UserController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/user/src/main/java/com/ecom/user/service/AuthService.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/user/src/main/java/com/ecom/user/service/AuthService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/user/src/main/java/com/ecom/user/service/AuthServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/user/src/main/java/com/ecom/user/service/AuthServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-frontend/src/App.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-frontend/src/App.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-frontend/src/components/checkout/AddressInfo.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-frontend/src/components/checkout/AddressInfo.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-frontend/src/components/checkout/AddressList.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-frontend/src/components/checkout/AddressList.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-frontend/src/components/checkout/Checkout.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-frontend/src/components/checkout/Checkout.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-frontend/src/store/actions/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-frontend/src/store/actions/index.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -52,39 +69,39 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Application.auth-service.executor": "Run",
-    "Application.bff-service.executor": "Run",
-    "Application.config-server.executor": "Run",
-    "Application.eureka.executor": "Run",
-    "Application.gateway.executor": "Run",
-    "Application.notificaiton-service.executor": "Run",
-    "Application.notification-service.executor": "Run",
-    "Application.order-service.executor": "Run",
-    "Application.product-service.executor": "Run",
-    "Application.user-service.executor": "Run",
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "git-widget-placeholder": "microservices-migration",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "/home/fragile/Desktop/platform-ecom/platform-ecom-backend/notification/src/main/java/com/ecom/notification",
-    "project.structure.last.edited": "Problems",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.2",
-    "settings.editor.selected.configurable": "editor.preferences.tabs"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.auth-service.executor&quot;: &quot;Run&quot;,
+    &quot;Application.bff-service.executor&quot;: &quot;Run&quot;,
+    &quot;Application.config-server.executor&quot;: &quot;Run&quot;,
+    &quot;Application.eureka.executor&quot;: &quot;Run&quot;,
+    &quot;Application.gateway.executor&quot;: &quot;Run&quot;,
+    &quot;Application.notificaiton-service.executor&quot;: &quot;Run&quot;,
+    &quot;Application.notification-service.executor&quot;: &quot;Run&quot;,
+    &quot;Application.order-service.executor&quot;: &quot;Run&quot;,
+    &quot;Application.product-service.executor&quot;: &quot;Run&quot;,
+    &quot;Application.user-service.executor&quot;: &quot;Run&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;microservices-migration&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/fragile/Desktop/platform-ecom/platform-ecom-backend/user/src/main/java/com/ecom/user&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Problems&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;editor.preferences.tabs&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/platform-ecom-backend/user/src/main/java/com/ecom/user" />
       <recent name="$PROJECT_DIR$/platform-ecom-backend/notification/src/main/java/com/ecom/notification" />
       <recent name="$PROJECT_DIR$/platform-ecom-backend" />
       <recent name="$PROJECT_DIR$/platform-ecom-backend/order" />
       <recent name="$PROJECT_DIR$/platform-ecom-backend/product" />
-      <recent name="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/platform-ecom-backend" />
@@ -304,7 +321,15 @@
       <option name="project" value="LOCAL" />
       <updated>1758728469659</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="fixing bugs">
+      <option name="closed" value="true" />
+      <created>1758728514109</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1758728514109</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="UnknownFeatures">

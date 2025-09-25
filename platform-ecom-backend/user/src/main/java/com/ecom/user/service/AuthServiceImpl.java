@@ -82,6 +82,25 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
+    public UserInfoResponse updateUserById(UpdateUserRequest updateUserRequest,Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("User service", "UserId",userId));
+        if (!encoder.matches(updateUserRequest.getCurrentPassword(), user.getPassword())) {
+            throw new APIException("Incorrect Password");
+        }
+        user.setEmail(updateUserRequest.getEmail());
+        user.setUserName(updateUserRequest.getUsername());
+        if (!updateUserRequest.getPassword().isEmpty()) {
+            user.setPassword(encoder.encode(updateUserRequest.getPassword()));
+        }
+        User savedUser = userRepository.save(user);
+        List<String> roles = savedUser.getRoles().stream()
+                .map(role -> role.getRoleName().toString()).toList();
+        UserInfoResponse userInfoResponse = new UserInfoResponse(savedUser.getUserId(), savedUser.getUserName(), savedUser.getEmail(), roles);
+        return userInfoResponse;
+    }
+
+    @Override
     public ResponseEntity<MessageResponse> register(SignupRequest signUpRequest) {
         if (userRepository.existsByUserName(signUpRequest.getUsername())) {
             return ResponseEntity.badRequest().body(new MessageResponse("Error: Username is already taken!"));

@@ -20,7 +20,7 @@ const Checkout = () => {
         (state) => state.auth
     )
     const { paymentMethod } = useSelector((state) => state.payment);
-
+    console.log(address)
     const handleBack = () => {
         setActiveStep((prevStep) => prevStep - 1);
     };
