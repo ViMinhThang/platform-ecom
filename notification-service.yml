@@ -6,7 +6,7 @@ spring:
       function:
         definition: placeOrderNotification
       bindings:
-        orderNotification-in-0:
+        placeOrderNotification-in-0:
           destination: order-notifications
           group: notification-service-group
           content-type: application/json
