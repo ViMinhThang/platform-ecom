@@ -20,6 +20,16 @@ spring:
     jwtSecret: "qweqweqweqweqweqw123123131231231cfcsvcxvwdfqsd"
     jwtExpirationMs: 600000
     jwtCookieName: "ecom"
+  cloud:
+    stream:
+      default-binder: kafka
+      bindings:
+        orderNotification-out-0:
+          destination: order-notifications
+          content-type: application/josn
+      kafka:
+        binder:
+          brokers: localhost:9092
 server:
   port: 8085
 stripe:
