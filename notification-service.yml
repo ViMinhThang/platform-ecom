@@ -1,4 +1,11 @@
-# spring:
+spring:
+  cloud:
+    stream:
+      bindings:
+        orderNotification-in-0:
+          destination: order-notifications
+          group: notification-service-group
+          content-type: application/json
   # datasource:
   #   url: jdbc:postgresql://localhost:5432/users?currentSchema=public&stringtype=unspecified&serverTimezone=Asia/Ho_Chi_Minh
   #   username: ${DB_USER}
