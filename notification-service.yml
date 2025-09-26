@@ -6,6 +6,10 @@ spring:
           destination: order-notifications
           group: notification-service-group
           content-type: application/json
+      kafka:
+        binder:
+          brokers: localhost:9092
+
   # datasource:
   #   url: jdbc:postgresql://localhost:5432/users?currentSchema=public&stringtype=unspecified&serverTimezone=Asia/Ho_Chi_Minh
   #   username: ${DB_USER}
