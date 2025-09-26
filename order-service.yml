@@ -26,7 +26,7 @@ spring:
       bindings:
         orderNotification-out-0:
           destination: order-notifications
-          content-type: application/josn
+          content-type: application/json
       kafka:
         binder:
           brokers: localhost:9092
