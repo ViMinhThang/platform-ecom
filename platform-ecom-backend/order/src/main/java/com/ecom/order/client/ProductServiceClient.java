@@ -22,7 +22,7 @@ public interface ProductServiceClient {
     @GetExchange("/get-product-by-seller-id/{sellerId}")
     ResponseEntity<List<ProductDTO>> getProductsBySellerId(@PathVariable("sellerId") Long sellerId);
 
-    @PostExchange("/reduce-product-stock")
+    @PostExchange("/reduce-stock")
     ResponseEntity<String> reduceStock(@RequestBody List<ReduceStockDTO> reduceStockDTOS);
 
     @GetExchange("/{productId}")

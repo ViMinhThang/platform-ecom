@@ -5,6 +5,7 @@ import jakarta.validation.constraints.Email;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -32,6 +33,7 @@ public class Order {
 
     @OneToOne
     @JoinColumn(name = "payment_id")
+    @ToString.Exclude
     private Payment payment;
 
     private Double totalAmount;

@@ -10,15 +10,17 @@ import com.ecom.order.exception.APIException;
 import com.ecom.order.exception.ResourceNotFoundException;
 import com.ecom.order.repositories.CartItemRepository;
 import com.ecom.order.repositories.CartRepository;
-import jakarta.transaction.Transactional;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Stream;
 
 @Service
+@Slf4j
 public class CartServiceImpl implements CartService {
 
     @Autowired
@@ -158,9 +160,8 @@ public class CartServiceImpl implements CartService {
     public String deleteProductFromCart(Long cartId, Long productId) {
         Cart cart = cartRepository.findById(cartId)
                 .orElseThrow(() -> new ResourceNotFoundException("Cart", "cartId", cartId));
-
-        CartItem cartItem = cartItemRepository.findCartItemByProductIdAndCart_CartId(cartId, productId);
-
+        log.info("{} {}", cartId, productId);
+        CartItem cartItem = cartItemRepository.findCartItemByProductIdAndCart_CartId(productId,cartId );
         if (cartItem == null) {
             throw new ResourceNotFoundException("Product", "productId", productId);
         }

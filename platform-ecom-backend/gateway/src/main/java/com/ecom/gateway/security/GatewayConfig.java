@@ -52,6 +52,8 @@ public class GatewayConfig {
                 // ---------------- PRODUCT SERVICE ----------------
                 .route("product-public", r -> r.path("/api/products/public/**")
                         .uri("lb://product-service"))
+                .route("product-images", r -> r.path("/products/images/**")
+                        .uri("lb://product-service"))
                 .route("product-admin", r -> r.path("/api/products/admin/**")
                         .filters(f -> f.filter(authFilter))
                         .uri("lb://product-service"))

@@ -6,6 +6,7 @@ import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Entity
 @Table(name = "payments")
@@ -19,6 +20,7 @@ public class Payment {
     private Long paymentId;
 
     @OneToOne(mappedBy = "payment", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ToString.Exclude
     private Order order;
 
     @NotBlank
