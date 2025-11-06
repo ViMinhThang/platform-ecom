@@ -14,12 +14,14 @@
         <option value="$PROJECT_DIR$/platform-ecom-backend/product/pom.xml" />
         <option value="$PROJECT_DIR$/platform-ecom-backend/order/pom.xml" />
         <option value="$PROJECT_DIR$/platform-ecom-backend/notification/pom.xml" />
+        <option value="$PROJECT_DIR$/platform-ecom-backend/media/pom.xml" />
       </list>
     </option>
     <option name="ignoredFiles">
       <set>
         <option value="$PROJECT_DIR$/platform-ecom-backend/auth-services/pom.xml" />
         <option value="$PROJECT_DIR$/platform-ecom-backend/bff/pom.xml" />
+        <option value="$PROJECT_DIR$/platform-ecom-backend/media/pom.xml" />
       </set>
     </option>
   </component>

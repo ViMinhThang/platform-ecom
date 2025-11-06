@@ -1,16 +1,18 @@
 package com.ecom.product.service;
 
-import com.ecom.product.dtos.CategoryDTO;
-import com.ecom.product.dtos.CategoryResponse;
+import com.ecom.product.dto.CategoryDTO;
+import com.ecom.product.dto.CategoryResponse;
 import jakarta.validation.Valid;
-import org.springframework.http.ResponseEntity;
 
 public interface CategoryService {
-    ResponseEntity<?> getAllCategories(Integer pageNumber, Integer pageSize, String sortBy, String sortOrder);
 
     CategoryDTO createCategory(@Valid CategoryDTO categoryDTO);
 
-    CategoryDTO deleteCategory(Long categoryId);
+    CategoryResponse getAllCategories(Integer pageNumber, Integer pageSize, String sortBy, String sortOrder);
+
+    CategoryDTO getCategoryById(Long categoryId);
 
     CategoryDTO updateCategory(@Valid CategoryDTO categoryDTO, Long categoryId);
+
+    CategoryDTO deleteCategory(Long categoryId);
 }

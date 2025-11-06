@@ -2,9 +2,10 @@ import { FileUploaderProps } from '@/components/file-uploader';
 import { Control, FieldPath, FieldValues } from 'react-hook-form';
 
 // Base props that all form components will share
+
 export interface BaseFormFieldProps<
-  TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+  TFieldValues extends FieldValues,
+  TName extends FieldPath<TFieldValues>,
 > {
   control: Control<TFieldValues>;
   name: TName;
@@ -14,7 +15,6 @@ export interface BaseFormFieldProps<
   disabled?: boolean;
   className?: string;
 }
-
 // Common option type for selects, radio groups, etc.
 export interface FormOption {
   value: string;

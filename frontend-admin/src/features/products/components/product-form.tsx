@@ -1,175 +1,228 @@
 "use client";
 
-import { FormFileUpload } from "@/components/forms/form-file-upload";
+import { useEffect, useState } from "react";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { useForm, SubmitHandler, FormProvider } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
+
 import { FormInput } from "@/components/forms/form-input";
 import { FormSelect } from "@/components/forms/form-select";
 import { FormTextarea } from "@/components/forms/form-textarea";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Form } from "@/components/ui/form";
-import { Product } from "@/constants/mock-api";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useRouter } from "next/navigation";
-import { useForm } from "react-hook-form";
-import * as z from "zod";
-import ProductOptionsEditor from "./Product-options-editor";
+import { JsonKeyValueEditor } from "./key-value-editor";
+import { useSession } from "next-auth/react";
+import { getCategories } from "@/services/category-service";
+import { CategoryDTO } from "@/types/category";
+import { useProduct } from "@/hooks/useProduct.ts";
 
-const MAX_FILE_SIZE = 5000000;
-const ACCEPTED_IMAGE_TYPES = [
-  "image/jpeg",
-  "image/jpg",
-  "image/png",
-  "image/webp",
-];
+interface ProductDialogProps {
+  productId?: number;
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+}
 
-const formSchema = z.object({
-  image: z
-    .any()
-    .refine((files) => files?.length == 1, "Image is required.")
-    .refine(
-      (files) => files?.[0]?.size <= MAX_FILE_SIZE,
-      `Max file size is 5MB.`
-    )
-    .refine(
-      (files) => ACCEPTED_IMAGE_TYPES.includes(files?.[0]?.type),
-      ".jpg, .jpeg, .png and .webp files are accepted."
-    ),
-  name: z.string().min(2, {
-    message: "Product name must be at least 2 characters.",
-  }),
-  category: z.string(),
-  price: z.number(),
-  status: z.enum(["active", "inactive"]),
-  description: z.string().min(10, {
-    message: "Description must be at least 10 characters.",
-  }),
+// ✅ Zod schema
+const ProductFormSchema = z.object({
+  name: z.string().min(2, "Name must be at least 2 characters"),
+  slug: z.string().min(2, "Slug must be at least 2 characters"),
+  description: z.string().min(5, "Description must be at least 5 characters"),
+  status: z.enum(["DRAFT", "ACTIVE", "OUT_OF_STOCK"]),
+  cate: z.string().min(1, "Category is required"),
+  specifications: z.string().optional(),
+  metadata: z.string().optional(),
 });
 
-export default function ProductForm({
-  initialData,
-  pageTitle,
-}: {
-  initialData: Product | null;
-  pageTitle: string;
-}) {
-  const defaultValues = {
-    name: initialData?.name || "",
-    category: initialData?.category || "",
-    price: initialData?.price || undefined,
-    description: initialData?.description || "",
-  };
+type ProductFormValues = z.infer<typeof ProductFormSchema>;
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: defaultValues,
+export const ProductDialog: React.FC<ProductDialogProps> = ({
+  productId,
+  open,
+  onOpenChange,
+}) => {
+  const { data: session, status: sessionStatus } = useSession();
+  const [categories, setCategories] = useState<CategoryDTO[]>([]);
+
+  const {
+    loading,
+    product,
+    fetchProduct,
+    createProductHandler,
+    updateProductHandler,
+  } = useProduct();
+
+  const methods = useForm<ProductFormValues>({
+    resolver: zodResolver(ProductFormSchema),
+    defaultValues: {
+      name: "",
+      slug: "",
+      description: "",
+      status: "DRAFT",
+      cate: "",
+      specifications: "{}",
+      metadata: "{}",
+    },
   });
 
-  const router = useRouter();
+  useEffect(() => {
+    if (!open || !session) return;
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    // Form submission logic would be implemented here
-    console.log(values);
-    router.push("/dashboard/product");
+    (async () => {
+      try {
+        const catRes = await getCategories(session.accessToken);
+        setCategories(catRes.content);
+      } catch (error) {
+        console.error("Failed to fetch categories:", error);
+      }
+    })();
+  }, [open, session]);
+
+  useEffect(() => {
+    if (open && session && productId && categories.length > 0) {
+      fetchProduct(productId, session.accessToken as string);
+    }
+  }, [open, productId, session, categories, fetchProduct]);
+
+
+  useEffect(() => {
+    if (!product) return;
+
+    const { name, slug, description, status, cate, specifications, metadata } =
+      product;
+
+    methods.reset({
+      name,
+      slug,
+      description,
+      status: status as any,
+      cate: cate?.id?.toString() || "",
+      specifications: JSON.stringify(specifications || {}, null, 2),
+      metadata: JSON.stringify(metadata || {}, null, 2),
+    });
+  }, [product, methods]);
+
+
+  const onSubmit: SubmitHandler<ProductFormValues> = async (values) => {
+    if (!session) return;
+
+    const payload = {
+      ...values,
+      cate: parseInt(values.cate, 10),
+      specifications: JSON.parse(values.specifications || "{}"),
+      metadata: JSON.parse(values.metadata || "{}"),
+    };
+
+    if (productId) {
+      await updateProductHandler(
+        productId,
+        payload,
+        session.accessToken as string
+      );
+    } else {
+      await createProductHandler(payload, session.accessToken as string);
+    }
+
+    onOpenChange(false);
+  };
+
+  const statusOptions = [
+    { label: "Draft", value: "DRAFT" },
+    { label: "Active", value: "ACTIVE" },
+    { label: "Out of Stock", value: "OUT_OF_STOCK" },
+  ];
+
+  const title = productId ? "Update Product" : "Create Product";
+
+  if (sessionStatus === "loading") {
+    return <div>Loading session...</div>;
   }
 
   return (
-    <Card className="mx-auto w-full">
-      <CardHeader>
-        <CardTitle className="text-left text-2xl font-bold">
-          {pageTitle}
-        </CardTitle>
-      </CardHeader>
-      <CardContent>
-        <Form
-          form={form as any}
-          onSubmit={form.handleSubmit(onSubmit)}
-          className="space-y-8"
-        >
-          <FormFileUpload
-            control={form.control}
-            name="image"
-            label="Product Image"
-            description="Upload a product image"
-            config={{
-              maxSize: 5 * 1024 * 1024,
-              maxFiles: 4,
-            }}
-          />
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>{title}</DialogTitle>
+          <DialogDescription>{title} details below</DialogDescription>
+        </DialogHeader>
 
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+        <FormProvider {...methods}>
+          <form
+            onSubmit={methods.handleSubmit(onSubmit)}
+            className="space-y-4"
+          >
             <FormInput
-              control={form.control}
+              control={methods.control}
               name="name"
-              label="Product Name"
-              placeholder="Enter product name"
+              label="Name"
               required
+              placeholder="Enter product name"
+            />
+
+            <FormInput
+              control={methods.control}
+              name="slug"
+              label="Slug"
+              required
+              placeholder="Enter slug"
+            />
+
+            <FormTextarea
+              control={methods.control}
+              name="description"
+              label="Description"
+              placeholder="Enter product description"
+              config={{ rows: 4, showCharCount: true, maxLength: 500 }}
             />
 
             <FormSelect
-              control={form.control}
-              name="category"
-              label="Category"
-              placeholder="Select category"
-              required
-              options={[
-                {
-                  label: "Beauty Products",
-                  value: "beauty",
-                },
-                {
-                  label: "Electronics",
-                  value: "electronics",
-                },
-                {
-                  label: "Home & Garden",
-                  value: "home",
-                },
-                {
-                  label: "Sports & Outdoors",
-                  value: "sports",
-                },
-              ]}
-            />
-
-            <FormInput
-              control={form.control}
-              name="price"
-              label="Price"
-              placeholder="Enter price"
-              required
-              type="number"
-              min={0}
-              step="0.01"
-            />
-            <FormInput
-              control={form.control}
+              control={methods.control}
               name="status"
               label="Status"
               required
-              type="text"
-              placeholder="Active/Inactive"
+              options={statusOptions}
             />
-          </div>
 
-          <FormTextarea
-            control={form.control}
-            name="description"
-            label="Description"
-            placeholder="Enter product description"
-            required
-            config={{
-              maxLength: 500,
-              showCharCount: true,
-              rows: 4,
-            }}
-          />
+            <FormSelect
+              control={methods.control}
+              name="cate"
+              label="Category"
+              required
+              disabled={categories.length === 0 || loading}
+              options={categories.map((c) => ({
+                label: c.name,
+                value: c.id.toString(),
+              }))}
+            />
 
-          <Button type="submit">
-            {initialData ? "Update Product" : "Add Product"}
-          </Button>
-        </Form>
-        {initialData && <ProductOptionsEditor product={initialData} />}
-      </CardContent>
-    </Card>
+            <JsonKeyValueEditor
+              control={methods.control}
+              name="specifications"
+              label="Specifications"
+            />
+
+            <JsonKeyValueEditor
+              control={methods.control}
+              name="metadata"
+              label="Metadata"
+            />
+
+            <div className="flex justify-end gap-2 mt-4">
+              <Button variant="outline" onClick={() => onOpenChange(false)}>
+                Cancel
+              </Button>
+              <Button type="submit" disabled={loading}>
+                {loading ? "Saving..." : "Save"}
+              </Button>
+            </div>
+          </form>
+        </FormProvider>
+      </DialogContent>
+    </Dialog>
   );
-}
+};

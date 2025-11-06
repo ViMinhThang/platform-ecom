@@ -8,7 +8,7 @@ platform-ecom-backend/src/main/java/resources/application.properties
 **/node_modules/
 frontend-admin/node_modules
 frontend-admin/.env
-
+uploads
 ### STS ###
 .apt_generated
 .classpath

@@ -1,13 +1,13 @@
-import { redirect } from 'next/navigation';
+import { redirect } from "next/navigation";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 
 export default async function Page() {
-  // const { userId } = await auth();
+  const session = await getServerSession(authOptions);
 
-  // if (!userId) {
-  //   return redirect('/auth/sign-in');
-  // } else {
-  //   redirect('/dashboard/overview');
-  // }
-      // redirect('/dashboard/overview');
+  if (!session?.user) {
+    redirect("/auth/sign-in");
+  }
 
+  redirect("/dashboard/overview");
 }

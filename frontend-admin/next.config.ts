@@ -9,6 +9,16 @@ const baseConfig: NextConfig = {
         protocol: 'https',
         hostname: 'api.slingacademy.com',
         port: ''
+      },{
+        hostname:'localhost',
+        protocol:'https',
+        port:'8080',
+        pathname:'**'
+      },
+      {
+        hostname:'example.com',
+        protocol:'https',
+        pathname:'**'
       }
     ]
   },

@@ -43,13 +43,13 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public AuthenticationResult login(LoginRequest loginRequest) {
-
-        User user = userRepository.findByUserName(loginRequest.getUsername())
-                .orElseThrow(() -> new ResourceNotFoundException("User", "User name", loginRequest.getUsername()));
-
-        if (!encoder.matches(loginRequest.getPassword(), user.getPassword())) {
-            throw new APIException("not valid!!");
-        }
+        System.out.println(loginRequest.toString());
+        User user = userRepository.findByEmail(loginRequest.getEmail())
+                .orElseThrow(() -> new ResourceNotFoundException("User", "User email", loginRequest.getEmail()));
+        System.out.println(user.toString());
+//        if (!encoder.matches(loginRequest.getPassword(), user.getPassword())) {
+//            throw new APIException("not valid!!");
+//        }
 
         ResponseCookie jwtCookie = jwtUtils.generateJwtCookie(String.valueOf(user.getUserId()));
 

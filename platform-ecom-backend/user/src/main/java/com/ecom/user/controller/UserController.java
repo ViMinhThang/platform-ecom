@@ -28,12 +28,12 @@ public class UserController {
     @Autowired
     AuthContext authContext;
 
-    @PostMapping("/signin")
-    public ResponseEntity<?> authenticateUser(@RequestBody LoginRequest loginRequest) {
+    @PostMapping("/login")
+    public ResponseEntity<AuthenticationResult> authenticateUser(@RequestBody LoginRequest loginRequest) {
         AuthenticationResult result = authService.login(loginRequest);
         return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE,
                         result.getJwtCookie().toString())
-                .body(result.getResponse());
+                .body(result);
     }
 
     @PostMapping("/signup")

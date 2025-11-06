@@ -1,34 +1,61 @@
-import { Product } from '@/constants/data';
-import { fakeProducts } from '@/constants/mock-api';
-import { searchParamsCache } from '@/lib/searchparams';
+import { cookies } from 'next/headers';
+import { getServerSession } from 'next-auth/next';
+import axios from 'axios';
 import { ProductTable } from './product-tables';
 import { columns } from './product-tables/columns';
+import { authOptions } from '@/app/api/auth/[...nextauth]/route';
+import { PaginatedProducts } from '@/types/product';
 
-type ProductListingPage = {};
+interface ProductListingPageProps {
+  searchParams?: {
+    page?: string;
+    perPage?: string;
+    name?: string;
+    category?: string;
+  };
+}
 
-export default async function ProductListingPage({}: ProductListingPage) {
-  // Showcasing the use of search params cache in nested RSCs
-  const page = searchParamsCache.get('page');
-  const search = searchParamsCache.get('name');
-  const pageLimit = searchParamsCache.get('perPage');
-  const categories = searchParamsCache.get('category');
+export default async function ProductListingPage({ searchParams }: ProductListingPageProps) {
+  const session = await getServerSession(authOptions);
 
-  const filters = {
-    page,
-    limit: pageLimit,
-    ...(search && { search }),
-    ...(categories && { categories: categories })
+  if (!session?.accessToken) {
+    return <div>You must be signed in to view products.</div>;
+  }
+
+  const page = searchParams?.page ?? '0';
+  const perPage = searchParams?.perPage ?? '10';
+  const name = searchParams?.name;
+  const category = searchParams?.category;
+
+  let paginatedProducts: PaginatedProducts = {
+    content: [],
+    pageNumber: 0,
+    pageSize: 10,
+    totalElements: 0,
+    totalPages: 0,
+    lastPage: true,
   };
 
-  const data = await fakeProducts.getProducts(filters);
-  const totalProducts = data.total_products;
-  const products: Product[] = data.products;
+  try {
+    const res = await axios.get<PaginatedProducts>(
+      'http://localhost:8080/api/products/seller',
+      {
+        headers: {
+          Authorization: `Bearer ${session.accessToken}`,
+        },
+        params: {
+          page,
+          perPage,
+          ...(name && { name }),
+          ...(category && { category }),
+        },
+      }
+    );
+    console.log('Fetched products:', res.data);
+    paginatedProducts = res.data;
+  } catch (err) {
+    console.error('Failed to fetch products', err);
+  }
 
-  return (
-    <ProductTable
-      data={products}
-      totalItems={totalProducts}
-      columns={columns}
-    />
-  );
+  return <ProductTable data={paginatedProducts.content} totalItems={paginatedProducts.totalElements} columns={columns} />;
 }

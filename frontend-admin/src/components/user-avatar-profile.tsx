@@ -6,8 +6,8 @@ interface UserAvatarProfileProps {
   user: {
     imageUrl?: string;
     fullName?: string | null;
-    emailAddresses: Array<{ emailAddress: string }>;
-  } | null;
+    email?: string
+  }
 }
 
 export function UserAvatarProfile({
@@ -28,7 +28,7 @@ export function UserAvatarProfile({
         <div className='grid flex-1 text-left text-sm leading-tight'>
           <span className='truncate font-semibold'>{user?.fullName || ''}</span>
           <span className='truncate text-xs'>
-            {user?.emailAddresses[0].emailAddress || ''}
+            {user?.email}
           </span>
         </div>
       )}

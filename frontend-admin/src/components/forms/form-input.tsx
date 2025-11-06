@@ -13,8 +13,8 @@ import { Input } from "@/components/ui/input";
 import { BaseFormFieldProps } from "@/types/base-form";
 
 interface FormInputProps<
-  TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
+  TFieldValues extends FieldValues,
+  TName extends FieldPath<TFieldValues>
 > extends BaseFormFieldProps<TFieldValues, TName> {
   type?: "text" | "email" | "password" | "number" | "tel" | "url";
   placeholder?: string;
@@ -23,9 +23,9 @@ interface FormInputProps<
   max?: string | number;
 }
 
-function FormInput<
-  TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
+export function FormInput<
+  TFieldValues extends FieldValues,
+  TName extends FieldPath<TFieldValues>
 >({
   control,
   name,
@@ -68,13 +68,8 @@ function FormInput<
               }
               onChange={(e) => {
                 const val = e.target.value;
-
                 if (type === "number") {
-                  if (val === "") {
-                    field.onChange("");
-                  } else {
-                    field.onChange(parseFloat(val));
-                  }
+                  field.onChange(val === "" ? "" : parseFloat(val));
                 } else {
                   field.onChange(val);
                 }
@@ -88,5 +83,3 @@ function FormInput<
     />
   );
 }
-
-export { FormInput };

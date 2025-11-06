@@ -1,6 +1,6 @@
 package com.ecom.product.exceptions;
 
-import com.ecom.product.dtos.APIResponse;
+import com.ecom.product.dto.APIResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;

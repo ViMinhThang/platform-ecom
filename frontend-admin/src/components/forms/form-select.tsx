@@ -19,17 +19,17 @@ import {
 import { BaseFormFieldProps, FormOption } from '@/types/base-form';
 
 interface FormSelectProps<
-  TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+  TFieldValues extends FieldValues,
+  TName extends FieldPath<TFieldValues>
 > extends BaseFormFieldProps<TFieldValues, TName> {
   options: FormOption[];
   placeholder?: string;
   searchable?: boolean;
 }
 
-function FormSelect<
-  TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+export function FormSelect<
+  TFieldValues extends FieldValues,
+  TName extends FieldPath<TFieldValues>
 >({
   control,
   name,
@@ -50,12 +50,12 @@ function FormSelect<
           {label && (
             <FormLabel>
               {label}
-              {required && <span className='ml-1 text-red-500'>*</span>}
+              {required && <span className="ml-1 text-red-500">*</span>}
             </FormLabel>
           )}
           <Select
+            value={field.value ?? ''}
             onValueChange={field.onChange}
-            defaultValue={field.value}
             disabled={disabled}
           >
             <FormControl>
@@ -83,4 +83,4 @@ function FormSelect<
   );
 }
 
-export { FormSelect, type FormOption };
+export type { FormOption };
