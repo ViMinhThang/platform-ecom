@@ -5,8 +5,8 @@ import { DataTableColumnHeader } from "@/components/ui/table/data-table-column-h
 import { ColumnDef, Column } from "@tanstack/react-table";
 import { Text } from "lucide-react";
 import Image from "next/image";
-import { CellAction } from "./cell-action";
 import { Product, ProductRow } from "@/types/product";
+import { CellAction } from "./cell-action";
 
 export const columns: ColumnDef<ProductRow>[] = [
   {
@@ -19,7 +19,7 @@ export const columns: ColumnDef<ProductRow>[] = [
       return (
         <div className="relative w-16 h-16">
           <Image
-            src={imageUrl}
+            src={`http://localhost:8080/uploads/${imageUrl}`}
             alt={ProductRow.name}
             fill
             className="object-cover rounded-md border"

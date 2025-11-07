@@ -36,7 +36,7 @@ export function ProductOptionCard({
   });
 
   return (
-    <div className="border rounded-lg p-4 space-y-2 shadow w-[30%]">
+    <div className="border rounded-lg p-4 space-y-2 shadow w-[35%]">
       <div className="flex justify-between items-center">
         <h4 className="font-semibold">Option {optionIndex + 1}</h4>
         <Button

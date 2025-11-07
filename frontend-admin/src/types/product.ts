@@ -1,8 +1,4 @@
-// Định nghĩa type cho category
-export interface CategoryDTO {
-  id: number;
-  name: string;
-}
+import { CategoryDTO } from "./category";
 
 // Định nghĩa type cho product item
 export interface ProductRow{

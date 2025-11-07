@@ -18,11 +18,9 @@ export interface UseProductResult {
     data: any,
     token: string
   ) => Promise<Product | null>;
+  setLoading: (loading: boolean) => void;
 }
 
-/**
- * useProduct — custom hook to handle CRUD logic for a single product.
- */
 export function useProduct(): UseProductResult {
   const [loading, setLoading] = useState(false);
   const [product, setProduct] = useState<Product | null>(null);
@@ -79,6 +77,7 @@ export function useProduct(): UseProductResult {
   return {
     loading,
     product,
+    setLoading,
     fetchProduct,
     createProductHandler,
     updateProductHandler,

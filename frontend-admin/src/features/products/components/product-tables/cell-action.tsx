@@ -24,9 +24,11 @@ import {
   IconTrash,
 } from "@tabler/icons-react";
 import { ProductRow } from "@/types/product";
-import { ProductDialog } from "../product-form";
-import { BulkProductOptionDialog } from "../product-options-dialog";
-import { ProductOptionProvider } from "@/provider/ProductOptionProvider";
+import { BulkProductOptionDialog } from "../product-option/product-options-dialog";
+import { ProductVariantDialog } from "../product-variant/product-variant-dialog";
+import { ProductImageDialog } from "../product-image/product-image-dialog";
+import { ProductDialog } from "../product-form/product-form";
+import { VariantFormValues } from "@/types/product-variant";
 
 interface CellActionProps {
   data: ProductRow;
@@ -66,36 +68,27 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
       <ProductDialog
         open={updateProductOpen}
         onOpenChange={setUpdateProductOpen}
-        productId={data.id} 
+        productId={data.id}
       />
 
       <BulkProductOptionDialog
-        productId={data.id} 
+        productId={data.id}
         open={updateOptionsOpen}
-        onOpenChange={setUpdateOptionsOpen} 
+        onOpenChange={setUpdateOptionsOpen}
       />
-
-      {/* <ProductVariantsDialog
+      <ProductImageDialog
+        productId={data.id}
+        open={updateImagesOpen}
+        onOpenChange={setUpdateImagesOpen}
+      ></ProductImageDialog>
+      <ProductVariantDialog
         open={updateVariantsOpen}
         onOpenChange={setUpdateVariantsOpen}
         productId={data.id}
-        variants={data.variants}
-        options={data.options}
-      /> */}
-
-      <Dialog open={updateImagesOpen} onOpenChange={setUpdateImagesOpen}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Update Images</DialogTitle>
-            <DialogDescription>
-              Here you can update the product images.
-            </DialogDescription>
-          </DialogHeader>
-          <div>Images for {data.name}</div>
-        </DialogContent>
-      </Dialog>
-
-      {/* 🧩 Dropdown Actions */}
+        onSave={function (variants: VariantFormValues[]): Promise<void> {
+          throw new Error("Function not implemented.");
+        }}
+      />
       <DropdownMenu modal={false}>
         <DropdownMenuTrigger asChild>
           <Button variant="ghost" className="h-8 w-8 p-0">

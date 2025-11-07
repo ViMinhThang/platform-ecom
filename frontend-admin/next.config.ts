@@ -11,7 +11,7 @@ const baseConfig: NextConfig = {
         port: ''
       },{
         hostname:'localhost',
-        protocol:'https',
+        protocol:'http',
         port:'8080',
         pathname:'**'
       },
