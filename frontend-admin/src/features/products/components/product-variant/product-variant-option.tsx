@@ -1,44 +1,62 @@
-import { FormInput } from "@/components/forms/form-input";
-import { Button } from "@/components/ui/button";
-import { useFieldArray, Control } from "react-hook-form";
+"use client";
 
-interface OptionValuesFieldArrayProps {
-  index: number;
+import { useProductOptions } from "@/providers/product-option-provider";
+import { Controller, Control } from "react-hook-form";
+import { FormSelect } from "@/components/forms/form-select";
+import { ProductOptionValue, VariantOptionValue } from "@/types/product/product-option";
+import { FormOption } from "@/types/base-form";
+
+interface ProductVariantOptionsProps {
   control: Control<any>;
+  namePrefix: string;
+  value: VariantOptionValue[];
 }
 
-export const OptionValuesFieldArray: React.FC<OptionValuesFieldArrayProps> = ({ index, control }) => {
-  const { fields, append, remove } = useFieldArray({
-    control,
-    name: `variants.${index}.optionValues`,
-  });
-
+export const ProductVariantOptions: React.FC<ProductVariantOptionsProps> = ({
+  control,
+  namePrefix,
+  value,
+}) => {
+  const { options } = useProductOptions();
+  console.log(value, "option values");
   return (
-    <div className="space-y-2">
-      {fields.map((field, i) => (
-        <div key={field.id} className="flex gap-2 items-center">
-          <FormInput
+    <div className="space-y-4">
+      {options.map((option) => {
+        const selected = value
+          ?.find((v) =>
+            option.values.some(
+              (optVal) => optVal.id === v.productOptionValue?.id
+            )
+          );
+
+        console.log(selected, "selected");
+
+        const formOptions: FormOption[] = option.values.map((v) => ({
+          value: v.id!.toString(),
+          label: v.displayValue || v.value,
+          disabled: false,
+        }));
+
+        return (
+          <Controller
+            key={option.id}
             control={control}
-            name={`variants.${index}.optionValues.${i}.optionName`}
-            label="Option Name"
-            placeholder="e.g., Size"
-            required
+            name={`${namePrefix}.option_${option.id}`}
+            defaultValue={selected?.productOptionValue?.id?.toString() || ""}
+            render={({ field }) => (
+              <FormSelect
+                key={field.value}
+                control={control}
+                label={option.name}
+                placeholder={`Select ${option.name}`}
+                options={formOptions}
+                required
+                name={field.name}
+              />
+            )}
           />
-          <FormInput
-            control={control}
-            name={`variants.${index}.optionValues.${i}.value`}
-            label="Value"
-            placeholder="e.g., M"
-            required
-          />
-          <Button type="button" variant="destructive" onClick={() => remove(i)}>
-            Delete
-          </Button>
-        </div>
-      ))}
-      <Button type="button" variant="outline" onClick={() => append({ optionName: "", value: "" })}>
-        + Add Option
-      </Button>
+        );
+      })}
     </div>
   );
 };

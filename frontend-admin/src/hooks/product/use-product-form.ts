@@ -7,9 +7,10 @@ import { useSession } from "next-auth/react";
 import { getCategories } from "@/services/category-service";
 import { createProduct, getProductById, updateProduct } from "@/services/product-service";
 import { CategoryDTO } from "@/types/category";
-import { ProductFormSchema, ProductFormValues } from "../types/product-form";
+import { ProductFormSchema, ProductFormValues } from "../../types/product/product-form";
 import { useProductContext } from "@/providers/product-provider";
-import { Product } from "@/types/product";
+import { Product } from "@/types/product/product";
+import { toast } from "sonner";
 
 export const useProductForm = (
   productId?: number,
@@ -95,7 +96,7 @@ export const useProductForm = (
       } else {
         result = await createProductHandler(payload, session.accessToken);
       }
-
+      toast.success(`Product ${productId ? "updated" : "created"} successfully!`);
       if (result) onOpenChange?.(false);
     },
     [session, productId, updateProductHandler, createProductHandler, onOpenChange]

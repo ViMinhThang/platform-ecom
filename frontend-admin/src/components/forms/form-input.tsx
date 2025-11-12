@@ -54,6 +54,7 @@ export function FormInput<
           )}
           <FormControl>
             <Input
+            className="rounded-sm"
               type={type}
               placeholder={placeholder}
               step={step}

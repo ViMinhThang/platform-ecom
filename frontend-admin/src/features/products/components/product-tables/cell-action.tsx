@@ -23,12 +23,12 @@ import {
   IconTools,
   IconTrash,
 } from "@tabler/icons-react";
-import { ProductRow } from "@/types/product";
+import { ProductRow } from "@/types/product/product";
 import { BulkProductOptionDialog } from "../product-option/product-options-dialog";
 import { ProductVariantDialog } from "../product-variant/product-variant-dialog";
 import { ProductImageDialog } from "../product-image/product-image-dialog";
 import { ProductDialog } from "../product-form/product-form";
-import { VariantFormValues } from "@/types/product-variant";
+import { VariantFormValues } from "@/types/product/product-variant";
 
 interface CellActionProps {
   data: ProductRow;

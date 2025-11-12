@@ -54,6 +54,7 @@ export function FormSelect<
             </FormLabel>
           )}
           <Select
+            key={field.value}
             defaultValue={field.value ?? ""}
             onValueChange={field.onChange}
             disabled={disabled}

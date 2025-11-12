@@ -1,154 +1,147 @@
+// product-option.tsx
+import { useForm, FormProvider, useFieldArray } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import z from "zod";
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
 import { FormInput } from "@/components/forms/form-input";
 import { FormSelect } from "@/components/forms/form-select";
 import { AlertModal } from "@/components/modal/alert-modal";
-import { Button } from "@/components/ui/button";
-import { Key, useState } from "react";
-import { Control, useFieldArray } from "react-hook-form";
 
-interface ProductOptionCardProps {
-  index: number;
-  optionIndex: number;
-  control: Control<any>;
-  removeOption: (index: number) => void;
-  onSave: (index: number) => void;
-  onDelete: (index: number) => void;
-  loading: boolean;
-}
+const OptionSchema = z.object({
+  id: z.number().optional(),
+  name: z.string().min(1),
+  displayName: z.string().min(1),
+  isRequired: z.string(),
+  sortOrder: z.number().optional(),
+  values: z.array(
+    z.object({
+      id: z.number().optional(),
+      value: z.string().min(1),
+      displayValue: z.string().min(1),
+      sortOrder: z.number().optional(),
+    })
+  ),
+});
 
 export function ProductOptionCard({
-  index,
-  optionIndex,
-  control,
-  removeOption,
-  onDelete,
+  option,
   onSave,
-  loading,
-}: ProductOptionCardProps) {
+  onDelete,
+}: {
+  option: z.infer<typeof OptionSchema>;
+  onSave: (data: z.infer<typeof OptionSchema>) => void;
+  onDelete: () => void;
+}) {
   const [alert, setAlert] = useState(false);
+
+  const methods = useForm({
+    resolver: zodResolver(OptionSchema),
+    defaultValues: option,
+  });
 
   const {
     fields: valueFields,
     append: appendValue,
     remove: removeValue,
   } = useFieldArray({
-    control,
-    name: `options.${optionIndex}.values`,
+    control: methods.control,
+    name: "values",
   });
 
+  const handleSave = methods.handleSubmit(onSave);
+
   return (
-    <div className="border rounded-lg p-4 space-y-2 shadow w-[35%]">
-      <div className="flex justify-between items-center">
-        <h4 className="font-semibold">Option {optionIndex + 1}</h4>
-        <Button
-          variant="destructive"
-          size="sm"
-          type="button"
-          onClick={() => setAlert(true)}
-        >
-          Remove Option
-        </Button>
-        <AlertModal
-          isOpen={alert}
-          onClose={() => setAlert(false)}
-          loading={loading}
-          onConfirm={() => {
-            onDelete(optionIndex);
-            removeOption(optionIndex);
-            setAlert(false);
-          }}
+    <FormProvider {...methods}>
+      <div className="border rounded-lg p-4 space-y-2 shadow w-[35%]">
+        <div className="flex justify-between items-center">
+          <h4 className="font-semibold">{option.name || "New Option"}</h4>
+          <Button variant="destructive" onClick={() => setAlert(true)}>
+            Remove Option
+          </Button>
+          <AlertModal
+            isOpen={alert}
+            onClose={() => setAlert(false)}
+            onConfirm={onDelete}
+            loading={false}
+          />
+        </div>
+
+        <FormInput
+          control={methods.control}
+          name="name"
+          label="Name"
+          required
         />
-      </div>
+        <FormInput
+          control={methods.control}
+          name="displayName"
+          label="Display Name"
+          required
+        />
+        <FormSelect
+          control={methods.control}
+          name="isRequired"
+          label="Required"
+          options={[
+            { label: "Yes", value: "true" },
+            { label: "No", value: "false" },
+          ]}
+        />
+        <FormInput
+          control={methods.control}
+          name="sortOrder"
+          label="Sort Order"
+          type="number"
+        />
 
-      <FormInput
-        control={control}
-        name={`options.${optionIndex}.name`}
-        label="Name"
-        placeholder="e.g., size"
-        required
-      />
-      <FormInput
-        control={control}
-        name={`options.${optionIndex}.displayName`}
-        label="Display Name"
-        placeholder="e.g., Size"
-        required
-      />
-      <FormSelect
-        control={control}
-        name={`options.${optionIndex}.isRequired`}
-        label="Required"
-        required
-        options={[
-          { label: "Yes", value: "true" },
-          { label: "No", value: "false" },
-        ]}
-      />
-      <FormInput
-        control={control}
-        name={`options.${optionIndex}.sortOrder`}
-        label="Sort Order"
-        type="number"
-        placeholder="0"
-      />
-
-      {/* Option Values */}
-      <div className="space-y-2 mt-2">
-        <h5 className="font-medium">Values</h5>
-        {valueFields.map((valueField, valueIndex) => (
-          <div
-            key={valueField.id as Key}
-            className="flex gap-2 items-center justify-center"
+        <div className="space-y-2 mt-2">
+          <h5 className="font-medium">Values</h5>
+          {valueFields.map((v, i) => (
+            <div key={v.id} className="flex gap-2 items-center">
+              <FormInput
+                control={methods.control}
+                name={`values.${i}.value`}
+                label="Value"
+                placeholder="e.g., S"
+                required
+              />
+              <FormInput
+                control={methods.control}
+                name={`values.${i}.displayValue`}
+                label="Display Value"
+                placeholder="e.g., Small"
+                required
+              />
+              <FormInput
+                control={methods.control}
+                name={`values.${i}.sortOrder`}
+                label="Sort Order"
+                type="number"
+              />
+              <Button
+                type="button"
+                variant="destructive"
+                onClick={() => removeValue(i)}
+              >
+                Remove
+              </Button>
+            </div>
+          ))}
+          <Button
+            type="button"
+            onClick={() =>
+              appendValue({ value: "", displayValue: "", sortOrder: 0 })
+            }
           >
-            <FormInput
-              control={control}
-              name={`options.${optionIndex}.values.${valueIndex}.value`}
-              label="Value"
-              placeholder="e.g., S"
-              required
-            />
-            <FormInput
-              control={control}
-              name={`options.${optionIndex}.values.${valueIndex}.displayValue`}
-              label="Display Value"
-              placeholder="e.g., Small"
-              required
-            />
-            <FormInput
-              control={control}
-              name={`options.${optionIndex}.values.${valueIndex}.sortOrder`}
-              label="Sort Order"
-              type="number"
-              placeholder="0"
-            />
-            <Button
-              type="button"
-              variant="destructive"
-              onClick={() => removeValue(valueIndex)}
-            >
-              Remove
-            </Button>
-          </div>
-        ))}
+            Add Value
+          </Button>
+        </div>
 
-        <Button
-          type="button"
-          onClick={() =>
-            appendValue({ value: "", displayValue: "", sortOrder: 0 })
-          }
-        >
-          Add Value
-        </Button>
+        <div className="flex justify-end mt-2">
+          <Button onClick={handleSave}>Save Option</Button>
+        </div>
       </div>
-
-      <div className="flex justify-end mt-2">
-        <Button
-          type="button"
-          onClick={() => onSave(optionIndex)}
-          disabled={loading}
-        >
-          {loading ? "Saving..." : "Save Option"}
-        </Button>
-      </div>
-    </div>
+    </FormProvider>
   );
 }

@@ -5,7 +5,7 @@ import { FormTextarea } from "@/components/forms/form-textarea";
 import { JsonKeyValueEditor } from "../key-value-editor";
 import { CategoryDTO } from "@/types/category";
 import { statusOptions } from "../../../../constants/product-form.constants";
-import { ProductFormValues } from "../../../../types/product-form";
+import { ProductFormValues } from "../../../../types/product/product-form";
 
 interface ProductFormFieldsProps {
   control: Control<ProductFormValues>;

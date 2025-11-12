@@ -7,7 +7,7 @@ import {
   useState,
   useCallback,
 } from "react";
-import { Product, ProductRow } from "@/types/product";
+import { Product, ProductRow } from "@/types/product/product";
 import {
   getProductById,
   createProduct,
@@ -63,7 +63,7 @@ export const ProductProvider: React.FC<ProductProviderProps> = ({
     setLoading(true);
     try {
       const created = await createProduct(data, token);
-      setProducts((prevProducts) => [...prevProducts, created]); // append to array
+      setProducts((prevProducts) => [...prevProducts, created]);
       return created;
     } catch (error) {
       console.error("Failed to create product:", error);

@@ -4,7 +4,7 @@ import { useSession } from "next-auth/react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { IconUpload } from "@tabler/icons-react";
-import { useProductImages } from "@/hooks/use-product-images";
+import { useProductImages } from "@/hooks/product/use-product-images";
 import { ProductImageList } from "./product-image-list";
 
 interface ProductImageDialogProps {

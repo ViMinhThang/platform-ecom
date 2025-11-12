@@ -6,6 +6,7 @@ import {
   setMainProductImage,
   ProductImage,
 } from "@/services/product-image-service";
+import { toast } from "sonner";
 
 export function useProductImages(productId: number, token?: string) {
   const [images, setImages] = useState<ProductImage[]>([]);
@@ -37,6 +38,7 @@ export function useProductImages(productId: number, token?: string) {
       try {
         const newImage = await uploadProductImage(productId, file, token);
         setImages((prev) => [...prev, newImage]);
+        toast.success("Image uploaded successfully!");
       } catch (error) {
         console.error("Failed to upload image", error);
       } finally {
@@ -52,6 +54,7 @@ export function useProductImages(productId: number, token?: string) {
       try {
         const deletedId = await deleteProductImage(productId, imageId, token);
         setImages((prev) => prev.filter((img) => img.id !== deletedId));
+        toast.success("Image deleted successfully!");
       } catch (error) {
         console.error("Failed to delete image", error);
       }

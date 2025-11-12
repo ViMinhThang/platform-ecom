@@ -1,6 +1,6 @@
 import axios from "axios";
-import { Product, ProductRow } from "@/types/product";
-import { PaginatedProducts } from "@/types/product";
+import { Product, ProductRow } from "@/types/product/product";
+import { PaginatedProducts } from "@/types/product/product";
 
 const API_BASE_URL = "http://localhost:8080/api/products/seller";
 

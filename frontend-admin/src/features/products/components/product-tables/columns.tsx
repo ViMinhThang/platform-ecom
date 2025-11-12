@@ -5,7 +5,7 @@ import { DataTableColumnHeader } from "@/components/ui/table/data-table-column-h
 import { ColumnDef, Column } from "@tanstack/react-table";
 import { Text } from "lucide-react";
 import Image from "next/image";
-import { Product, ProductRow } from "@/types/product";
+import { Product, ProductRow } from "@/types/product/product";
 import { CellAction } from "./cell-action";
 
 export const columns: ColumnDef<ProductRow>[] = [

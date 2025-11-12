@@ -3,8 +3,8 @@
 import { FormProvider } from "react-hook-form";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { useProductForm } from "@/hooks/use-product-form";
-import { ProductDialogProps } from "@/types/product-form";
+import { useProductForm } from "@/hooks/product/use-product-form";
+import { ProductDialogProps } from "@/types/product/product-form";
 import { ProductFormFields } from "./product-form-fields";
 
 export const ProductDialog: React.FC<ProductDialogProps> = ({ productId, open, onOpenChange }) => {

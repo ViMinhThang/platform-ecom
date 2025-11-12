@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { useSession } from "next-auth/react";
 import { createProduct, updateProduct } from "@/services/product-service";
-import { Product } from "@/types/product";
+import { Product } from "@/types/product/product";
 
 export function useProductActions() {
   const { data: session } = useSession();
