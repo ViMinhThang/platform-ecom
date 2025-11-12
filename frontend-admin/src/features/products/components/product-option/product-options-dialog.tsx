@@ -1,7 +1,16 @@
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from "@/components/ui/dialog";
 import { Plus } from "lucide-react";
 import { ProductOptionCard } from "./product-option";
-import { ProductOptionProvider, useProductOptions } from "@/providers/product-option-provider";
+import {
+  ProductOptionProvider,
+  useProductOptions,
+} from "@/providers/product-option-provider";
 
 interface BulkProductOptionDialogProps {
   productId: number;
@@ -18,7 +27,7 @@ function OptionsContent() {
         <ProductOptionCard
           key={option.id ?? index}
           option={option}
-          onSave={(data) => saveOption(data, index)}
+          onSave={(option) => saveOption(option, index)}
           onDelete={() => deleteOption(option.id, index)}
         />
       ))}
@@ -33,18 +42,21 @@ function OptionsContent() {
   );
 }
 
-export function BulkProductOptionDialog({ productId, open, onOpenChange }: BulkProductOptionDialogProps) {
+export function BulkProductOptionDialog({
+  productId,
+  open,
+  onOpenChange,
+}: BulkProductOptionDialogProps) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="min-w-[80%] h-[80vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>Manage Product Options</DialogTitle>
-          <DialogDescription>Add multiple options and their values</DialogDescription>
+          <DialogDescription>
+            Add multiple options and their values
+          </DialogDescription>
         </DialogHeader>
-
-        <ProductOptionProvider productId={productId}>
-          <OptionsContent />
-        </ProductOptionProvider>
+        <OptionsContent />
       </DialogContent>
     </Dialog>
   );

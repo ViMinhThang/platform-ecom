@@ -6,7 +6,7 @@ export interface VariantOptionValue {
   sortOrder?: number;
 }
 export interface ProductOptionValue {
-  productOption: OptionData;
+  productOption?: OptionData;
   id?:number;
   value: string;
   displayValue: string;

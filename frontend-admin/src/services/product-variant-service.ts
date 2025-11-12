@@ -21,12 +21,12 @@ export const getProductVariants = async (
 export const updateVariant = async (
   productId: number,
   variantId: number,
-  productVariantData: VariantFormValues,
+  productVariantData: any,
   token: string
-): Promise<VariantFormValues> => {
+): Promise<any> => {
   if (!token) throw new Error("Token is required to update product variant");
 
-  const response = await axios.put<VariantFormValues>(
+  const response = await axios.put<any>(
     `${API_BASE_URL}/${productId}/variants/${variantId}`,
     productVariantData,
     {
@@ -50,3 +50,31 @@ export const getOptionsForProduct = async (
   );
   return response.data;
 };
+export const createVariant = async (
+  productId: number,
+  productVariantData: VariantFormValues,
+  token: string
+): Promise<VariantFormValues> => {
+  if (!token) throw new Error("Token is required to create product variant");
+
+  const response = await axios.post<VariantFormValues>(
+    `${API_BASE_URL}/${productId}/variants`,
+    productVariantData,
+    {
+      headers: { Authorization: `Bearer ${token}` },
+    }
+  );
+
+  return response.data;
+};
+export const deleteVariant = async (
+  productId: number,
+  variantId: number,
+  token: string
+): Promise<void> => {
+  if (!token) throw new Error("Token is required to delete product variant");
+
+  await axios.delete(`${API_BASE_URL}/${productId}/variants/${variantId}`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+};  

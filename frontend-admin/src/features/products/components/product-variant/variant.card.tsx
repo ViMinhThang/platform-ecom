@@ -7,34 +7,49 @@ import { useProductVariants } from "@/providers/product-variant-provider";
 import { VariantFormValues } from "@/types/product/product-variant";
 import { useForm, Controller, FormProvider } from "react-hook-form";
 import { FormInput } from "@/components/forms/form-input";
-import { useProductOptions } from "@/providers/product-option-provider";
 import { ProductVariantOptions } from "./product-variant-option";
+import { useState } from "react";
+import { AlertModal } from "@/components/modal/alert-modal";
+
 interface VariantCardProps {
-  variant: VariantFormValues & { variantId?: number };
-  index: number;
+  variant: VariantFormValues;
 }
 
-export const VariantCard: React.FC<VariantCardProps> = ({ variant, index }) => {
+export const VariantCard: React.FC<VariantCardProps> = ({ variant }) => {
   const { saveVariant, removeVariant, productId } = useProductVariants();
+  const [isOpen, setIsOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
   const form = useForm<VariantFormValues>({
     defaultValues: variant,
     mode: "onBlur",
   });
 
+  const handleConfirm = async () => {
+    setLoading(true);
+    removeVariant(variant.id ?? variant.tempId);
+    setIsOpen(false);
+    setLoading(false);
+  };
+
   const { handleSubmit, control, watch, setValue } = form;
-  const optionValues = watch("optionValues");
+
+
   return (
     <FormProvider {...form}>
-      <Card key={variant.variantId ?? index} className="p-4 space-y-3">
+      <AlertModal
+        isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+        onConfirm={handleConfirm}
+        loading={loading}
+      />
+      <Card className="p-4 space-y-3">
         <div className="grid grid-cols-2 gap-3">
-          {/* Image Picker */}
           <VariantImagePicker
             productId={productId}
             value={watch("imageUrl")}
-            onChange={(url) => setValue("imageUrl", url)}
+            onSelect={(imageUrl) => setValue("imageUrl", imageUrl)}
           />
 
-          {/* Fields */}
           <div className="flex flex-col gap-3">
             <div className="grid grid-cols-2 gap-3">
               <FormInput
@@ -77,15 +92,12 @@ export const VariantCard: React.FC<VariantCardProps> = ({ variant, index }) => {
 
             {/* Actions */}
             <div className="flex gap-2">
-              <Button
-                variant="destructive"
-                onClick={() => removeVariant(index)}
-              >
+              <Button variant="destructive" onClick={() => setIsOpen(true)}>
                 Delete Variant
               </Button>
               <Button
                 onClick={handleSubmit(async (data) => {
-                  await saveVariant(index);
+                  await saveVariant(data);
                 })}
               >
                 Save Changes

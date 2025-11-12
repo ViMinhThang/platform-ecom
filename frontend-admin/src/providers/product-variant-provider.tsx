@@ -9,25 +9,29 @@ import {
 } from "react";
 import { useSession } from "next-auth/react";
 import { toast } from "sonner";
-
+import { v4 as uuidv4 } from "uuid";
 import {
+  createVariant,
+  deleteVariant,
   getProductVariants,
   updateVariant,
 } from "@/services/product-variant-service";
 import { VariantFormValues } from "@/types/product/product-variant";
 
 interface ProductVariantContextValue {
-  variants: (VariantFormValues & { variantId?: number })[];
+  variants: VariantFormValues[];
   loading: boolean;
-  productId:number,
+  productId: number;
   addVariant: () => void;
-  removeVariant: (index: number) => void;
+  removeVariant: (variantKey: number | string | undefined) => void;
   handleChange: (
-    index: number,
+    variantKey: number | string,
     field: keyof VariantFormValues,
     value: any
   ) => void;
-  saveVariant: (index: number) => Promise<void>;
+  saveVariant: (
+    variant: VariantFormValues
+  ) => Promise<VariantFormValues | null>;
   fetchVariants: () => Promise<void>;
 }
 
@@ -45,9 +49,7 @@ export const ProductVariantProvider: React.FC<ProductVariantProviderProps> = ({
   children,
 }) => {
   const { data: session } = useSession();
-  const [variants, setVariants] = useState<
-    (VariantFormValues & { variantId?: number })[]
-  >([]);
+  const [variants, setVariants] = useState<VariantFormValues[]>([]);
   const [loading, setLoading] = useState(false);
 
   const fetchVariants = async () => {
@@ -55,7 +57,10 @@ export const ProductVariantProvider: React.FC<ProductVariantProviderProps> = ({
     setLoading(true);
     try {
       const fetched = await getProductVariants(productId, session.accessToken!);
-      setVariants(fetched.map((v: any) => ({ ...v, variantId: v.id })));
+      // Add variantId for keying
+      setVariants(
+        fetched.map((v: any) => ({ ...v, variantId: v.id, tempId: v.tempId }))
+      );
     } catch (error) {
       console.error(error);
       toast.error("Failed to fetch product variants");
@@ -64,56 +69,98 @@ export const ProductVariantProvider: React.FC<ProductVariantProviderProps> = ({
     }
   };
 
+  // Add a new variant with a temporary UUID
+  const addVariant = () => {
+    const newVariant: VariantFormValues = {
+      tempId: uuidv4(),
+      sku: "",
+      price: 0,
+      stock: 0,
+      isActive: true,
+      optionValues: [],
+      imageUrl: "",
+    };
+    setVariants((prev) => [...prev, newVariant]);
+  };
+
+  const removeVariant = async (variantId: number | string | undefined) => {
+    if (!session?.accessToken) {
+      toast.error("Not authenticated");
+      return null;
+    }
+    try {
+      if (typeof variantId === "number") {
+        await deleteVariant(productId, variantId, session.accessToken);
+        toast.success("Variant deleted successfully");
+      }
+    } catch (error) {
+      console.error("Error deleting variant:", error);
+      toast.error("Failed to delete variant");
+      return;
+    } finally {
+      setVariants((prev) =>
+        prev.filter((v) => v.id !== variantId && v.tempId !== variantId)
+      );
+    }
+  };
+
   const handleChange = (
-    index: number,
+    variantKey: number | string,
     field: keyof VariantFormValues,
     value: any
   ) => {
     setVariants((prev) =>
-      prev.map((v, i) => (i === index ? { ...v, [field]: value } : v))
+      prev.map((v) =>
+        v.id === variantKey || v.tempId === variantKey
+          ? { ...v, [field]: value }
+          : v
+      )
     );
   };
 
-  const addVariant = () => {
-    setVariants((prev) => [
-      ...prev,
-      {
-        sku: "",
-        price: 0,
-        stock: 0,
-        isActive: true,
-        optionValues: [],
-        imageUrl: "",
-      },
-    ]);
-  };
-
-  const removeVariant = (index: number) => {
-    setVariants((prev) => prev.filter((_, i) => i !== index));
-  };
-
-  const saveVariant = async (index: number): Promise<void> => {
-    const variant = variants[index];
-    if (!variant?.variantId) {
-      toast.error("Missing variant ID");
-      return;
-    }
+  const saveVariant = async (
+    variant: VariantFormValues
+  ): Promise<VariantFormValues | null> => {
     if (!session?.accessToken) {
       toast.error("Not authenticated");
-      return;
+      return null;
     }
 
     try {
-      await updateVariant(
-        productId,
-        variant.variantId,
-        variant,
-        session.accessToken
-      );
-      toast.success("Variant updated successfully");
-    } catch (error) {
-      console.error(error);
-      toast.error("Failed to update variant");
+      let result: VariantFormValues;
+
+      if (variant.id) {
+        const variantId = variant.id;
+        result = await updateVariant(
+          productId,
+          variantId,
+          variant,
+          session.accessToken
+        );
+        toast.success("Variant updated successfully");
+
+        setVariants((prev) =>
+          prev.map((v) =>
+            v.id === result.id ? { ...result, variantId: result.id } : v
+          )
+        );
+      } else {
+        result = await createVariant(productId, variant, session.accessToken);
+        toast.success("Variant created successfully");
+        setVariants((prev) =>
+          prev.map((v) =>
+            v.tempId === variant.tempId
+              ? { ...result, variantId: result.id }
+              : v
+          )
+        );
+      }
+
+      return result;
+    } catch (error: any) {
+      console.error("Error saving variant:", error);
+      toast.error(error?.response?.data?.message || "Failed to save variant");
+      return null;
     }
   };
 

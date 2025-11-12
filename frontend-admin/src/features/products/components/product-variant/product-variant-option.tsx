@@ -3,8 +3,12 @@
 import { useProductOptions } from "@/providers/product-option-provider";
 import { Controller, Control } from "react-hook-form";
 import { FormSelect } from "@/components/forms/form-select";
-import { ProductOptionValue, VariantOptionValue } from "@/types/product/product-option";
+import {
+  ProductOptionValue,
+  VariantOptionValue,
+} from "@/types/product/product-option";
 import { FormOption } from "@/types/base-form";
+import { useEffect } from "react";
 
 interface ProductVariantOptionsProps {
   control: Control<any>;
@@ -18,18 +22,14 @@ export const ProductVariantOptions: React.FC<ProductVariantOptionsProps> = ({
   value,
 }) => {
   const { options } = useProductOptions();
-  console.log(value, "option values");
+  console.log(options, "options")
   return (
     <div className="space-y-4">
       {options.map((option) => {
-        const selected = value
-          ?.find((v) =>
-            option.values.some(
-              (optVal) => optVal.id === v.productOptionValue?.id
-            )
-          );
+        const selected = value?.find((v) =>
+          option.values.some((optVal) => optVal.id === v.productOptionValue?.id)
+        );
 
-        console.log(selected, "selected");
 
         const formOptions: FormOption[] = option.values.map((v) => ({
           value: v.id!.toString(),

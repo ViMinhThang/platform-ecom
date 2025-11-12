@@ -38,19 +38,15 @@ export const ProductVariantDialog: React.FC<ProductVariantDialogProps> = ({
 }) => {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <ProductOptionProvider productId={productId}>
-        <ProductVariantProvider productId={productId}>
-          <DialogContent className="min-w-4xl">
-            <DialogHeader>
-              <DialogTitle>Manage Product Variants</DialogTitle>
-              <DialogDescription>
-                Add, edit, or remove variants for this product.
-              </DialogDescription>
-            </DialogHeader>
-            <VariantsList />
-          </DialogContent>
-        </ProductVariantProvider>
-      </ProductOptionProvider>
+      <DialogContent className="min-w-4xl">
+        <DialogHeader>
+          <DialogTitle>Manage Product Variants</DialogTitle>
+          <DialogDescription>
+            Add, edit, or remove variants for this product.
+          </DialogDescription>
+        </DialogHeader>
+        <VariantsList />
+      </DialogContent>
     </Dialog>
   );
 };

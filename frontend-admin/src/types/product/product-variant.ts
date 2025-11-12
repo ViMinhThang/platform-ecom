@@ -2,6 +2,7 @@ import { OptionData, ProductOptionValue, VariantOptionValue } from "./product-op
 
 export type VariantFormValues = {
   id?: number;
+  tempId?: string;
   sku: string;
   price: number;
   stock: number;
