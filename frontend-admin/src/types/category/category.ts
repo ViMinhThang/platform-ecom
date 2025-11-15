@@ -1,10 +1,13 @@
-export interface CategoryDTO {
+export interface Category {
+  imageUrl?: string;
   id: number;
   name: string;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 export interface CategoryResponse {
-  content: CategoryDTO[];
+  content: Category[];
   pageNumber: number;
   pageSize: number;
   totalElements: number;

@@ -5,12 +5,19 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useSession } from "next-auth/react";
 import { getCategories } from "@/services/category-service";
-import { createProduct, getProductById, updateProduct } from "@/services/product-service";
-import { CategoryDTO } from "@/types/category";
-import { ProductFormSchema, ProductFormValues } from "../../types/product/product-form";
+import {
+  createProduct,
+  getProductById,
+  updateProduct,
+} from "@/services/product-service";
+import {
+  ProductFormSchema,
+  ProductFormValues,
+} from "../../types/product/product-form";
 import { useProductContext } from "@/providers/product-provider";
 import { Product } from "@/types/product/product";
 import { toast } from "sonner";
+import { Category } from "@/types/category/category";
 
 export const useProductForm = (
   productId?: number,
@@ -18,7 +25,7 @@ export const useProductForm = (
   onOpenChange?: (open: boolean) => void
 ) => {
   const { data: session } = useSession();
-  const [categories, setCategories] = useState<CategoryDTO[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
   const [localProduct, setLocalProduct] = useState<Product | null>(null);
 
   const { createProductHandler, updateProductHandler } = useProductContext();
@@ -42,7 +49,7 @@ export const useProductForm = (
 
     const fetchCategories = async () => {
       try {
-        const catRes = await getCategories(session.accessToken);
+        const catRes = await getCategories(session.accessToken, {});
         setCategories(catRes.content);
       } catch (error) {
         console.error("Failed to fetch categories:", error);
@@ -92,15 +99,32 @@ export const useProductForm = (
       let result = null;
       if (productId) {
         // Use context handler which internally calls service
-        result = await updateProductHandler(productId, payload, session.accessToken);
+        result = await updateProductHandler(
+          productId,
+          payload,
+          session.accessToken
+        );
       } else {
         result = await createProductHandler(payload, session.accessToken);
       }
-      toast.success(`Product ${productId ? "updated" : "created"} successfully!`);
+      toast.success(
+        `Product ${productId ? "updated" : "created"} successfully!`
+      );
       if (result) onOpenChange?.(false);
     },
-    [session, productId, updateProductHandler, createProductHandler, onOpenChange]
+    [
+      session,
+      productId,
+      updateProductHandler,
+      createProductHandler,
+      onOpenChange,
+    ]
   );
 
-  return { methods, onSubmit, categories, loading: methods.formState.isSubmitting };
+  return {
+    methods,
+    onSubmit,
+    categories,
+    loading: methods.formState.isSubmitting,
+  };
 };

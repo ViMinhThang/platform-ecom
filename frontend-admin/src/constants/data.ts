@@ -8,15 +8,22 @@ export type User = {
   updated_at: string;
   status: 'active' | 'inactive';
 };
-//Info: The following data is used for the sidebar navigation and Cmd K bar.
 export const navItems: NavItem[] = [
   {
     title: 'Dashboard',
     url: '/dashboard/overview',
     icon: 'dashboard',
-    isActive: false,
+    isActive: true,
     shortcut: ['d', 'd'],
     items: [] // Empty array as there are no child items for Dashboard
+  },
+    {
+    title: 'User',
+    url: '/dashboard/user',
+    icon: 'user',
+    isActive: false,
+    shortcut: ['u', 'u'],
+    items: []
   },
   {
     title: 'Product',
@@ -30,14 +37,6 @@ export const navItems: NavItem[] = [
     title: 'Category',
     url: '/dashboard/category',
     icon: 'category',
-    shortcut: ['p', 'p'],
-    isActive: false,
-    items: [] // No child items
-  },
-  {
-    title: 'User',
-    url: '/dashboard/user',
-    icon: 'user',
     shortcut: ['p', 'p'],
     isActive: false,
     items: [] // No child items

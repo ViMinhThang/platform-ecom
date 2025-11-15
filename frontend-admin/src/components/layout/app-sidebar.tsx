@@ -63,14 +63,12 @@ export default function AppSidebar() {
   const { isOpen } = useMediaQuery();
   const router = useRouter();
   const handleSwitchTenant = (_tenantId: string) => {
-    // Tenant switching functionality would be implemented here
   };
   const { data: session } = useSession();
-  const user = session?.user; // 👈 lấy user từ NextAuth
+  const user = session?.user; 
   const activeTenant = tenants[0];
 
   React.useEffect(() => {
-    // Side effects based on sidebar state changes
   }, [isOpen]);
 
   return (

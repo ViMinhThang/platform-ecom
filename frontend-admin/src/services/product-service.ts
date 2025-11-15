@@ -6,7 +6,7 @@ const API_BASE_URL = "http://localhost:8080/api/products/seller";
 
 export const getProducts = async (
   token: string | undefined,
-  params?: { page?: string; perPage?: string; name?: string; category?: string }
+  params?: any
 ): Promise<PaginatedProducts> => {
   if (!token) throw new Error("Token is required to fetch products");
 
@@ -51,9 +51,13 @@ export const updateProduct = async (
 ): Promise<Product> => {
   if (!token) throw new Error("Token is required to update product");
 
-  const response = await axios.put<Product>(`${API_BASE_URL}/${productId}`, productData, {
-    headers: { Authorization: `Bearer ${token}` },
-  });
+  const response = await axios.put<Product>(
+    `${API_BASE_URL}/${productId}`,
+    productData,
+    {
+      headers: { Authorization: `Bearer ${token}` },
+    }
+  );
 
   return response.data;
 };

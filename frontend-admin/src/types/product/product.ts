@@ -1,4 +1,4 @@
-import { CategoryDTO } from "../category";
+import { CategoryDTO } from "../category/category";
 
 // Định nghĩa type cho product item
 export interface ProductRow{

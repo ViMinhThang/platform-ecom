@@ -1,12 +1,31 @@
 "use client";
 import { Badge } from "@/components/ui/badge";
 import { DataTableColumnHeader } from "@/components/ui/table/data-table-column-header";
-import { Category, Product } from "@/constants/data";
 import { Column, ColumnDef } from "@tanstack/react-table";
 import { CheckCircle2, Text, XCircle } from "lucide-react";
 import { CellAction } from "./cell-action";
+import { Category } from "@/types/category/category";
+import Image from "next/image";
 
 export const columns: ColumnDef<Category>[] = [
+  {
+    id: "image",
+    header: "IMAGE",
+    cell: ({ row }) => {
+      const ProductRow = row.original;
+      const imageUrl = ProductRow.imageUrl || "/placeholder.png";
+      return (
+        <div className="relative w-16 h-16">
+          <Image
+            src={`http://localhost:8080/uploads/${imageUrl}`}
+            alt={ProductRow.name}
+            fill
+            className="object-cover rounded-md border"
+          />
+        </div>
+      );
+    },
+  },
   {
     id: "name",
     accessorKey: "name",
@@ -23,11 +42,11 @@ export const columns: ColumnDef<Category>[] = [
     enableColumnFilter: true,
   },
   {
-    accessorKey: "created_at",
+    accessorKey: "createdAt",
     header: "created at",
   },
   {
-    accessorKey: "updated_at",
+    accessorKey: "updatedAt",
     header: "updated at",
   },
   {

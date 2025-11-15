@@ -1,13 +1,74 @@
-
 import axios from "axios";
-import { CategoryResponse } from "@/types/category";
+import { Category, CategoryResponse } from "@/types/category/category";
 
-export const getCategories = async (token: string|undefined): Promise<CategoryResponse> => {
-  const response = await axios.get<CategoryResponse>(
-    "http://localhost:8080/api/categories",
+const API_BASE_URL = "http://localhost:8080/api/categories";
+export const getCategories = async (
+  token: string | undefined,
+  params: any
+): Promise<CategoryResponse> => {
+  const response = await axios.get<CategoryResponse>(API_BASE_URL, {
+    headers: { Authorization: `Bearer ${token}` },
+    params,
+  });
+  return response.data;
+};
+export const createCategory = async (
+  data: Category,
+  token: string
+): Promise<Category> => {
+  const response = await axios.post<Category>(API_BASE_URL, data, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  return response.data;
+};
+export const updateCategory = async (
+  categoryId: number,
+  data: Category,
+  token: string
+): Promise<Category> => {
+  const response = await axios.put<Category>(
+    `${API_BASE_URL}/${categoryId}`,
+    data,
     {
       headers: { Authorization: `Bearer ${token}` },
     }
   );
+  return response.data;
+};
+export const deleteCategory = async (
+  categoryId: number,
+  token: string
+): Promise<void> => {
+  await axios.delete(`${API_BASE_URL}/${categoryId}`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+};
+export const updateCategoryImage = async (
+  categoryId: number,
+  imageFile: File,
+  token: string
+): Promise<Category> => {
+  const formData = new FormData();
+  formData.append("image", imageFile);
+
+  const response = await axios.post<Category>(
+    `${API_BASE_URL}/${categoryId}/image`,
+    formData,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "multipart/form-data",
+      },
+    }
+  );
+  return response.data;
+};
+export const fetchCategory = async (
+  categoryId: number,
+  token: string
+): Promise<Category> => {
+  const response = await axios.get<Category>(`${API_BASE_URL}/${categoryId}`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
   return response.data;
 };

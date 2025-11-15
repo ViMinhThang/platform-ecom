@@ -4,8 +4,10 @@ import { Heading } from "@/components/ui/heading";
 import { Separator } from "@/components/ui/separator";
 import { DataTableSkeleton } from "@/components/ui/table/data-table-skeleton";
 import CategoryListingPage from "@/features/categories/components/category-listing";
+import UserListingPage from "@/features/users/component/user-listing";
 import { searchParamsCache } from "@/lib/searchparams";
 import { cn } from "@/lib/utils";
+import { CategoryProvider } from "@/providers/category-provider";
 import { IconPlus } from "@tabler/icons-react";
 import Link from "next/link";
 import { SearchParams } from "nuqs/server";
@@ -25,29 +27,31 @@ export default async function Page(props: pageProps) {
 
   return (
     <PageContainer scrollable={false}>
-      <div className="flex flex-1 flex-col space-y-4">
-        <div className="flex items-start justify-between">
-          <Heading
-            title="Products"
-            description="Manage products (Server side table functionalities.)"
-          />
-          <Link
-            href="/dashboard/category/new"
-            className={cn(buttonVariants(), "text-xs md:text-sm bg-black")}
+      <CategoryProvider>
+        <div className="flex flex-1 flex-col space-y-4">
+          <div className="flex items-start justify-between">
+            <Heading
+              title="Categories"
+              description="Manage categories (Server side table functionalities.)"
+            />
+            <Link
+              href="/dashboard/user/new"
+              className={cn(buttonVariants(), "text-xs md:text-sm bg-black")}
+            >
+              <IconPlus className="mr-2 h-4 w-4" /> Add New
+            </Link>
+          </div>
+          <Separator />
+          <Suspense
+            // key={key}
+            fallback={
+              <DataTableSkeleton columnCount={5} rowCount={8} filterCount={2} />
+            }
           >
-            <IconPlus className="mr-2 h-4 w-4" /> Add New
-          </Link>
+            <CategoryListingPage />
+          </Suspense>
         </div>
-        <Separator />
-        <Suspense
-          // key={key}
-          fallback={
-            <DataTableSkeleton columnCount={5} rowCount={8} filterCount={2} />
-          }
-        >
-          <CategoryListingPage />
-        </Suspense>
-      </div>
+      </CategoryProvider>
     </PageContainer>
   );
 }
