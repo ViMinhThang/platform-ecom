@@ -5,17 +5,17 @@ import {
   useEffect,
   ReactNode,
 } from "react";
-import { OptionData } from "@/types/product/product-option";
+import {ProductOption } from "@/types/product/product-option";
 import { productOptionService } from "@/services/productOptionService";
 import { useSession } from "next-auth/react";
 import { toast } from "sonner";
 
 interface ProductOptionContextValue {
-  options: OptionData[];
+  options: ProductOption[];
   loading: boolean;
   addOption: () => void;
   deleteOption: (id?: number, index?: number) => void;
-  saveOption: (data: OptionData, index: number) => Promise<void>;
+  saveOption: (data: ProductOption, index: number) => Promise<void>;
   refreshOptions: () => void;
 }
 
@@ -31,7 +31,7 @@ export function ProductOptionProvider({
   children: ReactNode;
 }) {
   const { data: session } = useSession();
-  const [options, setOptions] = useState<OptionData[]>([]);
+  const [options, setOptions] = useState<ProductOption[]>([]);
   const [loading, setLoading] = useState(false);
 
   const refreshOptions = async () => {
@@ -82,7 +82,7 @@ export function ProductOptionProvider({
     }
   };
 
-  const saveOption = async (data: OptionData, index: number) => {
+  const saveOption = async (data: ProductOption, index: number) => {
     console.log(1);
     try {
       if (data.id) {

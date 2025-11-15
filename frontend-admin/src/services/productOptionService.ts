@@ -1,17 +1,17 @@
-import { OptionData } from "@/types/product/product-option";
+import { ProductOption } from "@/types/product/product-option";
 import axios from "axios";
 
 export const productOptionService = {
   async getOptions(productId: number, token?: string) {
-    const res = await axios.get<OptionData[]>(
+    const res = await axios.get<ProductOption[]>(
       `http://localhost:8080/api/products/seller/${productId}/options`,
       { headers: { Authorization: `Bearer ${token}` } }
     );
     return res.data;
   },
 
-  async createOption(productId: number, option: OptionData, token?: string) {
-    const res = await axios.post<OptionData>(
+  async createOption(productId: number, option: ProductOption, token?: string) {
+    const res = await axios.post<ProductOption>(
       `http://localhost:8080/api/products/seller/product-options/${productId}`,
       { ...option, isRequired: option.isRequired === "true" ? true : false },
       { headers: { Authorization: `Bearer ${token}` } }
@@ -19,7 +19,7 @@ export const productOptionService = {
     return res.data;
   },
 
-  async updateOption(productId: number, optionId: number, option: OptionData, token?: string) {
+  async updateOption(productId: number, optionId: number, option: ProductOption, token?: string) {
     const res =await axios.put(
       `http://localhost:8080/api/products/seller/product-options/${productId}/${optionId}`,
       { ...option, isRequired: option.isRequired === "true" ? true : false },

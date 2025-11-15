@@ -1,4 +1,4 @@
-import { OptionData, ProductOptionValue, VariantOptionValue } from "./product-option";
+import {VariantOptionValue } from "./product-option";
 
 export type VariantFormValues = {
   id?: number;

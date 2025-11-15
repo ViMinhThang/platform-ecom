@@ -31,7 +31,6 @@ export const VariantImagePicker: React.FC<VariantImagePickerProps> = ({
   const [images, setImages] = useState<ProductImage[]>([]);
   const [loading, setLoading] = useState(false);
   const { data: token } = useSession();
-  console.log(value,"Image url")
   useEffect(() => {
     if (!open) return;
 

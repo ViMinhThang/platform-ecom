@@ -7,7 +7,7 @@ export const VariantsList = () => {
   const { variants, loading, addVariant } = useProductVariants();
   if (loading) return <div>Loading variants...</div>;
   console.log("VariantsList render", variants);
-
+  
   return (
     <div className="max-h-[60vh] overflow-y-auto space-y-3 pr-2">
       {variants.map((variant) => (

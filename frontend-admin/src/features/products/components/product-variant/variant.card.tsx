@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { VariantImagePicker } from "./product-variant-image-picker";
 import { useProductVariants } from "@/providers/product-variant-provider";
 import { VariantFormValues } from "@/types/product/product-variant";
-import { useForm, Controller, FormProvider } from "react-hook-form";
+import { useForm, FormProvider } from "react-hook-form";
 import { FormInput } from "@/components/forms/form-input";
 import { ProductVariantOptions } from "./product-variant-option";
 import { useState } from "react";
@@ -87,7 +87,6 @@ export const VariantCard: React.FC<VariantCardProps> = ({ variant }) => {
             <ProductVariantOptions
               control={control}
               namePrefix="optionValues"
-              value={watch("optionValues")}
             />
 
             {/* Actions */}
@@ -97,6 +96,7 @@ export const VariantCard: React.FC<VariantCardProps> = ({ variant }) => {
               </Button>
               <Button
                 onClick={handleSubmit(async (data) => {
+                  console.log("Saving variant", data);
                   await saveVariant(data);
                 })}
               >

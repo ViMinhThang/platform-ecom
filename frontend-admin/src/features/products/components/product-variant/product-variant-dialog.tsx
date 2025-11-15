@@ -1,7 +1,4 @@
 "use client";
-
-import { useEffect, useState } from "react";
-import { useSession } from "next-auth/react";
 import {
   Dialog,
   DialogContent,
@@ -9,19 +6,9 @@ import {
   DialogTitle,
   DialogDescription,
 } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
-import { toast } from "sonner";
 
-import { VariantImagePicker } from "./product-variant-image-picker";
-import {
-  getProductVariants,
-  updateVariant,
-} from "@/services/product-variant-service";
 import { VariantFormValues } from "@/types/product/product-variant";
-import { ProductVariantProvider } from "@/providers/product-variant-provider";
 import { VariantsList } from "./variant-list";
-import { ProductOptionProvider } from "@/providers/product-option-provider";
 
 interface ProductVariantDialogProps {
   open: boolean;
