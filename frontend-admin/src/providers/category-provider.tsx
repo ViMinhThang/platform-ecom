@@ -1,9 +1,11 @@
 "use client";
 import {
   createCategory,
+  deleteCategory,
   fetchCategory,
   getCategories,
   updateCategory,
+  updateCategoryImage,
 } from "@/services/category-service";
 import { Category } from "@/types/category/category";
 import { get } from "http";
@@ -28,7 +30,12 @@ interface CategoryContextValue {
     data: any,
     token: string
   ) => Promise<Category | null>;
-  deleteCategory: (categoryId: number, token: string) => Promise<void>;
+  deleteCategoryHandler: (categoryId: number, token: string) => Promise<void>;
+  uploadCategoryImage: (
+    categoryId: number,
+    imageFile: File,
+    token: string
+  ) => Promise<string>;
 }
 const CategoryContext = createContext<CategoryContextValue | undefined>(
   undefined
@@ -101,7 +108,7 @@ export const CategoryProvider: React.FC<CategoryProviderProps> = ({
       setLoading(false);
     }
   }, []);
-  const deleteCategory = useCallback(
+  const deleteCategoryHandler = useCallback(
     async (categoryId: number, token: string) => {
       setLoading(true);
       try {
@@ -117,6 +124,28 @@ export const CategoryProvider: React.FC<CategoryProviderProps> = ({
     },
     []
   );
+  const uploadCategoryImage = useCallback(
+    async (categoryId: number, imageFile: File, token: string) => {
+      setLoading(true);
+      try {
+        const res = await updateCategoryImage(categoryId, imageFile, token);
+        setCategory((prev) => (prev ? { ...prev, imageUrl: res } : null));
+        setCategories((prevCategories) =>
+          prevCategories.map((cat) =>
+            cat.id === categoryId ? { ...cat, imageUrl: res } : cat
+          )
+        );
+        return res;
+      } catch (error) {
+        console.error("Failed to upload category image:", error);
+        throw error;
+      } finally {
+        setLoading(false);
+      }
+    },
+    []
+  );
+
   return (
     <CategoryContext.Provider
       value={{
@@ -127,8 +156,9 @@ export const CategoryProvider: React.FC<CategoryProviderProps> = ({
         fetchCategories,
         getCategory,
         createCategoryHandler,
+        uploadCategoryImage,
         updateCategoryHandler,
-        deleteCategory,
+        deleteCategoryHandler,
       }}
     >
       {children}

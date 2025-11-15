@@ -1,14 +1,17 @@
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import PageContainer from "@/components/layout/page-container";
-import { buttonVariants } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { Heading } from "@/components/ui/heading";
 import { Separator } from "@/components/ui/separator";
 import { DataTableSkeleton } from "@/components/ui/table/data-table-skeleton";
 import CategoryListingPage from "@/features/categories/components/category-listing";
+import { CreateCategoryButton } from "@/features/categories/components/create-category";
 import UserListingPage from "@/features/users/component/user-listing";
 import { searchParamsCache } from "@/lib/searchparams";
 import { cn } from "@/lib/utils";
 import { CategoryProvider } from "@/providers/category-provider";
 import { IconPlus } from "@tabler/icons-react";
+import { getServerSession } from "next-auth";
 import Link from "next/link";
 import { SearchParams } from "nuqs/server";
 import { Suspense } from "react";
@@ -24,6 +27,11 @@ type pageProps = {
 export default async function Page(props: pageProps) {
   const searchParams = await props.searchParams;
   searchParamsCache.parse(searchParams);
+  const session = await getServerSession(authOptions);
+
+  if (!session?.accessToken) {
+    return <div>You must be signed in to view categories.</div>;
+  }
 
   return (
     <PageContainer scrollable={false}>
@@ -34,12 +42,7 @@ export default async function Page(props: pageProps) {
               title="Categories"
               description="Manage categories (Server side table functionalities.)"
             />
-            <Link
-              href="/dashboard/user/new"
-              className={cn(buttonVariants(), "text-xs md:text-sm bg-black")}
-            >
-              <IconPlus className="mr-2 h-4 w-4" /> Add New
-            </Link>
+            <CreateCategoryButton token={session?.accessToken} />
           </div>
           <Separator />
           <Suspense

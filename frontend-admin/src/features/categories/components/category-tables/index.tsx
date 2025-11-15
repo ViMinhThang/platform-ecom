@@ -68,6 +68,8 @@ export function CategoryTable<TData, TValue>({
       table={table}
       onPageChange={handlePaginationChange}
       onPageSizeChange={handlePageSizeChange}
-    />
+    >
+      <DataTableToolbar table={table} />
+    </DataTable>
   );
 }

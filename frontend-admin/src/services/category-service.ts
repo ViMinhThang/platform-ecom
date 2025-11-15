@@ -47,22 +47,23 @@ export const updateCategoryImage = async (
   categoryId: number,
   imageFile: File,
   token: string
-): Promise<Category> => {
+): Promise<string> => {
   const formData = new FormData();
-  formData.append("image", imageFile);
+  formData.append("file", imageFile);
 
-  const response = await axios.post<Category>(
+  const response = await axios.put<string>(
     `${API_BASE_URL}/${categoryId}/image`,
     formData,
     {
       headers: {
         Authorization: `Bearer ${token}`,
-        "Content-Type": "multipart/form-data",
       },
     }
   );
+
   return response.data;
 };
+
 export const fetchCategory = async (
   categoryId: number,
   token: string

@@ -17,7 +17,7 @@ export default async function CategoryListingPage({
   const session = await getServerSession(authOptions);
   console.log("Search Params in CategoryListingPage:", searchParams);
   if (!session?.accessToken) {
-    return <div>You must be signed in to view products.</div>;
+    return <div>You must be signed in to view categories.</div>;
   }
 
   return (

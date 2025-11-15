@@ -31,7 +31,7 @@ export default function CategoryListingClient({
     fetchCategories(token, filters);
   }, [fetchCategories, token, page, perPage]);
   if (!categories || categories.length === 0)
-    return <div>No products found.</div>;
+    return <div>No categories found.</div>;
 
   return (
     <CategoryTable

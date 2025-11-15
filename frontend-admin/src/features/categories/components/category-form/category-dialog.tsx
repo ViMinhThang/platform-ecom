@@ -1,6 +1,9 @@
 "use client";
 
-import { FormProvider, useForm } from "react-hook-form";
+import { useEffect } from "react";
+import { useForm, FormProvider } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useSession } from "next-auth/react";
 import {
   Dialog,
   DialogContent,
@@ -9,58 +12,81 @@ import {
   DialogDescription,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { useProductForm } from "@/hooks/product/use-product-form";
-import { CategoryFormFields } from "./category-form-field";
+
 import {
   CategoryDialogProps,
   CategoryFormSchema,
   CategoryFormValues,
 } from "@/types/category/category-form";
+import { CategoryFormFields } from "./category-form-field";
 import { useCategoryContext } from "@/providers/category-provider";
-import { useEffect } from "react";
-import { useSession } from "next-auth/react";
-import { zodResolver } from "@hookform/resolvers/zod";
 
 export const CategoryDialog: React.FC<CategoryDialogProps> = ({
   categoryId,
   open,
   onOpenChange,
 }) => {
-  const title = categoryId ? "Update Product" : "Create Product";
-  const { getCategory, category, loading } = useCategoryContext();
   const { data: session } = useSession();
   const accessToken = session?.accessToken || "";
 
+  const { getCategory, category, loading } = useCategoryContext();
+
+  // Title changes automatically
+  const isEditing = Boolean(categoryId);
+  const title = isEditing ? "Update Category" : "Create Category";
+
+  // Form Setup
   const methods = useForm<CategoryFormValues>({
     resolver: zodResolver(CategoryFormSchema),
     defaultValues: {
-      name: category ? category.name : "",
-      imageUrl: category ? category.imageUrl : "",
+      id: categoryId || undefined,
+      name: "",
+      imageUrl: "",
     },
   });
+
   useEffect(() => {
-    if (categoryId) {
+    if (open && categoryId) {
       getCategory(categoryId, accessToken);
     }
-  }, [categoryId, getCategory, open, accessToken]);
+  }, [open, categoryId, accessToken]);
 
-  const onSubmit = methods.handleSubmit(async (data: CategoryFormValues) => {
-    console.log("Form submitted with data:", data);
+  // Reset form when category data arrives
+  useEffect(() => {
+    if (category && open) {
+      methods.reset({
+        name: category.name,
+        imageUrl: category.imageUrl ?? "",
+      });
+    }
+  }, [category, open, methods]);
 
-    onOpenChange && onOpenChange(false);
+  const onSubmit = methods.handleSubmit(async (data) => {
+    console.log("Save category:", data);
+
+    // call update or create API here...
+    // await saveCategory(categoryId, data, accessToken)
+
+    onOpenChange(false);
   });
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="min-w-[80%] max-h-[90vh] overflow-y-auto">
+      <DialogContent className="overflow-y-auto">
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
-          <DialogDescription>{title} details below</DialogDescription>
+          <DialogDescription>
+            {isEditing ? "Update category details" : "Create a new category"}
+          </DialogDescription>
         </DialogHeader>
 
         <FormProvider {...methods}>
           <form onSubmit={onSubmit}>
-            <CategoryFormFields control={methods.control} loading={loading} />
+            <CategoryFormFields
+              control={methods.control}
+              loading={loading}
+              categoryId={categoryId}
+            />
             <div className="col-span-full flex justify-end gap-2 mt-6">
               <Button variant="outline" onClick={() => onOpenChange(false)}>
                 Cancel

@@ -1,6 +1,7 @@
 import * as z from "zod";
 
 export const CategoryFormSchema = z.object({
+  id: z.number().optional(),
   name: z.string().min(2),
   imageUrl: z.string().optional(),
 });
@@ -8,7 +9,7 @@ export const CategoryFormSchema = z.object({
 export type CategoryFormValues = z.infer<typeof CategoryFormSchema>;
 
 export interface CategoryDialogProps {
-  categoryId?: number;
+  categoryId: number;
   open: boolean;
   onOpenChange: (open: boolean) => void;
 }

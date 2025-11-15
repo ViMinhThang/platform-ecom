@@ -3,6 +3,7 @@ import { Heading } from "@/components/ui/heading";
 import { Separator } from "@/components/ui/separator";
 import { DataTableSkeleton } from "@/components/ui/table/data-table-skeleton";
 import { ProductDialogWrapper } from "@/features/products/components/product-form/create-product";
+import { ProductDialog } from "@/features/products/components/product-form/product-form";
 import ProductListingPage from "@/features/products/components/product-listing";
 import { searchParamsCache } from "@/lib/searchparams";
 import { ProductProvider } from "@/providers/product-provider";
@@ -18,9 +19,7 @@ type pageProps = {
 };
 
 export default async function Page(props: pageProps) {
-  const searchParams = await props.searchParams;
-  const params = searchParamsCache.parse(searchParams);
-  console.log("Search Params in Page Component:", params);
+
   return (
     <PageContainer scrollable={false}>
       <ProductProvider>
@@ -40,7 +39,7 @@ export default async function Page(props: pageProps) {
               <DataTableSkeleton columnCount={5} rowCount={8} filterCount={2} />
             }
           >
-            <ProductListingPage searchParams={ params}/>
+            <ProductListingPage />
           </Suspense>
         </div>
       </ProductProvider>

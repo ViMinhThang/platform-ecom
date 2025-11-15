@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import { DataTable } from '@/components/ui/table/data-table';
-import { DataTableToolbar } from '@/components/ui/table/data-table-toolbar';
-import { useDataTable } from '@/hooks/use-data-table';
-import { ColumnDef } from '@tanstack/react-table';
-import { useEffect } from 'react';
+import { DataTable } from "@/components/ui/table/data-table";
+import { DataTableToolbar } from "@/components/ui/table/data-table-toolbar";
+import { useDataTable } from "@/hooks/use-data-table";
+import { ColumnDef } from "@tanstack/react-table";
+import { useEffect } from "react";
 
 interface ProductTableParams<TData, TValue> {
   data: TData[];
@@ -23,13 +23,13 @@ export function ProductTable<TData, TValue>({
   onPageChange,
   onPerPageChange,
   currentPage,
-  pageSize
+  pageSize,
 }: ProductTableParams<TData, TValue>) {
   const pageCount = Math.ceil(totalItems / pageSize);
 
   const { table } = useDataTable({
     data,
-    columns, 
+    columns,
     pageCount: pageCount,
     initialState: {
       pagination: {
@@ -37,8 +37,8 @@ export function ProductTable<TData, TValue>({
         pageSize: pageSize,
       },
     },
-    shallow: false, 
-    debounceMs: 500
+    shallow: false,
+    debounceMs: 500,
   });
 
   // Override the pagination state management
@@ -52,7 +52,10 @@ export function ProductTable<TData, TValue>({
 
   // Custom pagination change handlers
   const handlePaginationChange = (updater: any) => {
-    const newPageIndex = typeof updater === 'function' ? updater(table.getState().pagination.pageIndex) : updater;
+    const newPageIndex =
+      typeof updater === "function"
+        ? updater(table.getState().pagination.pageIndex)
+        : updater;
     onPageChange(newPageIndex);
   };
 
@@ -63,10 +66,12 @@ export function ProductTable<TData, TValue>({
   };
 
   return (
-    <DataTable 
+    <DataTable
       table={table}
       onPageChange={handlePaginationChange}
       onPageSizeChange={handlePageSizeChange}
-    />
+    >
+      <DataTableToolbar table={table} />
+    </DataTable>
   );
 }

@@ -13,6 +13,8 @@ import { IconEdit, IconDotsVertical, IconTrash } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { CategoryDialog } from "../category-form/category-dialog";
+import { useCategoryContext } from "@/providers/category-provider";
+import { useSession } from "next-auth/react";
 
 interface CellActionProps {
   data: Category;
@@ -22,9 +24,15 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
   const [loading] = useState(false);
   const [open, setOpen] = useState(false);
   const [closeUpdateCategory, setCloseUpdateCategory] = useState(false);
-  const router = useRouter();
+  const { data: session } = useSession(); // Destructure session to get data
+  const { deleteCategoryHandler } = useCategoryContext();
 
-  const onConfirm = async () => {};
+  const onConfirm = async () => {
+    if (!session?.accessToken) {
+      return;
+    }
+    await deleteCategoryHandler(data.id, session.accessToken);
+  };
 
   return (
     <>
