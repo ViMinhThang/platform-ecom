@@ -40,7 +40,7 @@ export default async function Page(props: pageProps) {
           <div className="flex items-start justify-between">
             <Heading
               title="Categories"
-              description="Manage categories (Server side table functionalities.)"
+              description="Manage categories"
             />
             <CreateCategoryButton token={session?.accessToken} />
           </div>

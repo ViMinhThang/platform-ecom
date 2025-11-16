@@ -1,23 +1,42 @@
 "use client";
 import { Badge } from "@/components/ui/badge";
 import { DataTableColumnHeader } from "@/components/ui/table/data-table-column-header";
-import { User } from "@/constants/data";
 import { Column, ColumnDef } from "@tanstack/react-table";
 import { CheckCircle2, Text, XCircle } from "lucide-react";
 import { CellAction } from "./cell-action";
+import { User, UserRow } from "@/types/user/user";
+import Image from "next/image";
 
-export const columns: ColumnDef<User>[] = [
-   {
-    accessorKey: "id",
+export const columns: ColumnDef<UserRow>[] = [
+  {
+    id: "image",
+    header: "IMAGE",
+    cell: ({ row }) => {
+      const userRow = row.original;
+      const imageUrl = userRow.imageUrl || "/placeholder.png";
+      return (
+        <div className="relative w-16 h-16">
+          <Image
+            src={`http://localhost:8080/uploads/${imageUrl}`}
+            alt={userRow.username}
+            fill
+            className="object-cover rounded-md border"
+          />
+        </div>
+      );
+    },
+  },
+  {
+    accessorKey: "userId",
     header: "id",
   },
   {
-    id: "name",
-    accessorKey: "name",
-    header: ({ column }: { column: Column<User, unknown> }) => (
-      <DataTableColumnHeader column={column} title="Name" />
+    id: "username",
+    accessorKey: "username",
+    header: ({ column }: { column: Column<UserRow, unknown> }) => (
+      <DataTableColumnHeader column={column} title="username" />
     ),
-    cell: ({ cell }) => <div>{cell.getValue<User["name"]>()}</div>,
+    cell: ({ cell }) => <div>{cell.getValue<UserRow["username"]>()}</div>,
     meta: {
       label: "Name",
       placeholder: "Search user...",
@@ -26,13 +45,13 @@ export const columns: ColumnDef<User>[] = [
     },
     enableColumnFilter: true,
   },
-    {
+  {
     id: "email",
     accessorKey: "email",
-    header: ({ column }: { column: Column<User, unknown> }) => (
+    header: ({ column }: { column: Column<UserRow, unknown> }) => (
       <DataTableColumnHeader column={column} title="email" />
     ),
-    cell: ({ cell }) => <div>{cell.getValue<User["email"]>()}</div>,
+    cell: ({ cell }) => <div>{cell.getValue<UserRow["email"]>()}</div>,
     meta: {
       label: "email",
       placeholder: "Search email...",
@@ -42,12 +61,52 @@ export const columns: ColumnDef<User>[] = [
     enableColumnFilter: true,
   },
   {
-    accessorKey: "created_at",
-    header: "created at",
+    id: "isActive",
+    accessorKey: "isActive",
+    header: ({ column }: { column: Column<UserRow, unknown> }) => (
+      <DataTableColumnHeader column={column} title="Status" />
+    ),
+    cell: ({ cell }) => {
+      const isActive = cell.getValue<boolean>();
+      return isActive ? (
+        <Badge variant="default" className="flex items-center gap-1">
+          <CheckCircle2 size={16} />
+          Active
+        </Badge>
+      ) : (
+        <Badge variant="destructive" className="flex items-center gap-1">
+          <XCircle size={16} />
+          Inactive
+        </Badge>
+      );
+    },
+    meta: {
+      label: "Status",
+      placeholder: "Filter by status...",
+      variant: "select",
+      options: [
+        { label: "Active", value: "true" },
+        { label: "Inactive", value: "false" },
+      ],
+    },
+    enableColumnFilter: true,
   },
   {
-    accessorKey: "updated_at",
-    header: "updated at",
+    accessorKey: "roles",
+    header: ({ column }: { column: Column<UserRow, unknown> }) => (
+      <DataTableColumnHeader column={column} title="Roles" />
+    ),
+    cell: ({ cell }) => {
+      const roles = cell.getValue<UserRow["roles"]>();
+      return <div>{roles.map((role) => role.roleName).join(",")}</div>;
+    },
+    meta: {
+      label: "Roles",
+      placeholder: "Search roles...",
+      variant: "text",
+      icon: Text,
+    },
+    enableColumnFilter: true,
   },
   {
     id: "actions",

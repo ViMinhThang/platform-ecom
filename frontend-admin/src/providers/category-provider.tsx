@@ -9,6 +9,7 @@ import {
 } from "@/services/category-service";
 import { Category } from "@/types/category/category";
 import { get } from "http";
+import { useSession } from "next-auth/react";
 import {
   createContext,
   ReactNode,
@@ -22,19 +23,17 @@ interface CategoryContextValue {
   totalItems: number;
   loading: boolean;
   category: Category | null;
-  fetchCategories: (token: string, params?: any) => Promise<void>;
-  getCategory: (categoryId: number, token: string) => Promise<void | null>;
-  createCategoryHandler: (data: any, token: string) => Promise<Category | null>;
+  fetchCategories: ( params?: any) => Promise<void>;
+  getCategory: (categoryId: number) => Promise<void | null>;
+  createCategoryHandler: (data: any) => Promise<Category | null>;
   updateCategoryHandler: (
     categoryId: number,
     data: any,
-    token: string
   ) => Promise<Category | null>;
-  deleteCategoryHandler: (categoryId: number, token: string) => Promise<void>;
+  deleteCategoryHandler: (categoryId: number) => Promise<void>;
   uploadCategoryImage: (
     categoryId: number,
     imageFile: File,
-    token: string
   ) => Promise<string>;
 }
 const CategoryContext = createContext<CategoryContextValue | undefined>(
@@ -50,19 +49,24 @@ export const CategoryProvider: React.FC<CategoryProviderProps> = ({
   const [category, setCategory] = useState<Category | null>(null);
   const [categories, setCategories] = useState<Category[]>([]);
   const [totalItems, setTotalItems] = useState<number>(0);
-  const getCategory = useCallback(async (categoryId: number, token: string) => {
-    setLoading(true);
-    try {
-      const res = await fetchCategory(categoryId, token);
-      setCategory(res);
-    } catch (error) {
-      console.error("Failed to fetch category:", error);
-    } finally {
-      setLoading(false);
-    }
-  }, []);
+  const { data: sesssion } = useSession();
+  const token = sesssion?.accessToken || "";
+  const getCategory = useCallback(
+    async (categoryId: number) => {
+      setLoading(true);
+      try {
+        const res = await fetchCategory(categoryId, token);
+        setCategory(res);
+      } catch (error) {
+        console.error("Failed to fetch category:", error);
+      } finally {
+        setLoading(false);
+      }
+    },
+    [token]
+  );
   const createCategoryHandler = useCallback(
-    async (data: any, token: string) => {
+    async (data: any) => {
       setLoading(true);
       try {
         const created = await createCategory(data, token);
@@ -75,10 +79,10 @@ export const CategoryProvider: React.FC<CategoryProviderProps> = ({
         setLoading(false);
       }
     },
-    []
+    [token]
   );
   const updateCategoryHandler = useCallback(
-    async (categoryId: number, data: any, token: string) => {
+    async (categoryId: number, data: any) => {
       setLoading(true);
       try {
         const updated = await updateCategory(categoryId, data, token);
@@ -94,22 +98,25 @@ export const CategoryProvider: React.FC<CategoryProviderProps> = ({
         setLoading(false);
       }
     },
-    []
+    [token]
   );
-  const fetchCategories = useCallback(async (token: string, params?: any) => {
-    setLoading(true);
-    try {
-      const data = await getCategories(token, params);
-      setCategories(data.content);
-      setTotalItems(data.totalElements);
-    } catch (error) {
-      console.error("Failed to fetch categories:", error);
-    } finally {
-      setLoading(false);
-    }
-  }, []);
+  const fetchCategories = useCallback(
+    async (params?: any) => {
+      setLoading(true);
+      try {
+        const data = await getCategories(token, params);
+        setCategories(data.content);
+        setTotalItems(data.totalElements);
+      } catch (error) {
+        console.error("Failed to fetch categories:", error);
+      } finally {
+        setLoading(false);
+      }
+    },
+    [token]
+  );
   const deleteCategoryHandler = useCallback(
-    async (categoryId: number, token: string) => {
+    async (categoryId: number) => {
       setLoading(true);
       try {
         await deleteCategory(categoryId, token);
@@ -122,10 +129,10 @@ export const CategoryProvider: React.FC<CategoryProviderProps> = ({
         setLoading(false);
       }
     },
-    []
+    [token]
   );
   const uploadCategoryImage = useCallback(
-    async (categoryId: number, imageFile: File, token: string) => {
+    async (categoryId: number, imageFile: File) => {
       setLoading(true);
       try {
         const res = await updateCategoryImage(categoryId, imageFile, token);
@@ -143,7 +150,7 @@ export const CategoryProvider: React.FC<CategoryProviderProps> = ({
         setLoading(false);
       }
     },
-    []
+    [token]
   );
 
   return (

@@ -1,37 +1,27 @@
-import { searchParamsCache } from "@/lib/searchparams";
-import { UserTable } from "./user-tables";
-import { columns } from "./user-tables/columns";
+import { getServerSession } from "next-auth/next";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import UserListingClient from "./user-listing-client";
 
-type UserListingPage = {};
-
-export default async function UserListingPage({}: UserListingPage) {
-  // Showcasing the use of search params cache in nested RSCs
-  const page = searchParamsCache.get('page');
-  const search = searchParamsCache.get('name');
-  const pageLimit = searchParamsCache.get('perPage');
-  const categories = searchParamsCache.get('category');
-  
-  const filters = {
-    page,
-    limit: pageLimit,
-    ...(search && { search }),
-    ...(categories && { categories: categories })
+interface UserListingPageProps {
+  searchParams?: {
+    page: number;
+    perPage: number;
+    username: string | null;
+    email: string | null;
   };
+}
 
-  // Replace with actual data fetching logic
-  // const data = await fetchCategories(filters);
-  // const totalCategories = data.total_categories;
-  // const categoriesList: Category[] = data.categories;
+export default async function UserListingPage({ searchParams }: UserListingPageProps) {
+  const session = await getServerSession(authOptions);
 
-  // For demonstration, using mock data
-  const totalUser = 100; // mock total
-  const userList: never[] = []; // mock categories array
+  if (!session?.accessToken) {
+    return <div>You must be signed in to view users.</div>;
+  }
 
   return (
-    <UserTable
-      data={userList}
-      totalItems={totalUser}
-      columns={columns}
+    <UserListingClient
+      token={session.accessToken}
+      searchParams={searchParams}
     />
   );
-}   
+}

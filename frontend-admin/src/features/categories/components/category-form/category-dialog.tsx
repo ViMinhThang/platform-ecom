@@ -29,7 +29,8 @@ export const CategoryDialog: React.FC<CategoryDialogProps> = ({
   const { data: session } = useSession();
   const accessToken = session?.accessToken || "";
 
-  const { getCategory, category, loading } = useCategoryContext();
+  const { getCategory, category, loading, updateCategoryHandler } =
+    useCategoryContext();
 
   // Title changes automatically
   const isEditing = Boolean(categoryId);
@@ -63,9 +64,7 @@ export const CategoryDialog: React.FC<CategoryDialogProps> = ({
 
   const onSubmit = methods.handleSubmit(async (data) => {
     console.log("Save category:", data);
-
-    // call update or create API here...
-    // await saveCategory(categoryId, data, accessToken)
+    await updateCategoryHandler(categoryId, data, accessToken);
 
     onOpenChange(false);
   });

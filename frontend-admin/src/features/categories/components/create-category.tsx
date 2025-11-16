@@ -6,13 +6,11 @@ import { IconPlus } from "@tabler/icons-react";
 import { useState } from "react";
 import { toast } from "sonner";
 
-interface CreateCategoryButtonProps {
-  token: string;
-}
+interface CreateCategoryButtonProps {}
 
-export const CreateCategoryButton: React.FC<CreateCategoryButtonProps> = ({
-  token,
-}) => {
+export const CreateCategoryButton: React.FC<
+  CreateCategoryButtonProps
+> = ({}) => {
   const { createCategoryHandler } = useCategoryContext();
   const [loading, setLoading] = useState(false);
 
@@ -22,7 +20,7 @@ export const CreateCategoryButton: React.FC<CreateCategoryButtonProps> = ({
 
     setLoading(true);
     try {
-      await createCategoryHandler({ name }, token);
+      await createCategoryHandler({ name });
       toast.success("Category created successfully");
     } catch (err) {
       console.error(err);

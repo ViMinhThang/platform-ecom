@@ -69,7 +69,6 @@ export const ProductVariantProvider: React.FC<ProductVariantProviderProps> = ({
     }
   };
 
-  // Add a new variant with a temporary UUID
   const addVariant = () => {
     const newVariant: VariantFormValues = {
       tempId: uuidv4(),

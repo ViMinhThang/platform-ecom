@@ -4,7 +4,6 @@ import { columns } from "./category-tables/columns";
 import { useEffect, useState } from "react";
 import { useCategoryContext } from "@/providers/category-provider";
 interface CategoryListingClient {
-  token: string;
   searchParams?: {
     page: number;
     perPage: number;
@@ -13,7 +12,6 @@ interface CategoryListingClient {
   };
 }
 export default function CategoryListingClient({
-  token,
   searchParams,
 }: CategoryListingClient) {
   const { fetchCategories, categories, totalItems, loading } =
@@ -28,8 +26,8 @@ export default function CategoryListingClient({
   };
 
   useEffect(() => {
-    fetchCategories(token, filters);
-  }, [fetchCategories, token, page, perPage]);
+    fetchCategories(filters);
+  }, [fetchCategories, page, perPage]);
   if (!categories || categories.length === 0)
     return <div>No categories found.</div>;
 

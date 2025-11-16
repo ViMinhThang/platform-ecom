@@ -19,14 +19,15 @@ import { useSession } from "next-auth/react";
 interface ProductContextValue {
   loading: boolean;
   product: Product | null;
-  fetchProduct: (productId: number, token: string) => Promise<void>;
-  createProductHandler: (data: any, token: string) => Promise<ProductRow | null>;
+  fetchProduct: (productId: number) => Promise<void>;
+  createProductHandler: (
+    data: any,
+  ) => Promise<ProductRow | null>;
   updateProductHandler: (
     productId: number,
     data: any,
-    token: string
   ) => Promise<Product | null>;
-  fetchProducts: (token: string, params?: any) => Promise<void>;
+  fetchProducts: ( params?: any) => Promise<void>;
   products: ProductRow[];
   totalItems: number;
 }
@@ -46,7 +47,10 @@ export const ProductProvider: React.FC<ProductProviderProps> = ({
   const [product, setProduct] = useState<Product | null>(null);
   const [products, setProducts] = useState<ProductRow[]>([]);
   const [totalItems, setTotalItems] = useState<number>(0);
-  const fetchProduct = useCallback(async (productId: number, token: string) => {
+  const { data: session } = useSession();
+  const token = session?.accessToken || "";
+
+  const fetchProduct = useCallback(async (productId: number) => {
     setLoading(true);
     try {
       const res = await getProductById(productId, token);
@@ -56,10 +60,9 @@ export const ProductProvider: React.FC<ProductProviderProps> = ({
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [token]);
 
-  // Create a new product
-  const createProductHandler = useCallback(async (data: any, token: string) => {
+  const createProductHandler = useCallback(async (data: any) => {
     setLoading(true);
     try {
       const created = await createProduct(data, token);
@@ -71,10 +74,10 @@ export const ProductProvider: React.FC<ProductProviderProps> = ({
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [token]);
 
   const updateProductHandler = useCallback(
-    async (productId: number, data: any, token: string) => {
+    async (productId: number, data: any) => {
       setLoading(true);
       try {
         const updated = await updateProduct(productId, data, token);
@@ -92,9 +95,9 @@ export const ProductProvider: React.FC<ProductProviderProps> = ({
         setLoading(false);
       }
     },
-    []
+    [token]
   );
-  const fetchProducts = useCallback(async (token: string, params?: any) => {
+  const fetchProducts = useCallback(async (params?: any) => {
     setLoading(true);
     try {
       const data = await getProducts(token, params);
@@ -105,7 +108,7 @@ export const ProductProvider: React.FC<ProductProviderProps> = ({
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [token]);
   return (
     <ProductContext.Provider
       value={{

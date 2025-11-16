@@ -7,7 +7,6 @@ import { useProductContext } from "@/providers/product-provider";
 import { ProductTable } from "./product-tables";
 
 interface ProductListingClientProps {
-  token: string;
   searchParams?: {
     page?: string;
     perPage?: string;
@@ -17,14 +16,17 @@ interface ProductListingClientProps {
 }
 
 export const ProductListingClient: React.FC<ProductListingClientProps> = ({
-  token,
   searchParams,
 }) => {
   const router = useRouter();
   const urlSearchParams = useSearchParams();
 
-  const initialPage = Number(searchParams?.page ?? urlSearchParams.get("page") ?? 0);
-  const initialPerPage = Number(searchParams?.perPage ?? urlSearchParams.get("perPage") ?? 10);
+  const initialPage = Number(
+    searchParams?.page ?? urlSearchParams.get("page") ?? 0
+  );
+  const initialPerPage = Number(
+    searchParams?.perPage ?? urlSearchParams.get("perPage") ?? 10
+  );
 
   const [page, setPage] = useState(initialPage);
   const [perPage, setPerPage] = useState(initialPerPage);
@@ -32,12 +34,12 @@ export const ProductListingClient: React.FC<ProductListingClientProps> = ({
   const { fetchProducts, products, totalItems, loading } = useProductContext();
 
   useEffect(() => {
-    fetchProducts?.(token, {
+    fetchProducts?.({
       ...searchParams,
       page: page.toString(),
       perPage: perPage.toString(),
     });
-  }, [fetchProducts, token, page, perPage, searchParams]);
+  }, [fetchProducts, page, perPage, searchParams]);
 
   const firstRender = useRef(true);
   useEffect(() => {
