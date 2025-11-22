@@ -1,21 +1,25 @@
 spring:
-  application:
-    name: review-service
-  config:
-    import: "configserver:http://localhost:8888"
   datasource:
-    url: jdbc:postgresql://localhost:5432/review_db
+    url: jdbc:postgresql://localhost:5432/reviews?currentSchema=public&stringtype=unspecified&serverTimezone=Asia/Ho_Chi_Minh
     username: ${DB_USER}
     password: ${DB_PASSWORD}
-    driver-class-name: org.postgresql.Driver
+  rabbitmq:
+    host: ${RABBITMQ_HOST:localhost}
+    port: ${RABBITMQ_PORT:5672}
+    username: ${RABBITMQ_USERNAME:guest}
+    password: ${RABBITMQ_PASSWORD:guest}
+    virtual-host: ${RABBITMQ_VHOST:guest}
+    connection-timeout: 30000
   jpa:
-    hibernate:
-      ddl-auto: update
+    database: POSTGRESQL
     show-sql: true
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.PostgreSQLDialect
-        format_sql: true
+    hibernate:
+      ddl-auto: create-drop
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+  app:
+    jwtSecret: "qweqweqweqweqweqw123123131231231cfcsvcxvwdfqsd"
+    jwtExpirationMs: 600000
+    jwtCookieName: "ecom"
   cloud:
     stream:
       kafka:
@@ -31,32 +35,29 @@ spring:
         reviewDeleted-out-0:
           destination: review-events
           content-type: application/json
-
 server:
-  port: 8084
-
-eureka:
-  client:
-    service-url:
-      defaultZone: http://localhost:8761/eureka/
-    register-with-eureka: true
-    fetch-registry: true
-  instance:
-    prefer-ip-address: true
-    hostname: localhost
-
+  port: 8087
 management:
   endpoints:
     web:
       exposure:
-        include: health,info,prometheus
+        include: "*"
   tracing:
     sampling:
       probability: 1.0
-  zipkin:
-    tracing:
-      endpoint: http://localhost:9411/api/v2/spans
 
-jwt:
-  secret: "mySecret123"
-  expirationMs: 600000
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+    register-with-eureka: true
+    fetch-registry: true
+  instance:
+    preferIpAddress: true
+logging:
+  file:
+    name: logs/${spring.application.name}.log
+  logback:
+    rollingpolicy:
+      max-file-size: 5MB
+      max-history: 7
