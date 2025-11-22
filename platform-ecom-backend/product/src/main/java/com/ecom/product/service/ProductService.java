@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface ProductService {
 
-    ProductDTO createProduct(@Valid ProductDTO productDTO, Long userId);
+    ProductRowDTO createProduct(@Valid ProductDTO productDTO, Long userId);
 
     ProductDTO getProductById(Long productId);
 
@@ -20,6 +20,7 @@ public interface ProductService {
 
     ProductResponse getAllProductsForSeller(Integer page, Integer perPage, String name, String category, String sortBy, String sortOrder, Long userId);
 
+
 //    ProductResponse searchByCategory(Long categoryId, Integer pageNumber, Integer pageSize, String sortBy, String sortOrder);
 
 //    String reduceStocks(List<ReduceStockDTO> reduceStockDTOS);
@@ -27,4 +28,9 @@ public interface ProductService {
 //    Long getProductCounts();
 
 //    List<ProductRowDTO> getProductRowsForSeller(Integer page, Integer perPage, String name, String category, String sortBy, String sortOrder, Long userId);
+
+    // Public endpoints for anonymous users
+    ProductResponse getAllPublicProducts(Integer page, Integer perPage, String category, String search, String sortBy, String sortOrder);
+    
+    ProductDTO getPublicProductById(Long productId);
 }

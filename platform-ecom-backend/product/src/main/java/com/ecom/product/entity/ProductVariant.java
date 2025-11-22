@@ -1,6 +1,8 @@
 package com.ecom.product.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
 import jakarta.persistence.*;
 import lombok.*;
@@ -19,7 +21,7 @@ import java.util.Map;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@ToString(exclude = {"product", "optionValues"})
+@ToString(exclude = {"product","optionValues"})
 public class ProductVariant {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,6 +34,9 @@ public class ProductVariant {
     @Column(unique = true, nullable = false, length = 100)
     private String sku;
 
+
+    private String imageUrl;
+
     @Column(nullable = false)
     private BigDecimal price;
 
@@ -41,7 +46,7 @@ public class ProductVariant {
     @Column(name = "is_active")
     private Boolean isActive = true;
 
-    @OneToMany(mappedBy = "variant", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "variant", cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.EAGER)
     private List<VariantOptionValue> optionValues = new ArrayList<>();
 
     @Column(name = "created_at", updatable = false)

@@ -24,7 +24,7 @@ public class RoleGuardAspect {
     public Object checkRole(ProceedingJoinPoint joinPoint, RequireRole requireRole) throws Throwable {
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
         List<String> roles = authContext.getRoles(request);
-
+        System.out.println(roles.toString());
         if (!roles.contains(requireRole.value())) {
             throw new APIException("Forbidden: missing role " + requireRole.value());
         }

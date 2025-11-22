@@ -27,7 +27,6 @@ public class User {
     private Long userId;
 
     @NotBlank
-    @Size(max = 20)
     @Column(name = "username")
     private String userName;
 
@@ -36,6 +35,9 @@ public class User {
     @Email
     @Column(name = "email")
     private String email;
+
+
+    private String isActive = "true";
 
     @NotBlank
     @Size(max = 120)
@@ -47,6 +49,8 @@ public class User {
         this.email = email;
         this.password = password;
     }
+
+    private String imageUrl = "31343C.svg";
 
     @Setter
     @Getter

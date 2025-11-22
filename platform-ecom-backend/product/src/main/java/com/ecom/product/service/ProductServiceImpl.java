@@ -38,7 +38,7 @@ public class ProductServiceImpl implements ProductService {
 //    private CartServiceClient cartServiceClient;
 
     @Override
-    public ProductDTO createProduct(ProductDTO productDTO, Long userId) {
+    public ProductRowDTO createProduct(ProductDTO productDTO, Long userId) {
         Category category = categoryRepository.findById(productDTO.getCate().getId())
                 .orElseThrow(() -> new ResourceNotFoundException("Category", "Id", productDTO.getCate().toString()));
 
@@ -47,8 +47,14 @@ public class ProductServiceImpl implements ProductService {
         product.setUserId(userId);
 
         Product savedProduct = productRepository.save(product);
-
-        return modelMapper.map(savedProduct, ProductDTO.class);
+        Integer numOfVariants = savedProduct.getVariants().size();
+        return ProductRowDTO.builder().id(product.getId())
+                .name(product.getName())
+                .description(product.getDescription())
+                .category(modelMapper.map(product.getCategory(), CategoryDTO.class))
+                .imageUrl(!product.getImages().isEmpty() ? product.getImages().get(0).getImageUrl() : "placehold.co/600x400")
+                .status(product.getStatus())
+                .variants(numOfVariants).build();
     }
 
 
@@ -57,7 +63,7 @@ public class ProductServiceImpl implements ProductService {
         Product p = productRepository.findById(productId)
                 .orElseThrow(() -> new ResourceNotFoundException("Product", "ProductId", productId));
 
-        ProductDTO productDTO =  modelMapper.map(p, ProductDTO.class);
+        ProductDTO productDTO = modelMapper.map(p, ProductDTO.class);
         productDTO.setCate(modelMapper.map(p.getCategory(), CategoryDTO.class));
         return productDTO;
     }
@@ -68,7 +74,6 @@ public class ProductServiceImpl implements ProductService {
                 .orElseThrow(() -> new ResourceNotFoundException("Product", "Id", productId));
 
         modelMapper.map(productDTO, productFromDb);
-
         Product savedProduct = productRepository.save(productFromDb);
 
         return modelMapper.map(savedProduct, ProductDTO.class);
@@ -108,7 +113,7 @@ public class ProductServiceImpl implements ProductService {
                             .name(product.getName())
                             .description(product.getDescription())
                             .category(modelMapper.map(product.getCategory(), CategoryDTO.class))
-                            .imageUrl(product.getImages().get(0).getImageUrl())
+                            .imageUrl(!product.getImages().isEmpty() ? product.getImages().get(0).getImageUrl() : "placehold.co/600x400")
                             .status(product.getStatus())
                             .variants(numOfVariants)
                             .build();
@@ -125,5 +130,33 @@ public class ProductServiceImpl implements ProductService {
         response.setLastPage(pageProducts.isLast());
 
         return response;
+    }
+
+    @Override
+    public ProductResponse getAllPublicProducts(Integer page, Integer perPage, String category, String search, String sortBy, String sortOrder) {
+        Sort sort = sortOrder.equalsIgnoreCase("asc") ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
+        Pageable pageable = PageRequest.of(page, perPage, sort);
+
+        // Only show ACTIVE products for public
+        Specification<Product> spec = Specification.where(ProductUtils.statusEquals("ACTIVE"))
+                .and(ProductUtils.nameContains(search))
+                .and(ProductUtils.categoryEquals(category));
+
+        return getProducts(spec, pageable);
+    }
+
+    @Override
+    public ProductDTO getPublicProductById(Long productId) {
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new ResourceNotFoundException("Product", "ProductId", productId));
+
+        // Only return if product is ACTIVE
+        if (!"ACTIVE".equals(product.getStatus())) {
+            throw new ResourceNotFoundException("Product", "ProductId", productId);
+        }
+
+        ProductDTO productDTO = modelMapper.map(product, ProductDTO.class);
+        productDTO.setCate(modelMapper.map(product.getCategory(), CategoryDTO.class));
+        return productDTO;
     }
 }

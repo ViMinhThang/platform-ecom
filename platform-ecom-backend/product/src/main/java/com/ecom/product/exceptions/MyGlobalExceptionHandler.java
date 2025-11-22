@@ -15,21 +15,18 @@ import java.util.Map;
 public class MyGlobalExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<Map<String, String>> myMethodArgumentNotValidException(MethodArgumentNotValidException e) {
+    public ResponseEntity<Map<String, String>> myApiException(APIException e) {
         Map<String, String> response = new HashMap<>();
-        e.getBindingResult().getAllErrors().forEach(err -> {
-            String fieldName = ((FieldError) err).getField();
-            String message = err.getDefaultMessage();
-            response.put(fieldName, message);
-        });
+        response.put("error", e.getMessage());
         return new ResponseEntity<Map<String, String>>(response,
                 HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<APIResponse> myResourceNotFoundException(ResourceNotFoundException e) {
+    public ResponseEntity<APIResponse<String>> myResourceNotFoundException(ResourceNotFoundException e) {
         String message = e.getMessage();
-        APIResponse apiResponse = new APIResponse(message, false);
+        APIResponse<String> apiResponse = new APIResponse<String>(message, false, e.getMessage());
         return new ResponseEntity<>(apiResponse, HttpStatus.NOT_FOUND);
     }
+
 }

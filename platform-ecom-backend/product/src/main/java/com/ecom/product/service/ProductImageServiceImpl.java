@@ -9,6 +9,7 @@ import com.ecom.product.repository.ProductRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -25,13 +26,19 @@ public class ProductImageServiceImpl implements ProductImageService {
     @Autowired
     private ModelMapper modelMapper;
 
+    @Autowired
+    private FileStorageService fileStorageService; 
+
     @Override
-    public ProductImageDTO addImageToProduct(Long productId, ProductImageDTO productImageDTO) {
+    public ProductImageDTO addImageToProduct(Long productId, MultipartFile image) {
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new ResourceNotFoundException("Product", "productId", productId));
 
-        ProductImage productImage = modelMapper.map(productImageDTO, ProductImage.class);
+        String imageUrl = fileStorageService.storeFile(image);
+
+        ProductImage productImage = new ProductImage();
         productImage.setProduct(product);
+        productImage.setImageUrl(imageUrl);
 
         ProductImage savedImage = productImageRepository.save(productImage);
         return modelMapper.map(savedImage, ProductImageDTO.class);
@@ -53,12 +60,15 @@ public class ProductImageServiceImpl implements ProductImageService {
     }
 
     @Override
-    public ProductImageDTO updateProductImage(Long productId, Long imageId, ProductImageDTO productImageDTO) {
+    public ProductImageDTO updateProductImage(Long productId, Long imageId, MultipartFile imageFile) {
         ProductImage image = productImageRepository.findByProductIdAndId(productId, imageId)
                 .orElseThrow(() -> new ResourceNotFoundException("ProductImage", "imageId", imageId));
 
-        modelMapper.map(productImageDTO, image);
-
+        if (imageFile != null && !imageFile.isEmpty()) {
+            fileStorageService.deleteFile(image.getImageUrl());
+            String newImageUrl = fileStorageService.storeFile(imageFile);
+            image.setImageUrl(newImageUrl);
+        }
         ProductImage updatedImage = productImageRepository.save(image);
         return modelMapper.map(updatedImage, ProductImageDTO.class);
     }
@@ -67,6 +77,8 @@ public class ProductImageServiceImpl implements ProductImageService {
     public void deleteProductImage(Long productId, Long imageId) {
         ProductImage image = productImageRepository.findByProductIdAndId(productId, imageId)
                 .orElseThrow(() -> new ResourceNotFoundException("ProductImage", "imageId", imageId));
+
+        fileStorageService.deleteFile(image.getImageUrl());
         productImageRepository.delete(image);
     }
 }

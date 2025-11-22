@@ -102,4 +102,18 @@ public class OrderController {
         Double totalRevenue = orderService.getTotalRevenue();
         return new ResponseEntity<Double>(totalRevenue,HttpStatus.OK);
     }
+
+    @GetMapping("/{orderId}")
+    public ResponseEntity<OrderDTO> getOrderById(@PathVariable Long orderId) {
+        OrderDTO order = orderService.getOrderById(orderId);
+        return new ResponseEntity<>(order, HttpStatus.OK);
+    }
+
+    @GetMapping("/user/{email}/verify-purchase")
+    public ResponseEntity<Boolean> verifyPurchase(
+            @PathVariable String email,
+            @RequestParam("productId") Long productId) {
+        Boolean hasPurchased = orderService.verifyUserPurchase(email, productId);
+        return ResponseEntity.ok(hasPurchased);
+    }
 }

@@ -25,6 +25,7 @@ public class GatewayConfig {
 
     @Autowired
     private AuthenticationFilter authFilter;
+
     @Bean
     public KeyResolver hostNameKeyResolver() {
         return exchange -> Mono.just(
@@ -57,17 +58,21 @@ public class GatewayConfig {
                 .route("product-admin", r -> r.path("/api/products/admin/**")
                         .filters(f -> f.filter(authFilter))
                         .uri("lb://product-service"))
+                .route("product-category-public", r -> r.path("/api/categories/public/**")
+                        .uri("lb://product-service"))
                 .route("product-category", r -> r.path("/api/categories/**")
+                        .filters(f -> f.filter(authFilter))
+                        .uri("lb://product-service"))
+                .route("product-image", r -> r.path("/api/product-image/**")
                         .filters(f -> f.filter(authFilter))
                         .uri("lb://product-service"))
                 .route("product-seller", r -> r.path("/api/products/seller/**")
                         .filters(f -> f.filter(authFilter))
                         .uri("lb://product-service"))
-                // ---------------- USER SERVICE ----------------
                 .route("user-service", r -> r.path("/api/auth/update-info")
-                        .filters(f->f.filter(authFilter))
+                        .filters(f -> f.filter(authFilter))
                         .uri("lb://user-service"))
-                .route("user-service", r -> r.path("/api/auth/**")
+                .route("user-service", r -> r.path("/api/auth/**").filters(f -> f.filter(authFilter))
                         .uri("lb://user-service"))
                 .route("user-addresses-private", r -> r.path(
                                 "/api/addresses/**"
@@ -83,12 +88,15 @@ public class GatewayConfig {
                         .uri("lb://user-service"))
                 .route("notification-service", r -> r
                         .path("/api/notification/**")
-                        .filters(f->f.filter(authFilter))
+                        .filters(f -> f.filter(authFilter))
                         .uri("lb://NOTIFICATION-SERVICE"))
                 .route("order-service", r -> r
                         .path("/api/orders/**", "/api/carts/**")
-                        .filters(f->f.filter(authFilter))
+                        .filters(f -> f.filter(authFilter))
                         .uri("lb://ORDER-SERVICE"))
+                .route("review-service", r -> r.path("/api/reviews/**")
+                        .filters(f -> f.filter(authFilter))
+                        .uri("lb://REVIEW-SERVICE"))
                 .route("eureka-server", r -> r
                         .path("/eureka/main")
                         .filters(f -> f.rewritePath("/eureka/main", "/"))
@@ -96,6 +104,7 @@ public class GatewayConfig {
                 .route("eureka-server-static", r -> r
                         .path("/eureka/**")
                         .uri("http://localhost:8761"))
+
                 .build();
     }
 }

@@ -8,11 +8,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/products/{productId}/images")
+@RequestMapping("/api/product-image/{productId}/images")
 public class ProductImageController {
 
     @Autowired
@@ -20,8 +21,8 @@ public class ProductImageController {
 
     @PostMapping
     @RequireRole("ROLE_SELLER")
-    public ResponseEntity<ProductImageDTO> addImageToProduct(@PathVariable Long productId, @Valid @RequestBody ProductImageDTO productImageDTO) {
-        ProductImageDTO savedImage = productImageService.addImageToProduct(productId, productImageDTO);
+    public ResponseEntity<ProductImageDTO> addImageToProduct(@PathVariable Long productId, @RequestParam("image") MultipartFile image) {
+        ProductImageDTO savedImage = productImageService.addImageToProduct(productId, image);
         return new ResponseEntity<>(savedImage, HttpStatus.CREATED);
     }
 
@@ -39,8 +40,8 @@ public class ProductImageController {
 
     @PutMapping("/{imageId}")
     @RequireRole("ROLE_SELLER")
-    public ResponseEntity<ProductImageDTO> updateProductImage(@PathVariable Long productId, @PathVariable Long imageId, @Valid @RequestBody ProductImageDTO productImageDTO) {
-        ProductImageDTO updatedImage = productImageService.updateProductImage(productId, imageId, productImageDTO);
+    public ResponseEntity<ProductImageDTO> updateProductImage(@PathVariable Long productId, @PathVariable Long imageId , @RequestPart(value = "image", required = false) MultipartFile imageFile) {
+        ProductImageDTO updatedImage = productImageService.updateProductImage(productId, imageId, imageFile);
         return new ResponseEntity<>(updatedImage, HttpStatus.OK);
     }
 

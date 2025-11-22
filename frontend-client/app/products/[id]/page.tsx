@@ -3,18 +3,20 @@ import { notFound } from "next/navigation";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { ReviewStats } from "@/components/ReviewStats";
+import { ReviewList } from "@/components/ReviewList";
 
 interface ProductDetailPageProps {
-  props: any;
+  params: any;
 }
 
 export default async function ProductDetailPage({
-  props,
+  params,
 }: ProductDetailPageProps) {
   let product = null;
-  const { params } = await props;
+  const { id } = await params;
   try {
-    product = await getPublicProductById(params.id);
+    product = await getPublicProductById(id);
   } catch (error) {
     console.error("Failed to fetch product:", error);
     notFound();
@@ -112,13 +114,15 @@ export default async function ProductDetailPage({
         </div>
       </div>
 
-      {/* Reviews Section - Placeholder for Client Component */}
+      {/* Reviews Section */}
       <div className="mt-16 border-t pt-12">
         <h2 className="text-2xl font-bold mb-6">Customer Reviews</h2>
-        <p className="text-muted-foreground">
-          Reviews component will be added here (Client Component with
-          pagination)
-        </p>
+
+        {/* Review Summary - Server Component */}
+        <ReviewStats productId={product.id} />
+
+        {/* Review List - Client Component */}
+        <ReviewList productId={product.id} />
       </div>
 
       {/* Related Products - Can be Server Component */}

@@ -28,16 +28,6 @@ public class ProductImage {
     @Column(nullable = false, length = 500)
     private String imageUrl;
 
-    @Column(name = "is_primary")
-    private Boolean isPrimary = false;
-
-    @Column(name = "sort_order")
-    private Integer sortOrder = 0;
-
-    @Type(JsonBinaryType.class)
-    @Column(columnDefinition = "jsonb")
-    @Builder.Default
-    private Map<String, Object> metadata = new HashMap<>();
 
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;

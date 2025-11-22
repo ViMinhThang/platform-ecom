@@ -13,6 +13,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -25,6 +26,10 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Autowired
     private ModelMapper modelMapper;
+
+    @Autowired
+    private FileStorageService fileStorageService;
+
 
     @Override
     public CategoryDTO createCategory(CategoryDTO categoryDTO) {
@@ -86,5 +91,18 @@ public class CategoryServiceImpl implements CategoryService {
 
         categoryRepository.delete(category);
         return modelMapper.map(category, CategoryDTO.class);
+    }
+
+    @Override
+    public String updateCategoryImage(Long categoryId, MultipartFile image) {
+        Category category = categoryRepository.findById(categoryId)
+                .orElseThrow(() -> new ResourceNotFoundException("Category", "categoryId", categoryId));
+        if (category.getImageUrl()!=null) {
+            fileStorageService.deleteFile(category.getImageUrl());
+        }
+        String imageUrl = fileStorageService.storeFile(image);
+        category.setImageUrl(imageUrl);
+        categoryRepository.save(category);
+        return imageUrl;
     }
 }

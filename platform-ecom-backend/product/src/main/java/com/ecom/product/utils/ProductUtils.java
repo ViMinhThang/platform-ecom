@@ -18,4 +18,9 @@ public class ProductUtils {
         if (category == null || category.isEmpty()) return null;
         return (root, query, cb) -> cb.equal(root.get("category").get("name"), category);
     }
+
+    public static Specification<Product> statusEquals(String status) {
+        if (status == null || status.isEmpty()) return null;
+        return (root, query, cb) -> cb.equal(root.get("status"), status);
+    }
 }

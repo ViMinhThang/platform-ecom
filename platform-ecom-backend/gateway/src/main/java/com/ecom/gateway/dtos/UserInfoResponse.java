@@ -10,7 +10,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserInfoResponse {
-    private Long id;
+    private Long userId;
     private String username;
     private String email;
     private List<String> roles;

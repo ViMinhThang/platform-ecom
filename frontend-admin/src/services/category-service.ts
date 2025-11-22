@@ -6,7 +6,7 @@ export const getCategories = async (
   token: string | undefined,
   params: any
 ): Promise<CategoryResponse> => {
-  const response = await axios.get<CategoryResponse>(API_BASE_URL, {
+  const response = await axios.get<CategoryResponse>(API_BASE_URL + "/public", {
     headers: { Authorization: `Bearer ${token}` },
     params,
   });
@@ -68,8 +68,11 @@ export const fetchCategory = async (
   categoryId: number,
   token: string
 ): Promise<Category> => {
-  const response = await axios.get<Category>(`${API_BASE_URL}/${categoryId}`, {
-    headers: { Authorization: `Bearer ${token}` },
-  });
+  const response = await axios.get<Category>(
+    `${API_BASE_URL}/${categoryId}/public`,
+    {
+      headers: { Authorization: `Bearer ${token}` },
+    }
+  );
   return response.data;
 };

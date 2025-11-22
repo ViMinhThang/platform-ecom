@@ -35,8 +35,8 @@ public class VariantOptionValueServiceImpl implements VariantOptionValueService 
         ProductVariant variant = productVariantRepository.findById(variantOptionValueDTO.getVariantId())
                 .orElseThrow(() -> new ResourceNotFoundException("ProductVariant", "variantId", variantOptionValueDTO.getVariantId()));
 
-        ProductOptionValue optionValue = productOptionValueRepository.findById(variantOptionValueDTO.getOptionValueId())
-                .orElseThrow(() -> new ResourceNotFoundException("ProductOptionValue", "optionValueId", variantOptionValueDTO.getOptionValueId()));
+        ProductOptionValue optionValue = productOptionValueRepository.findById(variantOptionValueDTO.getProductOptionValue().getId())
+                .orElseThrow(() -> new ResourceNotFoundException("ProductOptionValue", "optionValueId", variantOptionValueDTO.getProductOptionValue().getId()));
 
         VariantOptionValue variantOptionValue = new VariantOptionValue();
         variantOptionValue.setVariant(variant);

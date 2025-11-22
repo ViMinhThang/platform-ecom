@@ -15,4 +15,8 @@ public interface OrderService {
     Long getOrdersCount();
 
     Double getTotalRevenue();
+
+    OrderDTO getOrderById(Long orderId);
+
+    Boolean verifyUserPurchase(String email, Long productId);
 }

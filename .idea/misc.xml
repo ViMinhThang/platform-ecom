@@ -15,6 +15,7 @@
         <option value="$PROJECT_DIR$/platform-ecom-backend/order/pom.xml" />
         <option value="$PROJECT_DIR$/platform-ecom-backend/notification/pom.xml" />
         <option value="$PROJECT_DIR$/platform-ecom-backend/media/pom.xml" />
+        <option value="$PROJECT_DIR$/platform-ecom-backend/review/pom.xml" />
       </list>
     </option>
     <option name="ignoredFiles">

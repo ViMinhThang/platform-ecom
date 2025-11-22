@@ -48,9 +48,9 @@ public class ProductController {
     }
     @PostMapping("/seller")
     @RequireRole("ROLE_SELLER")
-    public ResponseEntity<ProductDTO> createProduct(@Valid @RequestBody ProductDTO productDTO, HttpServletRequest request) {
+    public ResponseEntity<ProductRowDTO> createProduct(@Valid @RequestBody ProductDTO productDTO, HttpServletRequest request) {
         Long userId = authContext.getUserId(request);
-        ProductDTO savedProduct = productService.createProduct(productDTO, userId);
+        ProductRowDTO savedProduct = productService.createProduct(productDTO, userId);
         return new ResponseEntity<>(savedProduct, HttpStatus.CREATED);
     }
 
@@ -72,6 +72,26 @@ public class ProductController {
     @RequireRole("ROLE_SELLER")
     public ResponseEntity<ProductDTO> getProductById(@PathVariable Long productId) {
         ProductDTO productDTO = productService.getProductById(productId);
+        return new ResponseEntity<>(productDTO, HttpStatus.OK);
+    }
+
+    // Public endpoints for anonymous users
+    @GetMapping("/public")
+    public ResponseEntity<ProductResponse> getPublicProducts(
+            @RequestParam(name = "page", defaultValue = "0", required = false) Integer page,
+            @RequestParam(name = "perPage", defaultValue = "12", required = false) Integer perPage,
+            @RequestParam(name = "category", required = false) String category,
+            @RequestParam(name = "search", required = false) String search,
+            @RequestParam(name = "sortBy", defaultValue = "createdAt", required = false) String sortBy,
+            @RequestParam(name = "sortOrder", defaultValue = "desc", required = false) String sortOrder
+    ) {
+        ProductResponse productResponse = productService.getAllPublicProducts(page, perPage, category, search, sortBy, sortOrder);
+        return new ResponseEntity<>(productResponse, HttpStatus.OK);
+    }
+
+    @GetMapping("/public/{productId}")
+    public ResponseEntity<ProductDTO> getPublicProductById(@PathVariable Long productId) {
+        ProductDTO productDTO = productService.getPublicProductById(productId);
         return new ResponseEntity<>(productDTO, HttpStatus.OK);
     }
 

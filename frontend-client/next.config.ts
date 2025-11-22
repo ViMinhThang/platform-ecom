@@ -4,31 +4,39 @@ const baseConfig: NextConfig = {
   images: {
     remotePatterns: [
       {
-        protocol: 'https',
-        hostname: 'api.slingacademy.com',
-        port: ''
-      },{
-        hostname:'localhost',
-        protocol:'http',
-        port:'8080',
-        pathname:'**'
+        protocol: "https",
+        hostname: "api.slingacademy.com",
+        port: "",
       },
       {
-        hostname:'example.com',
-        protocol:'https',
-        pathname:'**'
-      },{
-        protocol: 'https',
-        hostname: 'images.unsplash.com',
-        port: ''
-      },{
-        protocol: 'http',
-        hostname: 'lorempixel.com',
-        port: ''
-      }
-    ]
+        hostname: "localhost",
+        protocol: "http",
+        port: "8080",
+        pathname: "**",
+      },
+      {
+        hostname: "example.com",
+        protocol: "https",
+        pathname: "**",
+      },
+      {
+        protocol: "https",
+        hostname: "images.unsplash.com",
+        port: "",
+      },
+      {
+        protocol: "http",
+        hostname: "lorempixel.com",
+        port: "",
+      },
+      {
+        protocol: "https",
+        hostname: "placehold.co",
+        port: "",
+      },
+    ],
   },
-  transpilePackages: ['geist']
+  transpilePackages: ["geist"],
 };
 
 export default baseConfig;

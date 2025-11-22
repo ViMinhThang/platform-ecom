@@ -15,6 +15,7 @@ public class ProductVariantDTO {
     private BigDecimal price;
     private Integer stock;
     private Boolean isActive;
+    private String imageUrl;
     private List<VariantOptionValueDTO> optionValues;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;

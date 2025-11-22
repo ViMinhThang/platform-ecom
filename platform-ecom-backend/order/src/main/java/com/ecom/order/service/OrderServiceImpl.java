@@ -199,4 +199,32 @@ public class OrderServiceImpl implements OrderService {
     public Double getTotalRevenue() {
         return orderRepository.getTotalRevenue();
     }
+
+    @Override
+    public OrderDTO getOrderById(Long orderId) {
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new ResourceNotFoundException("Order", "orderId", orderId));
+        return modelMapper.map(order, OrderDTO.class);
+    }
+
+    @Override
+    public Boolean verifyUserPurchase(String email, Long productId) {
+        // Find all delivered orders for this user with the product
+        List<Order> userOrders = orderRepository.findAll().stream()
+                .filter(order -> order.getEmail().equals(email))
+                .filter(order -> "DELIVERED".equalsIgnoreCase(order.getOrderStatus()))
+                .toList();
+
+        // Check if any order contains the product
+        for (Order order : userOrders) {
+            boolean hasProduct = order.getOrderItems().stream()
+                    .anyMatch(item -> item.getProductId().equals(productId));
+            if (hasProduct) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }
+

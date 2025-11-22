@@ -31,7 +31,7 @@ public class AuthenticationFilter implements GatewayFilter {
                 .flatMap(userInfo -> {
                     ServerHttpRequest mutatedRequest = exchange.getRequest()
                             .mutate()
-                            .header("X-User-Id", String.valueOf(userInfo.getId()))
+                            .header("X-User-Id", String.valueOf(userInfo.getUserId()))
                             .header("X-Roles", String.join(",", userInfo.getRoles()))
                             .build();
 

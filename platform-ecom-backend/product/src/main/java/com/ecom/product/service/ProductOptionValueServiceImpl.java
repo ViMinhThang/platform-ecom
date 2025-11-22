@@ -27,8 +27,8 @@ public class ProductOptionValueServiceImpl implements ProductOptionValueService 
 
     @Override
     public ProductOptionValueDTO createProductOptionValue(ProductOptionValueDTO productOptionValueDTO) {
-        ProductOption option = productOptionRepository.findById(productOptionValueDTO.getOptionId())
-                .orElseThrow(() -> new ResourceNotFoundException("ProductOption", "optionId", productOptionValueDTO.getOptionId()));
+        ProductOption option = productOptionRepository.findById(productOptionValueDTO.getId())
+                .orElseThrow(() -> new ResourceNotFoundException("ProductOption", "optionId", productOptionValueDTO.getId()));
 
         ProductOptionValue productOptionValue = modelMapper.map(productOptionValueDTO, ProductOptionValue.class);
         productOptionValue.setOption(option);

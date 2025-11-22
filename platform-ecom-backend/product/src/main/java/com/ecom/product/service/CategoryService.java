@@ -3,6 +3,7 @@ package com.ecom.product.service;
 import com.ecom.product.dto.CategoryDTO;
 import com.ecom.product.dto.CategoryResponse;
 import jakarta.validation.Valid;
+import org.springframework.web.multipart.MultipartFile;
 
 public interface CategoryService {
 
@@ -15,4 +16,6 @@ public interface CategoryService {
     CategoryDTO updateCategory(@Valid CategoryDTO categoryDTO, Long categoryId);
 
     CategoryDTO deleteCategory(Long categoryId);
+
+    String updateCategoryImage(Long categoryId, MultipartFile image);
 }

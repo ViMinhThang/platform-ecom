@@ -19,7 +19,11 @@ public class WebConfig {
     }
     @Bean
     public ModelMapper modelMapper() {
-        return new ModelMapper();
+        ModelMapper modelMapper = new ModelMapper();
+        modelMapper.typeMap(ProductDTO.class, Product.class)
+                .addMappings(mapper -> mapper.skip(Product::setId));
+
+        return modelMapper;
     }
 
 }

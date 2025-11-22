@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/api/categories")
@@ -19,13 +20,13 @@ public class CategoryController {
     private CategoryService categoryService;
 
     @PostMapping
-    @RequireRole("ROLE_ADMIN")
+    @RequireRole("ROLE_SELLER")
     public ResponseEntity<CategoryDTO> createCategory(@Valid @RequestBody CategoryDTO categoryDTO) {
         CategoryDTO savedCategoryDTO = categoryService.createCategory(categoryDTO);
         return new ResponseEntity<>(savedCategoryDTO, HttpStatus.CREATED);
     }
 
-    @GetMapping
+    @GetMapping("/public")
     public ResponseEntity<CategoryResponse> getAllCategories(
             @RequestParam(name = "pageNumber", defaultValue = AppConstants.PAGE_NUMBER, required = false) Integer pageNumber,
             @RequestParam(name = "pageSize", defaultValue = AppConstants.PAGE_SIZE, required = false) Integer pageSize,
@@ -35,21 +36,30 @@ public class CategoryController {
         return new ResponseEntity<>(categoryResponse, HttpStatus.OK);
     }
 
-    @GetMapping("/{categoryId}")
+    @GetMapping("/public/{categoryId}")
     public ResponseEntity<CategoryDTO> getCategoryById(@PathVariable Long categoryId) {
         CategoryDTO categoryDTO = categoryService.getCategoryById(categoryId);
         return new ResponseEntity<>(categoryDTO, HttpStatus.OK);
     }
 
     @PutMapping("/{categoryId}")
-    @RequireRole("ROLE_ADMIN")
+    @RequireRole("ROLE_SELLER")
     public ResponseEntity<CategoryDTO> updateCategory(@Valid @RequestBody CategoryDTO categoryDTO, @PathVariable Long categoryId) {
         CategoryDTO updatedCategory = categoryService.updateCategory(categoryDTO, categoryId);
         return new ResponseEntity<>(updatedCategory, HttpStatus.OK);
     }
 
+
+    @PutMapping("/{categoryId}/image")
+    @RequireRole("ROLE_SELLER")
+    public ResponseEntity<String> uploadCategoryImage(@PathVariable Long categoryId, @RequestParam("file") MultipartFile image) {
+        String updatedImage = categoryService.updateCategoryImage(categoryId, image);
+        return new ResponseEntity<>(updatedImage, HttpStatus.OK);
+    }
+
+
     @DeleteMapping("/{categoryId}")
-    @RequireRole("ROLE_ADMIN")
+    @RequireRole("ROLE_SELLER")
     public ResponseEntity<CategoryDTO> deleteCategory(@PathVariable Long categoryId) {
         CategoryDTO deletedCategory = categoryService.deleteCategory(categoryId);
         return new ResponseEntity<>(deletedCategory, HttpStatus.OK);

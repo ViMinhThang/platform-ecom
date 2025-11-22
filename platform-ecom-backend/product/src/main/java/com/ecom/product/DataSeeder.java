@@ -7,6 +7,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -20,6 +21,7 @@ public class DataSeeder implements CommandLineRunner {
     private final ProductOptionValueRepository optionValueRepo;
     private final ProductVariantRepository variantRepo;
     private final ProductImageRepository imageRepo;
+    private final VariantOptionValueRepository variantOptionValueRepository;
 
     @Override
     public void run(String... args) {
@@ -28,6 +30,9 @@ public class DataSeeder implements CommandLineRunner {
         // CATEGORY
         Category cat = categoryRepo.save(Category.builder()
                 .name("Thời trang nam")
+                .createdAt(LocalDateTime.now())
+                .updatedAt(LocalDateTime.now())
+                .imageUrl("a92c7a1e-65b7-4f42-b44b-ff6f84b76bf7_background.jpg")
                 .build());
 
         // PRODUCT
@@ -72,6 +77,7 @@ public class DataSeeder implements CommandLineRunner {
         ProductOptionValue l = optionValueRepo.save(ProductOptionValue.builder()
                 .option(sizeOpt).value("L").displayValue("Size L").sortOrder(0).build());
 
+
         // VARIANTS
         ProductVariant v1 = variantRepo.save(ProductVariant.builder()
                 .product(product)
@@ -91,11 +97,13 @@ public class DataSeeder implements CommandLineRunner {
 
         ProductImage img = ProductImage.builder()
                 .product(product)
-                .imageUrl("https://localhost:8080/uploads/1762084687965_background.jpg")
-                .isPrimary(true)
-                .metadata(Map.of("resolution", "800x800"))
+                .imageUrl("1762084687965_background.jpg")
                 .build();
 
+        VariantOptionValue variantOptionValue = variantOptionValueRepository.save(VariantOptionValue.builder().variant(v1).optionValue(red).build());
+        VariantOptionValue variantOptionValue1 = variantOptionValueRepository.save(VariantOptionValue.builder().variant(v1).optionValue(m).build());
+        VariantOptionValue variantOptionValue2 = variantOptionValueRepository.save(VariantOptionValue.builder().variant(v2).optionValue(blue).build());
+        VariantOptionValue variantOptionValue3 = variantOptionValueRepository.save(VariantOptionValue.builder().variant(v2).optionValue(l).build());
         imageRepo.save(img);
     }
 }
