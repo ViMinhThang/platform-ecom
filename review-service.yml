@@ -1,1 +1,62 @@
+spring:
+  application:
+    name: review-service
+  config:
+    import: "configserver:http://localhost:8888"
+  datasource:
+    url: jdbc:postgresql://localhost:5432/review_db
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+  cloud:
+    stream:
+      kafka:
+        binder:
+          brokers: localhost:9092
+      bindings:
+        reviewCreated-out-0:
+          destination: review-events
+          content-type: application/json
+        reviewUpdated-out-0:
+          destination: review-events
+          content-type: application/json
+        reviewDeleted-out-0:
+          destination: review-events
+          content-type: application/json
 
+server:
+  port: 8084
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+    register-with-eureka: true
+    fetch-registry: true
+  instance:
+    prefer-ip-address: true
+    hostname: localhost
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus
+  tracing:
+    sampling:
+      probability: 1.0
+  zipkin:
+    tracing:
+      endpoint: http://localhost:9411/api/v2/spans
+
+jwt:
+  secret: "mySecret123"
+  expirationMs: 600000
