@@ -39,20 +39,23 @@ export function ProductCard({
 
   return (
     <Link href={`/products/${id}`}>
-      <Card className="p-0 group overflow-hidden border border-zinc-200 dark:border-zinc-800 shadow-sm rounded-md hover:shadow-md transition-shadow">
-        <CardContent className="p-0 relative aspect-square bg-zinc-100 dark:bg-zinc-800 overflow-hidden">
+      <Card className="p-0 group overflow-hidden border border-border rounded-md hover:border-primary transition-colors">
+        <CardContent className="p-0 relative aspect-square bg-secondary overflow-hidden">
           {isNew && (
-            <Badge className="absolute top-2 left-2 z-10 bg-blue-600 text-white hover:bg-blue-700 rounded-sm px-2 py-0.5 text-xs">
+            <Badge className="absolute top-2 left-2 z-10 bg-primary text-primary-foreground hover:bg-primary/90 rounded-sm px-2 py-0.5 text-[10px]">
               New
             </Badge>
           )}
           {hasSale && (
-            <Badge className="absolute top-2 right-2 z-10 bg-red-600 text-white hover:bg-red-700 rounded-sm px-2 py-0.5 text-xs">
+            <Badge className="absolute top-2 right-2 z-10 bg-accent text-accent-foreground hover:bg-accent/90 rounded-sm px-2 py-0.5 text-[10px]">
               Sale
             </Badge>
           )}
           {!inStock && (
-            <Badge variant="secondary" className="absolute top-2 right-2 z-10">
+            <Badge
+              variant="secondary"
+              className="absolute top-2 right-2 z-10 text-[10px]"
+            >
               Out of Stock
             </Badge>
           )}
@@ -60,34 +63,36 @@ export function ProductCard({
             src={`http://localhost:8080/uploads/products/${displayImage}`}
             alt={name}
             fill
-            className="object-cover"
+            className="object-cover transition-transform duration-300"
           />
         </CardContent>
-        <CardFooter className="flex flex-col items-start p-3 space-y-2">
+        <CardFooter className="flex flex-col items-start p-2.5 space-y-1.5">
           <div className="space-y-1 w-full">
-            <p className="text-xs text-muted-foreground">{category}</p>
-            <h3 className="font-medium text-sm leading-tight line-clamp-2 h-10">
+            <p className="text-[10px] text-muted-foreground uppercase tracking-wider">
+              {category}
+            </p>
+            <h3 className="font-medium text-sm leading-tight line-clamp-2 h-9 text-foreground group-hover:text-primary transition-colors">
               {name}
             </h3>
-            <div className="flex items-center justify-between w-full">
-              <div className="flex items-center gap-2">
+            <div className="flex items-center justify-between w-full pt-1">
+              <div className="flex items-center gap-1.5">
                 {hasSale ? (
                   <>
-                    <p className="text-base font-bold text-red-600">
+                    <p className="text-sm font-bold text-accent">
                       ${salePrice!.toFixed(2)}
                     </p>
-                    <p className="text-sm text-muted-foreground line-through">
+                    <p className="text-xs text-muted-foreground line-through">
                       ${displayPrice.toFixed(2)}
                     </p>
                   </>
                 ) : (
-                  <p className="text-base font-bold text-blue-600">
+                  <p className="text-sm font-bold text-primary">
                     ${displayPrice.toFixed(2)}
                   </p>
                 )}
               </div>
               {totalSold > 0 && (
-                <p className="text-xs text-muted-foreground">
+                <p className="text-[10px] text-muted-foreground">
                   {totalSold} sold
                 </p>
               )}

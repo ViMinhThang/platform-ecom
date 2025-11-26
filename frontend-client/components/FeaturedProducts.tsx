@@ -6,7 +6,7 @@ export async function FeaturedProducts() {
   let products: ProductRow[] = [];
 
   try {
-    const data = await getPublicProducts({ page: 0, perPage: 10 });
+    const data = await getPublicProducts({ page: 0, perPage: 50 });
     products = data.content;
   } catch (error) {
     console.error("Failed to fetch products:", error);

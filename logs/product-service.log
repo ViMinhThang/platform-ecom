@@ -1745,3 +1745,57 @@ Caused by: org.apache.hc.client5.http.HttpHostConnectException: Connect to http:
 2025-11-26T22:08:33.300+07:00  INFO 81294 --- [product-service] [main] [                                                 ] com.ecom.product.seeder.FakeDataSeeder   : ✓ Created 150 products
 2025-11-26T22:08:41.793+07:00  INFO 81294 --- [product-service] [main] [                                                 ] com.ecom.product.seeder.FakeDataSeeder   : ✓ Added options, variants, and images to products
 2025-11-26T22:08:41.794+07:00  INFO 81294 --- [product-service] [main] [                                                 ] com.ecom.product.seeder.FakeDataSeeder   : Product service fake data seeding completed!
+2025-11-26T22:11:39.621+07:00  INFO 81294 --- [product-service] [http-nio-8084-exec-2] [                                                 ] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-11-26T22:11:39.622+07:00  INFO 81294 --- [product-service] [http-nio-8084-exec-2] [                                                 ] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2025-11-26T22:11:39.624+07:00  INFO 81294 --- [product-service] [http-nio-8084-exec-2] [                                                 ] o.s.web.servlet.DispatcherServlet        : Completed initialization in 2 ms
+2025-11-26T22:11:40.788+07:00  WARN 81294 --- [product-service] [AsyncReporter{org.springframework.boot.actuate.autoconfigure.tracing.zipkin.ZipkinRestTemplateSender@19d76106}] [                                                 ] z.r.AsyncReporter$BoundedAsyncReporter   : Spans were dropped due to exceptions. All subsequent errors will be logged at FINE level.
+2025-11-26T22:11:40.789+07:00  WARN 81294 --- [product-service] [AsyncReporter{org.springframework.boot.actuate.autoconfigure.tracing.zipkin.ZipkinRestTemplateSender@19d76106}] [                                                 ] z.r.AsyncReporter$BoundedAsyncReporter   : Dropped 2 spans due to ResourceAccessException(I/O error on POST request for "http://localhost:9411/api/v2/spans": Connect to http://localhost:9411 [localhost/127.0.0.1, localhost/0:0:0:0:0:0:0:1] failed: Connection refused)
+
+org.springframework.web.client.ResourceAccessException: I/O error on POST request for "http://localhost:9411/api/v2/spans": Connect to http://localhost:9411 [localhost/127.0.0.1, localhost/0:0:0:0:0:0:0:1] failed: Connection refused
+	at org.springframework.web.client.RestTemplate.createResourceAccessException(RestTemplate.java:915) ~[spring-web-6.1.6.jar:6.1.6]
+	at org.springframework.web.client.RestTemplate.doExecute(RestTemplate.java:895) ~[spring-web-6.1.6.jar:6.1.6]
+	at org.springframework.web.client.RestTemplate.execute(RestTemplate.java:790) ~[spring-web-6.1.6.jar:6.1.6]
+	at org.springframework.web.client.RestTemplate.exchange(RestTemplate.java:672) ~[spring-web-6.1.6.jar:6.1.6]
+	at org.springframework.boot.actuate.autoconfigure.tracing.zipkin.ZipkinRestTemplateSender$RestTemplateHttpPostCall.doExecute(ZipkinRestTemplateSender.java:68) ~[spring-boot-actuator-autoconfigure-3.2.5.jar:3.2.5]
+	at org.springframework.boot.actuate.autoconfigure.tracing.zipkin.ZipkinRestTemplateSender$RestTemplateHttpPostCall.doExecute(ZipkinRestTemplateSender.java:48) ~[spring-boot-actuator-autoconfigure-3.2.5.jar:3.2.5]
+	at zipkin2.Call$Base.execute(Call.java:391) ~[zipkin-2.23.2.jar:na]
+	at zipkin2.reporter.AsyncReporter$BoundedAsyncReporter.flush(AsyncReporter.java:299) ~[zipkin-reporter-2.16.3.jar:na]
+	at zipkin2.reporter.AsyncReporter$Flusher.run(AsyncReporter.java:378) ~[zipkin-reporter-2.16.3.jar:na]
+	at java.base/java.lang.Thread.run(Thread.java:1474) ~[na:na]
+Caused by: org.apache.hc.client5.http.HttpHostConnectException: Connect to http://localhost:9411 [localhost/127.0.0.1, localhost/0:0:0:0:0:0:0:1] failed: Connection refused
+	at java.base/sun.nio.ch.Net.pollConnect(Native Method) ~[na:na]
+	at java.base/sun.nio.ch.Net.pollConnectNow(Net.java:639) ~[na:na]
+	at java.base/sun.nio.ch.NioSocketImpl.timedFinishConnect(NioSocketImpl.java:543) ~[na:na]
+	at java.base/sun.nio.ch.NioSocketImpl.connect(NioSocketImpl.java:594) ~[na:na]
+	at java.base/java.net.SocksSocketImpl.connect(SocksSocketImpl.java:284) ~[na:na]
+	at java.base/java.net.Socket.connect(Socket.java:659) ~[na:na]
+	at org.apache.hc.client5.http.socket.PlainConnectionSocketFactory.lambda$connectSocket$0(PlainConnectionSocketFactory.java:91) ~[httpclient5-5.2.3.jar:5.2.3]
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:251) ~[na:na]
+	at org.apache.hc.client5.http.socket.PlainConnectionSocketFactory.connectSocket(PlainConnectionSocketFactory.java:90) ~[httpclient5-5.2.3.jar:5.2.3]
+	at org.apache.hc.client5.http.socket.ConnectionSocketFactory.connectSocket(ConnectionSocketFactory.java:123) ~[httpclient5-5.2.3.jar:5.2.3]
+	at org.apache.hc.client5.http.impl.io.DefaultHttpClientConnectionOperator.connect(DefaultHttpClientConnectionOperator.java:184) ~[httpclient5-5.2.3.jar:5.2.3]
+	at org.apache.hc.client5.http.impl.io.PoolingHttpClientConnectionManager.connect(PoolingHttpClientConnectionManager.java:447) ~[httpclient5-5.2.3.jar:5.2.3]
+	at org.apache.hc.client5.http.impl.classic.InternalExecRuntime.connectEndpoint(InternalExecRuntime.java:162) ~[httpclient5-5.2.3.jar:5.2.3]
+	at org.apache.hc.client5.http.impl.classic.InternalExecRuntime.connectEndpoint(InternalExecRuntime.java:172) ~[httpclient5-5.2.3.jar:5.2.3]
+	at org.apache.hc.client5.http.impl.classic.ConnectExec.execute(ConnectExec.java:142) ~[httpclient5-5.2.3.jar:5.2.3]
+	at org.apache.hc.client5.http.impl.classic.ExecChainElement.execute(ExecChainElement.java:51) ~[httpclient5-5.2.3.jar:5.2.3]
+	at org.apache.hc.client5.http.impl.classic.ProtocolExec.execute(ProtocolExec.java:192) ~[httpclient5-5.2.3.jar:5.2.3]
+	at org.apache.hc.client5.http.impl.classic.ExecChainElement.execute(ExecChainElement.java:51) ~[httpclient5-5.2.3.jar:5.2.3]
+	at org.apache.hc.client5.http.impl.classic.HttpRequestRetryExec.execute(HttpRequestRetryExec.java:96) ~[httpclient5-5.2.3.jar:5.2.3]
+	at org.apache.hc.client5.http.impl.classic.ExecChainElement.execute(ExecChainElement.java:51) ~[httpclient5-5.2.3.jar:5.2.3]
+	at org.apache.hc.client5.http.impl.classic.ContentCompressionExec.execute(ContentCompressionExec.java:152) ~[httpclient5-5.2.3.jar:5.2.3]
+	at org.apache.hc.client5.http.impl.classic.ExecChainElement.execute(ExecChainElement.java:51) ~[httpclient5-5.2.3.jar:5.2.3]
+	at org.apache.hc.client5.http.impl.classic.RedirectExec.execute(RedirectExec.java:115) ~[httpclient5-5.2.3.jar:5.2.3]
+	at org.apache.hc.client5.http.impl.classic.ExecChainElement.execute(ExecChainElement.java:51) ~[httpclient5-5.2.3.jar:5.2.3]
+	at org.apache.hc.client5.http.impl.classic.InternalHttpClient.doExecute(InternalHttpClient.java:170) ~[httpclient5-5.2.3.jar:5.2.3]
+	at org.apache.hc.client5.http.impl.classic.CloseableHttpClient.execute(CloseableHttpClient.java:87) ~[httpclient5-5.2.3.jar:5.2.3]
+	at org.apache.hc.client5.http.impl.classic.CloseableHttpClient.execute(CloseableHttpClient.java:55) ~[httpclient5-5.2.3.jar:5.2.3]
+	at org.apache.hc.client5.http.classic.HttpClient.executeOpen(HttpClient.java:183) ~[httpclient5-5.2.3.jar:5.2.3]
+	at org.springframework.http.client.HttpComponentsClientHttpRequest.executeInternal(HttpComponentsClientHttpRequest.java:95) ~[spring-web-6.1.6.jar:6.1.6]
+	at org.springframework.http.client.AbstractStreamingClientHttpRequest.executeInternal(AbstractStreamingClientHttpRequest.java:70) ~[spring-web-6.1.6.jar:6.1.6]
+	at org.springframework.http.client.AbstractClientHttpRequest.execute(AbstractClientHttpRequest.java:66) ~[spring-web-6.1.6.jar:6.1.6]
+	at org.springframework.web.client.RestTemplate.doExecute(RestTemplate.java:889) ~[spring-web-6.1.6.jar:6.1.6]
+	... 8 common frames omitted
+
+2025-11-26T22:13:31.742+07:00  INFO 81294 --- [product-service] [AsyncResolver-bootstrap-executor-0] [                                                 ] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2025-11-26T22:18:31.748+07:00  INFO 81294 --- [product-service] [AsyncResolver-bootstrap-executor-0] [                                                 ] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
