@@ -25,6 +25,7 @@ export interface ProductRow {
   status: string;
   variants?: number;
   description?: string;
+  firstVariant?: ProductVariant;
 }
 
 export interface Product {
@@ -49,6 +50,30 @@ export interface ProductResponse {
   lastPage: boolean;
 }
 
+export interface ProductOptionValue {
+  id: number;
+  value: string;
+  displayValue: string;
+  sortOrder: number;
+}
+
+export interface ProductOption {
+  id: number;
+  name: string;
+  displayName: string;
+  isRequired: boolean;
+  sortOrder: number;
+  values: ProductOptionValue[];
+}
+
+export interface VariantOptionValue {
+  id: number;
+  variantId: number;
+  optionId: number;
+  productOptionValue: ProductOptionValue;
+  priceModifier: number;
+}
+
 export interface ProductVariant {
   id: number;
   sku: string;
@@ -56,4 +81,10 @@ export interface ProductVariant {
   stock: number;
   isActive: boolean;
   imageUrl?: string;
+  optionValues: VariantOptionValue[];
+}
+
+export interface ProductDetail extends Product {
+  options: ProductOption[];
+  variants: ProductVariant[];
 }

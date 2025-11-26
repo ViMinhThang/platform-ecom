@@ -108,6 +108,20 @@ public class ProductServiceImpl implements ProductService {
         List<ProductRowDTO> productRowDTOS = pageProducts.getContent().stream()
                 .map(product -> {
                     Integer numOfVariants = product.getVariants().size();
+                    
+                    // Find first active variant with stock > 0, or just first active
+                    com.ecom.product.entity.ProductVariant firstVariant = product.getVariants().stream()
+                            .filter(v -> v.getIsActive())
+                            .filter(v -> v.getStock() > 0)
+                            .findFirst()
+                            .orElse(product.getVariants().stream()
+                                    .filter(v -> v.getIsActive())
+                                    .findFirst()
+                                    .orElse(null));
+
+                    com.ecom.product.dto.ProductVariantDTO firstVariantDTO = firstVariant != null ? 
+                            modelMapper.map(firstVariant, com.ecom.product.dto.ProductVariantDTO.class) : null;
+
                     return ProductRowDTO.builder()
                             .id(product.getId())
                             .name(product.getName())
@@ -116,6 +130,7 @@ public class ProductServiceImpl implements ProductService {
                             .imageUrl(!product.getImages().isEmpty() ? product.getImages().get(0).getImageUrl() : "placehold.co/600x400")
                             .status(product.getStatus())
                             .variants(numOfVariants)
+                            .firstVariant(firstVariantDTO)
                             .build();
                 })
                 .toList();
@@ -158,5 +173,40 @@ public class ProductServiceImpl implements ProductService {
         ProductDTO productDTO = modelMapper.map(product, ProductDTO.class);
         productDTO.setCate(modelMapper.map(product.getCategory(), CategoryDTO.class));
         return productDTO;
+    }
+
+    @Override
+    public com.ecom.product.dto.ProductDetailDTO getProductWithVariants(Long productId) {
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new ResourceNotFoundException("Product", "ProductId", productId));
+
+        if (!"ACTIVE".equals(product.getStatus())) {
+            throw new ResourceNotFoundException("Product", "ProductId", productId);
+        }
+
+        com.ecom.product.dto.ProductDetailDTO productDetailDTO = modelMapper.map(product, com.ecom.product.dto.ProductDetailDTO.class);
+        productDetailDTO.setCate(modelMapper.map(product.getCategory(), CategoryDTO.class));
+        
+        // Map options and variants explicitly if needed, but ModelMapper might handle it if configured correctly.
+        // Assuming ModelMapper handles List mapping if names match.
+        // Let's ensure options and variants are mapped.
+        
+        // Note: Product entity has 'options' and 'variants' lists. ProductDetailDTO has same names.
+        // However, we need to ensure lazy loading doesn't fail or we fetch them.
+        // The entity definition shows @OneToMany(fetch = FetchType.LAZY) for variants (default) but EAGER for options?
+        // Let's check Entity again.
+        // Product.java: variants is OneToMany (default lazy), options is OneToMany (default lazy).
+        // We need to make sure they are initialized.
+        
+        productDetailDTO.setOptions(product.getOptions().stream()
+                .map(option -> modelMapper.map(option, com.ecom.product.dto.ProductOptionDTO.class))
+                .collect(Collectors.toList()));
+
+        productDetailDTO.setVariants(product.getVariants().stream()
+                .filter(v -> v.getIsActive())
+                .map(variant -> modelMapper.map(variant, com.ecom.product.dto.ProductVariantDTO.class))
+                .collect(Collectors.toList()));
+
+        return productDetailDTO;
     }
 }

@@ -15,6 +15,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "./ui/select";
+import Image from "next/image";
 
 interface ReviewListProps {
   productId: number;
@@ -219,13 +220,9 @@ function ReviewCard({ review }: { review: Review }) {
               key={index}
               className="w-20 h-20 rounded-md border bg-muted overflow-hidden"
             >
-              <img
-                src={`/uploads/reviews/${image}`}
-                alt={`Review image ${index + 1}`}
-                className="w-full h-full object-cover"
-                onError={(e) => {
-                  e.currentTarget.src = "https://placehold.co/80x80?text=Image";
-                }}
+              <Image
+                src={"http://localhost:3000/uploads/reviews/" + image}
+                alt=""
               />
             </div>
           ))}

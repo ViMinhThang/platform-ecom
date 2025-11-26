@@ -95,4 +95,10 @@ public class ProductController {
         return new ResponseEntity<>(productDTO, HttpStatus.OK);
     }
 
+    @GetMapping("/public/{productId}/with-variants")
+    public ResponseEntity<com.ecom.product.dto.ProductDetailDTO> getPublicProductWithVariants(@PathVariable Long productId) {
+        com.ecom.product.dto.ProductDetailDTO productDetailDTO = productService.getProductWithVariants(productId);
+        return new ResponseEntity<>(productDetailDTO, HttpStatus.OK);
+    }
+
 }

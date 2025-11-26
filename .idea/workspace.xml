@@ -6,98 +6,27 @@
   <component name="ChangeListManager">
     <list default="true" id="c48beeac-7758-42e4-81dd-f068fbcd38be" name="Changes" comment="update spring cloud stream dependency">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-admin/frontend-client/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-admin/frontend-client/README.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-admin/frontend-client/app/favicon.ico" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-admin/frontend-client/app/globals.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-admin/frontend-client/app/layout.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-admin/frontend-client/app/page.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-admin/frontend-client/components.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-admin/frontend-client/eslint.config.mjs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-admin/frontend-client/lib/utils.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-admin/frontend-client/next.config.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-admin/frontend-client/package-lock.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-admin/frontend-client/package.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-admin/frontend-client/postcss.config.mjs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-admin/frontend-client/public/file.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-admin/frontend-client/public/globe.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-admin/frontend-client/public/next.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-admin/frontend-client/public/vercel.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-admin/frontend-client/public/window.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-admin/frontend-client/tsconfig.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-admin/src/services/category-service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-admin/src/services/category-service.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/app/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/app/page.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend-client/app/products/[id]/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/app/products/[id]/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/BannerGrid.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/BannerGrid.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/Hero.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/Hero.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/next.config.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/next.config.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-client/app/products/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/app/products/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-client/components/ProductCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/ProductCard.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-client/components/ReviewList.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/ReviewList.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-client/lib/api/client.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/lib/api/client.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-client/lib/api/products.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/lib/api/products.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-client/lib/api/reviews.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/lib/api/reviews.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-client/types/product.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/types/product.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/logs/order-service.log" beforeDir="false" afterPath="$PROJECT_DIR$/logs/order-service.log" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/logs/product-service.log" beforeDir="false" afterPath="$PROJECT_DIR$/logs/product-service.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/logs/product-service.log.2025-11-02.0.gz" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logs/product-service.log.2025-11-03.0.gz" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logs/product-service.log.2025-11-04.0.gz" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logs/product-service.log.2025-11-05.0.gz" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logs/product-service.log.2025-11-06.0.gz" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/logs/user-service.log" beforeDir="false" afterPath="$PROJECT_DIR$/logs/user-service.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/logs/user-service.log.2025-11-02.0.gz" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logs/user-service.log.2025-11-03.0.gz" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logs/user-service.log.2025-11-04.0.gz" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logs/user-service.log.2025-11-05.0.gz" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logs/user-service.log.2025-11-06.0.gz" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/gateway/src/main/java/com/ecom/gateway/dtos/UserInfoResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/gateway/src/main/java/com/ecom/gateway/dtos/UserInfoResponse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/gateway/src/main/java/com/ecom/gateway/security/AuthenticationFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/gateway/src/main/java/com/ecom/gateway/security/AuthenticationFilter.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/platform-ecom-backend/gateway/src/main/java/com/ecom/gateway/security/GatewayConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/gateway/src/main/java/com/ecom/gateway/security/GatewayConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/order/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/order/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/order/src/main/java/com/ecom/order/controller/OrderController.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/order/src/main/java/com/ecom/order/controller/OrderController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/order/src/main/java/com/ecom/order/service/OrderService.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/order/src/main/java/com/ecom/order/service/OrderService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/order/src/main/java/com/ecom/order/service/OrderServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/order/src/main/java/com/ecom/order/service/OrderServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/product/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/product/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/DataSeeder.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/DataSeeder.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/config/WebConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/config/WebConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/controller/CategoryController.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/controller/CategoryController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/order/src/main/java/com/ecom/order/seeder/FakeDataSeeder.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/order/src/main/java/com/ecom/order/seeder/FakeDataSeeder.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/controller/ProductController.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/controller/ProductController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/controller/ProductImageController.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/controller/ProductImageController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/controller/ProductVariantController.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/controller/ProductVariantController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/dto/APIResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/dto/APIResponse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/dto/CategoryDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/dto/CategoryDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/dto/ProductOptionValueDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/dto/ProductOptionValueDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/dto/ProductVariantDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/dto/ProductVariantDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/dto/VariantOptionValueDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/dto/VariantOptionValueDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/entity/Category.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/entity/Category.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/entity/ProductImage.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/entity/ProductImage.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/entity/ProductOption.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/entity/ProductOption.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/entity/ProductVariant.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/entity/ProductVariant.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/entity/VariantOptionValue.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/entity/VariantOptionValue.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/exceptions/MyGlobalExceptionHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/exceptions/MyGlobalExceptionHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/repository/ProductVariantRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/repository/ProductVariantRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/service/CategoryService.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/service/CategoryService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/service/CategoryServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/service/CategoryServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/service/FileStorageService.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/service/FileStorageService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/service/FileStorageServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/service/FileStorageServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/service/ProductImageService.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/service/ProductImageService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/service/ProductImageServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/service/ProductImageServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/service/ProductOptionServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/service/ProductOptionServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/service/ProductOptionValueServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/service/ProductOptionValueServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/dto/ProductRowDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/dto/ProductRowDTO.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/service/ProductService.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/service/ProductService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/service/ProductServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/service/ProductServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/service/ProductVariantServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/service/ProductVariantServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/service/VariantOptionValueServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/service/VariantOptionValueServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/utils/ProductUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/utils/ProductUtils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/resources/application.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/user/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/user/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/user/src/main/java/com/ecom/user/aspect/RoleGuardAspect.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/user/src/main/java/com/ecom/user/aspect/RoleGuardAspect.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/user/src/main/java/com/ecom/user/config/AppConstants.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/user/src/main/java/com/ecom/user/config/AppConstants.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/user/src/main/java/com/ecom/user/controller/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/user/src/main/java/com/ecom/user/controller/UserController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/user/src/main/java/com/ecom/user/dtos/RoleDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/user/src/main/java/com/ecom/user/dtos/RoleDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/user/src/main/java/com/ecom/user/dtos/RoleResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/user/src/main/java/com/ecom/user/dtos/RoleResponse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/user/src/main/java/com/ecom/user/dtos/UserDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/user/src/main/java/com/ecom/user/dtos/UserDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/user/src/main/java/com/ecom/user/dtos/UserInfoResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/user/src/main/java/com/ecom/user/dtos/UserInfoResponse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/user/src/main/java/com/ecom/user/entity/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/user/src/main/java/com/ecom/user/entity/User.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/user/src/main/java/com/ecom/user/service/AuthService.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/user/src/main/java/com/ecom/user/service/AuthService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/user/src/main/java/com/ecom/user/service/AuthServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/user/src/main/java/com/ecom/user/service/AuthServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/user/src/main/java/com/ecom/user/service/FileStorageServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/user/src/main/java/com/ecom/user/service/FileStorageServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/user/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/user/src/main/resources/application.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/review/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/review/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/review/src/main/java/com/ecom/review/config/WebConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/review/src/main/java/com/ecom/review/config/WebConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/review/src/main/java/com/ecom/review/controller/ReviewController.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/review/src/main/java/com/ecom/review/controller/ReviewController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/review/src/main/java/com/ecom/review/seeder/FakeDataSeeder.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/review/src/main/java/com/ecom/review/seeder/FakeDataSeeder.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -155,6 +84,7 @@
     &quot;Application.notification-service.executor&quot;: &quot;Run&quot;,
     &quot;Application.order-service.executor&quot;: &quot;Run&quot;,
     &quot;Application.product-service.executor&quot;: &quot;Run&quot;,
+    &quot;Application.review-service.executor&quot;: &quot;Run&quot;,
     &quot;Application.user-service.executor&quot;: &quot;Run&quot;,
     &quot;JUnit.com.ecom.product.service in product.executor&quot;: &quot;Debug&quot;,
     &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
@@ -165,7 +95,7 @@
     &quot;git-widget-placeholder&quot;: &quot;feature/nextjs&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
     &quot;last_opened_file_path&quot;: &quot;/home/fragile/Desktop/platform-ecom/platform-ecom-backend/user/src/main/java/com/ecom/user/service&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Global Libraries&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
     &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
     &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
     &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;
@@ -207,6 +137,7 @@
               <entry key="notification-service" value="STOPPED" />
               <entry key="order-service" value="STOPPED" />
               <entry key="product-service" value="STOPPED" />
+              <entry key="review-service" value="STOPPED" />
               <entry key="user-service" value="STOPPED" />
             </map>
           </value>
@@ -259,6 +190,16 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="review-service" type="Application" factoryName="Application">
+      <option name="envFilePaths">
+        <option value="$PROJECT_DIR$/platform-ecom-backend/review/.env" />
+      </option>
+      <option name="MAIN_CLASS_NAME" value="com.ecom.review.ReviewApplication" />
+      <module name="review" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="user-service" type="Application" factoryName="Application">
       <option name="ALTERNATIVE_JRE_PATH" value="/usr/lib/jvm/java-25-openjdk" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
@@ -287,6 +228,7 @@
       </method>
     </configuration>
     <list>
+      <item itemvalue="Application.review-service" />
       <item itemvalue="Application.notification-service" />
       <item itemvalue="Application.order-service" />
       <item itemvalue="Application.product-service" />
@@ -502,6 +444,12 @@
             <option name="WATCH_EXIT" value="false" />
           </properties>
           <option name="timeStamp" value="5" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-field">
+          <url>file://$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/entity/ProductVariant.java</url>
+          <line>55</line>
+          <properties field="updatedAt" class="com.ecom.product.entity.ProductVariant" />
+          <option name="timeStamp" value="7" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

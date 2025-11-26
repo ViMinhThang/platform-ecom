@@ -18,4 +18,5 @@ public class ProductRowDTO {
     private String status;
     private Integer variants;
     private String description;
+    private ProductVariantDTO firstVariant;
 }

@@ -1,10 +1,11 @@
-import { getPublicProductById } from "@/lib/api/products";
+import { getPublicProductWithVariants } from "@/lib/api/products";
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ReviewStats } from "@/components/ReviewStats";
 import { ReviewList } from "@/components/ReviewList";
+import { ProductVariantSection } from "@/components/ProductVariantSection";
 
 interface ProductDetailPageProps {
   params: any;
@@ -16,7 +17,7 @@ export default async function ProductDetailPage({
   let product = null;
   const { id } = await params;
   try {
-    product = await getPublicProductById(id);
+    product = await getPublicProductWithVariants(id);
   } catch (error) {
     console.error("Failed to fetch product:", error);
     notFound();
@@ -31,6 +32,7 @@ export default async function ProductDetailPage({
             <Image
               src={product.metadata?.imageUrl || "https://placehold.co/600x600"}
               alt={product.name}
+              unoptimized
               fill
               className="object-cover"
             />
@@ -53,19 +55,6 @@ export default async function ProductDetailPage({
             <h1 className="text-3xl font-bold tracking-tight">
               {product.name}
             </h1>
-            {product.status === "ACTIVE" && (
-              <Badge
-                variant="outline"
-                className="ml-2 bg-green-500/10 text-green-700 border-green-500/20"
-              >
-                In Stock
-              </Badge>
-            )}
-          </div>
-
-          {/* Price - Placeholder, will show from variants */}
-          <div className="text-3xl font-bold text-blue-600">
-            Price varies by variant
           </div>
 
           <div className="prose prose-sm max-w-none">
@@ -94,23 +83,8 @@ export default async function ProductDetailPage({
               </div>
             )}
 
-          {/* Placeholder for variant selector (Client Component) */}
-          <div className="border-t pt-6">
-            <h3 className="font-semibold mb-4">Select Options</h3>
-            <p className="text-sm text-muted-foreground">
-              Variant selector will be added here (Client Component)
-            </p>
-          </div>
-
-          {/* Add to Cart Button (Client Component wrapper) */}
-          <div className="flex gap-4 pt-6">
-            <Button size="lg" className="flex-1">
-              Add to Cart
-            </Button>
-            <Button size="lg" variant="outline">
-              ♡
-            </Button>
-          </div>
+          {/* Variant Section (Client Component) */}
+          <ProductVariantSection product={product} />
         </div>
       </div>
 

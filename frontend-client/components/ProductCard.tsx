@@ -6,6 +6,8 @@ import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
 
+import { ProductVariant } from "@/types/product";
+
 interface ProductCardProps {
   id: string;
   name: string;
@@ -13,6 +15,7 @@ interface ProductCardProps {
   image: string;
   category: string;
   isNew?: boolean;
+  firstVariant?: ProductVariant;
 }
 
 export function ProductCard({
@@ -22,7 +25,12 @@ export function ProductCard({
   image,
   category,
   isNew,
+  firstVariant,
 }: ProductCardProps) {
+  const displayPrice = firstVariant ? firstVariant.price : price;
+  const displayImage = firstVariant?.imageUrl || image;
+  const inStock = firstVariant ? firstVariant.stock > 0 : true;
+
   return (
     <Link href={`/products/${id}`}>
       <Card className="group overflow-hidden border border-zinc-200 dark:border-zinc-800 shadow-sm rounded-md hover:shadow-md transition-shadow">
@@ -32,7 +40,12 @@ export function ProductCard({
               New
             </Badge>
           )}
-          <Image src={image} alt={name} fill className="object-cover" />
+          {!inStock && (
+            <Badge variant="secondary" className="absolute top-2 right-2 z-10">
+              Out of Stock
+            </Badge>
+          )}
+          <Image src={displayImage} alt={name} fill className="object-cover" />
         </CardContent>
         <CardFooter className="flex flex-col items-start p-3 space-y-2">
           <div className="space-y-1 w-full">
@@ -41,14 +54,15 @@ export function ProductCard({
               {name}
             </h3>
             <p className="text-base font-bold text-blue-600">
-              ${price.toFixed(2)}
+              ${displayPrice.toFixed(2)}
             </p>
           </div>
           <Button
             className="w-full bg-zinc-900 text-white hover:bg-zinc-800 h-8 text-xs rounded-sm"
             size="sm"
+            disabled={!inStock}
           >
-            Add to Cart
+            {inStock ? "Add to Cart" : "Out of Stock"}
           </Button>
         </CardFooter>
       </Card>

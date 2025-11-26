@@ -59,7 +59,7 @@ public class ReviewController {
         return ResponseEntity.ok(reviewDTO);
     }
 
-    @GetMapping("/product/{productId}")
+    @GetMapping("/public/product/{productId}")
     public ResponseEntity<ReviewResponse> getReviewsByProduct(
             @PathVariable Long productId,
             @RequestParam(name = "pageNumber", defaultValue = AppConstants.PAGE_NUMBER, required = false) Integer pageNumber,
@@ -95,7 +95,7 @@ public class ReviewController {
         return ResponseEntity.ok(reviewResponse);
     }
 
-    @GetMapping("/summary/product/{productId}")
+    @GetMapping("/public/summary/product/{productId}")
     public ResponseEntity<ProductReviewSummaryDTO> getProductReviewSummary(@PathVariable Long productId) {
         ProductReviewSummaryDTO summary = reviewService.getProductReviewSummary(productId);
         return ResponseEntity.ok(summary);

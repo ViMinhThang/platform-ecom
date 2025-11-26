@@ -24,7 +24,9 @@ export async function getProductReviews(
   if (params.sortDir) searchParams.set("sortDir", params.sortDir);
 
   const query = searchParams.toString();
-  const endpoint = `/reviews/product/${productId}${query ? `?${query}` : ""}`;
+  const endpoint = `/reviews/public/product/${productId}${
+    query ? `?${query}` : ""
+  }`;
 
   return fetcher<ReviewResponse>(endpoint);
 }
@@ -32,5 +34,7 @@ export async function getProductReviews(
 export async function getProductReviewSummary(
   productId: number | string
 ): Promise<ProductReviewSummary> {
-  return fetcher<ProductReviewSummary>(`/reviews/summary/product/${productId}`);
+  return fetcher<ProductReviewSummary>(
+    `/reviews/public/summary/product/${productId}`
+  );
 }

@@ -151,7 +151,7 @@ public class FakeDataSeeder implements CommandLineRunner {
             orderItems.addAll(currentOrderItems);
             payments.add(payment);
         }
-
+        paymentRepository.saveAll(payments);
         // Save in order: orders, order items, payments
         orderRepository.saveAll(orders);
         log.info("✓ Created {} orders", orders.size());

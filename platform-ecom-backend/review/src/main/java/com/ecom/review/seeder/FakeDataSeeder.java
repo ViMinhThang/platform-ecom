@@ -36,7 +36,6 @@ public class FakeDataSeeder implements CommandLineRunner {
 
         log.info("Starting Review service fake data seeding...");
 
-        // Seed Reviews (for products 1-150, users 1-100)
         seedReviews(200);
 
         log.info("Review service fake data seeding completed!");
@@ -57,10 +56,8 @@ public class FakeDataSeeder implements CommandLineRunner {
             // Random user (assuming users 1-100 exist)
             Long userId = (long) faker.number().numberBetween(1, 101);
             
-            // Random product (assuming products 1-150 exist)
             Long productId = (long) faker.number().numberBetween(1, 151);
             
-            // Create unique key
             String uniqueKey = userId + "-" + productId;
 
             // Skip if this combination already exists
@@ -87,7 +84,6 @@ public class FakeDataSeeder implements CommandLineRunner {
             // Generate review title and comment
             review.setTitle(generateReviewTitle(rating));
             review.setComment(generateReviewComment(rating));
-
             // 30% chance to have images
             if (faker.number().numberBetween(1, 100) <= 30) {
                 review.setImages(generateReviewImages());

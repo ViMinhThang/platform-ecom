@@ -1,15 +1,12 @@
 // Base API client configuration
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8080/api';
+const API_BASE_URL =
+  process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:8080/api";
 
 export class APIError extends Error {
-  constructor(
-    message: string,
-    public status: number,
-    public data?: any
-  ) {
+  constructor(message: string, public status: number, public data?: any) {
     super(message);
-    this.name = 'APIError';
+    this.name = "APIError";
   }
 }
 
@@ -23,7 +20,7 @@ export async function fetcher<T>(
     const response = await fetch(url, {
       ...options,
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         ...options?.headers,
       },
     });
@@ -42,6 +39,6 @@ export async function fetcher<T>(
     if (error instanceof APIError) {
       throw error;
     }
-    throw new APIError('Network error', 0, error);
+    throw new APIError("Network error", 0, error);
   }
 }

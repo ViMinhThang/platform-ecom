@@ -1,6 +1,7 @@
 package com.ecom.product.service;
 
 import com.ecom.product.dto.ProductDTO;
+import com.ecom.product.dto.ProductDetailDTO;
 import com.ecom.product.dto.ProductResponse;
 import com.ecom.product.dto.ProductRowDTO;
 //import com.ecom.product.dto.ReduceStockDTO;
@@ -33,4 +34,6 @@ public interface ProductService {
     ProductResponse getAllPublicProducts(Integer page, Integer perPage, String category, String search, String sortBy, String sortOrder);
     
     ProductDTO getPublicProductById(Long productId);
+
+    ProductDetailDTO getProductWithVariants(Long productId);
 }

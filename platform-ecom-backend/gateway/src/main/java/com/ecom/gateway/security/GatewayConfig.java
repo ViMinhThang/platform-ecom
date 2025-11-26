@@ -94,6 +94,8 @@ public class GatewayConfig {
                         .path("/api/orders/**", "/api/carts/**")
                         .filters(f -> f.filter(authFilter))
                         .uri("lb://ORDER-SERVICE"))
+                .route("review-service", r -> r.path("/api/reviews/public/**")
+                        .uri("lb://REVIEW-SERVICE"))
                 .route("review-service", r -> r.path("/api/reviews/**")
                         .filters(f -> f.filter(authFilter))
                         .uri("lb://REVIEW-SERVICE"))
