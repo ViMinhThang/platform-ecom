@@ -2,11 +2,18 @@ import type { NextConfig } from "next";
 
 const baseConfig: NextConfig = {
   images: {
+    dangerouslyAllowLocalIP: true,
     remotePatterns: [
       {
         protocol: "https",
         hostname: "api.slingacademy.com",
         port: "",
+      },
+      {
+        protocol: "http",
+        hostname: "localhost",
+        port: "3000",
+        pathname: "**",
       },
       {
         hostname: "localhost",

@@ -8,56 +8,76 @@ import com.ecom.product.exceptions.ResourceNotFoundException;
 import com.ecom.product.repository.ProductOptionValueRepository;
 import com.ecom.product.repository.ProductVariantRepository;
 import com.ecom.product.repository.VariantOptionValueRepository;
+import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class VariantOptionValueServiceImpl implements VariantOptionValueService {
 
-    @Autowired
-    private VariantOptionValueRepository variantOptionValueRepository;
-
-    @Autowired
-    private ProductVariantRepository productVariantRepository;
-
-    @Autowired
-    private ProductOptionValueRepository productOptionValueRepository;
-
-    @Autowired
-    private ModelMapper modelMapper;
+    private final VariantOptionValueRepository variantOptionValueRepository;
+    private final ProductVariantRepository productVariantRepository;
+    private final ProductOptionValueRepository productOptionValueRepository;
+    private final ModelMapper modelMapper;
 
     @Override
-    public VariantOptionValueDTO createVariantOptionValue(VariantOptionValueDTO variantOptionValueDTO) {
-        ProductVariant variant = productVariantRepository.findById(variantOptionValueDTO.getVariantId())
-                .orElseThrow(() -> new ResourceNotFoundException("ProductVariant", "variantId", variantOptionValueDTO.getVariantId()));
+    public VariantOptionValueDTO createVariantOptionValue(VariantOptionValueDTO dto) {
+        ProductVariant variant = findProductVariant(dto.getVariantId());
+        ProductOptionValue optionValue = findProductOptionValue(dto.getProductOptionValue().getId());
 
-        ProductOptionValue optionValue = productOptionValueRepository.findById(variantOptionValueDTO.getProductOptionValue().getId())
-                .orElseThrow(() -> new ResourceNotFoundException("ProductOptionValue", "optionValueId", variantOptionValueDTO.getProductOptionValue().getId()));
-
-        VariantOptionValue variantOptionValue = new VariantOptionValue();
-        variantOptionValue.setVariant(variant);
-        variantOptionValue.setOptionValue(optionValue);
-
+        VariantOptionValue variantOptionValue = createVariantOptionValueEntity(variant, optionValue);
         VariantOptionValue savedValue = variantOptionValueRepository.save(variantOptionValue);
-        return modelMapper.map(savedValue, VariantOptionValueDTO.class);
+        
+        return mapToDTO(savedValue);
     }
 
     @Override
     public List<VariantOptionValueDTO> getValuesForVariant(Long variantId) {
         List<VariantOptionValue> values = variantOptionValueRepository.findByVariantId(variantId);
-        return values.stream()
-                .map(value -> modelMapper.map(value, VariantOptionValueDTO.class))
-                .collect(Collectors.toList());
+        return mapToDTOs(values);
     }
 
     @Override
     public void deleteVariantOptionValue(Long variantOptionValueId) {
-        VariantOptionValue value = variantOptionValueRepository.findById(variantOptionValueId)
-                .orElseThrow(() -> new ResourceNotFoundException("VariantOptionValue", "variantOptionValueId", variantOptionValueId));
+        VariantOptionValue value = findVariantOptionValue(variantOptionValueId);
         variantOptionValueRepository.delete(value);
+    }
+
+    // ==================== Private Helper Methods ====================
+
+    private ProductVariant findProductVariant(Long variantId) {
+        return productVariantRepository.findById(variantId)
+                .orElseThrow(() -> new ResourceNotFoundException("ProductVariant", "variantId", variantId));
+    }
+
+    private ProductOptionValue findProductOptionValue(Long optionValueId) {
+        return productOptionValueRepository.findById(optionValueId)
+                .orElseThrow(() -> new ResourceNotFoundException("ProductOptionValue", "optionValueId", optionValueId));
+    }
+
+    private VariantOptionValue findVariantOptionValue(Long id) {
+        return variantOptionValueRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("VariantOptionValue", "variantOptionValueId", id));
+    }
+
+    private VariantOptionValue createVariantOptionValueEntity(ProductVariant variant, ProductOptionValue optionValue) {
+        VariantOptionValue variantOptionValue = new VariantOptionValue();
+        variantOptionValue.setVariant(variant);
+        variantOptionValue.setOptionValue(optionValue);
+        return variantOptionValue;
+    }
+
+    private VariantOptionValueDTO mapToDTO(VariantOptionValue value) {
+        return modelMapper.map(value, VariantOptionValueDTO.class);
+    }
+
+    private List<VariantOptionValueDTO> mapToDTOs(List<VariantOptionValue> values) {
+        return values.stream()
+                .map(this::mapToDTO)
+                .collect(Collectors.toList());
     }
 }

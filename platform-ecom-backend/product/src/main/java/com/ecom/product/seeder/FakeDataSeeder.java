@@ -67,7 +67,7 @@ public class FakeDataSeeder implements CommandLineRunner {
         for (String name : categoryNames) {
             Category category = Category.builder()
                     .name(name)
-                    .imageUrl(faker.internet().image())
+                    .imageUrl("1.png")
                     .build();
             categories.add(category);
         }
@@ -209,13 +209,20 @@ public class FakeDataSeeder implements CommandLineRunner {
         // Create variants (combinations of options)
         for (ProductOptionValue colorValue : colorValues) {
             for (ProductOptionValue sizeValue : sizeValues) {
+                BigDecimal price = BigDecimal.valueOf(faker.number().randomDouble(2, 10, 1000));
+                boolean hasDiscount = faker.bool().bool(); // 50% chance of discount
+                
                 ProductVariant variant = ProductVariant.builder()
                         .product(product)
                         .sku(generateSku(product))
-                        .price(BigDecimal.valueOf(faker.number().randomDouble(2, 10, 1000)))
+                        .price(price)
+                        .salePrice(hasDiscount ? BigDecimal.valueOf(faker.number().randomDouble(2, 10, 1000)):null)
+                        .saleStart(hasDiscount ? java.time.LocalDateTime.now().minusDays(faker.number().numberBetween(1, 30)) : null)
+                        .saleEnd(hasDiscount ? java.time.LocalDateTime.now().plusDays(faker.number().numberBetween(1, 30)) : null)
                         .stock(faker.number().numberBetween(0, 100))
+                        .totalSold(faker.number().numberBetween(0, 500))
                         .isActive(true)
-                        .imageUrl(faker.internet().image())
+                        .imageUrl("2.png")
                         .build();
                 variant = productVariantRepository.save(variant);
 
@@ -240,7 +247,7 @@ public class FakeDataSeeder implements CommandLineRunner {
         for (int i = 0; i < count; i++) {
             ProductImage image = ProductImage.builder()
                     .product(product)
-                    .imageUrl(faker.internet().image())
+                    .imageUrl("1.png")
                     .build();
             productImageRepository.save(image);
         }

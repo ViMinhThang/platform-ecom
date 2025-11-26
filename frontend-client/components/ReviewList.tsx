@@ -221,7 +221,9 @@ function ReviewCard({ review }: { review: Review }) {
               className="w-20 h-20 rounded-md border bg-muted overflow-hidden"
             >
               <Image
-                src={"http://localhost:3000/uploads/reviews/" + image}
+                width={100}
+                height={100}
+                src={"http://localhost:8080/uploads/reviews/" + image}
                 alt=""
               />
             </div>

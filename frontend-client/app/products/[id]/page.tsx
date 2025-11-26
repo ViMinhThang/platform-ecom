@@ -1,3 +1,6 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import { getPublicProductWithVariants } from "@/lib/api/products";
 import { notFound } from "next/navigation";
 import Image from "next/image";
@@ -6,22 +9,54 @@ import { Badge } from "@/components/ui/badge";
 import { ReviewStats } from "@/components/ReviewStats";
 import { ReviewList } from "@/components/ReviewList";
 import { ProductVariantSection } from "@/components/ProductVariantSection";
+import { ProductDetail, ProductVariant } from "@/types/product";
 
 interface ProductDetailPageProps {
   params: any;
 }
 
-export default async function ProductDetailPage({
-  params,
-}: ProductDetailPageProps) {
-  let product = null;
-  const { id } = await params;
-  try {
-    product = await getPublicProductWithVariants(id);
-  } catch (error) {
-    console.error("Failed to fetch product:", error);
+export default function ProductDetailPage({ params }: ProductDetailPageProps) {
+  const [product, setProduct] = useState<ProductDetail | null>(null);
+  const [selectedVariant, setSelectedVariant] = useState<ProductVariant | null>(
+    null
+  );
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchProduct = async () => {
+      try {
+        const { id } = await params;
+        const data = await getPublicProductWithVariants(id);
+        console.log(data);
+        setProduct(data);
+      } catch (error) {
+        console.error("Failed to fetch product:", error);
+        notFound();
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProduct();
+  }, [params]);
+
+  if (loading) {
+    return (
+      <div className="container mx-auto py-8 px-4 md:px-6">
+        <div className="text-center">Loading...</div>
+      </div>
+    );
+  }
+
+  if (!product) {
     notFound();
   }
+
+  // Use variant image if available, otherwise fall back to product image
+  const displayImage =
+    selectedVariant?.imageUrl ||
+    product.metadata?.imageUrl ||
+    "https://placehold.co/600x600";
 
   return (
     <div className="container mx-auto py-8 px-4 md:px-6">
@@ -30,19 +65,25 @@ export default async function ProductDetailPage({
         <div className="space-y-4">
           <div className="aspect-square relative bg-zinc-100 dark:bg-zinc-800 rounded-lg overflow-hidden">
             <Image
-              src={product.metadata?.imageUrl || "https://placehold.co/600x600"}
+              width={900}
+              height={900}
+              key={displayImage}
+              src={`http://localhost:8080/uploads/products/${displayImage}`}
               alt={product.name}
               unoptimized
-              fill
               className="object-cover"
             />
           </div>
           {/* Placeholder for thumbnail carousel */}
           <div className="grid grid-cols-4 gap-2">
-            {[1, 2, 3, 4].map((i) => (
-              <div
-                key={i}
-                className="aspect-square relative bg-zinc-100 dark:bg-zinc-800 rounded-md"
+            {product.images.map((image, idx) => (
+              <Image
+                key={idx}
+                width={300}
+                height={300}
+                src={`http://localhost:8080/uploads/products/${image.imageUrl}`}
+                alt={product.name}
+                className="object-cover"
               />
             ))}
           </div>
@@ -84,7 +125,10 @@ export default async function ProductDetailPage({
             )}
 
           {/* Variant Section (Client Component) */}
-          <ProductVariantSection product={product} />
+          <ProductVariantSection
+            product={product}
+            onVariantChange={setSelectedVariant}
+          />
         </div>
       </div>
 

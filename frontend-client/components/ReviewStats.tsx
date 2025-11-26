@@ -1,5 +1,6 @@
-// Server Component - Review Statistics Summary
+"use client";
 
+import { useEffect, useState } from "react";
 import { getProductReviewSummary } from "@/lib/api/reviews";
 import { StarRating } from "./ui/StarRating";
 import { Progress } from "./ui/progress";
@@ -8,13 +9,42 @@ interface ReviewStatsProps {
   productId: number;
 }
 
-export async function ReviewStats({ productId }: ReviewStatsProps) {
-  let summary;
+interface ReviewSummary {
+  averageRating: number;
+  totalReviews: number;
+  ratingDistribution: Record<number, number>;
+}
 
-  try {
-    summary = await getProductReviewSummary(productId);
-  } catch (error) {
-    console.error("Failed to fetch review summary:", error);
+export function ReviewStats({ productId }: ReviewStatsProps) {
+  const [summary, setSummary] = useState<ReviewSummary | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
+
+  useEffect(() => {
+    const fetchSummary = async () => {
+      try {
+        const data = await getProductReviewSummary(productId);
+        setSummary(data);
+      } catch (error) {
+        console.error("Failed to fetch review summary:", error);
+        setError(true);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchSummary();
+  }, [productId]);
+
+  if (loading) {
+    return (
+      <div className="text-center py-8 text-muted-foreground">
+        <p>Loading reviews...</p>
+      </div>
+    );
+  }
+
+  if (error || !summary) {
     return (
       <div className="text-center py-8 text-muted-foreground">
         <p>Unable to load review statistics</p>

@@ -25,13 +25,6 @@ public class ProductOptionController {
         return new ResponseEntity<>(createdOption, HttpStatus.CREATED);
     }
 
-    @GetMapping
-    public ResponseEntity<List<ProductOptionDTO>> getAllProductOptions() {
-        List<ProductOptionDTO> options = productOptionService.getAllProductOptions();
-        return new ResponseEntity<>(options, HttpStatus.OK);
-    }
-
-
     @GetMapping("seller/{productId}/options")
     @RequireRole("ROLE_SELLER")
     public ResponseEntity<List<ProductOptionDTO>>getListProductOptionByProductId(@PathVariable Long productId){

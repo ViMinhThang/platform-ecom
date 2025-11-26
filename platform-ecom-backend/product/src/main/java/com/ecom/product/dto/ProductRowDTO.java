@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -16,6 +18,7 @@ public class ProductRowDTO {
     private CategoryDTO category;
     private String imageUrl;
     private String status;
+    private BigDecimal minPrice;
     private Integer variants;
     private String description;
     private ProductVariantDTO firstVariant;

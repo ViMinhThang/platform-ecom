@@ -18,108 +18,273 @@ export function VariantSelector({
   const [selectedValues, setSelectedValues] = useState<Record<number, number>>(
     {}
   );
-  // Initialize selections with first available variant or defaults
-  useEffect(() => {
-    if (Object.keys(selectedValues).length === 0 && variants.length > 0) {
-      // Try to find first in-stock variant
-      const defaultVariant = variants.find((v) => v.stock > 0) || variants[0];
 
-      if (defaultVariant) {
-        const initialSelections: Record<number, number> = {};
-        defaultVariant.optionValues.forEach((ov) => {
-          // Find which option this value belongs to
-          // We need to map optionValueId back to optionId
-          // The variant.optionValues has optionId directly
-          initialSelections[ov.optionId] = ov.productOptionValue.id;
-        });
-        setSelectedValues(initialSelections);
-        onVariantChange(defaultVariant);
-      }
-    }
-  }, [variants, options]); // Run once when data loads
+  // Sort options by sortOrder for hierarchical processing
+  const sortedOptions = [...options].sort((a, b) => a.sortOrder - b.sortOrder);
 
-  const handleOptionSelect = (optionId: number, valueId: number) => {
-    const newSelections = { ...selectedValues, [optionId]: valueId };
-    setSelectedValues(newSelections);
-
-    // Find matching variant
-    const variant = variants.find((v) => {
-      return (
-        v.optionValues.every((ov) => {
-          // Check if this variant's option value matches the selected value for this option
-          const selectedValueId = newSelections[ov.optionId];
-          return (
-            selectedValueId === undefined ||
-            selectedValueId === ov.productOptionValue.id
-          );
-        }) && v.optionValues.length === Object.keys(newSelections).length
-      );
+  // Create a mapping from option value ID to option ID
+  // This is needed because the backend's variant.optionValues.optionId is actually the option VALUE id
+  const valueIdToOptionId = new Map<number, number>();
+  options.forEach((option) => {
+    option.values.forEach((value) => {
+      valueIdToOptionId.set(value.id, option.id);
     });
+  });
 
-    onVariantChange(variant || null);
+  // Helper: Find variant matching exact selections
+  const findMatchingVariant = (
+    selections: Record<number, number>
+  ): ProductVariant | null => {
+    return (
+      variants.find((v) => {
+        // Must match all selections exactly
+        if (v.optionValues.length !== Object.keys(selections).length)
+          return false;
+
+        return v.optionValues.every((ov) => {
+          // Map the backend's optionId (which is actually option value id) to real option id
+          const realOptionId = valueIdToOptionId.get(ov.productOptionValue.id);
+          return (
+            realOptionId !== undefined &&
+            selections[realOptionId] === ov.productOptionValue.id
+          );
+        });
+      }) || null
+    );
   };
 
-  // Helper to check if a value is available given OTHER current selections
-  const isValueAvailable = (optionId: number, valueId: number) => {
-    // Check if any variant matches this combination (partial match is okay for other unselected options)
+  // Helper: Check if a value is available given upstream selections
+  const isValueAvailable = (optionId: number, valueId: number): boolean => {
+    // Get the index of this option in sorted order
+    const optionIndex = sortedOptions.findIndex((opt) => opt.id === optionId);
+
+    // Build upstream selections (options before this one)
+    const upstreamSelections: Record<number, number> = {};
+    for (let i = 0; i < optionIndex; i++) {
+      const upstreamOptionId = sortedOptions[i].id;
+      if (selectedValues[upstreamOptionId] !== undefined) {
+        upstreamSelections[upstreamOptionId] = selectedValues[upstreamOptionId];
+      }
+    }
+
+    // Check if any variant exists that:
+    // 1. Has this specific value for this option
+    // 2. Matches all upstream selections
     return variants.some((v) => {
-      // 1. Check if variant has this specific option value we are testing
-      const hasTargetValue = v.optionValues.some(
-        (ov) => ov.optionId === optionId && ov.productOptionValue.id === valueId
-      );
-      console.log("hasTargetValue", hasTargetValue);
+      // Check if variant has the target value
+      const hasTargetValue = v.optionValues.some((ov) => {
+        const realOptionId = valueIdToOptionId.get(ov.productOptionValue.id);
+        return (
+          realOptionId === optionId && ov.productOptionValue.id === valueId
+        );
+      });
       if (!hasTargetValue) return false;
 
-      // 2. Check if variant matches other currently selected options
-      // We only care about options that are ALREADY selected, excluding the one we are currently testing
-      return Object.entries(selectedValues).every(
-        ([selectedOptIdStr, selectedValId]) => {
-          const selectedOptId = Number(selectedOptIdStr);
-
-          // Skip the option we are currently testing (since we want to see if it's compatible with OTHERS)
-          if (selectedOptId === optionId) return true;
-
-          // Check if this variant has the selected value for this other option
-          return v.optionValues.some(
-            (ov) =>
-              ov.optionId === selectedOptId &&
-              ov.productOptionValue.id === selectedValId
-          );
+      // Check if variant matches all upstream selections
+      return Object.entries(upstreamSelections).every(
+        ([upstreamOptId, upstreamValId]) => {
+          return v.optionValues.some((ov) => {
+            const realOptionId = valueIdToOptionId.get(
+              ov.productOptionValue.id
+            );
+            return (
+              realOptionId === Number(upstreamOptId) &&
+              ov.productOptionValue.id === upstreamValId
+            );
+          });
         }
       );
     });
   };
 
+  // Helper: Get first available value for an option given upstream selections
+  const getFirstAvailableValue = (optionId: number): number | null => {
+    const option = sortedOptions.find((opt) => opt.id === optionId);
+    if (!option) return null;
+
+    // Sort values by sortOrder
+    const sortedValues = [...option.values].sort(
+      (a, b) => a.sortOrder - b.sortOrder
+    );
+
+    for (const value of sortedValues) {
+      if (isValueAvailable(optionId, value.id)) {
+        return value.id;
+      }
+    }
+    return null;
+  };
+
+  // Initialize selections hierarchically
+  useEffect(() => {
+    if (
+      Object.keys(selectedValues).length === 0 &&
+      sortedOptions.length > 0 &&
+      variants.length > 0
+    ) {
+      const initialSelections: Record<number, number> = {};
+
+      // Build selections cascading from first to last option
+      for (const option of sortedOptions) {
+        const firstAvailable = getFirstAvailableValue(option.id);
+        if (firstAvailable !== null) {
+          initialSelections[option.id] = firstAvailable;
+          // Temporarily update selectedValues for next iteration's availability check
+          setSelectedValues((prev) => ({
+            ...prev,
+            [option.id]: firstAvailable,
+          }));
+        }
+      }
+
+      setSelectedValues(initialSelections);
+      const variant = findMatchingVariant(initialSelections);
+      onVariantChange(variant);
+    }
+  }, [variants.length, options.length]); // Reinitialize if data changes
+
+  // Handle option selection with cascading
+  const handleOptionSelect = (optionId: number, valueId: number) => {
+    const optionIndex = sortedOptions.findIndex((opt) => opt.id === optionId);
+    const newSelections = { ...selectedValues, [optionId]: valueId };
+
+    // Re-evaluate all downstream options (options after the changed one)
+    for (let i = optionIndex + 1; i < sortedOptions.length; i++) {
+      const downstreamOption = sortedOptions[i];
+      const currentDownstreamValue = newSelections[downstreamOption.id];
+
+      // Temporarily set upstream selections for availability check
+      const tempSelections = { ...newSelections };
+      for (let j = 0; j <= i - 1; j++) {
+        tempSelections[sortedOptions[j].id] =
+          newSelections[sortedOptions[j].id];
+      }
+
+      // Check if current downstream value is still valid
+      const isCurrentValid =
+        currentDownstreamValue !== undefined &&
+        isValueAvailableWithSelections(
+          downstreamOption.id,
+          currentDownstreamValue,
+          tempSelections
+        );
+
+      if (!isCurrentValid) {
+        // Auto-select first available value
+        const firstAvailable = getFirstAvailableValueWithSelections(
+          downstreamOption.id,
+          tempSelections
+        );
+        if (firstAvailable !== null) {
+          newSelections[downstreamOption.id] = firstAvailable;
+        } else {
+          // No available values, remove selection
+          delete newSelections[downstreamOption.id];
+        }
+      }
+    }
+
+    setSelectedValues(newSelections);
+    const variant = findMatchingVariant(newSelections);
+    onVariantChange(variant);
+  };
+
+  // Helper with explicit selections parameter for cascading logic
+  const isValueAvailableWithSelections = (
+    optionId: number,
+    valueId: number,
+    currentSelections: Record<number, number>
+  ): boolean => {
+    const optionIndex = sortedOptions.findIndex((opt) => opt.id === optionId);
+
+    const upstreamSelections: Record<number, number> = {};
+    for (let i = 0; i < optionIndex; i++) {
+      const upstreamOptionId = sortedOptions[i].id;
+      if (currentSelections[upstreamOptionId] !== undefined) {
+        upstreamSelections[upstreamOptionId] =
+          currentSelections[upstreamOptionId];
+      }
+    }
+
+    return variants.some((v) => {
+      const hasTargetValue = v.optionValues.some((ov) => {
+        const realOptionId = valueIdToOptionId.get(ov.productOptionValue.id);
+        return (
+          realOptionId === optionId && ov.productOptionValue.id === valueId
+        );
+      });
+      if (!hasTargetValue) return false;
+
+      return Object.entries(upstreamSelections).every(
+        ([upstreamOptId, upstreamValId]) => {
+          return v.optionValues.some((ov) => {
+            const realOptionId = valueIdToOptionId.get(
+              ov.productOptionValue.id
+            );
+            return (
+              realOptionId === Number(upstreamOptId) &&
+              ov.productOptionValue.id === upstreamValId
+            );
+          });
+        }
+      );
+    });
+  };
+
+  // Helper with explicit selections parameter
+  const getFirstAvailableValueWithSelections = (
+    optionId: number,
+    currentSelections: Record<number, number>
+  ): number | null => {
+    const option = sortedOptions.find((opt) => opt.id === optionId);
+    if (!option) return null;
+
+    const sortedValues = [...option.values].sort(
+      (a, b) => a.sortOrder - b.sortOrder
+    );
+
+    for (const value of sortedValues) {
+      if (
+        isValueAvailableWithSelections(optionId, value.id, currentSelections)
+      ) {
+        return value.id;
+      }
+    }
+    return null;
+  };
+
   return (
     <div className="space-y-6">
-      {options.map((option) => (
+      {sortedOptions.map((option) => (
         <div key={option.id}>
           <h4 className="font-medium mb-3 text-sm text-muted-foreground">
             {option.displayName}
           </h4>
           <div className="flex flex-wrap gap-2">
-            {option.values.map((value) => {
-              const isSelected = selectedValues[option.id] === value.id;
-              const available = isValueAvailable(option.id, value.id);
+            {[...option.values]
+              .sort((a, b) => a.sortOrder - b.sortOrder)
+              .map((value) => {
+                const isSelected = selectedValues[option.id] === value.id;
+                const available = isValueAvailable(option.id, value.id);
 
-              return (
-                <button
-                  key={value.id}
-                  onClick={() => handleOptionSelect(option.id, value.id)}
-                  disabled={!available} // Optional: disable invalid combinations
-                  className={cn(
-                    "px-4 py-2 rounded-md border text-sm font-medium transition-all",
-                    isSelected
-                      ? "border-blue-600 bg-blue-50 text-blue-700 ring-1 ring-blue-600"
-                      : "border-input hover:border-zinc-400 hover:bg-accent",
-                    !available &&
-                      "opacity-50 cursor-not-allowed bg-muted text-muted-foreground"
-                  )}
-                >
-                  {value.displayValue}
-                </button>
-              );
-            })}
+                return (
+                  <button
+                    key={value.id}
+                    onClick={() => handleOptionSelect(option.id, value.id)}
+                    disabled={!available}
+                    className={cn(
+                      "px-4 py-2 rounded-md border text-sm font-medium transition-all",
+                      isSelected
+                        ? "border-blue-600 bg-blue-50 dark:bg-blue-950 text-blue-700 dark:text-blue-300 ring-1 ring-blue-600"
+                        : "border-input hover:border-zinc-400 hover:bg-accent",
+                      !available &&
+                        "opacity-50 cursor-not-allowed bg-muted text-muted-foreground"
+                    )}
+                  >
+                    {value.displayValue}
+                  </button>
+                );
+              })}
           </div>
         </div>
       ))}

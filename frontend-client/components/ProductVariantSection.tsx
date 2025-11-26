@@ -7,10 +7,21 @@ import { Button } from "./ui/button";
 import { Badge } from "./ui/badge";
 import { ShoppingCart } from "lucide-react";
 
-export function ProductVariantSection({ product }: { product: ProductDetail }) {
+export function ProductVariantSection({
+  product,
+  onVariantChange,
+}: {
+  product: ProductDetail;
+  onVariantChange?: (variant: ProductVariant | null) => void;
+}) {
   const [selectedVariant, setSelectedVariant] = useState<ProductVariant | null>(
     null
   );
+
+  const handleVariantChange = (variant: ProductVariant | null) => {
+    setSelectedVariant(variant);
+    onVariantChange?.(variant);
+  };
 
   // Fallback to product price if no variant selected (or range)
   const displayPrice = selectedVariant ? selectedVariant.price : 0;
@@ -22,12 +33,19 @@ export function ProductVariantSection({ product }: { product: ProductDetail }) {
       {/* Price Display */}
       <div>
         <div className="text-3xl font-bold text-blue-600">
-          {selectedVariant ? (
-            `$${displayPrice.toFixed(2)}`
+          {selectedVariant && selectedVariant.salePrice !== undefined ? (
+            <>
+              <p className="text-base font-bold text-red-600">
+                $
+                {selectedVariant.salePrice !== null &&
+                  selectedVariant.salePrice!.toFixed(2)}
+              </p>
+              <p className="text-sm text-muted-foreground line-through">
+                ${selectedVariant.price.toFixed(2)}
+              </p>
+            </>
           ) : (
-            <span className="text-xl text-muted-foreground">
-              Select options to see price
-            </span>
+            <p>Select an option</p>
           )}
         </div>
         {selectedVariant && (
@@ -52,7 +70,7 @@ export function ProductVariantSection({ product }: { product: ProductDetail }) {
           <VariantSelector
             options={product.options}
             variants={product.variants}
-            onVariantChange={setSelectedVariant}
+            onVariantChange={handleVariantChange}
           />
         </div>
       )}

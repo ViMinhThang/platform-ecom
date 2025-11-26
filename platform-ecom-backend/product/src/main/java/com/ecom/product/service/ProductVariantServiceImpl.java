@@ -13,9 +13,8 @@ import com.ecom.product.repository.ProductOptionValueRepository;
 import com.ecom.product.repository.ProductRepository;
 import com.ecom.product.repository.ProductVariantRepository;
 import jakarta.transaction.Transactional;
-import org.jetbrains.annotations.NotNull;
+import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Comparator;
@@ -24,28 +23,21 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class ProductVariantServiceImpl implements ProductVariantService {
 
-    @Autowired
-    private ProductVariantRepository productVariantRepository;
-
-    @Autowired
-    private ProductRepository productRepository;
-
-    @Autowired
-    private ProductOptionValueRepository optionValueRepository;
-
-    @Autowired
-    private ModelMapper modelMapper;
+    private final ProductVariantRepository productVariantRepository;
+    private final ProductRepository productRepository;
+    private final ProductOptionValueRepository optionValueRepository;
+    private final ModelMapper modelMapper;
 
     @Override
     public ProductVariantDTO createProductVariant(Long productId, ProductVariantDTO productVariantDTO) {
-        Product product = productRepository.findById(productId)
-                .orElseThrow(() -> new ResourceNotFoundException("Product", "productId", productId));
-
+        Product product = findProductById(productId);
+        
         ProductVariant productVariant = modelMapper.map(productVariantDTO, ProductVariant.class);
         productVariant.setProduct(product);
-
+        
         ProductVariant savedVariant = productVariantRepository.save(productVariant);
         return mapToVariantDTO(savedVariant);
     }
@@ -53,74 +45,111 @@ public class ProductVariantServiceImpl implements ProductVariantService {
     @Override
     public List<ProductVariantDTO> getVariantsForProduct(Long productId) {
         List<ProductVariant> variants = productVariantRepository.findByProductId(productId);
-        return variants.stream()
-                .map(this::mapToVariantDTO)
-                .sorted(Comparator.comparing(ProductVariantDTO::getId)).toList();
+        return mapAndSortVariants(variants);
     }
-
 
     @Override
     public ProductVariantDTO getProductVariantById(Long productId, Long variantId) {
-        ProductVariant variant = productVariantRepository.findByProductIdAndId(productId, variantId)
-                .orElseThrow(() -> new ResourceNotFoundException("ProductVariant", "variantId", variantId));
+        ProductVariant variant = findProductVariant(productId, variantId);
         return modelMapper.map(variant, ProductVariantDTO.class);
     }
 
     @Override
     @Transactional
     public ProductVariantDTO updateProductVariant(Long productId, Long variantId, ProductVariantDTO dto) {
-        ProductVariant variant = productVariantRepository.findByProductIdAndId(productId, variantId)
+        ProductVariant variant = findProductVariant(productId, variantId);
+        
+        validateNoDuplicateVariant(productId, variantId, dto);
+        
+        updateVariantDetails(variant, dto);
+        updateVariantOptionValues(variant, dto.getOptionValues());
+        
+        ProductVariant saved = productVariantRepository.save(variant);
+        return mapToVariantDTO(saved);
+    }
+
+    @Override
+    public void deleteProductVariant(Long productId, Long variantId) {
+        ProductVariant variant = findProductVariant(productId, variantId);
+        productVariantRepository.delete(variant);
+    }
+
+    // ==================== Private Helper Methods ====================
+
+    private Product findProductById(Long productId) {
+        return productRepository.findById(productId)
+                .orElseThrow(() -> new ResourceNotFoundException("Product", "productId", productId));
+    }
+
+    private ProductVariant findProductVariant(Long productId, Long variantId) {
+        return productVariantRepository.findByProductIdAndId(productId, variantId)
                 .orElseThrow(() -> new ResourceNotFoundException("ProductVariant", "variantId", variantId));
+    }
 
-        Set<Long> newOptionValueIds = dto.getOptionValues() == null
-                ? Set.of()
-                : dto.getOptionValues().stream()
-                .map(opt -> opt.getProductOptionValue().getId())
-                .collect(Collectors.toSet());
+    private List<ProductVariantDTO> mapAndSortVariants(List<ProductVariant> variants) {
+        return variants.stream()
+                .map(this::mapToVariantDTO)
+                .sorted(Comparator.comparing(ProductVariantDTO::getId))
+                .collect(Collectors.toList());
+    }
 
-        List<ProductVariant> otherVariants = productVariantRepository.findByProductId(productId).stream()
-                .filter(v -> !v.getId().equals(variantId))
-                .toList();
+    private void validateNoDuplicateVariant(Long productId, Long variantId, ProductVariantDTO dto) {
+        Set<Long> newOptionValueIds = extractOptionValueIds(dto);
+        List<ProductVariant> otherVariants = findOtherVariants(productId, variantId);
 
-        boolean duplicateExists = otherVariants.stream().anyMatch(v -> {
-            Set<Long> existingIds = v.getOptionValues().stream()
-                    .map(vo -> vo.getOptionValue().getId())
-                    .collect(Collectors.toSet());
-            return existingIds.equals(newOptionValueIds);
-        });
+        boolean duplicateExists = otherVariants.stream()
+                .anyMatch(v -> hasSameOptionValues(v, newOptionValueIds));
 
         if (duplicateExists) {
             throw new APIException("A variant with the same option combination already exists.");
         }
+    }
 
+    private Set<Long> extractOptionValueIds(ProductVariantDTO dto) {
+        if (dto.getOptionValues() == null) return Set.of();
+        
+        return dto.getOptionValues().stream()
+                .map(opt -> opt.getProductOptionValue().getId())
+                .collect(Collectors.toSet());
+    }
+
+    private List<ProductVariant> findOtherVariants(Long productId, Long variantId) {
+        return productVariantRepository.findByProductId(productId).stream()
+                .filter(v -> !v.getId().equals(variantId))
+                .collect(Collectors.toList());
+    }
+
+    private boolean hasSameOptionValues(ProductVariant variant, Set<Long> targetIds) {
+        Set<Long> existingIds = variant.getOptionValues().stream()
+                .map(vo -> vo.getOptionValue().getId())
+                .collect(Collectors.toSet());
+        return existingIds.equals(targetIds);
+    }
+
+    private void updateVariantDetails(ProductVariant variant, ProductVariantDTO dto) {
         variant.setSku(dto.getSku());
         variant.setPrice(dto.getPrice());
         variant.setStock(dto.getStock());
         variant.setIsActive(dto.getIsActive());
         variant.setImageUrl(dto.getImageUrl());
-
-        variant.getOptionValues().clear();
-        if (dto.getOptionValues() != null) {
-            for (VariantOptionValueDTO opt : dto.getOptionValues()) {
-                VariantOptionValue vo = new VariantOptionValue();
-                vo.setVariant(variant);
-                vo.setOptionValue(optionValueRepository.getReferenceById(opt.getProductOptionValue().getId()));
-                vo.setPriceModifier(opt.getPriceModifier());
-                variant.getOptionValues().add(vo);
-            }
-        }
-
-        ProductVariant saved = productVariantRepository.save(variant);
-        return mapToVariantDTO(saved);
     }
 
+    private void updateVariantOptionValues(ProductVariant variant, List<VariantOptionValueDTO> optionValueDTOs) {
+        variant.getOptionValues().clear();
+        
+        if (optionValueDTOs != null) {
+            for (VariantOptionValueDTO opt : optionValueDTOs) {
+                addVariantOptionValue(variant, opt);
+            }
+        }
+    }
 
-
-    @Override
-    public void deleteProductVariant(Long productId, Long variantId) {
-        ProductVariant variant = productVariantRepository.findByProductIdAndId(productId, variantId)
-                .orElseThrow(() -> new ResourceNotFoundException("ProductVariant", "variantId", variantId));
-        productVariantRepository.delete(variant);
+    private void addVariantOptionValue(ProductVariant variant, VariantOptionValueDTO opt) {
+        VariantOptionValue vo = new VariantOptionValue();
+        vo.setVariant(variant);
+        vo.setOptionValue(optionValueRepository.getReferenceById(opt.getProductOptionValue().getId()));
+        vo.setPriceModifier(opt.getPriceModifier());
+        variant.getOptionValues().add(vo);
     }
 
     private ProductVariantDTO mapToVariantDTO(ProductVariant variant) {
@@ -134,32 +163,33 @@ public class ProductVariantServiceImpl implements ProductVariantService {
         dto.setCreatedAt(variant.getCreatedAt());
         dto.setUpdatedAt(variant.getUpdatedAt());
         dto.setImageUrl(variant.getImageUrl());
-        List<VariantOptionValueDTO> optionValueDTOs = variant.getOptionValues().stream()
-                .map(vov -> {
-                    VariantOptionValueDTO vovDTO = new VariantOptionValueDTO();
-                    vovDTO.setId(vov.getId());
-                    vovDTO.setVariantId(variant.getId());
-                    vovDTO.setOptionId(vov.getOptionValue().getOption().getId());
-                    vovDTO.setPriceModifier(vov.getPriceModifier());
-
-                    ProductOptionValueDTO productOptionValueDTO = getProductOptionValueDTO(vov);
-                    vovDTO.setProductOptionValue(productOptionValueDTO);
-
-                    return vovDTO;
-                })
-                .toList();
-        dto.setOptionValues(optionValueDTOs);
+        
+        dto.setOptionValues(mapVariantOptionValues(variant));
+        
         return dto;
     }
 
-    @NotNull
-    private static ProductOptionValueDTO getProductOptionValueDTO(VariantOptionValue vov) {
-        ProductOptionValue pov = vov.getOptionValue();
-        ProductOptionValueDTO productOptionValueDTO = new ProductOptionValueDTO();
-        productOptionValueDTO.setId(pov.getId());
-        productOptionValueDTO.setValue(pov.getValue());
-        productOptionValueDTO.setDisplayValue(pov.getDisplayValue());
-        return productOptionValueDTO;
+    private List<VariantOptionValueDTO> mapVariantOptionValues(ProductVariant variant) {
+        return variant.getOptionValues().stream()
+                .map(this::mapToVariantOptionValueDTO)
+                .collect(Collectors.toList());
     }
 
+    private VariantOptionValueDTO mapToVariantOptionValueDTO(VariantOptionValue vov) {
+        VariantOptionValueDTO vovDTO = new VariantOptionValueDTO();
+        vovDTO.setId(vov.getId());
+        vovDTO.setVariantId(vov.getVariant().getId());
+        vovDTO.setOptionId(vov.getOptionValue().getOption().getId());
+        vovDTO.setPriceModifier(vov.getPriceModifier());
+        vovDTO.setProductOptionValue(mapToProductOptionValueDTO(vov.getOptionValue()));
+        return vovDTO;
+    }
+
+    private ProductOptionValueDTO mapToProductOptionValueDTO(ProductOptionValue pov) {
+        ProductOptionValueDTO dto = new ProductOptionValueDTO();
+        dto.setId(pov.getId());
+        dto.setValue(pov.getValue());
+        dto.setDisplayValue(pov.getDisplayValue());
+        return dto;
+    }
 }

@@ -4,7 +4,9 @@ import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
+import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Type;
+import org.hibernate.annotations.Where;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -15,6 +17,7 @@ import java.util.Map;
 
 @Entity
 @Table(name = "products")
+@SQLDelete(sql = "UPDATE products SET deleted = true WHERE id = ?")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -44,6 +47,13 @@ public class Product {
 
     @Column(name = "user_id")
     private Long userId;
+
+    @Column(name = "min_price")
+    private BigDecimal minPrice;
+
+    @Column(name = "deleted")
+    @Builder.Default
+    private Boolean deleted = false;
 
     @Type(JsonBinaryType.class)
     @Column(columnDefinition = "jsonb")

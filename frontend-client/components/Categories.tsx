@@ -1,65 +1,54 @@
-import Image from "next/image"
-import Link from "next/link"
+import Image from "next/image";
+import Link from "next/link";
+import { getCategories } from "@/lib/api/products";
+import type { Category } from "@/types/product";
 
-const CATEGORIES = [
-  {
-    name: "Electronics",
-    href: "/category/electronics",
-    image: "https://images.unsplash.com/photo-1498049381929-c518538d4bc2?auto=format&fit=crop&q=80&w=800",
-  },
-  {
-    name: "Fashion",
-    href: "/category/fashion",
-    image: "https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&q=80&w=800",
-  },
-  {
-    name: "Home & Garden",
-    href: "/category/home",
-    image: "https://images.unsplash.com/photo-1484101403633-562f891dc89a?auto=format&fit=crop&q=80&w=800",
-  },
-  {
-    name: "Sports",
-    href: "/category/sports",
-    image: "https://images.unsplash.com/photo-1461896836934-ffe607ba8211?auto=format&fit=crop&q=80&w=800",
-  },
-  {
-    name: "Beauty",
-    href: "/category/beauty",
-    image: "https://images.unsplash.com/photo-1596462502278-27bfdd403348?auto=format&fit=crop&q=80&w=800",
-  },
-  {
-    name: "Toys & Hobbies",
-    href: "/category/toys",
-    image: "https://images.unsplash.com/photo-1566576912902-48f532515614?auto=format&fit=crop&q=80&w=800",
-  },
-]
+export async function Categories() {
+  let categories: Category[] = [];
 
-export function Categories() {
+  try {
+    const data = await getCategories({ pageSize: 20 });
+    categories = data.content;
+  } catch (error) {
+    console.error("Failed to fetch categories:", error);
+  }
+
+  if (categories.length === 0) {
+    return null;
+  }
+
   return (
-    <section className="container py-16 bg-zinc-50 dark:bg-zinc-900/50">
-      <h2 className="text-3xl font-bold tracking-tight mb-10 text-center">Shop by Category</h2>
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-        {CATEGORIES.map((category) => (
+    <section className="container py-10 mx-auto">
+      <h2 className="text-2xl font-bold tracking-tight mb-6">
+        Shop by Category
+      </h2>
+      <div className="flex gap-8 overflow-x-auto pb-4 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:'none'] [scrollbar-width:'none'] snap-x">
+        {categories.map((category) => (
           <Link
-            key={category.name}
-            href={category.href}
-            className="group relative aspect-square overflow-hidden rounded-lg bg-zinc-100"
+            key={category.id}
+            href={`/products?category=${encodeURIComponent(category.name)}`}
+            className="flex flex-col items-center gap-3 min-w-[100px] snap-start"
           >
-            <Image
-              src={category.image}
-              alt={category.name}
-              fill
-              className="object-cover transition-transform duration-500 group-hover:scale-105"
-            />
-            <div className="absolute inset-0 bg-black/20 transition-colors group-hover:bg-black/40" />
-            <div className="absolute inset-0 flex items-center justify-center">
-              <h3 className="text-lg font-bold text-white drop-shadow-md text-center px-2">
-                {category.name}
-              </h3>
+            <div className="relative w-24 h-24 rounded-full overflow-hidden border-2 border-zinc-100 dark:border-zinc-800 shadow-sm bg-zinc-100 dark:bg-zinc-800">
+              {category.imageUrl ? (
+                <Image
+                  src={`http://localhost:8080/uploads/categories/${category.imageUrl}`}
+                  alt={category.name}
+                  fill
+                  className="object-cover"
+                />
+              ) : (
+                <div className="w-full h-full flex items-center justify-center text-zinc-400">
+                  <span className="text-xs">No Image</span>
+                </div>
+              )}
             </div>
+            <span className="text-sm font-medium text-zinc-700 dark:text-zinc-300 text-center whitespace-nowrap">
+              {category.name}
+            </span>
           </Link>
         ))}
       </div>
     </section>
-  )
+  );
 }

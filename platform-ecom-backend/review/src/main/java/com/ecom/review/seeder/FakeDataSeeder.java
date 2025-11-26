@@ -203,8 +203,10 @@ public class FakeDataSeeder implements CommandLineRunner {
         List<String> images = new ArrayList<>();
         
         for (int i = 0; i < imageCount; i++) {
-            // Generate fake image URLs
-            images.add("review-" + UUID.randomUUID().toString() + ".jpg");
+            images.add("1.png");
+            images.add("2.png");
+            images.add("3.png");
+
         }
         
         return images;

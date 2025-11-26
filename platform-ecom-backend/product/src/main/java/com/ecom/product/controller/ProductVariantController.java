@@ -31,12 +31,6 @@ public class ProductVariantController {
         return new ResponseEntity<>(variants, HttpStatus.OK);
     }
 
-    @GetMapping("/{variantId}")
-    public ResponseEntity<ProductVariantDTO> getProductVariantById(@PathVariable Long productId, @PathVariable Long variantId) {
-        ProductVariantDTO variant = productVariantService.getProductVariantById(productId, variantId);
-        return new ResponseEntity<>(variant, HttpStatus.OK);
-    }
-
     @PutMapping("/{variantId}")
     @RequireRole("ROLE_SELLER")
     public ResponseEntity<ProductVariantDTO> updateProductVariant(@PathVariable Long productId, @PathVariable Long variantId, @Valid @RequestBody ProductVariantDTO productVariantDTO) {

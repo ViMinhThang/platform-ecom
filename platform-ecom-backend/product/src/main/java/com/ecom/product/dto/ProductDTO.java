@@ -15,6 +15,7 @@ public class ProductDTO {
     private String description;
     private CategoryDTO cate;
     private String status;
+    private BigDecimal minPrice;
     private Map<String, Object> specifications;
     private Map<String, Object> metadata;
     private LocalDateTime createdAt;

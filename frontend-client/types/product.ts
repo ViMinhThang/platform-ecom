@@ -33,6 +33,7 @@ export interface Product {
   name: string;
   slug: string;
   description?: string;
+  images: ProductImage[];
   cate: Category;
   status: string;
   specifications?: Record<string, any>;
@@ -78,7 +79,11 @@ export interface ProductVariant {
   id: number;
   sku: string;
   price: number;
+  salePrice?: number;
+  saleStart?: string;
+  saleEnd?: string;
   stock: number;
+  totalSold?: number;
   isActive: boolean;
   imageUrl?: string;
   optionValues: VariantOptionValue[];
@@ -87,4 +92,10 @@ export interface ProductVariant {
 export interface ProductDetail extends Product {
   options: ProductOption[];
   variants: ProductVariant[];
+}
+export interface ProductImage {
+  id: number;
+  product: Product;
+  imageUrl: String;
+  createdAt: Date;
 }

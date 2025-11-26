@@ -13,9 +13,13 @@ public class ProductVariantDTO {
     private Long productId;
     private String sku;
     private BigDecimal price;
+    private BigDecimal salePrice;
+    private LocalDateTime saleStart;
+    private LocalDateTime saleEnd;
     private Integer stock;
     private Boolean isActive;
     private String imageUrl;
+    private Integer totalSold;
     private List<VariantOptionValueDTO> optionValues;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;

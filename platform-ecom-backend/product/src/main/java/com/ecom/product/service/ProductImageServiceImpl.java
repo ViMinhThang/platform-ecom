@@ -6,8 +6,8 @@ import com.ecom.product.entity.ProductImage;
 import com.ecom.product.exceptions.ResourceNotFoundException;
 import com.ecom.product.repository.ProductImageRepository;
 import com.ecom.product.repository.ProductRepository;
+import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -15,70 +15,93 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class ProductImageServiceImpl implements ProductImageService {
 
-    @Autowired
-    private ProductImageRepository productImageRepository;
-
-    @Autowired
-    private ProductRepository productRepository;
-
-    @Autowired
-    private ModelMapper modelMapper;
-
-    @Autowired
-    private FileStorageService fileStorageService; 
+    private final ProductImageRepository productImageRepository;
+    private final ProductRepository productRepository;
+    private final ModelMapper modelMapper;
+    private final FileStorageService fileStorageService;
 
     @Override
     public ProductImageDTO addImageToProduct(Long productId, MultipartFile image) {
-        Product product = productRepository.findById(productId)
-                .orElseThrow(() -> new ResourceNotFoundException("Product", "productId", productId));
-
+        Product product = findProductById(productId);
         String imageUrl = fileStorageService.storeFile(image);
-
-        ProductImage productImage = new ProductImage();
-        productImage.setProduct(product);
-        productImage.setImageUrl(imageUrl);
-
+        
+        ProductImage productImage = createProductImage(product, imageUrl);
         ProductImage savedImage = productImageRepository.save(productImage);
-        return modelMapper.map(savedImage, ProductImageDTO.class);
+        
+        return mapToProductImageDTO(savedImage);
     }
 
     @Override
     public List<ProductImageDTO> getProductImages(Long productId) {
         List<ProductImage> images = productImageRepository.findByProductId(productId);
-        return images.stream()
-                .map(image -> modelMapper.map(image, ProductImageDTO.class))
-                .collect(Collectors.toList());
+        return mapToProductImageDTOs(images);
     }
 
     @Override
     public ProductImageDTO getProductImageById(Long productId, Long imageId) {
-        ProductImage image = productImageRepository.findByProductIdAndId(productId, imageId)
-                .orElseThrow(() -> new ResourceNotFoundException("ProductImage", "imageId", imageId));
-        return modelMapper.map(image, ProductImageDTO.class);
+        ProductImage image = findProductImage(productId, imageId);
+        return mapToProductImageDTO(image);
     }
 
     @Override
     public ProductImageDTO updateProductImage(Long productId, Long imageId, MultipartFile imageFile) {
-        ProductImage image = productImageRepository.findByProductIdAndId(productId, imageId)
-                .orElseThrow(() -> new ResourceNotFoundException("ProductImage", "imageId", imageId));
+        ProductImage image = findProductImage(productId, imageId);
 
-        if (imageFile != null && !imageFile.isEmpty()) {
-            fileStorageService.deleteFile(image.getImageUrl());
-            String newImageUrl = fileStorageService.storeFile(imageFile);
-            image.setImageUrl(newImageUrl);
+        if (hasNewImageFile(imageFile)) {
+            updateImageFile(image, imageFile);
         }
+        
         ProductImage updatedImage = productImageRepository.save(image);
-        return modelMapper.map(updatedImage, ProductImageDTO.class);
+        return mapToProductImageDTO(updatedImage);
     }
 
     @Override
     public void deleteProductImage(Long productId, Long imageId) {
-        ProductImage image = productImageRepository.findByProductIdAndId(productId, imageId)
-                .orElseThrow(() -> new ResourceNotFoundException("ProductImage", "imageId", imageId));
-
+        ProductImage image = findProductImage(productId, imageId);
+        
         fileStorageService.deleteFile(image.getImageUrl());
         productImageRepository.delete(image);
+    }
+
+    // ==================== Private Helper Methods ====================
+
+    private Product findProductById(Long productId) {
+        return productRepository.findById(productId)
+                .orElseThrow(() -> new ResourceNotFoundException("Product", "productId", productId));
+    }
+
+    private ProductImage findProductImage(Long productId, Long imageId) {
+        return productImageRepository.findByProductIdAndId(productId, imageId)
+                .orElseThrow(() -> new ResourceNotFoundException("ProductImage", "imageId", imageId));
+    }
+
+    private ProductImage createProductImage(Product product, String imageUrl) {
+        ProductImage productImage = new ProductImage();
+        productImage.setProduct(product);
+        productImage.setImageUrl(imageUrl);
+        return productImage;
+    }
+
+    private boolean hasNewImageFile(MultipartFile imageFile) {
+        return imageFile != null && !imageFile.isEmpty();
+    }
+
+    private void updateImageFile(ProductImage image, MultipartFile newImageFile) {
+        fileStorageService.deleteFile(image.getImageUrl());
+        String newImageUrl = fileStorageService.storeFile(newImageFile);
+        image.setImageUrl(newImageUrl);
+    }
+
+    private ProductImageDTO mapToProductImageDTO(ProductImage image) {
+        return modelMapper.map(image, ProductImageDTO.class);
+    }
+
+    private List<ProductImageDTO> mapToProductImageDTOs(List<ProductImage> images) {
+        return images.stream()
+                .map(this::mapToProductImageDTO)
+                .collect(Collectors.toList());
     }
 }

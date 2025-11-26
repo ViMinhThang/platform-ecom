@@ -19,28 +19,18 @@ public class FileStorageServiceImpl implements FileStorageService {
 
     public FileStorageServiceImpl(@Value("${file.upload-dir}") String uploadDir) {
         this.fileStorageLocation = Paths.get(uploadDir).toAbsolutePath().normalize();
-
-        try {
-            Files.createDirectories(this.fileStorageLocation);
-        } catch (Exception ex) {
-            throw new RuntimeException("Could not create the directory where the uploaded files will be stored.", ex);
-        }
+        createUploadDirectory();
     }
 
     @Override
     public String storeFile(MultipartFile file) {
-        String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+        String fileName = StringUtils.cleanPath(getOriginalFilename(file));
+        validateFileName(fileName);
 
         try {
-            if (fileName.contains("..")) {
-                throw new RuntimeException("Sorry! Filename contains invalid path sequence " + fileName);
-            }
-
-            String newFileName = UUID.randomUUID().toString() + "_" + fileName;
-
+            String newFileName = generateUniqueFileName(fileName);
             Path targetLocation = this.fileStorageLocation.resolve(newFileName);
             Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
-
             return newFileName;
         } catch (IOException ex) {
             throw new RuntimeException("Could not store file " + fileName + ". Please try again!", ex);
@@ -52,8 +42,33 @@ public class FileStorageServiceImpl implements FileStorageService {
         try {
             Path filePath = this.fileStorageLocation.resolve(fileName).normalize();
             Files.deleteIfExists(filePath);
-        } catch (Exception ex) {
+        } catch (IOException ex) {
             throw new RuntimeException("Could not delete file " + fileName + ". Please try again!", ex);
         }
+    }
+
+    // ==================== Private Helper Methods ====================
+
+    private void createUploadDirectory() {
+        try {
+            Files.createDirectories(this.fileStorageLocation);
+        } catch (Exception ex) {
+            throw new RuntimeException("Could not create the directory where the uploaded files will be stored.", ex);
+        }
+    }
+
+    private String getOriginalFilename(MultipartFile file) {
+        String filename = file.getOriginalFilename();
+        return filename != null ? filename : "unknown_file";
+    }
+
+    private void validateFileName(String fileName) {
+        if (fileName.contains("..")) {
+            throw new RuntimeException("Sorry! Filename contains invalid path sequence " + fileName);
+        }
+    }
+
+    private String generateUniqueFileName(String fileName) {
+        return UUID.randomUUID().toString() + "_" + fileName;
     }
 }
