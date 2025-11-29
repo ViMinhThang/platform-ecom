@@ -5,6 +5,33 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c48beeac-7758-42e4-81dd-f068fbcd38be" name="Changes" comment="update spring cloud stream dependency">
+      <change afterPath="$PROJECT_DIR$/frontend-client/app/api/auth/[...nextauth]/route.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend-client/app/auth/register/page.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend-client/app/auth/sign-in/page.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend-client/app/profile/page.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend-client/components/UserNav.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend-client/components/auth/register-form.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend-client/components/auth/user-auth-form.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend-client/components/profile/AddressForm.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend-client/components/profile/AddressManager.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend-client/components/profile/OrderHistory.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend-client/components/profile/ProfileInfoForm.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend-client/components/providers.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend-client/components/ui/carousel.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend-client/components/ui/checkbox.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend-client/components/ui/dialog.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend-client/components/ui/form.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend-client/components/ui/label.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend-client/components/ui/sonner.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend-client/components/ui/table.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend-client/components/ui/tabs.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend-client/components/ui/textarea.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend-client/lib/api/ghn.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend-client/lib/api/profile.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend-client/middleware.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend-client/types/next-auth.d.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend-client/types/user.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
