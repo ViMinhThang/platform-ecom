@@ -5,16 +5,25 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.util.Map;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class ProductDTO {
-    private Long productId;
-    private String productName;
-    private String image;
+    private Long id;
+    private String name;
+    private String slug;
     private String description;
-    private Integer quantity;
-    private double price;
-    private double discount;
-    private double specialPrice;
+    private String status;
+    private BigDecimal minPrice;
+    private Map<String, Object> specifications;
+    private Map<String, Object> metadata;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
+    private Long totalSold;
+    private Long totalReviews;
+    private Double averageRating;
 }

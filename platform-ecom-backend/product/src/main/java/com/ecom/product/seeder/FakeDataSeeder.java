@@ -37,7 +37,7 @@ public class FakeDataSeeder implements CommandLineRunner {
     @Override
     @Transactional
     public void run(String... args) {
-        if (productRepository.count() > 50) {
+        if (productRepository.count() > 200) {
             log.info("Database already seeded with products. Skipping product seeding.");
             return;
         }

@@ -16,4 +16,6 @@ public interface ProductVariantService {
     ProductVariantDTO updateProductVariant(Long productId, Long variantId, @Valid ProductVariantDTO productVariantDTO);
 
     void deleteProductVariant(Long productId, Long variantId);
+
+    ProductVariantDTO findVariantById(Long variantId);
 }

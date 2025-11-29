@@ -15,6 +15,7 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 @Component
 @RequiredArgsConstructor
@@ -41,12 +42,9 @@ public class FakeDataSeeder implements CommandLineRunner {
 
         log.info("Starting Order service fake data seeding...");
 
-        // Seed Carts (for users 1-50)
         seedCarts(50);
 
-        // Seed Orders (historical orders)
-        seedOrders(1);
-
+        seedOrdersForAdmin(20);
         log.info("Order service fake data seeding completed!");
     }
 
@@ -81,7 +79,17 @@ public class FakeDataSeeder implements CommandLineRunner {
             for (int i = 0; i < itemCount; i++) {
                 CartItem item = new CartItem();
                 item.setCart(cart);
-                item.setProductId((long) faker.number().numberBetween(1, 150));
+
+                // Assign product ID and corresponding variant ID
+                Long productId = (long) faker.number().numberBetween(1, 150);
+                item.setProductId(productId);
+
+                // Estimate variant ID based on product ID
+                Long estimatedFirstVariantId = (productId - 1) * 10 + 1;
+                Long variantId = estimatedFirstVariantId + faker.number().numberBetween(0, 9);
+                // Note: CartItem entity would need productVariantId field too
+                // item.setProductVariantId(variantId);
+
                 item.setQuantity(faker.number().numberBetween(1, 5));
                 item.setProductPrice(faker.number().randomDouble(2, 10, 500));
                 item.setDiscount(faker.number().randomDouble(2, 0, 20));
@@ -98,26 +106,30 @@ public class FakeDataSeeder implements CommandLineRunner {
         log.info("✓ Created {} cart items", cartItems.size());
     }
 
-    private void seedOrders(int count) {
-        log.info("Seeding {} orders...", count);
+    private void seedOrdersForAdmin(int count) {
+        log.info("Seeding {} orders for admin@ecom.com...", count);
 
         List<com.ecom.order.entity.Order> orders = new ArrayList<>();
         List<OrderItem> orderItems = new ArrayList<>();
         List<Payment> payments = new ArrayList<>();
 
         for (int i = 0; i < count; i++) {
-            // Create order
+            // 1. Create Order
             com.ecom.order.entity.Order order = new com.ecom.order.entity.Order();
 
-            order.setEmail(faker.internet().emailAddress());
+            // --- STRICTLY ADMIN EMAIL ---
+            order.setEmail("admin@ecom.com");
+            // ----------------------------
+
+            // Randomize dates to simulate history
             order.setOrderDate(LocalDate.ofInstant(
-                    faker.date().past(365, java.util.concurrent.TimeUnit.DAYS).toInstant(),
-                    ZoneId.systemDefault()
-            ));
+                    faker.date().past(365, TimeUnit.DAYS).toInstant(),
+                    ZoneId.systemDefault()));
+
             order.setOrderStatus(faker.options().option("PENDING", "PROCESSING", "SHIPPED", "DELIVERED", "CANCELLED"));
             order.setAddressId((long) faker.number().numberBetween(1, 200));
 
-            // Create order items
+            // 2. Create Order Items
             int itemCount = faker.number().numberBetween(1, 5);
             double totalAmount = 0.0;
 
@@ -125,7 +137,17 @@ public class FakeDataSeeder implements CommandLineRunner {
             for (int j = 0; j < itemCount; j++) {
                 OrderItem item = new OrderItem();
                 item.setOrder(order);
-                item.setProductId((long) faker.number().numberBetween(1, 150));
+
+                // Assign product ID
+                Long productId = (long) faker.number().numberBetween(20, 50);
+                item.setProductId(productId);
+
+                // Estimate variant ID logic
+                Long estimatedFirstVariantId = (productId - 1) * 10 + 1;
+                Long variantId = estimatedFirstVariantId + faker.number().numberBetween(0, 9);
+                item.setProductVariantId(variantId);
+
+                // Pricing
                 item.setQuantity(faker.number().numberBetween(1, 4));
                 item.setOrderedProductPrice(faker.number().randomDouble(2, 10, 500));
                 item.setDiscount(faker.number().randomDouble(2, 0, 20));
@@ -137,10 +159,12 @@ public class FakeDataSeeder implements CommandLineRunner {
             order.setTotalAmount(totalAmount);
             order.setOrderItems(currentOrderItems);
 
-            // Create payment
+            // 3. Create Payment
             Payment payment = new Payment();
             payment.setPaymentMethod(faker.options().option("CREDIT_CARD", "DEBIT_CARD", "PAYPAL", "CASH_ON_DELIVERY"));
             payment.setPgPaymentId("PAY-" + faker.number().digits(10));
+
+            // Logic: If order is Cancelled, maybe payment failed? Or random. Keeping random for now.
             payment.setPgStatus(faker.options().option("SUCCESS", "PENDING", "FAILED"));
             payment.setPgResponseMessage(faker.lorem().sentence());
             payment.setPgName(faker.options().option("Stripe", "PayPal", "Razorpay", "Cash"));
@@ -148,58 +172,16 @@ public class FakeDataSeeder implements CommandLineRunner {
 
             order.setPayment(payment);
 
+            // Add to batch lists
             orders.add(order);
             orderItems.addAll(currentOrderItems);
             payments.add(payment);
         }
-        com.ecom.order.entity.Order order = new com.ecom.order.entity.Order();
 
-        order.setEmail("admin@ecom.com");
-        order.setOrderDate(LocalDate.ofInstant(
-                faker.date().past(365, java.util.concurrent.TimeUnit.DAYS).toInstant(),
-                ZoneId.systemDefault()
-        ));
-        order.setOrderStatus(faker.options().option("PENDING", "PROCESSING", "SHIPPED", "DELIVERED", "CANCELLED"));
-        order.setAddressId((long) faker.number().numberBetween(1, 200));
-
-        // Create order items
-        int itemCount = faker.number().numberBetween(1, 5);
-        double totalAmount = 0.0;
-
-        List<OrderItem> currentOrderItems = new ArrayList<>();
-        for (int j = 0; j < itemCount; j++) {
-            OrderItem item = new OrderItem();
-            item.setOrder(order);
-            item.setProductId((long) faker.number().numberBetween(1, 150));
-            item.setQuantity(faker.number().numberBetween(1, 4));
-            item.setOrderedProductPrice(faker.number().randomDouble(2, 10, 500));
-            item.setDiscount(faker.number().randomDouble(2, 0, 20));
-
-            totalAmount += (item.getOrderedProductPrice() - item.getDiscount()) * item.getQuantity();
-            currentOrderItems.add(item);
-        }
-
-        order.setTotalAmount(totalAmount);
-        order.setOrderItems(currentOrderItems);
-
-        // Create payment
-        Payment payment = new Payment();
-        payment.setPaymentMethod(faker.options().option("CREDIT_CARD", "DEBIT_CARD", "PAYPAL", "CASH_ON_DELIVERY"));
-        payment.setPgPaymentId("PAY-" + faker.number().digits(10));
-        payment.setPgStatus(faker.options().option("SUCCESS", "PENDING", "FAILED"));
-        payment.setPgResponseMessage(faker.lorem().sentence());
-        payment.setPgName(faker.options().option("Stripe", "PayPal", "Razorpay", "Cash"));
-        payment.setOrder(order);
-
-        order.setPayment(payment);
-
-        orders.add(order);
-        orderItems.addAll(currentOrderItems);
-        payments.add(payment);
+        // Batch Save
         paymentRepository.saveAll(payments);
         orderRepository.saveAll(orders);
-        log.info("✓ Created {} orders", orders.size());
-        log.info("✓ Created {} order items", orderItems.size());
-        log.info("✓ Created {} payments", payments.size());
-    }
-}
+
+        log.info("✓ Created {} orders for admin@ecom.com", orders.size());
+        log.info("✓ Created {} total order items", orderItems.size());
+    }}

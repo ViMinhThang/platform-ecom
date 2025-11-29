@@ -42,10 +42,10 @@ export function OrderCard({ order, onReviewOrderItem, onBuyAgain }: OrderCardPro
                     <h4 className="text-sm font-medium mb-2 text-muted-foreground">
                         Items ({order.orderItems.length})
                     </h4>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
+                    <div className="grid grid-cols-1  gap-2">
                         {order.orderItems.map((item) => (
                             <OrderItemCard
-                                key={`${order.orderId}-${item.productId}`}
+                                key={`${order.orderId}-${item.productVariant?.id}`}
                                 item={item}
                                 orderStatus={order.orderStatus}
                                 onReviewClick={() => onReviewOrderItem(item.productId, order.orderId)}

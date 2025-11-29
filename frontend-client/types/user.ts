@@ -1,4 +1,4 @@
-// User profile types for frontend
+import { Product, ProductVariant } from "./product";
 
 export interface Address {
     addressId?: number;
@@ -29,11 +29,16 @@ export interface UserProfile {
     addresses?: Address[];
 }
 
+// TypeScript interfaces matching backend DTOs
+
+// Order related types
+
 export interface OrderItem {
     productId: number;
     quantity: number;
-    discount: number;
     orderedProductPrice: number;
+    product: Product
+    productVariant?: ProductVariant;
 }
 
 export interface Order {

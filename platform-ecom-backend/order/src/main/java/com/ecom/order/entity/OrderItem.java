@@ -18,6 +18,9 @@ public class OrderItem {
 
     private Long productId;
 
+    @Column(name = "product_variant_id")
+    private Long productVariantId;
+
     @ManyToOne
     @JoinColumn(name = "order_id")
     private Order order;

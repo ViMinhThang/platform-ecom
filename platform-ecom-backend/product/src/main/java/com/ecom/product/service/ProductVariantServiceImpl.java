@@ -74,11 +74,22 @@ public class ProductVariantServiceImpl implements ProductVariantService {
         productVariantRepository.delete(variant);
     }
 
+    @Override
+    public ProductVariantDTO findVariantById(Long variantId) {
+        ProductVariant variant = findVariantByVariantId(variantId);
+        return mapToVariantDTO(variant);
+    }
+
     // ==================== Private Helper Methods ====================
 
     private Product findProductById(Long productId) {
         return productRepository.findById(productId)
                 .orElseThrow(() -> new ResourceNotFoundException("Product", "productId", productId));
+    }
+
+    private ProductVariant findVariantByVariantId(Long variantId){
+        return productVariantRepository.findById(variantId)
+                .orElseThrow(() -> new ResourceNotFoundException("ProductVariant", "variantId", variantId));
     }
 
     private ProductVariant findProductVariant(Long productId, Long variantId) {

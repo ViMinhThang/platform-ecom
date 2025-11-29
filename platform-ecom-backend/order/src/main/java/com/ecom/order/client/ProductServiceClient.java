@@ -1,7 +1,7 @@
 package com.ecom.order.client;
 
-
 import com.ecom.order.dtos.ProductDTO;
+import com.ecom.order.dtos.ProductVariantDTO;
 import com.ecom.order.dtos.ReduceStockDTO;
 import com.ecom.order.entity.OrderItem;
 import com.stripe.model.forwarding.Request;
@@ -25,6 +25,10 @@ public interface ProductServiceClient {
     @PostExchange("/reduce-stock")
     ResponseEntity<String> reduceStock(@RequestBody List<ReduceStockDTO> reduceStockDTOS);
 
-    @GetExchange("/{productId}")
+    @GetExchange("/public/{productId}")
     ResponseEntity<ProductDTO> getProductById(@PathVariable("productId") Long productId);
+
+    @GetExchange("/seller/{productId}/variants/{variantId}")
+    ResponseEntity<ProductVariantDTO> getProductVariantById(@PathVariable("productId") Long productId,
+            @PathVariable("variantId") Long variantId);
 }

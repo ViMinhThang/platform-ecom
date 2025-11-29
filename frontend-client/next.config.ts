@@ -40,6 +40,7 @@ const baseConfig: NextConfig = {
         protocol: "https",
         hostname: "placehold.co",
         port: "",
+        pathname: "/**",
       },
     ],
   },

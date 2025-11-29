@@ -95,7 +95,7 @@ export function OrderHistory() {
     return (
         <div className="space-y-6">
             {/* Orders Grid */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 gap-4">
                 {orders.map((order) => (
                     <OrderCard
                         key={order.orderId}

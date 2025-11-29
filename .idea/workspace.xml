@@ -5,14 +5,27 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c48beeac-7758-42e4-81dd-f068fbcd38be" name="Changes" comment="update spring cloud stream dependency">
+      <change afterPath="$PROJECT_DIR$/platform-ecom-backend/order/src/main/java/com/ecom/order/dtos/ProductOptionValueDTO.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/profile/AddressForm.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/profile/AddressForm.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/profile/AddressManager.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/profile/AddressManager.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-client/components/profile/OrderCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/profile/OrderCard.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend-client/components/profile/OrderHistory.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/profile/OrderHistory.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/profile/ProfileInfoForm.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/profile/ProfileInfoForm.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-client/components/profile/OrderItemCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/profile/OrderItemCard.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-client/next.config.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/next.config.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-client/types/user.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/types/user.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/logs/order-service.log" beforeDir="false" afterPath="$PROJECT_DIR$/logs/order-service.log" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/logs/product-service.log" beforeDir="false" afterPath="$PROJECT_DIR$/logs/product-service.log" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/logs/user-service.log" beforeDir="false" afterPath="$PROJECT_DIR$/logs/user-service.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/order/src/main/java/com/ecom/order/client/ProductServiceClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/order/src/main/java/com/ecom/order/client/ProductServiceClient.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/order/src/main/java/com/ecom/order/dtos/OrderItemDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/order/src/main/java/com/ecom/order/dtos/OrderItemDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/order/src/main/java/com/ecom/order/dtos/ProductDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/order/src/main/java/com/ecom/order/dtos/ProductDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/order/src/main/java/com/ecom/order/entity/OrderItem.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/order/src/main/java/com/ecom/order/entity/OrderItem.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/order/src/main/java/com/ecom/order/seeder/FakeDataSeeder.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/order/src/main/java/com/ecom/order/seeder/FakeDataSeeder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/order/src/main/java/com/ecom/order/service/CartServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/order/src/main/java/com/ecom/order/service/CartServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/order/src/main/java/com/ecom/order/service/OrderServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/order/src/main/java/com/ecom/order/service/OrderServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/controller/ProductVariantController.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/controller/ProductVariantController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/seeder/FakeDataSeeder.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/seeder/FakeDataSeeder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/service/ProductVariantService.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/service/ProductVariantService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/service/ProductVariantServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/service/ProductVariantServiceImpl.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -100,8 +113,8 @@
       <recent name="$PROJECT_DIR$/platform-ecom-backend" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
-      <recent name="com.ecom.notification.dtos" />
       <recent name="com.ecom.order.dtos" />
+      <recent name="com.ecom.notification.dtos" />
       <recent name="com.ecom.order.config" />
       <recent name="com.ecom.product.config" />
       <recent name="com.ecom.user.config" />
@@ -122,7 +135,7 @@
               <entry key="gateway" value="STOPPED" />
               <entry key="notification-service" value="STOPPED" />
               <entry key="order-service" value="STOPPED" />
-              <entry key="product-service" value="STOPPED" />
+              <entry key="product-service" value="FAILED" />
               <entry key="review-service" value="STOPPED" />
               <entry key="user-service" value="STOPPED" />
             </map>
