@@ -176,6 +176,9 @@ public class ProductServiceImpl implements ProductService {
                 .minPrice(calculateMinPrice(product))
                 .variants(product.getVariants().size())
                 .firstVariant(findFirstAvailableVariant(product))
+                .totalSold(product.getTotalSold())
+                .totalReviews(product.getTotalReviews())
+                .averageRating(product.getAverageRating())
                 .build();
     }
 

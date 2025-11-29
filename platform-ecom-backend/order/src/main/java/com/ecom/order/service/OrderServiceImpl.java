@@ -75,9 +75,9 @@ public class OrderServiceImpl implements OrderService {
         return orderResponse;
     }
 
-
     @Override
-    public OrderResponse getAllSellerOrders(Integer pageNumber, Integer pageSize, String sortBy, String sortOrder, Long sellerId) {
+    public OrderResponse getAllSellerOrders(Integer pageNumber, Integer pageSize, String sortBy, String sortOrder,
+            Long sellerId) {
         Sort sortByAndOrder = sortOrder.equalsIgnoreCase("asc")
                 ? Sort.by(sortBy).ascending()
                 : Sort.by(sortBy).descending();
@@ -123,7 +123,8 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional
-    public OrderDTO placeOrder(Long userId, Long addressId, String paymentMethod, String pgName, String pgPaymentId, String pgStatus, String pgResponseMessage) {
+    public OrderDTO placeOrder(Long userId, Long addressId, String paymentMethod, String pgName, String pgPaymentId,
+            String pgStatus, String pgResponseMessage) {
 
         try {
             Cart cart = cartRepository.findByUserId(userId);
@@ -145,7 +146,6 @@ public class OrderServiceImpl implements OrderService {
             order.setTotalAmount(cart.getTotalPrice());
             order.setOrderStatus("Accepted");
             order.setAddressId(addressId);
-
 
             Payment payment = new Payment(paymentMethod, pgPaymentId, pgStatus, pgResponseMessage, pgName);
             payment.setOrder(order);
@@ -169,9 +169,7 @@ public class OrderServiceImpl implements OrderService {
             orderItemRepository.saveAll(orderItems)
                     .forEach(oi -> reduceStockDTOS.add(new ReduceStockDTO(oi.getProductId(), oi.getQuantity())));
 
-
             productServiceClient.reduceStock(reduceStockDTOS);
-
 
             cart.getCartItems().forEach(ci -> cartService.deleteProductFromCart(cart.getCartId(), ci.getProductId()));
 
@@ -180,8 +178,8 @@ public class OrderServiceImpl implements OrderService {
 
             orderDTO.setAddressId(addressId);
 
-
-            PlaceOrderEvent placeOrderEvent = new PlaceOrderEvent(orderDTO.getEmail(), orderDTO.getOrderId(), orderDTO.getOrderStatus(), orderDTO.getTotalAmount());
+            PlaceOrderEvent placeOrderEvent = new PlaceOrderEvent(orderDTO.getEmail(), orderDTO.getOrderId(),
+                    orderDTO.getOrderStatus(), orderDTO.getTotalAmount());
             orderNotificationProducer.sendPlaceOrderNotification(placeOrderEvent);
 
             return orderDTO;
@@ -226,5 +224,29 @@ public class OrderServiceImpl implements OrderService {
 
         return false;
     }
-}
 
+    @Override
+    public OrderResponse getUserOrders(String email, Integer pageNumber, Integer pageSize, String sortBy,
+            String sortOrder) {
+        Sort sortByAndOrder = sortOrder.equalsIgnoreCase("asc")
+                ? Sort.by(sortBy).ascending()
+                : Sort.by(sortBy).descending();
+
+        Pageable pageDetails = PageRequest.of(pageNumber, pageSize, sortByAndOrder);
+        Page<Order> pageOrders = orderRepository.findByEmailOrderByOrderDateDesc(email, pageDetails);
+
+        List<OrderDTO> orderDTOs = pageOrders.getContent().stream()
+                .map(order -> modelMapper.map(order, OrderDTO.class))
+                .toList();
+
+        OrderResponse orderResponse = new OrderResponse();
+        orderResponse.setContent(orderDTOs);
+        orderResponse.setPageNumber(pageOrders.getNumber());
+        orderResponse.setPageSize(pageOrders.getSize());
+        orderResponse.setTotalElements(pageOrders.getTotalElements());
+        orderResponse.setTotalPages(pageOrders.getTotalPages());
+        orderResponse.setLastPage(pageOrders.isLast());
+
+        return orderResponse;
+    }
+}

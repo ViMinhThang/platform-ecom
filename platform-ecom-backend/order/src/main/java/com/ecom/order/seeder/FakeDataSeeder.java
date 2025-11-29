@@ -34,7 +34,7 @@ public class FakeDataSeeder implements CommandLineRunner {
     @Override
     @Transactional
     public void run(String... args) {
-        if (orderRepository.count() > 20) {
+        if (orderRepository.count() > 120) {
             log.info("Database already seeded with orders. Skipping order seeding.");
             return;
         }
@@ -45,7 +45,7 @@ public class FakeDataSeeder implements CommandLineRunner {
         seedCarts(50);
 
         // Seed Orders (historical orders)
-        seedOrders(100);
+        seedOrders(1);
 
         log.info("Order service fake data seeding completed!");
     }
@@ -108,6 +108,7 @@ public class FakeDataSeeder implements CommandLineRunner {
         for (int i = 0; i < count; i++) {
             // Create order
             com.ecom.order.entity.Order order = new com.ecom.order.entity.Order();
+
             order.setEmail(faker.internet().emailAddress());
             order.setOrderDate(LocalDate.ofInstant(
                     faker.date().past(365, java.util.concurrent.TimeUnit.DAYS).toInstant(),
@@ -151,8 +152,51 @@ public class FakeDataSeeder implements CommandLineRunner {
             orderItems.addAll(currentOrderItems);
             payments.add(payment);
         }
+        com.ecom.order.entity.Order order = new com.ecom.order.entity.Order();
+
+        order.setEmail("admin@ecom.com");
+        order.setOrderDate(LocalDate.ofInstant(
+                faker.date().past(365, java.util.concurrent.TimeUnit.DAYS).toInstant(),
+                ZoneId.systemDefault()
+        ));
+        order.setOrderStatus(faker.options().option("PENDING", "PROCESSING", "SHIPPED", "DELIVERED", "CANCELLED"));
+        order.setAddressId((long) faker.number().numberBetween(1, 200));
+
+        // Create order items
+        int itemCount = faker.number().numberBetween(1, 5);
+        double totalAmount = 0.0;
+
+        List<OrderItem> currentOrderItems = new ArrayList<>();
+        for (int j = 0; j < itemCount; j++) {
+            OrderItem item = new OrderItem();
+            item.setOrder(order);
+            item.setProductId((long) faker.number().numberBetween(1, 150));
+            item.setQuantity(faker.number().numberBetween(1, 4));
+            item.setOrderedProductPrice(faker.number().randomDouble(2, 10, 500));
+            item.setDiscount(faker.number().randomDouble(2, 0, 20));
+
+            totalAmount += (item.getOrderedProductPrice() - item.getDiscount()) * item.getQuantity();
+            currentOrderItems.add(item);
+        }
+
+        order.setTotalAmount(totalAmount);
+        order.setOrderItems(currentOrderItems);
+
+        // Create payment
+        Payment payment = new Payment();
+        payment.setPaymentMethod(faker.options().option("CREDIT_CARD", "DEBIT_CARD", "PAYPAL", "CASH_ON_DELIVERY"));
+        payment.setPgPaymentId("PAY-" + faker.number().digits(10));
+        payment.setPgStatus(faker.options().option("SUCCESS", "PENDING", "FAILED"));
+        payment.setPgResponseMessage(faker.lorem().sentence());
+        payment.setPgName(faker.options().option("Stripe", "PayPal", "Razorpay", "Cash"));
+        payment.setOrder(order);
+
+        order.setPayment(payment);
+
+        orders.add(order);
+        orderItems.addAll(currentOrderItems);
+        payments.add(payment);
         paymentRepository.saveAll(payments);
-        // Save in order: orders, order items, payments
         orderRepository.saveAll(orders);
         log.info("✓ Created {} orders", orders.size());
         log.info("✓ Created {} order items", orderItems.size());

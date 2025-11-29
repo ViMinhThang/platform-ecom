@@ -45,6 +45,9 @@ public class DataSeeder implements CommandLineRunner {
                 .status("ACTIVE")
                 .specifications(Map.of("chất_liệu", "Cotton 100%", "xuất_xứ", "Việt Nam"))
                 .metadata(Map.of("tags", List.of("áo thun", "nam", "cotton"), "rating", 4.8))
+                .totalSold(1250L)
+                .totalReviews(320L)
+                .averageRating(4.8)
                 .build();
         productRepo.save(product);
 

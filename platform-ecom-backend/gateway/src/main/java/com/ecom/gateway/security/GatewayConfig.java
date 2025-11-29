@@ -69,22 +69,16 @@ public class GatewayConfig {
                 .route("product-seller", r -> r.path("/api/products/seller/**")
                         .filters(f -> f.filter(authFilter))
                         .uri("lb://product-service"))
-                .route("user-service", r -> r.path("/api/auth/update-info")
-                        .filters(f -> f.filter(authFilter))
+                .route("user-service", r -> r.path("/api/auth/login")
+                        .uri("lb://user-service"))
+                .route("user-service", r -> r.path("/api/auth/signup")
                         .uri("lb://user-service"))
                 .route("user-service", r -> r.path("/api/auth/**").filters(f -> f.filter(authFilter))
                         .uri("lb://user-service"))
                 .route("user-addresses-private", r -> r.path(
-                                "/api/addresses/**"
+                                "/api/addresses/user","/api/addresses/**"
                         )
-                        .and().method("POST", "PUT", "DELETE")
                         .filters(f -> f.filter(authFilter))
-                        .uri("lb://user-service"))
-                .route("user-addresses-public", r -> r.path(
-                                "/api/addresses/**",
-                                "/api/addresses/{id}"
-                        )
-                        .and().method("GET")
                         .uri("lb://user-service"))
                 .route("notification-service", r -> r
                         .path("/api/notification/**")

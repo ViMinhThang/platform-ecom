@@ -40,6 +40,9 @@ export interface Product {
   metadata?: Record<string, any>;
   createdAt?: string;
   updatedAt?: string;
+  totalSold?: number;
+  totalReviews?: number;
+  averageRating?: number;
 }
 
 export interface ProductResponse {

@@ -22,4 +22,7 @@ public class ProductRowDTO {
     private Integer variants;
     private String description;
     private ProductVariantDTO firstVariant;
+    private Long totalSold;
+    private Long totalReviews;
+    private Double averageRating;
 }

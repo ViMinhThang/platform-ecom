@@ -59,6 +59,29 @@ public class AddressServiceImpl implements AddressService {
         addressFromDatabase.setStreet(addressDTO.getStreet());
         addressFromDatabase.setBuildingName(addressDTO.getBuildingName());
 
+        // Update GHN fields
+        addressFromDatabase.setProvinceId(addressDTO.getProvinceId());
+        addressFromDatabase.setProvinceName(addressDTO.getProvinceName());
+        addressFromDatabase.setDistrictId(addressDTO.getDistrictId());
+        addressFromDatabase.setDistrictName(addressDTO.getDistrictName());
+        addressFromDatabase.setWardCode(addressDTO.getWardCode());
+        addressFromDatabase.setWardName(addressDTO.getWardName());
+
+        // Handle default address logic
+        if (Boolean.TRUE.equals(addressDTO.getIsDefault())) {
+            User user = addressFromDatabase.getUser();
+            // Unset all other addresses as default
+            user.getAddresses().forEach(addr -> {
+                if (!addr.getAddressId().equals(addressId)) {
+                    addr.setIsDefault(false);
+                }
+            });
+            addressRepository.saveAll(user.getAddresses());
+            addressFromDatabase.setIsDefault(true);
+        } else if (addressDTO.getIsDefault() != null) {
+            addressFromDatabase.setIsDefault(false);
+        }
+
         Address updatedAddress = addressRepository.save(addressFromDatabase);
 
         User user = addressFromDatabase.getUser();
@@ -85,8 +108,24 @@ public class AddressServiceImpl implements AddressService {
 
     @Override
     public AddressDTO createAddress(AddressDTO addressDTO, User user) {
+        // Validate max 5 addresses per user
+        if (user.getAddresses().size() >= 5) {
+            throw new IllegalStateException("Maximum of 5 addresses allowed per user");
+        }
+
         Address address = modelMapper.map(addressDTO, Address.class);
         address.setUser(user);
+
+        // Handle default address logic
+        if (Boolean.TRUE.equals(addressDTO.getIsDefault())) {
+            // Unset all other addresses as default
+            user.getAddresses().forEach(addr -> addr.setIsDefault(false));
+            addressRepository.saveAll(user.getAddresses());
+            address.setIsDefault(true);
+        } else {
+            address.setIsDefault(false);
+        }
+
         List<Address> addressesList = user.getAddresses();
         addressesList.add(address);
         user.setAddresses(addressesList);

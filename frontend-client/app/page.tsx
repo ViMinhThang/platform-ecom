@@ -1,7 +1,6 @@
 import { Hero } from "@/components/Hero";
 import { FeaturedProducts } from "@/components/FeaturedProducts";
 import { BannerGrid } from "@/components/BannerGrid";
-import { CategorySidebar } from "@/components/CategorySidebar";
 import { Categories } from "@/components/Categories";
 
 export default function Home() {

@@ -85,6 +85,18 @@ public class Product {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
+    @Column(name = "total_sold")
+    @Builder.Default
+    private Long totalSold = 0L;
+
+    @Column(name = "total_reviews")
+    @Builder.Default
+    private Long totalReviews = 0L;
+
+    @Column(name = "average_rating")
+    @Builder.Default
+    private Double averageRating = 0.0;
+
     @PrePersist
     protected void onCreate() {
         createdAt = LocalDateTime.now();

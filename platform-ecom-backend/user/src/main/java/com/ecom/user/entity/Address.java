@@ -45,6 +45,17 @@ public class Address {
     @Size(min = 5, message = "Pincode must be atleast 5 characters")
     private String pincode;
 
+    // GHN API fields for Vietnamese address selection
+    private Integer provinceId;
+    private String provinceName;
+    private Integer districtId;
+    private String districtName;
+    private String wardCode;
+    private String wardName;
+
+    // Default address flag
+    private Boolean isDefault = false;
+
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;

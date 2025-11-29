@@ -6,9 +6,11 @@ services:
     environment:
       POSTGRES_USER: fragile
       POSTGRES_PASSWORD: 204863
-      PGDATA: /data/postgres
+      # Remove or update PGDATA to the standard path
+      PGDATA: /var/lib/postgresql/data
     volumes:
-      - postgres:/data/postgres
+      # Map the named volume to the standard path
+      - postgres:/var/lib/postgresql/data
       - ./init-multi-db.sql:/docker-entrypoint-initdb.d/init.sql
     ports:
       - "5432:5432"

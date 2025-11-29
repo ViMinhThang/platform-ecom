@@ -4,12 +4,20 @@ import { useEffect, useState } from "react";
 import { getPublicProductWithVariants } from "@/lib/api/products";
 import { notFound } from "next/navigation";
 import Image from "next/image";
+import { Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ReviewStats } from "@/components/ReviewStats";
 import { ReviewList } from "@/components/ReviewList";
 import { ProductVariantSection } from "@/components/ProductVariantSection";
 import { ProductDetail, ProductVariant } from "@/types/product";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
 
 interface ProductDetailPageProps {
   params: any;
@@ -21,6 +29,18 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
     null
   );
   const [loading, setLoading] = useState(true);
+  const [api, setApi] = useState<any>();
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+  useEffect(() => {
+    if (!api) {
+      return;
+    }
+
+    api.on("select", () => {
+      setCurrentImageIndex(api.selectedScrollSnap());
+    });
+  }, [api]);
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -61,41 +81,108 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
   return (
     <div className="container mx-auto py-8 px-4 md:px-6">
       <div className="grid md:grid-cols-2 gap-8">
-        {/* Image Section - Will be replaced with Client carousel component */}
+        {/* Image Section - Carousel */}
+        {/* Image Section - Main Image + Thumbnail Carousel */}
         <div className="space-y-4">
-          <div className="aspect-square relative bg-zinc-100 dark:bg-zinc-800 rounded-lg overflow-hidden">
+          {/* Main Image Display */}
+          <div className="aspect-square relative bg-zinc-100 dark:bg-zinc-800 rounded-lg overflow-hidden border">
             <Image
               width={900}
               height={900}
-              key={displayImage}
-              src={`http://localhost:8080/uploads/products/${displayImage}`}
+              src={
+                product.images && product.images.length > 0
+                  ? `http://localhost:8080/uploads/products/${product.images[currentImageIndex]?.imageUrl ||
+                  product.images[0].imageUrl
+                  }`
+                  : `http://localhost:8080/uploads/products/${displayImage}`
+              }
               alt={product.name}
+              className="object-cover w-full h-full transition-all duration-300"
               unoptimized
-              className="object-cover"
+              priority
             />
           </div>
-          {/* Placeholder for thumbnail carousel */}
-          <div className="grid grid-cols-4 gap-2">
-            {product.images.map((image, idx) => (
-              <Image
-                key={idx}
-                width={300}
-                height={300}
-                src={`http://localhost:8080/uploads/products/${image.imageUrl}`}
-                alt={product.name}
-                className="object-cover"
-              />
-            ))}
-          </div>
+
+          {/* Thumbnail Carousel */}
+          {product.images && product.images.length > 0 && (
+            <Carousel
+              setApi={setApi}
+              opts={{
+                align: "start",
+                loop: true,
+              }}
+            >
+              <CarouselContent className="ml-2">
+                {product.images.map((image, index) => (
+                  <CarouselItem key={index} className="pl-2 basis-1/4">
+                    <div
+                      className={`cursor-pointer rounded-md overflow-hidden border-2 transition-all ${currentImageIndex === index
+                        ? "border-primary ring-2 ring-primary/20"
+                        : "border-transparent hover:border-zinc-300"
+                        }`}
+                      onClick={() => {
+                        setCurrentImageIndex(index);
+                        api?.scrollTo(index);
+                      }}
+                    >
+                      <div className="aspect-square relative bg-zinc-100 dark:bg-zinc-800">
+                        <Image
+                          width={200}
+                          height={200}
+                          src={`http://localhost:8080/uploads/products/${image.imageUrl}`}
+                          alt={`${product.name} thumbnail ${index + 1}`}
+                          className="object-cover w-full h-full"
+                          unoptimized
+                        />
+                      </div>
+                    </div>
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+              <CarouselPrevious className="-left-4" />
+              <CarouselNext className="-right-4" />
+            </Carousel>
+          )}
         </div>
 
         {/* Product Info Section */}
         <div className="space-y-6">
           <div>
             <Badge className="mb-2">{product.cate.name}</Badge>
+
             <h1 className="text-3xl font-bold tracking-tight">
               {product.name}
             </h1>
+
+            <div className="flex items-center gap-4 mt-2 text-sm text-muted-foreground">
+              <div className="flex items-center gap-1">
+                <span className="font-medium text-foreground">
+                  {product.averageRating?.toFixed(1) || "0.0"}
+                </span>
+                <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+              </div>
+              <div className="h-4 w-px bg-border" />
+              <div>
+                {new Intl.NumberFormat("en-US", {
+                  notation: "compact",
+                  maximumFractionDigits: 1,
+                })
+                  .format(product.totalReviews || 0)
+                  .toLowerCase()}{" "}
+                reviews
+              </div>
+              <div className="h-4 w-px bg-border" />
+              <div>
+                sold{" "}
+                {new Intl.NumberFormat("en-US", {
+                  notation: "compact",
+                  maximumFractionDigits: 1,
+                })
+                  .format(product.totalSold || 0)
+                  .toLowerCase()}
+                +
+              </div>
+            </div>
           </div>
 
           <div className="prose prose-sm max-w-none">
