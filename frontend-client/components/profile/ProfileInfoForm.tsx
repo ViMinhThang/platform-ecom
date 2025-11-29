@@ -5,10 +5,10 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { UserProfile } from '@/types/user';
-import { updateUserInfo, uploadProfileImage } from '@/lib/api/profile';
+import { updateUserInfo } from '@/lib/api/profile';
+import { useImageUpload } from '@/hooks/useImageUpload';
+import { FormField } from '@/components/common/form/FormField';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { toast } from 'sonner';
 import { Loader2, Upload } from 'lucide-react';
@@ -26,9 +26,15 @@ interface ProfileInfoFormProps {
     onUpdate: () => void;
 }
 
+/**
+ * Form component for managing user profile information.
+ * Refactored to use reusable components and custom hooks following clean code principles.
+ */
 export function ProfileInfoForm({ user, onUpdate }: ProfileInfoFormProps) {
-    const [isUploading, setIsUploading] = useState(false);
     const [isSaving, setIsSaving] = useState(false);
+
+    // Use custom hook for image upload
+    const { handleImageUpload, isUploading } = useImageUpload(user.userId, onUpdate);
 
     const form = useForm<ProfileFormValues>({
         resolver: zodResolver(profileSchema),
@@ -49,33 +55,6 @@ export function ProfileInfoForm({ user, onUpdate }: ProfileInfoFormProps) {
             toast.error(error.message || 'Failed to update profile');
         } finally {
             setIsSaving(false);
-        }
-    };
-
-    const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-        const file = e.target.files?.[0];
-        if (!file) return;
-
-        // Validate file type and size
-        if (!file.type.startsWith('image/')) {
-            toast.error('Please upload an image file');
-            return;
-        }
-
-        if (file.size > 5 * 1024 * 1024) { // 5MB limit
-            toast.error('Image size should be less than 5MB');
-            return;
-        }
-
-        setIsUploading(true);
-        try {
-            await uploadProfileImage(user.userId, file);
-            toast.success('Profile image updated');
-            onUpdate();
-        } catch (error: any) {
-            toast.error(error.message || 'Failed to upload image');
-        } finally {
-            setIsUploading(false);
         }
     };
 
@@ -117,42 +96,31 @@ export function ProfileInfoForm({ user, onUpdate }: ProfileInfoFormProps) {
             </div>
 
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 max-w-md">
-                <div className="space-y-2">
-                    <Label htmlFor="username">Username</Label>
-                    <Input
-                        id="username"
-                        {...form.register('username')}
-                        disabled={isSaving}
-                    />
-                    {form.formState.errors.username && (
-                        <p className="text-sm text-red-500">{form.formState.errors.username.message}</p>
-                    )}
-                </div>
+                <FormField
+                    label="Username"
+                    id="username"
+                    registration={form.register('username')}
+                    error={form.formState.errors.username}
+                    disabled={isSaving}
+                />
 
-                <div className="space-y-2">
-                    <Label htmlFor="email">Email</Label>
-                    <Input
-                        id="email"
-                        type="email"
-                        {...form.register('email')}
-                        disabled={isSaving}
-                    />
-                    {form.formState.errors.email && (
-                        <p className="text-sm text-red-500">{form.formState.errors.email.message}</p>
-                    )}
-                </div>
-                <div className="space-y-2">
-                    <Label htmlFor="password">Password</Label>
-                    <Input
-                        id="password"
-                        type="password"
-                        {...form.register('password')}
-                        disabled={isSaving}
-                    />
-                    {form.formState.errors.email && (
-                        <p className="text-sm text-red-500">{form.formState.errors.email.message}</p>
-                    )}
-                </div>
+                <FormField
+                    label="Email"
+                    id="email"
+                    type="email"
+                    registration={form.register('email')}
+                    error={form.formState.errors.email}
+                    disabled={isSaving}
+                />
+
+                <FormField
+                    label="Password"
+                    id="password"
+                    type="password"
+                    registration={form.register('password')}
+                    error={form.formState.errors.password}
+                    disabled={isSaving}
+                />
 
                 <Button type="submit" disabled={isSaving}>
                     {isSaving && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}

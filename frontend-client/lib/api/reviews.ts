@@ -24,9 +24,8 @@ export async function getProductReviews(
   if (params.sortDir) searchParams.set("sortDir", params.sortDir);
 
   const query = searchParams.toString();
-  const endpoint = `/reviews/public/product/${productId}${
-    query ? `?${query}` : ""
-  }`;
+  const endpoint = `/reviews/public/product/${productId}${query ? `?${query}` : ""
+    }`;
 
   return fetcher<ReviewResponse>(endpoint);
 }
@@ -37,4 +36,19 @@ export async function getProductReviewSummary(
   return fetcher<ProductReviewSummary>(
     `/reviews/public/summary/product/${productId}`
   );
+}
+
+export interface CreateReviewPayload {
+  productId: number;
+  orderId: number;
+  rating: number;
+  title?: string;
+  comment?: string;
+}
+
+export async function createReview(payload: CreateReviewPayload): Promise<void> {
+  return fetcher(`/reviews`, {
+    method: 'POST',
+    body: JSON.stringify(payload),
+  });
 }

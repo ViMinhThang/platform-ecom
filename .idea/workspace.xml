@@ -5,65 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c48beeac-7758-42e4-81dd-f068fbcd38be" name="Changes" comment="update spring cloud stream dependency">
-      <change afterPath="$PROJECT_DIR$/frontend-client/app/api/auth/[...nextauth]/route.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend-client/app/auth/register/page.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend-client/app/auth/sign-in/page.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend-client/app/profile/page.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend-client/components/UserNav.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend-client/components/auth/register-form.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend-client/components/auth/user-auth-form.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend-client/components/profile/AddressForm.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend-client/components/profile/AddressManager.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend-client/components/profile/OrderHistory.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend-client/components/profile/ProfileInfoForm.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend-client/components/providers.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend-client/components/ui/carousel.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend-client/components/ui/checkbox.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend-client/components/ui/dialog.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend-client/components/ui/form.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend-client/components/ui/label.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend-client/components/ui/sonner.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend-client/components/ui/table.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend-client/components/ui/tabs.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend-client/components/ui/textarea.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend-client/lib/api/ghn.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend-client/lib/api/profile.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend-client/middleware.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend-client/types/next-auth.d.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend-client/types/user.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/app/layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/app/layout.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/app/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/app/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/app/products/[id]/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/app/products/[id]/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/SiteHeader.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/SiteHeader.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/types/product.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/types/product.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-client/components/profile/AddressForm.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/profile/AddressForm.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-client/components/profile/AddressManager.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/profile/AddressManager.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-client/components/profile/OrderHistory.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/profile/OrderHistory.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-client/components/profile/ProfileInfoForm.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/profile/ProfileInfoForm.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/logs/order-service.log" beforeDir="false" afterPath="$PROJECT_DIR$/logs/order-service.log" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/logs/product-service.log" beforeDir="false" afterPath="$PROJECT_DIR$/logs/product-service.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/logs/review-service.log" beforeDir="false" afterPath="$PROJECT_DIR$/logs/review-service.log" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/logs/user-service.log" beforeDir="false" afterPath="$PROJECT_DIR$/logs/user-service.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/gateway/src/main/java/com/ecom/gateway/security/GatewayConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/gateway/src/main/java/com/ecom/gateway/security/GatewayConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/order/src/main/java/com/ecom/order/controller/OrderController.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/order/src/main/java/com/ecom/order/controller/OrderController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/order/src/main/java/com/ecom/order/repositories/OrderRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/order/src/main/java/com/ecom/order/repositories/OrderRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/order/src/main/java/com/ecom/order/seeder/FakeDataSeeder.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/order/src/main/java/com/ecom/order/seeder/FakeDataSeeder.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/order/src/main/java/com/ecom/order/service/OrderService.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/order/src/main/java/com/ecom/order/service/OrderService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/order/src/main/java/com/ecom/order/service/OrderServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/order/src/main/java/com/ecom/order/service/OrderServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/DataSeeder.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/DataSeeder.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/dto/ProductDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/dto/ProductDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/dto/ProductRowDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/dto/ProductRowDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/entity/Product.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/entity/Product.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/seeder/FakeDataSeeder.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/seeder/FakeDataSeeder.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/service/ProductServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/service/ProductServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/user/src/main/java/com/ecom/user/dtos/AddressDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/user/src/main/java/com/ecom/user/dtos/AddressDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/user/src/main/java/com/ecom/user/dtos/UserInfoResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/user/src/main/java/com/ecom/user/dtos/UserInfoResponse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/user/src/main/java/com/ecom/user/entity/Address.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/user/src/main/java/com/ecom/user/entity/Address.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/user/src/main/java/com/ecom/user/service/AddressServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/user/src/main/java/com/ecom/user/service/AddressServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/user/src/main/java/com/ecom/user/service/AuthServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/user/src/main/java/com/ecom/user/service/AuthServiceImpl.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

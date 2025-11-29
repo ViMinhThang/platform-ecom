@@ -2,21 +2,20 @@
 
 import { useState } from 'react';
 import { Address } from '@/types/user';
-import { createAddress, updateAddress, deleteAddress } from '@/lib/api/profile';
+import { LIMITS, VALIDATION_MESSAGES } from '@/lib/constants';
+import { useAddressOperations } from '@/hooks/useAddressOperations';
 import { AddressForm } from './AddressForm';
+import { AddressCard } from './AddressCard';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 import {
     Dialog,
     DialogContent,
     DialogHeader,
     DialogTitle,
-    DialogTrigger,
     DialogDescription,
     DialogFooter,
 } from '@/components/ui/dialog';
-import { Plus, Pencil, Trash2, MapPin } from 'lucide-react';
+import { Plus } from 'lucide-react';
 import { toast } from 'sonner';
 
 interface AddressManagerProps {
@@ -24,16 +23,22 @@ interface AddressManagerProps {
     onUpdate: () => void;
 }
 
+/**
+ * Component for managing user addresses (CRUD operations).
+ * Refactored to use custom hooks for business logic and extracted components for presentation.
+ */
 export function AddressManager({ addresses, onUpdate }: AddressManagerProps) {
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [editingAddress, setEditingAddress] = useState<Address | undefined>(undefined);
-    const [isDeleting, setIsDeleting] = useState<number | null>(null);
-    const [deleteId, setDeleteId] = useState<number | null>(null);
     const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+    const [deleteId, setDeleteId] = useState<number | null>(null);
+
+    // Use custom hook for address operations
+    const { handleCreate, handleUpdate, handleDelete, isDeleting } = useAddressOperations(onUpdate);
 
     const handleAddClick = () => {
-        if (addresses.length >= 5) {
-            toast.error('You can only have a maximum of 5 addresses');
+        if (addresses.length >= LIMITS.MAX_ADDRESSES) {
+            toast.error(VALIDATION_MESSAGES.ADDRESS_LIMIT_REACHED);
             return;
         }
         setEditingAddress(undefined);
@@ -53,34 +58,26 @@ export function AddressManager({ addresses, onUpdate }: AddressManagerProps) {
     const confirmDelete = async () => {
         if (!deleteId) return;
 
-        setIsDeleting(deleteId);
         try {
-            await deleteAddress(deleteId);
-            toast.success('Address deleted successfully');
-            onUpdate();
-        } catch (error: any) {
-            toast.error(error.message || 'Failed to delete address');
-        } finally {
-            setIsDeleting(null);
+            await handleDelete(deleteId);
             setIsDeleteDialogOpen(false);
             setDeleteId(null);
+        } catch (error) {
+            // Error handled by hook
         }
     };
 
     const handleFormSubmit = async (data: Address) => {
         try {
-            if (editingAddress && editingAddress.addressId) {
-                await updateAddress(editingAddress.addressId, data);
-                toast.success('Address updated successfully');
+            if (editingAddress?.addressId) {
+                await handleUpdate(editingAddress.addressId, data);
             } else {
-                await createAddress(data);
-                toast.success('Address added successfully');
+                await handleCreate(data);
             }
             setIsDialogOpen(false);
-            onUpdate();
-        } catch (error: any) {
-            toast.error(error.message || 'Failed to save address');
-            throw error; // Re-throw to let form handle loading state if needed
+        } catch (error) {
+            // Error handled by hook
+            throw error;
         }
     };
 
@@ -95,54 +92,13 @@ export function AddressManager({ addresses, onUpdate }: AddressManagerProps) {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {addresses.map((address) => (
-                    <Card key={address.addressId} className="relative">
-                        <CardHeader className="pb-2">
-                            <div className="flex justify-between items-start">
-                                <CardTitle className="text-base font-medium flex items-center">
-                                    <MapPin className="mr-2 h-4 w-4 text-muted-foreground" />
-                                    {address.buildingName}
-                                </CardTitle>
-                                {address.isDefault && (
-                                    <Badge variant="secondary" className="bg-green-100 text-green-800 hover:bg-green-100">
-                                        Default
-                                    </Badge>
-                                )}
-                            </div>
-                        </CardHeader>
-                        <CardContent>
-                            <div className="text-sm text-muted-foreground space-y-1">
-                                <p>{address.street}</p>
-                                <p>
-                                    {address.wardName}, {address.districtName}
-                                </p>
-                                <p>{address.provinceName}</p>
-                                <p>{address.country}</p>
-                            </div>
-
-                            <div className="flex justify-end space-x-2 mt-4">
-                                <Button
-                                    variant="outline"
-                                    size="sm"
-                                    onClick={() => handleEditClick(address)}
-                                >
-                                    <Pencil className="h-4 w-4" />
-                                </Button>
-                                <Button
-                                    variant="outline"
-                                    size="sm"
-                                    className="text-red-500 hover:text-red-600"
-                                    onClick={() => address.addressId && handleDeleteClick(address.addressId)}
-                                    disabled={isDeleting === address.addressId}
-                                >
-                                    {isDeleting === address.addressId ? (
-                                        <span className="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
-                                    ) : (
-                                        <Trash2 className="h-4 w-4" />
-                                    )}
-                                </Button>
-                            </div>
-                        </CardContent>
-                    </Card>
+                    <AddressCard
+                        key={address.addressId}
+                        address={address}
+                        onEdit={handleEditClick}
+                        onDelete={handleDeleteClick}
+                        isDeleting={isDeleting === address.addressId}
+                    />
                 ))}
 
                 {addresses.length === 0 && (
@@ -152,6 +108,7 @@ export function AddressManager({ addresses, onUpdate }: AddressManagerProps) {
                 )}
             </div>
 
+            {/* Add/Edit Address Dialog */}
             <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
                 <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
                     <DialogHeader>
@@ -167,6 +124,7 @@ export function AddressManager({ addresses, onUpdate }: AddressManagerProps) {
                 </DialogContent>
             </Dialog>
 
+            {/* Delete Confirmation Dialog */}
             <Dialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
                 <DialogContent>
                     <DialogHeader>
