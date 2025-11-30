@@ -22,11 +22,9 @@ spring:
     jwtCookieName: "ecom"
 server:
   port: 8084
-project:
-  image: product/images/
 image:
   base:
-    url: http://localhost:8080/uploads
+    url: uploads/products
 management:
   endpoints:
     web:
