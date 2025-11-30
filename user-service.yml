@@ -31,7 +31,9 @@ management:
   tracing:
     sampling:
       probability: 1.0
-
+image:
+  base:
+    url: uploads/products
 eureka:
   client:
     serviceUrl:
