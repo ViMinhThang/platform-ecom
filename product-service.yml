@@ -14,7 +14,7 @@ spring:
     database: POSTGRESQL
     show-sql: true
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: update
     database-platform: org.hibernate.dialect.PostgreSQLDialect
   app:
     jwtSecret: "qweqweqweqweqweqw123123131231231cfcsvcxvwdfqsd"
