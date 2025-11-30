@@ -8,9 +8,9 @@ import { ProductDialogProps } from "@/types/product/product-form";
 import { ProductFormFields } from "./product-form-fields";
 
 export const ProductDialog: React.FC<ProductDialogProps> = ({ productId, open, onOpenChange }) => {
-  const { methods, onSubmit, categories, loading } = useProductForm(productId, open, onOpenChange);
+  const { methods, onSubmit, categories, loading } = useProductForm({ productId, open, onOpenChange });
   const title = productId ? "Update Product" : "Create Product";
-  
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="min-w-[80%] max-h-[90vh] overflow-y-auto">

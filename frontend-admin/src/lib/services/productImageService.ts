@@ -1,5 +1,5 @@
 // lib/services/productImageService.ts
-import { ProductImage } from "@/constants/data";
+import { ProductImage } from "@/types/product/product";
 import axios, { AxiosError } from "axios";
 
 const API_BASE_URL = "http://localhost:8080/api/admin/products";
@@ -77,11 +77,11 @@ export const uploadOptionValueImage = async (
   const formData = new FormData();
   formData.append("image", file);
   formData.append("productId", productId.toString());
-  formData.append("optionValueId", optionValueId.toString()); 
+  formData.append("optionValueId", optionValueId.toString());
 
   try {
     const res = await axios.post(
-      `${API_BASE_URL}/product-images/upload`, 
+      `${API_BASE_URL}/product-images/upload`,
       formData,
       {
         headers: {

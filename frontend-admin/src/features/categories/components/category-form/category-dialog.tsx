@@ -12,86 +12,158 @@ import {
   DialogDescription,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-
 import {
   CategoryDialogProps,
   CategoryFormSchema,
   CategoryFormValues,
 } from "@/types/category/category-form";
 import { CategoryFormFields } from "./category-form-field";
-import { useCategoryContext } from "@/providers/category-provider";
+import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
+import {
+  createCategory,
+  fetchCategoryById,
+  updateCategory,
+} from "@/lib/store/slices/categorySlice";
+import { toast } from "sonner";
+import { logger } from "@/lib/logger";
 
+/**
+ * Default form values for category
+ */
+const DEFAULT_FORM_VALUES: CategoryFormValues = {
+  id: undefined,
+  name: "",
+  imageUrl: "",
+};
+
+/**
+ * Category Dialog Component
+ * Handles creating and updating categories
+ */
 export const CategoryDialog: React.FC<CategoryDialogProps> = ({
   categoryId,
   open,
   onOpenChange,
 }) => {
   const { data: session } = useSession();
-  const accessToken = session?.accessToken || "";
+  const dispatch = useAppDispatch();
+  const { selectedCategory: category, loading } = useAppSelector(
+    (state) => state.categories
+  );
 
-  const { getCategory, category, loading, updateCategoryHandler } =
-    useCategoryContext();
-
-  // Title changes automatically
   const isEditing = Boolean(categoryId);
-  const title = isEditing ? "Update Category" : "Create Category";
+  const dialogTitle = isEditing ? "Update Category" : "Create Category";
+  const dialogDescription = isEditing
+    ? "Update category details"
+    : "Create a new category";
 
-  // Form Setup
   const methods = useForm<CategoryFormValues>({
     resolver: zodResolver(CategoryFormSchema),
-    defaultValues: {
-      id: categoryId || undefined,
-      name: "",
-      imageUrl: "",
-    },
+    defaultValues: DEFAULT_FORM_VALUES,
   });
 
+  /**
+   * Loads category data when editing
+   */
   useEffect(() => {
-    if (open && categoryId) {
-      getCategory(categoryId, accessToken);
-    }
-  }, [open, categoryId, accessToken]);
+    if (!open || !categoryId || !session?.accessToken) return;
 
-  // Reset form when category data arrives
+    dispatch(fetchCategoryById({ id: categoryId, token: session.accessToken }));
+  }, [open, categoryId, session, dispatch]);
+
+  /**
+   * Populates form with category data or resets to defaults
+   */
   useEffect(() => {
-    if (category && open) {
+    if (category && open && categoryId) {
       methods.reset({
         name: category.name,
         imageUrl: category.imageUrl ?? "",
       });
+    } else if (open && !categoryId) {
+      methods.reset(DEFAULT_FORM_VALUES);
     }
-  }, [category, open, methods]);
+  }, [category, open, methods, categoryId]);
 
-  const onSubmit = methods.handleSubmit(async (data) => {
-    console.log("Save category:", data);
-    await updateCategoryHandler(categoryId, data, accessToken);
+  /**
+   * Handles form submission
+   */
+  const handleSubmit = methods.handleSubmit(async (formData) => {
+    if (!session?.accessToken) {
+      toast.error("Authentication required");
+      return;
+    }
 
-    onOpenChange(false);
+    try {
+      const resultAction = isEditing && categoryId
+        ? await dispatch(
+          updateCategory({
+            id: categoryId,
+            data: formData as any,
+            token: session.accessToken,
+          })
+        )
+        : await dispatch(
+          createCategory({
+            data: formData as any,
+            token: session.accessToken,
+          })
+        );
+
+      if (
+        createCategory.fulfilled.match(resultAction) ||
+        updateCategory.fulfilled.match(resultAction)
+      ) {
+        toast.success(
+          `Category ${isEditing ? "updated" : "created"} successfully`
+        );
+        onOpenChange(false);
+      } else {
+        toast.error(`Failed to ${isEditing ? "update" : "create"} category`);
+      }
+    } catch (error) {
+      logger.error("Category form submission failed", error as Error, {
+        isEditing,
+        categoryId,
+      });
+      toast.error(`Failed to ${isEditing ? "update" : "create"} category`);
+    }
   });
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="overflow-y-auto">
+      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>{title}</DialogTitle>
-          <DialogDescription>
-            {isEditing ? "Update category details" : "Create a new category"}
-          </DialogDescription>
+          <DialogTitle>{dialogTitle}</DialogTitle>
+          <DialogDescription>{dialogDescription}</DialogDescription>
         </DialogHeader>
 
         <FormProvider {...methods}>
-          <form onSubmit={onSubmit}>
+          <form onSubmit={handleSubmit}>
             <CategoryFormFields
               control={methods.control}
               loading={loading}
               categoryId={categoryId}
             />
-            <div className="col-span-full flex justify-end gap-2 mt-6">
-              <Button variant="outline" onClick={() => onOpenChange(false)}>
+
+            <div className="mt-6 flex justify-end gap-3">
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => onOpenChange(false)}
+                disabled={loading || methods.formState.isSubmitting}
+              >
                 Cancel
               </Button>
-              <Button type="submit" disabled={loading}>
-                {loading ? "Saving..." : "Save"}
+              <Button
+                type="submit"
+                disabled={loading || methods.formState.isSubmitting}
+              >
+                {loading || methods.formState.isSubmitting
+                  ? "Saving..."
+                  : isEditing
+                    ? "Update Category"
+                    : "Create Category"}
               </Button>
             </div>
           </form>

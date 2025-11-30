@@ -82,7 +82,7 @@ public class FakeDataSeeder implements CommandLineRunner {
         List<User> users = new ArrayList<>();
 
         // Create admin user
-        User admin = createUser("admin", "admin@ecom.com", "admin123", Set.of(adminRole, userRole));
+        User admin = createUser("admin", "admin@ecom.com", "admin123", Set.of(adminRole, userRole,sellerRole));
         users.add(admin);
 
         // Create regular users

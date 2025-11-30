@@ -9,7 +9,7 @@ export const CategoryFormSchema = z.object({
 export type CategoryFormValues = z.infer<typeof CategoryFormSchema>;
 
 export interface CategoryDialogProps {
-  categoryId: number;
+  categoryId: number | null | undefined;
   open: boolean;
   onOpenChange: (open: boolean) => void;
 }

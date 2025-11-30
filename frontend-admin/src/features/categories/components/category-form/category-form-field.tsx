@@ -6,12 +6,13 @@ import { CategoryFormValues } from "@/types/category/category-form";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useSession } from "next-auth/react";
-import { useCategoryContext } from "@/providers/category-provider";
+import { useAppDispatch } from "@/lib/store/hooks";
+import { updateCategoryImage } from "@/lib/store/slices/categorySlice";
 
 interface CategoryFormFieldsProps {
   control: Control<CategoryFormValues>;
   loading: boolean;
-  categoryId: number;
+  categoryId: number | null | undefined;
 }
 
 export const CategoryFormFields: React.FC<CategoryFormFieldsProps> = ({
@@ -21,7 +22,7 @@ export const CategoryFormFields: React.FC<CategoryFormFieldsProps> = ({
 }) => {
   const { data: session } = useSession();
   const accessToken = session?.accessToken || "";
-  const { uploadCategoryImage } = useCategoryContext();
+  const dispatch = useAppDispatch();
   const {
     field: { value: imageUrl, onChange },
   } = useController({
@@ -33,27 +34,25 @@ export const CategoryFormFields: React.FC<CategoryFormFieldsProps> = ({
 
   const handleImageSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (!file) return;
+    if (!file || !categoryId) return; // Can't upload image without category ID
 
     setUploading(true);
 
     try {
-      setUploading(true);
-
-      const newImageUrl = await uploadCategoryImage(
-        categoryId,
+      const resultAction = await dispatch(updateCategoryImage({
+        id: categoryId,
         file,
-        accessToken
-      );
+        token: accessToken
+      }));
 
-      onChange(newImageUrl);
+      if (updateCategoryImage.fulfilled.match(resultAction)) {
+        onChange(resultAction.payload.imageUrl);
+      }
     } catch (err) {
       console.error("Failed to upload category image:", err);
     } finally {
       setUploading(false);
     }
-
-    setUploading(false);
   };
 
   return (
@@ -68,38 +67,40 @@ export const CategoryFormFields: React.FC<CategoryFormFieldsProps> = ({
         />
       </div>
 
-      <div className="space-y-4">
-        <div className="w-full h-48 border rounded-lg flex justify-center items-center overflow-hidden bg-gray-50">
-          {imageUrl ? (
-            <img
-              src={`http://localhost:8080/uploads/${imageUrl}`}
-              className="object-cover h-full w-full"
-              alt="Category image"
-            />
-          ) : (
-            <span className="text-gray-400">No image selected</span>
-          )}
+      {categoryId && (
+        <div className="space-y-4">
+          <div className="w-full h-48 border rounded-lg flex justify-center items-center overflow-hidden bg-gray-50">
+            {imageUrl ? (
+              <img
+                src={`http://localhost:8080/uploads/${imageUrl}`}
+                className="object-cover h-full w-full"
+                alt="Category image"
+              />
+            ) : (
+              <span className="text-gray-400">No image selected</span>
+            )}
+          </div>
+
+          <Button
+            type="button"
+            disabled={uploading || loading}
+            className="w-full"
+            onClick={() =>
+              document.getElementById("category-image-input")?.click()
+            }
+          >
+            {uploading ? "Uploading..." : "Select Image"}
+          </Button>
+
+          <input
+            id="category-image-input"
+            type="file"
+            accept="image/*"
+            className="hidden"
+            onChange={handleImageSelect}
+          />
         </div>
-
-        <Button
-          type="button"
-          disabled={uploading || loading}
-          className="w-full"
-          onClick={() =>
-            document.getElementById("category-image-input")?.click()
-          }
-        >
-          {uploading ? "Uploading..." : "Select Image"}
-        </Button>
-
-        <input
-          id="category-image-input"
-          type="file"
-          accept="image/*"
-          className="hidden"
-          onChange={handleImageSelect}
-        />
-      </div>
+      )}
     </div>
   );
 };

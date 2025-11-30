@@ -19,7 +19,7 @@ export const columns: ColumnDef<ProductRow>[] = [
       return (
         <div className="relative w-16 h-16">
           <Image
-            src={`http://localhost:8080/uploads/${imageUrl}`}
+            src={`http://localhost:8080/uploads/products/${imageUrl}`}
             alt={ProductRow.name}
             fill
             className="object-cover rounded-md border"
@@ -68,6 +68,9 @@ export const columns: ColumnDef<ProductRow>[] = [
   {
     accessorKey: "description",
     header: "DESCRIPTION",
+    cell: ({ cell }) => {
+      return <div className="overflow-hidden">{cell.getValue<ProductRow["description"]>()}</div>
+    }
   },
   {
     id: "actions",

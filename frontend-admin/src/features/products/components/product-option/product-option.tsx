@@ -8,6 +8,8 @@ import { FormInput } from "@/components/forms/form-input";
 import { FormSelect } from "@/components/forms/form-select";
 import { AlertModal } from "@/components/modal/alert-modal";
 
+import { ProductOption } from "@/types/product/product-option";
+
 const OptionSchema = z.object({
   id: z.number().optional(),
   name: z.string().min(1),
@@ -29,15 +31,18 @@ export function ProductOptionCard({
   onSave,
   onDelete,
 }: {
-  option: z.infer<typeof OptionSchema>;
-  onSave: (data: z.infer<typeof OptionSchema>) => void;
+  option: ProductOption;
+  onSave: (data: ProductOption) => void;
   onDelete: () => void;
 }) {
   const [alert, setAlert] = useState(false);
 
   const methods = useForm({
     resolver: zodResolver(OptionSchema),
-    defaultValues: option,
+    defaultValues: {
+      ...option,
+      isRequired: String(option.isRequired),
+    },
   });
 
   const {
@@ -49,7 +54,14 @@ export function ProductOptionCard({
     name: "values",
   });
 
-  const handleSave = methods.handleSubmit(onSave);
+  const onSubmit = (data: z.infer<typeof OptionSchema>) => {
+    onSave({
+      ...data,
+      isRequired: data.isRequired === "true",
+    });
+  };
+
+  const handleSave = methods.handleSubmit(onSubmit);
 
   return (
     <FormProvider {...methods}>

@@ -52,7 +52,7 @@ export const VariantImagePicker: React.FC<VariantImagePickerProps> = ({
   }, [open, productId]);
 
 
-  
+
 
   return (
     <>
@@ -62,7 +62,7 @@ export const VariantImagePicker: React.FC<VariantImagePickerProps> = ({
       >
         {value ? (
           <Image
-            src={`http://localhost:8080/uploads/${value}`}
+            src={`http://localhost:8080/uploads/products/${value}`}
             alt="Variant Image"
             fill
             className="object-cover"
@@ -75,7 +75,7 @@ export const VariantImagePicker: React.FC<VariantImagePickerProps> = ({
       </div>
 
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="max-w-xl">
+        <DialogContent className="min-w-[800px] h-[800px]">
           <DialogHeader>
             <DialogTitle>Select Variant Image</DialogTitle>
           </DialogHeader>
@@ -83,7 +83,7 @@ export const VariantImagePicker: React.FC<VariantImagePickerProps> = ({
           {loading ? (
             <div>Loading images...</div>
           ) : (
-            <div className="grid grid-cols-3 gap-2 max-h-96 overflow-y-auto">
+            <div className="grid grid-cols-2 gap-2">
               {images.map((img) => (
                 <ProductImageCard
                   key={img.id}

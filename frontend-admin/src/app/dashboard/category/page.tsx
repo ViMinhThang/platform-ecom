@@ -1,4 +1,4 @@
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { authOptions } from "@/lib/auth-options";
 import PageContainer from "@/components/layout/page-container";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Heading } from "@/components/ui/heading";
@@ -9,7 +9,6 @@ import { CreateCategoryButton } from "@/features/categories/components/create-ca
 import UserListingPage from "@/features/users/component/user-listing";
 import { searchParamsCache } from "@/lib/searchparams";
 import { cn } from "@/lib/utils";
-import { CategoryProvider } from "@/providers/category-provider";
 import { IconPlus } from "@tabler/icons-react";
 import { getServerSession } from "next-auth";
 import Link from "next/link";
@@ -35,26 +34,24 @@ export default async function Page(props: pageProps) {
 
   return (
     <PageContainer scrollable={false}>
-      <CategoryProvider>
-        <div className="flex flex-1 flex-col space-y-4">
-          <div className="flex items-start justify-between">
-            <Heading
-              title="Categories"
-              description="Manage categories"
-            />
-            <CreateCategoryButton token={session?.accessToken} />
-          </div>
-          <Separator />
-          <Suspense
-            // key={key}
-            fallback={
-              <DataTableSkeleton columnCount={5} rowCount={8} filterCount={2} />
-            }
-          >
-            <CategoryListingPage />
-          </Suspense>
+      <div className="flex flex-1 flex-col space-y-4">
+        <div className="flex items-start justify-between">
+          <Heading
+            title="Categories"
+            description="Manage categories"
+          />
+          <CreateCategoryButton token={session?.accessToken} />
         </div>
-      </CategoryProvider>
+        <Separator />
+        <Suspense
+          // key={key}
+          fallback={
+            <DataTableSkeleton columnCount={5} rowCount={8} filterCount={2} />
+          }
+        >
+          <CategoryListingPage />
+        </Suspense>
+      </div>
     </PageContainer>
   );
 }

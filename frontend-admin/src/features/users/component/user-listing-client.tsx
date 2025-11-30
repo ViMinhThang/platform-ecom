@@ -1,9 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useUserContext } from "@/providers/user-provider";
 import { UserTable } from "./user-tables";
 import { columns } from "./user-tables/columns";
+import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
+import { fetchUsers } from "@/lib/store/slices/userSlice";
 
 interface UserListingClientProps {
   token: string;
@@ -19,28 +20,38 @@ export default function UserListingClient({
   token,
   searchParams,
 }: UserListingClientProps) {
-  const { fetchUsers, users, totalItems, loading } = useUserContext();
+  const dispatch = useAppDispatch();
+  const { items: users, pagination, loading } = useAppSelector((state) => state.users);
+  const totalItems = pagination.totalElements;
 
   const [page, setPage] = useState<number>(Number(searchParams?.page ?? 0));
   const [perPage, setPerPage] = useState<number>(
     Number(searchParams?.perPage ?? 10)
   );
 
-  const filters = {
-    page,
-    perPage,
-  };
-
   useEffect(() => {
-    fetchUsers(filters);
-  }, [fetchUsers, token, page, perPage]);
+    if (!token) return;
 
-  if (!users || users.length === 0)
-    return <div>No users found.</div>;
+    dispatch(fetchUsers({
+      token,
+      params: {
+        page,
+        size: perPage
+      }
+    }));
+  }, [dispatch, token, page, perPage, searchParams]);
+
+  if (loading && users.length === 0)
+    return <div>Loading users...</div>;
+
+  const mappedUsers = users.map(user => ({
+    ...user,
+    roles: user.roles.map(role => ({ roleId: 0, roleName: role }))
+  }));
 
   return (
     <UserTable
-      data={users}
+      data={mappedUsers}
       totalItems={totalItems}
       columns={columns}
       onPageChange={setPage}

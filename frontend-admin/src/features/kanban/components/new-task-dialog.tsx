@@ -12,11 +12,11 @@ import {
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-
-import { useTaskStore } from '../utils/store';
+import { useAppDispatch } from '@/lib/store/hooks';
+import { addTask } from '@/lib/store/slices/kanbanSlice';
 
 export default function NewTaskDialog() {
-  const addTask = useTaskStore((state) => state.addTask);
+  const dispatch = useAppDispatch();
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -26,19 +26,19 @@ export default function NewTaskDialog() {
     const { title, description } = Object.fromEntries(formData);
 
     if (typeof title !== 'string' || typeof description !== 'string') return;
-    addTask(title, description);
+    dispatch(addTask({ title, description }));
   };
 
   return (
     <Dialog>
       <DialogTrigger asChild>
         <Button variant='secondary' size='sm'>
-          ＋ Add New Todo
+          ＋ Add New Task
         </Button>
       </DialogTrigger>
       <DialogContent className='sm:max-w-[425px]'>
         <DialogHeader>
-          <DialogTitle>Add New Todo</DialogTitle>
+          <DialogTitle>Add New Task</DialogTitle>
           <DialogDescription>
             What do you want to get done today?
           </DialogDescription>

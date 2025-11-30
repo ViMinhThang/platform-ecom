@@ -1,4 +1,5 @@
 import axios from "axios";
+import { APIResponse } from "@/types/api-response";
 
 const API_BASE_URL = "http://localhost:8080/api/product-image";
 
@@ -12,10 +13,10 @@ export const getProductImages = async (
   productId: number,
   token: string
 ): Promise<ProductImage[]> => {
-  const res = await axios.get(`${API_BASE_URL}/${productId}/images`, {
+  const res = await axios.get<APIResponse<ProductImage[]>>(`${API_BASE_URL}/${productId}/images`, {
     headers: { Authorization: `Bearer ${token}` },
   });
-  return res.data || [];
+  return res.data.data || [];
 };
 
 export const uploadProductImage = async (
@@ -26,14 +27,14 @@ export const uploadProductImage = async (
   const formData = new FormData();
   formData.append("image", file);
 
-  const res = await axios.post(`${API_BASE_URL}/${productId}/images`, formData, {
+  const res = await axios.post<APIResponse<ProductImage>>(`${API_BASE_URL}/${productId}/images`, formData, {
     headers: {
       Authorization: `Bearer ${token}`,
       "Content-Type": "multipart/form-data",
     },
   });
 
-  return res.data;
+  return res.data.data;
 };
 
 export const deleteProductImage = async (
@@ -41,7 +42,7 @@ export const deleteProductImage = async (
   imageId: number,
   token: string
 ): Promise<number> => {
-  await axios.delete(`${API_BASE_URL}/${productId}/images/${imageId}`, {
+  await axios.delete<APIResponse<string>>(`${API_BASE_URL}/${productId}/images/${imageId}`, {
     headers: { Authorization: `Bearer ${token}` },
   });
   return imageId;
@@ -52,11 +53,11 @@ export const setMainProductImage = async (
   imageId: number,
   token: string
 ): Promise<ProductImage> => {
-  const res = await axios.put(
+  const res = await axios.put<APIResponse<ProductImage>>(
     `${API_BASE_URL}/${productId}/images/${imageId}/main`,
     {},
     { headers: { Authorization: `Bearer ${token}` } }
   );
 
-  return res.data;
+  return res.data.data;
 };

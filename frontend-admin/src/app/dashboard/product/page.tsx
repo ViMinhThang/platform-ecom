@@ -6,7 +6,6 @@ import { ProductDialogWrapper } from "@/features/products/components/product-for
 import { ProductDialog } from "@/features/products/components/product-form/product-form";
 import ProductListingPage from "@/features/products/components/product-listing";
 import { searchParamsCache } from "@/lib/searchparams";
-import { ProductProvider } from "@/providers/product-provider";
 import { SearchParams } from "nuqs/server";
 import { Suspense } from "react";
 
@@ -22,27 +21,25 @@ export default async function Page(props: pageProps) {
 
   return (
     <PageContainer scrollable={false}>
-      <ProductProvider>
-        <div className="flex flex-1 flex-col space-y-4">
-          <div className="flex items-start justify-between">
-            <Heading
-              title="Products"
-              description="Manage products (Server side table functionalities.)"
-            />
-            <ProductDialogWrapper />
-          </div>
-
-          <Separator />
-
-          <Suspense
-            fallback={
-              <DataTableSkeleton columnCount={5} rowCount={8} filterCount={2} />
-            }
-          >
-            <ProductListingPage />
-          </Suspense>
+      <div className="flex flex-1 flex-col space-y-4">
+        <div className="flex items-start justify-between">
+          <Heading
+            title="Products"
+            description="Manage products (Server side table functionalities.)"
+          />
+          <ProductDialogWrapper />
         </div>
-      </ProductProvider>
+
+        <Separator />
+
+        <Suspense
+          fallback={
+            <DataTableSkeleton columnCount={5} rowCount={8} filterCount={2} />
+          }
+        >
+          <ProductListingPage />
+        </Suspense>
+      </div>
     </PageContainer>
   );
 }

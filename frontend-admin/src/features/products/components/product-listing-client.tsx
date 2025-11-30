@@ -3,8 +3,10 @@
 import { useEffect, useState, useRef } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { columns } from "./product-tables/columns";
-import { useProductContext } from "@/providers/product-provider";
 import { ProductTable } from "./product-tables";
+import { useSession } from "next-auth/react";
+import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
+import { fetchProducts } from "@/lib/store/slices/productSlice";
 
 interface ProductListingClientProps {
   searchParams?: {
@@ -20,6 +22,11 @@ export const ProductListingClient: React.FC<ProductListingClientProps> = ({
 }) => {
   const router = useRouter();
   const urlSearchParams = useSearchParams();
+  const { data: session } = useSession();
+  const dispatch = useAppDispatch();
+
+  const { items: products, pagination, loading } = useAppSelector((state) => state.products);
+  const totalItems = pagination.totalElements;
 
   const initialPage = Number(
     searchParams?.page ?? urlSearchParams.get("page") ?? 0
@@ -28,18 +35,21 @@ export const ProductListingClient: React.FC<ProductListingClientProps> = ({
     searchParams?.perPage ?? urlSearchParams.get("perPage") ?? 10
   );
 
-  const [page, setPage] = useState(initialPage);
+  const [page, setPage] = useState(0); // Always start from page 0
   const [perPage, setPerPage] = useState(initialPerPage);
 
-  const { fetchProducts, products, totalItems, loading } = useProductContext();
-
   useEffect(() => {
-    fetchProducts?.({
-      ...searchParams,
-      page: page.toString(),
-      perPage: perPage.toString(),
-    });
-  }, [fetchProducts, page, perPage, searchParams]);
+    if (!session?.accessToken) return;
+
+    dispatch(fetchProducts({
+      token: session.accessToken,
+      params: {
+        ...searchParams,
+        page: page,
+        size: perPage,
+      }
+    }));
+  }, [dispatch, session, page, perPage, searchParams]);
 
   const firstRender = useRef(true);
   useEffect(() => {
@@ -57,8 +67,9 @@ export const ProductListingClient: React.FC<ProductListingClientProps> = ({
     router.replace(`/dashboard/product?${params.toString()}`);
   }, [page, perPage, searchParams, router]);
 
-  if (loading) return <div>Loading products...</div>;
-  if (!products || products.length === 0) return <div>No products found.</div>;
+  if (loading && products.length === 0) return <div>Loading products...</div>;
+  // if (!products || products.length === 0) return <div>No products found.</div>; 
+  // Better to show empty table than just text if loading is done
 
   return (
     <ProductTable

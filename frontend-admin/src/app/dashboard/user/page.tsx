@@ -1,4 +1,4 @@
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { authOptions } from "@/lib/auth-options";
 import PageContainer from "@/components/layout/page-container";
 import { Heading } from "@/components/ui/heading";
 import { Separator } from "@/components/ui/separator";
@@ -6,7 +6,6 @@ import { DataTableSkeleton } from "@/components/ui/table/data-table-skeleton";
 import { CreateUserButton } from "@/features/users/component/create-user";
 import UserListingPage from "@/features/users/component/user-listing";
 import { searchParamsCache } from "@/lib/searchparams";
-import { UserProvider } from "@/providers/user-provider";
 import { getServerSession } from "next-auth";
 import { SearchParams } from "nuqs/server";
 import { Suspense } from "react";
@@ -30,23 +29,21 @@ export default async function Page(props: pageProps) {
 
   return (
     <PageContainer scrollable={false}>
-      <UserProvider>
-        <div className="flex flex-1 flex-col space-y-4">
-          <div className="flex items-start justify-between">
-            <Heading title="Users" description="Manage users" />
-            <CreateUserButton token={session?.accessToken} />
-          </div>
-          <Separator />
-          <Suspense
-            // key={key}
-            fallback={
-              <DataTableSkeleton columnCount={5} rowCount={8} filterCount={2} />
-            }
-          >
-            <UserListingPage />
-          </Suspense>
+      <div className="flex flex-1 flex-col space-y-4">
+        <div className="flex items-start justify-between">
+          <Heading title="Users" description="Manage users" />
+          <CreateUserButton />
         </div>
-      </UserProvider>
+        <Separator />
+        <Suspense
+          // key={key}
+          fallback={
+            <DataTableSkeleton columnCount={5} rowCount={8} filterCount={2} />
+          }
+        >
+          <UserListingPage />
+        </Suspense>
+      </div>
     </PageContainer>
   );
 }

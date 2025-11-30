@@ -34,10 +34,13 @@ public class ProductVariantServiceImpl implements ProductVariantService {
     @Override
     public ProductVariantDTO createProductVariant(Long productId, ProductVariantDTO productVariantDTO) {
         Product product = findProductById(productId);
-        
-        ProductVariant productVariant = modelMapper.map(productVariantDTO, ProductVariant.class);
+
+        ProductVariant productVariant = new ProductVariant();
         productVariant.setProduct(product);
-        
+
+        updateVariantDetails(productVariant, productVariantDTO);
+        updateVariantOptionValues(productVariant, productVariantDTO.getOptionValues());
+
         ProductVariant savedVariant = productVariantRepository.save(productVariant);
         return mapToVariantDTO(savedVariant);
     }
@@ -58,12 +61,12 @@ public class ProductVariantServiceImpl implements ProductVariantService {
     @Transactional
     public ProductVariantDTO updateProductVariant(Long productId, Long variantId, ProductVariantDTO dto) {
         ProductVariant variant = findProductVariant(productId, variantId);
-        
+
         validateNoDuplicateVariant(productId, variantId, dto);
-        
+
         updateVariantDetails(variant, dto);
         updateVariantOptionValues(variant, dto.getOptionValues());
-        
+
         ProductVariant saved = productVariantRepository.save(variant);
         return mapToVariantDTO(saved);
     }
@@ -87,7 +90,7 @@ public class ProductVariantServiceImpl implements ProductVariantService {
                 .orElseThrow(() -> new ResourceNotFoundException("Product", "productId", productId));
     }
 
-    private ProductVariant findVariantByVariantId(Long variantId){
+    private ProductVariant findVariantByVariantId(Long variantId) {
         return productVariantRepository.findById(variantId)
                 .orElseThrow(() -> new ResourceNotFoundException("ProductVariant", "variantId", variantId));
     }
@@ -117,8 +120,9 @@ public class ProductVariantServiceImpl implements ProductVariantService {
     }
 
     private Set<Long> extractOptionValueIds(ProductVariantDTO dto) {
-        if (dto.getOptionValues() == null) return Set.of();
-        
+        if (dto.getOptionValues() == null)
+            return Set.of();
+
         return dto.getOptionValues().stream()
                 .map(opt -> opt.getProductOptionValue().getId())
                 .collect(Collectors.toSet());
@@ -147,7 +151,7 @@ public class ProductVariantServiceImpl implements ProductVariantService {
 
     private void updateVariantOptionValues(ProductVariant variant, List<VariantOptionValueDTO> optionValueDTOs) {
         variant.getOptionValues().clear();
-        
+
         if (optionValueDTOs != null) {
             for (VariantOptionValueDTO opt : optionValueDTOs) {
                 addVariantOptionValue(variant, opt);
@@ -174,9 +178,9 @@ public class ProductVariantServiceImpl implements ProductVariantService {
         dto.setCreatedAt(variant.getCreatedAt());
         dto.setUpdatedAt(variant.getUpdatedAt());
         dto.setImageUrl(variant.getImageUrl());
-        
+
         dto.setOptionValues(mapVariantOptionValues(variant));
-        
+
         return dto;
     }
 

@@ -5,12 +5,12 @@ import { Button } from "@/components/ui/button";
 import { IconCheck, IconTrash } from "@tabler/icons-react";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
-import { ProductImage } from "@/services/product-image-service";
+import { ProductImage } from "@/types/product/product";
 
 interface ProductImageCardProps {
   image: ProductImage;
   onDelete?: (id: number) => void;
-  onSelect: (newUrl: string) => void;
+  onSelect?: (url: string) => void;
 
   type: "Select" | "Delete";
   setOpen?: (open: boolean) => void;
@@ -24,7 +24,7 @@ export const ProductImageCard: React.FC<ProductImageCardProps> = ({
 }) => {
   const handleSelect = () => {
     if (!setOpen) return;
-    onSelect(image.imageUrl);
+    if (onSelect) onSelect(image.imageUrl);
     setOpen(false);
   };
 
@@ -37,7 +37,7 @@ export const ProductImageCard: React.FC<ProductImageCardProps> = ({
     >
       <CardContent className="p-0 relative w-full h-full">
         <Image
-          src={`http://localhost:8080/uploads/${image.imageUrl}`}
+          src={`http://localhost:8080/uploads/products/${image.imageUrl}`}
           alt="Product image"
           fill
           className="object-cover w-full h-full"

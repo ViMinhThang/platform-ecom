@@ -7,10 +7,9 @@ import {
 } from "@/components/ui/dialog";
 import { Plus } from "lucide-react";
 import { ProductOptionCard } from "./product-option";
-import {
-  ProductOptionProvider,
-  useProductOptions,
-} from "@/providers/product-option-provider";
+import { useProductOptions } from "@/providers/product-option-provider";
+import { useState } from "react";
+import { ProductOption } from "@/types/product/product-option";
 
 interface BulkProductOptionDialogProps {
   productId: number;
@@ -19,22 +18,67 @@ interface BulkProductOptionDialogProps {
 }
 
 function OptionsContent() {
-  const { options, addOption, deleteOption, saveOption } = useProductOptions();
+  const { options, createOption, updateOption, deleteOption } = useProductOptions();
+  const [tempOptions, setTempOptions] = useState<ProductOption[]>([]);
+
+  const handleAddOption = () => {
+    setTempOptions([
+      ...tempOptions,
+      {
+        name: "",
+        displayName: "",
+        isRequired: false,
+        sortOrder: 0,
+        values: [],
+      },
+    ]);
+  };
+
+  const handleSave = async (data: ProductOption, isTemp: boolean, index: number) => {
+    if (isTemp) {
+      const result = await createOption(data);
+      if (result) {
+        // Remove from tempOptions on success
+        setTempOptions((prev) => prev.filter((_, i) => i !== index));
+      }
+    } else {
+      if (data.id) {
+        await updateOption(data.id, data);
+      }
+    }
+  };
+
+  const handleDelete = async (optionId: number | undefined, isTemp: boolean, index: number) => {
+    if (isTemp) {
+      setTempOptions((prev) => prev.filter((_, i) => i !== index));
+    } else if (optionId) {
+      await deleteOption(optionId);
+    }
+  };
 
   return (
     <div className="flex flex-wrap gap-4">
-      {options.map((option, index) => (
+      {options.map((option) => (
         <ProductOptionCard
-          key={option.id ?? index}
+          key={option.id}
           option={option}
-          onSave={(option) => saveOption(option, index)}
-          onDelete={() => deleteOption(option.id, index)}
+          onSave={(data) => handleSave(data, false, 0)}
+          onDelete={() => handleDelete(option.id, false, 0)}
+        />
+      ))}
+
+      {tempOptions.map((option, index) => (
+        <ProductOptionCard
+          key={`temp-${index}`}
+          option={option}
+          onSave={(data) => handleSave(data, true, index)}
+          onDelete={() => handleDelete(undefined, true, index)}
         />
       ))}
 
       <div
-        className="flex items-center justify-center w-96 h-96 border-2 border-dashed rounded-lg cursor-pointer hover:bg-neutral-500"
-        onClick={addOption}
+        className="flex items-center justify-center w-96 h-96 border-2 border-dashed rounded-lg cursor-pointer hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors"
+        onClick={handleAddOption}
       >
         <Plus className="w-12 h-12 text-gray-400" />
       </div>

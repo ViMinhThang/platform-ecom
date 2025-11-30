@@ -11,7 +11,7 @@ export const UserFormSchema = z.object({
 export type UserFormValues = z.infer<typeof UserFormSchema>;
 
 export interface UserDialogProps {
-  userId: number;
+  userId: number | null | undefined;
   open: boolean;
   onOpenChange: (open: boolean) => void;
 }

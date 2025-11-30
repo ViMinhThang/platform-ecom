@@ -27,14 +27,14 @@ export default function KBar({ children }: { children: React.ReactNode }) {
       const baseAction =
         navItem.url !== '#'
           ? {
-              id: `${navItem.title.toLowerCase()}Action`,
-              name: navItem.title,
-              shortcut: navItem.shortcut,
-              keywords: navItem.title.toLowerCase(),
-              section: 'Navigation',
-              subtitle: `Go to ${navItem.title}`,
-              perform: () => navigateTo(navItem.url)
-            }
+            id: `${navItem.title.toLowerCase()}Action`,
+            name: navItem.title,
+            shortcut: navItem.shortcut,
+            keywords: navItem.title.toLowerCase(),
+            section: 'Navigation',
+            subtitle: `Go to ${navItem.title}`,
+            perform: () => navigateTo(navItem.url)
+          }
           : null;
 
       // Map child items into actions
@@ -55,7 +55,12 @@ export default function KBar({ children }: { children: React.ReactNode }) {
   }, [router]);
 
   return (
-    <KBarProvider actions={actions}>
+    <KBarProvider
+      actions={actions}
+      options={{
+        enableHistory: typeof window !== 'undefined'
+      }}
+    >
       <KBarComponent>{children}</KBarComponent>
     </KBarProvider>
   );

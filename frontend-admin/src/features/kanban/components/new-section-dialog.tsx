@@ -11,10 +11,11 @@ import {
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 
-import { useTaskStore } from '../utils/store';
+import { useAppDispatch } from '@/lib/store/hooks';
+import { addCol } from '@/lib/store/slices/kanbanSlice';
 
 export default function NewSectionDialog() {
-  const addCol = useTaskStore((state) => state.addCol);
+  const dispatch = useAppDispatch();
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -24,7 +25,7 @@ export default function NewSectionDialog() {
     const { title } = Object.fromEntries(formData);
 
     if (typeof title !== 'string') return;
-    addCol(title);
+    dispatch(addCol(title));
   };
 
   return (

@@ -6,14 +6,14 @@ export default withAuth(
 
     if (
       req.nextUrl.pathname.startsWith("/dashboard/admin") &&
-      token?.user?.role.includes("ROLE_SELLER")
+      token?.user?.roles.includes("ROLE_SELLER")
     ) {
       return new Response("Forbidden", { status: 403 });
     }
 
     if (
       req.nextUrl.pathname.startsWith("/dashboard/admin") &&
-      token?.user?.role.includes("ROLE_ADMIN")
+      token?.user?.roles.includes("ROLE_ADMIN")
     ) {
       return new Response("Forbidden", { status: 403 });
     }

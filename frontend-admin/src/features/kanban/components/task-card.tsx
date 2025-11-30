@@ -1,17 +1,11 @@
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
-import { Task } from '../utils/store';
+import { Task } from '@/lib/store/slices/kanbanSlice';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { cva } from 'class-variance-authority';
-import { IconGripVertical } from '@tabler/icons-react';
+import { GripVertical } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
-
-// export interface Task {
-//   id: UniqueIdentifier;
-//   columnId: ColumnId;
-//   content: string;
-// }
 
 interface TaskCardProps {
   task: Task;
@@ -49,7 +43,7 @@ export function TaskCard({ task, isOverlay }: TaskCardProps) {
     transform: CSS.Translate.toString(transform)
   };
 
-  const variants = cva('mb-2', {
+  const variants = cva('', {
     variants: {
       dragging: {
         over: 'ring-2 opacity-30',
@@ -66,22 +60,24 @@ export function TaskCard({ task, isOverlay }: TaskCardProps) {
         dragging: isOverlay ? 'overlay' : isDragging ? 'over' : undefined
       })}
     >
-      <CardHeader className='space-between border-secondary relative flex flex-row border-b-2 px-3 py-3'>
+      <CardHeader className='px-3 py-3 space-between flex flex-row border-b-2 border-secondary relative'>
         <Button
           variant={'ghost'}
           {...attributes}
           {...listeners}
-          className='text-secondary-foreground/50 -ml-2 h-auto cursor-grab p-1'
+          className='p-1 text-secondary-foreground/50 -ml-2 h-auto cursor-grab'
         >
           <span className='sr-only'>Move task</span>
-          <IconGripVertical />
+          <GripVertical />
         </Button>
         <Badge variant={'outline'} className='ml-auto font-semibold'>
           Task
         </Badge>
       </CardHeader>
-      <CardContent className='px-3 pt-3 pb-6 text-left whitespace-pre-wrap'>
+      <CardContent className='px-3 pb-6 pt-3 text-left whitespace-pre-wrap'>
         {task.title}
+        <br />
+        <span className="text-xs text-muted-foreground">{task.description}</span>
       </CardContent>
     </Card>
   );

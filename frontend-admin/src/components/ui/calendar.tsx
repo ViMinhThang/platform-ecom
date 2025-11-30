@@ -67,7 +67,7 @@ function Calendar({
       components={{
         IconLeft: LeftIcon,
         IconRight: RightIcon
-      }}
+      } as any}
       {...props}
     />
   );

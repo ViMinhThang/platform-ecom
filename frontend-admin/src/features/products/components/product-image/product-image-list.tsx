@@ -1,6 +1,6 @@
 "use client";
 
-import { ProductImage } from "@/services/product-image-service";
+import { ProductImage } from "@/types/product/product";
 import { ProductImageCard } from "../product-image-cart";
 
 interface ProductImageListProps {
@@ -23,7 +23,7 @@ export const ProductImageList: React.FC<ProductImageListProps> = ({
   return (
     <div className="flex flex-wrap gap-4 justify-start items-start">
       {images.map((img) => (
-        <ProductImageCard key={img.id} image={img} onDelete={deleteImage} type="Delete"/>
+        <ProductImageCard key={img.id} image={img} onDelete={deleteImage} type="Delete" />
       ))}
     </div>
   );

@@ -13,21 +13,33 @@ import { IconEdit, IconDotsVertical, IconTrash } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { UserDialog } from "../user-form/user-dialog";
-import { useUserContext } from "@/providers/user-provider";
+import { useSession } from "next-auth/react";
+import { useAppDispatch } from "@/lib/store/hooks";
+import { deleteUser } from "@/lib/store/slices/userSlice";
 
 interface CellActionProps {
   data: UserRow;
 }
 
 export const CellAction: React.FC<CellActionProps> = ({ data }) => {
-  const [loading] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
   const [closeUpdateUser, setCloseUpdateUser] = useState(false);
-  const { deleteUserHandler } = useUserContext();
+
+  const { data: session } = useSession();
+  const dispatch = useAppDispatch();
 
   const onConfirm = async () => {
-    await deleteUserHandler(data.userId);
-    setOpen(false);
+    if (!session?.accessToken) return;
+    setLoading(true);
+    try {
+      await dispatch(deleteUser({ id: data.userId, token: session.accessToken }));
+      setOpen(false);
+    } catch (error) {
+      console.error("Failed to delete user:", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (

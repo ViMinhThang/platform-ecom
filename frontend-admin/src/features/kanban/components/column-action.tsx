@@ -19,7 +19,8 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
-import { useTaskStore } from '../utils/store';
+import { useAppDispatch } from '@/lib/store/hooks';
+import { removeCol, updateCol } from '@/lib/store/slices/kanbanSlice';
 import { UniqueIdentifier } from '@dnd-kit/core';
 import { Input } from '@/components/ui/input';
 import { toast } from 'sonner';
@@ -32,8 +33,7 @@ export function ColumnActions({
   id: UniqueIdentifier;
 }) {
   const [name, setName] = React.useState(title);
-  const updateCol = useTaskStore((state) => state.updateCol);
-  const removeCol = useTaskStore((state) => state.removeCol);
+  const dispatch = useAppDispatch();
   const [editDisable, setIsEditDisable] = React.useState(true);
   const [showDeleteDialog, setShowDeleteDialog] = React.useState(false);
   const inputRef = React.useRef<HTMLInputElement>(null);
@@ -44,7 +44,7 @@ export function ColumnActions({
         onSubmit={(e) => {
           e.preventDefault();
           setIsEditDisable(!editDisable);
-          updateCol(id, name);
+          dispatch(updateCol({ id, newName: name }));
           toast(`${title} updated to ${name}`);
         }}
       >
@@ -103,7 +103,7 @@ export function ColumnActions({
                 setTimeout(() => (document.body.style.pointerEvents = ''), 100);
 
                 setShowDeleteDialog(false);
-                removeCol(id);
+                dispatch(removeCol(id));
                 toast('This column has been deleted.');
               }}
             >

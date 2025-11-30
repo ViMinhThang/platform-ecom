@@ -1,13 +1,13 @@
-import { CategoryDTO } from "../category/category";
+import { Category } from "../category/category";
 
 // Định nghĩa type cho product item
-export interface ProductRow{
+export interface ProductRow {
   id: number;
   name: string;
-  category: CategoryDTO;
+  category: Category;
   imageUrl: string;
   status: 'DRAFT' | 'ACTIVE' | 'OUT_OF_STOCK';
-  variants: number; 
+  variants: number;
   description: string;
 }
 
@@ -24,11 +24,17 @@ export interface Product {
   name: string;
   slug: string;
   description: string;
-  cate?: CategoryDTO;
+  cate?: Category;
   status: "DRAFT" | "ACTIVE" | "OUT_OF_STOCK";
   userId?: number;
   specifications?: Record<string, any>;
   metadata?: Record<string, any>;
   createdAt?: string;
   updatedAt?: string;
+}
+
+export interface ProductImage {
+  id: number;
+  imageUrl: string;
+  isMain: boolean;
 }

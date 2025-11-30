@@ -17,7 +17,7 @@ public class FileStorageServiceImpl implements FileStorageService {
 
     private final Path fileStorageLocation;
 
-    public FileStorageServiceImpl(@Value("${file.upload-dir}") String uploadDir) {
+    public FileStorageServiceImpl(@Value("${image.base.url}") String uploadDir) {
         this.fileStorageLocation = Paths.get(uploadDir).toAbsolutePath().normalize();
 
         try {
