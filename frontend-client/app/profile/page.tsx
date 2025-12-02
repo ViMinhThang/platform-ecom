@@ -1,23 +1,26 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import { UserProfile } from '@/types/user';
-import { getUserProfile, getUserAddresses } from '@/lib/api/profile';
 import { ProfileInfoForm } from '@/components/profile/ProfileInfoForm';
 import { AddressManager } from '@/components/profile/AddressManager';
 import { OrderHistory } from '@/components/profile/OrderHistory';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Loader2, User, MapPin, ShoppingBag } from 'lucide-react';
-import { toast } from 'sonner';
+import { useAppDispatch, useAppSelector } from '@/lib/store/hooks';
+import { checkAuth } from '@/lib/store/slices/authSlice';
+import { fetchAddresses } from '@/lib/store/slices/addressSlice';
+import { fetchUserOrders } from '@/lib/store/slices/orderSlice';
 
 export default function ProfilePage() {
     const { data: session, status } = useSession();
     const router = useRouter();
-    const [profile, setProfile] = useState<UserProfile | null>(null);
-    const [loading, setLoading] = useState(true);
+    const dispatch = useAppDispatch();
+
+    const { user, loading: authLoading } = useAppSelector((state) => state.auth);
+    const { addresses } = useAppSelector((state) => state.address);
 
     useEffect(() => {
         if (status === 'unauthenticated') {
@@ -25,32 +28,28 @@ export default function ProfilePage() {
         }
     }, [status, router]);
 
-    const fetchProfileData = async () => {
-        if (!session?.user) return;
+    useEffect(() => {
+        if (session?.accessToken) {
+            const token = session.accessToken as string;
+            dispatch(checkAuth(token));
+            dispatch(fetchAddresses(token));
+            dispatch(fetchUserOrders({ token }));
+        }
+    }, [session, dispatch]);
 
-        try {
-            // @ts-ignore
-            const userId = session.user.id as string;
-            const data = await getUserProfile(userId);
-
-            // Also fetch addresses separately to ensure we have the latest list
-            // Although getUserProfile might include them, getUserAddresses is the dedicated endpoint
-            const addresses = await getUserAddresses();
-            setProfile({ ...data, addresses });
-        } catch (error) {
-            toast.error('Failed to load profile data');
-        } finally {
-            setLoading(false);
+    const handleProfileUpdate = () => {
+        if (session?.accessToken) {
+            dispatch(checkAuth(session.accessToken as string));
         }
     };
 
-    useEffect(() => {
-        if (session?.user) {
-            fetchProfileData();
+    const handleAddressUpdate = () => {
+        if (session?.accessToken) {
+            dispatch(fetchAddresses(session.accessToken as string));
         }
-    }, [session]);
+    };
 
-    if (status === 'loading' || loading) {
+    if (status === 'loading' || authLoading) {
         return (
             <div className="flex h-[calc(100vh-4rem)] items-center justify-center">
                 <Loader2 className="h-8 w-8 animate-spin text-primary" />
@@ -58,8 +57,8 @@ export default function ProfilePage() {
         );
     }
 
-    if (!profile) {
-        return null; // Or error state
+    if (!user) {
+        return null;
     }
 
     return (
@@ -96,7 +95,7 @@ export default function ProfilePage() {
                             </CardDescription>
                         </CardHeader>
                         <CardContent>
-                            <ProfileInfoForm user={profile} onUpdate={fetchProfileData} />
+                            <ProfileInfoForm user={user} onUpdate={handleProfileUpdate} />
                         </CardContent>
                     </Card>
                 </TabsContent>
@@ -111,8 +110,8 @@ export default function ProfilePage() {
                         </CardHeader>
                         <CardContent>
                             <AddressManager
-                                addresses={profile.addresses || []}
-                                onUpdate={fetchProfileData}
+                                addresses={addresses}
+                                onUpdate={handleAddressUpdate}
                             />
                         </CardContent>
                     </Card>

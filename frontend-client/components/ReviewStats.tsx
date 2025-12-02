@@ -1,7 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { getProductReviewSummary } from "@/lib/api/reviews";
+import { useEffect } from "react";
+import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
+import { fetchReviewSummary } from "@/lib/store/slices/reviewSlice";
 import { StarRating } from "./ui/StarRating";
 import { Progress } from "./ui/progress";
 
@@ -9,34 +10,15 @@ interface ReviewStatsProps {
   productId: number;
 }
 
-interface ReviewSummary {
-  averageRating: number;
-  totalReviews: number;
-  ratingDistribution: Record<number, number>;
-}
-
 export function ReviewStats({ productId }: ReviewStatsProps) {
-  const [summary, setSummary] = useState<ReviewSummary | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(false);
+  const dispatch = useAppDispatch();
+  const { summary, loading } = useAppSelector((state) => state.reviews);
 
   useEffect(() => {
-    const fetchSummary = async () => {
-      try {
-        const data = await getProductReviewSummary(productId);
-        setSummary(data);
-      } catch (error) {
-        console.error("Failed to fetch review summary:", error);
-        setError(true);
-      } finally {
-        setLoading(false);
-      }
-    };
+    dispatch(fetchReviewSummary(productId));
+  }, [dispatch, productId]);
 
-    fetchSummary();
-  }, [productId]);
-
-  if (loading) {
+  if (loading && !summary) {
     return (
       <div className="text-center py-8 text-muted-foreground">
         <p>Loading reviews...</p>
@@ -44,12 +26,11 @@ export function ReviewStats({ productId }: ReviewStatsProps) {
     );
   }
 
-  if (error || !summary) {
-    return (
-      <div className="text-center py-8 text-muted-foreground">
-        <p>Unable to load review statistics</p>
-      </div>
-    );
+  if (!summary) {
+    // If not loading and no summary, it might mean no reviews or error.
+    // But usually summary endpoint returns 0s if no reviews.
+    // So if summary is null, it's likely still initializing or error.
+    return null;
   }
 
   const { averageRating, totalReviews, ratingDistribution } = summary;

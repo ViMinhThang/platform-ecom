@@ -43,6 +43,7 @@ export interface Product {
   totalSold?: number;
   totalReviews?: number;
   averageRating?: number;
+  minPrice?: number;
 }
 
 export interface ProductResponse {
@@ -99,6 +100,6 @@ export interface ProductDetail extends Product {
 export interface ProductImage {
   id: number;
   product: Product;
-  imageUrl: String;
+  imageUrl: string;
   createdAt: Date;
 }

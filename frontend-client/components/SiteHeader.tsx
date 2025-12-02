@@ -1,13 +1,31 @@
+'use client';
+
 import Link from "next/link"
-import { Search, ShoppingCart, User, Menu } from "lucide-react"
+import { Search, ShoppingCart, Menu } from "lucide-react"
+import { useEffect } from "react"
+import { useSession } from "next-auth/react"
 
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { Badge } from "@/components/ui/badge"
 import { UserNav } from "@/components/UserNav"
+import { useAppDispatch, useAppSelector } from "@/lib/store/hooks"
+import { fetchCart } from "@/lib/store/slices/cartSlice"
 
 export function SiteHeader() {
+  const dispatch = useAppDispatch();
+  const { data: session } = useSession();
+  const { cart } = useAppSelector((state) => state.cart);
+
+  useEffect(() => {
+    if (session?.accessToken) {
+      dispatch(fetchCart(session.accessToken as string));
+    }
+  }, [dispatch, session]);
+
+  const cartItemCount = cart?.products.reduce((total, item) => total + item.quantity, 0) || 0;
+
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background">
       <div className="container mx-auto flex h-16 items-center px-4 md:px-6">
@@ -75,9 +93,11 @@ export function SiteHeader() {
             <UserNav />
             <Button variant="ghost" size="icon" className="relative">
               <ShoppingCart className="h-5 w-5" />
-              <Badge className="absolute -right-1 -top-1 h-4 w-4 rounded-full p-0 flex items-center justify-center text-[10px]">
-                2
-              </Badge>
+              {cartItemCount > 0 && (
+                <Badge className="absolute -right-1 -top-1 h-4 w-4 rounded-full p-0 flex items-center justify-center text-[10px]">
+                  {cartItemCount}
+                </Badge>
+              )}
               <span className="sr-only">Cart</span>
             </Button>
           </nav>

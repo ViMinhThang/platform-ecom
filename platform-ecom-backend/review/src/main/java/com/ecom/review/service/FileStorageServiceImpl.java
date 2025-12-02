@@ -1,6 +1,6 @@
 package com.ecom.review.service;
 
-import com.ecom.review.exception.APIException;
+import com.ecom.common.exception.APIException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -8,15 +8,10 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.nio.file.*;
 import java.nio.file.StandardCopyOption;
 import java.util.UUID;
 
-/**
- * Implementation of FileStorageService for handling review image uploads
- */
 @Slf4j
 @Service
 public class FileStorageServiceImpl implements FileStorageService {

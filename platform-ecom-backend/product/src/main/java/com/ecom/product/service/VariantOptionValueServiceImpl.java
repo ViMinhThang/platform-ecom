@@ -1,13 +1,9 @@
 package com.ecom.product.service;
 
 import com.ecom.product.dto.VariantOptionValueDTO;
-import com.ecom.product.entity.ProductOptionValue;
-import com.ecom.product.entity.ProductVariant;
-import com.ecom.product.entity.VariantOptionValue;
-import com.ecom.product.exceptions.ResourceNotFoundException;
-import com.ecom.product.repository.ProductOptionValueRepository;
-import com.ecom.product.repository.ProductVariantRepository;
-import com.ecom.product.repository.VariantOptionValueRepository;
+import com.ecom.product.entity.*;
+import com.ecom.common.exception.ResourceNotFoundException;
+import com.ecom.product.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;

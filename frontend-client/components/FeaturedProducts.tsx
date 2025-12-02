@@ -1,5 +1,5 @@
 import { ProductCard } from "@/components/ProductCard";
-import { getPublicProducts } from "@/lib/api/products";
+import { getPublicProducts } from "@/lib/services/product-service";
 import type { ProductRow } from "@/types/product";
 
 export async function FeaturedProducts() {

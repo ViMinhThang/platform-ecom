@@ -4,8 +4,8 @@ import com.ecom.order.client.ProductServiceClient;
 import com.ecom.order.client.UserServiceClient;
 import com.ecom.order.dtos.*;
 import com.ecom.order.entity.*;
-import com.ecom.order.exception.APIException;
-import com.ecom.order.exception.ResourceNotFoundException;
+import com.ecom.common.exception.APIException;
+import com.ecom.common.exception.ResourceNotFoundException;
 import com.ecom.order.producer.OrderNotificationProducer;
 import com.ecom.order.repositories.CartRepository;
 import com.ecom.order.repositories.OrderItemRepository;
@@ -138,13 +138,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Boolean verifyUserPurchase(String email, Long productId) {
-        // Optimized: fetching all orders is bad practice, but keeping logic similar to
-        // original for safety
-        // Ideally should use a repository method like findByEmailAndProductIdAndStatus
-        List<Order> userOrders = orderRepository.findAll().stream()
-                .filter(order -> order.getEmail().equals(email))
-                .filter(order -> ORDER_STATUS_DELIVERED.equalsIgnoreCase(order.getOrderStatus()))
-                .toList();
+        List<Order> userOrders = orderRepository.findByEmailAndOrderStatus(email, ORDER_STATUS_DELIVERED);
 
         return userOrders.stream()
                 .flatMap(order -> order.getOrderItems().stream())

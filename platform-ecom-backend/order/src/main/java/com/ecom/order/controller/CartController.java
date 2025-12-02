@@ -1,7 +1,8 @@
 package com.ecom.order.controller;
 
-
-import com.ecom.order.config.AuthContext;
+import com.ecom.common.security.AuthContext;
+import com.ecom.common.util.APIResponse;
+import com.ecom.common.util.ResponseBuilder;
 import com.ecom.order.dtos.CartDTO;
 import com.ecom.order.dtos.CartItemDTO;
 import com.ecom.order.dtos.ProductDTO;
@@ -9,8 +10,7 @@ import com.ecom.order.entity.Cart;
 import com.ecom.order.repositories.CartRepository;
 import com.ecom.order.service.CartService;
 import jakarta.servlet.http.HttpServletRequest;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,76 +18,85 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/carts")
+@RequiredArgsConstructor
 public class CartController {
 
-    @Autowired
-    private CartRepository cartRepository;
+    private final CartRepository cartRepository;
 
-    @Autowired
-    private AuthContext authContext;
+    private final AuthContext authContext;
 
-    @Autowired
-    private CartService cartService;
+    private final CartService cartService;
 
     @PostMapping("/create")
-    public ResponseEntity<String> createOrUpdateCart(@RequestBody List<CartItemDTO> cartItems,
-                                                     HttpServletRequest request) {
+    public ResponseEntity<APIResponse<String>> createOrUpdateCart(@RequestBody List<CartItemDTO> cartItems,
+            HttpServletRequest request) {
         Long userId = authContext.getUserId(request);
         String response = cartService.createOrUpdateCartWithItems(cartItems, userId);
-        return new ResponseEntity<>(response, HttpStatus.CREATED);
+        return ResponseBuilder.createdWithMessage("Cart created or updated successfully", response);
     }
 
-    @PostMapping("/products/{productId}/quantity/{quantity}")
-    public ResponseEntity<CartDTO> addProductToCart(@PathVariable Long productId,
-                                                    @PathVariable Integer quantity,
-                                                    HttpServletRequest request) {
+    @PostMapping("/add")
+    public ResponseEntity<APIResponse<CartDTO>> addItemToCart(@RequestBody CartItemDTO cartItemDTO,
+            HttpServletRequest request) {
         Long userId = authContext.getUserId(request);
-        CartDTO cartDTO = cartService.addProductToCart(userId, productId, quantity);
-        return new ResponseEntity<CartDTO>(cartDTO, HttpStatus.CREATED);
+        CartDTO cartDTO = cartService.addItemToCart(userId, cartItemDTO);
+        return ResponseBuilder.createdWithMessage("Product added to cart successfully", cartDTO);
     }
 
     @GetMapping("/")
-    public ResponseEntity<List<CartDTO>> getCarts() {
+    public ResponseEntity<APIResponse<List<CartDTO>>> getCarts() {
         List<CartDTO> cartDTOs = cartService.getAllCarts();
-        return new ResponseEntity<List<CartDTO>>(cartDTOs, HttpStatus.FOUND);
+        return ResponseBuilder.success("Carts retrieved successfully", cartDTOs);
     }
 
     @GetMapping("/users/cart")
-    public ResponseEntity<CartDTO> getCartById(HttpServletRequest request) {
+    public ResponseEntity<APIResponse<CartDTO>> getCartById(HttpServletRequest request) {
         Long userId = authContext.getUserId(request);
         Cart cart = cartRepository.findByUserId(userId);
+        if (cart == null) {
+             // Return empty cart or create one?
+             // For now, let's return a not found or empty.
+             // But getCart handles creation if needed? No, getCart throws if not found.
+             // Let's return empty if not found or create it.
+             // cartService.createCart is private.
+             // But we can just return success with empty DTO or null.
+             return ResponseBuilder.success("Cart retrieved successfully", new CartDTO());
+        }
         Long cartId = cart.getCartId();
         CartDTO cartDTO = cartService.getCart(cartId);
-        return new ResponseEntity<CartDTO>(cartDTO, HttpStatus.OK);
+        return ResponseBuilder.success("Cart retrieved successfully", cartDTO);
     }
 
-    @PutMapping("/products/{productId}/quantity/{operation}")
-    public ResponseEntity<CartDTO> updateCartProduct(@PathVariable Long productId,
-                                                     @PathVariable String operation) {
-
-        CartDTO cartDTO = cartService.updateProductQuantityInCart(productId,
-                operation.equalsIgnoreCase("delete") ? -1 : 1);
-
-        return new ResponseEntity<CartDTO>(cartDTO, HttpStatus.OK);
+    @PutMapping("/items/{productId}")
+    public ResponseEntity<APIResponse<CartDTO>> updateCartItem(@PathVariable Long productId,
+            @RequestParam(required = false) Long variantId,
+            @RequestParam int quantityChange,
+            HttpServletRequest request) {
+        Long userId = authContext.getUserId(request);
+        Cart cart = cartRepository.findByUserId(userId);
+        CartDTO cartDTO = cartService.updateItemQuantity(cart.getCartId(), productId, variantId, quantityChange);
+        return ResponseBuilder.success("Cart product updated successfully", cartDTO);
     }
 
-    @DeleteMapping("/{cartId}/product/{productId}")
-    public ResponseEntity<String> deleteProductFromCart(@PathVariable Long cartId,
-                                                        @PathVariable Long productId) {
-        String status = cartService.deleteProductFromCart(cartId, productId);
-
-        return new ResponseEntity<String>(status, HttpStatus.OK);
+    @DeleteMapping("/items/{productId}")
+    public ResponseEntity<APIResponse<String>> deleteItemFromCart(@PathVariable Long productId,
+            @RequestParam(required = false) Long variantId,
+            HttpServletRequest request) {
+        Long userId = authContext.getUserId(request);
+        Cart cart = cartRepository.findByUserId(userId);
+        String status = cartService.deleteItemFromCart(cart.getCartId(), productId, variantId);
+        return ResponseBuilder.success("Product deleted from cart successfully", status);
     }
 
     @PostMapping("/update-product-in-carts")
-    public ResponseEntity<String> updateProductInCarts(@RequestBody ProductDTO productDTO) {
+    public ResponseEntity<APIResponse<String>> updateProductInCarts(@RequestBody ProductDTO productDTO) {
         String status = cartService.updateProductInCarts(productDTO);
-        return new ResponseEntity<>(status, HttpStatus.OK);
+        return ResponseBuilder.success("Product updated in carts successfully", status);
     }
 
     @PostMapping("delete-product-from-carts")
-    public ResponseEntity<String> deleteProductFromCarts(@RequestBody ProductDTO productDTO) {
+    public ResponseEntity<APIResponse<String>> deleteProductFromCarts(@RequestBody ProductDTO productDTO) {
         String status = cartService.deleteProductFromCarts(productDTO);
-        return new ResponseEntity<>(status, HttpStatus.OK);
+        return ResponseBuilder.success("Product deleted from carts successfully", status);
     }
 }

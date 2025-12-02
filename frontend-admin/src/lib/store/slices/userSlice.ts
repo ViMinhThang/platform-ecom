@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { User, UserResponse, role } from '@/types/user/user';
+import { APIResponse } from '@/types/api'; // Assuming this exists, or I'll define it inline or import from utils
 import { API_ENDPOINTS, PAGINATION } from '@/config/constants';
 import { createRequestConfig, createMultipartConfig, handleApiError } from '@/lib/utils/api';
 import { logger } from '@/lib/logger';
@@ -112,13 +113,17 @@ export const fetchUsers = createAsyncThunk(
         try {
             logger.apiRequest('GET', API_ENDPOINTS.AUTH, params);
 
-            const response = await axios.get<UserResponse>(API_ENDPOINTS.AUTH, {
+            // Backend returns APIResponse<UserResponse>, so we need to access response.data.data
+            // But wait, the axios.get<UserResponse> implies response.data IS UserResponse.
+            // Let's check the backend controller: ResponseEntity<APIResponse<UserResponse>>
+            // So axios.get<APIResponse<UserResponse>> is correct.
+            const response = await axios.get<APIResponse<UserResponse>>(API_ENDPOINTS.AUTH, {
                 ...createRequestConfig(token),
                 params,
             });
 
             logger.apiResponse('GET', API_ENDPOINTS.AUTH, response.status);
-            return response.data;
+            return response.data.data; // Access the 'data' field of APIResponse
         } catch (error) {
             handleApiError(error);
             return rejectWithValue('Failed to fetch users');

@@ -7,6 +7,7 @@ import axios, { AxiosError, AxiosRequestConfig } from 'axios';
 import { API_ENDPOINTS } from '@/config/constants';
 import { ApiError, NetworkError, handleError } from '@/lib/errors';
 import { logger } from '@/lib/logger';
+import { APIResponse } from '@/types/api-response';
 
 /**
  * Builds a complete API URL from endpoint and parameters
@@ -116,7 +117,7 @@ export function isAxiosError(error: unknown): error is AxiosError {
  * Unwraps APIResponse wrapper and extracts data
  * @throws Error if response status is false
  */
-export function unwrapResponse<T>(axiosResponse: { data: { message: string; status: boolean; data: T } }): T {
+export function unwrapResponse<T>(axiosResponse: { data: APIResponse<T> }): T {
     const apiResponse = axiosResponse.data;
 
     if (!apiResponse.status) {
@@ -129,6 +130,6 @@ export function unwrapResponse<T>(axiosResponse: { data: { message: string; stat
 /**
  * Extracts success message from wrapped response
  */
-export function extractMessage<T>(axiosResponse: { data: { message: string; status: boolean; data: T } }): string {
+export function extractMessage<T>(axiosResponse: { data: APIResponse<T> }): string {
     return axiosResponse.data.message;
 }

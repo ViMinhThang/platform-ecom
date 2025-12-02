@@ -2,8 +2,8 @@ export interface Category {
   imageUrl?: string;
   id: number;
   name: string;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface CategoryResponse {

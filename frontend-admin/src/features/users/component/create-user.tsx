@@ -48,8 +48,9 @@ export const CreateUserButton: React.FC<CreateUserButtonProps> = ({ }) => {
     const dummyUser = {
       username: `user-${Date.now()}`,
       email: `user-${Date.now()}@example.com`,
-      roles: ["ROLE_USER"], // Simplified, or map from allRoles if needed
+      roles: [{ roleId: 0, roleName: "ROLE_USER" }], // Simplified, or map from allRoles if needed
       password: "123456",
+      isActive: "true",
     };
 
     setLoading(true);

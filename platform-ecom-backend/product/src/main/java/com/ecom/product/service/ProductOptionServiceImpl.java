@@ -5,7 +5,7 @@ import com.ecom.product.dto.ProductOptionValueDTO;
 import com.ecom.product.entity.Product;
 import com.ecom.product.entity.ProductOption;
 import com.ecom.product.entity.ProductOptionValue;
-import com.ecom.product.exceptions.ResourceNotFoundException;
+import com.ecom.common.exception.ResourceNotFoundException;
 import com.ecom.product.repository.ProductOptionRepository;
 import com.ecom.product.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
@@ -74,7 +74,6 @@ public class ProductOptionServiceImpl implements ProductOptionService {
         productRepository.save(product);
     }
 
-    // ==================== Private Helper Methods ====================
 
     private Product findProductById(Long productId) {
         return productRepository.findById(productId)

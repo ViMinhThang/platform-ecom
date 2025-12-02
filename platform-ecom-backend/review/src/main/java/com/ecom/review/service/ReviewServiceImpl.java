@@ -4,8 +4,8 @@ import com.ecom.review.client.OrderServiceClient;
 import com.ecom.review.client.ProductServiceClient;
 import com.ecom.review.dto.*;
 import com.ecom.review.entity.Review;
-import com.ecom.review.exception.APIException;
-import com.ecom.review.exception.ResourceNotFoundException;
+import com.ecom.common.exception.APIException;
+import com.ecom.common.exception.ResourceNotFoundException;
 import com.ecom.review.repository.ReviewRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -161,7 +161,7 @@ public class ReviewServiceImpl implements ReviewService {
             if (!DELIVERED_STATUS.equalsIgnoreCase(order.getOrderStatus())) {
                 throw new APIException("You can only review products from delivered orders");
             }
-        } catch (ResourceNotFoundException | APIException e) {
+        } catch (APIException e) {
             throw e;
         } catch (Exception e) {
             throw new APIException("Unable to verify order. Please try again later.");

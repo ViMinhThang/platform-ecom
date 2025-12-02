@@ -1,4 +1,4 @@
-import { getPublicProducts } from "@/lib/api/products";
+import { getPublicProducts } from "@/lib/services/product-service";
 import { ProductCard } from "@/components/ProductCard";
 import type { ProductRow } from "@/types/product";
 

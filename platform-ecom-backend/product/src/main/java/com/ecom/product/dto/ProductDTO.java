@@ -23,4 +23,5 @@ public class ProductDTO {
     private Long totalSold;
     private Long totalReviews;
     private Double averageRating;
+    private Long userId;
 }

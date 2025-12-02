@@ -1,14 +1,13 @@
 import Image from "next/image";
 import Link from "next/link";
-import { getCategories } from "@/lib/api/products";
+import { getCategories } from "@/lib/services/product-service";
 import type { Category } from "@/types/product";
 
 export async function Categories() {
   let categories: Category[] = [];
 
   try {
-    const data = await getCategories({ pageSize: 20 });
-    categories = data.content;
+    categories = await getCategories();
   } catch (error) {
     console.error("Failed to fetch categories:", error);
   }

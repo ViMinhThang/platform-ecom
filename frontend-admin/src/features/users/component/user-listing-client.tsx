@@ -44,10 +44,7 @@ export default function UserListingClient({
   if (loading && users.length === 0)
     return <div>Loading users...</div>;
 
-  const mappedUsers = users.map(user => ({
-    ...user,
-    roles: user.roles.map(role => ({ roleId: 0, roleName: role }))
-  }));
+  const mappedUsers = users;
 
   return (
     <UserTable

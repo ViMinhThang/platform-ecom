@@ -1,11 +1,12 @@
 'use client';
 
 import { useState } from 'react';
+import { useSession } from 'next-auth/react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { UserProfile } from '@/types/user';
-import { updateUserInfo } from '@/lib/api/profile';
+import { updateUserInfo } from '@/lib/services/user-service';
 import { useImageUpload } from '@/hooks/useImageUpload';
 import { FormField } from '@/components/common/form/FormField';
 import { Button } from '@/components/ui/button';
@@ -28,9 +29,10 @@ interface ProfileInfoFormProps {
 
 /**
  * Form component for managing user profile information.
- * Refactored to use reusable components and custom hooks following clean code principles.
+ * Updated to use NextAuth session for token management.
  */
 export function ProfileInfoForm({ user, onUpdate }: ProfileInfoFormProps) {
+    const { data: session } = useSession();
     const [isSaving, setIsSaving] = useState(false);
 
     // Use custom hook for image upload
@@ -46,9 +48,15 @@ export function ProfileInfoForm({ user, onUpdate }: ProfileInfoFormProps) {
     });
 
     const onSubmit = async (data: ProfileFormValues) => {
+        const token = session?.accessToken as string;
+        if (!token) {
+            toast.error('You must be logged in to update your profile');
+            return;
+        }
+
         setIsSaving(true);
         try {
-            await updateUserInfo(data);
+            await updateUserInfo(data, token);
             toast.success('Profile updated successfully');
             onUpdate();
         } catch (error: any) {

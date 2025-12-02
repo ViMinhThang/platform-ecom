@@ -1,28 +1,33 @@
 import { useState } from 'react';
-import { uploadProfileImage } from '@/lib/api/profile';
+import { useSession } from 'next-auth/react';
+import { uploadProfileImage } from '@/lib/services/user-service';
 import { LIMITS, FILE_TYPES, VALIDATION_MESSAGES } from '@/lib/constants';
 import { toast } from 'sonner';
 
 /**
- * Custom hook for handling profile image uploads.
+ * Custom hook for handling profile image uploads with NextAuth token.
  * Includes file validation and error handling.
  * 
  * @param userId - User ID for the upload
  * @param onSuccess - Callback to execute after successful upload
  * @returns Object containing upload handler and loading state
- * 
- * @example
- * const { handleImageUpload, isUploading } = useImageUpload(user.userId, onUpdate);
  */
 export function useImageUpload(userId: number, onSuccess?: () => void) {
+    const { data: session } = useSession();
     const [isUploading, setIsUploading] = useState(false);
 
     const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>): Promise<void> => {
         const file = e.target.files?.[0];
         if (!file) return;
 
+        const token = session?.accessToken as string;
+        if (!token) {
+            toast.error('You must be logged in to upload images');
+            return;
+        }
+
         // Validate file type
-        if (!FILE_TYPES.IMAGES.includes(file.type)) {
+        if (!FILE_TYPES.IMAGES.includes(file.type as any)) {
             toast.error(VALIDATION_MESSAGES.IMAGE_TYPE_INVALID);
             return;
         }
@@ -35,7 +40,7 @@ export function useImageUpload(userId: number, onSuccess?: () => void) {
 
         setIsUploading(true);
         try {
-            await uploadProfileImage(userId, file);
+            await uploadProfileImage(userId, file, token);
             toast.success('Profile image updated');
             onSuccess?.();
         } catch (error: any) {

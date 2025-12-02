@@ -1,19 +1,13 @@
 package com.ecom.user.controller;
 
-import com.ecom.user.aspect.RequireRole;
-import com.ecom.user.config.AppConstants;
-import com.ecom.user.config.AuthContext;
+import com.ecom.common.aspect.RequireRole;
+import com.ecom.common.security.AuthContext;
+import com.ecom.common.util.*;
 import com.ecom.user.dtos.*;
-import com.ecom.user.entity.AppRole;
-import com.ecom.user.entity.User;
-import com.ecom.user.repositories.RoleRepository;
 import com.ecom.user.service.AuthService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,92 +16,95 @@ import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/api/auth")
+@RequiredArgsConstructor
 public class UserController {
 
-
-    @Autowired
-    AuthService authService;
-
-    @Autowired
-    AuthContext authContext;
-
+    private final AuthService authService;
+    private final AuthContext authContext;
 
     @GetMapping
-//    @RequireRole("ROLE_SELLER")
-    public ResponseEntity<UserResponse> getAllUsers(@RequestParam(name = "pageNumber", defaultValue = AppConstants.PAGE_NUMBER, required = false) Integer pageNumber, @RequestParam(name = "pageSize", defaultValue = AppConstants.PAGE_SIZE, required = false) Integer pageSize, @RequestParam(name = "sortBy", defaultValue = AppConstants.SORT_USER_BY, required = false) String sortBy, @RequestParam(name = "sortOrder", defaultValue = AppConstants.SORT_DIR, required = false) String sortOrder) {
-        UserResponse userResponse = authService.getAllUsers(pageNumber, pageSize, sortBy, sortOrder);
-        return new ResponseEntity<>(userResponse, HttpStatus.OK);
+    // @RequireRole("ROLE_SELLER")
+    public ResponseEntity<APIResponse<UserResponse>> getAllUsers(PaginationRequest paginationRequest) {
+        UserResponse userResponse = authService.getAllUsers(
+                paginationRequest.getPageNumber(),
+                paginationRequest.getPageSize(),
+                paginationRequest.getSortBy(),
+                paginationRequest.getSortOrder());
+        return ResponseBuilder.success("Users retrieved successfully", userResponse);
     }
 
     @PostMapping
-    public ResponseEntity<UserDTO> createUser(@RequestBody UserDTO userDTO) {
+    public ResponseEntity<APIResponse<UserDTO>> createUser(@RequestBody UserDTO userDTO) {
         UserDTO savedUser = authService.createUser(userDTO);
-        return new ResponseEntity<>(savedUser, HttpStatus.OK);
+        return ResponseBuilder.createdWithMessage("User created successfully", savedUser);
     }
 
     @PostMapping("/login")
-    public ResponseEntity<AuthenticationResult> authenticateUser(@RequestBody LoginRequest loginRequest) {
+    public ResponseEntity<APIResponse<AuthenticationResult>> authenticateUser(@RequestBody LoginRequest loginRequest) {
         AuthenticationResult result = authService.login(loginRequest);
-        return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, result.getJwtCookie().toString()).body(result);
+        APIResponse<AuthenticationResult> response = new APIResponse<>("Login successful", true, result);
+        return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, result.getJwtCookie().toString()).body(response);
     }
 
     @PostMapping("/signup")
     public ResponseEntity<MessageResponse> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
-        return authService.register(signUpRequest);
+         authService.register(signUpRequest);
+         return new ResponseEntity<MessageResponse>(new MessageResponse("Register successfully"), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<UserInfoResponse> getUserInfo(@PathVariable("id") String userId) {
+    public ResponseEntity<APIResponse<UserInfoResponse>> getUserInfo(@PathVariable("id") String userId) {
         UserInfoResponse result = authService.getUserById(userId);
-        return new ResponseEntity<UserInfoResponse>(result, HttpStatus.OK);
+        return ResponseBuilder.success("User info retrieved successfully", result);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<UserDTO> updateUserByAdmin(@PathVariable("id") Long userId, @RequestBody UserDTO userDTO) {
+    public ResponseEntity<APIResponse<UserDTO>> updateUserByAdmin(@PathVariable("id") Long userId,
+            @RequestBody UserDTO userDTO) {
         UserDTO savedUser = authService.updateUserByAdmin(userId, userDTO);
-        return new ResponseEntity<>(savedUser, HttpStatus.OK);
+        return ResponseBuilder.success("User updated successfully", savedUser);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<UserDTO> deleteUserById(@PathVariable("id") Long userId) {
+    public ResponseEntity<APIResponse<UserDTO>> deleteUserById(@PathVariable("id") Long userId) {
         UserDTO deletedUser = authService.deleteUser(userId);
-        return new ResponseEntity<>(deletedUser, HttpStatus.OK);
+        return ResponseBuilder.success("User deleted successfully", deletedUser);
     }
 
     @PutMapping("/{id}/image")
-    public ResponseEntity<String> uploadUserImage(@PathVariable("id") Long userId, @RequestParam("file") MultipartFile image) {
+    public ResponseEntity<APIResponse<String>> uploadUserImage(@PathVariable("id") Long userId,
+            @RequestParam("file") MultipartFile image) {
         String imageUrl = authService.uploadUserImage(userId, image);
-        return new ResponseEntity<>(imageUrl, HttpStatus.OK);
+        return ResponseBuilder.success("User image uploaded successfully", imageUrl);
     }
 
     @GetMapping("/validate")
-    public ResponseEntity<UserInfoResponse> validateToken(@CookieValue("ecom") String jwtToken) {
+    public ResponseEntity<APIResponse<UserInfoResponse>> validateToken(@CookieValue("ecom") String jwtToken) {
         UserInfoResponse response = authService.validate(jwtToken);
-        return ResponseEntity.ok(response);
+        return ResponseBuilder.success("Token validated successfully", response);
     }
 
-
     @GetMapping("/get-email-by-user-id/{userId}")
-    public ResponseEntity<String> getEmailByUserId(@PathVariable Long userId) {
+    public ResponseEntity<APIResponse<String>> getEmailByUserId(@PathVariable Long userId) {
         UserInfoResponse user = authService.getUserById(String.valueOf(userId));
-        return new ResponseEntity<String>(user.getEmail(), HttpStatus.OK);
+        return ResponseBuilder.success("Email retrieved successfully", user.getEmail());
     }
 
     @PutMapping("/update-info")
     @RequireRole("ROLE_USER")
-    public ResponseEntity<UserInfoResponse> updateUserInfo(@RequestBody UpdateUserRequest updateUserRequest, HttpServletRequest request) {
+    public ResponseEntity<APIResponse<UserInfoResponse>> updateUserInfo(
+            @RequestBody UpdateUserRequest updateUserRequest,
+            HttpServletRequest request) {
         Long userId = authContext.getUserId(request);
         UserInfoResponse user = authService.updateUserById(updateUserRequest, userId);
-        return new ResponseEntity<UserInfoResponse>(user, HttpStatus.OK);
+        return ResponseBuilder.success("User info updated successfully", user);
     }
-
 
     @GetMapping("/roles")
-//    @RequireRole("ROLE_SELLER")
-    public ResponseEntity<RoleResponse> getAllRoles() {
+    // @RequireRole("ROLE_SELLER")
+    public ResponseEntity<APIResponse<RoleResponse>> getAllRoles() {
         RoleResponse roleResponse = authService.getAllRoles();
-        return new ResponseEntity<>(roleResponse, HttpStatus.OK);
+        return ResponseBuilder.success("Roles retrieved successfully", roleResponse);
     }
-
 
 }

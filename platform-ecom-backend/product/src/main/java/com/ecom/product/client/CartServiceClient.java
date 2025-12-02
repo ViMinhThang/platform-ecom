@@ -1,6 +1,6 @@
 //package com.ecom.product.client;
 //
-//import com.ecom.product.dtos.ProductDTO;
+//import com.ecom.product.dto.ProductDTO;
 //import org.springframework.http.ResponseEntity;
 //import org.springframework.web.bind.annotation.RequestBody;
 //import org.springframework.web.service.annotation.HttpExchange;

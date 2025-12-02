@@ -3,7 +3,9 @@
 // Client Component - Paginated Review List
 
 import { useEffect, useState } from "react";
-import { getProductReviews, GetReviewsParams } from "@/lib/api/reviews";
+import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
+import { fetchProductReviews, resetReviews } from "@/lib/store/slices/reviewSlice";
+import { GetReviewsParams } from "@/lib/services/review-service";
 import type { Review } from "@/types/review";
 import { StarRating } from "./ui/StarRating";
 import { Button } from "./ui/button";
@@ -22,40 +24,30 @@ interface ReviewListProps {
 }
 
 export function ReviewList({ productId }: ReviewListProps) {
-  const [reviews, setReviews] = useState<Review[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const dispatch = useAppDispatch();
+  const { reviews, loading, error, pagination } = useAppSelector((state) => state.reviews);
+
   const [page, setPage] = useState(0);
-  const [totalPages, setTotalPages] = useState(0);
   const [sortBy, setSortBy] = useState("createdAt");
   const [sortDir, setSortDir] = useState<"asc" | "desc">("desc");
 
   useEffect(() => {
-    async function fetchReviews() {
-      setLoading(true);
-      setError(null);
+    // Reset reviews when component unmounts or productId changes
+    return () => {
+      dispatch(resetReviews());
+    };
+  }, [dispatch, productId]);
 
-      try {
-        const params: GetReviewsParams = {
-          pageNumber: page,
-          pageSize: 10,
-          sortBy,
-          sortDir,
-        };
+  useEffect(() => {
+    const params: GetReviewsParams = {
+      pageNumber: page,
+      pageSize: 10,
+      sortBy,
+      sortDir,
+    };
 
-        const response = await getProductReviews(productId, params);
-        setReviews(response.content);
-        setTotalPages(response.totalPages);
-      } catch (err) {
-        setError("Failed to load reviews");
-        console.error("Error fetching reviews:", err);
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    fetchReviews();
-  }, [productId, page, sortBy, sortDir]);
+    dispatch(fetchProductReviews({ productId, params }));
+  }, [dispatch, productId, page, sortBy, sortDir]);
 
   const handleSortChange = (value: string) => {
     const [newSortBy, newSortDir] = value.split("-");
@@ -64,7 +56,7 @@ export function ReviewList({ productId }: ReviewListProps) {
     setPage(0); // Reset to first page
   };
 
-  if (loading) {
+  if (loading && reviews.length === 0) {
     return (
       <div className="space-y-4">
         {[1, 2, 3].map((i) => (
@@ -86,7 +78,7 @@ export function ReviewList({ productId }: ReviewListProps) {
     );
   }
 
-  if (reviews.length === 0) {
+  if (!loading && reviews.length === 0) {
     return (
       <div className="text-center py-8 text-muted-foreground">
         <p>No reviews yet. Be the first to review!</p>
@@ -99,7 +91,7 @@ export function ReviewList({ productId }: ReviewListProps) {
       {/* Sort Selector */}
       <div className="flex justify-between items-center">
         <h3 className="font-semibold">
-          {reviews.length} {reviews.length === 1 ? "Review" : "Reviews"}
+          {pagination.totalElements} {pagination.totalElements === 1 ? "Review" : "Reviews"}
         </h3>
         <Select value={`${sortBy}-${sortDir}`} onValueChange={handleSortChange}>
           <SelectTrigger className="w-[200px]">
@@ -123,7 +115,7 @@ export function ReviewList({ productId }: ReviewListProps) {
       </div>
 
       {/* Pagination */}
-      {totalPages > 1 && (
+      {pagination.totalPages > 1 && (
         <div className="flex justify-center gap-2 pt-4">
           <Button
             variant="outline"
@@ -133,12 +125,12 @@ export function ReviewList({ productId }: ReviewListProps) {
             Previous
           </Button>
           <span className="flex items-center px-4 text-sm text-muted-foreground">
-            Page {page + 1} of {totalPages}
+            Page {page + 1} of {pagination.totalPages}
           </span>
           <Button
             variant="outline"
-            onClick={() => setPage((p) => Math.min(totalPages - 1, p + 1))}
-            disabled={page >= totalPages - 1}
+            onClick={() => setPage((p) => Math.min(pagination.totalPages - 1, p + 1))}
+            disabled={page >= pagination.totalPages - 1}
           >
             Next
           </Button>

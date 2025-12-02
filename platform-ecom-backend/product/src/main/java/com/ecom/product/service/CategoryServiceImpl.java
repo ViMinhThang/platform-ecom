@@ -3,15 +3,13 @@ package com.ecom.product.service;
 import com.ecom.product.dto.CategoryDTO;
 import com.ecom.product.dto.CategoryResponse;
 import com.ecom.product.entity.Category;
-import com.ecom.product.exceptions.APIException;
-import com.ecom.product.exceptions.ResourceNotFoundException;
+import com.ecom.common.exception.APIException;
+import com.ecom.common.exception.ResourceNotFoundException;
 import com.ecom.product.repository.CategoryRepository;
+import com.ecom.common.service.FileStorageService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -31,10 +29,10 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public CategoryDTO createCategory(CategoryDTO categoryDTO) {
         validateCategoryNameDoesNotExist(categoryDTO.getName());
-        
+
         Category category = modelMapper.map(categoryDTO, Category.class);
         Category savedCategory = categoryRepository.save(category);
-        
+
         return mapToCategoryDTO(savedCategory);
     }
 
@@ -42,9 +40,9 @@ public class CategoryServiceImpl implements CategoryService {
     public CategoryResponse getAllCategories(Integer pageNumber, Integer pageSize, String sortBy, String sortOrder) {
         Pageable pageable = createPageable(pageNumber, pageSize, sortBy, sortOrder);
         Page<Category> categoryPage = categoryRepository.findAll(pageable);
-        
+
         List<CategoryDTO> categoryDTOs = mapToCategoryDTOs(categoryPage.getContent());
-        
+
         return buildCategoryResponse(categoryPage, categoryDTOs);
     }
 
@@ -57,36 +55,35 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public CategoryDTO updateCategory(CategoryDTO categoryDTO, Long categoryId) {
         Category category = findCategoryById(categoryId);
-        
+
         category.setName(categoryDTO.getName());
         Category updatedCategory = categoryRepository.save(category);
-        
+
         return mapToCategoryDTO(updatedCategory);
     }
 
     @Override
     public CategoryDTO deleteCategory(Long categoryId) {
         Category category = findCategoryById(categoryId);
-        
+
         categoryRepository.delete(category);
-        
+
         return mapToCategoryDTO(category);
     }
 
     @Override
     public String updateCategoryImage(Long categoryId, MultipartFile image) {
         Category category = findCategoryById(categoryId);
-        
+
         deleteOldImageIfExists(category);
-        
+
         String imageUrl = fileStorageService.storeFile(image);
         category.setImageUrl(imageUrl);
         categoryRepository.save(category);
-        
+
         return imageUrl;
     }
 
-    // ==================== Private Helper Methods ====================
 
     private Category findCategoryById(Long categoryId) {
         return categoryRepository.findById(categoryId)

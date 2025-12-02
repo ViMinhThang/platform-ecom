@@ -1,14 +1,12 @@
 package com.ecom.user.dtos;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
+import lombok.*;
 import java.util.List;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class UserInfoResponse {
     private Long userId;
     private String username;

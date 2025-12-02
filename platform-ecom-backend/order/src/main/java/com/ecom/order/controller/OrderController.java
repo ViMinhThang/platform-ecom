@@ -1,38 +1,34 @@
 package com.ecom.order.controller;
 
-import com.ecom.order.aspect.RequireRole;
+import com.ecom.common.aspect.RequireRole;
 import com.ecom.order.client.UserServiceClient;
-import com.ecom.order.config.AppConstants;
-import com.ecom.order.config.AuthContext;
+
+import com.ecom.common.security.AuthContext;
+import com.ecom.common.util.APIResponse;
+import com.ecom.common.util.PaginationRequest;
+import com.ecom.common.util.ResponseBuilder;
 import com.ecom.order.dtos.*;
 import com.ecom.order.service.OrderService;
 import com.ecom.order.service.StripeService;
 import com.stripe.exception.StripeException;
 import com.stripe.model.PaymentIntent;
 import jakarta.servlet.http.HttpServletRequest;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController()
 @RequestMapping("/api/orders")
+@RequiredArgsConstructor
 public class OrderController {
 
-    @Autowired
-    private OrderService orderService;
-
-    @Autowired
-    private AuthContext authContext;
-
-    @Autowired
-    private StripeService stripeService;
-
-    @Autowired
-    private UserServiceClient userServiceClient;
+    private final OrderService orderService;
+    private final AuthContext authContext;
+    private final StripeService stripeService;
+    private final UserServiceClient userServiceClient;
 
     @PostMapping("/users/payments/{paymentMethod}")
-    public ResponseEntity<OrderDTO> orderProducts(@PathVariable String paymentMethod,
+    public ResponseEntity<APIResponse<OrderDTO>> orderProducts(@PathVariable String paymentMethod,
             @RequestBody OrderRequestDTO orderRequestDTO,
             HttpServletRequest request) {
         Long userId = authContext.getUserId(request);
@@ -45,96 +41,101 @@ public class OrderController {
                 orderRequestDTO.getPgPaymentId(),
                 orderRequestDTO.getPgStatus(),
                 orderRequestDTO.getPgResponseMessage());
-        return new ResponseEntity<>(order, HttpStatus.CREATED);
+        return ResponseBuilder.createdWithMessage("Order placed successfully", order);
     }
 
     @PostMapping("/stripe-client-secret")
-    public ResponseEntity<String> createStripeClientSecret(@RequestBody StripePaymentDto stripePaymentDto)
+    public ResponseEntity<APIResponse<String>> createStripeClientSecret(@RequestBody StripePaymentDto stripePaymentDto)
             throws StripeException, StripeException {
         System.out.println("StripePaymentDTO Received " + stripePaymentDto);
         PaymentIntent paymentIntent = stripeService.paymentIntent(stripePaymentDto);
-        return new ResponseEntity<>(paymentIntent.getClientSecret(), HttpStatus.CREATED);
+        return ResponseBuilder.createdWithMessage("Stripe client secret created successfully",
+                paymentIntent.getClientSecret());
     }
 
     @GetMapping("/admin/orders")
     @RequireRole("ROLE_ADMIN")
-    public ResponseEntity<OrderResponse> getAllOrders(
-            @RequestParam(name = "pageNumber", defaultValue = AppConstants.PAGE_NUMBER, required = false) Integer pageNumber,
-            @RequestParam(name = "pageSize", defaultValue = AppConstants.PAGE_SIZE, required = false) Integer pageSize,
-            @RequestParam(name = "sortBy", defaultValue = AppConstants.SORT_ORDERS_BY, required = false) String sortBy,
-            @RequestParam(name = "sortOrder", defaultValue = AppConstants.SORT_DIR, required = false) String sortOrder) {
-        OrderResponse orderResponse = orderService.getAllOrders(pageNumber, pageSize, sortBy, sortOrder);
-        return new ResponseEntity<OrderResponse>(orderResponse, HttpStatus.OK);
+    public ResponseEntity<APIResponse<OrderResponse>> getAllOrders(PaginationRequest paginationRequest) {
+        OrderResponse orderResponse = orderService.getAllOrders(
+                paginationRequest.getPageNumber(),
+                paginationRequest.getPageSize(),
+                paginationRequest.getSortBy(),
+                paginationRequest.getSortOrder());
+        return ResponseBuilder.success("Orders retrieved successfully", orderResponse);
     }
 
     @GetMapping("/seller/orders")
     @RequireRole("ROLE_SELLER")
-    public ResponseEntity<OrderResponse> getAllSellerOrders(
-            @RequestParam(name = "pageNumber", defaultValue = AppConstants.PAGE_NUMBER, required = false) Integer pageNumber,
-            @RequestParam(name = "pageSize", defaultValue = AppConstants.PAGE_SIZE, required = false) Integer pageSize,
-            @RequestParam(name = "sortBy", defaultValue = AppConstants.SORT_ORDERS_BY, required = false) String sortBy,
-            @RequestParam(name = "sortOrder", defaultValue = AppConstants.SORT_DIR, required = false) String sortOrder,
+    public ResponseEntity<APIResponse<OrderResponse>> getAllSellerOrders(
+            PaginationRequest paginationRequest,
             HttpServletRequest request) {
         Long userId = authContext.getUserId(request);
-        OrderResponse orderResponse = orderService.getAllSellerOrders(pageNumber, pageSize, sortBy, sortOrder, userId);
-        return new ResponseEntity<OrderResponse>(orderResponse, HttpStatus.OK);
+        OrderResponse orderResponse = orderService.getAllSellerOrders(
+                paginationRequest.getPageNumber(),
+                paginationRequest.getPageSize(),
+                paginationRequest.getSortBy(),
+                paginationRequest.getSortOrder(),
+                userId);
+        return ResponseBuilder.success("Seller orders retrieved successfully", orderResponse);
     }
 
     @PutMapping("/admin/orders/{orderId}/status")
     @RequireRole("ROLE_ADMIN")
-    public ResponseEntity<OrderDTO> updateOrderStatus(@PathVariable Long orderId,
+    public ResponseEntity<APIResponse<OrderDTO>> updateOrderStatus(@PathVariable Long orderId,
             @RequestBody OrderStatusUpdateDTO orderStatusUpdateDto) {
         OrderDTO order = orderService.updateOrder(orderId, orderStatusUpdateDto.getStatus());
-        return new ResponseEntity<OrderDTO>(order, HttpStatus.OK);
+        return ResponseBuilder.success("Order status updated successfully", order);
     }
 
     @PutMapping("/seller/orders/{orderId}/status")
     @RequireRole("ROLE_SELLER")
-    public ResponseEntity<OrderDTO> updateOrderStatusSeller(@PathVariable Long orderId,
+    public ResponseEntity<APIResponse<OrderDTO>> updateOrderStatusSeller(@PathVariable Long orderId,
             @RequestBody OrderStatusUpdateDTO orderStatusUpdateDto) {
         OrderDTO order = orderService.updateOrder(orderId, orderStatusUpdateDto.getStatus());
-        return new ResponseEntity<OrderDTO>(order, HttpStatus.OK);
+        return ResponseBuilder.success("Order status updated successfully", order);
     }
 
     @GetMapping("/count-orders")
-    public ResponseEntity<Long> getOrdersCount() {
+    public ResponseEntity<APIResponse<Long>> getOrdersCount() {
         Long count = orderService.getOrdersCount();
-        return new ResponseEntity<Long>(count, HttpStatus.OK);
+        return ResponseBuilder.success("Orders count retrieved successfully", count);
     }
 
     @GetMapping("/order-revenue")
-    public ResponseEntity<Double> getTotalRevenue() {
+    public ResponseEntity<APIResponse<Double>> getTotalRevenue() {
         Double totalRevenue = orderService.getTotalRevenue();
-        return new ResponseEntity<Double>(totalRevenue, HttpStatus.OK);
+        return ResponseBuilder.success("Total revenue retrieved successfully", totalRevenue);
     }
 
     @GetMapping("/{orderId}")
-    public ResponseEntity<OrderDTO> getOrderById(@PathVariable Long orderId) {
+    public ResponseEntity<APIResponse<OrderDTO>> getOrderById(@PathVariable Long orderId) {
         OrderDTO order = orderService.getOrderById(orderId);
-        return new ResponseEntity<>(order, HttpStatus.OK);
+        return ResponseBuilder.success("Order retrieved successfully", order);
     }
 
     @GetMapping("/user/{email}/verify-purchase")
-    public ResponseEntity<Boolean> verifyPurchase(
+    public ResponseEntity<APIResponse<Boolean>> verifyPurchase(
             @PathVariable String email,
             @RequestParam("productId") Long productId) {
         Boolean hasPurchased = orderService.verifyUserPurchase(email, productId);
-        return ResponseEntity.ok(hasPurchased);
+        return ResponseBuilder.success("Purchase verification retrieved successfully", hasPurchased);
     }
 
     @GetMapping("/user/history")
-    public ResponseEntity<OrderResponse> getUserOrderHistory(
-            @RequestParam(name = "pageNumber", defaultValue = AppConstants.PAGE_NUMBER, required = false) Integer pageNumber,
-            @RequestParam(name = "pageSize", defaultValue = AppConstants.PAGE_SIZE, required = false) Integer pageSize,
-            @RequestParam(name = "sortBy", defaultValue = AppConstants.SORT_ORDERS_BY, required = false) String sortBy,
-            @RequestParam(name = "sortOrder", defaultValue = AppConstants.SORT_DIR, required = false) String sortOrder,
+    public ResponseEntity<APIResponse<OrderResponse>> getUserOrderHistory(
+            PaginationRequest paginationRequest,
             HttpServletRequest request) {
         Long userId = authContext.getUserId(request);
 
         // Get user email from user service
         String email = userServiceClient.getEmailById(userId);
 
-        OrderResponse orderResponse = orderService.getUserOrders(email, pageNumber, pageSize, sortBy, sortOrder);
-        return new ResponseEntity<>(orderResponse, HttpStatus.OK);
+        OrderResponse orderResponse = orderService.getUserOrders(
+                email,
+                paginationRequest.getPageNumber(),
+                paginationRequest.getPageSize(),
+                paginationRequest.getSortBy(),
+                paginationRequest.getSortOrder());
+        return ResponseBuilder.success("User order history retrieved successfully", orderResponse);
     }
 }

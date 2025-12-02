@@ -23,4 +23,6 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
 
     // Find all orders for a specific user (by email) ordered by date descending
     Page<Order> findByEmailOrderByOrderDateDesc(String email, Pageable pageable);
+
+    List<Order> findByEmailAndOrderStatus(String email, String orderStatus);
 }

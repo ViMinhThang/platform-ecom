@@ -3,7 +3,7 @@ package com.ecom.notification.service;
 import com.ecom.notification.client.OrderServiceClient;
 import com.ecom.notification.client.ProductServiceClient;
 import com.ecom.notification.dtos.AnalyticsResponse;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service

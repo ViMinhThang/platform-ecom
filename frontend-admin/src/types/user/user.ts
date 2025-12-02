@@ -4,8 +4,9 @@ export interface User {
   email: string;
   imageUrl: string;
   isActive: string;
-  roles: string[];
+  roles: role[];
 }
+
 export interface UserResponse {
   content: User[];
   pageNumber: number;
@@ -14,11 +15,13 @@ export interface UserResponse {
   totalPages: number;
   lastPage: boolean;
 }
+
 export interface role {
   roleId: number;
   roleName: string;
 }
-export interface UserRow{
+
+export interface UserRow {
   userId: number;
   username: string;
   email: string;

@@ -1,6 +1,5 @@
 package com.ecom.order.dtos;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -26,4 +25,9 @@ public class ProductDTO {
     private Long totalSold;
     private Long totalReviews;
     private Double averageRating;
+    private Long userId;
+    private Integer quantity;
+    private Long variantId;
+    private String variantSku;
+    private String sellerName;
 }

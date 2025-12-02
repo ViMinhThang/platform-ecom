@@ -1,41 +1,38 @@
-import { useState } from 'react';
-import { createReview, CreateReviewPayload } from '@/lib/api/reviews';
+import { useSession } from 'next-auth/react';
 import { toast } from 'sonner';
+import { useAppDispatch, useAppSelector } from '@/lib/store/hooks';
+import { submitReview } from '@/lib/store/slices/reviewSlice';
+import { CreateReviewPayload } from '@/lib/services/review-service';
 
 /**
- * Custom hook for managing product review submission.
+ * Custom hook for managing product review submission with Redux.
  * Handles review creation with loading states and error handling.
  * 
  * @returns Object containing submit handler and loading state
- * 
- * @example
- * const { submitReview, isSubmitting } = useReview();
- * 
- * await submitReview({
- *   productId: 123,
- *   orderId: 456,
- *   rating: 5,
- *   comment: 'Great product!'
- * });
  */
 export function useReview() {
-    const [isSubmitting, setIsSubmitting] = useState(false);
+    const { data: session } = useSession();
+    const dispatch = useAppDispatch();
+    const { submitting: isSubmitting } = useAppSelector(state => state.reviews);
 
-    const submitReview = async (payload: CreateReviewPayload): Promise<void> => {
-        setIsSubmitting(true);
+    const handleSubmitReview = async (payload: CreateReviewPayload): Promise<void> => {
+        const token = session?.accessToken as string;
+        if (!token) {
+            toast.error('You must be logged in to submit a review');
+            return;
+        }
+
         try {
-            await createReview(payload);
+            await dispatch(submitReview({ payload, token })).unwrap();
             toast.success('Review submitted successfully');
         } catch (error: any) {
-            toast.error(error.message || 'Failed to submit review');
+            toast.error(error || 'Failed to submit review');
             throw error;
-        } finally {
-            setIsSubmitting(false);
         }
     };
 
     return {
-        submitReview,
+        submitReview: handleSubmitReview,
         isSubmitting,
     };
 }

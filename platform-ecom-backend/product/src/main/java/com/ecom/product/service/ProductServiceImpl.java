@@ -1,26 +1,18 @@
 package com.ecom.product.service;
 
 import com.ecom.product.dto.*;
-import com.ecom.product.entity.Category;
-import com.ecom.product.entity.Product;
-import com.ecom.product.entity.ProductVariant;
-import com.ecom.product.exceptions.ResourceNotFoundException;
-import com.ecom.product.repository.CategoryRepository;
-import com.ecom.product.repository.ProductRepository;
+import com.ecom.product.entity.*;
+import java.util.*;
+import com.ecom.product.repository.*;
+import org.springframework.data.domain.*;
+import com.ecom.common.exception.ResourceNotFoundException;
 import com.ecom.product.utils.ProductUtils;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -33,6 +25,7 @@ public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
+    private final ProductVariantRepository productVariantRepository;
     private final ModelMapper modelMapper;
 
     @Override
@@ -106,6 +99,13 @@ public class ProductServiceImpl implements ProductService {
         validateProductIsActive(product);
         
         return mapToProductDetailDTO(product);
+    }
+
+    @Override
+    public ProductVariantDTO getVariantById(Long variantId) {
+        ProductVariant variant = productVariantRepository.findById(variantId)
+                .orElseThrow(() -> new ResourceNotFoundException("ProductVariant", "Id", variantId));
+        return modelMapper.map(variant, ProductVariantDTO.class);
     }
 
     // ==================== Private Helper Methods ====================

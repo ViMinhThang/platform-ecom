@@ -3,9 +3,10 @@ package com.ecom.product.service;
 import com.ecom.product.dto.ProductImageDTO;
 import com.ecom.product.entity.Product;
 import com.ecom.product.entity.ProductImage;
-import com.ecom.product.exceptions.ResourceNotFoundException;
+import com.ecom.common.exception.ResourceNotFoundException;
 import com.ecom.product.repository.ProductImageRepository;
 import com.ecom.product.repository.ProductRepository;
+import com.ecom.common.service.FileStorageService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -27,10 +28,10 @@ public class ProductImageServiceImpl implements ProductImageService {
     public ProductImageDTO addImageToProduct(Long productId, MultipartFile image) {
         Product product = findProductById(productId);
         String imageUrl = fileStorageService.storeFile(image);
-        
+
         ProductImage productImage = createProductImage(product, imageUrl);
         ProductImage savedImage = productImageRepository.save(productImage);
-        
+
         return mapToProductImageDTO(savedImage);
     }
 
@@ -53,7 +54,7 @@ public class ProductImageServiceImpl implements ProductImageService {
         if (hasNewImageFile(imageFile)) {
             updateImageFile(image, imageFile);
         }
-        
+
         ProductImage updatedImage = productImageRepository.save(image);
         return mapToProductImageDTO(updatedImage);
     }
@@ -61,12 +62,11 @@ public class ProductImageServiceImpl implements ProductImageService {
     @Override
     public void deleteProductImage(Long productId, Long imageId) {
         ProductImage image = findProductImage(productId, imageId);
-        
+
         fileStorageService.deleteFile(image.getImageUrl());
         productImageRepository.delete(image);
     }
 
-    // ==================== Private Helper Methods ====================
 
     private Product findProductById(Long productId) {
         return productRepository.findById(productId)

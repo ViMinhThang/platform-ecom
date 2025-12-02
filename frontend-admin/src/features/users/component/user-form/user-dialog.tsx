@@ -54,7 +54,7 @@ function transformUserToFormValues(
     imageUrl: user.imageUrl ?? "",
     isActive: String(user.isActive),
     roles: availableRoles
-      .filter((role) => user.roles.includes(role.roleName))
+      .filter((role) => user.roles.some((r) => r.roleName === role.roleName))
       .map((role) => String(role.roleId)),
   };
 }
@@ -70,7 +70,7 @@ function transformFormValuesToUserData(
     ...formValues,
     roles: availableRoles
       .filter((role) => formValues.roles.includes(String(role.roleId)))
-      .map((role) => role.roleName),
+      .map((role) => ({ roleId: role.roleId, roleName: role.roleName })),
   };
 }
 

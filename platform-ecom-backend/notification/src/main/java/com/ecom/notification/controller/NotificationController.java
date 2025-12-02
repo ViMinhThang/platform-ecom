@@ -1,7 +1,7 @@
 package com.ecom.notification.controller;
 
 
-import com.ecom.notification.aspect.RequireRole;
+import com.ecom.common.aspect.RequireRole;
 import com.ecom.notification.dtos.AnalyticsResponse;
 import com.ecom.notification.service.AnalyticsService;
 import org.springframework.beans.factory.annotation.Autowired;

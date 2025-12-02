@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { getPublicProductWithVariants } from "@/lib/api/products";
+import { getPublicProductWithVariants } from "@/lib/services/product-service";
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import { Star } from "lucide-react";

@@ -11,6 +11,7 @@ import lombok.ToString;
 @Table(name = "cart_items")
 @NoArgsConstructor
 @AllArgsConstructor
+
 public class CartItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,4 +28,7 @@ public class CartItem {
     private Integer quantity;
     private double discount;
     private double productPrice;
+    
+    @Column(name = "variant_id")
+    private Long variantId;
 }

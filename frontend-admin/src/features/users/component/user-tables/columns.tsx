@@ -67,8 +67,8 @@ export const columns: ColumnDef<UserRow>[] = [
       <DataTableColumnHeader column={column} title="Status" />
     ),
     cell: ({ cell }) => {
-      const isActive = cell.getValue<boolean>();
-      return isActive ? (
+      const isActive = cell.getValue<string>();
+      return isActive === "true" ? (
         <Badge variant="default" className="flex items-center gap-1">
           <CheckCircle2 size={16} />
           Active

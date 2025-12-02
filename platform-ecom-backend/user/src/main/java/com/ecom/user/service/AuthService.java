@@ -6,7 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
 
 public interface AuthService {
-    ResponseEntity<MessageResponse> register(@Valid SignupRequest signUpRequest);
+    void register(@Valid SignupRequest signUpRequest);
 
     UserResponse getAllUsers(Integer pageNumber, Integer pageSize, String sortBy, String sortOrder);
 

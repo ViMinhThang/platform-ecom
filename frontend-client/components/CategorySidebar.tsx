@@ -1,14 +1,13 @@
 import Link from "next/link"
 import { ChevronRight } from "lucide-react"
-import { getCategories } from "@/lib/api/products"
+import { getCategories } from "@/lib/services/product-service"
 import type { Category } from "@/types/product"
 
 export async function CategorySidebar() {
   let categories: Category[] = [];
-  
+
   try {
-    const data = await getCategories({ pageSize: 15 });
-    categories = data.content;
+    categories = await getCategories();
   } catch (error) {
     console.error('Failed to fetch categories:', error);
   }

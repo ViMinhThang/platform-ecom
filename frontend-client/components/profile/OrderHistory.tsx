@@ -1,8 +1,8 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useSession } from 'next-auth/react';
 import { Order } from '@/types/user';
-import { getUserOrders } from '@/lib/api/profile';
 import { useBuyAgain } from '@/hooks/useBuyAgain';
 import { OrderCard } from './OrderCard';
 import { ReviewDialog } from './ReviewDialog';
@@ -11,21 +11,17 @@ import { EmptyState } from '@/components/common/EmptyState';
 import { Pagination } from '@/components/common/Pagination';
 import { Package } from 'lucide-react';
 import { toast } from 'sonner';
+import { useAppDispatch, useAppSelector } from '@/lib/store/hooks';
+import { fetchUserOrders } from '@/lib/store/slices/orderSlice';
 
 /**
  * Component for displaying user order history in card layout.
- * Refactored from table to cards for better UX and direct item actions.
+ * Refactored to use Redux with NextAuth session token.
  */
 export function OrderHistory() {
-    const [orders, setOrders] = useState<Order[]>([]);
-    const [loading, setLoading] = useState(true);
-    const [pagination, setPagination] = useState({
-        pageNumber: 0,
-        pageSize: 10,
-        totalElements: 0,
-        totalPages: 0,
-        lastPage: true,
-    });
+    const dispatch = useAppDispatch();
+    const { data: session } = useSession();
+    const { orders, pagination, loading } = useAppSelector((state) => state.orders);
 
     // Review dialog state
     const [reviewDialogOpen, setReviewDialogOpen] = useState(false);
@@ -34,32 +30,20 @@ export function OrderHistory() {
 
     const { buyAgain } = useBuyAgain();
 
-    const fetchOrders = async (page: number) => {
-        setLoading(true);
-        try {
-            const data = await getUserOrders(page, pagination.pageSize);
-            setOrders(data.content);
-            setPagination({
-                pageNumber: data.pageNumber,
-                pageSize: data.pageSize,
-                totalElements: data.totalElements,
-                totalPages: data.totalPages,
-                lastPage: data.lastPage,
-            });
-        } catch (error) {
-            toast.error('Failed to load order history');
-        } finally {
-            setLoading(false);
-        }
-    };
-
+    // Initial fetch
     useEffect(() => {
-        fetchOrders(0);
-    }, []);
+        if (session?.accessToken && orders.length === 0 && !loading) {
+            dispatch(fetchUserOrders({ token: session.accessToken as string }));
+        }
+    }, [dispatch, session, orders.length, loading]);
 
     const handlePageChange = (newPage: number) => {
-        if (newPage >= 0 && newPage < pagination.totalPages) {
-            fetchOrders(newPage);
+        if (newPage >= 0 && newPage < pagination.totalPages && session?.accessToken) {
+            dispatch(fetchUserOrders({
+                token: session.accessToken as string,
+                pageNumber: newPage,
+                pageSize: pagination.pageSize
+            }));
         }
     };
 
@@ -74,7 +58,6 @@ export function OrderHistory() {
     };
 
     const handleReviewSuccess = () => {
-        // Optionally refresh orders or update UI
         toast.success('Thank you for your review!');
     };
 

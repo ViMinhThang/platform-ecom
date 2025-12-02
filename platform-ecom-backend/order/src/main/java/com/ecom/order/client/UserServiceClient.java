@@ -15,4 +15,7 @@ public interface UserServiceClient {
 
     @GetExchange("/auth/get-email-by-user-id/{userId}")
     String getEmailById(@PathVariable("userId") Long userId);
+
+    @GetExchange("/auth/{userId}")
+    org.springframework.http.ResponseEntity<com.ecom.common.util.APIResponse<com.ecom.order.dtos.UserInfoResponse>> getUserInfo(@PathVariable("userId") Long userId);
 }
