@@ -59,7 +59,10 @@ public class GlobalExceptionHandler {
         log.error("Unexpected error occurred", ex);
         return buildErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, "An unexpected error occurred. Please try again later.", request);
     }
-
+    @ExceptionHandler(UnauthorizedException.class)
+    public ResponseEntity<ErrorResponse> handleUnauthorizedException(APIException ex, WebRequest request) {
+        return buildErrorResponse(ex.getStatus(), ex.getMessage(), request);
+    }
     private ResponseEntity<ErrorResponse> buildErrorResponse(HttpStatus status, String message, WebRequest request) {
         log.error("Exception handled: {} - Status: {}", message, status);
 

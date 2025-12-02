@@ -1,5 +1,6 @@
 package com.ecom.user.controller;
 
+import com.ecom.common.aspect.RequireRole;
 import com.ecom.common.security.AuthContext;
 import com.ecom.common.util.APIResponse;
 import com.ecom.common.util.ResponseBuilder;
@@ -17,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/addresses")
+@RequestMapping("/api/v1/users/addresses")
 @RequiredArgsConstructor
 public class AddressController {
 
@@ -25,48 +26,76 @@ public class AddressController {
     private final UserRepository userRepository;
     private final AuthContext authContext;
 
-    @PostMapping("")
-    public ResponseEntity<APIResponse<AddressDTO>> createAddress(@Valid @RequestBody AddressDTO addressDTO,
-            HttpServletRequest request) {
-        Long userId = authContext.getUserId(request);
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new ResourceNotFoundException("User", "UserId", userId));
 
-        AddressDTO savedAddressDTO = addressService.createAddress(addressDTO, user);
+    /**
+     * POST /api/v1/users/addresses
+     * Create a new address for the authenticated user
+     * */
+    @PostMapping()
+    @RequireRole("ROLE_USER")
+    public ResponseEntity<APIResponse<AddressDTO>> createAddress(@Valid @RequestBody AddressDTO addressDTO,
+                                                                 HttpServletRequest request) {
+        Long userId = authContext.getUserId(request);
+
+
+        AddressDTO savedAddressDTO = addressService.createAddress(addressDTO, userId);
         return ResponseBuilder.createdWithMessage("Address created successfully", savedAddressDTO);
     }
 
-    @GetMapping("")
-    public ResponseEntity<APIResponse<List<AddressDTO>>> getAddresses() {
-        List<AddressDTO> addressList = addressService.getAddresses();
-        return ResponseBuilder.success("Addresses retrieved successfully", addressList);
-    }
 
+    /**
+     * GET /api/v1/users/addresses
+     * Get all addresses for the authenticated user
+     */
     @GetMapping("/user")
-    public ResponseEntity<APIResponse<List<AddressDTO>>> getUserAddresses(HttpServletRequest request) {
+    public ResponseEntity<APIResponse<List<AddressDTO>>> getMyAddresses(HttpServletRequest request) {
         Long userId = authContext.getUserId(request);
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new ResourceNotFoundException("User", "UserId", userId));
-        List<AddressDTO> addressList = addressService.getUserAddresses(user);
+
+        List<AddressDTO> addressList = addressService.getUserAddresses(userId);
         return ResponseBuilder.success("User addresses retrieved successfully", addressList);
     }
 
+    /**
+     * GET /api/v1/users/addresses/{addressId}
+     * Get a specific address by ID (only if it belongs to the authenticated user)
+     */
     @GetMapping("/{addressId}")
-    public ResponseEntity<APIResponse<AddressDTO>> getAddressById(@PathVariable Long addressId) {
-        AddressDTO addressDTO = addressService.getAddressesById(addressId);
+    public ResponseEntity<APIResponse<AddressDTO>> getAddressById(
+            @PathVariable Long addressId,
+            HttpServletRequest request) {
+        Long userId = authContext.getUserId(request);
+
+        AddressDTO addressDTO = addressService.getAddressById(addressId, userId);
         return ResponseBuilder.success("Address retrieved successfully", addressDTO);
     }
 
+    /**
+     * PUT /api/v1/users/addresses/{addressId}
+     * Update an existing address (only if it belongs to the authenticated user)
+     */
     @PutMapping("/{addressId}")
-    public ResponseEntity<APIResponse<AddressDTO>> updateAddress(@PathVariable Long addressId,
-            @RequestBody AddressDTO addressDTO) {
-        AddressDTO updatedAddress = addressService.updateAddress(addressId, addressDTO);
+    public ResponseEntity<APIResponse<AddressDTO>> updateAddress(
+            @PathVariable Long addressId,
+            @Valid @RequestBody AddressDTO addressDTO,
+            HttpServletRequest request) {
+        Long userId = authContext.getUserId(request);
+
+        // Update and verify ownership
+        AddressDTO updatedAddress = addressService.updateAddress(addressId, addressDTO, userId);
         return ResponseBuilder.success("Address updated successfully", updatedAddress);
     }
 
+    /**
+     * DELETE /api/v1/users/addresses/{addressId}
+     * Delete an address (only if it belongs to the authenticated user)
+     */
     @DeleteMapping("/{addressId}")
-    public ResponseEntity<APIResponse<String>> deleteAddress(@PathVariable Long addressId) {
-        String status = addressService.deleteAddress(addressId);
+    public ResponseEntity<APIResponse<String>> deleteAddress(
+            @PathVariable Long addressId,
+            HttpServletRequest request) {
+        Long userId = authContext.getUserId(request);
+
+        String status = addressService.deleteAddress(addressId, userId);
         return ResponseBuilder.success("Address deleted successfully", status);
     }
 

@@ -1,4 +1,158 @@
 package com.ecom.user.service;
 
-public class AdminUserServiceImple {
+import com.ecom.common.exception.APIException;
+import com.ecom.common.exception.ResourceNotFoundException;
+import com.ecom.common.exception.UserAlreadyExistsException;
+import com.ecom.user.dtos.RoleDTO;
+import com.ecom.user.dtos.UserDTO;
+import com.ecom.user.dtos.UserInfoResponse;
+import com.ecom.user.dtos.UserResponse;
+import com.ecom.user.entity.AppRole;
+import com.ecom.user.entity.Role;
+import com.ecom.user.entity.User;
+import com.ecom.user.repositories.RoleRepository;
+import com.ecom.user.repositories.UserRepository;
+import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+@Service
+@RequiredArgsConstructor
+public class AdminUserServiceImpl implements AdminUserService {
+
+    private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
+    private final ModelMapper modelMapper;
+    private final PasswordEncoder encoder;
+    private final RoleService roleService;
+
+    @Override
+    public UserResponse getAllUsers(Pageable pageable) {
+        Page<User> userPage = userRepository.findAll(pageable);
+        List<UserDTO> userDTOS = userPage.getContent().stream()
+                .map(user -> modelMapper.map(user, UserDTO.class)).toList();
+
+        return UserResponse.builder()
+                .content(userDTOS)
+                .pageNumber(userPage.getNumber())
+                .pageSize(userPage.getSize())
+                .totalElements(userPage.getTotalElements())
+                .totalPages(userPage.getTotalPages())
+                .lastPage(userPage.isLast())
+                .build();
+    }
+
+    @Override
+    @Transactional
+    public UserDTO createUserByAdmin(UserDTO userDTO) {
+        checkEmailAndUsernameExists(userDTO.getEmail(), userDTO.getUsername());
+
+        User user = modelMapper.map(userDTO, User.class);
+
+        user.setPassword(encoder.encode("12345678"));
+
+        // Default role if not provided or handle roles from DTO
+        if (userDTO.getRoles() != null && !userDTO.getRoles().isEmpty()) {
+            Set<Role> roles = userDTO.getRoles().stream()
+                    .map(r -> roleService.getRole(r.getRoleName()))
+                    .collect(Collectors.toSet());
+            user.setRoles(roles);
+        } else {
+            Role userRole = roleService.getRole(AppRole.ROLE_USER);
+            user.setRoles(Set.of(userRole));
+        }
+
+        userRepository.save(user);
+        return modelMapper.map(user, UserDTO.class);
+    }
+
+    @Override
+    @Transactional
+    public UserDTO updateUserByAdmin(Long userId, UserDTO userDTO) {
+        User user = getUserByUserIdFromDatabase(userId);
+
+        // Validate unique data
+        validateUniqueData(user.getUserId(), userDTO.getEmail(), userDTO.getUsername());
+
+        // Update fields
+        user.setEmail(userDTO.getEmail());
+        user.setUserName(userDTO.getUsername());
+        user.setIsActive(userDTO.getIsActive());
+
+        if (userDTO.getImageUrl() != null) {
+            user.setImageUrl(userDTO.getImageUrl());
+        }
+
+        // Update Roles
+        if (userDTO.getRoles() != null && !userDTO.getRoles().isEmpty()) {
+            Set<Role> roles = userDTO.getRoles().stream()
+                    .map(r -> roleService.getRole(r.getRoleName()))
+                    .collect(Collectors.toSet());
+            user.setRoles(roles);
+        }
+
+        User updatedUser = userRepository.save(user);
+        return modelMapper.map(updatedUser, UserDTO.class);
+    }
+
+    @Override
+    @Transactional
+    public void deleteUser(Long userId) {
+        User user = getUserByUserIdFromDatabase(userId);
+        userRepository.delete(user);
+    }
+
+    @Override
+    public UserInfoResponse getUserById(Long userId) {
+        return mapUserToUserInfoResponse(getUserByUserIdFromDatabase(userId));
+    }
+
+    private User getUserByUserIdFromDatabase(Long userId) {
+        return userRepository.findById(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("User", "UserId", userId));
+    }
+
+    private void checkEmailAndUsernameExists(String email, String username) {
+        if (userRepository.existsByUserName(username)) {
+            throw new UserAlreadyExistsException("Error: Username is already taken!");
+        }
+        if (userRepository.existsByEmail(email)) {
+            throw new UserAlreadyExistsException("Error: Email is already in use");
+        }
+    }
+
+    private void validateUniqueData(Long currentUserId, String newEmail, String newUsername) {
+        User currentUser = getUserByUserIdFromDatabase(currentUserId);
+
+        if (!currentUser.getUserName().equals(newUsername) && userRepository.existsByUserName(newUsername)) {
+            throw new APIException("Username is already taken!");
+        }
+
+        if (!currentUser.getEmail().equals(newEmail) && userRepository.existsByEmail(newEmail)) {
+            throw new APIException("Email is already in use!");
+        }
+    }
+
+    private UserInfoResponse mapUserToUserInfoResponse(User user) {
+        List<String> roles = user.getRoles().stream()
+                .map(role -> role.getRoleName().toString())
+                .toList();
+
+        return UserInfoResponse.builder()
+                .userId(user.getUserId())
+                .username(user.getUserName())
+                .email(user.getEmail())
+                .imageUrl(user.getImageUrl())
+                .isActive(user.getIsActive())
+                .roles(roles)
+                .build();
+    }
 }

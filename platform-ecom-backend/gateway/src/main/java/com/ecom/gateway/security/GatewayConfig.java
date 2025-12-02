@@ -15,16 +15,21 @@ import reactor.core.publisher.Mono;
 import java.util.List;
 import java.util.Objects;
 
-
 @Configuration
 public class GatewayConfig {
-    @Bean
-    public RedisRateLimiter redisRateLimiter() {
-        return new RedisRateLimiter(10, 20, 1);
-    }
 
     @Autowired
     private AuthenticationFilter authFilter;
+
+    @Bean
+    public RedisRateLimiter publicRateLimiter() {
+        return new RedisRateLimiter(10, 20, 1);
+    }
+
+    @Bean
+    public RedisRateLimiter authenticatedRateLimiter() {
+        return new RedisRateLimiter(50, 100, 1);
+    }
 
     @Bean
     public KeyResolver hostNameKeyResolver() {
@@ -46,58 +51,207 @@ public class GatewayConfig {
         return new CorsWebFilter(source);
     }
 
-
     @Bean
     public RouteLocator customRouteLocator(RouteLocatorBuilder builder) {
         return builder.routes()
-                // ---------------- PRODUCT SERVICE ----------------
-                .route("product-public", r -> r.path("/api/products/public/**")
-                        .uri("lb://product-service"))
-                .route("product-images", r -> r.path("/products/images/**")
-                        .uri("lb://product-service"))
-                .route("product-admin", r -> r.path("/api/products/admin/**")
-                        .filters(f -> f.filter(authFilter))
-                        .uri("lb://product-service"))
-                .route("product-category-public", r -> r.path("/api/categories/public/**")
-                        .uri("lb://product-service"))
-                .route("product-category", r -> r.path("/api/categories/**")
-                        .filters(f -> f.filter(authFilter))
-                        .uri("lb://product-service"))
-                .route("product-image", r -> r.path("/api/product-image/**")
-                        .filters(f -> f.filter(authFilter))
-                        .uri("lb://product-service"))
-                .route("product-seller", r -> r.path("/api/products/seller/**")
-                        .filters(f -> f.filter(authFilter))
-                        .uri("lb://product-service"))
-                .route("user-service", r -> r.path("/api/auth/login")
+                // ============================================================
+                // AUTHENTICATION & USER SERVICE - /api/v1/auth
+                // ============================================================
+                // Public authentication endpoints
+                .route("auth-login", r -> r
+                        .path("/api/v1/auth/login")
+                        .filters(f -> f.requestRateLimiter(c -> c.setRateLimiter(publicRateLimiter())))
                         .uri("lb://user-service"))
-                .route("user-service", r -> r.path("/api/auth/signup")
+
+                .route("auth-signup", r -> r
+                        .path("/api/v1/auth/signup")
+                        .filters(f -> f.requestRateLimiter(c -> c.setRateLimiter(publicRateLimiter())))
                         .uri("lb://user-service"))
-                .route("user-service", r -> r.path("/api/auth/**").filters(f -> f.filter(authFilter))
+
+                .route("auth-refresh", r -> r
+                        .path("/api/v1/auth/refresh")
+                        .filters(f -> f.requestRateLimiter(c -> c.setRateLimiter(publicRateLimiter())))
                         .uri("lb://user-service"))
-                .route("user-addresses-private", r -> r.path(
-                                "/api/addresses/user","/api/addresses/**"
-                        )
-                        .filters(f -> f.filter(authFilter))
+
+                .route("auth-forgot-password", r -> r
+                        .path("/api/v1/auth/forgot-password", "/api/v1/auth/reset-password")
+                        .filters(f -> f.requestRateLimiter(c -> c.setRateLimiter(publicRateLimiter())))
                         .uri("lb://user-service"))
-                .route("notification-service", r -> r
-                        .path("/api/notification/**")
-                        .filters(f -> f.filter(authFilter))
-                        .uri("lb://NOTIFICATION-SERVICE"))
-                .route("order-service", r -> r
-                        .path("/api/orders/**", "/api/carts/**")
-                        .filters(f -> f.filter(authFilter))
-                        .uri("lb://ORDER-SERVICE"))
-                .route("review-service", r -> r.path("/api/reviews/public/**")
-                        .uri("lb://REVIEW-SERVICE"))
-                .route("review-service", r -> r.path("/api/reviews/**")
-                        .filters(f -> f.filter(authFilter))
-                        .uri("lb://REVIEW-SERVICE"))
-                .route("eureka-server", r -> r
-                        .path("/eureka/main")
-                        .filters(f -> f.rewritePath("/eureka/main", "/"))
+
+                .route("auth-protected", r -> r
+                        .path("/api/v1/auth/logout", "/api/v1/auth/change-password", "/api/v1/auth/profile","/api/v1/auth/profile")
+                        .filters(f -> f
+                                .filter(authFilter)
+                                .requestRateLimiter(c -> c.setRateLimiter(authenticatedRateLimiter())))
+                        .uri("lb://user-service"))
+
+                // ============================================================
+                // USER PROFILE & ADDRESSES - /api/v1/users
+                // ============================================================
+
+                .route("user-profile", r -> r
+                        .path("/api/v1/users/me", "/api/v1/users/me/**")
+                        .filters(f -> f
+                                .filter(authFilter)
+                                .requestRateLimiter(c -> c.setRateLimiter(authenticatedRateLimiter())))
+                        .uri("lb://user-service"))
+
+                .route("user-addresses", r -> r
+                        .path("/api/v1/users/addresses", "/api/v1/users/addresses/**")
+                        .filters(f -> f
+                                .filter(authFilter)
+                                .requestRateLimiter(c -> c.setRateLimiter(authenticatedRateLimiter())))
+                        .uri("lb://user-service"))
+
+                // Admin user management
+                .route("admin-users", r -> r
+                        .path("/api/v1/admin/users/**")
+                        .filters(f -> f
+                                .filter(authFilter)
+                                .requestRateLimiter(c -> c.setRateLimiter(authenticatedRateLimiter())))
+                        .uri("lb://user-service"))
+
+                // ============================================================
+                // PRODUCT CATALOG - /api/v1/products
+                // ============================================================
+
+                // Public product endpoints
+                .route("products-public", r -> r
+                        .path("/api/v1/products", "/api/v1/products/{id}", "/api/v1/products/{id}/details")
+                        .filters(f -> f.requestRateLimiter(c -> c.setRateLimiter(publicRateLimiter())))
+                        .uri("lb://product-service"))
+
+                .route("products-search", r -> r
+                        .path("/api/v1/products/search")
+                        .filters(f -> f.requestRateLimiter(c -> c.setRateLimiter(publicRateLimiter())))
+                        .uri("lb://product-service"))
+
+                // Product images (public access)
+                .route("product-images", r -> r
+                        .path("/api/v1/products/images/**")
+                        .filters(f -> f.requestRateLimiter(c -> c.setRateLimiter(publicRateLimiter())))
+                        .uri("lb://product-service"))
+
+                // Seller product management
+                .route("seller-products", r -> r
+                        .path("/api/v1/sellers/products", "/api/v1/sellers/products/**")
+                        .filters(f -> f
+                                .filter(authFilter)
+                                .requestRateLimiter(c -> c.setRateLimiter(authenticatedRateLimiter())))
+                        .uri("lb://product-service"))
+
+                // Admin product management
+                .route("admin-products", r -> r
+                        .path("/api/v1/admin/products/**")
+                        .filters(f -> f
+                                .filter(authFilter)
+                                .requestRateLimiter(c -> c.setRateLimiter(authenticatedRateLimiter())))
+                        .uri("lb://product-service"))
+
+                // ============================================================
+                // CATEGORIES - /api/v1/categories
+                // ============================================================
+
+                // Public categories
+                .route("categories-public", r -> r
+                        .path("/api/v1/categories", "/api/v1/categories/{id}")
+                        .filters(f -> f.requestRateLimiter(c -> c.setRateLimiter(publicRateLimiter())))
+                        .uri("lb://product-service"))
+
+                // Admin category management
+                .route("admin-categories", r -> r
+                        .path("/api/v1/admin/categories/**")
+                        .filters(f -> f
+                                .filter(authFilter)
+                                .requestRateLimiter(c -> c.setRateLimiter(authenticatedRateLimiter())))
+                        .uri("lb://product-service"))
+
+                // ============================================================
+                // SHOPPING CART - /api/v1/cart
+                // ============================================================
+
+                .route("shopping-cart", r -> r
+                        .path("/api/v1/cart", "/api/v1/cart/**")
+                        .filters(f -> f
+                                .filter(authFilter)
+                                .requestRateLimiter(c -> c.setRateLimiter(authenticatedRateLimiter())))
+                        .uri("lb://order-service"))
+
+                // ============================================================
+                // ORDERS - /api/v1/orders
+                // ============================================================
+
+                // Customer orders
+                .route("customer-orders", r -> r
+                        .path("/api/v1/orders", "/api/v1/orders/{id}", "/api/v1/orders/{id}/cancel")
+                        .filters(f -> f
+                                .filter(authFilter)
+                                .requestRateLimiter(c -> c.setRateLimiter(authenticatedRateLimiter())))
+                        .uri("lb://order-service"))
+
+                // Seller order management
+                .route("seller-orders", r -> r
+                        .path("/api/v1/sellers/orders", "/api/v1/sellers/orders/**")
+                        .filters(f -> f
+                                .filter(authFilter)
+                                .requestRateLimiter(c -> c.setRateLimiter(authenticatedRateLimiter())))
+                        .uri("lb://order-service"))
+
+                // Admin order management
+                .route("admin-orders", r -> r
+                        .path("/api/v1/admin/orders/**")
+                        .filters(f -> f
+                                .filter(authFilter)
+                                .requestRateLimiter(c -> c.setRateLimiter(authenticatedRateLimiter())))
+                        .uri("lb://order-service"))
+
+                // ============================================================
+                // REVIEWS - /api/v1/reviews
+                // ============================================================
+
+                // Public reviews (read-only)
+                .route("reviews-public", r -> r
+                        .path("/api/v1/products/{productId}/reviews")
+                        .filters(f -> f.requestRateLimiter(c -> c.setRateLimiter(publicRateLimiter())))
+                        .uri("lb://review-service"))
+
+                // Authenticated review actions (create, update, delete)
+                .route("reviews-authenticated", r -> r
+                        .path("/api/v1/reviews", "/api/v1/reviews/**")
+                        .filters(f -> f
+                                .filter(authFilter)
+                                .requestRateLimiter(c -> c.setRateLimiter(authenticatedRateLimiter())))
+                        .uri("lb://review-service"))
+
+                // Admin review moderation
+                .route("admin-reviews", r -> r
+                        .path("/api/v1/admin/reviews/**")
+                        .filters(f -> f
+                                .filter(authFilter)
+                                .requestRateLimiter(c -> c.setRateLimiter(authenticatedRateLimiter())))
+                        .uri("lb://review-service"))
+
+                // ============================================================
+                // NOTIFICATIONS - /api/v1/notifications
+                // ============================================================
+
+                .route("notifications", r -> r
+                        .path("/api/v1/notifications", "/api/v1/notifications/**")
+                        .filters(f -> f
+                                .filter(authFilter)
+                                .requestRateLimiter(c -> c.setRateLimiter(authenticatedRateLimiter())))
+                        .uri("lb://notification-service"))
+
+                // ============================================================
+                // SERVICE DISCOVERY (Internal/Admin only)
+                // ============================================================
+
+                .route("eureka-web", r -> r
+                        .path("/eureka/web")
+                        .filters(f -> f.rewritePath("/eureka/web", "/"))
                         .uri("http://localhost:8761"))
-                .route("eureka-server-static", r -> r
+
+                .route("eureka-static", r -> r
                         .path("/eureka/**")
                         .uri("http://localhost:8761"))
 

@@ -5,6 +5,7 @@ import com.ecom.common.security.AuthContext;
 import com.ecom.common.util.*;
 import com.ecom.user.dtos.*;
 import com.ecom.user.service.AuthService;
+import com.ecom.user.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -15,96 +16,103 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 @RestController
-@RequestMapping("/api/auth")
+@RequestMapping("/api/v1")
 @RequiredArgsConstructor
 public class UserController {
 
     private final AuthService authService;
+    private final UserService userService;
     private final AuthContext authContext;
 
-    @GetMapping
-    // @RequireRole("ROLE_SELLER")
-    public ResponseEntity<APIResponse<UserResponse>> getAllUsers(PaginationRequest paginationRequest) {
-        UserResponse userResponse = authService.getAllUsers(
-                paginationRequest.getPageNumber(),
-                paginationRequest.getPageSize(),
-                paginationRequest.getSortBy(),
-                paginationRequest.getSortOrder());
-        return ResponseBuilder.success("Users retrieved successfully", userResponse);
-    }
-
-    @PostMapping
-    public ResponseEntity<APIResponse<UserDTO>> createUser(@RequestBody UserDTO userDTO) {
-        UserDTO savedUser = authService.createUser(userDTO);
-        return ResponseBuilder.createdWithMessage("User created successfully", savedUser);
-    }
-
-    @PostMapping("/login")
+    /**
+     * POST /api/v1/auth/login
+     * Public endpoint for user authentication
+     */
+    @PostMapping("/auth/login")
     public ResponseEntity<APIResponse<AuthenticationResult>> authenticateUser(@RequestBody LoginRequest loginRequest) {
         AuthenticationResult result = authService.login(loginRequest);
         APIResponse<AuthenticationResult> response = new APIResponse<>("Login successful", true, result);
-        return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, result.getJwtCookie().toString()).body(response);
+        return ResponseEntity.ok()
+                .header(HttpHeaders.SET_COOKIE, result.getJwtCookie().toString())
+                .body(response);
     }
 
-    @PostMapping("/signup")
+    /**
+     * POST /api/v1/auth/signup
+     * Public endpoint for user registration
+     */
+    @PostMapping("/auth/signup")
     public ResponseEntity<MessageResponse> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
-         authService.register(signUpRequest);
-         return new ResponseEntity<MessageResponse>(new MessageResponse("Register successfully"), HttpStatus.OK);
+        authService.register(signUpRequest);
+        return new ResponseEntity<>(new MessageResponse("Register successfully"), HttpStatus.OK);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<APIResponse<UserInfoResponse>> getUserInfo(@PathVariable("id") String userId) {
-        UserInfoResponse result = authService.getUserById(userId);
-        return ResponseBuilder.success("User info retrieved successfully", result);
+    /**
+     * POST /api/v1/auth/logout
+     * Protected endpoint for user logout
+     */
+    @PostMapping("/auth/logout")
+    @RequireRole("ROLE_USER")
+    public ResponseEntity<MessageResponse> logout(HttpServletRequest request) {
+        // Implement logout logic (clear cookie, invalidate token, etc.)
+        return ResponseEntity.ok(new MessageResponse("Logout successful"));
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<APIResponse<UserDTO>> updateUserByAdmin(@PathVariable("id") Long userId,
-            @RequestBody UserDTO userDTO) {
-        UserDTO savedUser = authService.updateUserByAdmin(userId, userDTO);
-        return ResponseBuilder.success("User updated successfully", savedUser);
+    /**
+     * GET /api/v1/auth/profile
+     * Protected endpoint to get current user profile
+     */
+    @GetMapping("/auth/profile")
+    @RequireRole("ROLE_USER")
+    public ResponseEntity<APIResponse<UserInfoResponse>> getCurrentUserProfile(HttpServletRequest request) {
+        Long userId = authContext.getUserId(request);
+        UserInfoResponse result = userService.getMyProfile(userId);
+        return ResponseBuilder.success("User profile retrieved successfully", result);
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<APIResponse<UserDTO>> deleteUserById(@PathVariable("id") Long userId) {
-        UserDTO deletedUser = authService.deleteUser(userId);
-        return ResponseBuilder.success("User deleted successfully", deletedUser);
-    }
-
-    @PutMapping("/{id}/image")
-    public ResponseEntity<APIResponse<String>> uploadUserImage(@PathVariable("id") Long userId,
-            @RequestParam("file") MultipartFile image) {
-        String imageUrl = authService.uploadUserImage(userId, image);
-        return ResponseBuilder.success("User image uploaded successfully", imageUrl);
-    }
-
-    @GetMapping("/validate")
+    @GetMapping("/auth/validate")
     public ResponseEntity<APIResponse<UserInfoResponse>> validateToken(@CookieValue("ecom") String jwtToken) {
         UserInfoResponse response = authService.validate(jwtToken);
         return ResponseBuilder.success("Token validated successfully", response);
     }
 
-    @GetMapping("/get-email-by-user-id/{userId}")
-    public ResponseEntity<APIResponse<String>> getEmailByUserId(@PathVariable Long userId) {
-        UserInfoResponse user = authService.getUserById(String.valueOf(userId));
-        return ResponseBuilder.success("Email retrieved successfully", user.getEmail());
+    /**
+     * GET /api/v1/users/me
+     * Get current authenticated user's information
+     */
+    @GetMapping("/users/me")
+    @RequireRole("ROLE_USER")
+    public ResponseEntity<APIResponse<UserInfoResponse>> getMyInfo(HttpServletRequest request) {
+        Long userId = authContext.getUserId(request);
+        UserInfoResponse result = userService.getMyProfile(userId);
+        return ResponseBuilder.success("User info retrieved successfully", result);
     }
 
-    @PutMapping("/update-info")
+    /**
+     * PUT /api/v1/users/me
+     * Update current authenticated user's information
+     */
+    @PutMapping("/users/me")
     @RequireRole("ROLE_USER")
-    public ResponseEntity<APIResponse<UserInfoResponse>> updateUserInfo(
+    public ResponseEntity<APIResponse<UserInfoResponse>> updateMyInfo(
             @RequestBody UpdateUserRequest updateUserRequest,
             HttpServletRequest request) {
         Long userId = authContext.getUserId(request);
-        UserInfoResponse user = authService.updateUserById(updateUserRequest, userId);
+        UserInfoResponse user = userService.updateMyProfile(userId, updateUserRequest);
         return ResponseBuilder.success("User info updated successfully", user);
     }
 
-    @GetMapping("/roles")
-    // @RequireRole("ROLE_SELLER")
-    public ResponseEntity<APIResponse<RoleResponse>> getAllRoles() {
-        RoleResponse roleResponse = authService.getAllRoles();
-        return ResponseBuilder.success("Roles retrieved successfully", roleResponse);
+    /**
+     * PUT /api/v1/users/me/image
+     * Upload profile image for current user
+     */
+    @PutMapping("/users/me/image")
+    @RequireRole("ROLE_USER")
+    public ResponseEntity<APIResponse<String>> uploadMyImage(
+            @RequestParam("file") MultipartFile image,
+            HttpServletRequest request) {
+        Long userId = authContext.getUserId(request);
+        String imageUrl = userService.uploadMyAvatar(userId, image);
+        return ResponseBuilder.success("User image uploaded successfully", imageUrl);
     }
-
 }

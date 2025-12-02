@@ -1,5 +1,6 @@
 package com.ecom.user.service;
 
+import com.ecom.common.exception.UnauthorizedException;
 import com.ecom.user.dtos.AddressDTO;
 import com.ecom.user.entity.Address;
 import com.ecom.user.entity.User;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class AddressServiceImpl implements AddressService {
@@ -33,17 +35,20 @@ public class AddressServiceImpl implements AddressService {
                 .toList();
     }
 
-    @Override
-    public List<AddressDTO> getUserAddresses(User user) {
-        return user.getAddresses().stream()
-                .map(address -> modelMapper.map(address, AddressDTO.class))
-                .toList();
-    }
 
     @Override
+    public List<AddressDTO> getUserAddresses(Long userId) {
+        return addressRepository.findByUserUserId(userId).stream()
+                .map(address -> modelMapper.map(address,AddressDTO.class))
+                .toList();
+    }
+    @Override
     @Transactional
-    public AddressDTO createAddress(AddressDTO addressDTO, User user) {
-        long count = addressRepository.countByUser(user);
+    public AddressDTO createAddress(AddressDTO addressDTO, Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("User", "id", userId));
+
+        long count = addressRepository.countByUserUserId(userId); // Tối ưu dùng countByUserId
         if (count >= 5) {
             throw new IllegalStateException("Maximum of 5 addresses allowed per user");
         }
@@ -57,10 +62,53 @@ public class AddressServiceImpl implements AddressService {
         return modelMapper.map(savedAddress, AddressDTO.class);
     }
 
+
+
+    @Override
+    public AddressDTO getAddressByIdAdmin(Long addressId) {
+        Address address = getAddressFromDatabase(addressId);
+        return modelMapper.map(address, AddressDTO.class);
+    }
+
+    @Override
+    public List<AddressDTO> getAddressesByUserId(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("User", "userId", userId));
+
+        return user.getAddresses().stream()
+                .map(address -> modelMapper.map(address, AddressDTO.class))
+                .toList();
+    }
+
     @Override
     @Transactional
-    public AddressDTO updateAddress(Long addressId, AddressDTO addressDTO) {
+    public String deleteAddressAdmin(Long addressId) {
         Address address = getAddressFromDatabase(addressId);
+
+        addressRepository.delete(address);
+        return "Address deleted successfully with addressId: " + addressId;
+    }
+
+
+    @Override
+    public AddressDTO getAddressById(Long addressId, Long userId) {
+        Address address = getAddressFromDatabase(addressId);
+
+        if (!address.getUser().getUserId().equals(userId)) {
+            throw new UnauthorizedException("You are not allowed to access this address");
+        }
+
+        return modelMapper.map(address, AddressDTO.class);
+    }
+
+    @Override
+    @Transactional
+    public AddressDTO updateAddress(Long addressId, AddressDTO addressDTO, Long userId) {
+        Address address = getAddressFromDatabase(addressId);
+
+        if (!address.getUser().getUserId().equals(userId)) {
+            throw new UnauthorizedException("You are not allowed to modify this address");
+        }
 
         modelMapper.map(addressDTO, address);
 
@@ -72,11 +120,14 @@ public class AddressServiceImpl implements AddressService {
 
     @Override
     @Transactional
-    public String deleteAddress(Long addressId) {
+    public String deleteAddress(Long addressId, Long userId) {
         Address address = getAddressFromDatabase(addressId);
 
-        addressRepository.delete(address);
+        if (!address.getUser().getUserId().equals(userId)) {
+            throw new UnauthorizedException("You are not allowed to delete this address");
+        }
 
+        addressRepository.delete(address);
         return "Address deleted successfully with addressId: " + addressId;
     }
 
