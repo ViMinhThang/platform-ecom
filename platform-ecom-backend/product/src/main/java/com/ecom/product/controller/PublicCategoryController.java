@@ -7,7 +7,6 @@ import com.ecom.product.dto.CategoryDTO;
 import com.ecom.product.dto.CategoryResponse;
 import com.ecom.product.service.signature.CategoryService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,13 +21,13 @@ public class PublicCategoryController {
     private final CategoryService categoryService;
 
     @GetMapping
-    public ResponseEntity<CategoryResponse> getAllCategories(PaginationRequest paginationRequest) {
+    public ResponseEntity<APIResponse<CategoryResponse>> getAllCategories(PaginationRequest paginationRequest) {
         CategoryResponse categoryResponse = categoryService.getAllCategories(
                 paginationRequest.getPageNumber(),
                 paginationRequest.getPageSize(),
                 paginationRequest.getSortBy(),
                 paginationRequest.getSortOrder());
-        return new ResponseEntity<>(categoryResponse, HttpStatus.OK);
+        return ResponseBuilder.success("Categories retrieved successfully", categoryResponse);
     }
 
     @GetMapping("/{categoryId}")

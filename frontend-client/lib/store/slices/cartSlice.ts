@@ -1,68 +1,59 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { Cart } from '@/types/cart';
-import { getCart, addToCart, updateCartItem, deleteFromCart } from '@/lib/services/cart-service';
-import { getErrorMessage } from '@/lib/errors';
+import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
+import { cartService } from '@/lib/services/cart.service';
+import { CartDTO, AddToCartRequest, CartBySeller } from '@/types/cart.types';
 
 interface CartState {
-    cart: Cart | null;
+    cart: CartDTO | null;
+    cartBySeller: CartBySeller[];
     loading: boolean;
     error: string | null;
 }
 
 const initialState: CartState = {
     cart: null,
+    cartBySeller: [],
     loading: false,
-    error: null,
+    error: null
 };
 
+// Async thunks
 export const fetchCart = createAsyncThunk(
     'cart/fetchCart',
-    async (token: string | undefined, { rejectWithValue }) => {
-        if (!token) {
-            return rejectWithValue('Not authenticated');
-        }
-        try {
-            const cart = await getCart(token);
-            return cart;
-        } catch (error) {
-            return rejectWithValue(getErrorMessage(error));
-        }
+    async () => {
+        return await cartService.getCart();
     }
 );
 
-export const addItemToCart = createAsyncThunk(
-    'cart/addItem',
-    async ({ productId, quantity, variantId, token }: { productId: number; quantity: number; variantId: number | null; token: string }, { rejectWithValue }) => {
-        try {
-            const cart = await addToCart(productId, quantity, variantId, token);
-            return cart;
-        } catch (error) {
-            return rejectWithValue(getErrorMessage(error));
-        }
+export const addToCart = createAsyncThunk(
+    'cart/addToCart',
+    async (request: AddToCartRequest) => {
+        return await cartService.addToCart(request);
     }
 );
 
-export const updateItemInCart = createAsyncThunk(
-    'cart/updateItem',
-    async ({ productId, quantityChange, variantId, token }: { productId: number; quantityChange: number; variantId: number | undefined; token: string }, { rejectWithValue }) => {
-        try {
-            const cart = await updateCartItem(productId, quantityChange, variantId, token);
-            return cart;
-        } catch (error) {
-            return rejectWithValue(getErrorMessage(error));
-        }
+export const updateCartQuantity = createAsyncThunk(
+    'cart/updateQuantity',
+    async (params: { productId: number; variantId?: number; change: number }) => {
+        return await cartService.updateQuantity(
+            params.productId,
+            params.variantId,
+            params.change
+        );
     }
 );
 
-export const removeItemFromCart = createAsyncThunk(
+export const removeCartItem = createAsyncThunk(
     'cart/removeItem',
-    async ({ productId, variantId, token }: { productId: number; variantId: number | undefined; token: string }, { rejectWithValue }) => {
-        try {
-            await deleteFromCart(productId, variantId, token);
-            return { productId, variantId };
-        } catch (error) {
-            return rejectWithValue(getErrorMessage(error));
-        }
+    async (params: { productId: number; variantId?: number }) => {
+        await cartService.removeItem(params.productId, params.variantId);
+        return params;
+    }
+);
+
+export const clearCart = createAsyncThunk(
+    'cart/clearCart',
+    async () => {
+        await cartService.clearCart();
     }
 );
 
@@ -70,75 +61,70 @@ const cartSlice = createSlice({
     name: 'cart',
     initialState,
     reducers: {
-        clearCart: (state) => {
+        clearCartState: (state) => {
             state.cart = null;
-        },
+            state.cartBySeller = [];
+        }
     },
     extraReducers: (builder) => {
         builder
-            // Fetch Cart
+            // Fetch cart
             .addCase(fetchCart.pending, (state) => {
                 state.loading = true;
                 state.error = null;
             })
-            .addCase(fetchCart.fulfilled, (state, action) => {
+            .addCase(fetchCart.fulfilled, (state, action: PayloadAction<CartDTO>) => {
                 state.loading = false;
                 state.cart = action.payload;
+                state.cartBySeller = groupItemsBySeller(action.payload);
             })
             .addCase(fetchCart.rejected, (state, action) => {
                 state.loading = false;
-                state.error = action.payload as string;
+                state.error = action.error.message || 'Failed to fetch cart';
             })
-            // Add Item
-            .addCase(addItemToCart.pending, (state) => {
-                state.loading = true;
-                state.error = null;
-            })
-            .addCase(addItemToCart.fulfilled, (state, action) => {
-                state.loading = false;
+            // Add to cart
+            .addCase(addToCart.fulfilled, (state, action: PayloadAction<CartDTO>) => {
                 state.cart = action.payload;
+                state.cartBySeller = groupItemsBySeller(action.payload);
             })
-            .addCase(addItemToCart.rejected, (state, action) => {
-                state.loading = false;
-                state.error = action.payload as string;
-            })
-            // Update Item
-            .addCase(updateItemInCart.pending, (state) => {
-                state.loading = true;
-                state.error = null;
-            })
-            .addCase(updateItemInCart.fulfilled, (state, action) => {
-                state.loading = false;
+            // Update quantity
+            .addCase(updateCartQuantity.fulfilled, (state, action: PayloadAction<CartDTO>) => {
                 state.cart = action.payload;
+                state.cartBySeller = groupItemsBySeller(action.payload);
             })
-            .addCase(updateItemInCart.rejected, (state, action) => {
-                state.loading = false;
-                state.error = action.payload as string;
+            // Remove item
+            .addCase(removeCartItem.fulfilled, (state) => {
+                // Cart will be refreshed by fetchCart usually, but we can optimistically update if needed
+                // For now, we rely on the component to refetch or the backend to return updated cart
             })
-            // Remove Item
-            .addCase(removeItemFromCart.pending, (state) => {
-                state.loading = true;
-                state.error = null;
-            })
-            .addCase(removeItemFromCart.fulfilled, (state, action) => {
-                state.loading = false;
-                if (state.cart) {
-                    state.cart.products = state.cart.products.filter(
-                        item => !(item.id === action.payload.productId && item.variantId === action.payload.variantId)
-                    );
-                    // Recalculate total price client-side or assume fetchCart will be called?
-                    // Ideally we should fetchCart after remove, or backend returns updated cart on delete.
-                    // But delete returns void.
-                    // We can just subtract price.
-                    // But simpler to just filter for now.
-                }
-            })
-            .addCase(removeItemFromCart.rejected, (state, action) => {
-                state.loading = false;
-                state.error = action.payload as string;
+            // Clear cart
+            .addCase(clearCart.fulfilled, (state) => {
+                state.cart = null;
+                state.cartBySeller = [];
             });
-    },
+    }
 });
 
-export const { clearCart } = cartSlice.actions;
+// Helper function to group cart items by seller
+function groupItemsBySeller(cart: CartDTO): CartBySeller[] {
+    if (!cart || !cart.items) return [];
+
+    const grouped = cart.items.reduce((acc, item) => {
+        if (!acc[item.sellerId]) {
+            acc[item.sellerId] = {
+                sellerId: item.sellerId,
+                sellerName: item.sellerName,
+                items: [],
+                subtotal: 0
+            };
+        }
+        acc[item.sellerId].items.push(item);
+        acc[item.sellerId].subtotal += item.totalPrice;
+        return acc;
+    }, {} as Record<number, CartBySeller>);
+
+    return Object.values(grouped);
+}
+
+export const { clearCartState } = cartSlice.actions;
 export default cartSlice.reducer;

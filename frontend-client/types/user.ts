@@ -78,19 +78,3 @@ export interface GHNWard {
     DistrictID: number;
     WardName: string;
 }
-
-// API Response types
-export interface ApiResponse<T> {
-    code: number;
-    message: string;
-    data: T;
-}
-
-export interface PaginatedResponse<T> {
-    content: T[];
-    pageNumber: number;
-    pageSize: number;
-    totalElements: number;
-    totalPages: number;
-    lastPage: boolean;
-}

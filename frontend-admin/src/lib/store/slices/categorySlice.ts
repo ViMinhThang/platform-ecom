@@ -97,13 +97,13 @@ export const fetchCategories = createAsyncThunk(
             const url = API_ENDPOINTS.CATEGORIES_PUBLIC;
             logger.apiRequest('GET', url, params);
 
-            const response = await axios.get<CategoryResponse>(url, {
+            const response = await axios.get<APIResponse<CategoryResponse>>(url, {
                 ...createRequestConfig(token),
                 params,
             });
 
             logger.apiResponse('GET', url, response.status);
-            return response.data;
+            return unwrapResponse(response);
         } catch (error) {
             handleApiError(error);
             return rejectWithValue('Failed to fetch categories');

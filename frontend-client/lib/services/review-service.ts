@@ -33,7 +33,7 @@ export async function getProductReviews(
     if (params.sortDir) searchParams.set('sortDir', params.sortDir);
 
     const query = searchParams.toString();
-    const endpoint = `/reviews/public/product/${productId}${query ? `?${query}` : ''}`;
+    const endpoint = `/v1/products/${productId}/reviews${query ? `?${query}` : ''}`;
 
     const response = await apiClient.get<ReviewResponse>(endpoint);
     return response.data;
@@ -46,7 +46,7 @@ export async function getProductReviewSummary(
     productId: number | string
 ): Promise<ProductReviewSummary> {
     const response = await apiClient.get<ProductReviewSummary>(
-        `/reviews/public/summary/product/${productId}`
+        `/v1/reviews/summary/product/${productId}`
     );
     return response.data;
 }
@@ -55,7 +55,7 @@ export async function getProductReviewSummary(
  * Create a review (requires auth)
  */
 export async function createReview(payload: CreateReviewPayload, token: string): Promise<void> {
-    await apiClient.post('/reviews', payload, {
+    await apiClient.post('/v1/reviews', payload, {
         headers: { Authorization: `Bearer ${token}` },
     });
 }

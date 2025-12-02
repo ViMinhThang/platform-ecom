@@ -7,10 +7,10 @@ import { Button } from "./ui/button";
 import { Badge } from "./ui/badge";
 import { ShoppingCart, Minus, Plus } from "lucide-react";
 import { useAppDispatch } from "@/lib/store/hooks";
-import { addItemToCart } from "@/lib/store/slices/cartSlice";
 import { useSession } from "next-auth/react";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { addToCart } from "@/lib/store/slices/cartSlice";
 
 export function ProductVariantSection({
   product,
@@ -46,11 +46,10 @@ export function ProductVariantSection({
     }
 
     try {
-      await dispatch(addItemToCart({
+      await dispatch(addToCart({
         productId: product.id,
         quantity,
-        variantId: selectedVariant ? selectedVariant.id : null,
-        token: session.accessToken as string
+        variantId: selectedVariant ? selectedVariant.id : undefined,
       })).unwrap();
       toast.success("Added to cart");
     } catch (error) {
@@ -62,10 +61,15 @@ export function ProductVariantSection({
   // Fallback to product price if no variant selected (or range)
   const displayPrice = selectedVariant ? selectedVariant.price : 0;
   const displayStock = selectedVariant ? selectedVariant.stock : 0;
-  const canAddToCart = (selectedVariant && displayStock > 0) || (!product.variants?.length); // If no variants, assume available? Or check product status?
-  // Actually, if variants exist, must select one. If no variants, check product status?
-  // ProductDetail interface has status.
-  // But for now, let's assume if variants exist, selection is required.
+  const hasVariants = (product.variants?.length ?? 0) > 0;
+  const isVariantSelected = !!selectedVariant;
+  const canAddToCart = !hasVariants || (isVariantSelected && displayStock > 0);
+
+  const getButtonText = () => {
+    if (hasVariants && !isVariantSelected) return "Select Options";
+    if (displayStock === 0) return "Out of Stock";
+    return "Add to Cart";
+  };
 
   return (
     <div className="space-y-8">
@@ -87,7 +91,7 @@ export function ProductVariantSection({
             <p>
               {selectedVariant
                 ? `$${selectedVariant.price.toFixed(2)}`
-                : (product.variants && product.variants.length > 0 ? "Select an option" : `$${product.minPrice || 0}`)}
+                : (hasVariants ? "Select an option" : `$${product.minPrice || 0}`)}
             </p>
           )}
         </div>
@@ -149,11 +153,11 @@ export function ProductVariantSection({
         <Button
           size="lg"
           className="flex-1 h-12 text-base"
-          disabled={!canAddToCart && (product.variants?.length ?? 0) > 0}
+          disabled={!canAddToCart}
           onClick={handleAddToCart}
         >
           <ShoppingCart className="mr-2 h-5 w-5" />
-          {canAddToCart || !(product.variants?.length) ? "Add to Cart" : "Out of Stock"}
+          {getButtonText()}
         </Button>
         <Button size="lg" variant="outline" className="h-12 w-12 p-0">
           ♡

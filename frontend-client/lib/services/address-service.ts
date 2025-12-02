@@ -5,7 +5,7 @@ import { Address, ApiResponse } from '@/types/user';
  * Get user's addresses
  */
 export const getUserAddresses = async (token: string): Promise<Address[]> => {
-    const response = await apiClient.get<ApiResponse<Address[]>>('/addresses/user', {
+    const response = await apiClient.get<ApiResponse<Address[]>>('/v1/users/addresses', {
         headers: { Authorization: `Bearer ${token}` },
     });
     return response.data.data;
@@ -16,7 +16,7 @@ export const getUserAddresses = async (token: string): Promise<Address[]> => {
  */
 export const createAddress = async (address: Address, token: string): Promise<Address> => {
     const response = await apiClient.post<ApiResponse<Address>>(
-        '/addresses',
+        '/v1/users/addresses',
         address,
         { headers: { Authorization: `Bearer ${token}` } }
     );
@@ -32,7 +32,7 @@ export const updateAddress = async (
     token: string
 ): Promise<Address> => {
     const response = await apiClient.put<ApiResponse<Address>>(
-        `/addresses/${addressId}`,
+        `/v1/users/addresses/${addressId}`,
         address,
         { headers: { Authorization: `Bearer ${token}` } }
     );
@@ -44,7 +44,8 @@ export const updateAddress = async (
  */
 export const deleteAddress = async (addressId: number, token: string): Promise<void> => {
     await apiClient.delete<ApiResponse<string>>(
-        `/addresses/${addressId}`,
+        `/v1/users/addresses/${addressId}`,
         { headers: { Authorization: `Bearer ${token}` } }
     );
 };
+

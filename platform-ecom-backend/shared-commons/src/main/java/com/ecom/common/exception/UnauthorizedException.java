@@ -1,10 +1,10 @@
 package com.ecom.common.exception;
 
-import org.springframework.http.HttpStatus;
-
-public class UnauthorizedException extends APIException{
-
+/**
+ * Exception thrown when user is not authorized to perform an action
+ */
+public class UnauthorizedException extends RuntimeException {
     public UnauthorizedException(String message) {
-        super(HttpStatus.FORBIDDEN, message, "RESOURCE_FORBIDDEN");
+        super(message);
     }
 }

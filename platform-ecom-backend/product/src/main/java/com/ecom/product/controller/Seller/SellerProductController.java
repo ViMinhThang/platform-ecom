@@ -12,7 +12,6 @@ import com.ecom.product.service.signature.ProductService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,7 +25,7 @@ public class SellerProductController {
 
     @GetMapping
     @RequireRole("ROLE_SELLER")
-    public ResponseEntity<ProductResponse> getSellerProducts(
+    public ResponseEntity<APIResponse<ProductResponse>> getSellerProducts(
             PaginationRequest paginationRequest,
             @RequestParam(name = "name", required = false) String name,
             @RequestParam(name = "category", required = false) String category,
@@ -40,7 +39,7 @@ public class SellerProductController {
                 paginationRequest.getSortBy(),
                 paginationRequest.getSortOrder(),
                 userId);
-        return new ResponseEntity<>(productResponse, HttpStatus.OK);
+        return ResponseBuilder.success("Products retrieved successfully", productResponse);
     }
 
     @PostMapping

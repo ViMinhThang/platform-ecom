@@ -6,7 +6,7 @@ import { UserProfile, ApiResponse } from '@/types/user';
  */
 export const getUserProfile = async (userId: string, token: string): Promise<UserProfile> => {
     const response = await apiClient.get<ApiResponse<UserProfile>>(
-        `/auth/${userId}`,
+        `/v1/users/me`,
         { headers: { Authorization: `Bearer ${token}` } }
     );
     return response.data.data;
@@ -20,7 +20,7 @@ export const updateUserInfo = async (
     token: string
 ): Promise<UserProfile> => {
     const response = await apiClient.put<ApiResponse<UserProfile>>(
-        '/auth/update-info',
+        '/v1/users/me',
         data,
         { headers: { Authorization: `Bearer ${token}` } }
     );
@@ -39,7 +39,7 @@ export const uploadProfileImage = async (
     formData.append('file', file);
 
     const response = await apiClient.put<ApiResponse<string>>(
-        `/auth/${userId}/image`,
+        `/v1/users/me/image`,
         formData,
         {
             headers: {
@@ -56,8 +56,9 @@ export const uploadProfileImage = async (
  */
 export const validateToken = async (token: string): Promise<UserProfile> => {
     const response = await apiClient.get<ApiResponse<UserProfile>>(
-        '/auth/validate',
+        '/v1/auth/validate',
         { headers: { Authorization: `Bearer ${token}` } }
     );
     return response.data.data;
 };
+

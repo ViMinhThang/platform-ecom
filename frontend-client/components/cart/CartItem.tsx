@@ -1,94 +1,105 @@
 "use client";
 
-import Image from "next/image";
-import { Minus, Plus, Trash2, Store } from "lucide-react";
+import { CartItemDTO } from "@/types/cart.types";
 import { Button } from "@/components/ui/button";
-import { CartProduct } from "@/types/cart";
-import { Badge } from "@/components/ui/badge";
+import { Minus, Plus, Trash2 } from "lucide-react";
+import Image from "next/image";
+import { useCart } from "@/hooks/useCart";
+import { useState } from "react";
 
 interface CartItemProps {
-    item: CartProduct;
-    onUpdateQuantity: (productId: number, variantId: number | undefined, change: number) => void;
-    onRemove: (productId: number, variantId: number | undefined) => void;
+    item: CartItemDTO;
 }
 
-export function CartItem({ item, onUpdateQuantity, onRemove }: CartItemProps) {
-    // Determine image to show: variant specific or first product image
-    // Backend ProductDTO doesn't explicitly send variant image, but we could have added it.
-    // For now, use first product image.
-    const imageUrl = item.images && item.images.length > 0
-        ? `http://localhost:8080/uploads/products/${item.images[0].imageUrl}`
-        : "https://placehold.co/100x100";
+export function CartItem({ item }: CartItemProps) {
+    const { updateQuantity, removeItem } = useCart();
+    const [updating, setUpdating] = useState(false);
+
+    const handleQuantityChange = async (newQuantity: number) => {
+        if (newQuantity < 1) return;
+        setUpdating(true);
+        try {
+            await updateQuantity(item.productId, item.variantId, newQuantity - item.quantity);
+        } finally {
+            setUpdating(false);
+        }
+    };
+
+    const handleRemove = async () => {
+        setUpdating(true);
+        try {
+            await removeItem(item.productId, item.variantId);
+        } finally {
+            setUpdating(false);
+        }
+    };
 
     return (
-        <div className="flex gap-4 py-4 border-b">
-            <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border bg-zinc-100">
+        <div className="flex gap-4 py-4 border-b last:border-0">
+            {/* Product Image */}
+            <div className="relative h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border bg-zinc-100">
                 <Image
-                    src={imageUrl}
-                    alt={item.name}
-                    width={96}
-                    height={96}
-                    className="h-full w-full object-cover object-center"
+                    src={`http://localhost:8080/uploads/products/${item.imageUrl}`}
+                    alt={item.productName}
+                    fill
+                    className="object-cover"
                     unoptimized
                 />
             </div>
 
-            <div className="flex flex-1 flex-col">
-                <div>
-                    <div className="flex justify-between text-base font-medium">
-                        <h3 className="line-clamp-2 pr-4">
-                            <a href={`/products/${item.id}`}>{item.name}</a>
-                        </h3>
-                        <p className="ml-4 whitespace-nowrap">
-                            ${(item.minPrice || 0).toFixed(2)}
-                        </p>
-                    </div>
-
-                    {item.sellerName && (
-                        <div className="flex items-center gap-1 mt-1 text-sm text-muted-foreground">
-                            <Store className="w-3 h-3" />
-                            <span>{item.sellerName}</span>
-                        </div>
+            {/* Product Details */}
+            <div className="flex flex-1 flex-col justify-between">
+                <div className="grid gap-1">
+                    <h3 className="font-medium">{item.productName}</h3>
+                    {item.variantName && (
+                        <p className="text-sm text-muted-foreground">Variant: {item.variantName}</p>
                     )}
-
-                    {item.variantSku && (
-                        <p className="mt-1 text-sm text-muted-foreground">
-                            Variant: {item.variantSku}
-                        </p>
-                    )}
+                    <p className="text-sm font-medium text-blue-600">
+                        ${item.price.toFixed(2)}
+                    </p>
                 </div>
 
-                <div className="flex flex-1 items-end justify-between text-sm">
+                <div className="flex items-center justify-between mt-2">
+                    {/* Quantity Selector */}
                     <div className="flex items-center gap-2">
                         <Button
                             variant="outline"
                             size="icon"
                             className="h-8 w-8"
-                            onClick={() => onUpdateQuantity(item.id, item.variantId, -1)}
-                            disabled={item.quantity <= 1}
+                            onClick={() => handleQuantityChange(item.quantity - 1)}
+                            disabled={item.quantity <= 1 || updating}
                         >
                             <Minus className="h-3 w-3" />
                         </Button>
-                        <span className="w-8 text-center">{item.quantity}</span>
+                        <span className="w-8 text-center text-sm">{item.quantity}</span>
                         <Button
                             variant="outline"
                             size="icon"
                             className="h-8 w-8"
-                            onClick={() => onUpdateQuantity(item.id, item.variantId, 1)}
+                            onClick={() => handleQuantityChange(item.quantity + 1)}
+                            disabled={updating}
                         >
                             <Plus className="h-3 w-3" />
                         </Button>
                     </div>
 
+                    {/* Remove Button */}
                     <Button
                         variant="ghost"
+                        size="sm"
                         className="text-red-500 hover:text-red-600 hover:bg-red-50"
-                        onClick={() => onRemove(item.id, item.variantId)}
+                        onClick={handleRemove}
+                        disabled={updating}
                     >
-                        <Trash2 className="mr-1 h-4 w-4" />
+                        <Trash2 className="h-4 w-4 mr-1" />
                         Remove
                     </Button>
                 </div>
+            </div>
+
+            {/* Item Total */}
+            <div className="text-right font-medium">
+                ${item.totalPrice.toFixed(2)}
             </div>
         </div>
     );

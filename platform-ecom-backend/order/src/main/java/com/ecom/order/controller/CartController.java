@@ -1,102 +1,115 @@
 package com.ecom.order.controller;
 
-import com.ecom.common.security.AuthContext;
+import com.ecom.common.aspect.RequireRole;
 import com.ecom.common.util.APIResponse;
 import com.ecom.common.util.ResponseBuilder;
-import com.ecom.order.dtos.CartDTO;
-import com.ecom.order.dtos.CartItemDTO;
-import com.ecom.order.dtos.ProductDTO;
-import com.ecom.order.entity.Cart;
-import com.ecom.order.repositories.CartRepository;
-import com.ecom.order.service.CartService;
+import com.ecom.order.dto.AddToCartRequest;
+import com.ecom.order.dto.CartDTO;
+import com.ecom.order.service.signature.CartService;
+
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
+/**
+ * Cart Controller - Shopping cart operations
+ */
+@Slf4j
 @RestController
-@RequestMapping("/api/carts")
+@RequestMapping("/api/v1/cart")
 @RequiredArgsConstructor
 public class CartController {
 
-    private final CartRepository cartRepository;
-
-    private final AuthContext authContext;
-
     private final CartService cartService;
 
-    @PostMapping("/create")
-    public ResponseEntity<APIResponse<String>> createOrUpdateCart(@RequestBody List<CartItemDTO> cartItems,
-            HttpServletRequest request) {
-        Long userId = authContext.getUserId(request);
-        String response = cartService.createOrUpdateCartWithItems(cartItems, userId);
-        return ResponseBuilder.createdWithMessage("Cart created or updated successfully", response);
+    /**
+     * Get user's cart (grouped by seller)
+     */
+    @GetMapping
+    @RequireRole("ROLE_USER")
+    public ResponseEntity<APIResponse<CartDTO>> getCart(HttpServletRequest request) {
+        Long userId = extractUserId(request);
+        CartDTO cart = cartService.getCartForUser(userId);
+
+        return ResponseBuilder.success("Cart retrieved", cart);
     }
 
+    /**
+     * Add item to cart
+     */
     @PostMapping("/add")
-    public ResponseEntity<APIResponse<CartDTO>> addItemToCart(@RequestBody CartItemDTO cartItemDTO,
+    @RequireRole("ROLE_USER")
+    public ResponseEntity<APIResponse<CartDTO>> addToCart(
+            @Valid @RequestBody AddToCartRequest addRequest,
             HttpServletRequest request) {
-        Long userId = authContext.getUserId(request);
-        CartDTO cartDTO = cartService.addItemToCart(userId, cartItemDTO);
-        return ResponseBuilder.createdWithMessage("Product added to cart successfully", cartDTO);
+
+        Long userId = extractUserId(request);
+        CartDTO cart = cartService.addToCart(userId, addRequest);
+
+        log.info("User {} added product {} to cart", userId, addRequest.getProductId());
+        return ResponseBuilder.success("Item added to cart", cart);
     }
 
-    @GetMapping("/")
-    public ResponseEntity<APIResponse<List<CartDTO>>> getCarts() {
-        List<CartDTO> cartDTOs = cartService.getAllCarts();
-        return ResponseBuilder.success("Carts retrieved successfully", cartDTOs);
-    }
-
-    @GetMapping("/users/cart")
-    public ResponseEntity<APIResponse<CartDTO>> getCartById(HttpServletRequest request) {
-        Long userId = authContext.getUserId(request);
-        Cart cart = cartRepository.findByUserId(userId);
-        if (cart == null) {
-             // Return empty cart or create one?
-             // For now, let's return a not found or empty.
-             // But getCart handles creation if needed? No, getCart throws if not found.
-             // Let's return empty if not found or create it.
-             // cartService.createCart is private.
-             // But we can just return success with empty DTO or null.
-             return ResponseBuilder.success("Cart retrieved successfully", new CartDTO());
-        }
-        Long cartId = cart.getCartId();
-        CartDTO cartDTO = cartService.getCart(cartId);
-        return ResponseBuilder.success("Cart retrieved successfully", cartDTO);
-    }
-
+    /**
+     * Update cart item quantity
+     */
     @PutMapping("/items/{productId}")
-    public ResponseEntity<APIResponse<CartDTO>> updateCartItem(@PathVariable Long productId,
+    @RequireRole("ROLE_USER")
+    public ResponseEntity<APIResponse<CartDTO>> updateCartItem(
+            @PathVariable Long productId,
             @RequestParam(required = false) Long variantId,
-            @RequestParam int quantityChange,
+            @RequestParam Integer quantityChange,
             HttpServletRequest request) {
-        Long userId = authContext.getUserId(request);
-        Cart cart = cartRepository.findByUserId(userId);
-        CartDTO cartDTO = cartService.updateItemQuantity(cart.getCartId(), productId, variantId, quantityChange);
-        return ResponseBuilder.success("Cart product updated successfully", cartDTO);
+
+        Long userId = extractUserId(request);
+        CartDTO cart = cartService.updateCartItemQuantity(userId, productId, variantId, quantityChange);
+
+        return ResponseBuilder.success("Cart updated", cart);
     }
 
+    /**
+     * Remove item from cart
+     */
     @DeleteMapping("/items/{productId}")
-    public ResponseEntity<APIResponse<String>> deleteItemFromCart(@PathVariable Long productId,
+    @RequireRole("ROLE_USER")
+    public ResponseEntity<APIResponse<Void>> removeFromCart(
+            @PathVariable Long productId,
             @RequestParam(required = false) Long variantId,
             HttpServletRequest request) {
-        Long userId = authContext.getUserId(request);
-        Cart cart = cartRepository.findByUserId(userId);
-        String status = cartService.deleteItemFromCart(cart.getCartId(), productId, variantId);
-        return ResponseBuilder.success("Product deleted from cart successfully", status);
+
+        Long userId = extractUserId(request);
+        cartService.removeFromCart(userId, productId, variantId);
+
+        return ResponseBuilder.success("Item removed from cart", null);
     }
 
-    @PostMapping("/update-product-in-carts")
-    public ResponseEntity<APIResponse<String>> updateProductInCarts(@RequestBody ProductDTO productDTO) {
-        String status = cartService.updateProductInCarts(productDTO);
-        return ResponseBuilder.success("Product updated in carts successfully", status);
+    /**
+     * Clear entire cart
+     */
+    @DeleteMapping("/clear")
+    @RequireRole("ROLE_USER")
+    public ResponseEntity<APIResponse<Void>> clearCart(HttpServletRequest request) {
+        Long userId = extractUserId(request);
+
+        // Get cart first
+        CartDTO cart = cartService.getCartForUser(userId);
+        cartService.clearCart(cart.getId());
+
+        return ResponseBuilder.success("Cart cleared", null);
     }
 
-    @PostMapping("delete-product-from-carts")
-    public ResponseEntity<APIResponse<String>> deleteProductFromCarts(@RequestBody ProductDTO productDTO) {
-        String status = cartService.deleteProductFromCarts(productDTO);
-        return ResponseBuilder.success("Product deleted from carts successfully", status);
+    /**
+     * Extract user ID from JWT token in request
+     */
+    private Long extractUserId(HttpServletRequest request) {
+        // The @RequireRole annotation + AuthenticationFilter should have set this
+        Object userIdAttr = request.getAttribute("userId");
+        if (userIdAttr == null) {
+            throw new IllegalStateException("User ID not found in request");
+        }
+        return Long.valueOf(userIdAttr.toString());
     }
 }

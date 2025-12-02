@@ -1,5 +1,5 @@
 import apiClient from '@/lib/api-client';
-import { ApiResponse } from '@/types/user';
+import { APIResponse } from '@/types/common.types';
 import { Product, ProductResponse, ProductDetail, Category } from '@/types/product';
 
 export interface GetProductsParams {
@@ -18,24 +18,24 @@ export const getPublicProducts = async (params: GetProductsParams = {}): Promise
     const searchParams = new URLSearchParams();
 
     if (params.page !== undefined) searchParams.set('page', params.page.toString());
-    if (params.perPage !== undefined) searchParams.set('perPage', params.perPage.toString());
+    if (params.perPage !== undefined) searchParams.set('size', params.perPage.toString());
     if (params.category) searchParams.set('category', params.category);
     if (params.search) searchParams.set('search', params.search);
     if (params.sortBy) searchParams.set('sortBy', params.sortBy);
     if (params.sortOrder) searchParams.set('sortOrder', params.sortOrder);
 
     const query = searchParams.toString();
-    const endpoint = `/products/public${query ? `?${query}` : ''}`;
+    const endpoint = `/v1/products${query ? `?${query}` : ''}`;
 
-    const response = await apiClient.get<ProductResponse>(endpoint);
-    return response.data;
+    const response = await apiClient.get<APIResponse<ProductResponse>>(endpoint);
+    return response.data.data;
 };
 
 /**
  * Fetch product by ID
  */
 export const getPublicProductById = async (id: number | string): Promise<Product> => {
-    const response = await apiClient.get<ApiResponse<Product>>(`/products/public/${id}`);
+    const response = await apiClient.get<APIResponse<Product>>(`/v1/products/${id}`);
     return response.data.data;
 };
 
@@ -43,7 +43,7 @@ export const getPublicProductById = async (id: number | string): Promise<Product
  * Fetch product with variants
  */
 export const getPublicProductWithVariants = async (id: number | string): Promise<ProductDetail> => {
-    const response = await apiClient.get<ApiResponse<ProductDetail>>(`/products/public/${id}/with-variants`);
+    const response = await apiClient.get<APIResponse<ProductDetail>>(`/v1/products/${id}/with-variants`);
     return response.data.data;
 };
 
@@ -51,6 +51,7 @@ export const getPublicProductWithVariants = async (id: number | string): Promise
  * Fetch all categories (public - no auth required)
  */
 export const getCategories = async (): Promise<Category[]> => {
-    const response = await apiClient.get<ApiResponse<Category[]>>('/categories/public');
+    const response = await apiClient.get<APIResponse<Category[]>>('/v1/categories');
     return response.data.data;
 };
+

@@ -88,13 +88,13 @@ export const fetchProducts = createAsyncThunk(
         try {
             logger.apiRequest('GET', API_ENDPOINTS.PRODUCTS_SELLER, params);
 
-            const response = await axios.get<PaginatedProducts>(API_ENDPOINTS.PRODUCTS_SELLER, {
+            const response = await axios.get<APIResponse<PaginatedProducts>>(API_ENDPOINTS.PRODUCTS_SELLER, {
                 ...createRequestConfig(token),
                 params,
             });
 
             logger.apiResponse('GET', API_ENDPOINTS.PRODUCTS_SELLER, response.status);
-            return response.data;
+            return unwrapResponse(response);
         } catch (error) {
             handleApiError(error);
             return rejectWithValue('Failed to fetch products');

@@ -9,7 +9,6 @@ import com.ecom.product.dto.ProductResponse;
 import com.ecom.product.dto.ProductVariantDTO;
 import com.ecom.product.service.signature.ProductService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,7 +20,7 @@ public class PublicProductController {
     private final ProductService productService;
 
     @GetMapping
-    public ResponseEntity<ProductResponse> getPublicProducts(
+    public ResponseEntity<APIResponse<ProductResponse>> getPublicProducts(
             PaginationRequest paginationRequest,
             @RequestParam(name = "category", required = false) String category,
             @RequestParam(name = "search", required = false) String search) {
@@ -32,7 +31,7 @@ public class PublicProductController {
                 search,
                 paginationRequest.getSortBy(),
                 paginationRequest.getSortOrder());
-        return new ResponseEntity<>(productResponse, HttpStatus.OK);
+        return ResponseBuilder.success("Products retrieved successfully", productResponse);
     }
 
     @GetMapping("/{productId}")
