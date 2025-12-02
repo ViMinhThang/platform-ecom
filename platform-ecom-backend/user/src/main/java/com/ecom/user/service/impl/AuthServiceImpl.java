@@ -1,4 +1,4 @@
-package com.ecom.user.service;
+package com.ecom.user.service.impl;
 
 import com.ecom.common.exception.APIException;
 import com.ecom.common.exception.ResourceNotFoundException;
@@ -9,6 +9,8 @@ import com.ecom.user.entity.User;
 import com.ecom.user.repositories.RoleRepository;
 import com.ecom.user.repositories.UserRepository;
 import com.ecom.user.security.JwtUtils;
+import com.ecom.user.service.signature.AuthService;
+import com.ecom.user.service.signature.RoleService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseCookie;

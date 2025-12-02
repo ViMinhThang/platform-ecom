@@ -1,9 +1,10 @@
-package com.ecom.product.service;
+package com.ecom.product.service.impl;
 
 import com.ecom.product.dto.*;
 import com.ecom.product.entity.*;
 import java.util.*;
 import com.ecom.product.repository.*;
+import com.ecom.product.service.signature.ProductService;
 import org.springframework.data.domain.*;
 import com.ecom.common.exception.ResourceNotFoundException;
 import com.ecom.product.utils.ProductUtils;

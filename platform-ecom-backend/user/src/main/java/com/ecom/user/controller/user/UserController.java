@@ -1,4 +1,4 @@
-package com.ecom.user.controller.admin;
+package com.ecom.user.controller.user;
 
 import com.ecom.common.aspect.RequireRole;
 import com.ecom.common.security.AuthContext;

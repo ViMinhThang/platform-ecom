@@ -1,7 +1,6 @@
-package com.ecom.product.service;
+package com.ecom.product.service.signature;
 
 import com.ecom.product.dto.ProductImageDTO;
-import jakarta.validation.Valid;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;

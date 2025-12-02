@@ -117,18 +117,7 @@ public class GatewayConfig {
 
                 // Public product endpoints
                 .route("products-public", r -> r
-                        .path("/api/v1/products", "/api/v1/products/{id}", "/api/v1/products/{id}/details")
-                        .filters(f -> f.requestRateLimiter(c -> c.setRateLimiter(publicRateLimiter())))
-                        .uri("lb://product-service"))
-
-                .route("products-search", r -> r
-                        .path("/api/v1/products/search")
-                        .filters(f -> f.requestRateLimiter(c -> c.setRateLimiter(publicRateLimiter())))
-                        .uri("lb://product-service"))
-
-                // Product images (public access)
-                .route("product-images", r -> r
-                        .path("/api/v1/products/images/**")
+                        .path("/api/v1/products", "/api/v1/products/**")
                         .filters(f -> f.requestRateLimiter(c -> c.setRateLimiter(publicRateLimiter())))
                         .uri("lb://product-service"))
 
@@ -154,8 +143,16 @@ public class GatewayConfig {
 
                 // Public categories
                 .route("categories-public", r -> r
-                        .path("/api/v1/categories", "/api/v1/categories/{id}")
+                        .path("/api/v1/categories", "/api/v1/categories/**")
                         .filters(f -> f.requestRateLimiter(c -> c.setRateLimiter(publicRateLimiter())))
+                        .uri("lb://product-service"))
+
+                // Seller category management
+                .route("seller-categories", r -> r
+                        .path("/api/v1/sellers/categories", "/api/v1/sellers/categories/**")
+                        .filters(f -> f
+                                .filter(authFilter)
+                                .requestRateLimiter(c -> c.setRateLimiter(authenticatedRateLimiter())))
                         .uri("lb://product-service"))
 
                 // Admin category management

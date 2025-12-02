@@ -1,24 +1,20 @@
-package com.ecom.product.controller;
+package com.ecom.product.controller.Seller;
 
-import com.ecom.common.util.PaginationRequest;
 import com.ecom.common.aspect.RequireRole;
-
 import com.ecom.common.util.APIResponse;
 import com.ecom.common.util.ResponseBuilder;
 import com.ecom.product.dto.CategoryDTO;
-import com.ecom.product.dto.CategoryResponse;
-import com.ecom.product.service.CategoryService;
+import com.ecom.product.service.signature.CategoryService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 @RestController
-@RequestMapping("/api/categories")
+@RequestMapping("/api/v1/sellers/categories")
 @RequiredArgsConstructor
-public class CategoryController {
+public class SellerCategoryController {
 
     private final CategoryService categoryService;
 
@@ -27,22 +23,6 @@ public class CategoryController {
     public ResponseEntity<APIResponse<CategoryDTO>> createCategory(@Valid @RequestBody CategoryDTO categoryDTO) {
         CategoryDTO savedCategoryDTO = categoryService.createCategory(categoryDTO);
         return ResponseBuilder.createdWithMessage("Category created successfully", savedCategoryDTO);
-    }
-
-    @GetMapping("/public")
-    public ResponseEntity<CategoryResponse> getAllCategories(PaginationRequest paginationRequest) {
-        CategoryResponse categoryResponse = categoryService.getAllCategories(
-                paginationRequest.getPageNumber(),
-                paginationRequest.getPageSize(),
-                paginationRequest.getSortBy(),
-                paginationRequest.getSortOrder());
-        return new ResponseEntity<>(categoryResponse, HttpStatus.OK);
-    }
-
-    @GetMapping("/public/{categoryId}")
-    public ResponseEntity<APIResponse<CategoryDTO>> getCategoryById(@PathVariable Long categoryId) {
-        CategoryDTO categoryDTO = categoryService.getCategoryById(categoryId);
-        return ResponseBuilder.success("Category retrieved successfully", categoryDTO);
     }
 
     @PutMapping("/{categoryId}")

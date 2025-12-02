@@ -1,4 +1,4 @@
-package com.ecom.user.controller;
+package com.ecom.user.controller.admin;
 import com.ecom.common.util.APIResponse;
 import com.ecom.common.util.ResponseBuilder;
 import com.ecom.user.dtos.AddressDTO;

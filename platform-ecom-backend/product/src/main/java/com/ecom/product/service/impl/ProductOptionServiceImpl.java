@@ -1,4 +1,4 @@
-package com.ecom.product.service;
+package com.ecom.product.service.impl;
 
 import com.ecom.product.dto.ProductOptionDTO;
 import com.ecom.product.dto.ProductOptionValueDTO;
@@ -8,6 +8,7 @@ import com.ecom.product.entity.ProductOptionValue;
 import com.ecom.common.exception.ResourceNotFoundException;
 import com.ecom.product.repository.ProductOptionRepository;
 import com.ecom.product.repository.ProductRepository;
+import com.ecom.product.service.signature.ProductOptionService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;

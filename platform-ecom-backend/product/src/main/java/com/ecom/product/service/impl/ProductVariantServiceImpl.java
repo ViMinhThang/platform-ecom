@@ -1,4 +1,4 @@
-package com.ecom.product.service;
+package com.ecom.product.service.impl;
 
 import com.ecom.product.dto.ProductOptionValueDTO;
 import com.ecom.product.dto.ProductVariantDTO;
@@ -12,6 +12,7 @@ import com.ecom.common.exception.ResourceNotFoundException;
 import com.ecom.product.repository.ProductOptionValueRepository;
 import com.ecom.product.repository.ProductRepository;
 import com.ecom.product.repository.ProductVariantRepository;
+import com.ecom.product.service.signature.ProductVariantService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;

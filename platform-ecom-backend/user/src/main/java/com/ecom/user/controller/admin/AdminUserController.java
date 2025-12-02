@@ -1,4 +1,4 @@
-package com.ecom.user.controller;
+package com.ecom.user.controller.admin;
 
 import com.ecom.common.aspect.RequireRole;
 import com.ecom.common.util.APIResponse;

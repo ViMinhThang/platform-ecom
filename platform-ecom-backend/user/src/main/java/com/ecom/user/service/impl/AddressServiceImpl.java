@@ -1,4 +1,4 @@
-package com.ecom.user.service;
+package com.ecom.user.service.impl;
 
 import com.ecom.common.exception.UnauthorizedException;
 import com.ecom.user.dtos.AddressDTO;
@@ -7,6 +7,7 @@ import com.ecom.user.entity.User;
 import com.ecom.common.exception.ResourceNotFoundException;
 import com.ecom.user.repositories.AddressRepository;
 import com.ecom.user.repositories.UserRepository;
+import com.ecom.user.service.signature.AddressService;
 import org.modelmapper.ModelMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

@@ -1,4 +1,4 @@
-package com.ecom.product.service;
+package com.ecom.product.service.impl;
 
 import com.ecom.product.dto.CategoryDTO;
 import com.ecom.product.dto.CategoryResponse;
@@ -7,6 +7,7 @@ import com.ecom.common.exception.APIException;
 import com.ecom.common.exception.ResourceNotFoundException;
 import com.ecom.product.repository.CategoryRepository;
 import com.ecom.common.service.FileStorageService;
+import com.ecom.product.service.signature.CategoryService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.*;

@@ -1,8 +1,6 @@
-package com.ecom.user.service;
+package com.ecom.user.service.signature;
 
 import com.ecom.user.dtos.AddressDTO;
-import com.ecom.user.entity.User;
-import jakarta.validation.Valid;
 
 import java.util.List;
 

@@ -1,9 +1,8 @@
-package com.ecom.user.service;
+package com.ecom.user.service.impl;
 
 import com.ecom.common.exception.APIException;
 import com.ecom.common.exception.ResourceNotFoundException;
 import com.ecom.common.exception.UserAlreadyExistsException;
-import com.ecom.user.dtos.RoleDTO;
 import com.ecom.user.dtos.UserDTO;
 import com.ecom.user.dtos.UserInfoResponse;
 import com.ecom.user.dtos.UserResponse;
@@ -12,6 +11,8 @@ import com.ecom.user.entity.Role;
 import com.ecom.user.entity.User;
 import com.ecom.user.repositories.RoleRepository;
 import com.ecom.user.repositories.UserRepository;
+import com.ecom.user.service.signature.AdminUserService;
+import com.ecom.user.service.signature.RoleService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;

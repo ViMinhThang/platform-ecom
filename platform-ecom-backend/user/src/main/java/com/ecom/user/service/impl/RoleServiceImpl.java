@@ -1,10 +1,11 @@
-package com.ecom.user.service;
+package com.ecom.user.service.impl;
 
 import com.ecom.user.dtos.RoleDTO;
 import com.ecom.user.dtos.RoleResponse;
 import com.ecom.user.entity.AppRole;
 import com.ecom.user.entity.Role;
 import com.ecom.user.repositories.RoleRepository;
+import com.ecom.user.service.signature.RoleService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;

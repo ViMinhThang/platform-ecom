@@ -1,4 +1,4 @@
-package com.ecom.product.service;
+package com.ecom.product.service.signature;
 
 import com.ecom.product.dto.ProductVariantDTO;
 import jakarta.validation.Valid;

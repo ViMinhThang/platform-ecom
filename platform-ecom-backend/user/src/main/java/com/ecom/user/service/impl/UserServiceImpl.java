@@ -1,4 +1,4 @@
-package com.ecom.user.service;
+package com.ecom.user.service.impl;
 
 import com.ecom.common.exception.APIException;
 import com.ecom.common.exception.ResourceNotFoundException;
@@ -7,6 +7,7 @@ import com.ecom.user.dtos.UpdateUserRequest;
 import com.ecom.user.dtos.UserInfoResponse;
 import com.ecom.user.entity.User;
 import com.ecom.user.repositories.UserRepository;
+import com.ecom.user.service.signature.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;

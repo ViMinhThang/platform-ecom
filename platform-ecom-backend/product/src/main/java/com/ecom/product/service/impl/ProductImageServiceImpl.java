@@ -1,4 +1,4 @@
-package com.ecom.product.service;
+package com.ecom.product.service.impl;
 
 import com.ecom.product.dto.ProductImageDTO;
 import com.ecom.product.entity.Product;
@@ -7,6 +7,7 @@ import com.ecom.common.exception.ResourceNotFoundException;
 import com.ecom.product.repository.ProductImageRepository;
 import com.ecom.product.repository.ProductRepository;
 import com.ecom.common.service.FileStorageService;
+import com.ecom.product.service.signature.ProductImageService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
