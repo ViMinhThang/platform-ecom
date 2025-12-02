@@ -5,7 +5,6 @@ import com.ecom.common.security.AuthContext;
 import com.ecom.common.util.APIResponse;
 import com.ecom.common.util.ResponseBuilder;
 import com.ecom.user.dtos.AddressDTO;
-import com.ecom.user.repositories.UserRepository;
 import com.ecom.user.service.signature.AddressService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
@@ -21,25 +20,21 @@ import java.util.List;
 public class AddressController {
 
     private final AddressService addressService;
-    private final UserRepository userRepository;
     private final AuthContext authContext;
-
 
     /**
      * POST /api/v1/users/addresses
      * Create a new address for the authenticated user
-     * */
+     */
     @PostMapping()
     @RequireRole("ROLE_USER")
     public ResponseEntity<APIResponse<AddressDTO>> createAddress(@Valid @RequestBody AddressDTO addressDTO,
-                                                                 HttpServletRequest request) {
+            HttpServletRequest request) {
         Long userId = authContext.getUserId(request);
-
 
         AddressDTO savedAddressDTO = addressService.createAddress(addressDTO, userId);
         return ResponseBuilder.createdWithMessage("Address created successfully", savedAddressDTO);
     }
-
 
     /**
      * GET /api/v1/users/addresses

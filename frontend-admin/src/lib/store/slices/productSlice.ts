@@ -86,14 +86,14 @@ export const fetchProducts = createAsyncThunk(
     'products/fetchProducts',
     async ({ token, params }: FetchProductsParams, { rejectWithValue }) => {
         try {
-            logger.apiRequest('GET', API_ENDPOINTS.PRODUCTS, params);
+            logger.apiRequest('GET', API_ENDPOINTS.PRODUCTS_SELLER, params);
 
-            const response = await axios.get<PaginatedProducts>(API_ENDPOINTS.PRODUCTS, {
+            const response = await axios.get<PaginatedProducts>(API_ENDPOINTS.PRODUCTS_SELLER, {
                 ...createRequestConfig(token),
                 params,
             });
 
-            logger.apiResponse('GET', API_ENDPOINTS.PRODUCTS, response.status);
+            logger.apiResponse('GET', API_ENDPOINTS.PRODUCTS_SELLER, response.status);
             return response.data;
         } catch (error) {
             handleApiError(error);
@@ -106,7 +106,7 @@ export const fetchProductById = createAsyncThunk(
     'products/fetchProductById',
     async ({ id, token }: FetchProductByIdParams, { rejectWithValue }) => {
         try {
-            const url = `${API_ENDPOINTS.PRODUCTS}/${id}`;
+            const url = `${API_ENDPOINTS.PRODUCTS_SELLER}/${id}`;
             logger.apiRequest('GET', url);
 
             const response = await axios.get<APIResponse<Product>>(url, createRequestConfig(token));
@@ -124,15 +124,15 @@ export const createProduct = createAsyncThunk(
     'products/createProduct',
     async ({ data, token }: CreateProductParams, { rejectWithValue }) => {
         try {
-            logger.apiRequest('POST', API_ENDPOINTS.PRODUCTS, { data });
+            logger.apiRequest('POST', API_ENDPOINTS.PRODUCTS_SELLER, { data });
 
             const response = await axios.post<APIResponse<ProductRow>>(
-                API_ENDPOINTS.PRODUCTS,
+                API_ENDPOINTS.PRODUCTS_SELLER,
                 data,
                 createRequestConfig(token)
             );
 
-            logger.apiResponse('POST', API_ENDPOINTS.PRODUCTS, response.status);
+            logger.apiResponse('POST', API_ENDPOINTS.PRODUCTS_SELLER, response.status);
             return unwrapResponse(response);
         } catch (error) {
             handleApiError(error);
@@ -145,7 +145,7 @@ export const updateProduct = createAsyncThunk(
     'products/updateProduct',
     async ({ id, data, token }: UpdateProductParams, { rejectWithValue }) => {
         try {
-            const url = `${API_ENDPOINTS.PRODUCTS}/${id}`;
+            const url = `${API_ENDPOINTS.PRODUCTS_SELLER}/${id}`;
             logger.apiRequest('PUT', url, { data });
 
             const response = await axios.put<APIResponse<Product>>(url, data, createRequestConfig(token));
@@ -163,7 +163,7 @@ export const deleteProduct = createAsyncThunk(
     'products/deleteProduct',
     async ({ id, token }: DeleteProductParams, { rejectWithValue }) => {
         try {
-            const url = `${API_ENDPOINTS.PRODUCTS}/${id}`;
+            const url = `${API_ENDPOINTS.PRODUCTS_SELLER}/${id}`;
             logger.apiRequest('DELETE', url);
 
             const response = await axios.delete<APIResponse<string>>(url, createRequestConfig(token));

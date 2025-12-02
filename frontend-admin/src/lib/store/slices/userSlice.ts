@@ -111,19 +111,15 @@ export const fetchUsers = createAsyncThunk(
     'users/fetchUsers',
     async ({ token, params }: FetchUsersParams, { rejectWithValue }) => {
         try {
-            logger.apiRequest('GET', API_ENDPOINTS.AUTH, params);
+            logger.apiRequest('GET', API_ENDPOINTS.ADMIN_USERS, params);
 
-            // Backend returns APIResponse<UserResponse>, so we need to access response.data.data
-            // But wait, the axios.get<UserResponse> implies response.data IS UserResponse.
-            // Let's check the backend controller: ResponseEntity<APIResponse<UserResponse>>
-            // So axios.get<APIResponse<UserResponse>> is correct.
-            const response = await axios.get<APIResponse<UserResponse>>(API_ENDPOINTS.AUTH, {
+            const response = await axios.get<APIResponse<UserResponse>>(API_ENDPOINTS.ADMIN_USERS, {
                 ...createRequestConfig(token),
                 params,
             });
 
             logger.apiResponse('GET', API_ENDPOINTS.AUTH, response.status);
-            return response.data.data; // Access the 'data' field of APIResponse
+            return response.data.data;
         } catch (error) {
             handleApiError(error);
             return rejectWithValue('Failed to fetch users');
@@ -135,7 +131,7 @@ export const fetchUserById = createAsyncThunk(
     'users/fetchUserById',
     async ({ id, token }: FetchUserByIdParams, { rejectWithValue }) => {
         try {
-            const url = `${API_ENDPOINTS.AUTH}/${id}`;
+            const url = `${API_ENDPOINTS.ADMIN_USERS}/${id}`;
             logger.apiRequest('GET', url);
 
             const response = await axios.get<User>(url, createRequestConfig(token));
@@ -153,10 +149,10 @@ export const createUser = createAsyncThunk(
     'users/createUser',
     async ({ data, token }: CreateUserParams, { rejectWithValue }) => {
         try {
-            logger.apiRequest('POST', API_ENDPOINTS.AUTH, { data });
+            logger.apiRequest('POST', API_ENDPOINTS.ADMIN_USERS, { data });
 
             const response = await axios.post<User>(
-                API_ENDPOINTS.AUTH,
+                API_ENDPOINTS.ADMIN_USERS,
                 data,
                 createRequestConfig(token)
             );
@@ -174,7 +170,7 @@ export const updateUser = createAsyncThunk(
     'users/updateUser',
     async ({ id, data, token }: UpdateUserParams, { rejectWithValue }) => {
         try {
-            const url = `${API_ENDPOINTS.AUTH}/${id}`;
+            const url = `${API_ENDPOINTS.ADMIN_USERS}/${id}`;
             logger.apiRequest('PUT', url, { data });
 
             const response = await axios.put<User>(url, data, createRequestConfig(token));
@@ -192,7 +188,7 @@ export const deleteUser = createAsyncThunk(
     'users/deleteUser',
     async ({ id, token }: DeleteUserParams, { rejectWithValue }) => {
         try {
-            const url = `${API_ENDPOINTS.AUTH}/${id}`;
+            const url = `${API_ENDPOINTS.ADMIN_USERS}/${id}`;
             logger.apiRequest('DELETE', url);
 
             const response = await axios.delete(url, createRequestConfig(token));
@@ -210,7 +206,7 @@ export const updateUserImage = createAsyncThunk(
     'users/updateUserImage',
     async ({ id, file, token }: UpdateUserImageParams, { rejectWithValue }) => {
         try {
-            const url = `${API_ENDPOINTS.AUTH}/${id}/image`;
+            const url = `${API_ENDPOINTS.ADMIN_USERS}/${id}/image`;
             logger.apiRequest('PUT', url, { fileName: file.name });
 
             const formData = new FormData();
@@ -231,7 +227,7 @@ export const fetchAllRoles = createAsyncThunk(
     'users/fetchAllRoles',
     async ({ token }: FetchRolesParams, { rejectWithValue }) => {
         try {
-            const url = `${API_ENDPOINTS.AUTH}/roles`;
+            const url = API_ENDPOINTS.ADMIN_ROLES;
             logger.apiRequest('GET', url);
 
             const response = await axios.get<RolesResponse>(url, createRequestConfig(token));

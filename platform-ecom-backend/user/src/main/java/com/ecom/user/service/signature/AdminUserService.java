@@ -15,4 +15,6 @@ public interface AdminUserService {
     public void deleteUser(Long userId);
 
     public UserInfoResponse getUserById(Long userId);
+
+    public String uploadUserImage(Long userId, org.springframework.web.multipart.MultipartFile image);
 }

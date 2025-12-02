@@ -6,12 +6,20 @@
 // API Configuration
 export const API_ENDPOINTS = {
     BASE_URL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080',
-    PRODUCTS: `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080'}/api/products/seller`,
-    CATEGORIES: `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080'}/api/categories`,
-    USERS: `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080'}/api/users`,
-    AUTH: `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080'}/api/auth`,
-    PRODUCT_IMAGES: `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080'}/api/product-image`,
-    ROLES: `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080'}/api/roles`,
+    // Products
+    PRODUCTS_PUBLIC: `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080'}/api/v1/products`,
+    PRODUCTS_SELLER: `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080'}/api/v1/sellers/products`,
+    PRODUCTS_ADMIN: `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080'}/api/v1/admin/products`,
+
+    // Categories
+    CATEGORIES_PUBLIC: `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080'}/api/v1/categories`,
+    CATEGORIES_ADMIN: `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080'}/api/v1/admin/categories`,
+
+    // Users & Auth
+    USERS: `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080'}/api/v1/users`,
+    ADMIN_USERS: `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080'}/api/v1/admin/users`,
+    AUTH: `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080'}/api/v1/auth`,
+    ADMIN_ROLES: `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080'}/api/v1/admin/roles`,
 } as const;
 
 // Pagination Defaults

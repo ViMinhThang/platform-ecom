@@ -3,13 +3,13 @@ package com.ecom.user.service.impl;
 import com.ecom.common.exception.APIException;
 import com.ecom.common.exception.ResourceNotFoundException;
 import com.ecom.common.exception.UserAlreadyExistsException;
+import com.ecom.common.service.FileStorageService;
 import com.ecom.user.dtos.UserDTO;
 import com.ecom.user.dtos.UserInfoResponse;
 import com.ecom.user.dtos.UserResponse;
 import com.ecom.user.entity.AppRole;
 import com.ecom.user.entity.Role;
 import com.ecom.user.entity.User;
-import com.ecom.user.repositories.RoleRepository;
 import com.ecom.user.repositories.UserRepository;
 import com.ecom.user.service.signature.AdminUserService;
 import com.ecom.user.service.signature.RoleService;
@@ -30,10 +30,10 @@ import java.util.stream.Collectors;
 public class AdminUserServiceImpl implements AdminUserService {
 
     private final UserRepository userRepository;
-    private final RoleRepository roleRepository;
     private final ModelMapper modelMapper;
     private final PasswordEncoder encoder;
     private final RoleService roleService;
+    private final FileStorageService fileStorageService;
 
     @Override
     public UserResponse getAllUsers(Pageable pageable) {
@@ -114,6 +114,16 @@ public class AdminUserServiceImpl implements AdminUserService {
     @Override
     public UserInfoResponse getUserById(Long userId) {
         return mapUserToUserInfoResponse(getUserByUserIdFromDatabase(userId));
+    }
+
+    @Override
+    @Transactional
+    public String uploadUserImage(Long userId, org.springframework.web.multipart.MultipartFile image) {
+        User user = getUserByUserIdFromDatabase(userId);
+        String fileName = fileStorageService.storeFile(image);
+        user.setImageUrl(fileName);
+        userRepository.save(user);
+        return fileName;
     }
 
     private User getUserByUserIdFromDatabase(Long userId) {

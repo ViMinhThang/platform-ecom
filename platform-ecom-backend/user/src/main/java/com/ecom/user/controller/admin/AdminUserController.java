@@ -15,12 +15,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 /**
- * Controller for admin-level address management
+ * Controller for admin-level user management
  * All endpoints require ROLE_ADMIN
- * Base path: /api/v1/admin/addresses
+ * Base path: /api/v1
  */
 @RestController
-@RequestMapping("/api/v1/admin/users")
+@RequestMapping("/api/v1")
 @RequiredArgsConstructor
 public class AdminUserController {
 
@@ -76,6 +76,19 @@ public class AdminUserController {
             @RequestBody UserDTO userDTO) {
         UserDTO savedUser = adminUserService.updateUserByAdmin(userId, userDTO);
         return ResponseBuilder.success("User updated successfully", savedUser);
+    }
+
+    /**
+     * PUT /api/v1/admin/users/{id}/image
+     * Admin endpoint to update user image
+     */
+    @PutMapping("/admin/users/{id}/image")
+    @RequireRole("ROLE_ADMIN")
+    public ResponseEntity<APIResponse<String>> uploadUserImage(
+            @PathVariable("id") Long userId,
+            @RequestParam("file") org.springframework.web.multipart.MultipartFile image) {
+        String imageUrl = adminUserService.uploadUserImage(userId, image);
+        return ResponseBuilder.success("User image updated successfully", imageUrl);
     }
 
     /**

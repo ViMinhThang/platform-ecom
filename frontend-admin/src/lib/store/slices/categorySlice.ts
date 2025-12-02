@@ -94,7 +94,7 @@ export const fetchCategories = createAsyncThunk(
     'categories/fetchCategories',
     async ({ token, params }: FetchCategoriesParams, { rejectWithValue }) => {
         try {
-            const url = `${API_ENDPOINTS.CATEGORIES}/public`;
+            const url = API_ENDPOINTS.CATEGORIES_PUBLIC;
             logger.apiRequest('GET', url, params);
 
             const response = await axios.get<CategoryResponse>(url, {
@@ -115,7 +115,7 @@ export const fetchCategoryById = createAsyncThunk(
     'categories/fetchCategoryById',
     async ({ id, token }: FetchCategoryByIdParams, { rejectWithValue }) => {
         try {
-            const url = `${API_ENDPOINTS.CATEGORIES}/${id}/public`;
+            const url = `${API_ENDPOINTS.CATEGORIES_PUBLIC}/${id}`;
             logger.apiRequest('GET', url);
 
             const response = await axios.get<APIResponse<Category>>(url, createRequestConfig(token));
@@ -133,15 +133,15 @@ export const createCategory = createAsyncThunk(
     'categories/createCategory',
     async ({ data, token }: CreateCategoryParams, { rejectWithValue }) => {
         try {
-            logger.apiRequest('POST', API_ENDPOINTS.CATEGORIES, { data });
+            logger.apiRequest('POST', API_ENDPOINTS.CATEGORIES_ADMIN, { data });
 
             const response = await axios.post<APIResponse<Category>>(
-                API_ENDPOINTS.CATEGORIES,
+                API_ENDPOINTS.CATEGORIES_ADMIN,
                 data,
                 createRequestConfig(token)
             );
 
-            logger.apiResponse('POST', API_ENDPOINTS.CATEGORIES, response.status);
+            logger.apiResponse('POST', API_ENDPOINTS.CATEGORIES_ADMIN, response.status);
             return unwrapResponse(response);
         } catch (error) {
             handleApiError(error);
@@ -154,7 +154,7 @@ export const updateCategory = createAsyncThunk(
     'categories/updateCategory',
     async ({ id, data, token }: UpdateCategoryParams, { rejectWithValue }) => {
         try {
-            const url = `${API_ENDPOINTS.CATEGORIES}/${id}`;
+            const url = `${API_ENDPOINTS.CATEGORIES_ADMIN}/${id}`;
             logger.apiRequest('PUT', url, { data });
 
             const response = await axios.put<APIResponse<Category>>(url, data, createRequestConfig(token));
@@ -172,7 +172,7 @@ export const deleteCategory = createAsyncThunk(
     'categories/deleteCategory',
     async ({ id, token }: DeleteCategoryParams, { rejectWithValue }) => {
         try {
-            const url = `${API_ENDPOINTS.CATEGORIES}/${id}`;
+            const url = `${API_ENDPOINTS.CATEGORIES_ADMIN}/${id}`;
             logger.apiRequest('DELETE', url);
 
             const response = await axios.delete<APIResponse<string>>(url, createRequestConfig(token));
@@ -191,7 +191,7 @@ export const updateCategoryImage = createAsyncThunk(
     'categories/updateCategoryImage',
     async ({ id, file, token }: UpdateCategoryImageParams, { rejectWithValue }) => {
         try {
-            const url = `${API_ENDPOINTS.CATEGORIES}/${id}/image`;
+            const url = `${API_ENDPOINTS.CATEGORIES_ADMIN}/${id}/image`;
             logger.apiRequest('PUT', url, { fileName: file.name });
 
             const formData = new FormData();
@@ -316,20 +316,9 @@ const categorySlice = createSlice({
             })
             .addCase(updateCategoryImage.fulfilled, (state, action) => {
                 state.loading = false;
-                // Assuming the response is just the image URL string, and we need to update the category in the list
-                // Note: The backend returns string, but we might need to know which category it was if we want to update the list item.
-                // I modified the thunk to return { id, imageUrl }
                 const index = state.items.findIndex((c) => c.id === action.payload.id);
                 if (index !== -1) {
-                    // Assuming Category has an image field. Let's check the type definition if possible, but for now assuming 'image' or 'imageUrl'
-                    // Based on previous files, it might be 'image' or similar.
-                    // I'll assume 'image' property exists on Category type or similar.
-                    // If not, this might need adjustment.
-                    // Let's check Category type content from previous steps or just assume for now.
-                    // Actually I didn't see the content of Category type. I'll assume it has an image field.
-                    // If not, I'll just leave it for now.
-                    // Wait, I can see Category type in `src/types/category/category.ts` if I read it.
-                    // I'll read it in the next step to be sure.
+
                 }
             })
             .addCase(updateCategoryImage.rejected, (state, action) => {
