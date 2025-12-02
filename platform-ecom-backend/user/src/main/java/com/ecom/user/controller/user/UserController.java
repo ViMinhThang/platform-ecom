@@ -1,11 +1,11 @@
-package com.ecom.user.controller;
+package com.ecom.user.controller.admin;
 
 import com.ecom.common.aspect.RequireRole;
 import com.ecom.common.security.AuthContext;
 import com.ecom.common.util.*;
 import com.ecom.user.dtos.*;
-import com.ecom.user.service.AuthService;
-import com.ecom.user.service.UserService;
+import com.ecom.user.service.signature.AuthService;
+import com.ecom.user.service.signature.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

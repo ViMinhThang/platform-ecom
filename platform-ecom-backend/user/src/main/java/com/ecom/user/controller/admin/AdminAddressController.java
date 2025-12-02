@@ -2,7 +2,7 @@ package com.ecom.user.controller;
 import com.ecom.common.util.APIResponse;
 import com.ecom.common.util.ResponseBuilder;
 import com.ecom.user.dtos.AddressDTO;
-import com.ecom.user.service.AddressService;
+import com.ecom.user.service.signature.AddressService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
