@@ -3,6 +3,7 @@
 export interface Category {
   id: number;
   name: string;
+  slug: string;
   imageUrl?: string;
   createdAt?: string;
   updatedAt?: string;
@@ -18,6 +19,7 @@ export interface CategoryResponse {
 }
 
 export interface ProductRow {
+  minPrice: number;
   id: number;
   name: string;
   category: Category;

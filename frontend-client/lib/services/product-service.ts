@@ -9,6 +9,9 @@ export interface GetProductsParams {
     search?: string;
     sortBy?: string;
     sortOrder?: 'asc' | 'desc';
+    minPrice?: number;
+    maxPrice?: number;
+    minRating?: number;
 }
 
 /**
@@ -23,6 +26,9 @@ export const getPublicProducts = async (params: GetProductsParams = {}): Promise
     if (params.search) searchParams.set('search', params.search);
     if (params.sortBy) searchParams.set('sortBy', params.sortBy);
     if (params.sortOrder) searchParams.set('sortOrder', params.sortOrder);
+    if (params.minPrice !== undefined) searchParams.set('minPrice', params.minPrice.toString());
+    if (params.maxPrice !== undefined) searchParams.set('maxPrice', params.maxPrice.toString());
+    if (params.minRating !== undefined) searchParams.set('minRating', params.minRating.toString());
 
     const query = searchParams.toString();
     const endpoint = `/v1/products${query ? `?${query}` : ''}`;

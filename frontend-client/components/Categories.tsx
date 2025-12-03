@@ -27,7 +27,7 @@ export async function Categories() {
         {categories.map((category) => (
           <Link
             key={category.id}
-            href={`/products?category=${encodeURIComponent(category.name)}`}
+            href={`/category/${category.slug}`}
             className="flex flex-col items-center gap-4 p-4 rounded-xl hover:bg-secondary/50 transition-colors group"
           >
             <div className="relative w-28 h-28 rounded-full overflow-hidden border-2 border-border shadow-sm bg-secondary group-hover:border-primary transition-colors">

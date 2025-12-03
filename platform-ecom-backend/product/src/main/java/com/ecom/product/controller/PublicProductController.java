@@ -13,6 +13,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
+
 @RestController
 @RequestMapping("/api/v1/products")
 @RequiredArgsConstructor
@@ -24,14 +26,20 @@ public class PublicProductController {
     public ResponseEntity<APIResponse<ProductResponse>> getPublicProducts(
             PaginationRequest paginationRequest,
             @RequestParam(name = "category", required = false) String category,
-            @RequestParam(name = "search", required = false) String search) {
+            @RequestParam(name = "search", required = false) String search,
+            @RequestParam(name = "minPrice", required = false) BigDecimal minPrice,
+            @RequestParam(name = "maxPrice", required = false) BigDecimal maxPrice,
+            @RequestParam(name = "minRating", required = false) Double minRating) {
         ProductResponse productResponse = productService.getAllPublicProducts(
                 paginationRequest.getPageNumber(),
                 paginationRequest.getPageSize(),
                 category,
                 search,
                 paginationRequest.getSortBy(),
-                paginationRequest.getSortOrder());
+                paginationRequest.getSortOrder(),
+                minPrice,
+                maxPrice,
+                minRating);
         return ResponseBuilder.success("Products retrieved successfully", productResponse);
     }
 

@@ -34,10 +34,10 @@ public class ProductServiceImpl implements ProductService {
     @Transactional
     public ProductRowDTO createProduct(ProductDTO productDTO, Long userId) {
         Category category = findCategoryById(productDTO.getCate().getId());
-        
+
         Product product = buildProductFromDTO(productDTO, category, userId);
         Product savedProduct = productRepository.save(product);
-        
+
         return productMapper.toRowDTO(savedProduct);
     }
 
@@ -52,7 +52,7 @@ public class ProductServiceImpl implements ProductService {
     @Transactional
     public ProductDTO updateProduct(Long productId, ProductDTO productDTO) {
         Product existingProduct = findProductById(productId);
-        
+
         // Explicit field updates - safer than modelMapper.map()
         if (productDTO.getName() != null) {
             existingProduct.setName(productDTO.getName());
@@ -73,7 +73,7 @@ public class ProductServiceImpl implements ProductService {
             Category category = findCategoryById(productDTO.getCate().getId());
             existingProduct.setCategory(category);
         }
-        
+
         Product updatedProduct = productRepository.save(existingProduct);
         return productMapper.toDTO(updatedProduct);
     }
@@ -84,32 +84,34 @@ public class ProductServiceImpl implements ProductService {
         Product product = findProductById(productId);
         ProductDTO productDTO = productMapper.toDTO(product);
         productRepository.delete(product);
-        
+
         return productDTO;
     }
 
     @Override
     @Transactional(readOnly = true)
-    public ProductResponse getAllProductsForSeller(Integer page, Integer perPage, 
-                                                   String name, String category, 
-                                                   String sortBy, String sortOrder, 
-                                                   Long userId) {
+    public ProductResponse getAllProductsForSeller(Integer page, Integer perPage,
+            String name, String category,
+            String sortBy, String sortOrder,
+            Long userId) {
         Pageable pageable = PageableUtils.createPageable(page, perPage, sortBy, sortOrder);
-        
+
         Specification<Product> specification = buildSellerProductSpecification(userId, name, category);
-        
+
         return fetchAndMapProducts(specification, pageable);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public ProductResponse getAllPublicProducts(Integer page, Integer perPage, 
-                                                String category, String search, 
-                                                String sortBy, String sortOrder) {
+    public ProductResponse getAllPublicProducts(Integer page, Integer perPage,
+            String category, String search,
+            String sortBy, String sortOrder,
+            BigDecimal minPrice, BigDecimal maxPrice, Double minRating) {
         Pageable pageable = PageableUtils.createPageable(page, perPage, sortBy, sortOrder);
-        
-        Specification<Product> specification = buildPublicProductSpecification(search, category);
-        
+
+        Specification<Product> specification = buildPublicProductSpecification(search, category, minPrice, maxPrice,
+                minRating);
+
         return fetchAndMapProducts(specification, pageable);
     }
 
@@ -118,7 +120,7 @@ public class ProductServiceImpl implements ProductService {
     public ProductDTO getPublicProductById(Long productId) {
         Product product = findProductById(productId);
         validateProductIsActive(product);
-        
+
         return productMapper.toDTO(product);
     }
 
@@ -127,7 +129,7 @@ public class ProductServiceImpl implements ProductService {
     public ProductDetailDTO getProductWithVariants(Long productId) {
         Product product = findProductById(productId);
         validateProductIsActive(product);
-        
+
         return productMapper.toDetailDTO(product);
     }
 
@@ -152,7 +154,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     private void validateProductIsActive(Product product) {
-        if (!ProductStatus.ACTIVE.getValue().equals(product.getStatus())) {
+        if (!ProductStatus.ACTIVE.getValue().equals(product.getStatus()) || Boolean.TRUE.equals(product.getDeleted())) {
             throw new ResourceNotFoundException("Product", "ProductId", product.getId());
         }
     }
@@ -175,21 +177,40 @@ public class ProductServiceImpl implements ProductService {
                 .and(ProductUtils.categoryEquals(category));
     }
 
-    private Specification<Product> buildPublicProductSpecification(String search, String category) {
-        Specification<Product> spec = ProductUtils.statusEquals(ProductStatus.ACTIVE.getValue());
-        if (search != null) {
-            spec = spec != null ? spec.and(ProductUtils.nameContains(search)) : ProductUtils.nameContains(search);
+    private Specification<Product> buildPublicProductSpecification(String search, String category, BigDecimal minPrice,
+            BigDecimal maxPrice, Double minRating) {
+        // Start with base filters: ACTIVE status AND not deleted
+        Specification<Product> spec = ProductUtils.statusEquals(ProductStatus.ACTIVE.getValue())
+                .and(ProductUtils.isNotDeleted());
+
+        if (search != null && !search.isEmpty()) {
+            spec = spec.and(ProductUtils.nameContains(search));
         }
-        if (category != null) {
-            spec = spec != null ? spec.and(ProductUtils.categoryEquals(category)) : ProductUtils.categoryEquals(category);
+
+        // Support both category name and slug
+        if (category != null && !category.isEmpty()) {
+            // Try slug first, fall back to name for backward compatibility
+            spec = spec.and(ProductUtils.categorySlugEquals(category)
+                    .or(ProductUtils.categoryEquals(category)));
         }
+
+        // Apply price range filter
+        if (minPrice != null || maxPrice != null) {
+            spec = spec.and(ProductUtils.priceRange(minPrice, maxPrice));
+        }
+
+        // Apply rating filter
+        if (minRating != null) {
+            spec = spec.and(ProductUtils.ratingGreaterThanOrEqual(minRating));
+        }
+
         return spec;
     }
 
     private ProductResponse fetchAndMapProducts(Specification<Product> specification, Pageable pageable) {
         Page<Product> productPage = productRepository.findAll(specification, pageable);
         List<ProductRowDTO> productRows = productMapper.toRowDTOs(productPage.getContent());
-        
+
         return buildProductResponse(productPage, productRows);
     }
 
@@ -201,7 +222,7 @@ public class ProductServiceImpl implements ProductService {
         response.setTotalElements(productPage.getTotalElements());
         response.setTotalPages(productPage.getTotalPages());
         response.setLastPage(productPage.isLast());
-        
+
         return response;
     }
 }

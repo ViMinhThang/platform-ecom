@@ -9,6 +9,12 @@ export interface ProductRow {
   status: 'DRAFT' | 'ACTIVE' | 'OUT_OF_STOCK';
   variants: number;
   description: string;
+  minPrice: number;
+  totalSold: number;
+  totalReviews: number;
+  averageRating: number;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface PaginatedProducts {
@@ -19,6 +25,7 @@ export interface PaginatedProducts {
   totalPages: number;
   lastPage: boolean;
 }
+
 export interface Product {
   id?: number;
   name: string;

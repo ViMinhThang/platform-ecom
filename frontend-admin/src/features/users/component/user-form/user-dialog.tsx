@@ -27,6 +27,10 @@ import {
 import { toast } from "sonner";
 import { logger } from "@/lib/logger";
 import { role, User } from "@/types/user/user";
+import { UserImageUploadField } from "./user-image-upload-field";
+import { Badge } from "@/components/ui/badge";
+import { CheckCircle2, XCircle } from "lucide-react";
+import { useController } from "react-hook-form";
 
 /**
  * Default form values for creating a user
@@ -38,6 +42,7 @@ const DEFAULT_FORM_VALUES: UserFormValues = {
   imageUrl: "",
   isActive: "true",
   roles: [],
+  addresses: [],
 };
 
 /**
@@ -56,6 +61,7 @@ function transformUserToFormValues(
     roles: availableRoles
       .filter((role) => user.roles.some((r) => r.roleName === role.roleName))
       .map((role) => String(role.roleId)),
+    addresses: user.addresses || [],
   };
 }
 
@@ -75,8 +81,64 @@ function transformFormValuesToUserData(
 }
 
 /**
+ * User Summary Sidebar Component
+ */
+const UserSummarySidebar: React.FC<{
+  methods: any;
+  userId: number | null | undefined;
+  loading: boolean;
+}> = ({ methods, userId, loading }) => {
+  const {
+    field: { value: imageUrl, onChange: setImage },
+  } = useController({ control: methods.control, name: "imageUrl" });
+
+  const {
+    field: { value: username },
+  } = useController({ control: methods.control, name: "username" });
+
+  const {
+    field: { value: email },
+  } = useController({ control: methods.control, name: "email" });
+
+  const {
+    field: { value: isActive },
+  } = useController({ control: methods.control, name: "isActive" });
+
+  return (
+    <div className="bg-muted/50 p-6 rounded-lg space-y-6">
+      <UserImageUploadField
+        imageUrl={imageUrl}
+        setImage={setImage}
+        userId={userId}
+        loading={loading}
+      />
+
+      <div className="text-center space-y-2">
+        <h3 className="font-semibold text-lg">
+          {username || "New User"}
+        </h3>
+        <p className="text-sm text-muted-foreground">
+          {email || "No email set"}
+        </p>
+        {isActive === "true" ? (
+          <Badge variant="default" className="flex items-center gap-1 w-fit mx-auto">
+            <CheckCircle2 size={14} />
+            Active
+          </Badge>
+        ) : (
+          <Badge variant="destructive" className="flex items-center gap-1 w-fit mx-auto">
+            <XCircle size={14} />
+            Inactive
+          </Badge>
+        )}
+      </div>
+    </div>
+  );
+};
+
+/**
  * User Dialog Component
- * Handles creating and updating users
+ * Handles creating and updating users with enhanced split-view layout
  */
 export const UserDialog: React.FC<UserDialogProps> = ({
   userId,
@@ -179,7 +241,7 @@ export const UserDialog: React.FC<UserDialogProps> = ({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+      <DialogContent className="max-w-5xl max-h-[90vh] overflow-hidden">
         <DialogHeader>
           <DialogTitle>{dialogTitle}</DialogTitle>
           <DialogDescription>{dialogDescription}</DialogDescription>
@@ -187,13 +249,27 @@ export const UserDialog: React.FC<UserDialogProps> = ({
 
         <FormProvider {...methods}>
           <form onSubmit={handleSubmit} onError={handleFormError}>
-            <UserFormFields
-              control={methods.control}
-              loading={loading}
-              userId={userId}
-            />
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 overflow-y-auto max-h-[calc(90vh-200px)] px-1">
+              {/* Left Sidebar - User Summary */}
+              <div className="md:col-span-1">
+                <UserSummarySidebar
+                  methods={methods}
+                  userId={userId}
+                  loading={loading}
+                />
+              </div>
 
-            <div className="mt-6 flex justify-end gap-3">
+              {/* Right Content - Form Fields with Tabs */}
+              <div className="md:col-span-2">
+                <UserFormFields
+                  control={methods.control}
+                  loading={loading}
+                  userId={userId}
+                />
+              </div>
+            </div>
+
+            <div className="mt-6 flex justify-end gap-3 pt-4 border-t">
               <Button
                 type="button"
                 variant="outline"

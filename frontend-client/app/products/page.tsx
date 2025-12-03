@@ -1,40 +1,32 @@
-import { getPublicProducts } from "@/lib/services/product-service";
+"use client";
+
+import { useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 import { ProductCard } from "@/components/ProductCard";
-import type { ProductRow } from "@/types/product";
-import { logger } from "@/lib/logger";
+import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
+import { fetchProducts } from "@/lib/store/slices/productSlice";
 
-interface ProductsPageProps {
-  searchParams: { [key: string]: string | string[] | undefined };
-}
+export default function ProductsPage() {
+  const dispatch = useAppDispatch();
+  const searchParams = useSearchParams();
+  const { products, loading, error, pagination } = useAppSelector(
+    (state) => state.products
+  );
 
-export default async function ProductsPage({
-  searchParams,
-}: ProductsPageProps) {
-  const page = Number(searchParams.page) || 0;
-  const category =
-    typeof searchParams.category === "string"
-      ? searchParams.category
-      : undefined;
-  const search =
-    typeof searchParams.search === "string" ? searchParams.search : undefined;
+  const page = Number(searchParams.get("page")) || 0;
+  const category = searchParams.get("category") || undefined;
+  const search = searchParams.get("search") || undefined;
 
-  let products: ProductRow[] = [];
-  let totalPages = 0;
-  let error = null;
-
-  try {
-    const data = await getPublicProducts({
-      page,
-      perPage: 12,
-      category,
-      search,
-    });
-    products = data.content;
-    totalPages = data.totalPages;
-  } catch (err) {
-    logger.error("Failed to fetch products:", err);
-    error = "Failed to load products. Please try again later.";
-  }
+  useEffect(() => {
+    dispatch(
+      fetchProducts({
+        page,
+        perPage: 12,
+        category,
+        search,
+      })
+    );
+  }, [dispatch, page, category, search]);
 
   return (
     <div className="container mx-auto py-8 px-4 md:px-6">
@@ -45,7 +37,11 @@ export default async function ProductsPage({
         <p className="text-muted-foreground mt-2">Discover our collection</p>
       </div>
 
-      {error ? (
+      {loading ? (
+        <div className="text-center py-12">
+          <p className="text-muted-foreground">Loading products...</p>
+        </div>
+      ) : error ? (
         <div className="text-center py-12">
           <p className="text-destructive">{error}</p>
         </div>
@@ -57,7 +53,7 @@ export default async function ProductsPage({
                 key={product.id}
                 id={product.id.toString()}
                 name={product.name}
-                price={0}
+                price={product.minPrice || 0}
                 image={product.imageUrl || "https://placehold.co/600x400"}
                 category={product.category.name}
                 isNew={false}
@@ -66,11 +62,11 @@ export default async function ProductsPage({
             ))}
           </div>
 
-          {/* Pagination will go here - Client Component */}
-          {totalPages > 1 && (
+          {/* Pagination */}
+          {pagination.totalPages > 1 && (
             <div className="mt-12 flex justify-center">
               <div className="text-sm text-muted-foreground">
-                Page {page + 1} of {totalPages}
+                Page {pagination.pageNumber + 1} of {pagination.totalPages}
               </div>
             </div>
           )}

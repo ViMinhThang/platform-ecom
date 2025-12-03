@@ -16,27 +16,27 @@ import java.util.Optional;
 @Repository
 public interface OrderGroupRepository extends JpaRepository<OrderGroup, Long> {
 
-    Optional<OrderGroup> findByGroupNumber(String groupNumber);
+        Optional<OrderGroup> findByGroupNumber(String groupNumber);
 
-    Page<OrderGroup> findByUserId(Long userId, Pageable pageable);
+        Page<OrderGroup> findByUserId(Long userId, Pageable pageable);
 
-    List<OrderGroup> findByUserIdAndOverallStatus(Long userId, OrderGroupStatus status);
+        List<OrderGroup> findByUserIdAndOverallStatus(Long userId, OrderGroupStatus status);
 
-    @Query("SELECT og FROM OrderGroup og " +
-            "LEFT JOIN FETCH og.subOrders " +
-            "WHERE og.id = :groupId")
-    Optional<OrderGroup> findByIdWithSubOrders(@Param("groupId") Long groupId);
+        @Query("SELECT og FROM OrderGroup og " +
+                        "LEFT JOIN FETCH og.subOrders " +
+                        "WHERE og.id = :groupId")
+        Optional<OrderGroup> findByIdWithSubOrders(@Param("groupId") Long groupId);
 
-    @Query("SELECT og FROM OrderGroup og " +
-            "WHERE og.userId = :userId " +
-            "AND og.createdAt BETWEEN :startDate AND :endDate")
-    List<OrderGroup> findByUserIdAndDateRange(
-            @Param("userId") Long userId,
-            @Param("startDate") LocalDateTime startDate,
-            @Param("endDate") LocalDateTime endDate);
+        @Query("SELECT og FROM OrderGroup og " +
+                        "WHERE og.userId = :userId " +
+                        "AND og.createdAt BETWEEN :startDate AND :endDate")
+        List<OrderGroup> findByUserIdAndDateRange(
+                        @Param("userId") Long userId,
+                        @Param("startDate") LocalDateTime startDate,
+                        @Param("endDate") LocalDateTime endDate);
 
-    @Query("SELECT COUNT(og) FROM OrderGroup og " +
-            "WHERE og.userId = :userId " +
-            "AND og.paymentStatus = 'SUCCEEDED'")
-    long countCompletedOrdersByUser(@Param("userId") Long userId);
+        @Query("SELECT COUNT(og) FROM OrderGroup og " +
+                        "WHERE og.userId = :userId " +
+                        "AND og.paymentStatus = 'SUCCEEDED'")
+        long countCompletedOrdersByUser(@Param("userId") Long userId);
 }

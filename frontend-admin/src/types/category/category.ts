@@ -2,6 +2,7 @@ export interface Category {
   imageUrl?: string;
   id: number;
   name: string;
+  slug: string;
   createdAt: string;
   updatedAt: string;
 }

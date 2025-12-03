@@ -1,16 +1,34 @@
+"use client";
+
+import { useEffect } from "react";
 import { ProductCard } from "@/components/ProductCard";
-import { getPublicProducts } from "@/lib/services/product-service";
-import type { ProductRow } from "@/types/product";
-import { logger } from "@/lib/logger";
+import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
+import { fetchProducts } from "@/lib/store/slices/productSlice";
 
-export async function FeaturedProducts() {
-  let products: ProductRow[] = [];
+export function FeaturedProducts() {
+  const dispatch = useAppDispatch();
+  const { products, loading } = useAppSelector((state) => state.products);
 
-  try {
-    const data = await getPublicProducts({ page: 0, perPage: 50 });
-    products = data.content;
-  } catch (error) {
-    logger.error("Failed to fetch products:", error);
+  useEffect(() => {
+    dispatch(fetchProducts({ page: 0, perPage: 50 }));
+  }, [dispatch]);
+
+  if (loading && products.length === 0) {
+    return (
+      <section className="container mx-auto py-16 md:py-24 px-4 md:px-6">
+        <div className="flex items-center justify-between mb-10">
+          <div>
+            <h2 className="text-3xl font-bold tracking-tight">
+              Featured Products
+            </h2>
+            <p className="text-muted-foreground mt-2">Handpicked for you.</p>
+          </div>
+        </div>
+        <p className="text-muted-foreground text-center py-12">
+          Loading products...
+        </p>
+      </section>
+    );
   }
 
   return (
@@ -36,7 +54,7 @@ export async function FeaturedProducts() {
               key={product.id}
               id={product.id.toString()}
               name={product.name}
-              price={0}
+              price={product.minPrice || 0}
               image={product.imageUrl || "https://placehold.co/600x400"}
               category={product.category.name}
               isNew={false}

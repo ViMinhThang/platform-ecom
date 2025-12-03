@@ -9,6 +9,7 @@ import java.util.List;
 public class CategoryDTO {
     private Long id;
     private String name;
+    private String slug;
     private String imageUrl;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;

@@ -25,7 +25,12 @@ public class Category {
     @NotBlank
     @Size(min = 5, message = "Category name must contain atleast 5 characters")
     private String name;
+
+    @Column(unique = true, nullable = false)
+    private String slug;
+
     private String imageUrl;
+
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
     private List<Product> products;
 
@@ -43,10 +48,26 @@ public class Category {
     protected void onCreate() {
         createdAt = LocalDateTime.now();
         updatedAt = LocalDateTime.now();
+        if (slug == null || slug.isEmpty()) {
+            slug = generateSlug(name);
+        }
     }
 
     @PreUpdate
     protected void onUpdate() {
         updatedAt = LocalDateTime.now();
+    }
+
+    /**
+     * Generate URL-safe slug from category name
+     */
+    private String generateSlug(String name) {
+        if (name == null)
+            return "";
+        return name.toLowerCase()
+                .replaceAll("[^a-z0-9\\s-]", "") // Remove special characters
+                .replaceAll("\\s+", "-") // Replace spaces with hyphens
+                .replaceAll("-+", "-") // Replace multiple hyphens with single
+                .replaceAll("^-|-$", ""); // Remove leading/trailing hyphens
     }
 }

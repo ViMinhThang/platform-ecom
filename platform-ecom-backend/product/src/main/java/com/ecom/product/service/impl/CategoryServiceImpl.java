@@ -33,8 +33,9 @@ public class CategoryServiceImpl implements CategoryService {
 
         Category category = new Category();
         category.setName(categoryDTO.getName());
+        category.setSlug(categoryDTO.getSlug()); // Allow custom slug if provided
         category.setImageUrl(categoryDTO.getImageUrl());
-        
+
         Category savedCategory = categoryRepository.save(category);
 
         return categoryMapper.toDTO(savedCategory);
@@ -55,6 +56,14 @@ public class CategoryServiceImpl implements CategoryService {
     @Transactional(readOnly = true)
     public CategoryDTO getCategoryById(Long categoryId) {
         Category category = findCategoryById(categoryId);
+        return categoryMapper.toDTO(category);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public CategoryDTO getCategoryBySlug(String slug) {
+        Category category = categoryRepository.findBySlug(slug)
+                .orElseThrow(() -> new ResourceNotFoundException("Category", "slug", slug));
         return categoryMapper.toDTO(category);
     }
 
@@ -93,7 +102,6 @@ public class CategoryServiceImpl implements CategoryService {
 
         return imageUrl;
     }
-
 
     private Category findCategoryById(Long categoryId) {
         return categoryRepository.findById(categoryId)

@@ -5,6 +5,7 @@ export interface User {
   imageUrl: string;
   isActive: string;
   roles: role[];
+  addresses: Address[];
 }
 
 export interface UserResponse {
@@ -21,6 +22,23 @@ export interface role {
   roleName: string;
 }
 
+export interface Address {
+  addressId: number;
+  street: string;
+  buildingName: string;
+  city: string;
+  state: string;
+  country: string;
+  pincode: string;
+  provinceId?: number;
+  provinceName?: string;
+  districtId?: number;
+  districtName?: string;
+  wardCode?: string;
+  wardName?: string;
+  isDefault: boolean;
+}
+
 export interface UserRow {
   userId: number;
   username: string;
@@ -28,4 +46,5 @@ export interface UserRow {
   imageUrl: string;
   isActive: string;
   roles: role[];
+  addresses: Address[];
 }

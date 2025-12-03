@@ -22,6 +22,7 @@ export const API_ENDPOINTS = {
     ADMIN_USERS: `${env.apiBaseUrl}/api/v1/admin/users`,
     AUTH: `${env.apiBaseUrl}/api/v1/auth`,
     ADMIN_ROLES: `${env.apiBaseUrl}/api/v1/admin/roles`,
+    ADMIN_ORDERS: `${env.apiBaseUrl}/api/v1/admin/orders`,
 } as const;
 
 // Pagination Defaults

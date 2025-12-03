@@ -2,7 +2,7 @@
 import { Badge } from "@/components/ui/badge";
 import { DataTableColumnHeader } from "@/components/ui/table/data-table-column-header";
 import { Column, ColumnDef } from "@tanstack/react-table";
-import { CheckCircle2, Text, XCircle } from "lucide-react";
+import { CheckCircle2, Text, XCircle, MapPin } from "lucide-react";
 import { CellAction } from "./cell-action";
 import { User, UserRow } from "@/types/user/user";
 import Image from "next/image";
@@ -107,6 +107,32 @@ export const columns: ColumnDef<UserRow>[] = [
       icon: Text,
     },
     enableColumnFilter: true,
+  },
+  {
+    id: "addresses",
+    accessorKey: "addresses",
+    header: ({ column }: { column: Column<UserRow, unknown> }) => (
+      <DataTableColumnHeader column={column} title="Addresses" />
+    ),
+    cell: ({ cell }) => {
+      const addresses = cell.getValue<UserRow["addresses"]>();
+      const count = addresses?.length || 0;
+      const defaultAddress = addresses?.find(addr => addr.isDefault);
+
+      return (
+        <div className="flex items-center gap-2">
+          <MapPin size={16} className="text-muted-foreground" />
+          <div className="flex flex-col">
+            <span className="font-medium">{count} {count === 1 ? 'address' : 'addresses'}</span>
+            {defaultAddress && (
+              <span className="text-xs text-muted-foreground truncate max-w-[200px]">
+                {defaultAddress.city}, {defaultAddress.country}
+              </span>
+            )}
+          </div>
+        </div>
+      );
+    },
   },
   {
     id: "actions",

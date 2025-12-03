@@ -1,4 +1,6 @@
 import { z } from "zod";
+import { Address } from "./user";
+
 export const UserFormSchema = z.object({
   userId: z.number().optional(),
   username: z.string().min(3),
@@ -6,6 +8,7 @@ export const UserFormSchema = z.object({
   imageUrl: z.string().optional(),
   isActive: z.string(),
   roles: z.array(z.string()).nonempty("At least one role is required"),
+  addresses: z.array(z.any()).optional(),
 });
 
 export type UserFormValues = z.infer<typeof UserFormSchema>;

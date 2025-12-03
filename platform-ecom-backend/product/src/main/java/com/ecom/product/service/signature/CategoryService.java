@@ -13,6 +13,8 @@ public interface CategoryService {
 
     CategoryDTO getCategoryById(Long categoryId);
 
+    CategoryDTO getCategoryBySlug(String slug);
+
     CategoryDTO updateCategory(@Valid CategoryDTO categoryDTO, Long categoryId);
 
     CategoryDTO deleteCategory(Long categoryId);

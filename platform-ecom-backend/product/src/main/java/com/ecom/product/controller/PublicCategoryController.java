@@ -35,4 +35,10 @@ public class PublicCategoryController {
         CategoryDTO categoryDTO = categoryService.getCategoryById(categoryId);
         return ResponseBuilder.success("Category retrieved successfully", categoryDTO);
     }
+
+    @GetMapping("/slug/{slug}")
+    public ResponseEntity<APIResponse<CategoryDTO>> getCategoryBySlug(@PathVariable String slug) {
+        CategoryDTO categoryDTO = categoryService.getCategoryBySlug(slug);
+        return ResponseBuilder.success("Category retrieved successfully", categoryDTO);
+    }
 }

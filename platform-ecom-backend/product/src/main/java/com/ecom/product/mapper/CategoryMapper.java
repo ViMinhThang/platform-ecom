@@ -20,14 +20,15 @@ public class CategoryMapper {
         if (category == null) {
             return null;
         }
-        
+
         CategoryDTO dto = new CategoryDTO();
         dto.setId(category.getId());
         dto.setName(category.getName());
+        dto.setSlug(category.getSlug());
         dto.setImageUrl(category.getImageUrl());
         dto.setCreatedAt(category.getCreatedAt());
         dto.setUpdatedAt(category.getUpdatedAt());
-        
+
         return dto;
     }
 
@@ -38,7 +39,7 @@ public class CategoryMapper {
         if (categories == null) {
             return List.of();
         }
-        
+
         return categories.stream()
                 .map(this::toDTO)
                 .collect(Collectors.toList());

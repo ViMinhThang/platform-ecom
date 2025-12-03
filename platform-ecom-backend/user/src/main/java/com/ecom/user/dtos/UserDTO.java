@@ -1,6 +1,8 @@
 package com.ecom.user.dtos;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import com.ecom.user.entity.Role;
@@ -20,4 +22,5 @@ public class UserDTO {
     private Boolean isActive;
     private String imageUrl;
     private Set<Role> roles = new HashSet<>();
+    private List<AddressDTO> addresses = new ArrayList<>();
 }

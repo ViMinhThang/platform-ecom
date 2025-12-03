@@ -4,26 +4,29 @@ import com.ecom.common.exception.InsufficientStockException;
 import com.ecom.common.exception.OrderGroupNotFoundException;
 import com.ecom.common.exception.UnauthorizedException;
 import com.ecom.order.client.ProductServiceClient;
-import com.ecom.order.dto.CreateOrderRequest;
-import com.ecom.order.dto.OrderGroupDTO;
-import com.ecom.order.dto.SubOrderDTO;
+import com.ecom.order.client.UserServiceClient;
+import com.ecom.order.dto.*;
 import com.ecom.order.entity.*;
+import com.ecom.order.mapper.AdminOrderMapper;
 import com.ecom.order.payment.PaymentIntent;
 import com.ecom.order.repository.CartRepository;
 import com.ecom.order.repository.OrderGroupRepository;
 import com.ecom.order.service.signature.OrderGroupService;
 import com.ecom.order.service.signature.PaymentService;
-import com.ecom.order.dto.ProductDetails;
+import com.ecom.order.utils.OrderUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -35,7 +38,9 @@ public class OrderGroupServiceImpl implements OrderGroupService {
     private final CartRepository cartRepository;
     private final PaymentService paymentService;
     private final ProductServiceClient productServiceClient;
+    private final UserServiceClient userServiceClient;
     private final ModelMapper modelMapper;
+    private final AdminOrderMapper adminOrderMapper;
 
     /**
      * Create Order Group from Cart (Multi-Seller Support)
@@ -286,5 +291,153 @@ public class OrderGroupServiceImpl implements OrderGroupService {
         dto.setSubOrders(subOrderDTOs);
 
         return dto;
+    }
+
+    /**
+     * Admin: Get all orders with filtering
+     */
+    @Override
+    @Transactional(readOnly = true)
+    public Page<AdminOrderGroupDTO> getAllOrdersAdmin(OrderFilterRequest filter) {
+        Specification<OrderGroup> spec = Specification.where(null);
+
+        if (filter.getGroupNumber() != null) {
+            spec = spec.and(OrderUtils.groupNumberContains(filter.getGroupNumber()));
+        }
+        if (filter.getOverallStatus() != null) {
+            spec = spec.and(OrderUtils.overallStatusEquals(filter.getOverallStatus()));
+        }
+        if (filter.getPaymentStatus() != null) {
+            spec = spec.and(OrderUtils.paymentStatusEquals(filter.getPaymentStatus()));
+        }
+        if (filter.getStartDate() != null || filter.getEndDate() != null) {
+            spec = spec.and(OrderUtils.createdBetween(filter.getStartDate(), filter.getEndDate()));
+        }
+        if (filter.getMinAmount() != null || filter.getMaxAmount() != null) {
+            spec = spec.and(OrderUtils.totalAmountBetween(filter.getMinAmount(), filter.getMaxAmount()));
+        }
+        if (filter.getSellerName() != null) {
+            spec = spec.and(OrderUtils.hasSubOrderWithSeller(filter.getSellerName()));
+        }
+
+        Pageable pageable = org.springframework.data.domain.PageRequest.of(
+                filter.getPageNumber(),
+                filter.getPageSize(),
+                filter.getSortDirection(),
+                filter.getSortBy());
+
+        Page<OrderGroup> orders = orderGroupRepository.findAll(spec, pageable);
+
+        return orders.map(order -> {
+            UserDTO user = userServiceClient.getUserSafe(order.getUserId());
+            // For list view, we might not need full addresses to save performance, but
+            // let's fetch for now
+            return adminOrderMapper.toAdminDTO(order, user, null, null);
+        });
+    }
+
+    /**
+     * Admin: Get order details
+     */
+    @Override
+    @Transactional(readOnly = true)
+    public AdminOrderGroupDTO getOrderDetailsAdmin(Long groupId) {
+        OrderGroup group = orderGroupRepository.findByIdWithSubOrders(groupId)
+                .orElseThrow(() -> new OrderGroupNotFoundException(groupId));
+
+        UserDTO user = userServiceClient.getUserSafe(group.getUserId());
+        AddressDTO shipping = userServiceClient.getAddressSafe(group.getUserId(), group.getShippingAddressId());
+        AddressDTO billing = group.getBillingAddressId() != null
+                ? userServiceClient.getAddressSafe(group.getUserId(), group.getBillingAddressId())
+                : null;
+
+        return adminOrderMapper.toAdminDTO(group, user, shipping, billing);
+    }
+
+    /**
+     * Admin: Update overall order status
+     */
+    @Override
+    @Transactional
+    public AdminOrderGroupDTO updateOrderStatus(Long groupId, String newStatus, String notes) {
+        OrderGroup group = orderGroupRepository.findByIdWithSubOrders(groupId)
+                .orElseThrow(() -> new OrderGroupNotFoundException(groupId));
+
+        try {
+            OrderGroupStatus status = OrderGroupStatus.valueOf(newStatus);
+            group.setOverallStatus(status);
+
+            // If cancelled, cancel all sub-orders
+            if (status == OrderGroupStatus.CANCELLED) {
+                for (SubOrder subOrder : group.getSubOrders()) {
+                    if (subOrder.getStatus() != SubOrderStatus.CANCELLED &&
+                            subOrder.getStatus() != SubOrderStatus.DELIVERED) {
+                        subOrder.updateStatus(SubOrderStatus.CANCELLED, null, "Admin cancelled order group: " + notes);
+                    }
+                }
+            }
+
+            group = orderGroupRepository.save(group);
+            return getOrderDetailsAdmin(groupId);
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException("Invalid status: " + newStatus);
+        }
+    }
+
+    /**
+     * Admin: Update sub-order status
+     */
+    @Override
+    @Transactional
+    public AdminSubOrderDTO updateSubOrderStatus(Long groupId, Long subOrderId, String newStatus, Long adminId,
+            String notes) {
+        OrderGroup group = orderGroupRepository.findByIdWithSubOrders(groupId)
+                .orElseThrow(() -> new OrderGroupNotFoundException(groupId));
+
+        SubOrder subOrder = group.getSubOrders().stream()
+                .filter(so -> so.getId().equals(subOrderId))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("Sub-order not found: " + subOrderId));
+
+        try {
+            SubOrderStatus status = SubOrderStatus.valueOf(newStatus);
+            subOrder.updateStatus(status, adminId, notes);
+
+            orderGroupRepository.save(group); // Will cascade update to sub-order and trigger overall status update
+
+            return adminOrderMapper.toAdminSubOrderDTO(subOrder);
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException("Invalid status: " + newStatus);
+        }
+    }
+
+    /**
+     * Admin: Update tracking info
+     */
+    @Override
+    @Transactional
+    public AdminSubOrderDTO updateSubOrderTracking(Long groupId, Long subOrderId, TrackingUpdateRequest request) {
+        OrderGroup group = orderGroupRepository.findByIdWithSubOrders(groupId)
+                .orElseThrow(() -> new OrderGroupNotFoundException(groupId));
+
+        SubOrder subOrder = group.getSubOrders().stream()
+                .filter(so -> so.getId().equals(subOrderId))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("Sub-order not found: " + subOrderId));
+
+        if (request.getTrackingNumber() != null)
+            subOrder.setTrackingNumber(request.getTrackingNumber());
+        if (request.getTrackingUrl() != null)
+            subOrder.setTrackingUrl(request.getTrackingUrl());
+        if (request.getCarrier() != null)
+            subOrder.setCarrier(request.getCarrier());
+        if (request.getEstimatedDelivery() != null)
+            subOrder.setEstimatedDelivery(request.getEstimatedDelivery());
+        if (request.getFulfillmentStatus() != null)
+            subOrder.setFulfillmentStatus(request.getFulfillmentStatus());
+
+        orderGroupRepository.save(group);
+
+        return adminOrderMapper.toAdminSubOrderDTO(subOrder);
     }
 }

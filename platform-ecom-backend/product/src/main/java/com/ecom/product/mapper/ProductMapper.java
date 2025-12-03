@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 public class ProductMapper {
 
     private static final String DEFAULT_IMAGE_URL = "placehold.co/600x400";
-    
+
     private final CategoryMapper categoryMapper;
     private final ProductVariantMapper productVariantMapper;
 
@@ -28,7 +28,7 @@ public class ProductMapper {
         if (product == null) {
             return null;
         }
-        
+
         ProductDTO dto = new ProductDTO();
         dto.setId(product.getId());
         dto.setName(product.getName());
@@ -45,7 +45,7 @@ public class ProductMapper {
         dto.setTotalReviews(product.getTotalReviews());
         dto.setAverageRating(product.getAverageRating());
         dto.setUserId(product.getUserId());
-        
+
         return dto;
     }
 
@@ -56,7 +56,7 @@ public class ProductMapper {
         if (product == null) {
             return null;
         }
-        
+
         return ProductRowDTO.builder()
                 .id(product.getId())
                 .name(product.getName())
@@ -70,6 +70,8 @@ public class ProductMapper {
                 .totalSold(product.getTotalSold())
                 .totalReviews(product.getTotalReviews())
                 .averageRating(product.getAverageRating())
+                .createdAt(product.getCreatedAt())
+                .updatedAt(product.getUpdatedAt())
                 .build();
     }
 
@@ -80,7 +82,7 @@ public class ProductMapper {
         if (product == null) {
             return null;
         }
-        
+
         ProductDetailDTO dto = new ProductDetailDTO();
         dto.setId(product.getId());
         dto.setName(product.getName());
@@ -96,12 +98,12 @@ public class ProductMapper {
         dto.setTotalSold(product.getTotalSold());
         dto.setTotalReviews(product.getTotalReviews());
         dto.setAverageRating(product.getAverageRating());
-        
+
         // Map collections
         dto.setOptions(mapProductOptions(product));
         dto.setVariants(productVariantMapper.mapActiveVariants(product));
         dto.setImages(mapProductImages(product));
-        
+
         return dto;
     }
 
@@ -112,7 +114,7 @@ public class ProductMapper {
         if (products == null) {
             return List.of();
         }
-        
+
         return products.stream()
                 .map(this::toRowDTO)
                 .collect(Collectors.toList());
@@ -135,7 +137,7 @@ public class ProductMapper {
         if (product.getOptions() == null) {
             return List.of();
         }
-        
+
         return product.getOptions().stream()
                 .map(this::mapProductOptionToDTO)
                 .collect(Collectors.toList());
@@ -149,13 +151,13 @@ public class ProductMapper {
         dto.setId(option.getId());
         dto.setName(option.getName());
         dto.setDisplayName(option.getDisplayName());
-        
+
         if (option.getValues() != null) {
             dto.setValues(option.getValues().stream()
                     .map(this::mapProductOptionValueToDTO)
                     .collect(Collectors.toList()));
         }
-        
+
         return dto;
     }
 
@@ -177,7 +179,7 @@ public class ProductMapper {
         if (product.getImages() == null) {
             return List.of();
         }
-        
+
         return product.getImages().stream()
                 .map(this::mapProductImageToDTO)
                 .collect(Collectors.toList());

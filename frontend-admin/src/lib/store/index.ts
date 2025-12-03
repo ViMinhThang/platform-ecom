@@ -6,6 +6,7 @@ import categoryReducer from './slices/categorySlice';
 import userReducer from './slices/userSlice';
 import kanbanReducer from './slices/kanbanSlice';
 import uiReducer from './slices/uiSlice';
+import orderReducer from './slices/orderSlice';
 
 export const store = configureStore({
     reducer: {
@@ -16,6 +17,7 @@ export const store = configureStore({
         users: userReducer,
         kanban: kanbanReducer,
         ui: uiReducer,
+        orders: orderReducer,
     },
 });
 

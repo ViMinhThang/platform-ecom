@@ -1,11 +1,11 @@
 "use client";
 
-import { Control, useController } from "react-hook-form";
+import { Control } from "react-hook-form";
 import { UserFormValues } from "@/types/user/user.form";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { UserBasicInfoFields } from "./user-basic-info-fields";
-import { UserImageUploadField } from "./user-image-upload-field";
 import { UserRolesField } from "./user-roles-field";
-
+import { UserAddressesField } from "./user-addresses-field";
 
 interface UserFormFieldsProps {
   control: Control<UserFormValues>;
@@ -14,30 +14,40 @@ interface UserFormFieldsProps {
 }
 
 /**
- * User Form Fields Container
- * Orchestrates all user form field components
+ * User Form Fields Container with Tabs
+ * Orchestrates all user form field components in a tabbed layout
  */
 export const UserFormFields: React.FC<UserFormFieldsProps> = ({
   control,
   loading,
   userId,
 }) => {
-  const {
-    field: { value: imageUrl, onChange: setImage },
-  } = useController({ control, name: "imageUrl" });
-
   return (
-    <div className="space-y-6">
-      <UserBasicInfoFields control={control} loading={loading} />
+    <Tabs defaultValue="profile" className="w-full">
+      <TabsList className="grid w-full grid-cols-3">
+        <TabsTrigger value="profile">Profile</TabsTrigger>
+        <TabsTrigger value="addresses">Addresses</TabsTrigger>
+        <TabsTrigger value="security">Security</TabsTrigger>
+      </TabsList>
 
-      <UserImageUploadField
-        imageUrl={imageUrl}
-        setImage={setImage}
-        userId={userId}
-        loading={loading}
-      />
+      <TabsContent value="profile" className="space-y-4 mt-4">
+        <UserBasicInfoFields control={control} loading={loading} />
+        <UserRolesField control={control} loading={loading} />
+      </TabsContent>
 
-      <UserRolesField control={control} loading={loading} />
-    </div>
+      <TabsContent value="addresses" className="mt-4">
+        <UserAddressesField
+          control={control}
+          loading={loading}
+          userId={userId}
+        />
+      </TabsContent>
+
+      <TabsContent value="security" className="mt-4">
+        <div className="text-center text-muted-foreground py-8">
+          <p>Password management coming soon...</p>
+        </div>
+      </TabsContent>
+    </Tabs>
   );
 };

@@ -21,7 +21,7 @@ export async function CategorySidebar() {
           categories.map((category) => (
             <Link
               key={category.id}
-              href={`/products?category=${encodeURIComponent(category.name)}`}
+              href={`/category/${category.slug}`}
               className="flex items-center justify-between px-2 py-2 text-sm text-muted-foreground hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-foreground rounded-md transition-colors"
             >
               {category.name}
