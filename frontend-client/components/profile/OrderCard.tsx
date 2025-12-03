@@ -1,6 +1,6 @@
 'use client';
 
-import { Order } from '@/types/user';
+import { OrderGroupDTO } from '@/types/order.types';
 import { OrderItemCard } from './OrderItemCard';
 import { StatusBadge } from '@/components/common/StatusBadge';
 import { Button } from '@/components/ui/button';
@@ -9,9 +9,9 @@ import { formatOrderDate } from '@/lib/utils/dateUtils';
 import { ShoppingCart, Package } from 'lucide-react';
 
 interface OrderCardProps {
-    order: Order;
+    order: OrderGroupDTO;
     onReviewOrderItem: (productId: number, orderId: number) => void;
-    onBuyAgain: (order: Order) => void;
+    onBuyAgain: (order: OrderGroupDTO) => void;
 }
 
 /**
@@ -25,13 +25,13 @@ export function OrderCard({ order, onReviewOrderItem, onBuyAgain }: OrderCardPro
                 <div className="flex flex-wrap items-center justify-between gap-2">
                     <div className="flex items-center gap-2">
                         <Package className="h-4 w-4 text-muted-foreground" />
-                        <span className="font-semibold">Order #{order.orderId}</span>
+                        <span className="font-semibold">Order #{order.groupNumber}</span>
                     </div>
                     <div className="flex items-center gap-2">
                         <span className="text-sm text-muted-foreground">
-                            {formatOrderDate(order.orderDate)}
+                            {formatOrderDate(order.createdAt)}
                         </span>
-                        <StatusBadge status={order.orderStatus} />
+                        <StatusBadge status={order.overallStatus} />
                     </div>
                 </div>
             </CardHeader>
@@ -40,15 +40,26 @@ export function OrderCard({ order, onReviewOrderItem, onBuyAgain }: OrderCardPro
                 {/* Order Items */}
                 <div>
                     <h4 className="text-sm font-medium mb-2 text-muted-foreground">
-                        Items ({order.orderItems.length})
+                        Items ({order.subOrders.flatMap(o => o.items).length})
                     </h4>
-                    <div className="grid grid-cols-1  gap-2">
-                        {order.orderItems.map((item) => (
+                    <div className="grid grid-cols-1 gap-2">
+                        {order.subOrders.flatMap(subOrder =>
+                            subOrder.items.map(item => ({
+                                ...item,
+                                subOrderId: subOrder.id,
+                                status: subOrder.status,
+                                // Map DTO fields to what OrderItemCard expects if needed
+                                // Assuming OrderItemCard needs to be updated or we map here
+                                productVariant: { id: item.variantId, name: item.variantName },
+                                product: { id: item.productId, name: item.productName, images: [] } // Placeholder for missing data
+                            }))
+                        ).map((item) => (
                             <OrderItemCard
-                                key={`${order.orderId}-${item.productVariant?.id}`}
+                                key={`${item.subOrderId}-${item.variantId || item.productId}`}
+                                // @ts-ignore - Mapping DTO item to UI item
                                 item={item}
-                                orderStatus={order.orderStatus}
-                                onReviewClick={() => onReviewOrderItem(item.productId, order.orderId)}
+                                orderStatus={item.status}
+                                onReviewClick={() => onReviewOrderItem(item.productId, item.subOrderId)}
                             />
                         ))}
                     </div>
@@ -70,12 +81,10 @@ export function OrderCard({ order, onReviewOrderItem, onBuyAgain }: OrderCardPro
                     </Button>
                 </div>
 
-                {/* Payment Info (optional) */}
-                {order.payment && (
-                    <div className="text-xs text-muted-foreground pt-2 border-t">
-                        Payment: {order.payment.paymentMethod}
-                    </div>
-                )}
+                {/* Payment Info */}
+                <div className="text-xs text-muted-foreground pt-2 border-t">
+                    Payment Status: {order.paymentStatus}
+                </div>
             </CardContent>
         </Card>
     );

@@ -1,5 +1,7 @@
 package com.ecom.order.service.impl;
 
+import com.ecom.common.exception.SubOrderNotFoundException;
+import com.ecom.common.exception.UnauthorizedException;
 import com.ecom.order.dto.RefundRequest;
 import com.ecom.order.dto.SubOrderDTO;
 import com.ecom.order.entity.SubOrder;
@@ -216,11 +218,5 @@ public class SubOrderServiceImpl implements SubOrderService {
      */
     private SubOrderDTO convertToDTO(SubOrder subOrder) {
         return modelMapper.map(subOrder, SubOrderDTO.class);
-    }
-}
-
-class SubOrderNotFoundException extends RuntimeException {
-    public SubOrderNotFoundException(Long id) {
-        super("Sub-order not found: " + id);
     }
 }

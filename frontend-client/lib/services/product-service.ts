@@ -1,6 +1,6 @@
 import apiClient from '@/lib/api-client';
 import { APIResponse } from '@/types/common.types';
-import { Product, ProductResponse, ProductDetail, Category } from '@/types/product';
+import { Product, ProductResponse, ProductDetail, Category, CategoryResponse } from '@/types/product';
 
 export interface GetProductsParams {
     page?: number;
@@ -51,7 +51,7 @@ export const getPublicProductWithVariants = async (id: number | string): Promise
  * Fetch all categories (public - no auth required)
  */
 export const getCategories = async (): Promise<Category[]> => {
-    const response = await apiClient.get<APIResponse<Category[]>>('/v1/categories');
-    return response.data.data;
+    const response = await apiClient.get<APIResponse<CategoryResponse>>('/v1/categories');
+    return response.data.data.content;
 };
 

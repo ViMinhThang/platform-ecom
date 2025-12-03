@@ -28,6 +28,7 @@ public class AuthenticationFilter implements GatewayFilter {
         String token = authHeader.substring(7);
 
         return authServiceClient.validate(token)
+                .map(response -> response.getData())
                 .flatMap(userInfo -> {
                     ServerHttpRequest mutatedRequest = exchange.getRequest()
                             .mutate()

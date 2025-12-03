@@ -1,5 +1,7 @@
 package com.ecom.order.service.impl;
 
+import com.ecom.common.exception.DuplicatePaymentException;
+import com.ecom.common.exception.TransactionNotFoundException;
 import com.ecom.order.entity.OrderGroup;
 import com.ecom.order.entity.PaymentStatus;
 import com.ecom.order.entity.PaymentTransaction;
@@ -126,17 +128,5 @@ public class PaymentServiceImpl implements PaymentService {
 
         log.error("Payment failed for order group {}: {}",
                 group.getGroupNumber(), errorMessage);
-    }
-}
-
-class DuplicatePaymentException extends RuntimeException {
-    public DuplicatePaymentException(String message) {
-        super(message);
-    }
-}
-
-class TransactionNotFoundException extends RuntimeException {
-    public TransactionNotFoundException(String id) {
-        super("Transaction not found: " + id);
     }
 }

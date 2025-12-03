@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import { UserProfile } from '@/types/user';
-import { getUserProfile, updateUserInfo, validateToken } from '@/lib/services/user-service';
+import { getUserProfile, updateUserInfo } from '@/lib/services/user-service';
 import { getErrorMessage } from '@/lib/errors';
 
 interface AuthState {
@@ -17,24 +17,7 @@ const initialState: AuthState = {
     error: null,
 };
 
-/**
- * Check authentication by validating token from session
- * This should be called with the token from NextAuth session
- */
-export const checkAuth = createAsyncThunk(
-    'auth/checkAuth',
-    async (token: string | undefined, { rejectWithValue }) => {
-        if (!token) {
-            return rejectWithValue('No authentication token');
-        }
-        try {
-            const user = await validateToken(token);
-            return user;
-        } catch (error) {
-            return rejectWithValue(getErrorMessage(error));
-        }
-    }
-);
+
 
 /**
  * Update user profile information
@@ -56,9 +39,9 @@ export const updateUser = createAsyncThunk(
  */
 export const fetchUserProfile = createAsyncThunk(
     'auth/fetchUserProfile',
-    async ({ userId, token }: { userId: string; token: string }, { rejectWithValue }) => {
+    async ({ token }: { token: string }, { rejectWithValue }) => {
         try {
-            const user = await getUserProfile(userId, token);
+            const user = await getUserProfile(token);
             return user;
         } catch (error) {
             return rejectWithValue(getErrorMessage(error));
@@ -85,20 +68,6 @@ const authSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder
-            // Check Auth
-            .addCase(checkAuth.pending, (state) => {
-                state.loading = true;
-            })
-            .addCase(checkAuth.fulfilled, (state, action) => {
-                state.loading = false;
-                state.isAuthenticated = true;
-                state.user = action.payload;
-            })
-            .addCase(checkAuth.rejected, (state) => {
-                state.loading = false;
-                state.isAuthenticated = false;
-                state.user = null;
-            })
             // Fetch User Profile
             .addCase(fetchUserProfile.pending, (state) => {
                 state.loading = true;

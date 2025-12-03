@@ -1,9 +1,10 @@
 import { AuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
+import { logger } from "./logger";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:8080/api";
 
-interface AuthResponse {
+interface LoginData {
     response: {
         userId: number;
         username: string;
@@ -15,6 +16,12 @@ interface AuthResponse {
     jwtCookie: {
         value: string;
     };
+}
+
+interface AuthResponse {
+    success: boolean;
+    message: string;
+    data: LoginData;
 }
 
 interface CustomUser {
@@ -36,7 +43,7 @@ export const authOptions: AuthOptions = {
             },
             async authorize(credentials) {
                 try {
-                    const res = await fetch(`${API_BASE_URL}/auth/login`, {
+                    const res = await fetch(`${API_BASE_URL}/v1/auth/login`, {
                         method: "POST",
                         headers: { "Content-Type": "application/json" },
                         body: JSON.stringify({
@@ -50,11 +57,14 @@ export const authOptions: AuthOptions = {
                         throw new Error(error?.message || "Invalid email or password");
                     }
 
-                    const data: AuthResponse = await res.json();
+                    const apiResponse: AuthResponse = await res.json();
+                    logger.info("Authentication response:", { data: apiResponse.data });
 
-                    if (!data.response?.userId) {
+                    if (!apiResponse.data?.response?.userId) {
                         throw new Error("Invalid response from authentication server");
                     }
+
+                    const { data } = apiResponse;
 
                     const user: CustomUser = {
                         id: String(data.response.userId),

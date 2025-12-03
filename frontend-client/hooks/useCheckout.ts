@@ -1,3 +1,4 @@
+import { useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAppDispatch, useAppSelector } from '@/lib/store/hooks';
 import { createOrder } from '@/lib/store/slices/orderSlice';
@@ -16,7 +17,7 @@ export const useCheckout = () => {
     const checkout = useAppSelector((state) => state.checkout);
     const { currentOrder, loading, error } = useAppSelector((state) => state.orders); // Note: state.orders matches store config
 
-    const proceedToPayment = async () => {
+    const proceedToPayment = useCallback(async () => {
         if (!checkout.selectedAddressId) {
             throw new Error('Please select a delivery address');
         }
@@ -31,21 +32,25 @@ export const useCheckout = () => {
         const order = await dispatch(createOrder(request)).unwrap();
         dispatch(setCheckoutStep('payment'));
         return order;
-    };
+    }, [checkout.selectedAddressId, checkout.paymentProvider, checkout.promoCode, dispatch]);
 
-    const completeCheckout = () => {
+    const completeCheckout = useCallback(() => {
         dispatch(setCheckoutStep('confirmation'));
         dispatch(resetCheckout());
-    };
+    }, [dispatch]);
+
+    const setStep = useCallback((step: any) => dispatch(setCheckoutStep(step)), [dispatch]);
+    const selectAddress = useCallback((id: number) => dispatch(setSelectedAddress(id)), [dispatch]);
+    const setProvider = useCallback((provider: 'stripe' | 'paypal') => dispatch(setPaymentProvider(provider)), [dispatch]);
 
     return {
         checkout,
         currentOrder,
         loading,
         error,
-        setStep: (step: any) => dispatch(setCheckoutStep(step)),
-        selectAddress: (id: number) => dispatch(setSelectedAddress(id)),
-        setProvider: (provider: 'stripe' | 'paypal') => dispatch(setPaymentProvider(provider)),
+        setStep,
+        selectAddress,
+        setProvider,
         proceedToPayment,
         completeCheckout
     };

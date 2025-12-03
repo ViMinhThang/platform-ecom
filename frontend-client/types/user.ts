@@ -78,3 +78,44 @@ export interface GHNWard {
     DistrictID: number;
     WardName: string;
 }
+
+export interface GHNService {
+    service_id: number;
+    short_name: string;
+    service_type_id: number;
+}
+
+export interface GHNItem {
+    name: string;
+    code?: string;
+    quantity: number;
+    price?: number;
+    length: number;
+    width: number;
+    height: number;
+    weight: number;
+    category?: {
+        level1: string;
+    };
+}
+
+export interface GHNFeeRequest {
+    service_id: number;
+    service_type_id?: number | null;
+    insurance_value: number;
+    coupon: string | null;
+    to_ward_code: string;
+    to_district_id: number;
+    from_district_id: number;
+    from_ward_code?: string;
+    weight: number;
+    length: number;
+    width: number;
+    height: number;
+    cod_failed_amount?: number;
+    items?: GHNItem[];
+}
+
+export interface GHNFeeResponse {
+    total: number;
+}

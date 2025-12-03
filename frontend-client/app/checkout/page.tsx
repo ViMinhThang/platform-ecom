@@ -7,13 +7,30 @@ import { AddressForm } from "@/components/checkout/AddressForm";
 import { PaymentForm } from "@/components/checkout/PaymentForm";
 import { Elements } from "@stripe/react-stripe-js";
 import { getStripe } from "@/lib/services/stripe.service";
-import { Loader2 } from "lucide-react";
+import { Loader2, AlertCircle } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { useShipping } from "@/hooks/useShipping";
+import { useAppSelector } from "@/lib/store/hooks";
 
 export default function CheckoutPage() {
-    const { checkout, currentOrder, proceedToPayment, loading: orderLoading } = useCheckout();
+    const { checkout, currentOrder, proceedToPayment, loading: orderLoading, error: orderError } = useCheckout();
     const { cart } = useCart();
     const [stripePromise] = useState(() => getStripe());
     const [elementsOptions, setElementsOptions] = useState<any>(null);
+
+    // Shipping calculation
+    const { shippingFee, loading: shippingLoading, calculateTotalShipping } = useShipping();
+    const { addresses } = useAppSelector((state) => state.address);
+
+    // Calculate shipping when address is selected
+    useEffect(() => {
+        if (cart && checkout.selectedAddressId && addresses.length > 0) {
+            const selectedAddress = addresses.find(a => a.addressId === checkout.selectedAddressId);
+            if (selectedAddress) {
+                calculateTotalShipping(cart, selectedAddress);
+            }
+        }
+    }, [cart, checkout.selectedAddressId, addresses, calculateTotalShipping]);
 
     // Initialize Stripe Elements when we have a client secret
     useEffect(() => {
@@ -32,15 +49,17 @@ export default function CheckoutPage() {
 
     // Handle transition to payment step
     useEffect(() => {
-        if (checkout.step === 'payment' && !currentOrder && !orderLoading) {
+        if (checkout.step === 'payment' && !currentOrder && !orderLoading && !orderError) {
             // If we are in payment step but no order created yet, create it
             proceedToPayment().catch(console.error);
         }
-    }, [checkout.step, currentOrder, orderLoading, proceedToPayment]);
+    }, [checkout.step, currentOrder, orderLoading, proceedToPayment, orderError]);
 
     if (!cart) {
         return <div className="container py-12 text-center">Loading checkout...</div>;
     }
+
+    const totalAmount = cart.totalAmount + shippingFee;
 
     return (
         <div className="container mx-auto py-8 px-4 md:px-6 max-w-4xl">
@@ -76,6 +95,19 @@ export default function CheckoutPage() {
                                 <div className="flex justify-center py-12">
                                     <Loader2 className="h-8 w-8 animate-spin text-primary" />
                                 </div>
+                            ) : orderError ? (
+                                <div className="flex flex-col items-center justify-center py-8 text-center space-y-4">
+                                    <div className="bg-destructive/10 p-3 rounded-full">
+                                        <AlertCircle className="h-6 w-6 text-destructive" />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <h3 className="font-semibold text-lg">Failed to create order</h3>
+                                        <p className="text-muted-foreground max-w-xs mx-auto">{orderError}</p>
+                                    </div>
+                                    <Button onClick={() => proceedToPayment()} variant="outline">
+                                        Try Again
+                                    </Button>
+                                </div>
                             ) : (
                                 elementsOptions && (
                                     <Elements stripe={stripePromise} options={elementsOptions}>
@@ -109,16 +141,22 @@ export default function CheckoutPage() {
 
                         <div className="border-t pt-4 space-y-2">
                             <div className="flex justify-between">
-                                <span>Subtotal</span>
+                                <span className="text-muted-foreground">Subtotal</span>
                                 <span>${cart.totalAmount.toFixed(2)}</span>
                             </div>
-                            <div className="flex justify-between text-muted-foreground">
-                                <span>Shipping</span>
-                                <span>Calculated next</span>
+                            <div className="flex justify-between">
+                                <span className="text-muted-foreground">Shipping</span>
+                                <span>
+                                    {shippingLoading ? (
+                                        <Loader2 className="h-3 w-3 animate-spin inline" />
+                                    ) : (
+                                        shippingFee > 0 ? `$${shippingFee.toLocaleString()}` : 'Calculated next'
+                                    )}
+                                </span>
                             </div>
                             <div className="flex justify-between font-bold text-lg pt-2 border-t">
                                 <span>Total</span>
-                                <span>${cart.totalAmount.toFixed(2)}</span>
+                                <span>${totalAmount.toLocaleString()}</span>
                             </div>
                         </div>
                     </div>

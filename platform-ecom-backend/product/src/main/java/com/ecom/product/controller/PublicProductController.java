@@ -7,6 +7,7 @@ import com.ecom.product.dto.ProductDTO;
 import com.ecom.product.dto.ProductDetailDTO;
 import com.ecom.product.dto.ProductResponse;
 import com.ecom.product.dto.ProductVariantDTO;
+import com.ecom.product.dto.ProductVariantDetailDTO;
 import com.ecom.product.service.signature.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -51,5 +52,36 @@ public class PublicProductController {
     public ResponseEntity<APIResponse<ProductVariantDTO>> getVariantById(@PathVariable Long variantId) {
         ProductVariantDTO variantDTO = productService.getVariantById(variantId);
         return ResponseBuilder.success("Variant retrieved successfully", variantDTO);
+    }
+
+    @GetMapping("/{productId}/variants/{variantId}")
+    public ResponseEntity<APIResponse<ProductVariantDetailDTO>> getProductVariantDetails(
+            @PathVariable Long productId,
+            @PathVariable Long variantId) {
+
+        ProductDTO product = productService.getPublicProductById(productId);
+        ProductVariantDTO variant = productService.getVariantById(variantId);
+
+        String variantName = "Default";
+        if (variant.getOptionValues() != null && !variant.getOptionValues().isEmpty()) {
+            variantName = variant.getOptionValues().stream()
+                    .filter(opt -> opt.getProductOptionValue() != null)
+                    .map(opt -> opt.getProductOptionValue().getValue())
+                    .reduce((a, b) -> a + " - " + b)
+                    .orElse("Default");
+        }
+
+        ProductVariantDetailDTO detailDTO = ProductVariantDetailDTO.builder()
+                .productId(product.getId())
+                .name(product.getName())
+                .imageUrl(variant.getImageUrl() != null ? variant.getImageUrl() : "https://placeholder.com/image.jpg") // Fallback
+                .sellerId(product.getUserId())
+                .sellerName("Seller " + product.getUserId()) // Placeholder
+                .variantName(variantName)
+                .price(variant.getPrice())
+                .stockQuantity(variant.getStock())
+                .build();
+
+        return ResponseBuilder.success("Product variant details retrieved successfully", detailDTO);
     }
 }

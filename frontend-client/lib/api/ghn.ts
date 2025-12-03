@@ -1,7 +1,14 @@
 // GHN API integration for Vietnamese address selection
-import type { ApiResponse, GHNProvince, GHNDistrict, GHNWard } from '@/types/user';
+import type { GHNProvince, GHNDistrict, GHNWard, GHNService, GHNFeeRequest, GHNFeeResponse } from '@/types/user';
+
+interface GHNResponse<T> {
+    code: number;
+    message: string;
+    data: T;
+}
 
 const GHN_API_BASE_URL = "https://dev-online-gateway.ghn.vn/shiip/public-api/master-data";
+const GHN_API_ORDER_URL = "https://dev-online-gateway.ghn.vn/shiip/public-api/v2/shipping-order";
 const GHN_TOKEN = process.env.NEXT_PUBLIC_GHN_TOKEN || '';
 
 /**
@@ -21,7 +28,7 @@ export async function getProvinces(): Promise<GHNProvince[]> {
             throw new Error('Failed to fetch provinces');
         }
 
-        const data: ApiResponse<GHNProvince[]> = await response.json();
+        const data: GHNResponse<GHNProvince[]> = await response.json();
         return data.data || [];
     } catch (error) {
         console.error('Error fetching provinces:', error);
@@ -47,7 +54,7 @@ export async function getDistricts(provinceId: number): Promise<GHNDistrict[]> {
             throw new Error('Failed to fetch districts');
         }
 
-        const data: ApiResponse<GHNDistrict[]> = await response.json();
+        const data: GHNResponse<GHNDistrict[]> = await response.json();
         return data.data || [];
     } catch (error) {
         console.error('Error fetching districts:', error);
@@ -74,10 +81,74 @@ export async function getWards(districtId: number): Promise<GHNWard[]> {
             throw new Error('Failed to fetch wards');
         }
 
-        const data: ApiResponse<GHNWard[]> = await response.json();
+        const data: GHNResponse<GHNWard[]> = await response.json();
         return data.data || [];
     } catch (error) {
         console.error('Error fetching wards:', error);
         throw new Error('Unable to load wards. Please try again later.');
+    }
+}
+
+/**
+ * Get available shipping services
+ * @param fromDistrict - Sender district ID
+ * @param toDistrict - Receiver district ID
+ * @param shopId - Shop ID
+ */
+export async function getAvailableServices(fromDistrict: number, toDistrict: number, shopId: number): Promise<GHNService[]> {
+    try {
+        const response = await fetch(`${GHN_API_ORDER_URL}/available-services`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'token': GHN_TOKEN,
+            },
+            body: JSON.stringify({
+                shop_id: shopId,
+                from_district: fromDistrict,
+                to_district: toDistrict
+            }),
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to fetch services');
+        }
+
+        const data: GHNResponse<GHNService[]> = await response.json();
+        return data.data || [];
+    } catch (error) {
+        console.error('Error fetching services:', error);
+        throw new Error('Unable to load shipping services.');
+    }
+}
+
+/**
+ * Calculate shipping fee
+ * @param params - Fee calculation parameters
+ * @param shopId - Shop ID
+ */
+export async function calculateShippingFee(params: GHNFeeRequest, shopId: number): Promise<GHNFeeResponse> {
+    try {
+        const response = await fetch(`${GHN_API_ORDER_URL}/fee`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'token': GHN_TOKEN,
+                'shop_id': shopId.toString()
+            },
+            body: JSON.stringify(params),
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            console.error('GHN Fee Error:', errorData);
+            throw new Error(errorData.message || 'Failed to calculate shipping fee');
+        }
+
+        const data: GHNResponse<GHNFeeResponse> = await response.json();
+        return data.data!;
+    } catch (error) {
+        console.error('Error calculating fee:', error);
+        throw error;
     }
 }

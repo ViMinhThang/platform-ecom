@@ -20,11 +20,11 @@ export function SiteHeader() {
 
   useEffect(() => {
     if (session?.accessToken) {
-      dispatch(fetchCart(session.accessToken as string));
+      dispatch(fetchCart());
     }
   }, [dispatch, session]);
 
-  const cartItemCount = cart?.products.reduce((total, item) => total + item.quantity, 0) || 0;
+  const cartItemCount = cart?.items?.reduce((total, item) => total + item.quantity, 0) || 0;
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background">
@@ -91,7 +91,7 @@ export function SiteHeader() {
           </div>
           <nav className="flex items-center space-x-2">
             <UserNav />
-            <Button variant="ghost" size="icon" className="relative">
+            <Link href="/cart" className="relative">
               <ShoppingCart className="h-5 w-5" />
               {cartItemCount > 0 && (
                 <Badge className="absolute -right-1 -top-1 h-4 w-4 rounded-full p-0 flex items-center justify-center text-[10px]">
@@ -99,7 +99,7 @@ export function SiteHeader() {
                 </Badge>
               )}
               <span className="sr-only">Cart</span>
-            </Button>
+            </Link>
           </nav>
         </div>
       </div>

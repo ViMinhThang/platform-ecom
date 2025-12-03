@@ -1,5 +1,9 @@
 package com.ecom.order.service.impl;
 
+import com.ecom.common.exception.InsufficientStockException;
+import com.ecom.common.exception.OrderGroupNotFoundException;
+import com.ecom.common.exception.UnauthorizedException;
+import com.ecom.order.client.ProductServiceClient;
 import com.ecom.order.dto.CreateOrderRequest;
 import com.ecom.order.dto.OrderGroupDTO;
 import com.ecom.order.dto.SubOrderDTO;
@@ -7,11 +11,9 @@ import com.ecom.order.entity.*;
 import com.ecom.order.payment.PaymentIntent;
 import com.ecom.order.repository.CartRepository;
 import com.ecom.order.repository.OrderGroupRepository;
-import com.ecom.order.service.ProductDetails;
-import com.ecom.order.service.ProductServiceClient;
 import com.ecom.order.service.signature.OrderGroupService;
 import com.ecom.order.service.signature.PaymentService;
-
+import com.ecom.order.dto.ProductDetails;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -212,8 +214,14 @@ public class OrderGroupServiceImpl implements OrderGroupService {
     private void enrichAndValidateCartItems(Cart cart) {
         for (CartItem item : cart.getItems()) {
             // Get product details
-            ProductDetails details = productServiceClient.getProductDetails(
+            var response = productServiceClient.getProductDetails(
                     item.getProductId(), item.getVariantId());
+
+            if (response == null || !response.isSuccess() || response.getData() == null) {
+                throw new IllegalStateException("Product not found: " + item.getProductId());
+            }
+
+            ProductDetails details = response.getData();
 
             item.setProductName(details.getName());
             item.setImageUrl(details.getImageUrl());
@@ -278,23 +286,5 @@ public class OrderGroupServiceImpl implements OrderGroupService {
         dto.setSubOrders(subOrderDTOs);
 
         return dto;
-    }
-}
-
-class OrderGroupNotFoundException extends RuntimeException {
-    public OrderGroupNotFoundException(Long id) {
-        super("Order group not found: " + id);
-    }
-}
-
-class UnauthorizedException extends RuntimeException {
-    public UnauthorizedException(String message) {
-        super(message);
-    }
-}
-
-class InsufficientStockException extends RuntimeException {
-    public InsufficientStockException(String message) {
-        super(message);
     }
 }

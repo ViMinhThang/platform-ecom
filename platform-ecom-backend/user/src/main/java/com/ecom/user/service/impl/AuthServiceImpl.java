@@ -38,6 +38,7 @@ public class AuthServiceImpl implements AuthService {
                 .orElseThrow(() -> new ResourceNotFoundException("User", "User email", loginRequest.getEmail()));
 
         if (!encoder.matches(loginRequest.getPassword(), user.getPassword())) {
+            System.out.println(loginRequest.toString());
             throw new APIException("Invalid email or password!");
         }
 

@@ -45,7 +45,7 @@ public class AddressController {
      * GET /api/v1/users/addresses
      * Get all addresses for the authenticated user
      */
-    @GetMapping("/user")
+    @GetMapping()
     public ResponseEntity<APIResponse<List<AddressDTO>>> getMyAddresses(HttpServletRequest request) {
         Long userId = authContext.getUserId(request);
 

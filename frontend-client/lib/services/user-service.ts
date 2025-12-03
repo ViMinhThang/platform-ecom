@@ -1,11 +1,12 @@
 import apiClient from '@/lib/api-client';
-import { UserProfile, ApiResponse } from '@/types/user';
+import { APIResponse } from '@/types/common.types';
+import { UserProfile } from '@/types/user';
 
 /**
  * Get user profile
  */
-export const getUserProfile = async (userId: string, token: string): Promise<UserProfile> => {
-    const response = await apiClient.get<ApiResponse<UserProfile>>(
+export const getUserProfile = async (token: string): Promise<UserProfile> => {
+    const response = await apiClient.get<APIResponse<UserProfile>>(
         `/v1/users/me`,
         { headers: { Authorization: `Bearer ${token}` } }
     );
@@ -16,10 +17,10 @@ export const getUserProfile = async (userId: string, token: string): Promise<Use
  * Update user profile info
  */
 export const updateUserInfo = async (
-    data: { username: string; email: string },
+    data: { username: string; email: string; password?: string; currentPassword?: string },
     token: string
 ): Promise<UserProfile> => {
-    const response = await apiClient.put<ApiResponse<UserProfile>>(
+    const response = await apiClient.put<APIResponse<UserProfile>>(
         '/v1/users/me',
         data,
         { headers: { Authorization: `Bearer ${token}` } }
@@ -38,7 +39,7 @@ export const uploadProfileImage = async (
     const formData = new FormData();
     formData.append('file', file);
 
-    const response = await apiClient.put<ApiResponse<string>>(
+    const response = await apiClient.put<APIResponse<string>>(
         `/v1/users/me/image`,
         formData,
         {
@@ -50,15 +51,3 @@ export const uploadProfileImage = async (
     );
     return response.data.data;
 };
-
-/**
- * Validate token
- */
-export const validateToken = async (token: string): Promise<UserProfile> => {
-    const response = await apiClient.get<ApiResponse<UserProfile>>(
-        '/v1/auth/validate',
-        { headers: { Authorization: `Bearer ${token}` } }
-    );
-    return response.data.data;
-};
-

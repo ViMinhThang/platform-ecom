@@ -90,7 +90,7 @@ export function AddressManager({ addresses, onUpdate }: AddressManagerProps) {
                 </Button>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 {addresses.map((address) => (
                     <AddressCard
                         key={address.addressId}
@@ -102,8 +102,15 @@ export function AddressManager({ addresses, onUpdate }: AddressManagerProps) {
                 ))}
 
                 {addresses.length === 0 && (
-                    <div className="col-span-full text-center py-12 border-2 border-dashed rounded-lg text-muted-foreground">
-                        <p>No addresses found. Add one to get started.</p>
+                    <div className="col-span-full flex flex-col items-center justify-center py-16 border-2 border-dashed rounded-xl bg-muted/30 text-muted-foreground">
+                        <div className="h-12 w-12 rounded-full bg-muted flex items-center justify-center mb-4">
+                            <Plus className="h-6 w-6" />
+                        </div>
+                        <h3 className="text-lg font-medium text-foreground">No addresses found</h3>
+                        <p className="text-sm mt-1 mb-4">Add a shipping address to get started.</p>
+                        <Button onClick={handleAddClick} variant="outline">
+                            Add New Address
+                        </Button>
                     </div>
                 )}
             </div>

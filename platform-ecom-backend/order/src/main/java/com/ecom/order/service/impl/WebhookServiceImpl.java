@@ -1,5 +1,6 @@
 package com.ecom.order.service.impl;
 
+import com.ecom.common.exception.WebhookSecurityException;
 import com.ecom.order.entity.PaymentWebhook;
 import com.ecom.order.payment.PaymentProvider;
 import com.ecom.order.payment.PaymentProviderFactory;
@@ -188,11 +189,5 @@ public class WebhookServiceImpl implements WebhookService {
     private String extractRefundId(WebhookEvent event) {
         // Implementation depends on provider
         return "unknown";
-    }
-}
-
-class WebhookSecurityException extends RuntimeException {
-    public WebhookSecurityException(String message) {
-        super(message);
     }
 }

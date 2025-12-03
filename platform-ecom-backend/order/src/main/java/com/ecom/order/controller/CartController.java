@@ -1,6 +1,7 @@
 package com.ecom.order.controller;
 
 import com.ecom.common.aspect.RequireRole;
+import com.ecom.common.security.AuthContext;
 import com.ecom.common.util.APIResponse;
 import com.ecom.common.util.ResponseBuilder;
 import com.ecom.order.dto.AddToCartRequest;
@@ -25,13 +26,15 @@ public class CartController {
 
     private final CartService cartService;
 
+    private final AuthContext authContext;
+
     /**
      * Get user's cart (grouped by seller)
      */
-    @GetMapping
+    @GetMapping()
     @RequireRole("ROLE_USER")
     public ResponseEntity<APIResponse<CartDTO>> getCart(HttpServletRequest request) {
-        Long userId = extractUserId(request);
+        Long userId = authContext.getUserId(request);
         CartDTO cart = cartService.getCartForUser(userId);
 
         return ResponseBuilder.success("Cart retrieved", cart);
@@ -46,7 +49,7 @@ public class CartController {
             @Valid @RequestBody AddToCartRequest addRequest,
             HttpServletRequest request) {
 
-        Long userId = extractUserId(request);
+        Long userId = authContext.getUserId(request);
         CartDTO cart = cartService.addToCart(userId, addRequest);
 
         log.info("User {} added product {} to cart", userId, addRequest.getProductId());
@@ -64,7 +67,7 @@ public class CartController {
             @RequestParam Integer quantityChange,
             HttpServletRequest request) {
 
-        Long userId = extractUserId(request);
+        Long userId = authContext.getUserId(request);
         CartDTO cart = cartService.updateCartItemQuantity(userId, productId, variantId, quantityChange);
 
         return ResponseBuilder.success("Cart updated", cart);
@@ -80,7 +83,7 @@ public class CartController {
             @RequestParam(required = false) Long variantId,
             HttpServletRequest request) {
 
-        Long userId = extractUserId(request);
+        Long userId = authContext.getUserId(request);
         cartService.removeFromCart(userId, productId, variantId);
 
         return ResponseBuilder.success("Item removed from cart", null);
@@ -92,24 +95,12 @@ public class CartController {
     @DeleteMapping("/clear")
     @RequireRole("ROLE_USER")
     public ResponseEntity<APIResponse<Void>> clearCart(HttpServletRequest request) {
-        Long userId = extractUserId(request);
+        Long userId = authContext.getUserId(request);
 
         // Get cart first
         CartDTO cart = cartService.getCartForUser(userId);
         cartService.clearCart(cart.getId());
 
         return ResponseBuilder.success("Cart cleared", null);
-    }
-
-    /**
-     * Extract user ID from JWT token in request
-     */
-    private Long extractUserId(HttpServletRequest request) {
-        // The @RequireRole annotation + AuthenticationFilter should have set this
-        Object userIdAttr = request.getAttribute("userId");
-        if (userIdAttr == null) {
-            throw new IllegalStateException("User ID not found in request");
-        }
-        return Long.valueOf(userIdAttr.toString());
     }
 }

@@ -1,6 +1,7 @@
 package com.ecom.order.controller;
 
 import com.ecom.common.aspect.RequireRole;
+import com.ecom.common.security.AuthContext;
 import com.ecom.common.util.APIResponse;
 import com.ecom.common.util.ResponseBuilder;
 import com.ecom.order.dto.CreateOrderRequest;
@@ -29,7 +30,7 @@ import org.springframework.web.bind.annotation.*;
 public class OrderGroupController {
 
     private final OrderGroupService orderGroupService;
-
+    private final AuthContext authContext;
     /**
      * Create order group from cart (checkout)
      */
@@ -120,7 +121,7 @@ public class OrderGroupController {
      * Extract user ID from request
      */
     private Long extractUserId(HttpServletRequest request) {
-        Object userIdAttr = request.getAttribute("userId");
+        Object userIdAttr = authContext.getUserId(request);
         if (userIdAttr == null) {
             throw new IllegalStateException("User ID not found in request");
         }

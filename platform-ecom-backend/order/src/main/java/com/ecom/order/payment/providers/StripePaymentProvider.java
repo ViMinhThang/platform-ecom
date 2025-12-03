@@ -1,5 +1,7 @@
 package com.ecom.order.payment.providers;
 
+import com.ecom.common.exception.PaymentException;
+import com.ecom.common.exception.WebhookException;
 import com.ecom.order.payment.*;
 import com.stripe.Stripe;
 import com.stripe.exception.SignatureVerificationException;
@@ -24,10 +26,10 @@ import java.math.BigDecimal;
 @Service
 public class StripePaymentProvider implements PaymentProvider {
 
-    @Value("${stripe.api-key}")
+    @Value("${stripe.api-key:123}")
     private String apiKey;
 
-    @Value("${stripe.webhook-secret}")
+    @Value("${stripe.webhook-secret:123}")
     private String webhookSecret;
 
     @Value("${stripe.enabled:true}")
@@ -202,20 +204,3 @@ public class StripePaymentProvider implements PaymentProvider {
     }
 }
 
-/**
- * Custom exception for payment errors
- */
-class PaymentException extends RuntimeException {
-    public PaymentException(String message) {
-        super(message);
-    }
-}
-
-/**
- * Custom exception for webhook errors
- */
-class WebhookException extends RuntimeException {
-    public WebhookException(String message) {
-        super(message);
-    }
-}

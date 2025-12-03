@@ -59,7 +59,6 @@ export function PaymentForm() {
         const { error } = await stripe.confirmPayment({
             elements,
             confirmParams: {
-                // Return URL where the user is redirected after payment
                 return_url: `${window.location.origin}/checkout/success?orderId=${currentOrder.id}`,
             },
         });
