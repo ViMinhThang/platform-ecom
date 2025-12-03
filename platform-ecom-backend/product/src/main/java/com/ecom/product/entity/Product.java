@@ -16,7 +16,14 @@ import java.util.List;
 import java.util.Map;
 
 @Entity
-@Table(name = "products")
+@Table(name = "products", indexes = {
+    @Index(name = "idx_product_status", columnList = "status"),
+    @Index(name = "idx_product_user_id", columnList = "user_id"),
+    @Index(name = "idx_product_category_id", columnList = "category_id"),
+    @Index(name = "idx_product_slug", columnList = "slug"),
+    @Index(name = "idx_product_status_user", columnList = "status,user_id"),
+    @Index(name = "idx_product_deleted", columnList = "deleted")
+})
 @SQLDelete(sql = "UPDATE products SET deleted = true WHERE id = ?")
 @Data
 @NoArgsConstructor

@@ -12,7 +12,7 @@ public class UserInfoResponse {
     private String username;
     private String email;
     private String imageUrl;
-    private String isActive;
+    private Boolean isActive;
     private List<String> roles;
     private List<AddressDTO> addresses;
 }

@@ -3,13 +3,33 @@ import { APIResponse } from '@/types/common.types';
 import { UserProfile } from '@/types/user';
 
 /**
+ * Register new user
+ */
+export interface RegisterUserData {
+    username: string;
+    email: string;
+    password: string;
+    role?: string[];
+}
+
+export const registerUser = async (data: RegisterUserData): Promise<{ message: string }> => {
+    const response = await apiClient.post<APIResponse<{ message: string }>>(
+        '/auth/signup',
+        {
+            username: data.username,
+            email: data.email,
+            password: data.password,
+            role: data.role || ['user'],
+        }
+    );
+    return response.data.data;
+};
+
+/**
  * Get user profile
  */
-export const getUserProfile = async (token: string): Promise<UserProfile> => {
-    const response = await apiClient.get<APIResponse<UserProfile>>(
-        `/v1/users/me`,
-        { headers: { Authorization: `Bearer ${token}` } }
-    );
+export const getUserProfile = async (): Promise<UserProfile> => {
+    const response = await apiClient.get<APIResponse<UserProfile>>(`/v1/users/me`);
     return response.data.data;
 };
 
@@ -17,13 +37,11 @@ export const getUserProfile = async (token: string): Promise<UserProfile> => {
  * Update user profile info
  */
 export const updateUserInfo = async (
-    data: { username: string; email: string; password?: string; currentPassword?: string },
-    token: string
+    data: { username: string; email: string; password?: string; currentPassword?: string }
 ): Promise<UserProfile> => {
     const response = await apiClient.put<APIResponse<UserProfile>>(
         '/v1/users/me',
-        data,
-        { headers: { Authorization: `Bearer ${token}` } }
+        data
     );
     return response.data.data;
 };
@@ -32,9 +50,7 @@ export const updateUserInfo = async (
  * Upload profile image
  */
 export const uploadProfileImage = async (
-    userId: number,
-    file: File,
-    token: string
+    file: File
 ): Promise<string> => {
     const formData = new FormData();
     formData.append('file', file);
@@ -44,10 +60,10 @@ export const uploadProfileImage = async (
         formData,
         {
             headers: {
-                Authorization: `Bearer ${token}`,
                 'Content-Type': 'multipart/form-data',
             },
         }
     );
     return response.data.data;
 };
+

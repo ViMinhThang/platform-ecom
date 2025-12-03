@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { GHNProvince, GHNDistrict, GHNWard } from '@/types/user';
-import { getProvinces, getDistricts, getWards } from '@/lib/api/ghn';
+import { getProvinces, getDistricts, getWards } from '@/lib/services/ghn-service';
 import { toast } from 'sonner';
 
 /**

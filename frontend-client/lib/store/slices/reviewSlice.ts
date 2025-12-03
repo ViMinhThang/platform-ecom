@@ -8,6 +8,7 @@ import {
     CreateReviewPayload
 } from '@/lib/services/review-service';
 import { getErrorMessage } from '@/lib/errors';
+import { logger } from '@/lib/logger';
 
 interface ReviewState {
     reviews: Review[];
@@ -122,7 +123,7 @@ const reviewSlice = createSlice({
             })
             .addCase(fetchReviewSummary.rejected, (state, action) => {
                 // Summary failure shouldn't block the UI significantly
-                console.error('Failed to fetch review summary:', action.payload);
+                logger.error('Failed to fetch review summary:', action.payload);
             })
 
             // Submit Review

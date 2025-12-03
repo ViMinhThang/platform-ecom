@@ -1,7 +1,5 @@
-import axios from "axios";
+import apiClient from '@/lib/api-client';
 import { APIResponse } from "@/types/api-response";
-
-const API_BASE_URL = "http://localhost:8080/api/product-image";
 
 export interface ProductImage {
   id: number;
@@ -10,53 +8,51 @@ export interface ProductImage {
 }
 
 export const getProductImages = async (
-  productId: number,
-  token: string
+  productId: number
 ): Promise<ProductImage[]> => {
-  const res = await axios.get<APIResponse<ProductImage[]>>(`${API_BASE_URL}/${productId}/images`, {
-    headers: { Authorization: `Bearer ${token}` },
-  });
+  const res = await apiClient.get<APIResponse<ProductImage[]>>(
+    `/api/product-image/${productId}/images`
+  );
   return res.data.data || [];
 };
 
 export const uploadProductImage = async (
   productId: number,
-  file: File,
-  token: string
+  file: File
 ): Promise<ProductImage> => {
   const formData = new FormData();
   formData.append("image", file);
 
-  const res = await axios.post<APIResponse<ProductImage>>(`${API_BASE_URL}/${productId}/images`, formData, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-      "Content-Type": "multipart/form-data",
-    },
-  });
+  const res = await apiClient.post<APIResponse<ProductImage>>(
+    `/api/product-image/${productId}/images`,
+    formData,
+    {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    }
+  );
 
   return res.data.data;
 };
 
 export const deleteProductImage = async (
   productId: number,
-  imageId: number,
-  token: string
+  imageId: number
 ): Promise<number> => {
-  await axios.delete<APIResponse<string>>(`${API_BASE_URL}/${productId}/images/${imageId}`, {
-    headers: { Authorization: `Bearer ${token}` },
-  });
+  await apiClient.delete<APIResponse<string>>(
+    `/api/product-image/${productId}/images/${imageId}`
+  );
   return imageId;
 };
 
 export const setMainProductImage = async (
   productId: number,
-  imageId: number,
-  token: string
+  imageId: number
 ): Promise<ProductImage> => {
-  const res = await axios.put<APIResponse<ProductImage>>(
-    `${API_BASE_URL}/${productId}/images/${imageId}/main`,
-    {},
-    { headers: { Authorization: `Bearer ${token}` } }
+  const res = await apiClient.put<APIResponse<ProductImage>>(
+    `/api/product-image/${productId}/images/${imageId}/main`,
+    {}
   );
 
   return res.data.data;

@@ -1,38 +1,34 @@
+import apiClient from '@/lib/api-client';
 import { ProductOption } from "@/types/product/product-option";
 import { APIResponse } from "@/types/api-response";
-import axios from "axios";
 
 export const productOptionService = {
-  async getOptions(productId: number, token?: string) {
-    const res = await axios.get<APIResponse<ProductOption[]>>(
-      `http://localhost:8080/api/products/seller/${productId}/options`,
-      { headers: { Authorization: `Bearer ${token}` } }
+  async getOptions(productId: number) {
+    const res = await apiClient.get<APIResponse<ProductOption[]>>(
+      `/api/products/seller/${productId}/options`
     );
     return res.data.data;
   },
 
-  async createOption(productId: number, option: ProductOption, token?: string) {
-    const res = await axios.post<APIResponse<ProductOption>>(
-      `http://localhost:8080/api/products/seller/product-options/${productId}`,
-      { ...option, isRequired: option.isRequired === "true" ? true : false },
-      { headers: { Authorization: `Bearer ${token}` } }
+  async createOption(productId: number, option: ProductOption) {
+    const res = await apiClient.post<APIResponse<ProductOption>>(
+      `/api/products/seller/product-options/${productId}`,
+      { ...option, isRequired: Boolean(option.isRequired) }
     );
     return res.data.data;
   },
 
-  async updateOption(productId: number, optionId: number, option: ProductOption, token?: string) {
-    const res = await axios.put<APIResponse<ProductOption>>(
-      `http://localhost:8080/api/products/seller/product-options/${productId}/${optionId}`,
-      { ...option, isRequired: option.isRequired === "true" ? true : false },
-      { headers: { Authorization: `Bearer ${token}` } }
+  async updateOption(productId: number, optionId: number, option: ProductOption) {
+    const res = await apiClient.put<APIResponse<ProductOption>>(
+      `/api/products/seller/product-options/${productId}/${optionId}`,
+      { ...option, isRequired: Boolean(option.isRequired) }
     );
     return res.data.data;
   },
 
-  async deleteOption(productId: number, optionId: number, token?: string) {
-    await axios.delete<APIResponse<string>>(
-      `http://localhost:8080/api/products/seller/product-options/${productId}/${optionId}`,
-      { headers: { Authorization: `Bearer ${token}` } }
+  async deleteOption(productId: number, optionId: number) {
+    await apiClient.delete<APIResponse<string>>(
+      `/api/products/seller/product-options/${productId}/${optionId}`
     );
   },
 };

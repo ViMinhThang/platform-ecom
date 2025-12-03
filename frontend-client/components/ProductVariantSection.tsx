@@ -11,6 +11,7 @@ import { useSession } from "next-auth/react";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { addToCart } from "@/lib/store/slices/cartSlice";
+import { logger } from "@/lib/logger";
 
 export function ProductVariantSection({
   product,
@@ -53,7 +54,7 @@ export function ProductVariantSection({
       })).unwrap();
       toast.success("Added to cart");
     } catch (error) {
-      console.error("Failed to add to cart:", error);
+      logger.error("Failed to add to cart:", error);
       toast.error("Failed to add to cart");
     }
   };

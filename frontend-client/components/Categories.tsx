@@ -2,6 +2,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { getCategories } from "@/lib/services/product-service";
 import type { Category } from "@/types/product";
+import { logger } from "@/lib/logger"
+import { imageUrl } from "@/lib/utils/imageUrl";
 
 export async function Categories() {
   let categories: Category[] = [];
@@ -9,7 +11,7 @@ export async function Categories() {
   try {
     categories = await getCategories();
   } catch (error) {
-    console.error("Failed to fetch categories:", error);
+    logger.error("Failed to fetch categories:", error);
   }
 
   if (categories.length === 0) {
@@ -31,7 +33,7 @@ export async function Categories() {
             <div className="relative w-28 h-28 rounded-full overflow-hidden border-2 border-border shadow-sm bg-secondary group-hover:border-primary transition-colors">
               {category.imageUrl ? (
                 <Image
-                  src={`http://localhost:8080/uploads/categories/${category.imageUrl}`}
+                  src={imageUrl.category(category.imageUrl)}
                   alt={category.name}
                   fill
                   className="object-cover group-hover:scale-110 transition-transform duration-300"

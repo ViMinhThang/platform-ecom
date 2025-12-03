@@ -1,8 +1,7 @@
 import { AuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { logger } from "./logger";
-
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:8080/api";
+import { env } from "./config/env";
 
 interface LoginData {
     response: {
@@ -43,7 +42,7 @@ export const authOptions: AuthOptions = {
             },
             async authorize(credentials) {
                 try {
-                    const res = await fetch(`${API_BASE_URL}/v1/auth/login`, {
+                    const res = await fetch(`${env.apiBaseUrl}/v1/auth/login`, {
                         method: "POST",
                         headers: { "Content-Type": "application/json" },
                         body: JSON.stringify({
@@ -77,7 +76,7 @@ export const authOptions: AuthOptions = {
 
                     return user;
                 } catch (error) {
-                    console.error("Authorization failed:", error);
+                    logger.error("Authorization failed:", error);
                     throw error instanceof Error ? error : new Error("Authorization failed");
                 }
             },

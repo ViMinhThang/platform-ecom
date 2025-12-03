@@ -3,23 +3,25 @@
  * Centralizes all magic numbers, strings, and configuration values
  */
 
+import { env } from '@/lib/config/env';
+
 // API Configuration
 export const API_ENDPOINTS = {
-    BASE_URL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080',
+    BASE_URL: env.apiBaseUrl,
     // Products
-    PRODUCTS_PUBLIC: `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080'}/api/v1/products`,
-    PRODUCTS_SELLER: `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080'}/api/v1/sellers/products`,
-    PRODUCTS_ADMIN: `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080'}/api/v1/admin/products`,
+    PRODUCTS_PUBLIC: `${env.apiBaseUrl}/api/v1/products`,
+    PRODUCTS_SELLER: `${env.apiBaseUrl}/api/v1/sellers/products`,
+    PRODUCTS_ADMIN: `${env.apiBaseUrl}/api/v1/admin/products`,
 
     // Categories
-    CATEGORIES_PUBLIC: `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080'}/api/v1/categories`,
-    CATEGORIES_ADMIN: `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080'}/api/v1/admin/categories`,
+    CATEGORIES_PUBLIC: `${env.apiBaseUrl}/api/v1/categories`,
+    CATEGORIES_ADMIN: `${env.apiBaseUrl}/api/v1/admin/categories`,
 
     // Users & Auth
-    USERS: `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080'}/api/v1/users`,
-    ADMIN_USERS: `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080'}/api/v1/admin/users`,
-    AUTH: `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080'}/api/v1/auth`,
-    ADMIN_ROLES: `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080'}/api/v1/admin/roles`,
+    USERS: `${env.apiBaseUrl}/api/v1/users`,
+    ADMIN_USERS: `${env.apiBaseUrl}/api/v1/admin/users`,
+    AUTH: `${env.apiBaseUrl}/api/v1/auth`,
+    ADMIN_ROLES: `${env.apiBaseUrl}/api/v1/admin/roles`,
 } as const;
 
 // Pagination Defaults

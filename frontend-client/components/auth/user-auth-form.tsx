@@ -6,6 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { signIn } from "next-auth/react";
+import { toast } from "sonner";
 
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -55,12 +56,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
         setLoading(false);
 
         if (!signInResult?.ok) {
-            // toast({
-            //   title: "Something went wrong.",
-            //   description: "Your sign in request failed. Please try again.",
-            //   variant: "destructive",
-            // })
-            alert("Sign in failed"); // Simple alert for now
+            toast.error("Your sign in request failed. Please try again.");
             return;
         }
 

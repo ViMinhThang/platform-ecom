@@ -11,6 +11,7 @@ import { Loader2, AlertCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useShipping } from "@/hooks/useShipping";
 import { useAppSelector } from "@/lib/store/hooks";
+import { logger } from "@/lib/logger";
 
 export default function CheckoutPage() {
     const { checkout, currentOrder, proceedToPayment, loading: orderLoading, error: orderError } = useCheckout();
@@ -51,7 +52,7 @@ export default function CheckoutPage() {
     useEffect(() => {
         if (checkout.step === 'payment' && !currentOrder && !orderLoading && !orderError) {
             // If we are in payment step but no order created yet, create it
-            proceedToPayment().catch(console.error);
+            proceedToPayment().catch((err) => logger.error("Failed to proceed to payment", err));
         }
     }, [checkout.step, currentOrder, orderLoading, proceedToPayment, orderError]);
 

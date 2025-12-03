@@ -5,74 +5,83 @@ import com.ecom.product.dto.CategoryResponse;
 import com.ecom.product.entity.Category;
 import com.ecom.common.exception.APIException;
 import com.ecom.common.exception.ResourceNotFoundException;
+import com.ecom.product.mapper.CategoryMapper;
 import com.ecom.product.repository.CategoryRepository;
 import com.ecom.common.service.FileStorageService;
 import com.ecom.product.service.signature.CategoryService;
+import com.ecom.product.utils.PageableUtils;
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class CategoryServiceImpl implements CategoryService {
 
-    private static final String ASCENDING_ORDER = "asc";
-
     private final CategoryRepository categoryRepository;
-    private final ModelMapper modelMapper;
+    private final CategoryMapper categoryMapper;
     private final FileStorageService fileStorageService;
 
     @Override
+    @Transactional
     public CategoryDTO createCategory(CategoryDTO categoryDTO) {
         validateCategoryNameDoesNotExist(categoryDTO.getName());
 
-        Category category = modelMapper.map(categoryDTO, Category.class);
+        Category category = new Category();
+        category.setName(categoryDTO.getName());
+        category.setImageUrl(categoryDTO.getImageUrl());
+        
         Category savedCategory = categoryRepository.save(category);
 
-        return mapToCategoryDTO(savedCategory);
+        return categoryMapper.toDTO(savedCategory);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public CategoryResponse getAllCategories(Integer pageNumber, Integer pageSize, String sortBy, String sortOrder) {
-        Pageable pageable = createPageable(pageNumber, pageSize, sortBy, sortOrder);
+        Pageable pageable = PageableUtils.createPageable(pageNumber, pageSize, sortBy, sortOrder);
         Page<Category> categoryPage = categoryRepository.findAll(pageable);
 
-        List<CategoryDTO> categoryDTOs = mapToCategoryDTOs(categoryPage.getContent());
+        List<CategoryDTO> categoryDTOs = categoryMapper.toDTOs(categoryPage.getContent());
 
         return buildCategoryResponse(categoryPage, categoryDTOs);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public CategoryDTO getCategoryById(Long categoryId) {
         Category category = findCategoryById(categoryId);
-        return mapToCategoryDTO(category);
+        return categoryMapper.toDTO(category);
     }
 
     @Override
+    @Transactional
     public CategoryDTO updateCategory(CategoryDTO categoryDTO, Long categoryId) {
         Category category = findCategoryById(categoryId);
 
         category.setName(categoryDTO.getName());
         Category updatedCategory = categoryRepository.save(category);
 
-        return mapToCategoryDTO(updatedCategory);
+        return categoryMapper.toDTO(updatedCategory);
     }
 
     @Override
+    @Transactional
     public CategoryDTO deleteCategory(Long categoryId) {
         Category category = findCategoryById(categoryId);
+        CategoryDTO categoryDTO = categoryMapper.toDTO(category);
 
         categoryRepository.delete(category);
 
-        return mapToCategoryDTO(category);
+        return categoryDTO;
     }
 
     @Override
+    @Transactional
     public String updateCategoryImage(Long categoryId, MultipartFile image) {
         Category category = findCategoryById(categoryId);
 
@@ -96,23 +105,6 @@ public class CategoryServiceImpl implements CategoryService {
         if (existingCategory != null) {
             throw new APIException("Category with the name " + name + " already exists!");
         }
-    }
-
-    private Pageable createPageable(Integer pageNumber, Integer pageSize, String sortBy, String sortOrder) {
-        Sort sort = ASCENDING_ORDER.equalsIgnoreCase(sortOrder)
-                ? Sort.by(sortBy).ascending()
-                : Sort.by(sortBy).descending();
-        return PageRequest.of(pageNumber, pageSize, sort);
-    }
-
-    private CategoryDTO mapToCategoryDTO(Category category) {
-        return modelMapper.map(category, CategoryDTO.class);
-    }
-
-    private List<CategoryDTO> mapToCategoryDTOs(List<Category> categories) {
-        return categories.stream()
-                .map(this::mapToCategoryDTO)
-                .collect(Collectors.toList());
     }
 
     private CategoryResponse buildCategoryResponse(Page<Category> categoryPage, List<CategoryDTO> categoryDTOs) {

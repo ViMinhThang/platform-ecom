@@ -2,6 +2,10 @@ package com.ecom.product.service.impl;
 
 import com.ecom.product.dto.*;
 import com.ecom.product.entity.*;
+import com.ecom.product.enums.ProductStatus;
+import com.ecom.product.mapper.ProductMapper;
+import com.ecom.product.mapper.ProductVariantMapper;
+import com.ecom.product.utils.PageableUtils;
 import java.util.*;
 import com.ecom.product.repository.*;
 import com.ecom.product.service.signature.ProductService;
@@ -9,9 +13,9 @@ import org.springframework.data.domain.*;
 import com.ecom.common.exception.ResourceNotFoundException;
 import com.ecom.product.utils.ProductUtils;
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.stream.Collectors;
@@ -20,55 +24,77 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class ProductServiceImpl implements ProductService {
 
-    private static final String ACTIVE_STATUS = "ACTIVE";
-    private static final String DEFAULT_IMAGE_URL = "placehold.co/600x400";
-    private static final String ASCENDING_ORDER = "asc";
-
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
     private final ProductVariantRepository productVariantRepository;
-    private final ModelMapper modelMapper;
+    private final ProductMapper productMapper;
+    private final ProductVariantMapper productVariantMapper;
 
     @Override
+    @Transactional
     public ProductRowDTO createProduct(ProductDTO productDTO, Long userId) {
         Category category = findCategoryById(productDTO.getCate().getId());
         
         Product product = buildProductFromDTO(productDTO, category, userId);
         Product savedProduct = productRepository.save(product);
         
-        return mapToProductRowDTO(savedProduct);
+        return productMapper.toRowDTO(savedProduct);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public ProductDTO getProductById(Long productId) {
         Product product = findProductById(productId);
-        return mapToProductDTO(product);
+        return productMapper.toDTO(product);
     }
 
     @Override
+    @Transactional
     public ProductDTO updateProduct(Long productId, ProductDTO productDTO) {
         Product existingProduct = findProductById(productId);
         
-        modelMapper.map(productDTO, existingProduct);
-        Product updatedProduct = productRepository.save(existingProduct);
+        // Explicit field updates - safer than modelMapper.map()
+        if (productDTO.getName() != null) {
+            existingProduct.setName(productDTO.getName());
+        }
+        if (productDTO.getDescription() != null) {
+            existingProduct.setDescription(productDTO.getDescription());
+        }
+        if (productDTO.getStatus() != null) {
+            existingProduct.setStatus(productDTO.getStatus());
+        }
+        if (productDTO.getSpecifications() != null) {
+            existingProduct.setSpecifications(productDTO.getSpecifications());
+        }
+        if (productDTO.getMetadata() != null) {
+            existingProduct.setMetadata(productDTO.getMetadata());
+        }
+        if (productDTO.getCate() != null && productDTO.getCate().getId() != null) {
+            Category category = findCategoryById(productDTO.getCate().getId());
+            existingProduct.setCategory(category);
+        }
         
-        return mapToProductDTO(updatedProduct);
+        Product updatedProduct = productRepository.save(existingProduct);
+        return productMapper.toDTO(updatedProduct);
     }
 
     @Override
+    @Transactional
     public ProductDTO deleteProduct(Long productId) {
         Product product = findProductById(productId);
+        ProductDTO productDTO = productMapper.toDTO(product);
         productRepository.delete(product);
         
-        return mapToProductDTO(product);
+        return productDTO;
     }
 
     @Override
+    @Transactional(readOnly = true)
     public ProductResponse getAllProductsForSeller(Integer page, Integer perPage, 
                                                    String name, String category, 
                                                    String sortBy, String sortOrder, 
                                                    Long userId) {
-        Pageable pageable = createPageable(page, perPage, sortBy, sortOrder);
+        Pageable pageable = PageableUtils.createPageable(page, perPage, sortBy, sortOrder);
         
         Specification<Product> specification = buildSellerProductSpecification(userId, name, category);
         
@@ -76,10 +102,11 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public ProductResponse getAllPublicProducts(Integer page, Integer perPage, 
                                                 String category, String search, 
                                                 String sortBy, String sortOrder) {
-        Pageable pageable = createPageable(page, perPage, sortBy, sortOrder);
+        Pageable pageable = PageableUtils.createPageable(page, perPage, sortBy, sortOrder);
         
         Specification<Product> specification = buildPublicProductSpecification(search, category);
         
@@ -87,26 +114,29 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public ProductDTO getPublicProductById(Long productId) {
         Product product = findProductById(productId);
         validateProductIsActive(product);
         
-        return mapToProductDTO(product);
+        return productMapper.toDTO(product);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public ProductDetailDTO getProductWithVariants(Long productId) {
         Product product = findProductById(productId);
         validateProductIsActive(product);
         
-        return mapToProductDetailDTO(product);
+        return productMapper.toDetailDTO(product);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public ProductVariantDTO getVariantById(Long variantId) {
         ProductVariant variant = productVariantRepository.findById(variantId)
                 .orElseThrow(() -> new ResourceNotFoundException("ProductVariant", "Id", variantId));
-        return modelMapper.map(variant, ProductVariantDTO.class);
+        return productVariantMapper.toDTO(variant);
     }
 
     // ==================== Private Helper Methods ====================
@@ -122,23 +152,21 @@ public class ProductServiceImpl implements ProductService {
     }
 
     private void validateProductIsActive(Product product) {
-        if (!ACTIVE_STATUS.equals(product.getStatus())) {
+        if (!ProductStatus.ACTIVE.getValue().equals(product.getStatus())) {
             throw new ResourceNotFoundException("Product", "ProductId", product.getId());
         }
     }
 
     private Product buildProductFromDTO(ProductDTO productDTO, Category category, Long userId) {
-        Product product = modelMapper.map(productDTO, Product.class);
+        Product product = new Product();
+        product.setName(productDTO.getName());
+        product.setDescription(productDTO.getDescription());
+        product.setStatus(productDTO.getStatus());
+        product.setSpecifications(productDTO.getSpecifications());
+        product.setMetadata(productDTO.getMetadata());
         product.setCategory(category);
         product.setUserId(userId);
         return product;
-    }
-
-    private Pageable createPageable(Integer page, Integer perPage, String sortBy, String sortOrder) {
-        Sort sort = ASCENDING_ORDER.equalsIgnoreCase(sortOrder) 
-                ? Sort.by(sortBy).ascending() 
-                : Sort.by(sortBy).descending();
-        return PageRequest.of(page, perPage, sort);
     }
 
     private Specification<Product> buildSellerProductSpecification(Long userId, String name, String category) {
@@ -148,118 +176,21 @@ public class ProductServiceImpl implements ProductService {
     }
 
     private Specification<Product> buildPublicProductSpecification(String search, String category) {
-        return Specification.where(ProductUtils.statusEquals(ACTIVE_STATUS))
-                .and(ProductUtils.nameContains(search))
-                .and(ProductUtils.categoryEquals(category));
+        Specification<Product> spec = ProductUtils.statusEquals(ProductStatus.ACTIVE.getValue());
+        if (search != null) {
+            spec = spec != null ? spec.and(ProductUtils.nameContains(search)) : ProductUtils.nameContains(search);
+        }
+        if (category != null) {
+            spec = spec != null ? spec.and(ProductUtils.categoryEquals(category)) : ProductUtils.categoryEquals(category);
+        }
+        return spec;
     }
 
     private ProductResponse fetchAndMapProducts(Specification<Product> specification, Pageable pageable) {
         Page<Product> productPage = productRepository.findAll(specification, pageable);
-        List<ProductRowDTO> productRows = mapToProductRowDTOs(productPage.getContent());
+        List<ProductRowDTO> productRows = productMapper.toRowDTOs(productPage.getContent());
         
         return buildProductResponse(productPage, productRows);
-    }
-
-    private List<ProductRowDTO> mapToProductRowDTOs(List<Product> products) {
-        return products.stream()
-                .map(this::mapToProductRowDTO)
-                .toList();
-    }
-
-    private ProductRowDTO mapToProductRowDTO(Product product) {
-        return ProductRowDTO.builder()
-                .id(product.getId())
-                .name(product.getName())
-                .description(product.getDescription())
-                .category(mapToCategoryDTO(product.getCategory()))
-                .imageUrl(getFirstImageUrl(product))
-                .status(product.getStatus())
-                .minPrice(calculateMinPrice(product))
-                .variants(product.getVariants().size())
-                .firstVariant(findFirstAvailableVariant(product))
-                .totalSold(product.getTotalSold())
-                .totalReviews(product.getTotalReviews())
-                .averageRating(product.getAverageRating())
-                .build();
-    }
-
-    private ProductDTO mapToProductDTO(Product product) {
-        ProductDTO productDTO = modelMapper.map(product, ProductDTO.class);
-        productDTO.setCate(mapToCategoryDTO(product.getCategory()));
-        return productDTO;
-    }
-
-    private ProductDetailDTO mapToProductDetailDTO(Product product) {
-        ProductDetailDTO productDetailDTO = modelMapper.map(product, ProductDetailDTO.class);
-        productDetailDTO.setCate(mapToCategoryDTO(product.getCategory()));
-        productDetailDTO.setOptions(mapProductOptions(product));
-        productDetailDTO.setVariants(mapActiveVariants(product));
-        productDetailDTO.setImages(mapProductImages(product));
-        
-        return productDetailDTO;
-    }
-
-    private CategoryDTO mapToCategoryDTO(Category category) {
-        return modelMapper.map(category, CategoryDTO.class);
-    }
-
-    private String getFirstImageUrl(Product product) {
-        return product.getImages().isEmpty() 
-                ? DEFAULT_IMAGE_URL 
-                : product.getImages().get(0).getImageUrl();
-    }
-
-    private BigDecimal calculateMinPrice(Product product) {
-        return product.getVariants().stream()
-                .filter(this::isAvailableVariant)
-                .map(ProductVariant::getEffectivePrice)
-                .min(Comparator.naturalOrder())
-                .orElse(null);
-    }
-
-    private ProductVariantDTO findFirstAvailableVariant(Product product) {
-        Optional<ProductVariant> variant = findFirstVariantWithStock(product)
-                .or(() -> findFirstActiveVariant(product));
-        
-        return variant
-                .map(v -> modelMapper.map(v, ProductVariantDTO.class))
-                .orElse(null);
-    }
-
-    private Optional<ProductVariant> findFirstVariantWithStock(Product product) {
-        return product.getVariants().stream()
-                .filter(ProductVariant::getIsActive)
-                .filter(v -> v.getStock() > 0)
-                .findFirst();
-    }
-
-    private Optional<ProductVariant> findFirstActiveVariant(Product product) {
-        return product.getVariants().stream()
-                .filter(ProductVariant::getIsActive)
-                .findFirst();
-    }
-
-    private boolean isAvailableVariant(ProductVariant variant) {
-        return variant.getIsActive() && !variant.getDeleted();
-    }
-
-    private List<ProductOptionDTO> mapProductOptions(Product product) {
-        return product.getOptions().stream()
-                .map(option -> modelMapper.map(option, ProductOptionDTO.class))
-                .collect(Collectors.toList());
-    }
-
-    private List<ProductVariantDTO> mapActiveVariants(Product product) {
-        return product.getVariants().stream()
-                .filter(ProductVariant::getIsActive)
-                .map(variant -> modelMapper.map(variant, ProductVariantDTO.class))
-                .collect(Collectors.toList());
-    }
-
-    private List<ProductImageDTO> mapProductImages(Product product) {
-        return product.getImages().stream()
-                .map(image -> modelMapper.map(image, ProductImageDTO.class))
-                .collect(Collectors.toList());
     }
 
     private ProductResponse buildProductResponse(Page<Product> productPage, List<ProductRowDTO> productRows) {

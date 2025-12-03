@@ -7,6 +7,8 @@ import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
 
 import { ProductVariant } from "@/types/product";
+import { logger } from "@/lib/logger";
+import { imageUrl } from "@/lib/utils/imageUrl";
 
 interface ProductCardProps {
   id: string;
@@ -30,7 +32,7 @@ export function ProductCard({
   const displayPrice = firstVariant ? firstVariant.price : price;
   const displayImage = firstVariant?.imageUrl || image;
   const inStock = firstVariant ? firstVariant.stock > 0 : true;
-  console.log(firstVariant);
+  logger.debug('ProductCard variant:', { firstVariant });
   // Check if sale is active
   const hasSale =
     firstVariant?.salePrice !== undefined && firstVariant?.salePrice !== null;
@@ -60,7 +62,7 @@ export function ProductCard({
             </Badge>
           )}
           <Image
-            src={`http://localhost:8080/uploads/products/${displayImage}`}
+            src={imageUrl.product(displayImage)}
             alt={name}
             fill
             className="object-cover transition-transform duration-300"

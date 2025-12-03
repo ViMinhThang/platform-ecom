@@ -2,6 +2,7 @@ import Link from "next/link"
 import { ChevronRight } from "lucide-react"
 import { getCategories } from "@/lib/services/product-service"
 import type { Category } from "@/types/product"
+import { logger } from "@/lib/logger"
 
 export async function CategorySidebar() {
   let categories: Category[] = [];
@@ -9,7 +10,7 @@ export async function CategorySidebar() {
   try {
     categories = await getCategories();
   } catch (error) {
-    console.error('Failed to fetch categories:', error);
+    logger.error('Failed to fetch categories:', error);
   }
 
   return (

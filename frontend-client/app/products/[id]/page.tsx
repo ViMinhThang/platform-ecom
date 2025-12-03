@@ -11,6 +11,8 @@ import { ReviewStats } from "@/components/ReviewStats";
 import { ReviewList } from "@/components/ReviewList";
 import { ProductVariantSection } from "@/components/ProductVariantSection";
 import { ProductDetail, ProductVariant } from "@/types/product";
+import { logger } from "@/lib/logger";
+import { imageUrl } from "@/lib/utils/imageUrl";
 import {
   Carousel,
   CarouselContent,
@@ -47,10 +49,10 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
       try {
         const { id } = await params;
         const data = await getPublicProductWithVariants(id);
-        console.log(data);
+        logger.debug('Fetched product data:', { data });
         setProduct(data);
       } catch (error) {
-        console.error("Failed to fetch product:", error);
+        logger.error("Failed to fetch product:", error);
         notFound();
       } finally {
         setLoading(false);
@@ -89,13 +91,11 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
             <Image
               width={900}
               height={900}
-              src={
+              src={imageUrl.product(
                 product.images && product.images.length > 0
-                  ? `http://localhost:8080/uploads/products/${product.images[currentImageIndex]?.imageUrl ||
-                  product.images[0].imageUrl
-                  }`
-                  : `http://localhost:8080/uploads/products/${displayImage}`
-              }
+                  ? product.images[currentImageIndex]?.imageUrl || product.images[0].imageUrl
+                  : displayImage
+              )}
               alt={product.name}
               className="object-cover w-full h-full transition-all duration-300"
               unoptimized
@@ -129,7 +129,7 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
                         <Image
                           width={200}
                           height={200}
-                          src={`http://localhost:8080/uploads/products/${image.imageUrl}`}
+                          src={imageUrl.product(image.imageUrl)}
                           alt={`${product.name} thumbnail ${index + 1}`}
                           className="object-cover w-full h-full"
                           unoptimized

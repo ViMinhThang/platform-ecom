@@ -9,6 +9,8 @@ import { GetReviewsParams } from "@/lib/services/review-service";
 import type { Review } from "@/types/review";
 import { StarRating } from "./ui/StarRating";
 import { Button } from "./ui/button";
+import { useSession } from "next-auth/react";
+import { imageUrl } from "@/lib/utils/imageUrl";
 import { Badge } from "./ui/badge";
 import {
   Select,
@@ -215,7 +217,7 @@ function ReviewCard({ review }: { review: Review }) {
               <Image
                 width={100}
                 height={100}
-                src={"http://localhost:8080/uploads/reviews/" + image}
+                src={imageUrl.review(image)}
                 alt=""
               />
             </div>

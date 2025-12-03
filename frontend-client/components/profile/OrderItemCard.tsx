@@ -3,7 +3,8 @@
 import { OrderItem } from '@/types/user';
 import { Button } from '@/components/ui/button';
 import { canReviewOrder } from '@/lib/utils/orderStatus';
-import { Star } from 'lucide-react';
+import { Star, Package } from 'lucide-react';
+import { imageUrl } from '@/lib/utils/imageUrl';
 import Image from 'next/image';
 
 interface OrderItemCardProps {
@@ -28,7 +29,7 @@ export function OrderItemCard({ item, orderStatus, onReviewClick }: OrderItemCar
                     <Image
                         width={100}
                         height={100}
-                        src={`http://localhost:8080/uploads/products/${variant.imageUrl}`}
+                        src={imageUrl.product(variant.imageUrl)}
                         alt="Product variant"
                         unoptimized={true}
                         className="w-full h-full object-cover"

@@ -1,6 +1,7 @@
 import { ProductCard } from "@/components/ProductCard";
 import { getPublicProducts } from "@/lib/services/product-service";
 import type { ProductRow } from "@/types/product";
+import { logger } from "@/lib/logger";
 
 export async function FeaturedProducts() {
   let products: ProductRow[] = [];
@@ -9,7 +10,7 @@ export async function FeaturedProducts() {
     const data = await getPublicProducts({ page: 0, perPage: 50 });
     products = data.content;
   } catch (error) {
-    console.error("Failed to fetch products:", error);
+    logger.error("Failed to fetch products:", error);
   }
 
   return (

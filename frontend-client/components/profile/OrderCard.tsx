@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { formatOrderDate } from '@/lib/utils/dateUtils';
 import { ShoppingCart, Package } from 'lucide-react';
+import { transformSubOrderItemToOrderItem } from '@/lib/utils/transformers';
 
 interface OrderCardProps {
     order: OrderGroupDTO;
@@ -44,22 +45,15 @@ export function OrderCard({ order, onReviewOrderItem, onBuyAgain }: OrderCardPro
                     </h4>
                     <div className="grid grid-cols-1 gap-2">
                         {order.subOrders.flatMap(subOrder =>
-                            subOrder.items.map(item => ({
-                                ...item,
-                                subOrderId: subOrder.id,
-                                status: subOrder.status,
-                                // Map DTO fields to what OrderItemCard expects if needed
-                                // Assuming OrderItemCard needs to be updated or we map here
-                                productVariant: { id: item.variantId, name: item.variantName },
-                                product: { id: item.productId, name: item.productName, images: [] } // Placeholder for missing data
-                            }))
+                            subOrder.items.map(item =>
+                                transformSubOrderItemToOrderItem(item, subOrder.id, subOrder.status)
+                            )
                         ).map((item) => (
                             <OrderItemCard
-                                key={`${item.subOrderId}-${item.variantId || item.productId}`}
-                                // @ts-ignore - Mapping DTO item to UI item
+                                key={`${item.productId}-${item.productVariant?.id || 'no-variant'}`}
                                 item={item}
-                                orderStatus={item.status}
-                                onReviewClick={() => onReviewOrderItem(item.productId, item.subOrderId)}
+                                orderStatus={order.overallStatus}
+                                onReviewClick={() => onReviewOrderItem(item.productId, order.id)}
                             />
                         ))}
                     </div>

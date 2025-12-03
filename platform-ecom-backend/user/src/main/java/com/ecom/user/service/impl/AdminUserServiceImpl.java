@@ -10,6 +10,7 @@ import com.ecom.user.dtos.UserResponse;
 import com.ecom.user.entity.AppRole;
 import com.ecom.user.entity.Role;
 import com.ecom.user.entity.User;
+import com.ecom.user.mapper.UserMapper;
 import com.ecom.user.repositories.UserRepository;
 import com.ecom.user.service.signature.AdminUserService;
 import com.ecom.user.service.signature.RoleService;
@@ -34,6 +35,7 @@ public class AdminUserServiceImpl implements AdminUserService {
     private final PasswordEncoder encoder;
     private final RoleService roleService;
     private final FileStorageService fileStorageService;
+    private final UserMapper userMapper;
 
     @Override
     public UserResponse getAllUsers(Pageable pageable) {
@@ -113,7 +115,7 @@ public class AdminUserServiceImpl implements AdminUserService {
 
     @Override
     public UserInfoResponse getUserById(Long userId) {
-        return mapUserToUserInfoResponse(getUserByUserIdFromDatabase(userId));
+        return userMapper.toUserInfoResponse(getUserByUserIdFromDatabase(userId));
     }
 
     @Override
@@ -152,18 +154,4 @@ public class AdminUserServiceImpl implements AdminUserService {
         }
     }
 
-    private UserInfoResponse mapUserToUserInfoResponse(User user) {
-        List<String> roles = user.getRoles().stream()
-                .map(role -> role.getRoleName().toString())
-                .toList();
-
-        return UserInfoResponse.builder()
-                .userId(user.getUserId())
-                .username(user.getUserName())
-                .email(user.getEmail())
-                .imageUrl(user.getImageUrl())
-                .isActive(user.getIsActive())
-                .roles(roles)
-                .build();
-    }
 }

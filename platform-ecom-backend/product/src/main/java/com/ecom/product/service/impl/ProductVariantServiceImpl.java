@@ -9,13 +9,13 @@ import com.ecom.product.entity.ProductVariant;
 import com.ecom.product.entity.VariantOptionValue;
 import com.ecom.common.exception.APIException;
 import com.ecom.common.exception.ResourceNotFoundException;
+import com.ecom.product.mapper.ProductVariantMapper;
 import com.ecom.product.repository.ProductOptionValueRepository;
 import com.ecom.product.repository.ProductRepository;
 import com.ecom.product.repository.ProductVariantRepository;
 import com.ecom.product.service.signature.ProductVariantService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.Comparator;
@@ -30,9 +30,10 @@ public class ProductVariantServiceImpl implements ProductVariantService {
     private final ProductVariantRepository productVariantRepository;
     private final ProductRepository productRepository;
     private final ProductOptionValueRepository optionValueRepository;
-    private final ModelMapper modelMapper;
+    private final ProductVariantMapper productVariantMapper;
 
     @Override
+    @Transactional
     public ProductVariantDTO createProductVariant(Long productId, ProductVariantDTO productVariantDTO) {
         Product product = findProductById(productId);
 
@@ -43,19 +44,21 @@ public class ProductVariantServiceImpl implements ProductVariantService {
         updateVariantOptionValues(productVariant, productVariantDTO.getOptionValues());
 
         ProductVariant savedVariant = productVariantRepository.save(productVariant);
-        return mapToVariantDTO(savedVariant);
+        return productVariantMapper.toDTO(savedVariant);
     }
 
     @Override
+    @Transactional
     public List<ProductVariantDTO> getVariantsForProduct(Long productId) {
         List<ProductVariant> variants = productVariantRepository.findByProductId(productId);
         return mapAndSortVariants(variants);
     }
 
     @Override
+    @Transactional
     public ProductVariantDTO getProductVariantById(Long productId, Long variantId) {
         ProductVariant variant = findProductVariant(productId, variantId);
-        return modelMapper.map(variant, ProductVariantDTO.class);
+        return productVariantMapper.toDTO(variant);
     }
 
     @Override
@@ -69,19 +72,21 @@ public class ProductVariantServiceImpl implements ProductVariantService {
         updateVariantOptionValues(variant, dto.getOptionValues());
 
         ProductVariant saved = productVariantRepository.save(variant);
-        return mapToVariantDTO(saved);
+        return productVariantMapper.toDTO(saved);
     }
 
     @Override
+    @Transactional
     public void deleteProductVariant(Long productId, Long variantId) {
         ProductVariant variant = findProductVariant(productId, variantId);
         productVariantRepository.delete(variant);
     }
 
     @Override
+    @Transactional
     public ProductVariantDTO findVariantById(Long variantId) {
         ProductVariant variant = findVariantByVariantId(variantId);
-        return mapToVariantDTO(variant);
+        return productVariantMapper.toDTO(variant);
     }
 
     // ==================== Private Helper Methods ====================
@@ -103,7 +108,7 @@ public class ProductVariantServiceImpl implements ProductVariantService {
 
     private List<ProductVariantDTO> mapAndSortVariants(List<ProductVariant> variants) {
         return variants.stream()
-                .map(this::mapToVariantDTO)
+                .map(productVariantMapper::toDTO)
                 .sorted(Comparator.comparing(ProductVariantDTO::getId))
                 .collect(Collectors.toList());
     }
@@ -145,6 +150,9 @@ public class ProductVariantServiceImpl implements ProductVariantService {
     private void updateVariantDetails(ProductVariant variant, ProductVariantDTO dto) {
         variant.setSku(dto.getSku());
         variant.setPrice(dto.getPrice());
+        variant.setSalePrice(dto.getSalePrice());
+        variant.setSaleStart(dto.getSaleStart());
+        variant.setSaleEnd(dto.getSaleEnd());
         variant.setStock(dto.getStock());
         variant.setIsActive(dto.getIsActive());
         variant.setImageUrl(dto.getImageUrl());
@@ -166,46 +174,5 @@ public class ProductVariantServiceImpl implements ProductVariantService {
         vo.setOptionValue(optionValueRepository.getReferenceById(opt.getProductOptionValue().getId()));
         vo.setPriceModifier(opt.getPriceModifier());
         variant.getOptionValues().add(vo);
-    }
-
-    private ProductVariantDTO mapToVariantDTO(ProductVariant variant) {
-        ProductVariantDTO dto = new ProductVariantDTO();
-        dto.setId(variant.getId());
-        dto.setProductId(variant.getProduct().getId());
-        dto.setSku(variant.getSku());
-        dto.setPrice(variant.getPrice());
-        dto.setStock(variant.getStock());
-        dto.setIsActive(variant.getIsActive());
-        dto.setCreatedAt(variant.getCreatedAt());
-        dto.setUpdatedAt(variant.getUpdatedAt());
-        dto.setImageUrl(variant.getImageUrl());
-
-        dto.setOptionValues(mapVariantOptionValues(variant));
-
-        return dto;
-    }
-
-    private List<VariantOptionValueDTO> mapVariantOptionValues(ProductVariant variant) {
-        return variant.getOptionValues().stream()
-                .map(this::mapToVariantOptionValueDTO)
-                .collect(Collectors.toList());
-    }
-
-    private VariantOptionValueDTO mapToVariantOptionValueDTO(VariantOptionValue vov) {
-        VariantOptionValueDTO vovDTO = new VariantOptionValueDTO();
-        vovDTO.setId(vov.getId());
-        vovDTO.setVariantId(vov.getVariant().getId());
-        vovDTO.setOptionId(vov.getOptionValue().getOption().getId());
-        vovDTO.setPriceModifier(vov.getPriceModifier());
-        vovDTO.setProductOptionValue(mapToProductOptionValueDTO(vov.getOptionValue()));
-        return vovDTO;
-    }
-
-    private ProductOptionValueDTO mapToProductOptionValueDTO(ProductOptionValue pov) {
-        ProductOptionValueDTO dto = new ProductOptionValueDTO();
-        dto.setId(pov.getId());
-        dto.setValue(pov.getValue());
-        dto.setDisplayValue(pov.getDisplayValue());
-        return dto;
     }
 }

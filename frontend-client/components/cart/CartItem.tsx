@@ -2,7 +2,8 @@
 
 import { CartItemDTO } from "@/types/cart.types";
 import { Button } from "@/components/ui/button";
-import { Minus, Plus, Trash2 } from "lucide-react";
+import { Trash2, Plus, Minus } from 'lucide-react';
+import { imageUrl } from '@/lib/utils/imageUrl';
 import Image from "next/image";
 import { useCart } from "@/hooks/useCart";
 import { useState } from "react";
@@ -39,7 +40,7 @@ export function CartItem({ item }: CartItemProps) {
             {/* Product Image */}
             <div className="relative h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border bg-zinc-100">
                 <Image
-                    src={`http://localhost:8080/uploads/products/${item.imageUrl}`}
+                    src={imageUrl.product(item.imageUrl)}
                     alt={item.productName}
                     fill
                     className="object-cover"

@@ -1,6 +1,7 @@
 import { getPublicProducts } from "@/lib/services/product-service";
 import { ProductCard } from "@/components/ProductCard";
 import type { ProductRow } from "@/types/product";
+import { logger } from "@/lib/logger";
 
 interface ProductsPageProps {
   searchParams: { [key: string]: string | string[] | undefined };
@@ -31,7 +32,7 @@ export default async function ProductsPage({
     products = data.content;
     totalPages = data.totalPages;
   } catch (err) {
-    console.error("Failed to fetch products:", err);
+    logger.error("Failed to fetch products:", err);
     error = "Failed to load products. Please try again later.";
   }
 

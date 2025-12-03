@@ -1,8 +1,9 @@
 import { useState, useCallback } from 'react';
 import { CartDTO } from '@/types/cart.types';
 import { Address } from '@/types/user';
-import { getAvailableServices, calculateShippingFee } from '@/lib/api/ghn';
+import { getAvailableServices, calculateShippingFee } from '@/lib/services/ghn-service';
 import { toast } from 'sonner';
+import { logger } from '@/lib/logger';
 
 export function useShipping() {
     const [shippingFee, setShippingFee] = useState<number>(0);
@@ -29,7 +30,7 @@ export function useShipping() {
             const services = await getAvailableServices(DEFAULT_FROM_DISTRICT, address.districtId, SHOP_ID);
 
             if (services.length === 0) {
-                console.warn(`No shipping services available for shop ${SHOP_ID}`);
+                logger.warn(`No shipping services available for shop ${SHOP_ID}`);
                 setShippingFee(0);
                 return;
             }
@@ -80,7 +81,7 @@ export function useShipping() {
                         break; // Found a working service
                     }
                 } catch (e) {
-                    console.warn(`Service ${service.service_id} (${service.short_name}) failed:`, e);
+                    logger.warn(`Service ${service.service_id} (${service.short_name}) failed:`, { error: e });
                     lastError = e;
                     continue;
                 }
@@ -89,11 +90,11 @@ export function useShipping() {
             if (feeData) {
                 setShippingFee(feeData.total);
             } else {
-                console.error("All shipping services failed");
+                logger.error("All shipping services failed", lastError);
                 throw lastError || new Error("No suitable shipping service found");
             }
         } catch (error) {
-            console.error("Failed to calculate shipping:", error);
+            logger.error("Failed to calculate shipping:", error);
             toast.error("Failed to calculate shipping fee");
         } finally {
             setLoading(false);

@@ -6,6 +6,7 @@ import com.ecom.common.service.FileStorageService;
 import com.ecom.user.dtos.UpdateUserRequest;
 import com.ecom.user.dtos.UserInfoResponse;
 import com.ecom.user.entity.User;
+import com.ecom.user.mapper.UserMapper;
 import com.ecom.user.repositories.UserRepository;
 import com.ecom.user.service.signature.UserService;
 import lombok.RequiredArgsConstructor;
@@ -14,8 +15,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.List;
-
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
@@ -23,11 +22,12 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder encoder;
     private final FileStorageService fileStorageService;
+    private final UserMapper userMapper;
 
     @Override
     public UserInfoResponse getMyProfile(Long userId) {
         User user = getUserByUserIdFromDatabase(userId);
-        return mapUserToUserInfoResponse(user);
+        return userMapper.toUserInfoResponse(user);
     }
 
     @Override
@@ -53,7 +53,7 @@ public class UserServiceImpl implements UserService {
         }
 
         User savedUser = userRepository.save(user);
-        return mapUserToUserInfoResponse(savedUser);
+        return userMapper.toUserInfoResponse(savedUser);
     }
 
     @Override
@@ -90,18 +90,4 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    private UserInfoResponse mapUserToUserInfoResponse(User user) {
-        List<String> roles = user.getRoles().stream()
-                .map(role -> role.getRoleName().toString())
-                .toList();
-
-        return UserInfoResponse.builder()
-                .userId(user.getUserId())
-                .username(user.getUserName())
-                .email(user.getEmail())
-                .imageUrl(user.getImageUrl())
-                .isActive(user.getIsActive())
-                .roles(roles)
-                .build();
-    }
 }

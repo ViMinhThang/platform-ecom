@@ -5,6 +5,9 @@ import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
+import { registerUser } from "@/lib/services/user-service";
+import { logger } from "@/lib/logger";
+import { toast } from "sonner";
 
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -45,29 +48,17 @@ export function RegisterForm({ className, ...props }: RegisterFormProps) {
         setLoading(true);
 
         try {
-            const res = await fetch("http://localhost:8080/api/auth/signup", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    username: data.username,
-                    email: data.email,
-                    password: data.password,
-                    role: ["user"], // Default role
-                }),
+            await registerUser({
+                username: data.username,
+                email: data.email,
+                password: data.password,
             });
 
-            const responseData = await res.json();
-
-            if (!res.ok) {
-                throw new Error(responseData.message || "Registration failed");
-            }
-
-            alert("Registration successful! Please sign in.");
+            toast.success("Registration successful! Please sign in.");
             router.push("/auth/sign-in");
         } catch (error: any) {
-            alert(error.message || "Something went wrong");
+            logger.error("Registration failed:", error);
+            toast.error(error.message || "Something went wrong");
         } finally {
             setLoading(false);
         }

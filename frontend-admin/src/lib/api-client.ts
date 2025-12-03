@@ -1,18 +1,22 @@
+/**
+ * Centralized API Client
+ * Provides a configured axios instance with automatic authentication and logging
+ */
+
 import axios, { AxiosInstance, AxiosError } from 'axios';
-import { logger } from './logger';
-import { ApiError, NetworkError } from './errors';
-import { env } from './config/env';
+import { API_ENDPOINTS } from '@/config/constants';
+import { logger } from '@/lib/logger';
+import { ApiError, NetworkError } from '@/lib/errors';
 import { getSession } from 'next-auth/react';
 
-// Create axios instance
 export const apiClient: AxiosInstance = axios.create({
-    baseURL: env.apiBaseUrl,
+    baseURL: API_ENDPOINTS.BASE_URL,
     headers: {
         'Content-Type': 'application/json',
     },
-    withCredentials: true,
 });
 
+// Request interceptor - auto-inject auth token from session
 apiClient.interceptors.request.use(
     async (config) => {
         const session = await getSession();
@@ -33,6 +37,7 @@ apiClient.interceptors.request.use(
     }
 );
 
+// Response interceptor - logging and error handling
 apiClient.interceptors.response.use(
     (response) => {
         logger.apiResponse(
