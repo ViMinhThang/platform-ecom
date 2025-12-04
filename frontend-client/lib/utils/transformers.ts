@@ -38,10 +38,9 @@ export function transformSubOrderItemToOrderItem(
             price: item.unitPrice,
             stock: 0,
             isActive: true,
-            imageUrl: undefined,
+            imageUrl: item.imageUrl,
             optionValues: [],
-            variantName: item.variantName, // Add variant name from DTO
+            variantName: item.variantName,
         } : undefined,
     };
 }
-

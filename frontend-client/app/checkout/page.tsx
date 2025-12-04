@@ -14,7 +14,13 @@ import { useAppSelector } from "@/lib/store/hooks";
 import { logger } from "@/lib/logger";
 
 export default function CheckoutPage() {
-    const { checkout, currentOrder, proceedToPayment, loading: orderLoading, error: orderError } = useCheckout();
+    const {
+        checkout,
+        checkoutSession,
+        startCheckout,
+        loading: orderLoading,
+        error: orderError
+    } = useCheckout();
     const { cart } = useCart();
     const [stripePromise] = useState(() => getStripe());
     const [elementsOptions, setElementsOptions] = useState<any>(null);
@@ -33,11 +39,11 @@ export default function CheckoutPage() {
         }
     }, [cart, checkout.selectedAddressId, addresses, calculateTotalShipping]);
 
-    // Initialize Stripe Elements when we have a client secret
+    // Initialize Stripe Elements when we have a client secret from checkout session
     useEffect(() => {
-        if (currentOrder?.paymentClientSecret) {
+        if (checkoutSession?.clientSecret) {
             setElementsOptions({
-                clientSecret: currentOrder.paymentClientSecret,
+                clientSecret: checkoutSession.clientSecret,
                 appearance: {
                     theme: 'stripe',
                     variables: {
@@ -46,15 +52,15 @@ export default function CheckoutPage() {
                 },
             });
         }
-    }, [currentOrder]);
+    }, [checkoutSession]);
 
-    // Handle transition to payment step
+    // Handle transition to payment step - initiate checkout to get Stripe client secret
     useEffect(() => {
-        if (checkout.step === 'payment' && !currentOrder && !orderLoading && !orderError) {
-            // If we are in payment step but no order created yet, create it
-            proceedToPayment().catch((err) => logger.error("Failed to proceed to payment", err));
+        if (checkout.step === 'payment' && !checkoutSession && !orderLoading && !orderError) {
+            // If we are in payment step but no checkout session yet, initiate it
+            startCheckout().catch((err) => logger.error("Failed to initiate checkout", err));
         }
-    }, [checkout.step, currentOrder, orderLoading, proceedToPayment, orderError]);
+    }, [checkout.step, checkoutSession, orderLoading, startCheckout, orderError]);
 
     if (!cart) {
         return <div className="container py-12 text-center">Loading checkout...</div>;
@@ -102,10 +108,10 @@ export default function CheckoutPage() {
                                         <AlertCircle className="h-6 w-6 text-destructive" />
                                     </div>
                                     <div className="space-y-2">
-                                        <h3 className="font-semibold text-lg">Failed to create order</h3>
+                                        <h3 className="font-semibold text-lg">Failed to initiate checkout</h3>
                                         <p className="text-muted-foreground max-w-xs mx-auto">{orderError}</p>
                                     </div>
-                                    <Button onClick={() => proceedToPayment()} variant="outline">
+                                    <Button onClick={() => startCheckout()} variant="outline">
                                         Try Again
                                     </Button>
                                 </div>

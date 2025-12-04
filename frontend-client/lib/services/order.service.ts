@@ -2,7 +2,9 @@ import apiClient from '@/lib/api-client';
 import {
     OrderGroupDTO,
     CreateOrderRequest,
-    SubOrderDTO
+    SubOrderDTO,
+    CheckoutSession,
+    ConfirmPaymentRequest
 } from '@/types/order.types';
 import { APIResponse, PaginatedResponse } from '@/types/common.types';
 
@@ -10,9 +12,25 @@ const ORDER_API = '/v1/order-groups';
 const SUBORDER_API = '/v1/sub-orders';
 
 export const orderService = {
-    createOrder: async (request: CreateOrderRequest): Promise<OrderGroupDTO> => {
+    /**
+     * Step 1: Initiate checkout - creates Stripe PaymentIntent
+     * No order is created yet
+     */
+    initiateCheckout: async (request: CreateOrderRequest): Promise<CheckoutSession> => {
+        const { data } = await apiClient.post<APIResponse<CheckoutSession>>(
+            `${ORDER_API}/initiate-checkout`,
+            request
+        );
+        return data.data;
+    },
+
+    /**
+     * Step 2: Confirm payment and create order
+     * Called after Stripe payment succeeds
+     */
+    confirmPayment: async (request: ConfirmPaymentRequest): Promise<OrderGroupDTO> => {
         const { data } = await apiClient.post<APIResponse<OrderGroupDTO>>(
-            ORDER_API,
+            `${ORDER_API}/confirm-payment`,
             request
         );
         return data.data;

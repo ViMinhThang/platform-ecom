@@ -1,5 +1,5 @@
 export enum OrderGroupStatus {
-    PENDING = 'PENDING',
+    PAID = 'PAID',
     PROCESSING = 'PROCESSING',
     PARTIALLY_SHIPPED = 'PARTIALLY_SHIPPED',
     COMPLETED = 'COMPLETED',
@@ -18,8 +18,6 @@ export enum SubOrderStatus {
 }
 
 export enum PaymentStatus {
-    PENDING = 'PENDING',
-    PROCESSING = 'PROCESSING',
     SUCCEEDED = 'SUCCEEDED',
     FAILED = 'FAILED',
     CANCELLED = 'CANCELLED',
@@ -33,6 +31,7 @@ export interface SubOrderItemDTO {
     variantId?: number;
     productName: string;
     variantName?: string;
+    imageUrl?: string;
     quantity: number;
     unitPrice: number;
     totalPrice: number;
@@ -78,7 +77,6 @@ export interface OrderGroupDTO {
     createdAt: string;
     updatedAt: string;
     subOrders: SubOrderDTO[];
-    paymentClientSecret?: string; // For Stripe
 }
 
 export interface CreateOrderRequest {
@@ -86,4 +84,24 @@ export interface CreateOrderRequest {
     paymentProvider: string;
     promoCode?: string;
     idempotencyKey: string;
+}
+
+/**
+ * Checkout session returned from initiateCheckout
+ * Contains Stripe client secret for payment
+ */
+export interface CheckoutSession {
+    clientSecret: string;
+    paymentIntentId: string;
+    amount: number;
+    currency: string;
+    addressId: number;
+}
+
+/**
+ * Request to confirm payment and create order
+ */
+export interface ConfirmPaymentRequest {
+    paymentIntentId: string;
+    addressId: number;
 }

@@ -56,7 +56,7 @@ export default function CategoryPage({ params }: CategoryPageProps) {
     return (
         <div className="container mx-auto py-8 px-4 md:px-6">
             {/* Top Section: Seller Grid */}
-            <SellerGrid />
+            <SellerGrid categorySlug={categorySlug} />
 
             <div className="mb-8">
                 <h1 className="text-3xl font-bold tracking-tight capitalize">
@@ -90,16 +90,19 @@ export default function CategoryPage({ params }: CategoryPageProps) {
                         </div>
                     ) : products.length > 0 ? (
                         <>
-                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">
                                 {products.map((product) => (
                                     <ProductCard
                                         key={product.id}
                                         id={product.id.toString()}
+                                        slug={product.slug || `product-${product.id}`}
                                         name={product.name}
                                         price={product.minPrice || 0}
                                         image={product.imageUrl || "https://placehold.co/600x400"}
                                         category={product.category.name}
                                         isNew={false}
+                                        rating={product.averageRating}
+                                        soldCount={product.totalSold}
                                         firstVariant={product.firstVariant}
                                     />
                                 ))}

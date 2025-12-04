@@ -61,3 +61,30 @@ export const getCategories = async (): Promise<Category[]> => {
     return response.data.data.content;
 };
 
+/**
+ * Top seller information for a category
+ */
+export interface TopSeller {
+    sellerId: number;
+    sellerName: string;
+    imageUrl: string | null;
+}
+
+/**
+ * Fetch top sellers for a category
+ */
+export const getTopSellers = async (categorySlug: string, limit = 10): Promise<TopSeller[]> => {
+    const response = await apiClient.get<APIResponse<TopSeller[]>>(
+        `/v1/products/categories/${encodeURIComponent(categorySlug)}/top-sellers?limit=${limit}`
+    );
+    return response.data.data;
+};
+
+/**
+ * Fetch product by slug with variants
+ */
+export const getProductBySlug = async (slug: string): Promise<ProductDetail> => {
+    const response = await apiClient.get<APIResponse<ProductDetail>>(`/v1/products/slug/${encodeURIComponent(slug)}`);
+    return response.data.data;
+};
+

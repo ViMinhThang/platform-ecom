@@ -6,10 +6,21 @@ import org.springframework.data.domain.Pageable;
 
 /**
  * Order Group Service Interface
+ * Handles checkout initiation, payment confirmation, and order management
  */
 public interface OrderGroupService {
 
-    OrderGroupDTO createFromCart(Long userId, CreateOrderRequest request);
+    /**
+     * Step 1: Initiate checkout - validates cart and creates Stripe PaymentIntent
+     * No order is created at this step
+     */
+    CheckoutSessionDTO initiateCheckout(Long userId, CreateOrderRequest request);
+
+    /**
+     * Step 2: After Stripe payment succeeds, confirm and create the order
+     * This is the only way orders are created - guaranteeing PAID status
+     */
+    OrderGroupDTO confirmPaymentAndCreateOrder(Long userId, ConfirmPaymentRequest request);
 
     OrderGroupDTO getOrderGroup(Long groupId, Long userId);
 

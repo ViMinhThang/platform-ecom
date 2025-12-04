@@ -19,6 +19,8 @@ public interface PaymentTransactionRepository extends JpaRepository<PaymentTrans
 
     Optional<PaymentTransaction> findByProviderTransactionId(String providerTransactionId);
 
+    boolean existsByProviderTransactionId(String providerTransactionId);
+
     @Query("SELECT pt FROM PaymentTransaction pt " +
             "WHERE pt.orderGroup.id = :groupId " +
             "ORDER BY pt.createdAt DESC")

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import { fetchOrderById } from "@/lib/store/slices/orderSlice";
@@ -14,23 +14,17 @@ export default function CheckoutSuccessPage() {
     const router = useRouter();
     const dispatch = useAppDispatch();
     const { currentOrder, loading } = useAppSelector((state) => state.orders);
-    const [paymentStatus, setPaymentStatus] = useState<string | null>(null);
 
     const orderId = searchParams.get("orderId");
-    const redirectStatus = searchParams.get("redirect_status");
 
     useEffect(() => {
-        if (redirectStatus) {
-            setPaymentStatus(redirectStatus);
-        }
-
         if (orderId) {
             dispatch(fetchOrderById(Number(orderId)));
         }
 
         // Clear checkout state
         dispatch(resetCheckout());
-    }, [orderId, redirectStatus, dispatch]);
+    }, [orderId, dispatch]);
 
     if (loading) {
         return (
@@ -40,27 +34,21 @@ export default function CheckoutSuccessPage() {
         );
     }
 
-    const isSuccess = paymentStatus === "succeeded";
-
     return (
         <div className="container mx-auto py-16 px-4 max-w-2xl">
             <div className="text-center space-y-6">
                 {/* Success Icon */}
                 <div className="flex justify-center">
-                    <div className={`p-4 rounded-full ${isSuccess ? 'bg-green-100 dark:bg-green-900/30' : 'bg-yellow-100 dark:bg-yellow-900/30'}`}>
-                        <CheckCircle2 className={`h-16 w-16 ${isSuccess ? 'text-green-600' : 'text-yellow-600'}`} />
+                    <div className="p-4 rounded-full bg-green-100 dark:bg-green-900/30">
+                        <CheckCircle2 className="h-16 w-16 text-green-600" />
                     </div>
                 </div>
 
                 {/* Title */}
                 <div className="space-y-2">
-                    <h1 className="text-3xl font-bold">
-                        {isSuccess ? "Payment Successful!" : "Order Received"}
-                    </h1>
+                    <h1 className="text-3xl font-bold">Payment Successful!</h1>
                     <p className="text-muted-foreground">
-                        {isSuccess
-                            ? "Thank you for your purchase. Your order has been confirmed."
-                            : "Your order has been received and is being processed."}
+                        Thank you for your purchase. Your order has been confirmed.
                     </p>
                 </div>
 
@@ -85,9 +73,7 @@ export default function CheckoutSuccessPage() {
                             </div>
                             <div className="flex justify-between">
                                 <span className="text-muted-foreground">Payment Status</span>
-                                <span className={`font-medium ${isSuccess ? 'text-green-600' : 'text-yellow-600'}`}>
-                                    {isSuccess ? "Paid" : currentOrder.paymentStatus}
-                                </span>
+                                <span className="font-medium text-green-600">Paid</span>
                             </div>
                             <div className="flex justify-between">
                                 <span className="text-muted-foreground">Items</span>

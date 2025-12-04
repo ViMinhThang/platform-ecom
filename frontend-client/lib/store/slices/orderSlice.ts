@@ -2,13 +2,16 @@ import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import { orderService } from '@/lib/services/order.service';
 import {
     OrderGroupDTO,
-    CreateOrderRequest
+    CreateOrderRequest,
+    CheckoutSession,
+    ConfirmPaymentRequest
 } from '@/types/order.types';
 import { PaginatedResponse } from '@/types/common.types';
 
 interface OrderState {
     orders: OrderGroupDTO[];
     currentOrder: OrderGroupDTO | null;
+    checkoutSession: CheckoutSession | null;
     loading: boolean;
     error: string | null;
     page: number;
@@ -18,16 +21,30 @@ interface OrderState {
 const initialState: OrderState = {
     orders: [],
     currentOrder: null,
+    checkoutSession: null,
     loading: false,
     error: null,
     page: 0,
     totalPages: 0
 };
 
-export const createOrder = createAsyncThunk(
-    'order/createOrder',
+/**
+ * Step 1: Initiate checkout - creates Stripe PaymentIntent
+ */
+export const initiateCheckout = createAsyncThunk(
+    'order/initiateCheckout',
     async (request: CreateOrderRequest) => {
-        return await orderService.createOrder(request);
+        return await orderService.initiateCheckout(request);
+    }
+);
+
+/**
+ * Step 2: Confirm payment and create order
+ */
+export const confirmPayment = createAsyncThunk(
+    'order/confirmPayment',
+    async (request: ConfirmPaymentRequest) => {
+        return await orderService.confirmPayment(request);
     }
 );
 
@@ -59,22 +76,39 @@ const orderSlice = createSlice({
     reducers: {
         clearCurrentOrder: (state) => {
             state.currentOrder = null;
+        },
+        clearCheckoutSession: (state) => {
+            state.checkoutSession = null;
         }
     },
     extraReducers: (builder) => {
         builder
-            // Create order
-            .addCase(createOrder.pending, (state) => {
+            // Initiate checkout
+            .addCase(initiateCheckout.pending, (state) => {
                 state.loading = true;
                 state.error = null;
             })
-            .addCase(createOrder.fulfilled, (state, action: PayloadAction<OrderGroupDTO>) => {
+            .addCase(initiateCheckout.fulfilled, (state, action: PayloadAction<CheckoutSession>) => {
+                state.loading = false;
+                state.checkoutSession = action.payload;
+            })
+            .addCase(initiateCheckout.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.error.message || 'Failed to initiate checkout';
+            })
+            // Confirm payment
+            .addCase(confirmPayment.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(confirmPayment.fulfilled, (state, action: PayloadAction<OrderGroupDTO>) => {
                 state.loading = false;
                 state.currentOrder = action.payload;
+                state.checkoutSession = null; // Clear checkout session after order is created
             })
-            .addCase(createOrder.rejected, (state, action) => {
+            .addCase(confirmPayment.rejected, (state, action) => {
                 state.loading = false;
-                state.error = action.error.message || 'Failed to create order';
+                state.error = action.error.message || 'Failed to confirm payment';
             })
             // Fetch orders
             .addCase(fetchOrders.pending, (state) => {
@@ -105,10 +139,9 @@ const orderSlice = createSlice({
             // Cancel order
             .addCase(cancelOrder.fulfilled, (state, action: PayloadAction<number>) => {
                 if (state.currentOrder?.id === action.payload) {
-                    // @ts-ignore - Enum compatibility issue, treating as string for now
+                    // @ts-ignore - Enum compatibility issue
                     state.currentOrder.overallStatus = 'CANCELLED';
                 }
-                // Update in list as well
                 const order = state.orders.find(o => o.id === action.payload);
                 if (order) {
                     // @ts-ignore
@@ -118,5 +151,5 @@ const orderSlice = createSlice({
     }
 });
 
-export const { clearCurrentOrder } = orderSlice.actions;
+export const { clearCurrentOrder, clearCheckoutSession } = orderSlice.actions;
 export default orderSlice.reducer;

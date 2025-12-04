@@ -62,4 +62,20 @@ public interface ProductRepository extends JpaRepository<Product, Long>, JpaSpec
     @EntityGraph(attributePaths = {"category", "variants", "images", "options"})
     @Query("SELECT DISTINCT p FROM Product p WHERE p.id IN :productIds")
     List<Product> findAllWithAssociations(@Param("productIds") List<Long> productIds);
+
+    /**
+     * Find top sellers by category slug
+     * Returns userId and total sales aggregated
+     */
+    @Query("SELECT p.userId, SUM(p.totalSold) as sales FROM Product p " +
+           "WHERE p.category.slug = :categorySlug AND p.status = 'ACTIVE' AND p.deleted = false " +
+           "GROUP BY p.userId ORDER BY sales DESC")
+    List<Object[]> findTopSellersByCategorySlug(@Param("categorySlug") String categorySlug, Pageable pageable);
+
+    /**
+     * Find product by slug with all associations
+     */
+    @EntityGraph(attributePaths = {"category", "variants", "images", "options"})
+    Optional<Product> findBySlugAndDeletedFalse(String slug);
 }
+

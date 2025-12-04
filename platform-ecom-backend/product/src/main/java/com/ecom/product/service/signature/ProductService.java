@@ -2,7 +2,7 @@ package com.ecom.product.service.signature;
 
 import com.ecom.product.dto.*;
 import jakarta.validation.Valid;
-
+import java.util.List;
 import java.math.BigDecimal;
 
 public interface ProductService {
@@ -26,4 +26,8 @@ public interface ProductService {
     ProductDetailDTO getProductWithVariants(Long productId);
 
     ProductVariantDTO getVariantById(Long variantId);
+
+    List<TopSellerDTO> getTopSellersByCategory(String categorySlug, int limit);
+
+    ProductDetailDTO getProductBySlug(String slug);
 }

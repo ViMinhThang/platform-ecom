@@ -1,75 +1,75 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { PaymentElement, useStripe, useElements } from "@stripe/react-stripe-js";
 import { useCheckout } from "@/hooks/useCheckout";
 import { Button } from "@/components/ui/button";
-import { AlertCircle, CheckCircle2 } from "lucide-react";
+import { AlertCircle, CheckCircle2, Loader2 } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { useRouter } from "next/navigation";
 
 export function PaymentForm() {
     const stripe = useStripe();
     const elements = useElements();
-    const { currentOrder, completeCheckout } = useCheckout();
+    const { checkoutSession, confirmPaymentAndCreateOrder } = useCheckout();
     const [message, setMessage] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState(false);
     const router = useRouter();
 
-    useEffect(() => {
-        if (!stripe) {
-            return;
-        }
-
-        const clientSecret = new URLSearchParams(window.location.search).get(
-            "payment_intent_client_secret"
-        );
-
-        if (!clientSecret) {
-            return;
-        }
-
-        stripe.retrievePaymentIntent(clientSecret).then(({ paymentIntent }) => {
-            switch (paymentIntent?.status) {
-                case "succeeded":
-                    setMessage("Payment succeeded!");
-                    break;
-                case "processing":
-                    setMessage("Your payment is processing.");
-                    break;
-                case "requires_payment_method":
-                    setMessage("Your payment was not successful, please try again.");
-                    break;
-                default:
-                    setMessage("Something went wrong.");
-                    break;
-            }
-        });
-    }, [stripe]);
-
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
-        if (!stripe || !elements || !currentOrder) {
+        if (!stripe || !elements || !checkoutSession) {
             return;
         }
 
         setIsLoading(true);
+        setMessage(null);
 
-        const { error } = await stripe.confirmPayment({
-            elements,
-            confirmParams: {
-                return_url: `${window.location.origin}/checkout/success?orderId=${currentOrder.id}`,
-            },
-        });
+        try {
+            // Step 1: Confirm payment with Stripe (no redirect)
+            const { paymentIntent, error } = await stripe.confirmPayment({
+                elements,
+                redirect: "if_required",
+                confirmParams: {
+                    return_url: window.location.origin, // Fallback only
+                }
+            });
 
-        if (error.type === "card_error" || error.type === "validation_error") {
-            setMessage(error.message || "An unexpected error occurred.");
-        } else {
-            setMessage("An unexpected error occurred.");
+            if (error) {
+                // Payment failed
+                if (error.type === "card_error" || error.type === "validation_error") {
+                    setMessage(error.message || "Payment failed. Please try again.");
+                } else {
+                    setMessage("An unexpected error occurred.");
+                }
+                setIsLoading(false);
+                return;
+            }
+
+            // Step 2: Payment succeeded - create order in backend
+            if (paymentIntent && paymentIntent.status === "succeeded") {
+                try {
+                    const order = await confirmPaymentAndCreateOrder(paymentIntent.id);
+
+                    // Navigate to success page
+                    router.push(`/checkout/success?orderId=${order.id}`);
+                } catch (orderError: any) {
+                    setMessage(orderError.message || "Payment succeeded but failed to create order. Please contact support.");
+                    setIsLoading(false);
+                }
+            } else if (paymentIntent && paymentIntent.status === "processing") {
+                setMessage("Your payment is processing. Please wait...");
+                setIsLoading(false);
+            } else {
+                setMessage("Payment was not completed. Please try again.");
+                setIsLoading(false);
+            }
+
+        } catch (err: any) {
+            setMessage(err.message || "An unexpected error occurred.");
+            setIsLoading(false);
         }
-
-        setIsLoading(false);
     };
 
     return (
@@ -80,9 +80,9 @@ export function PaymentForm() {
             </div>
 
             {message && (
-                <Alert variant={message === "Payment succeeded!" ? "default" : "destructive"}>
-                    {message === "Payment succeeded!" ? <CheckCircle2 className="h-4 w-4" /> : <AlertCircle className="h-4 w-4" />}
-                    <AlertTitle>{message === "Payment succeeded!" ? "Success" : "Error"}</AlertTitle>
+                <Alert variant={message.includes("succeeded") ? "default" : "destructive"}>
+                    {message.includes("succeeded") ? <CheckCircle2 className="h-4 w-4" /> : <AlertCircle className="h-4 w-4" />}
+                    <AlertTitle>{message.includes("succeeded") ? "Success" : "Error"}</AlertTitle>
                     <AlertDescription>{message}</AlertDescription>
                 </Alert>
             )}
@@ -93,9 +93,14 @@ export function PaymentForm() {
                 className="w-full"
                 size="lg"
             >
-                <span id="button-text">
-                    {isLoading ? "Processing..." : `Pay $${currentOrder?.totalAmount.toFixed(2)}`}
-                </span>
+                {isLoading ? (
+                    <>
+                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                        Processing...
+                    </>
+                ) : (
+                    `Pay $${checkoutSession?.amount.toFixed(2) || '0.00'}`
+                )}
             </Button>
         </form>
     );

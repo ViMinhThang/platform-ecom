@@ -4,6 +4,8 @@ import com.ecom.common.aspect.RequireRole;
 import com.ecom.common.security.AuthContext;
 import com.ecom.common.util.APIResponse;
 import com.ecom.common.util.ResponseBuilder;
+import com.ecom.order.dto.CheckoutSessionDTO;
+import com.ecom.order.dto.ConfirmPaymentRequest;
 import com.ecom.order.dto.CreateOrderRequest;
 import com.ecom.order.dto.OrderGroupDTO;
 import com.ecom.order.service.signature.OrderGroupService;
@@ -22,6 +24,11 @@ import org.springframework.web.bind.annotation.*;
 
 /**
  * Order Group Controller - Multi-seller order management
+ * 
+ * Checkout Flow:
+ * 1. POST /initiate-checkout - Validates cart, creates Stripe PaymentIntent (no order yet)
+ * 2. Frontend completes payment with Stripe
+ * 3. POST /confirm-payment - Verifies payment, creates order with PAID status
  */
 @Slf4j
 @RestController
@@ -31,21 +38,42 @@ public class OrderGroupController {
 
     private final OrderGroupService orderGroupService;
     private final AuthContext authContext;
+
     /**
-     * Create order group from cart (checkout)
+     * Step 1: Initiate checkout - creates Stripe PaymentIntent
+     * No order is created at this step
      */
-    @PostMapping
+    @PostMapping("/initiate-checkout")
     @RequireRole("ROLE_USER")
-    public ResponseEntity<APIResponse<OrderGroupDTO>> createOrderGroup(
+    public ResponseEntity<APIResponse<CheckoutSessionDTO>> initiateCheckout(
             @Valid @RequestBody CreateOrderRequest request,
             HttpServletRequest httpRequest) {
 
         Long userId = extractUserId(httpRequest);
 
-        log.info("Creating order group for user {} with payment provider {}",
+        log.info("Initiating checkout for user {} with payment provider {}",
                 userId, request.getPaymentProvider());
 
-        OrderGroupDTO orderGroup = orderGroupService.createFromCart(userId, request);
+        CheckoutSessionDTO session = orderGroupService.initiateCheckout(userId, request);
+
+        return ResponseEntity.ok(ResponseBuilder.success("Checkout initiated", session).getBody());
+    }
+
+    /**
+     * Step 2: Confirm payment and create order
+     * Called after Stripe payment succeeds on frontend
+     */
+    @PostMapping("/confirm-payment")
+    @RequireRole("ROLE_USER")
+    public ResponseEntity<APIResponse<OrderGroupDTO>> confirmPayment(
+            @Valid @RequestBody ConfirmPaymentRequest request,
+            HttpServletRequest httpRequest) {
+
+        Long userId = extractUserId(httpRequest);
+
+        log.info("Confirming payment {} for user {}", request.getPaymentIntentId(), userId);
+
+        OrderGroupDTO orderGroup = orderGroupService.confirmPaymentAndCreateOrder(userId, request);
 
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(ResponseBuilder.success("Order created successfully", orderGroup).getBody());
@@ -85,7 +113,7 @@ public class OrderGroupController {
     }
 
     /**
-     * Cancel order group (only if payment not completed)
+     * Cancel order group (only if not shipped)
      */
     @PostMapping("/{groupId}/cancel")
     @RequireRole("ROLE_USER")

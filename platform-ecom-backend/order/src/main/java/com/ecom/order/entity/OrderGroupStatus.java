@@ -9,10 +9,7 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public enum OrderGroupStatus {
-    PENDING("Group created, awaiting payment"),
-    PAYMENT_PENDING("Payment initiated"),
     PAID("Payment confirmed"),
-    PAYMENT_FAILED("Payment failed"),
     PROCESSING("All sub-orders processing"),
     PARTIALLY_SHIPPED("Some sub-orders shipped"),
     COMPLETED("All sub-orders delivered"),

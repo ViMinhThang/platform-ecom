@@ -1,23 +1,27 @@
 import { useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAppDispatch, useAppSelector } from '@/lib/store/hooks';
-import { createOrder } from '@/lib/store/slices/orderSlice';
+import { initiateCheckout, confirmPayment } from '@/lib/store/slices/orderSlice';
 import {
     setCheckoutStep,
     setSelectedAddress,
     setPaymentProvider,
     resetCheckout
 } from '@/lib/store/slices/checkoutSlice';
-import type { CreateOrderRequest } from '@/types/order.types';
+import type { CreateOrderRequest, ConfirmPaymentRequest } from '@/types/order.types';
 import { v4 as uuidv4 } from 'uuid';
 
 export const useCheckout = () => {
     const router = useRouter();
     const dispatch = useAppDispatch();
     const checkout = useAppSelector((state) => state.checkout);
-    const { currentOrder, loading, error } = useAppSelector((state) => state.orders); // Note: state.orders matches store config
+    const { currentOrder, checkoutSession, loading, error } = useAppSelector((state) => state.orders);
 
-    const proceedToPayment = useCallback(async () => {
+    /**
+     * Step 1: Initiate checkout - creates Stripe PaymentIntent
+     * No order is created at this step
+     */
+    const startCheckout = useCallback(async () => {
         if (!checkout.selectedAddressId) {
             throw new Error('Please select a delivery address');
         }
@@ -29,10 +33,28 @@ export const useCheckout = () => {
             idempotencyKey: `checkout-${Date.now()}-${uuidv4()}`
         };
 
-        const order = await dispatch(createOrder(request)).unwrap();
+        const session = await dispatch(initiateCheckout(request)).unwrap();
         dispatch(setCheckoutStep('payment'));
-        return order;
+        return session;
     }, [checkout.selectedAddressId, checkout.paymentProvider, checkout.promoCode, dispatch]);
+
+    /**
+     * Step 2: Confirm payment and create order
+     * Called after Stripe payment succeeds
+     */
+    const confirmPaymentAndCreateOrder = useCallback(async (paymentIntentId: string) => {
+        if (!checkout.selectedAddressId) {
+            throw new Error('Address not selected');
+        }
+
+        const request: ConfirmPaymentRequest = {
+            paymentIntentId,
+            addressId: checkout.selectedAddressId
+        };
+
+        const order = await dispatch(confirmPayment(request)).unwrap();
+        return order;
+    }, [checkout.selectedAddressId, dispatch]);
 
     const completeCheckout = useCallback(() => {
         dispatch(setCheckoutStep('confirmation'));
@@ -46,12 +68,14 @@ export const useCheckout = () => {
     return {
         checkout,
         currentOrder,
+        checkoutSession,
         loading,
         error,
         setStep,
         selectAddress,
         setProvider,
-        proceedToPayment,
+        startCheckout,
+        confirmPaymentAndCreateOrder,
         completeCheckout
     };
 };

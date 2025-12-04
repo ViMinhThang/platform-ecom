@@ -22,11 +22,14 @@ export interface ProductRow {
   minPrice: number;
   id: number;
   name: string;
+  slug: string;
   category: Category;
   imageUrl?: string;
   status: string;
   variants?: number;
   description?: string;
+  averageRating?: number;
+  totalSold?: number;
   firstVariant?: ProductVariant;
 }
 
@@ -38,6 +41,7 @@ export interface Product {
   images: ProductImage[];
   cate: Category;
   status: string;
+  userId?: number;
   specifications?: Record<string, any>;
   metadata?: Record<string, any>;
   createdAt?: string;

@@ -1,138 +1,102 @@
 package com.ecom.order.service.impl;
 
 import com.ecom.common.exception.DuplicatePaymentException;
-import com.ecom.common.exception.TransactionNotFoundException;
-import com.ecom.order.entity.OrderGroup;
-import com.ecom.order.entity.PaymentStatus;
-import com.ecom.order.entity.PaymentTransaction;
-import com.ecom.order.payment.*;
-import com.ecom.order.repository.PaymentTransactionRepository;
+import com.ecom.common.exception.PaymentException;
+import com.ecom.order.payment.PaymentIntent;
+import com.ecom.order.payment.PaymentProvider;
+import com.ecom.order.payment.PaymentProviderFactory;
+import com.ecom.order.payment.PaymentRequest;
 import com.ecom.order.service.signature.PaymentService;
-
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
+import java.math.BigDecimal;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class PaymentServiceImpl implements PaymentService {
 
-    private final PaymentProviderFactory providerFactory;
-    private final PaymentTransactionRepository transactionRepository;
+    private static final String DEFAULT_PROVIDER = "stripe";
+    private static final String PAYMENT_SUCCEEDED_STATUS = "succeeded";
 
-    /**
-     * Create payment intent for order group
-     */
-    @Transactional
-    public PaymentIntent createPaymentIntent(OrderGroup orderGroup, String providerName, String idempotencyKey) {
-        // Check idempotency
-        if (transactionRepository.existsByIdempotencyKey(idempotencyKey)) {
+    private final PaymentProviderFactory providerFactory;
+
+    // In-memory idempotency cache. In production, use Redis or database.
+    private final Map<String, String> idempotencyKeys = new ConcurrentHashMap<>();
+
+    // ==================== Public API ====================
+
+    @Override
+    public PaymentIntent createPaymentIntent(BigDecimal amount, String currency,
+                                              String description, Long userId, String idempotencyKey) {
+        checkIdempotency(idempotencyKey);
+        PaymentIntent intent = executePaymentIntent(amount, currency, description, userId);
+        trackIdempotencyKey(idempotencyKey, intent.getId());
+
+        log.info("Created payment intent: {} for amount: {} {}", intent.getId(), amount, currency);
+        return intent;
+    }
+
+    @Override
+    public PaymentIntent verifyPaymentSucceeded(String paymentIntentId) {
+        PaymentIntent intent = retrievePaymentIntent(paymentIntentId);
+        validatePaymentSucceeded(intent, paymentIntentId);
+
+        log.info("Payment verified as succeeded: {}", paymentIntentId);
+        return intent;
+    }
+
+    // ==================== Private Helpers ====================
+
+    private void checkIdempotency(String idempotencyKey) {
+        if (idempotencyKeys.containsKey(idempotencyKey)) {
             log.warn("Duplicate payment request detected: {}", idempotencyKey);
             throw new DuplicatePaymentException("Payment request already processed");
         }
+    }
 
-        // Get payment provider
-        PaymentProvider provider = providerFactory.getProvider(providerName);
+    private void trackIdempotencyKey(String idempotencyKey, String intentId) {
+        idempotencyKeys.put(idempotencyKey, intentId);
+    }
 
-        // Create payment request
+    private PaymentIntent executePaymentIntent(BigDecimal amount, String currency,
+                                                String description, Long userId) {
+        PaymentProvider provider = providerFactory.getProvider(DEFAULT_PROVIDER);
+
         PaymentRequest request = PaymentRequest.builder()
-                .orderGroupId(orderGroup.getId())
-                .orderNumber(orderGroup.getGroupNumber())
-                .amount(orderGroup.getTotalAmount())
-                .currency(orderGroup.getCurrency())
-                .description("Order " + orderGroup.getGroupNumber())
-                .userId(orderGroup.getUserId())
+                .amount(amount)
+                .currency(currency)
+                .description(description)
+                .userId(userId)
                 .build();
-
-        // Create transaction record
-        PaymentTransaction transaction = PaymentTransaction.builder()
-                .orderGroup(orderGroup)
-                .provider(providerName)
-                .paymentMethod("card") // Default for now
-                .amount(orderGroup.getTotalAmount())
-                .currency(orderGroup.getCurrency())
-                .status(PaymentStatus.PROCESSING)
-                .idempotencyKey(idempotencyKey)
-                .build();
-
-        transaction = transactionRepository.save(transaction);
 
         try {
-            // Create payment intent with provider
-            PaymentIntent intent = provider.createPaymentIntent(request);
-
-            // Update transaction
-            transaction.setProviderTransactionId(intent.getId());
-            transaction.setStatus(PaymentStatus.PROCESSING);
-
-            log.info("Created payment intent for order group {}: {}",
-                    orderGroup.getGroupNumber(), intent.getId());
-
-            return intent;
-
+            return provider.createPaymentIntent(request);
         } catch (Exception e) {
-            transaction.setStatus(PaymentStatus.FAILED);
-            transaction.setErrorMessage(e.getMessage());
-            throw e;
-        } finally {
-            transactionRepository.save(transaction);
+            log.error("Failed to create payment intent", e);
+            throw new PaymentException("Failed to create payment: " + e.getMessage());
         }
     }
 
-    /**
-     * Handle payment success
-     */
-    @Transactional
-    public void handlePaymentSuccess(String providerTransactionId) {
-        try {
-            PaymentTransaction transaction = transactionRepository
-                    .findByProviderTransactionId(providerTransactionId)
-                    .orElseThrow(() -> new TransactionNotFoundException(providerTransactionId));
+    private PaymentIntent retrievePaymentIntent(String paymentIntentId) {
+        PaymentProvider provider = providerFactory.getProvider(DEFAULT_PROVIDER);
+        PaymentIntent intent = provider.getPaymentIntent(paymentIntentId);
 
-            if (transaction.getStatus() == PaymentStatus.SUCCEEDED) {
-                log.warn("Payment already processed: {}", providerTransactionId);
-                return;
-            }
-
-            transaction.setStatus(PaymentStatus.SUCCEEDED);
-            transaction.setCompletedAt(LocalDateTime.now());
-            transactionRepository.save(transaction);
-
-            // Update order group
-            OrderGroup group = transaction.getOrderGroup();
-            group.setPaymentStatus(PaymentStatus.SUCCEEDED);
-            group.updateOverallStatus();
-
-            log.info("Payment succeeded for order group: {}", group.getGroupNumber());
-        } catch (TransactionNotFoundException e) {
-            log.warn("Transaction not found for payment intent: {}. This may be a race condition.",
-                    providerTransactionId);
-            // Don't throw - the webhook might arrive before transaction is saved
+        if (intent == null) {
+            throw new PaymentException("Payment intent not found: " + paymentIntentId);
         }
+        return intent;
     }
 
-    /**
-     * Handle payment failure
-     */
-    @Transactional
-    public void handlePaymentFailure(String providerTransactionId, String errorMessage) {
-        PaymentTransaction transaction = transactionRepository
-                .findByProviderTransactionId(providerTransactionId)
-                .orElseThrow(() -> new TransactionNotFoundException(providerTransactionId));
-
-        transaction.setStatus(PaymentStatus.FAILED);
-        transaction.setErrorMessage(errorMessage);
-        transactionRepository.save(transaction);
-
-        // Update order group
-        OrderGroup group = transaction.getOrderGroup();
-        group.setPaymentStatus(PaymentStatus.FAILED);
-
-        log.error("Payment failed for order group {}: {}",
-                group.getGroupNumber(), errorMessage);
+    private void validatePaymentSucceeded(PaymentIntent intent, String paymentIntentId) {
+        if (!PAYMENT_SUCCEEDED_STATUS.equals(intent.getStatus())) {
+            log.error("Payment not succeeded. Status: {} for intent: {}",
+                    intent.getStatus(), paymentIntentId);
+            throw new PaymentException("Payment not confirmed. Status: " + intent.getStatus());
+        }
     }
 }

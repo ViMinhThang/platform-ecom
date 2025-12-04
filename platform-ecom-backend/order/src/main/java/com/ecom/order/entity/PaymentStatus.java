@@ -9,8 +9,6 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public enum PaymentStatus {
-    PENDING("Payment not initiated"),
-    PROCESSING("Payment in progress"),
     SUCCEEDED("Payment successful"),
     FAILED("Payment failed"),
     CANCELLED("Payment cancelled"),

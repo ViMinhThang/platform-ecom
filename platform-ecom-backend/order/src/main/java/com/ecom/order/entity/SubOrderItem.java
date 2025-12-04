@@ -47,6 +47,9 @@ public class SubOrderItem {
     @Column(name = "total_price", nullable = false, precision = 10, scale = 2)
     private BigDecimal totalPrice;
 
+    @Column(name = "image_url")
+    private String imageUrl;
+
     /**
      * Calculate total price from quantity and unit price
      */

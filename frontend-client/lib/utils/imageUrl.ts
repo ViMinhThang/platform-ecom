@@ -31,4 +31,9 @@ export const imageUrl = {
     product: (path: string | undefined | null) => getImageUrl(path, 'products'),
     category: (path: string | undefined | null) => getImageUrl(path, 'categories'),
     review: (path: string | undefined | null) => getImageUrl(path, 'reviews'),
+    avatar: (path: string | undefined | null) => {
+        if (!path) return 'https://placehold.co/100x100?text=User';
+        if (path.startsWith('http://') || path.startsWith('https://')) return path;
+        return `${env.uploadsBaseUrl}/avatars/${path}`;
+    },
 };

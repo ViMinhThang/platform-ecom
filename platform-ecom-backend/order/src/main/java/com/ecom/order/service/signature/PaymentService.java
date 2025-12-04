@@ -1,16 +1,24 @@
 package com.ecom.order.service.signature;
 
-import com.ecom.order.entity.OrderGroup;
 import com.ecom.order.payment.PaymentIntent;
+
+import java.math.BigDecimal;
 
 /**
  * Payment Service Interface
+ * Handles Stripe payment intent creation and verification
  */
 public interface PaymentService {
 
-    PaymentIntent createPaymentIntent(OrderGroup orderGroup, String providerName, String idempotencyKey);
+    /**
+     * Create a payment intent for checkout (no order created yet)
+     */
+    PaymentIntent createPaymentIntent(BigDecimal amount, String currency, String description, 
+                                       Long userId, String idempotencyKey);
 
-    void handlePaymentSuccess(String providerTransactionId);
-
-    void handlePaymentFailure(String providerTransactionId, String errorMessage);
+    /**
+     * Verify that a payment succeeded with Stripe
+     * Returns the payment intent if succeeded, throws exception if not
+     */
+    PaymentIntent verifyPaymentSucceeded(String paymentIntentId);
 }

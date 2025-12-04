@@ -1,26 +1,65 @@
+'use client';
+
+import { useEffect, useState } from "react";
 import { SellerCard } from "./SellerCard";
+import { getTopSellers, TopSeller } from "@/lib/services/product-service";
 
-// Mock data for sellers
-const MOCK_SELLERS = [
-    { id: "1", name: "Tech World", imageUrl: "https://placehold.co/400x400/png?text=Tech" },
-    { id: "2", name: "Fashion Hub", imageUrl: "https://placehold.co/400x400/png?text=Fashion" },
-    { id: "3", name: "Home Decor", imageUrl: "https://placehold.co/400x400/png?text=Home" },
-    { id: "4", name: "Sports Gear", imageUrl: "https://placehold.co/400x400/png?text=Sports" },
-    { id: "5", name: "Beauty Plus", imageUrl: "https://placehold.co/400x400/png?text=Beauty" },
-    { id: "6", name: "Kids Corner", imageUrl: "https://placehold.co/400x400/png?text=Kids" },
-];
+interface SellerGridProps {
+    categorySlug: string;
+}
 
-export function SellerGrid() {
+export function SellerGrid({ categorySlug }: SellerGridProps) {
+    const [sellers, setSellers] = useState<TopSeller[]>([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const fetchSellers = async () => {
+            try {
+                setLoading(true);
+                const data = await getTopSellers(categorySlug, 10);
+                setSellers(data);
+            } catch (error) {
+                console.error('Failed to fetch top sellers:', error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        if (categorySlug) {
+            fetchSellers();
+        }
+    }, [categorySlug]);
+
+    if (loading) {
+        return (
+            <div className="mb-12">
+                <h2 className="text-2xl font-bold mb-6">Top Sellers</h2>
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
+                    {[...Array(6)].map((_, i) => (
+                        <div key={i} className="space-y-2 animate-pulse">
+                            <div className="aspect-square w-full bg-muted rounded" />
+                            <div className="h-4 w-3/4 mx-auto bg-muted rounded" />
+                        </div>
+                    ))}
+                </div>
+            </div>
+        );
+    }
+
+    if (sellers.length === 0) {
+        return null;
+    }
+
     return (
         <div className="mb-12">
             <h2 className="text-2xl font-bold mb-6">Top Sellers</h2>
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
-                {MOCK_SELLERS.map((seller) => (
+                {sellers.map((seller) => (
                     <SellerCard
-                        key={seller.id}
-                        id={seller.id}
-                        name={seller.name}
-                        imageUrl={seller.imageUrl}
+                        key={seller.sellerId}
+                        id={seller.sellerId.toString()}
+                        name={seller.sellerName}
+                        imageUrl={seller.imageUrl || "https://placehold.co/400x400/png?text=Seller"}
                     />
                 ))}
             </div>

@@ -16,7 +16,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
+import com.ecom.product.client.UserServiceClient;
 import java.math.BigDecimal;
 import java.util.stream.Collectors;
 
@@ -29,6 +29,7 @@ public class ProductServiceImpl implements ProductService {
     private final ProductVariantRepository productVariantRepository;
     private final ProductMapper productMapper;
     private final ProductVariantMapper productVariantMapper;
+    private final UserServiceClient userServiceClient;
 
     @Override
     @Transactional
@@ -224,5 +225,34 @@ public class ProductServiceImpl implements ProductService {
         response.setLastPage(productPage.isLast());
 
         return response;
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<TopSellerDTO> getTopSellersByCategory(String categorySlug, int limit) {
+        Pageable pageable = PageRequest.of(0, limit);
+        List<Object[]> results = productRepository.findTopSellersByCategorySlug(categorySlug, pageable);
+
+        return results.stream()
+                .map(row -> {
+                    Long userId = (Long) row[0];
+                    UserDTO user = userServiceClient.getUserSafe(userId);
+                    
+                    return TopSellerDTO.builder()
+                            .sellerId(userId)
+                            .sellerName(user != null ? user.getUsername() : "Unknown Seller")
+                            .imageUrl(user != null ? user.getImageUrl() : null)
+                            .build();
+                })
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public ProductDetailDTO getProductBySlug(String slug) {
+        Product product = productRepository.findBySlugAndDeletedFalse(slug)
+                .orElseThrow(() -> new ResourceNotFoundException("Product", "slug", slug));
+        validateProductIsActive(product);
+        return productMapper.toDetailDTO(product);
     }
 }

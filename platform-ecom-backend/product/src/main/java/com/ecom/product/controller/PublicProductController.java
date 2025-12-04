@@ -3,16 +3,11 @@ package com.ecom.product.controller;
 import com.ecom.common.util.APIResponse;
 import com.ecom.common.util.PaginationRequest;
 import com.ecom.common.util.ResponseBuilder;
-import com.ecom.product.dto.ProductDTO;
-import com.ecom.product.dto.ProductDetailDTO;
-import com.ecom.product.dto.ProductResponse;
-import com.ecom.product.dto.ProductVariantDTO;
-import com.ecom.product.dto.ProductVariantDetailDTO;
+import com.ecom.product.dto.*;
 import com.ecom.product.service.signature.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.math.BigDecimal;
 
 @RestController
@@ -91,5 +86,19 @@ public class PublicProductController {
                 .build();
 
         return ResponseBuilder.success("Product variant details retrieved successfully", detailDTO);
+    }
+
+    @GetMapping("/categories/{categorySlug}/top-sellers")
+    public ResponseEntity<APIResponse<TopSellerDTO>>> getTopSellers(
+            @PathVariable String categorySlug,
+            @RequestParam(defaultValue = "10") int limit) {
+        var topSellers = productService.getTopSellersByCategory(categorySlug, limit);
+        return ResponseBuilder.success("Top sellers retrieved successfully", topSellers);
+    }
+
+    @GetMapping("/slug/{slug}")
+    public ResponseEntity<APIResponse<ProductDetailDTO>> getProductBySlug(@PathVariable String slug) {
+        ProductDetailDTO product = productService.getProductBySlug(slug);
+        return ResponseBuilder.success("Product retrieved successfully", product);
     }
 }
