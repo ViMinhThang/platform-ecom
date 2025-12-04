@@ -34,7 +34,8 @@ server:
   port: 8085
 stripe:
   secret:
-    key: ${STRIPE_SECRET}
+    key: ${STRIPE_SECRET_KEY}
+    webhook: ${STRIPE_WEBHOOK_SECRET}
 management:
   endpoints:
     web:
