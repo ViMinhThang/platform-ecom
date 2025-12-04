@@ -91,6 +91,7 @@ export interface ProductVariant {
   stock: number;
   totalSold?: number;
   isActive: boolean;
+  hidden?: boolean;
   imageUrl?: string;
   optionValues: VariantOptionValue[];
 }

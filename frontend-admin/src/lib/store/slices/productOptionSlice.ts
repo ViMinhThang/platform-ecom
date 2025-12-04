@@ -1,17 +1,13 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
 import { ProductOption } from '@/types/product/product-option';
-import { API_ENDPOINTS } from '@/config/constants';
-import { createRequestConfig, handleApiError, unwrapResponse } from '@/lib/utils/api';
+import { productOptionService } from '@/lib/services/product-option-service';
 import { logger } from '@/lib/logger';
-import { APIResponse } from '@/types/api-response';
 
 /**
  * Parameters for fetching options
  */
 interface FetchOptionsParams {
     productId: number;
-    token: string;
 }
 
 /**
@@ -20,7 +16,6 @@ interface FetchOptionsParams {
 interface CreateOptionParams {
     productId: number;
     data: ProductOption;
-    token: string;
 }
 
 /**
@@ -30,7 +25,6 @@ interface UpdateOptionParams {
     productId: number;
     optionId: number;
     data: ProductOption;
-    token: string;
 }
 
 /**
@@ -39,7 +33,6 @@ interface UpdateOptionParams {
 interface DeleteOptionParams {
     productId: number;
     optionId: number;
-    token: string;
 }
 
 interface ProductOptionState {
@@ -60,17 +53,16 @@ const initialState: ProductOptionState = {
 
 export const fetchOptions = createAsyncThunk(
     'productOptions/fetchOptions',
-    async ({ productId, token }: FetchOptionsParams, { rejectWithValue }) => {
+    async ({ productId }: FetchOptionsParams, { rejectWithValue }) => {
         try {
-            const url = `${API_ENDPOINTS.PRODUCTS}/${productId}/options`;
-            logger.apiRequest('GET', url);
+            logger.apiRequest('GET', `/api/v1/sellers/products/${productId}/options`);
 
-            const response = await axios.get<APIResponse<ProductOption[]>>(url, createRequestConfig(token));
+            const options = await productOptionService.getOptions(productId);
 
-            logger.apiResponse('GET', url, response.status);
-            return unwrapResponse(response);
+            logger.apiResponse('GET', `/api/v1/sellers/products/${productId}/options`, 200);
+            return options;
         } catch (error) {
-            handleApiError(error);
+            logger.error('Failed to fetch product options', { error });
             return rejectWithValue('Failed to fetch product options');
         }
     }
@@ -78,27 +70,16 @@ export const fetchOptions = createAsyncThunk(
 
 export const createOption = createAsyncThunk(
     'productOptions/createOption',
-    async ({ productId, data, token }: CreateOptionParams, { rejectWithValue }) => {
+    async ({ productId, data }: CreateOptionParams, { rejectWithValue }) => {
         try {
-            const url = `${API_ENDPOINTS.PRODUCTS}/product-options/${productId}`;
-            logger.apiRequest('POST', url, { data });
+            logger.apiRequest('POST', `/api/v1/sellers/products/${productId}/options`, { data });
 
-            // Ensure isRequired is boolean
-            const payload = {
-                ...data,
-                isRequired: Boolean(data.isRequired)
-            };
+            const option = await productOptionService.createOption(productId, data);
 
-            const response = await axios.post<APIResponse<ProductOption>>(
-                url,
-                payload,
-                createRequestConfig(token)
-            );
-
-            logger.apiResponse('POST', url, response.status);
-            return unwrapResponse(response);
+            logger.apiResponse('POST', `/api/v1/sellers/products/${productId}/options`, 201);
+            return option;
         } catch (error) {
-            handleApiError(error);
+            logger.error('Failed to create product option', { error });
             return rejectWithValue('Failed to create product option');
         }
     }
@@ -106,23 +87,16 @@ export const createOption = createAsyncThunk(
 
 export const updateOption = createAsyncThunk(
     'productOptions/updateOption',
-    async ({ productId, optionId, data, token }: UpdateOptionParams, { rejectWithValue }) => {
+    async ({ productId, optionId, data }: UpdateOptionParams, { rejectWithValue }) => {
         try {
-            const url = `${API_ENDPOINTS.PRODUCTS}/product-options/${productId}/${optionId}`;
-            logger.apiRequest('PUT', url, { data });
+            logger.apiRequest('PUT', `/api/v1/sellers/products/${productId}/options/${optionId}`, { data });
 
-            // Ensure isRequired is boolean
-            const payload = {
-                ...data,
-                isRequired: Boolean(data.isRequired)
-            };
+            const option = await productOptionService.updateOption(productId, optionId, data);
 
-            const response = await axios.put<APIResponse<ProductOption>>(url, payload, createRequestConfig(token));
-
-            logger.apiResponse('PUT', url, response.status);
-            return unwrapResponse(response);
+            logger.apiResponse('PUT', `/api/v1/sellers/products/${productId}/options/${optionId}`, 200);
+            return option;
         } catch (error) {
-            handleApiError(error);
+            logger.error('Failed to update product option', { error });
             return rejectWithValue('Failed to update product option');
         }
     }
@@ -130,18 +104,16 @@ export const updateOption = createAsyncThunk(
 
 export const deleteOption = createAsyncThunk(
     'productOptions/deleteOption',
-    async ({ productId, optionId, token }: DeleteOptionParams, { rejectWithValue }) => {
+    async ({ productId, optionId }: DeleteOptionParams, { rejectWithValue }) => {
         try {
-            const url = `${API_ENDPOINTS.PRODUCTS}/product-options/${productId}/${optionId}`;
-            logger.apiRequest('DELETE', url);
+            logger.apiRequest('DELETE', `/api/v1/sellers/products/${productId}/options/${optionId}`);
 
-            const response = await axios.delete<APIResponse<string>>(url, createRequestConfig(token));
+            await productOptionService.deleteOption(productId, optionId);
 
-            logger.apiResponse('DELETE', url, response.status);
-            unwrapResponse(response);
+            logger.apiResponse('DELETE', `/api/v1/sellers/products/${productId}/options/${optionId}`, 200);
             return optionId;
         } catch (error) {
-            handleApiError(error);
+            logger.error('Failed to delete product option', { error });
             return rejectWithValue('Failed to delete product option');
         }
     }

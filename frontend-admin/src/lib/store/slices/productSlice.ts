@@ -1,30 +1,14 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
 import { Product, ProductRow, PaginatedProducts } from '@/types/product/product';
-import { API_ENDPOINTS, PAGINATION } from '@/config/constants';
-import { createRequestConfig, handleApiError, unwrapResponse } from '@/lib/utils/api';
+import { productService, ProductQueryParams } from '@/lib/services/product-service';
+import { PAGINATION } from '@/config/constants';
 import { logger } from '@/lib/logger';
-import { APIResponse } from '@/types/api-response';
-
-/**
- * Parameters for fetching products with pagination and filtering
- */
-interface FetchProductsParams {
-    token: string;
-    params?: {
-        page?: number;
-        size?: number;
-        search?: string;
-        status?: string;
-    };
-}
 
 /**
  * Parameters for creating a product
  */
 interface CreateProductParams {
     data: Omit<Product, 'id' | 'createdAt' | 'updatedAt'>;
-    token: string;
 }
 
 /**
@@ -33,7 +17,6 @@ interface CreateProductParams {
 interface UpdateProductParams {
     id: number;
     data: Partial<Omit<Product, 'id' | 'createdAt' | 'updatedAt'>>;
-    token: string;
 }
 
 /**
@@ -41,7 +24,6 @@ interface UpdateProductParams {
  */
 interface DeleteProductParams {
     id: number;
-    token: string;
 }
 
 /**
@@ -49,7 +31,6 @@ interface DeleteProductParams {
  */
 interface FetchProductByIdParams {
     id: number;
-    token: string;
 }
 
 interface ProductState {
@@ -84,19 +65,16 @@ const initialState: ProductState = {
 
 export const fetchProducts = createAsyncThunk(
     'products/fetchProducts',
-    async ({ token, params }: FetchProductsParams, { rejectWithValue }) => {
+    async (args: { params?: ProductQueryParams } = {}, { rejectWithValue }) => {
         try {
-            logger.apiRequest('GET', API_ENDPOINTS.PRODUCTS_SELLER, params);
+            logger.apiRequest('GET', '/api/v1/sellers/products');
 
-            const response = await axios.get<APIResponse<PaginatedProducts>>(API_ENDPOINTS.PRODUCTS_SELLER, {
-                ...createRequestConfig(token),
-                params,
-            });
+            const products = await productService.getProducts(args.params);
 
-            logger.apiResponse('GET', API_ENDPOINTS.PRODUCTS_SELLER, response.status);
-            return unwrapResponse(response);
+            logger.apiResponse('GET', '/api/v1/sellers/products', 200);
+            return products;
         } catch (error) {
-            handleApiError(error);
+            logger.error('Failed to fetch products', { error });
             return rejectWithValue('Failed to fetch products');
         }
     }
@@ -104,17 +82,16 @@ export const fetchProducts = createAsyncThunk(
 
 export const fetchProductById = createAsyncThunk(
     'products/fetchProductById',
-    async ({ id, token }: FetchProductByIdParams, { rejectWithValue }) => {
+    async ({ id }: FetchProductByIdParams, { rejectWithValue }) => {
         try {
-            const url = `${API_ENDPOINTS.PRODUCTS_SELLER}/${id}`;
-            logger.apiRequest('GET', url);
+            logger.apiRequest('GET', `/api/v1/sellers/products/${id}`);
 
-            const response = await axios.get<APIResponse<Product>>(url, createRequestConfig(token));
+            const product = await productService.getProductById(id);
 
-            logger.apiResponse('GET', url, response.status);
-            return unwrapResponse(response);
+            logger.apiResponse('GET', `/api/v1/sellers/products/${id}`, 200);
+            return product;
         } catch (error) {
-            handleApiError(error);
+            logger.error(`Failed to fetch product with ID ${id}`, { error });
             return rejectWithValue(`Failed to fetch product with ID ${id}`);
         }
     }
@@ -122,20 +99,16 @@ export const fetchProductById = createAsyncThunk(
 
 export const createProduct = createAsyncThunk(
     'products/createProduct',
-    async ({ data, token }: CreateProductParams, { rejectWithValue }) => {
+    async ({ data }: CreateProductParams, { rejectWithValue }) => {
         try {
-            logger.apiRequest('POST', API_ENDPOINTS.PRODUCTS_SELLER, { data });
+            logger.apiRequest('POST', '/api/v1/sellers/products', { data });
 
-            const response = await axios.post<APIResponse<ProductRow>>(
-                API_ENDPOINTS.PRODUCTS_SELLER,
-                data,
-                createRequestConfig(token)
-            );
+            const product = await productService.createProduct(data);
 
-            logger.apiResponse('POST', API_ENDPOINTS.PRODUCTS_SELLER, response.status);
-            return unwrapResponse(response);
+            logger.apiResponse('POST', '/api/v1/sellers/products', 201);
+            return product;
         } catch (error) {
-            handleApiError(error);
+            logger.error('Failed to create product', { error });
             return rejectWithValue('Failed to create product');
         }
     }
@@ -143,17 +116,16 @@ export const createProduct = createAsyncThunk(
 
 export const updateProduct = createAsyncThunk(
     'products/updateProduct',
-    async ({ id, data, token }: UpdateProductParams, { rejectWithValue }) => {
+    async ({ id, data }: UpdateProductParams, { rejectWithValue }) => {
         try {
-            const url = `${API_ENDPOINTS.PRODUCTS_SELLER}/${id}`;
-            logger.apiRequest('PUT', url, { data });
+            logger.apiRequest('PUT', `/api/v1/sellers/products/${id}`, { data });
 
-            const response = await axios.put<APIResponse<Product>>(url, data, createRequestConfig(token));
+            const product = await productService.updateProduct(id, data);
 
-            logger.apiResponse('PUT', url, response.status);
-            return unwrapResponse(response);
+            logger.apiResponse('PUT', `/api/v1/sellers/products/${id}`, 200);
+            return product;
         } catch (error) {
-            handleApiError(error);
+            logger.error(`Failed to update product with ID ${id}`, { error });
             return rejectWithValue(`Failed to update product with ID ${id}`);
         }
     }
@@ -161,18 +133,16 @@ export const updateProduct = createAsyncThunk(
 
 export const deleteProduct = createAsyncThunk(
     'products/deleteProduct',
-    async ({ id, token }: DeleteProductParams, { rejectWithValue }) => {
+    async ({ id }: DeleteProductParams, { rejectWithValue }) => {
         try {
-            const url = `${API_ENDPOINTS.PRODUCTS_SELLER}/${id}`;
-            logger.apiRequest('DELETE', url);
+            logger.apiRequest('DELETE', `/api/v1/sellers/products/${id}`);
 
-            const response = await axios.delete<APIResponse<string>>(url, createRequestConfig(token));
+            await productService.deleteProduct(id);
 
-            logger.apiResponse('DELETE', url, response.status);
-            unwrapResponse(response); // Unwrap to verify success
+            logger.apiResponse('DELETE', `/api/v1/sellers/products/${id}`, 200);
             return id;
         } catch (error) {
-            handleApiError(error);
+            logger.error(`Failed to delete product with ID ${id}`, { error });
             return rejectWithValue(`Failed to delete product with ID ${id}`);
         }
     }

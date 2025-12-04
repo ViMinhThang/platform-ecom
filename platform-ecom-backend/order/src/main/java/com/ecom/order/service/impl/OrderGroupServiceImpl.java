@@ -346,9 +346,9 @@ public class OrderGroupServiceImpl implements OrderGroupService {
                 .orElseThrow(() -> new OrderGroupNotFoundException(groupId));
 
         UserDTO user = userServiceClient.getUserSafe(group.getUserId());
-        AddressDTO shipping = userServiceClient.getAddressSafe(group.getUserId(), group.getShippingAddressId());
+        AddressDTO shipping = userServiceClient.getAddressSafe(group.getShippingAddressId());
         AddressDTO billing = group.getBillingAddressId() != null
-                ? userServiceClient.getAddressSafe(group.getUserId(), group.getBillingAddressId())
+                ? userServiceClient.getAddressSafe(group.getBillingAddressId())
                 : null;
 
         return adminOrderMapper.toAdminDTO(group, user, shipping, billing);

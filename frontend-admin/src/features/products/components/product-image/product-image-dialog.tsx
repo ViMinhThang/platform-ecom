@@ -1,6 +1,5 @@
 "use client";
 
-import { useSession } from "next-auth/react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { IconUpload } from "@tabler/icons-react";
@@ -18,10 +17,7 @@ export const ProductImageDialog: React.FC<ProductImageDialogProps> = ({
   open,
   onOpenChange,
 }) => {
-  const { data: session } = useSession();
-  const token = session?.accessToken;
-
-  const { images, uploadImage, uploading, deleteImage } = useProductImages(productId, token);
+  const { images, uploadImage, uploading, deleteImage } = useProductImages(productId);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;

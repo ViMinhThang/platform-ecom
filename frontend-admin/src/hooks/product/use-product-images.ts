@@ -1,74 +1,78 @@
-import { useState, useEffect, useCallback } from "react";
+import { useEffect, useCallback } from 'react';
+import { useAppDispatch, useAppSelector } from '@/lib/store/hooks';
 import {
-  getProductImages,
+  fetchProductImages,
   uploadProductImage,
   deleteProductImage,
-  setMainProductImage,
   ProductImage,
-} from "@/services/product-image-service";
-import { toast } from "sonner";
+} from '@/lib/store/slices/productImageSlice';
+import { toast } from 'sonner';
 
-export function useProductImages(productId: number, token?: string) {
-  const [images, setImages] = useState<ProductImage[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [uploading, setUploading] = useState(false);
+/**
+ * Hook for managing product images using Redux
+ * Provides images, loading states, and CRUD operations
+ */
+export function useProductImages(productId: number) {
+  const dispatch = useAppDispatch();
+  const { imagesByProductId, loading, error, uploadProgress } = useAppSelector(
+    (state) => state.productImages
+  );
 
-  // Fetch images
-  const fetchImages = useCallback(async () => {
-    if (!token) return;
-    setLoading(true);
-    try {
-      const res = await getProductImages(productId, token);
-      setImages(res);
-    } catch (error) {
-      console.error("Failed to fetch images", error);
-    } finally {
-      setLoading(false);
-    }
-  }, [productId, token]);
+  const images = imagesByProductId[productId] || [];
 
+  // Fetch images on mount or when productId changes
   useEffect(() => {
-    fetchImages();
-  }, [fetchImages]);
+    dispatch(fetchProductImages(productId));
+  }, [dispatch, productId]);
 
+  // Show error toast if error occurs
+  useEffect(() => {
+    if (error) {
+      toast.error(error);
+    }
+  }, [error]);
+
+  // Upload image
   const uploadImage = useCallback(
     async (file: File) => {
-      if (!token) return;
-      setUploading(true);
       try {
-        const newImage = await uploadProductImage(productId, file, token);
-        setImages((prev) => [...prev, newImage]);
-        toast.success("Image uploaded successfully!");
-      } catch (error) {
-        console.error("Failed to upload image", error);
-      } finally {
-        setUploading(false);
+        await dispatch(uploadProductImage({ productId, file })).unwrap();
+        toast.success('Image uploaded successfully!');
+      } catch (err) {
+        toast.error('Failed to upload image');
+        console.error('Failed to upload image', err);
       }
     },
-    [productId, token]
+    [dispatch, productId]
   );
 
+  // Delete image
   const deleteImage = useCallback(
     async (imageId: number) => {
-      if (!token) return;
       try {
-        const deletedId = await deleteProductImage(productId, imageId, token);
-        setImages((prev) => prev.filter((img) => img.id !== deletedId));
-        toast.success("Image deleted successfully!");
-      } catch (error) {
-        console.error("Failed to delete image", error);
+        await dispatch(deleteProductImage({ productId, imageId })).unwrap();
+        toast.success('Image deleted successfully!');
+      } catch (err) {
+        toast.error('Failed to delete image');
+        console.error('Failed to delete image', err);
       }
     },
-    [productId, token]
+    [dispatch, productId]
   );
 
+  // Refresh images
+  const refreshImages = useCallback(() => {
+    dispatch(fetchProductImages(productId));
+  }, [dispatch, productId]);
 
   return {
     images,
     loading,
-    uploading,
-    fetchImages,
+    uploading: loading && uploadProgress > 0,
+    uploadProgress,
     uploadImage,
     deleteImage,
+    refreshImages,
   };
 }
+

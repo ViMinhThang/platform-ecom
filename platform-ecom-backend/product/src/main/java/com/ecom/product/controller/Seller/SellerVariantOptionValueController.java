@@ -17,7 +17,7 @@ public class SellerVariantOptionValueController {
 
     private final VariantOptionValueService variantOptionValueService;
 
-    @PostMapping
+    @PostMapping()
     @RequireRole("ROLE_SELLER")
     public ResponseEntity<APIResponse<VariantOptionValueDTO>> createVariantOptionValue(
             @Valid @RequestBody VariantOptionValueDTO variantOptionValueDTO) {

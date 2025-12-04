@@ -4,7 +4,7 @@
  */
 export interface APIResponse<T> {
     message: string;
-    status: boolean;
+    success: boolean;
     data: T;
 }
 
@@ -13,7 +13,7 @@ export interface APIResponse<T> {
  * @throws Error if response status is false
  */
 export function unwrapApiResponse<T>(response: APIResponse<T>): T {
-    if (!response.status) {
+    if (!response.success) {
         throw new Error(response.message || 'Operation failed');
     }
     return response.data;

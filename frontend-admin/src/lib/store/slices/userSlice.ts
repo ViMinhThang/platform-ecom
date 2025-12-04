@@ -1,9 +1,9 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { User, UserResponse, role } from '@/types/user/user';
-import { APIResponse } from '@/types/api'; // Assuming this exists, or I'll define it inline or import from utils
+import { APIResponse } from '@/types/api-response';
 import { API_ENDPOINTS, PAGINATION } from '@/config/constants';
-import { createRequestConfig, createMultipartConfig, handleApiError } from '@/lib/utils/api';
+import { createRequestConfig, createMultipartConfig, handleApiError, unwrapResponse } from '@/lib/utils/api';
 import { logger } from '@/lib/logger';
 
 /**
@@ -134,10 +134,10 @@ export const fetchUserById = createAsyncThunk(
             const url = `${API_ENDPOINTS.ADMIN_USERS}/${id}`;
             logger.apiRequest('GET', url);
 
-            const response = await axios.get<User>(url, createRequestConfig(token));
+            const response = await axios.get<APIResponse<User>>(url, createRequestConfig(token));
 
             logger.apiResponse('GET', url, response.status);
-            return response.data;
+            return unwrapResponse(response);
         } catch (error) {
             handleApiError(error);
             return rejectWithValue(`Failed to fetch user with ID ${id}`);
@@ -151,14 +151,14 @@ export const createUser = createAsyncThunk(
         try {
             logger.apiRequest('POST', API_ENDPOINTS.ADMIN_USERS, { data });
 
-            const response = await axios.post<User>(
+            const response = await axios.post<APIResponse<User>>(
                 API_ENDPOINTS.ADMIN_USERS,
                 data,
                 createRequestConfig(token)
             );
 
-            logger.apiResponse('POST', API_ENDPOINTS.AUTH, response.status);
-            return response.data;
+            logger.apiResponse('POST', API_ENDPOINTS.ADMIN_USERS, response.status);
+            return unwrapResponse(response);
         } catch (error) {
             handleApiError(error);
             return rejectWithValue('Failed to create user');
@@ -173,10 +173,10 @@ export const updateUser = createAsyncThunk(
             const url = `${API_ENDPOINTS.ADMIN_USERS}/${id}`;
             logger.apiRequest('PUT', url, { data });
 
-            const response = await axios.put<User>(url, data, createRequestConfig(token));
+            const response = await axios.put<APIResponse<User>>(url, data, createRequestConfig(token));
 
             logger.apiResponse('PUT', url, response.status);
-            return response.data;
+            return unwrapResponse(response);
         } catch (error) {
             handleApiError(error);
             return rejectWithValue(`Failed to update user with ID ${id}`);
@@ -212,10 +212,10 @@ export const updateUserImage = createAsyncThunk(
             const formData = new FormData();
             formData.append('file', file);
 
-            const response = await axios.put<string>(url, formData, createMultipartConfig(token));
+            const response = await axios.put<APIResponse<string>>(url, formData, createMultipartConfig(token));
 
             logger.apiResponse('PUT', url, response.status);
-            return { id, imageUrl: response.data };
+            return { id, imageUrl: unwrapResponse(response) };
         } catch (error) {
             handleApiError(error);
             return rejectWithValue(`Failed to update image for user with ID ${id}`);
@@ -230,10 +230,11 @@ export const fetchAllRoles = createAsyncThunk(
             const url = API_ENDPOINTS.ADMIN_ROLES;
             logger.apiRequest('GET', url);
 
-            const response = await axios.get<RolesResponse>(url, createRequestConfig(token));
+            const response = await axios.get<APIResponse<RolesResponse>>(url, createRequestConfig(token));
 
             logger.apiResponse('GET', url, response.status);
-            return response.data.allRoles;
+            const data = unwrapResponse(response);
+            return data.allRoles;
         } catch (error) {
             handleApiError(error);
             return rejectWithValue('Failed to fetch roles');

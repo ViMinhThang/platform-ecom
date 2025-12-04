@@ -20,33 +20,39 @@ interface OrderItemCardProps {
 export function OrderItemCard({ item, orderStatus, onReviewClick }: OrderItemCardProps) {
     const itemTotal = item.quantity * item.orderedProductPrice;
     const variant = item.productVariant;
+    const hasImage = variant?.imageUrl;
 
     return (
         <div className="border rounded-lg overflow-hidden hover:border-primary/50 transition-colors flex">
-            {/* Product Variant Image */}
-            {variant?.imageUrl && (
-                <div className="shrink-0 w-[100px] bg-muted">
+            {/* Product Image */}
+            <div className="shrink-0 w-[100px] h-[100px] bg-muted flex items-center justify-center">
+                {hasImage ? (
                     <Image
                         width={100}
                         height={100}
-                        src={imageUrl.product(variant.imageUrl)}
-                        alt="Product variant"
+                        src={imageUrl.product(variant.imageUrl!)}
+                        alt={item.product.name}
                         unoptimized={true}
                         className="w-full h-full object-cover"
                     />
-                </div>
-            )}
+                ) : (
+                    <Package className="h-8 w-8 text-muted-foreground" />
+                )}
+            </div>
 
             <div className="p-3 space-y-2 flex-1">
                 {/* Product Info */}
                 <div>
-                    <p className="font-medium text-sm truncate">
-                        Product #{item.product.id}
+                    <p className="font-medium text-sm line-clamp-2">
+                        {item.product.name}
                     </p>
-                    <p className="font-medium text-sm truncate">
-                        Product Name: {item.product.name}
-                    </p>
-                    {variant?.sku && (
+                    {/* Variant Name */}
+                    {variant?.variantName && (
+                        <p className="text-xs text-muted-foreground mt-1">
+                            Variant: <span className="text-foreground">{variant.variantName}</span>
+                        </p>
+                    )}
+                    {variant?.sku && !variant.sku.startsWith('VAR-') && (
                         <p className="text-xs text-muted-foreground">
                             SKU: {variant.sku}
                         </p>
@@ -93,3 +99,4 @@ export function OrderItemCard({ item, orderStatus, onReviewClick }: OrderItemCar
         </div>
     );
 }
+

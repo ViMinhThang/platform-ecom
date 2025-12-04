@@ -1,30 +1,20 @@
 package com.ecom.product.entity;
 
-
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.Type;
-import org.hibernate.annotations.Where;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Entity
 @Table(name = "product_variants")
-@SQLDelete(sql = "UPDATE product_variants SET deleted = true WHERE id = ?")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@ToString(exclude = {"product","optionValues"})
+@ToString
 public class ProductVariant {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,11 +22,12 @@ public class ProductVariant {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id", nullable = false)
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     private Product product;
 
     @Column(unique = true, nullable = false, length = 100)
     private String sku;
-
 
     private String imageUrl;
 
@@ -60,11 +51,11 @@ public class ProductVariant {
     @Column(name = "total_sold")
     private Integer totalSold = 0;
 
-    @Column(name = "deleted")
+    @Column(name = "hidden")
     @Builder.Default
-    private Boolean deleted = false;
+    private Boolean hidden = false;
 
-    @OneToMany(mappedBy = "variant", cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "variant", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<VariantOptionValue> optionValues = new ArrayList<>();
 
     @Column(name = "created_at", updatable = false)
@@ -78,6 +69,7 @@ public class ProductVariant {
         createdAt = LocalDateTime.now();
         updatedAt = LocalDateTime.now();
     }
+
     public BigDecimal getEffectivePrice() {
         LocalDateTime now = LocalDateTime.now();
         if (salePrice != null &&
@@ -87,6 +79,7 @@ public class ProductVariant {
         }
         return price;
     }
+
     @PreUpdate
     protected void onUpdate() {
         updatedAt = LocalDateTime.now();

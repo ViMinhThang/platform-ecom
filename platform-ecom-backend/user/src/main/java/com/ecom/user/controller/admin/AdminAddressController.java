@@ -1,4 +1,5 @@
 package com.ecom.user.controller.admin;
+
 import com.ecom.common.util.APIResponse;
 import com.ecom.common.util.ResponseBuilder;
 import com.ecom.user.dtos.AddressDTO;
@@ -59,5 +60,16 @@ public class AdminAddressController {
     public ResponseEntity<APIResponse<String>> deleteAddress(@PathVariable Long addressId) {
         String status = addressService.deleteAddressAdmin(addressId);
         return ResponseBuilder.success("Address deleted successfully", status);
+    }
+
+    /**
+     * GET /api/v1/internal/addresses/{addressId}
+     * Internal endpoint for other microservices to get address details
+     * Should be protected at gateway level (not exposed publicly)
+     */
+    @GetMapping("/internal/addresses/{addressId}")
+    public ResponseEntity<APIResponse<AddressDTO>> getAddressByIdInternal(@PathVariable Long addressId) {
+        AddressDTO addressDTO = addressService.getAddressByIdAdmin(addressId);
+        return ResponseBuilder.success("Address retrieved successfully", addressDTO);
     }
 }

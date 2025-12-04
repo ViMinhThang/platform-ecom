@@ -21,11 +21,10 @@ public class HttpClientConfig {
                 ProductServiceClient.class);
     }
 
-    // @Bean
-    // public UserServiceClient userServiceClient(RestClient.Builder
-    // restClientBuilder) {
-    // return RestClientFactory.createClient(restClientBuilder,
-    // "http://user-service/api", UserServiceClient.class);
-    // }
+    @Bean
+    public UserServiceClient userServiceClient(RestClient.Builder restClientBuilder) {
+        return RestClientFactory.createClient(restClientBuilder,
+                "http://user-service/api/v1/internal/user-service", UserServiceClient.class);
+    }
 
 }

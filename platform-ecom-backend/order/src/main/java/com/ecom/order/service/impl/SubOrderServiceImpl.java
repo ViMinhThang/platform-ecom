@@ -2,12 +2,10 @@ package com.ecom.order.service.impl;
 
 import com.ecom.common.exception.SubOrderNotFoundException;
 import com.ecom.common.exception.UnauthorizedException;
-import com.ecom.order.dto.RefundRequest;
 import com.ecom.order.dto.SubOrderDTO;
 import com.ecom.order.entity.SubOrder;
 import com.ecom.order.entity.SubOrderStatus;
 import com.ecom.order.repository.SubOrderRepository;
-import com.ecom.order.service.signature.RefundService;
 import com.ecom.order.service.signature.SubOrderService;
 
 import lombok.RequiredArgsConstructor;
@@ -26,7 +24,6 @@ import java.time.LocalDateTime;
 public class SubOrderServiceImpl implements SubOrderService {
 
     private final SubOrderRepository subOrderRepository;
-    private final RefundService refundService;
     private final ModelMapper modelMapper;
 
     /**
@@ -187,30 +184,6 @@ public class SubOrderServiceImpl implements SubOrderService {
         subOrderRepository.save(subOrder);
 
         log.info("Sub-order {} cancelled by user {}", subOrderId, userId);
-    }
-
-    /**
-     * Request refund for sub-order
-     */
-    @Transactional
-    public void requestRefund(Long subOrderId, Long userId, RefundRequest request) {
-        SubOrder subOrder = subOrderRepository.findById(subOrderId)
-                .orElseThrow(() -> new SubOrderNotFoundException(subOrderId));
-
-        // Verify buyer ownership
-        if (!subOrder.getOrderGroup().getUserId().equals(userId)) {
-            throw new UnauthorizedException("Not authorized");
-        }
-
-        // Validate refund eligibility
-        if (subOrder.getStatus() != SubOrderStatus.DELIVERED) {
-            throw new IllegalStateException("Can only refund delivered orders");
-        }
-
-        // Process refund
-        refundService.processRefund(subOrderId, request);
-
-        log.info("Refund requested for sub-order {}", subOrderId);
     }
 
     /**

@@ -3,7 +3,7 @@ export interface User {
   username: string;
   email: string;
   imageUrl: string;
-  isActive: string;
+  isActive: boolean;
   roles: role[];
   addresses: Address[];
 }
@@ -44,7 +44,7 @@ export interface UserRow {
   username: string;
   email: string;
   imageUrl: string;
-  isActive: string;
+  isActive: boolean;
   roles: role[];
   addresses: Address[];
 }

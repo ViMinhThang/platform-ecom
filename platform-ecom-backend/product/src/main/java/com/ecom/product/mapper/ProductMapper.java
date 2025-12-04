@@ -127,7 +127,7 @@ public class ProductMapper {
         if (product.getImages() == null || product.getImages().isEmpty()) {
             return DEFAULT_IMAGE_URL;
         }
-        return product.getImages().get(0).getImageUrl();
+        return product.getImages().iterator().next().getImageUrl();
     }
 
     /**

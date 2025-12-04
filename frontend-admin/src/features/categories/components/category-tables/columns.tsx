@@ -17,7 +17,7 @@ export const columns: ColumnDef<Category>[] = [
       return (
         <div className="relative w-16 h-16">
           <Image
-            src={`http://localhost:8080/uploads/${imageUrl}`}
+            src={`http://localhost:8080/uploads/products/${imageUrl}`}
             alt={ProductRow.name}
             fill
             className="object-cover rounded-md border"

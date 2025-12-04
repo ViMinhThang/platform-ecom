@@ -56,6 +56,22 @@ public class ProductVariantServiceImpl implements ProductVariantService {
 
     @Override
     @Transactional
+    public List<ProductVariantDTO> getVariantsForProduct(Long productId, Boolean hidden) {
+        List<ProductVariant> variants = (hidden == null)
+                ? productVariantRepository.findByProductId(productId)
+                : productVariantRepository.findByProductIdAndHidden(productId, hidden);
+        return mapAndSortVariants(variants);
+    }
+
+    @Override
+    @Transactional
+    public List<ProductVariantDTO> getPublicVariantsForProduct(Long productId) {
+        List<ProductVariant> variants = productVariantRepository.findByProductIdAndHiddenFalse(productId);
+        return mapAndSortVariants(variants);
+    }
+
+    @Override
+    @Transactional
     public ProductVariantDTO getProductVariantById(Long productId, Long variantId) {
         ProductVariant variant = findProductVariant(productId, variantId);
         return productVariantMapper.toDTO(variant);
@@ -87,6 +103,15 @@ public class ProductVariantServiceImpl implements ProductVariantService {
     public ProductVariantDTO findVariantById(Long variantId) {
         ProductVariant variant = findVariantByVariantId(variantId);
         return productVariantMapper.toDTO(variant);
+    }
+
+    @Override
+    @Transactional
+    public ProductVariantDTO toggleVariantVisibility(Long productId, Long variantId) {
+        ProductVariant variant = findProductVariant(productId, variantId);
+        variant.setHidden(!Boolean.TRUE.equals(variant.getHidden()));
+        ProductVariant saved = productVariantRepository.save(variant);
+        return productVariantMapper.toDTO(saved);
     }
 
     // ==================== Private Helper Methods ====================

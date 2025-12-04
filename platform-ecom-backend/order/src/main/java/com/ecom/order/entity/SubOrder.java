@@ -106,14 +106,6 @@ public class SubOrder {
     @Builder.Default
     private List<SubOrderItem> items = new ArrayList<>();
 
-    @OneToMany(mappedBy = "subOrder", cascade = CascadeType.ALL)
-    @Builder.Default
-    private List<SubOrderStatusHistory> statusHistory = new ArrayList<>();
-
-    @OneToMany(mappedBy = "subOrder", cascade = CascadeType.ALL)
-    @Builder.Default
-    private List<RefundTransaction> refunds = new ArrayList<>();
-
     // Helper methods
     public void addItem(SubOrderItem item) {
         items.add(item);
@@ -123,11 +115,6 @@ public class SubOrder {
     public void removeItem(SubOrderItem item) {
         items.remove(item);
         item.setSubOrder(null);
-    }
-
-    public void addStatusHistory(SubOrderStatusHistory history) {
-        statusHistory.add(history);
-        history.setSubOrder(this);
     }
 
     /**
@@ -145,13 +132,12 @@ public class SubOrder {
     }
 
     /**
-     * Update status and track history
+     * Update status with timestamp tracking
      */
     public void updateStatus(SubOrderStatus newStatus, Long changedBy, String notes) {
-        SubOrderStatus oldStatus = this.status;
         this.status = newStatus;
 
-        // Update timestamps
+        // Update timestamps based on new status
         if (newStatus == SubOrderStatus.SHIPPED && this.shippedAt == null) {
             this.shippedAt = LocalDateTime.now();
         } else if (newStatus == SubOrderStatus.DELIVERED && this.deliveredAt == null) {
@@ -159,17 +145,6 @@ public class SubOrder {
         } else if (newStatus == SubOrderStatus.CANCELLED && this.cancelledAt == null) {
             this.cancelledAt = LocalDateTime.now();
         }
-
-        // Add to history
-        SubOrderStatusHistory history = SubOrderStatusHistory.builder()
-                .subOrder(this)
-                .oldStatus(oldStatus != null ? oldStatus.name() : null)
-                .newStatus(newStatus.name())
-                .changedBy(changedBy)
-                .notes(notes)
-                .build();
-
-        addStatusHistory(history);
 
         // Update parent order group
         if (orderGroup != null) {

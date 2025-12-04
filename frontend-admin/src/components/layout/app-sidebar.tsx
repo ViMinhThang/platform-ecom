@@ -60,12 +60,13 @@ const tenants = [
 
 export default function AppSidebar() {
   const pathname = usePathname();
+  console.log('AppSidebar navItems:', JSON.stringify(navItems.find(i => i.title === 'Orders'), null, 2));
   const { isOpen } = useMediaQuery();
   const router = useRouter();
   const handleSwitchTenant = (_tenantId: string) => {
   };
   const { data: session } = useSession();
-  const user = session?.user; 
+  const user = session?.user;
   const activeTenant = tenants[0];
 
   React.useEffect(() => {

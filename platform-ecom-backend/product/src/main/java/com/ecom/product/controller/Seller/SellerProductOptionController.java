@@ -19,7 +19,7 @@ public class SellerProductOptionController {
 
     private final ProductOptionService productOptionService;
 
-    @PostMapping
+    @PostMapping()
     @RequireRole("ROLE_SELLER")
     public ResponseEntity<APIResponse<ProductOptionDTO>> createProductOption(
             @Valid @RequestBody ProductOptionDTO productOptionDTO, @PathVariable Long productId) {
@@ -27,7 +27,7 @@ public class SellerProductOptionController {
         return ResponseBuilder.createdWithMessage("Product option created successfully", createdOption);
     }
 
-    @GetMapping
+    @GetMapping()
     @RequireRole("ROLE_SELLER")
     public ResponseEntity<APIResponse<List<ProductOptionDTO>>> getListProductOptionByProductId(
             @PathVariable Long productId) {

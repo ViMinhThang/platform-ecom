@@ -27,6 +27,7 @@ export function transformSubOrderItemToOrderItem(
             cate: {
                 id: 0,
                 name: '',
+                slug: '',
                 imageUrl: undefined,
             },
             status: 'ACTIVE',
@@ -39,6 +40,8 @@ export function transformSubOrderItemToOrderItem(
             isActive: true,
             imageUrl: undefined,
             optionValues: [],
+            variantName: item.variantName, // Add variant name from DTO
         } : undefined,
     };
 }
+

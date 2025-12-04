@@ -5,12 +5,10 @@ import com.ecom.common.exception.ResourceNotFoundException;
 import com.ecom.common.exception.UserAlreadyExistsException;
 import com.ecom.common.service.FileStorageService;
 import com.ecom.user.dtos.UserDTO;
-import com.ecom.user.dtos.UserInfoResponse;
 import com.ecom.user.dtos.UserResponse;
 import com.ecom.user.entity.AppRole;
 import com.ecom.user.entity.Role;
 import com.ecom.user.entity.User;
-import com.ecom.user.mapper.UserMapper;
 import com.ecom.user.repositories.UserRepository;
 import com.ecom.user.service.signature.AdminUserService;
 import com.ecom.user.service.signature.RoleService;
@@ -35,7 +33,6 @@ public class AdminUserServiceImpl implements AdminUserService {
     private final PasswordEncoder encoder;
     private final RoleService roleService;
     private final FileStorageService fileStorageService;
-    private final UserMapper userMapper;
 
     @Override
     public UserResponse getAllUsers(Pageable pageable) {
@@ -114,14 +111,27 @@ public class AdminUserServiceImpl implements AdminUserService {
     }
 
     @Override
-    public UserInfoResponse getUserById(Long userId) {
-        return userMapper.toUserInfoResponse(getUserByUserIdFromDatabase(userId));
+    public UserDTO getUserById(Long userId) {
+        return modelMapper.map(getUserByUserIdFromDatabase(userId), UserDTO.class);
     }
 
     @Override
     @Transactional
     public String uploadUserImage(Long userId, org.springframework.web.multipart.MultipartFile image) {
         User user = getUserByUserIdFromDatabase(userId);
+
+        // Delete old image if it exists and is not the default image
+        String oldImageUrl = user.getImageUrl();
+        if (oldImageUrl != null && !oldImageUrl.isEmpty() && !"31343C.svg".equals(oldImageUrl)) {
+            try {
+                fileStorageService.deleteFile(oldImageUrl);
+            } catch (Exception e) {
+                // Log but don't fail if old image deletion fails
+                // The new image upload should still proceed
+            }
+        }
+
+        // Store new image
         String fileName = fileStorageService.storeFile(image);
         user.setImageUrl(fileName);
         userRepository.save(user);

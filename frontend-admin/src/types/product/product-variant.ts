@@ -1,4 +1,4 @@
-import {VariantOptionValue } from "./product-option";
+import { VariantOptionValue } from "./product-option";
 
 export type VariantFormValues = {
   id?: number;
@@ -7,7 +7,7 @@ export type VariantFormValues = {
   price: number;
   stock: number;
   isActive: boolean;
+  hidden?: boolean;
   optionValues: VariantOptionValue[];
   imageUrl: string;
 };
- 

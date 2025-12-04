@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { Usable, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import { ProductCard } from "@/components/ProductCard";
 import { SellerGrid } from "@/components/category/SellerGrid";
@@ -9,9 +9,10 @@ import { SortPanel } from "@/components/category/SortPanel";
 import { Pagination } from "@/components/ui/Pagination";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import { fetchProducts } from "@/lib/store/slices/productSlice";
+import React from "react";
 
 interface CategoryPageProps {
-    params: { slug: string };
+    params: Usable<{ slug: string }>
 }
 
 export default function CategoryPage({ params }: CategoryPageProps) {
@@ -20,8 +21,8 @@ export default function CategoryPage({ params }: CategoryPageProps) {
     const { products, loading, error, pagination } = useAppSelector(
         (state) => state.products
     );
-
-    const categorySlug = decodeURIComponent(params.slug);
+    const { slug } = React.use(params)
+    const categorySlug = decodeURIComponent(slug);
 
     // Extract all filter params from URL
     const page = Number(searchParams.get("page")) || 0;

@@ -1,7 +1,6 @@
 package com.ecom.user.service.signature;
 
 import com.ecom.user.dtos.UserDTO;
-import com.ecom.user.dtos.UserInfoResponse;
 import com.ecom.user.dtos.UserResponse;
 import org.springframework.data.domain.Pageable;
 
@@ -14,7 +13,7 @@ public interface AdminUserService {
 
     public void deleteUser(Long userId);
 
-    public UserInfoResponse getUserById(Long userId);
+    public UserDTO getUserById(Long userId);
 
     public String uploadUserImage(Long userId, org.springframework.web.multipart.MultipartFile image);
 }

@@ -19,7 +19,7 @@ public class SellerProductVariantController {
 
     private final ProductVariantService productVariantService;
 
-    @PostMapping
+    @PostMapping()
     @RequireRole("ROLE_SELLER")
     public ResponseEntity<APIResponse<ProductVariantDTO>> createProductVariant(@PathVariable Long productId,
             @Valid @RequestBody ProductVariantDTO productVariantDTO) {
@@ -28,11 +28,12 @@ public class SellerProductVariantController {
         return ResponseBuilder.createdWithMessage("Variant created successfully", createdVariant);
     }
 
-    @GetMapping
+    @GetMapping()
     @RequireRole("ROLE_SELLER")
     public ResponseEntity<APIResponse<List<ProductVariantDTO>>> getVariantsForProduct(
-            @PathVariable Long productId) {
-        List<ProductVariantDTO> variants = productVariantService.getVariantsForProduct(productId);
+            @PathVariable Long productId,
+            @RequestParam(required = false) Boolean hidden) {
+        List<ProductVariantDTO> variants = productVariantService.getVariantsForProduct(productId, hidden);
         return ResponseBuilder.success("Variants retrieved successfully", variants);
     }
 
@@ -50,6 +51,15 @@ public class SellerProductVariantController {
         ProductVariantDTO updatedVariant = productVariantService.updateProductVariant(productId, variantId,
                 productVariantDTO);
         return ResponseBuilder.success("Variant updated successfully", updatedVariant);
+    }
+
+    @PatchMapping("/{variantId}/visibility")
+    @RequireRole("ROLE_SELLER")
+    public ResponseEntity<APIResponse<ProductVariantDTO>> toggleVariantVisibility(
+            @PathVariable Long productId,
+            @PathVariable Long variantId) {
+        ProductVariantDTO variant = productVariantService.toggleVariantVisibility(productId, variantId);
+        return ResponseBuilder.success("Variant visibility toggled", variant);
     }
 
     @DeleteMapping("/{variantId}")

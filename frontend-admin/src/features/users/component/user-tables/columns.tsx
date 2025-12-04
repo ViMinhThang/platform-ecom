@@ -17,7 +17,7 @@ export const columns: ColumnDef<UserRow>[] = [
       return (
         <div className="relative w-16 h-16">
           <Image
-            src={`http://localhost:8080/uploads/${imageUrl}`}
+            src={`http://localhost:8080/uploads/products/${imageUrl}`}
             alt={userRow.username}
             fill
             className="object-cover rounded-md border"
@@ -67,8 +67,8 @@ export const columns: ColumnDef<UserRow>[] = [
       <DataTableColumnHeader column={column} title="Status" />
     ),
     cell: ({ cell }) => {
-      const isActive = cell.getValue<string>();
-      return isActive === "true" ? (
+      const isActive = cell.getValue<boolean>();
+      return isActive === true ? (
         <Badge variant="default" className="flex items-center gap-1">
           <CheckCircle2 size={16} />
           Active

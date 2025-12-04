@@ -5,7 +5,6 @@ import lombok.Data;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Map;
 
 @Data
 public class ProductVariantDTO {
@@ -21,6 +20,7 @@ public class ProductVariantDTO {
     private String imageUrl;
     private Integer totalSold;
     private List<VariantOptionValueDTO> optionValues;
+    private Boolean hidden;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 }

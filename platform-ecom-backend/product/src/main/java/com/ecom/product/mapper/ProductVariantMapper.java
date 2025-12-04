@@ -29,7 +29,7 @@ public class ProductVariantMapper {
         if (variant == null) {
             return null;
         }
-        
+
         ProductVariantDTO dto = new ProductVariantDTO();
         dto.setId(variant.getId());
         dto.setProductId(variant.getProduct().getId());
@@ -42,14 +42,15 @@ public class ProductVariantMapper {
         dto.setIsActive(variant.getIsActive());
         dto.setTotalSold(variant.getTotalSold());
         dto.setImageUrl(variant.getImageUrl());
+        dto.setHidden(variant.getHidden());
         dto.setCreatedAt(variant.getCreatedAt());
         dto.setUpdatedAt(variant.getUpdatedAt());
-        
+
         // Map option values if available
         if (variant.getOptionValues() != null) {
             dto.setOptionValues(mapVariantOptionValues(variant));
         }
-        
+
         return dto;
     }
 
@@ -60,22 +61,23 @@ public class ProductVariantMapper {
         if (variants == null) {
             return List.of();
         }
-        
+
         return variants.stream()
                 .map(this::toDTO)
                 .collect(Collectors.toList());
     }
 
     /**
-     * Maps only active variants from a product
+     * Maps only active and visible variants from a product (for public routes)
      */
     public List<ProductVariantDTO> mapActiveVariants(Product product) {
         if (product == null || product.getVariants() == null) {
             return List.of();
         }
-        
+
         return product.getVariants().stream()
-                .filter(ProductVariant::getIsActive)
+                .filter(v -> Boolean.TRUE.equals(v.getIsActive()))
+                .filter(v -> !Boolean.TRUE.equals(v.getHidden()))
                 .map(this::toDTO)
                 .collect(Collectors.toList());
     }
@@ -88,10 +90,10 @@ public class ProductVariantMapper {
         if (product == null || product.getVariants() == null) {
             return null;
         }
-        
+
         Optional<ProductVariant> variant = findFirstVariantWithStock(product)
                 .or(() -> findFirstActiveVariant(product));
-        
+
         return variant.map(this::toDTO).orElse(null);
     }
 
@@ -102,7 +104,7 @@ public class ProductVariantMapper {
         if (product == null || product.getVariants() == null) {
             return null;
         }
-        
+
         return product.getVariants().stream()
                 .filter(this::isAvailableVariant)
                 .map(ProductVariant::getEffectivePrice)
@@ -130,11 +132,11 @@ public class ProductVariantMapper {
     }
 
     /**
-     * Checks if variant is available (active and not deleted)
+     * Checks if variant is available (active and not hidden)
      */
     private boolean isAvailableVariant(ProductVariant variant) {
-        return variant.getIsActive() != null && variant.getIsActive() 
-                && (variant.getDeleted() == null || !variant.getDeleted());
+        return variant.getIsActive() != null && variant.getIsActive()
+                && (variant.getHidden() == null || !variant.getHidden());
     }
 
     /**

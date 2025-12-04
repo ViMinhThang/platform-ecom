@@ -2,6 +2,7 @@ import { configureStore } from '@reduxjs/toolkit';
 import productReducer from './slices/productSlice';
 import productVariantReducer from './slices/productVariantSlice';
 import productOptionReducer from './slices/productOptionSlice';
+import productImageReducer from './slices/productImageSlice';
 import categoryReducer from './slices/categorySlice';
 import userReducer from './slices/userSlice';
 import kanbanReducer from './slices/kanbanSlice';
@@ -13,6 +14,7 @@ export const store = configureStore({
         products: productReducer,
         productVariants: productVariantReducer,
         productOptions: productOptionReducer,
+        productImages: productImageReducer,
         categories: categoryReducer,
         users: userReducer,
         kanban: kanbanReducer,

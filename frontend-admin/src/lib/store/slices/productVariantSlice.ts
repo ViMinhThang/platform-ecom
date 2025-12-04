@@ -1,10 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
 import { VariantFormValues } from '@/types/product/product-variant';
-import { API_ENDPOINTS } from '@/config/constants';
-import { createRequestConfig, handleApiError, unwrapResponse } from '@/lib/utils/api';
+import { productVariantService } from '@/lib/services/product-variant-service';
 import { logger } from '@/lib/logger';
-import { APIResponse } from '@/types/api-response';
 import { v4 as uuidv4 } from 'uuid';
 
 /**
@@ -12,7 +9,6 @@ import { v4 as uuidv4 } from 'uuid';
  */
 interface FetchVariantsParams {
     productId: number;
-    token: string;
 }
 
 /**
@@ -21,7 +17,6 @@ interface FetchVariantsParams {
 interface CreateVariantParams {
     productId: number;
     data: VariantFormValues;
-    token: string;
 }
 
 /**
@@ -31,7 +26,6 @@ interface UpdateVariantParams {
     productId: number;
     variantId: number;
     data: VariantFormValues;
-    token: string;
 }
 
 /**
@@ -40,7 +34,6 @@ interface UpdateVariantParams {
 interface DeleteVariantParams {
     productId: number;
     variantId: number;
-    token: string;
 }
 
 interface ProductVariantState {
@@ -61,19 +54,16 @@ const initialState: ProductVariantState = {
 
 export const fetchVariants = createAsyncThunk(
     'productVariants/fetchVariants',
-    async ({ productId, token }: FetchVariantsParams, { rejectWithValue }) => {
+    async ({ productId }: FetchVariantsParams, { rejectWithValue }) => {
         try {
-            const url = `${API_ENDPOINTS.PRODUCTS}/${productId}/variants`;
-            logger.apiRequest('GET', url);
+            logger.apiRequest('GET', `/api/v1/sellers/products/${productId}/variants`);
 
-            const response = await axios.get<APIResponse<VariantFormValues[]>>(url, createRequestConfig(token));
+            const variants = await productVariantService.getProductVariants(productId);
 
-            logger.apiResponse('GET', url, response.status);
-            const variants = unwrapResponse(response);
-
+            logger.apiResponse('GET', `/api/v1/sellers/products/${productId}/variants`, 200);
             return variants.map(v => ({ ...v, variantId: v.id }));
         } catch (error) {
-            handleApiError(error);
+            logger.error('Failed to fetch variants', { error });
             return rejectWithValue('Failed to fetch variants');
         }
     }
@@ -81,22 +71,16 @@ export const fetchVariants = createAsyncThunk(
 
 export const createVariant = createAsyncThunk(
     'productVariants/createVariant',
-    async ({ productId, data, token }: CreateVariantParams, { rejectWithValue }) => {
+    async ({ productId, data }: CreateVariantParams, { rejectWithValue }) => {
         try {
-            const url = `${API_ENDPOINTS.PRODUCTS}/${productId}/variants`;
-            logger.apiRequest('POST', url, { data });
+            logger.apiRequest('POST', `/api/v1/sellers/products/${productId}/variants`, { data });
 
-            const response = await axios.post<APIResponse<VariantFormValues>>(
-                url,
-                data,
-                createRequestConfig(token)
-            );
+            const variant = await productVariantService.createVariant(productId, data);
 
-            logger.apiResponse('POST', url, response.status);
-            const variant = unwrapResponse(response);
+            logger.apiResponse('POST', `/api/v1/sellers/products/${productId}/variants`, 201);
             return { ...variant, variantId: variant.id };
         } catch (error) {
-            handleApiError(error);
+            logger.error('Failed to create variant', { error });
             return rejectWithValue('Failed to create variant');
         }
     }
@@ -104,18 +88,16 @@ export const createVariant = createAsyncThunk(
 
 export const updateVariant = createAsyncThunk(
     'productVariants/updateVariant',
-    async ({ productId, variantId, data, token }: UpdateVariantParams, { rejectWithValue }) => {
+    async ({ productId, variantId, data }: UpdateVariantParams, { rejectWithValue }) => {
         try {
-            const url = `${API_ENDPOINTS.PRODUCTS}/${productId}/variants/${variantId}`;
-            logger.apiRequest('PUT', url, { data });
+            logger.apiRequest('PUT', `/api/v1/sellers/products/${productId}/variants/${variantId}`, { data });
 
-            const response = await axios.put<APIResponse<VariantFormValues>>(url, data, createRequestConfig(token));
+            const variant = await productVariantService.updateVariant(productId, variantId, data);
 
-            logger.apiResponse('PUT', url, response.status);
-            const variant = unwrapResponse(response);
+            logger.apiResponse('PUT', `/api/v1/sellers/products/${productId}/variants/${variantId}`, 200);
             return { ...variant, variantId: variant.id };
         } catch (error) {
-            handleApiError(error);
+            logger.error('Failed to update variant', { error });
             return rejectWithValue('Failed to update variant');
         }
     }
@@ -123,19 +105,34 @@ export const updateVariant = createAsyncThunk(
 
 export const deleteVariant = createAsyncThunk(
     'productVariants/deleteVariant',
-    async ({ productId, variantId, token }: DeleteVariantParams, { rejectWithValue }) => {
+    async ({ productId, variantId }: DeleteVariantParams, { rejectWithValue }) => {
         try {
-            const url = `${API_ENDPOINTS.PRODUCTS}/${productId}/variants/${variantId}`;
-            logger.apiRequest('DELETE', url);
+            logger.apiRequest('DELETE', `/api/v1/sellers/products/${productId}/variants/${variantId}`);
 
-            const response = await axios.delete<APIResponse<string>>(url, createRequestConfig(token));
+            await productVariantService.deleteVariant(productId, variantId);
 
-            logger.apiResponse('DELETE', url, response.status);
-            unwrapResponse(response);
+            logger.apiResponse('DELETE', `/api/v1/sellers/products/${productId}/variants/${variantId}`, 200);
             return variantId;
         } catch (error) {
-            handleApiError(error);
+            logger.error('Failed to delete variant', { error });
             return rejectWithValue('Failed to delete variant');
+        }
+    }
+);
+
+export const toggleVariantVisibility = createAsyncThunk(
+    'productVariants/toggleVisibility',
+    async ({ productId, variantId }: DeleteVariantParams, { rejectWithValue }) => {
+        try {
+            logger.apiRequest('PATCH', `/api/v1/sellers/products/${productId}/variants/${variantId}/visibility`);
+
+            const variant = await productVariantService.toggleVisibility(productId, variantId);
+
+            logger.apiResponse('PATCH', `/api/v1/sellers/products/${productId}/variants/${variantId}/visibility`, 200);
+            return { ...variant, variantId: variant.id };
+        } catch (error) {
+            logger.error('Failed to toggle variant visibility', { error });
+            return rejectWithValue('Failed to toggle variant visibility');
         }
     }
 );
@@ -254,6 +251,21 @@ const productVariantSlice = createSlice({
             })
             .addCase(deleteVariant.rejected, (state, action) => {
                 state.loading = false;
+                state.error = action.payload as string;
+            });
+
+        // Toggle Visibility - uses local loading state only to avoid clearing the list
+        builder
+            .addCase(toggleVariantVisibility.pending, (state) => {
+                state.error = null;
+            })
+            .addCase(toggleVariantVisibility.fulfilled, (state, action) => {
+                const index = state.items.findIndex((v) => v.id === action.payload.id);
+                if (index !== -1) {
+                    state.items[index] = action.payload;
+                }
+            })
+            .addCase(toggleVariantVisibility.rejected, (state, action) => {
                 state.error = action.payload as string;
             });
     },

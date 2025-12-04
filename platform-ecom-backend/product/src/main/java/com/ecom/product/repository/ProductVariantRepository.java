@@ -12,16 +12,22 @@ import java.util.Optional;
 @Repository
 public interface ProductVariantRepository extends JpaRepository<ProductVariant, Long> {
 
-    List<ProductVariant> findByProductId(Long productId);
+        List<ProductVariant> findByProductId(Long productId);
 
-    Optional<ProductVariant> findByProductIdAndId(Long productId, Long variantId);
-    @Query("SELECT v FROM ProductVariant v " +
-            "JOIN v.optionValues ov " +
-            "WHERE ov.optionValue.id IN :optionValueIds " +
-            "GROUP BY v.id " +
-            "HAVING COUNT(ov.id) = :size")
-    Optional<ProductVariant> findUniqueVariantByOptionValueIds(
-            @Param("optionValueIds") List<Long> optionValueIds,
-            @Param("size") long size
-    );
+        // For public routes - exclude hidden variants
+        List<ProductVariant> findByProductIdAndHiddenFalse(Long productId);
+
+        // For seller routes with filter
+        List<ProductVariant> findByProductIdAndHidden(Long productId, Boolean hidden);
+
+        Optional<ProductVariant> findByProductIdAndId(Long productId, Long variantId);
+
+        @Query("SELECT v FROM ProductVariant v " +
+                        "JOIN v.optionValues ov " +
+                        "WHERE ov.optionValue.id IN :optionValueIds " +
+                        "GROUP BY v.id " +
+                        "HAVING COUNT(ov.id) = :size")
+        Optional<ProductVariant> findUniqueVariantByOptionValueIds(
+                        @Param("optionValueIds") List<Long> optionValueIds,
+                        @Param("size") long size);
 }

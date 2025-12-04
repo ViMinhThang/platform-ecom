@@ -2,12 +2,11 @@
 
 import { useState } from "react";
 import { useSession } from "next-auth/react";
-import { Button } from "@/components/ui/button";
-import { FormInput } from "@/components/forms/form-input";
 import { useAppDispatch } from "@/lib/store/hooks";
 import { updateUserImage } from "@/lib/store/slices/userSlice";
 import { toast } from "sonner";
 import { logger } from "@/lib/logger";
+import { Upload, Loader2 } from "lucide-react";
 
 interface UserImageUploadFieldProps {
     imageUrl: string | undefined;
@@ -18,7 +17,7 @@ interface UserImageUploadFieldProps {
 
 /**
  * User Image Upload Field
- * Handles user profile image upload
+ * Clickable area for uploading and displaying user profile image
  */
 export const UserImageUploadField: React.FC<UserImageUploadFieldProps> = ({
     imageUrl,
@@ -75,52 +74,67 @@ export const UserImageUploadField: React.FC<UserImageUploadFieldProps> = ({
         }
     };
 
+    const displayImageUrl = imageUrl
+        ? (imageUrl.startsWith('http') ? imageUrl : `http://localhost:8080/uploads/products/${imageUrl}`)
+        : null;
+
     return (
-        <div className="space-y-2">
-            <label className="text-sm font-medium">Image URL</label>
+        <div className="flex flex-col items-center space-y-3">
             <input
-                type="text"
-                placeholder="Enter image URL or upload below"
-                value={imageUrl || ""}
-                onChange={(e) => setImage(e.target.value)}
-                disabled={loading}
-                className="w-full px-3 py-2 border rounded-md"
+                type="file"
+                id="user-image-upload"
+                accept="image/*"
+                onChange={handleImageSelect}
+                disabled={uploading || loading || !userId}
+                className="hidden"
             />
 
-            <div className="flex items-center gap-3">
-                <input
-                    type="file"
-                    id="user-image-upload"
-                    accept="image/*"
-                    onChange={handleImageSelect}
-                    disabled={uploading || loading}
-                    className="hidden"
-                />
-                <label htmlFor="user-image-upload">
-                    <Button
-                        type="button"
-                        variant="outline"
-                        disabled={uploading || loading || !userId}
-                        asChild
-                    >
-                        <span>{uploading ? "Uploading..." : "Upload Image"}</span>
-                    </Button>
-                </label>
-
-                {imageUrl && (
+            <label
+                htmlFor="user-image-upload"
+                className={`
+                    relative w-32 h-32 rounded-full border-2 border-dashed 
+                    flex items-center justify-center cursor-pointer
+                    transition-all duration-200
+                    ${!userId ? 'opacity-50 cursor-not-allowed' : 'hover:border-primary hover:bg-muted/50'}
+                    ${uploading ? 'cursor-wait' : ''}
+                `}
+            >
+                {uploading ? (
+                    <Loader2 className="w-8 h-8 animate-spin text-muted-foreground" />
+                ) : displayImageUrl ? (
                     <img
-                        src={imageUrl}
-                        alt="User preview"
-                        className="h-12 w-12 rounded-full object-cover"
+                        src={displayImageUrl}
+                        alt="User profile"
+                        className="w-full h-full rounded-full object-cover"
                     />
+                ) : (
+                    <div className="flex flex-col items-center gap-2 text-muted-foreground">
+                        <Upload className="w-8 h-8" />
+                        <span className="text-xs">Upload</span>
+                    </div>
+                )}
+
+                {/* Overlay on hover when image exists */}
+                {displayImageUrl && !uploading && userId && (
+                    <div className="absolute inset-0 bg-black/50 rounded-full opacity-0 hover:opacity-100 transition-opacity flex items-center justify-center">
+                        <Upload className="w-6 h-6 text-white" />
+                    </div>
+                )}
+            </label>
+
+            <div className="text-center">
+                <p className="text-sm font-medium">Profile Image</p>
+                {!userId && (
+                    <p className="text-xs text-muted-foreground mt-1">
+                        Save user first to upload
+                    </p>
+                )}
+                {userId && !uploading && (
+                    <p className="text-xs text-muted-foreground mt-1">
+                        Click to {displayImageUrl ? 'change' : 'upload'}
+                    </p>
                 )}
             </div>
-
-            {!userId && (
-                <p className="text-sm text-muted-foreground">
-                    Save the user first to enable image upload
-                </p>
-            )}
         </div>
     );
 };

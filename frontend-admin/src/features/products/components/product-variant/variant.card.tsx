@@ -2,6 +2,8 @@
 
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Switch } from "@/components/ui/switch";
+import { Label } from "@/components/ui/label";
 import { VariantImagePicker } from "./product-variant-image-picker";
 import { useProductVariants } from "@/providers/product-variant-provider";
 import { VariantFormValues } from "@/types/product/product-variant";
@@ -10,6 +12,10 @@ import { FormInput } from "@/components/forms/form-input";
 import { ProductVariantOptions } from "./product-variant-option";
 import { useState } from "react";
 import { AlertModal } from "@/components/modal/alert-modal";
+import { useAppDispatch } from "@/lib/store/hooks";
+import { toggleVariantVisibility } from "@/lib/store/slices/productVariantSlice";
+import { Eye, EyeOff } from "lucide-react";
+import { toast } from "sonner";
 
 interface VariantCardProps {
   variant: VariantFormValues;
@@ -17,8 +23,10 @@ interface VariantCardProps {
 
 export const VariantCard: React.FC<VariantCardProps> = ({ variant }) => {
   const { saveVariant, removeVariant, productId } = useProductVariants();
+  const dispatch = useAppDispatch();
   const [isOpen, setIsOpen] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [isToggling, setIsToggling] = useState(false);
   const form = useForm<VariantFormValues>({
     defaultValues: variant,
     mode: "onBlur",
@@ -31,8 +39,27 @@ export const VariantCard: React.FC<VariantCardProps> = ({ variant }) => {
     setLoading(false);
   };
 
+  const handleToggleVisibility = async () => {
+    if (!variant.id || !productId) return;
+
+    setIsToggling(true);
+    try {
+      await dispatch(toggleVariantVisibility({
+        productId,
+        variantId: variant.id
+      })).unwrap();
+      toast.success(variant.hidden ? "Variant is now visible" : "Variant is now hidden");
+    } catch (error) {
+      toast.error("Failed to toggle visibility");
+    } finally {
+      setIsToggling(false);
+    }
+  };
+
   const { handleSubmit, control, watch, setValue } = form;
 
+  const isHidden = variant.hidden ?? false;
+  const isNewVariant = !variant.id;
 
   return (
     <FormProvider {...form}>
@@ -42,7 +69,28 @@ export const VariantCard: React.FC<VariantCardProps> = ({ variant }) => {
         onConfirm={handleConfirm}
         loading={loading}
       />
-      <Card className="p-4 space-y-3">
+      <Card className={`p-4 space-y-3 transition-all duration-300 ${isToggling ? 'opacity-40 scale-[0.99]' : ''} ${isHidden && !isToggling ? 'opacity-60 border-dashed' : ''}`}>
+        {/* Visibility Toggle Header */}
+        {!isNewVariant && (
+          <div className="flex items-center justify-between pb-2 border-b">
+            <div className="flex items-center gap-2">
+              {isHidden ? (
+                <EyeOff className="h-4 w-4 text-muted-foreground" />
+              ) : (
+                <Eye className="h-4 w-4 text-green-500" />
+              )}
+              <Label className="text-sm font-medium">
+                {isHidden ? "Hidden from customers" : "Visible to customers"}
+              </Label>
+            </div>
+            <Switch
+              checked={!isHidden}
+              onCheckedChange={handleToggleVisibility}
+              disabled={isToggling}
+            />
+          </div>
+        )}
+
         <div className="grid grid-cols-2 gap-3">
           <VariantImagePicker
             productId={productId}

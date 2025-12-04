@@ -19,11 +19,6 @@ public interface PaymentProvider {
     PaymentIntent capturePayment(String transactionId);
 
     /**
-     * Refund a payment
-     */
-    RefundResult refundPayment(String transactionId, BigDecimal amount);
-
-    /**
      * Cancel a payment intent
      */
     boolean cancelPayment(String transactionId);

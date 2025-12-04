@@ -6,8 +6,8 @@ import {
 } from '@/types/order.types';
 import { APIResponse, PaginatedResponse } from '@/types/common.types';
 
-const ORDER_API = '/api/v1/order-groups';
-const SUBORDER_API = '/api/v1/sub-orders';
+const ORDER_API = '/v1/order-groups';
+const SUBORDER_API = '/v1/sub-orders';
 
 export const orderService = {
     createOrder: async (request: CreateOrderRequest): Promise<OrderGroupDTO> => {

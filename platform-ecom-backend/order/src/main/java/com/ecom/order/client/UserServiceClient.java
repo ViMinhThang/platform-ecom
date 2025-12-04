@@ -7,19 +7,21 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.service.annotation.GetExchange;
+import org.springframework.web.service.annotation.HttpExchange;
 
 /**
  * Client for communicating with User Service
  */
+@HttpExchange
 public interface UserServiceClient {
 
     Logger log = LoggerFactory.getLogger(UserServiceClient.class);
 
-    @GetExchange("/{userId}")
+    @GetExchange("/users/{userId}")
     APIResponse<UserDTO> getUser(@PathVariable("userId") Long userId);
 
-    @GetExchange("/{userId}/addresses/{addressId}")
-    APIResponse<AddressDTO> getAddress(@PathVariable("userId") Long userId, @PathVariable("addressId") Long addressId);
+    @GetExchange("/admin/addresses/internal/addresses/{addressId}")
+    APIResponse<AddressDTO> getAddress(@PathVariable("addressId") Long addressId);
 
     default UserDTO getUserSafe(Long userId) {
         try {
@@ -33,14 +35,14 @@ public interface UserServiceClient {
         return null;
     }
 
-    default AddressDTO getAddressSafe(Long userId, Long addressId) {
+    default AddressDTO getAddressSafe(Long addressId) {
         try {
-            APIResponse<AddressDTO> response = getAddress(userId, addressId);
+            APIResponse<AddressDTO> response = getAddress(addressId);
             if (response != null && response.isSuccess()) {
                 return response.getData();
             }
         } catch (Exception e) {
-            log.error("Error fetching address details for userId: {}, addressId: {}", userId, addressId, e);
+            log.error("Error fetching address details for addressId: {}", addressId, e);
         }
         return null;
     }

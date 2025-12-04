@@ -4,7 +4,6 @@ import com.ecom.order.dto.*;
 import com.ecom.order.entity.OrderGroup;
 import com.ecom.order.entity.SubOrder;
 import com.ecom.order.entity.SubOrderItem;
-import com.ecom.order.entity.SubOrderStatusHistory;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -38,7 +37,7 @@ public class AdminOrderMapper {
                 .createdAt(orderGroup.getCreatedAt())
                 .updatedAt(orderGroup.getUpdatedAt())
                 .subOrders(toAdminSubOrderDTOs(orderGroup.getSubOrders()))
-                .paymentTransactions(new ArrayList<>()) // TODO: map payment transactions
+                .paymentTransactions(new ArrayList<>())
                 .build();
     }
 
@@ -59,7 +58,7 @@ public class AdminOrderMapper {
                 .subOrderNumber(subOrder.getSubOrderNumber())
                 .sellerId(subOrder.getSellerId())
                 .sellerName(subOrder.getSellerName())
-                .sellerEmail(null) // TODO: fetch from user service
+                .sellerEmail(null)
                 .status(subOrder.getStatus().name())
                 .fulfillmentStatus(subOrder.getFulfillmentStatus())
                 .subtotal(subOrder.getSubtotal())
@@ -77,7 +76,6 @@ public class AdminOrderMapper {
                 .deliveredAt(subOrder.getDeliveredAt())
                 .cancelledAt(subOrder.getCancelledAt())
                 .items(toSubOrderItemDTOs(subOrder.getItems()))
-                .statusHistory(toStatusHistoryDTOs(subOrder.getStatusHistory()))
                 .build();
     }
 
@@ -102,28 +100,6 @@ public class AdminOrderMapper {
                 .quantity(item.getQuantity())
                 .unitPrice(item.getUnitPrice())
                 .totalPrice(item.getTotalPrice())
-                .build();
-    }
-
-    public List<SubOrderStatusHistoryDTO> toStatusHistoryDTOs(List<SubOrderStatusHistory> histories) {
-        if (histories == null)
-            return new ArrayList<>();
-        return histories.stream()
-                .map(this::toStatusHistoryDTO)
-                .collect(Collectors.toList());
-    }
-
-    public SubOrderStatusHistoryDTO toStatusHistoryDTO(SubOrderStatusHistory history) {
-        if (history == null)
-            return null;
-
-        return SubOrderStatusHistoryDTO.builder()
-                .id(history.getId())
-                .oldStatus(history.getOldStatus())
-                .newStatus(history.getNewStatus())
-                .changedBy(history.getChangedBy())
-                .notes(history.getNotes())
-                .changedAt(history.getChangedAt())
                 .build();
     }
 }

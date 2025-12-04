@@ -15,15 +15,14 @@ export function VariantSelector({
   variants,
   onVariantChange,
 }: VariantSelectorProps) {
+  const visibleVariants = variants.filter(v => !v.hidden);
+
   const [selectedValues, setSelectedValues] = useState<Record<number, number>>(
     {}
   );
 
-  // Sort options by sortOrder for hierarchical processing
   const sortedOptions = [...options].sort((a, b) => a.sortOrder - b.sortOrder);
 
-  // Create a mapping from option value ID to option ID
-  // This is needed because the backend's variant.optionValues.optionId is actually the option VALUE id
   const valueIdToOptionId = new Map<number, number>();
   options.forEach((option) => {
     option.values.forEach((value) => {
@@ -31,18 +30,15 @@ export function VariantSelector({
     });
   });
 
-  // Helper: Find variant matching exact selections
   const findMatchingVariant = (
     selections: Record<number, number>
   ): ProductVariant | null => {
     return (
-      variants.find((v) => {
-        // Must match all selections exactly
+      visibleVariants.find((v) => {
         if (v.optionValues.length !== Object.keys(selections).length)
           return false;
 
         return v.optionValues.every((ov) => {
-          // Map the backend's optionId (which is actually option value id) to real option id
           const realOptionId = valueIdToOptionId.get(ov.productOptionValue.id);
           return (
             realOptionId !== undefined &&
@@ -53,12 +49,9 @@ export function VariantSelector({
     );
   };
 
-  // Helper: Check if a value is available given upstream selections
   const isValueAvailable = (optionId: number, valueId: number): boolean => {
-    // Get the index of this option in sorted order
     const optionIndex = sortedOptions.findIndex((opt) => opt.id === optionId);
 
-    // Build upstream selections (options before this one)
     const upstreamSelections: Record<number, number> = {};
     for (let i = 0; i < optionIndex; i++) {
       const upstreamOptionId = sortedOptions[i].id;
@@ -67,11 +60,8 @@ export function VariantSelector({
       }
     }
 
-    // Check if any variant exists that:
-    // 1. Has this specific value for this option
-    // 2. Matches all upstream selections
-    return variants.some((v) => {
-      // Check if variant has the target value
+
+    return visibleVariants.some((v) => {
       const hasTargetValue = v.optionValues.some((ov) => {
         const realOptionId = valueIdToOptionId.get(ov.productOptionValue.id);
         return (
@@ -80,7 +70,6 @@ export function VariantSelector({
       });
       if (!hasTargetValue) return false;
 
-      // Check if variant matches all upstream selections
       return Object.entries(upstreamSelections).every(
         ([upstreamOptId, upstreamValId]) => {
           return v.optionValues.some((ov) => {
@@ -97,12 +86,10 @@ export function VariantSelector({
     });
   };
 
-  // Helper: Get first available value for an option given upstream selections
   const getFirstAvailableValue = (optionId: number): number | null => {
     const option = sortedOptions.find((opt) => opt.id === optionId);
     if (!option) return null;
 
-    // Sort values by sortOrder
     const sortedValues = [...option.values].sort(
       (a, b) => a.sortOrder - b.sortOrder
     );
@@ -115,21 +102,18 @@ export function VariantSelector({
     return null;
   };
 
-  // Initialize selections hierarchically
   useEffect(() => {
     if (
       Object.keys(selectedValues).length === 0 &&
       sortedOptions.length > 0 &&
-      variants.length > 0
+      visibleVariants.length > 0
     ) {
       const initialSelections: Record<number, number> = {};
 
-      // Build selections cascading from first to last option
       for (const option of sortedOptions) {
         const firstAvailable = getFirstAvailableValue(option.id);
         if (firstAvailable !== null) {
           initialSelections[option.id] = firstAvailable;
-          // Temporarily update selectedValues for next iteration's availability check
           setSelectedValues((prev) => ({
             ...prev,
             [option.id]: firstAvailable,
@@ -141,7 +125,7 @@ export function VariantSelector({
       const variant = findMatchingVariant(initialSelections);
       onVariantChange(variant);
     }
-  }, [variants.length, options.length]); // Reinitialize if data changes
+  }, [visibleVariants.length, options.length]); // Reinitialize if data changes
 
   // Handle option selection with cascading
   const handleOptionSelect = (optionId: number, valueId: number) => {
@@ -206,7 +190,7 @@ export function VariantSelector({
       }
     }
 
-    return variants.some((v) => {
+    return visibleVariants.some((v) => {
       const hasTargetValue = v.optionValues.some((ov) => {
         const realOptionId = valueIdToOptionId.get(ov.productOptionValue.id);
         return (
@@ -278,7 +262,7 @@ export function VariantSelector({
                         ? "border-blue-600 bg-blue-50 dark:bg-blue-950 text-blue-700 dark:text-blue-300 ring-1 ring-blue-600"
                         : "border-input hover:border-zinc-400 hover:bg-accent",
                       !available &&
-                        "opacity-50 cursor-not-allowed bg-muted text-muted-foreground"
+                      "opacity-50 cursor-not-allowed bg-muted text-muted-foreground"
                     )}
                   >
                     {value.displayValue}

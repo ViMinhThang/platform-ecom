@@ -88,25 +88,31 @@ public class PaymentServiceImpl implements PaymentService {
      */
     @Transactional
     public void handlePaymentSuccess(String providerTransactionId) {
-        PaymentTransaction transaction = transactionRepository
-                .findByProviderTransactionId(providerTransactionId)
-                .orElseThrow(() -> new TransactionNotFoundException(providerTransactionId));
+        try {
+            PaymentTransaction transaction = transactionRepository
+                    .findByProviderTransactionId(providerTransactionId)
+                    .orElseThrow(() -> new TransactionNotFoundException(providerTransactionId));
 
-        if (transaction.getStatus() == PaymentStatus.SUCCEEDED) {
-            log.warn("Payment already processed: {}", providerTransactionId);
-            return;
+            if (transaction.getStatus() == PaymentStatus.SUCCEEDED) {
+                log.warn("Payment already processed: {}", providerTransactionId);
+                return;
+            }
+
+            transaction.setStatus(PaymentStatus.SUCCEEDED);
+            transaction.setCompletedAt(LocalDateTime.now());
+            transactionRepository.save(transaction);
+
+            // Update order group
+            OrderGroup group = transaction.getOrderGroup();
+            group.setPaymentStatus(PaymentStatus.SUCCEEDED);
+            group.updateOverallStatus();
+
+            log.info("Payment succeeded for order group: {}", group.getGroupNumber());
+        } catch (TransactionNotFoundException e) {
+            log.warn("Transaction not found for payment intent: {}. This may be a race condition.",
+                    providerTransactionId);
+            // Don't throw - the webhook might arrive before transaction is saved
         }
-
-        transaction.setStatus(PaymentStatus.SUCCEEDED);
-        transaction.setCompletedAt(LocalDateTime.now());
-        transactionRepository.save(transaction);
-
-        // Update order group
-        OrderGroup group = transaction.getOrderGroup();
-        group.setPaymentStatus(PaymentStatus.SUCCEEDED);
-        group.updateOverallStatus();
-
-        log.info("Payment succeeded for order group: {}", group.getGroupNumber());
     }
 
     /**

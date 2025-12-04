@@ -58,14 +58,14 @@ function FormCheckboxGroup<
           )}
           {description && <FormDescription>{description}</FormDescription>}
           <div className={`grid gap-4 ${gridCols[columns]}`}>
-            {options.map((option) => (
-              <div key={option.value} className='flex items-center space-x-2'>
+            {options.map((option, index) => (
+              <div key={option.value || `option-${index}`} className='flex items-center space-x-2'>
                 <FormControl>
                   <Checkbox
-                    id={`${name}-${option.value}`}
+                    id={`${name}-${option.value || index}`}
                     checked={field.value?.includes(option.value) || false}
                     onCheckedChange={(checked) => {
-                      const currentValues = field.value || [];
+                      const currentValues = (field.value || []).filter((v: string) => v != null); // Filter out null/undefined
                       if (checked) {
                         field.onChange([...currentValues, option.value]);
                       } else {
@@ -80,7 +80,7 @@ function FormCheckboxGroup<
                   />
                 </FormControl>
                 <label
-                  htmlFor={`${name}-${option.value}`}
+                  htmlFor={`${name}-${option.value || index}`}
                   className='text-sm leading-none font-medium peer-disabled:cursor-not-allowed peer-disabled:opacity-70'
                 >
                   {option.label}
@@ -90,14 +90,16 @@ function FormCheckboxGroup<
           </div>
           {showBadges && field.value && field.value.length > 0 && (
             <div className='mt-2 flex flex-wrap gap-2'>
-              {field.value.map((value: string) => {
-                const option = options.find((opt) => opt.value === value);
-                return (
-                  <Badge key={value} variant='secondary'>
-                    {option?.label || value}
-                  </Badge>
-                );
-              })}
+              {field.value
+                .filter((value: string) => value != null) // Filter out null/undefined
+                .map((value: string, index: number) => {
+                  const option = options.find((opt) => opt.value === value);
+                  return (
+                    <Badge key={value || `badge-${index}`} variant='secondary'>
+                      {option?.label || value}
+                    </Badge>
+                  );
+                })}
             </div>
           )}
           <FormMessage />

@@ -23,7 +23,7 @@ public class SellerProductController {
     private final ProductService productService;
     private final AuthContext authContext;
 
-    @GetMapping
+    @GetMapping()
     @RequireRole("ROLE_SELLER")
     public ResponseEntity<APIResponse<ProductResponse>> getSellerProducts(
             PaginationRequest paginationRequest,

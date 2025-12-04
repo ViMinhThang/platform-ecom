@@ -1,6 +1,5 @@
 package com.ecom.order.service.signature;
 
-import com.ecom.order.dto.RefundRequest;
 import com.ecom.order.dto.SubOrderDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -22,6 +21,4 @@ public interface SubOrderService {
     SubOrderDTO markAsDelivered(Long subOrderId, Long sellerId);
 
     void cancelSubOrder(Long subOrderId, Long userId, String reason);
-
-    void requestRefund(Long subOrderId, Long userId, RefundRequest request);
 }

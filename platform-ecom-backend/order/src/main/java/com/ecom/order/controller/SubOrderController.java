@@ -3,12 +3,10 @@ package com.ecom.order.controller;
 import com.ecom.common.aspect.RequireRole;
 import com.ecom.common.util.APIResponse;
 import com.ecom.common.util.ResponseBuilder;
-import com.ecom.order.dto.RefundRequest;
 import com.ecom.order.dto.SubOrderDTO;
 import com.ecom.order.service.signature.SubOrderService;
 
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -31,8 +29,6 @@ public class SubOrderController {
 
     /**
      * Get sub-order details
-     * Users can view their own sub-orders
-     * Sellers can view sub-orders assigned to them
      */
     @GetMapping("/{subOrderId}")
     @RequireRole("ROLE_USER")
@@ -125,8 +121,6 @@ public class SubOrderController {
 
     /**
      * Cancel sub-order
-     * Users can cancel before shipping
-     * Sellers can cancel anytime
      */
     @PostMapping("/{subOrderId}/cancel")
     @RequireRole("ROLE_USER")
@@ -142,25 +136,6 @@ public class SubOrderController {
         subOrderService.cancelSubOrder(subOrderId, userId, reason);
 
         return ResponseBuilder.success("Sub-order cancelled", null);
-    }
-
-    /**
-     * Request refund for sub-order
-     */
-    @PostMapping("/{subOrderId}/refund")
-    @RequireRole("ROLE_USER")
-    public ResponseEntity<APIResponse<Void>> requestRefund(
-            @PathVariable Long subOrderId,
-            @Valid @RequestBody RefundRequest request,
-            HttpServletRequest httpRequest) {
-
-        Long userId = extractUserId(httpRequest);
-
-        log.info("User {} requesting refund for sub-order {}", userId, subOrderId);
-
-        subOrderService.requestRefund(subOrderId, userId, request);
-
-        return ResponseBuilder.success("Refund requested", null);
     }
 
     /**

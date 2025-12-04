@@ -31,6 +31,11 @@ export interface UserProfile {
 
 // TypeScript interfaces matching backend DTOs
 
+// Extended ProductVariant for order display with variant name
+export interface OrderProductVariant extends ProductVariant {
+    variantName?: string;
+}
+
 // Order related types
 
 export interface OrderItem {
@@ -38,7 +43,7 @@ export interface OrderItem {
     quantity: number;
     orderedProductPrice: number;
     product: Product
-    productVariant?: ProductVariant;
+    productVariant?: OrderProductVariant;
 }
 
 export interface Order {

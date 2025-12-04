@@ -1,11 +1,8 @@
 "use client";
 
 import { useState, useEffect } from "react";
-
-import {
-  getProductImages,
-  ProductImage,
-} from "@/services/product-image-service"; // backend service
+import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
+import { fetchProductImages, ProductImage } from "@/lib/store/slices/productImageSlice";
 import Image from "next/image";
 import {
   Dialog,
@@ -13,7 +10,6 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { useSession } from "next-auth/react";
 import { ProductImageCard } from "../product-image-cart";
 
 interface VariantImagePickerProps {
@@ -28,28 +24,18 @@ export const VariantImagePicker: React.FC<VariantImagePickerProps> = ({
   onSelect,
 }) => {
   const [open, setOpen] = useState(false);
-  const [images, setImages] = useState<ProductImage[]>([]);
-  const [loading, setLoading] = useState(false);
-  const { data: token } = useSession();
+  const dispatch = useAppDispatch();
+  const { imagesByProductId, loading } = useAppSelector(
+    (state) => state.productImages
+  );
+
+  const images = imagesByProductId[productId] || [];
+
   useEffect(() => {
-    if (!open) return;
-
-    const fetchImages = async () => {
-      setLoading(true);
-      if (!token || !token.accessToken) return;
-      const accessToken = token.accessToken;
-      try {
-        const imgs = await getProductImages(productId, accessToken);
-        setImages(imgs);
-      } catch (err) {
-        console.error("Failed to fetch product images:", err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchImages();
-  }, [open, productId]);
+    if (open && !images.length) {
+      dispatch(fetchProductImages(productId));
+    }
+  }, [open, productId, dispatch, images.length]);
 
 
 

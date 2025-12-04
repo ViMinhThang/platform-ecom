@@ -6,12 +6,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.service.annotation.GetExchange;
+import org.springframework.web.service.annotation.HttpExchange;
 
 import java.math.BigDecimal;
 
 /**
  * Client for communicating with Product Service
  */
+@HttpExchange
 public interface ProductServiceClient {
 
     Logger log = LoggerFactory.getLogger(ProductServiceClient.class);

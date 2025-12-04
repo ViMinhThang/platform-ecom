@@ -37,9 +37,9 @@ export function ProfileLayout({ children }: ProfileLayoutProps) {
 
     return (
         <div className="container max-w-5xl py-10 mx-auto ">
-            <div className="flex flex-col space-y-8 lg:flex-row lg:space-x-12 lg:space-y-0">
-                <aside className="-mx-4 lg:w-1/4">
-                    <nav className="flex space-x-2 overflow-x-auto px-4 lg:flex-col lg:space-x-0 lg:space-y-1 lg:overflow-visible bg-white rounded-lg p-4 mr-4">
+            <div className="flex flex-col space-y-8 lg:flex-row lg:space-y-0 gap-8">
+                <aside className="lg:w-1/4">
+                    <nav className="flex space-x-2 overflow-x-auto px-4 lg:flex-col lg:space-x-0 lg:space-y-1 lg:overflow-visible bg-white dark:bg-zinc-900 rounded-lg p-4 border shadow-sm">
                         {sidebarItems.map((item) => {
                             // Determine if this item is active
                             // For "Profile" (default), check if tab is missing or 'profile'

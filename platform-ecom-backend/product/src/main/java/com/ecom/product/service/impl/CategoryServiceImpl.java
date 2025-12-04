@@ -127,7 +127,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     private void deleteOldImageIfExists(Category category) {
-        if (category.getImageUrl() != null) {
+        if (!category.getImageUrl().isEmpty()) {
             fileStorageService.deleteFile(category.getImageUrl());
         }
     }

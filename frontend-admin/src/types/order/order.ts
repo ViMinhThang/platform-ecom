@@ -1,11 +1,19 @@
 export interface Address {
-    id: number;
+    addressId: number;
     street: string;
+    buildingName?: string;
     city: string;
     state: string;
     country: string;
-    zipCode: string;
-    isDefault: boolean;
+    pincode: string;
+    // GHN API fields
+    provinceId?: number;
+    provinceName?: string;
+    districtId?: number;
+    districtName?: string;
+    wardCode?: string;
+    wardName?: string;
+    isDefault?: boolean;
 }
 
 export interface SubOrderItem {
@@ -14,19 +22,9 @@ export interface SubOrderItem {
     productName: string;
     variantId: number;
     variantName: string;
-    variantSku: string;
     quantity: number;
     unitPrice: number;
     totalPrice: number;
-}
-
-export interface SubOrderStatusHistory {
-    id: number;
-    oldStatus: string;
-    newStatus: string;
-    changedBy: number;
-    notes: string;
-    changedAt: string;
 }
 
 export interface AdminSubOrder {
@@ -52,7 +50,6 @@ export interface AdminSubOrder {
     deliveredAt?: string;
     cancelledAt?: string;
     items: SubOrderItem[];
-    statusHistory: SubOrderStatusHistory[];
 }
 
 export interface AdminOrderGroup {
@@ -98,3 +95,4 @@ export interface TrackingUpdateRequest {
     estimatedDelivery?: string;
     fulfillmentStatus?: string;
 }
+

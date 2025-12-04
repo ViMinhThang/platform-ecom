@@ -49,7 +49,4 @@ public class AdminSubOrderDTO {
 
     // Items
     private List<SubOrderItemDTO> items;
-
-    // Status history
-    private List<SubOrderStatusHistoryDTO> statusHistory;
 }

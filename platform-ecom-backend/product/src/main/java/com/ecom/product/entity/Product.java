@@ -6,30 +6,31 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Type;
-import org.hibernate.annotations.Where;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @Entity
 @Table(name = "products", indexes = {
-    @Index(name = "idx_product_status", columnList = "status"),
-    @Index(name = "idx_product_user_id", columnList = "user_id"),
-    @Index(name = "idx_product_category_id", columnList = "category_id"),
-    @Index(name = "idx_product_slug", columnList = "slug"),
-    @Index(name = "idx_product_status_user", columnList = "status,user_id"),
-    @Index(name = "idx_product_deleted", columnList = "deleted")
+        @Index(name = "idx_product_status", columnList = "status"),
+        @Index(name = "idx_product_user_id", columnList = "user_id"),
+        @Index(name = "idx_product_category_id", columnList = "category_id"),
+        @Index(name = "idx_product_slug", columnList = "slug"),
+        @Index(name = "idx_product_status_user", columnList = "status,user_id"),
+        @Index(name = "idx_product_deleted", columnList = "deleted")
 })
 @SQLDelete(sql = "UPDATE products SET deleted = true WHERE id = ?")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@ToString(exclude = { "variants", "images", "options"})
+@ToString
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -73,18 +74,19 @@ public class Product {
     private Map<String, Object> metadata = new HashMap<>();
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ProductVariant> variants = new ArrayList<>();
+    @EqualsAndHashCode.Exclude
+    @Builder.Default
+    private Set<ProductVariant> variants = new HashSet<>();
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ProductImage> images = new ArrayList<>();
+    @EqualsAndHashCode.Exclude
+    @Builder.Default
+    private Set<ProductImage> images = new HashSet<>();
 
-    @OneToMany(
-            mappedBy = "product",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true
-    )
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    @EqualsAndHashCode.Exclude
+    @Builder.Default
     private List<ProductOption> options = new ArrayList<>();
-
 
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
@@ -108,8 +110,10 @@ public class Product {
     protected void onCreate() {
         createdAt = LocalDateTime.now();
         updatedAt = LocalDateTime.now();
-        if (slug == null) slug = name.toLowerCase().replaceAll("\\s+", "-");
+        if (slug == null)
+            slug = name.toLowerCase().replaceAll("\\s+", "-");
     }
+
     public void addImage(ProductImage image) {
         images.add(image);
         image.setProduct(this);
@@ -119,6 +123,7 @@ public class Product {
         images.remove(image);
         image.setProduct(null);
     }
+
     @PreUpdate
     protected void onUpdate() {
         updatedAt = LocalDateTime.now();

@@ -2,7 +2,7 @@ import apiClient from '@/lib/api-client';
 import { CartDTO, AddToCartRequest } from '@/types/cart.types';
 import { APIResponse } from '@/types/common.types';
 
-const CART_API = '/api/v1/cart';
+const CART_API = 'http://localhost:8080/api/v1/cart';
 
 export const cartService = {
     // Get current user's cart

@@ -52,15 +52,18 @@ function transformUserToFormValues(
   user: User,
   availableRoles: role[]
 ): UserFormValues {
+  // Map user roles to role IDs, using user's roles if availableRoles not loaded yet
+  const roleIds = user.roles
+    ?.filter((r) => r.roleId != null)
+    .map((r) => String(r.roleId)) || [];
+
   return {
     userId: user.userId,
     username: user.username,
     email: user.email,
     imageUrl: user.imageUrl ?? "",
-    isActive: String(user.isActive),
-    roles: availableRoles
-      .filter((role) => user.roles.some((r) => r.roleName === role.roleName))
-      .map((role) => String(role.roleId)),
+    isActive: user.isActive === true ? "true" : "false",
+    roles: roleIds, // Use user's role IDs directly
     addresses: user.addresses || [],
   };
 }
@@ -74,7 +77,8 @@ function transformFormValuesToUserData(
 ) {
   return {
     ...formValues,
-    roles: availableRoles
+    isActive: formValues.isActive === "true", // Convert string to boolean
+    roles: (availableRoles || [])
       .filter((role) => formValues.roles.includes(String(role.roleId)))
       .map((role) => ({ roleId: role.roleId, roleName: role.roleName })),
   };
@@ -241,7 +245,7 @@ export const UserDialog: React.FC<UserDialogProps> = ({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-5xl max-h-[90vh] overflow-hidden">
+      <DialogContent className="min-w-5xl max-h-[90vh] overflow-hidden">
         <DialogHeader>
           <DialogTitle>{dialogTitle}</DialogTitle>
           <DialogDescription>{dialogDescription}</DialogDescription>

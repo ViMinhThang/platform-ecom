@@ -120,7 +120,7 @@ export function isAxiosError(error: unknown): error is AxiosError {
 export function unwrapResponse<T>(axiosResponse: { data: APIResponse<T> }): T {
     const apiResponse = axiosResponse.data;
 
-    if (!apiResponse.status) {
+    if (!apiResponse.success) {
         throw new Error(apiResponse.message || 'Operation failed');
     }
 

@@ -10,6 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/v1/sellers/products/{productId}/images")
 @RequiredArgsConstructor
@@ -40,5 +42,12 @@ public class SellerProductImageController {
             @PathVariable Long imageId) {
         productImageService.deleteProductImage(productId, imageId);
         return ResponseBuilder.deleted("Image deleted successfully", null);
+    }
+    @GetMapping
+    @RequireRole("ROLE_SELLER")
+    public ResponseEntity<APIResponse<List<ProductImageDTO>>> getProductImages(
+            @PathVariable Long productId) {
+        List<ProductImageDTO> images = productImageService.getProductImages(productId);
+        return ResponseBuilder.success("Images retrieved successfully", images);
     }
 }

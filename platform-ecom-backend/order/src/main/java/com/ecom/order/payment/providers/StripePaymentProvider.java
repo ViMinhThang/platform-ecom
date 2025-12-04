@@ -26,10 +26,10 @@ import java.math.BigDecimal;
 @Service
 public class StripePaymentProvider implements PaymentProvider {
 
-    @Value("${stripe.api-key:123}")
+    @Value("${stripe.secret.key:123}")
     private String apiKey;
 
-    @Value("${stripe.webhook-secret:123}")
+    @Value("${stripe.secret.webhook:123}")
     private String webhookSecret;
 
     @Value("${stripe.enabled:true}")
@@ -94,38 +94,6 @@ public class StripePaymentProvider implements PaymentProvider {
         } catch (StripeException e) {
             log.error("Failed to capture payment", e);
             throw new PaymentException("Failed to capture payment: " + e.getMessage());
-        }
-    }
-
-    @Override
-    public RefundResult refundPayment(String transactionId, BigDecimal amount) {
-        try {
-            // Convert amount to cents
-            long amountInCents = amount.multiply(BigDecimal.valueOf(100)).longValue();
-
-            RefundCreateParams params = RefundCreateParams.builder()
-                    .setPaymentIntent(transactionId)
-                    .setAmount(amountInCents)
-                    .build();
-
-            Refund refund = Refund.create(params);
-
-            log.info("Created Stripe refund: {} for payment: {}", refund.getId(), transactionId);
-
-            return RefundResult.builder()
-                    .refundId(refund.getId())
-                    .status(refund.getStatus())
-                    .amount(BigDecimal.valueOf(refund.getAmount()).divide(BigDecimal.valueOf(100)))
-                    .currency(refund.getCurrency())
-                    .success("succeeded".equals(refund.getStatus()))
-                    .build();
-
-        } catch (StripeException e) {
-            log.error("Failed to create refund", e);
-            return RefundResult.builder()
-                    .success(false)
-                    .errorMessage(e.getMessage())
-                    .build();
         }
     }
 
@@ -203,4 +171,3 @@ public class StripePaymentProvider implements PaymentProvider {
                 .build();
     }
 }
-
