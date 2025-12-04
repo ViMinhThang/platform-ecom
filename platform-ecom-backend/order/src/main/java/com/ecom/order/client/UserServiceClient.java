@@ -20,7 +20,7 @@ public interface UserServiceClient {
     @GetExchange("/users/{userId}")
     APIResponse<UserDTO> getUser(@PathVariable("userId") Long userId);
 
-    @GetExchange("/admin/addresses/internal/addresses/{addressId}")
+    @GetExchange("/addresses/{addressId}")
     APIResponse<AddressDTO> getAddress(@PathVariable("addressId") Long addressId);
 
     default UserDTO getUserSafe(Long userId) {
