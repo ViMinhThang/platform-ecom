@@ -30,7 +30,7 @@ spring:
     jwtCookieName: "ecom"
 
 server:
-  port: 8085
+  port: 8088
 
 management:
   endpoints:
