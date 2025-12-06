@@ -2,37 +2,7 @@ import apiClient from "../api-client";
 import { API_ENDPOINTS } from "@/config/constants";
 
 // ==================== Types ====================
-
-export interface InventoryDTO {
-    id: number;
-    productId: number;
-    variantId: number;
-    sku: string | null;
-    availableStock: number;
-    reservedStock: number;
-    totalStock: number;
-    lowStockThreshold: number;
-    reorderPoint: number;
-    reorderQuantity: number;
-    trackInventory: boolean;
-    isLowStock: boolean;
-    createdAt: string;
-    updatedAt: string;
-}
-
-export interface StockAdjustmentRequest {
-    adjustment: number;
-    reason?: string;
-    referenceType?: string;
-    referenceId?: string;
-}
-
-export interface InventorySettingsRequest {
-    lowStockThreshold?: number;
-    reorderPoint?: number;
-    reorderQuantity?: number;
-    trackInventory?: boolean;
-}
+import { InventoryDTO, InventorySettingsRequest, StockAdjustmentRequest } from "@/types/inventory/inventory";
 
 export interface InventoryTransactionDTO {
     id: number;

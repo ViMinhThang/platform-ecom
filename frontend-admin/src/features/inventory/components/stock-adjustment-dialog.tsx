@@ -3,7 +3,6 @@
 import { useState } from 'react';
 import { useAppDispatch } from '@/lib/store/hooks';
 import { adjustStock } from '@/lib/store/slices/inventorySlice';
-import { InventoryDTO } from '@/lib/services/inventory-service';
 import {
     Dialog,
     DialogContent,
@@ -18,6 +17,7 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { toast } from 'sonner';
 import { Loader2, Plus, Minus } from 'lucide-react';
+import { InventoryDTO } from '@/types/inventory/inventory';
 
 interface StockAdjustmentDialogProps {
     inventory: InventoryDTO | null;

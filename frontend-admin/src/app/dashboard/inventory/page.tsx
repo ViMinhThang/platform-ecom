@@ -13,7 +13,6 @@ import {
     fetchLowStockItems,
     clearCurrentInventory,
 } from '@/lib/store/slices/inventorySlice';
-import { InventoryDTO } from '@/lib/services/inventory-service';
 
 import { columns } from '@/features/inventory/components/inventory-table/columns';
 import { InventoryTable } from '@/features/inventory/components/inventory-table/inventory-table';
@@ -28,6 +27,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/components/ui/select';
+import { InventoryDTO } from '@/types/inventory/inventory';
 
 export default function InventoryPage() {
     const dispatch = useAppDispatch();

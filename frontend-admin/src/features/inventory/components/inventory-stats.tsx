@@ -1,7 +1,7 @@
 'use client';
 
-import { InventoryDTO } from '@/lib/services/inventory-service';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { InventoryDTO } from '@/types/inventory/inventory';
 import { Package, AlertTriangle, Clock, BarChart3 } from 'lucide-react';
 
 interface InventoryStatsProps {

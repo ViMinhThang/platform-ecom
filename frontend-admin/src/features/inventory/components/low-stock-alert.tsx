@@ -1,10 +1,10 @@
 'use client';
 
-import { InventoryDTO } from '@/lib/services/inventory-service';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { AlertTriangle, Package, TrendingDown, Edit } from 'lucide-react';
+import { InventoryDTO } from '@/types/inventory/inventory';
 
 interface LowStockAlertProps {
     items: InventoryDTO[];
