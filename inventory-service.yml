@@ -21,9 +21,8 @@ spring:
           destination: stock-updated-topic
         lowStockAlert-out-0:
           destination: low-stock-alert-topic
-      kafka:
-        binder:
-          brokers: ${KAFKA_BROKERS:localhost:9092}
+  kafka:
+    bootstrap-servers: localhost:9093
   app:
     jwtSecret: "qweqweqweqweqweqw123123131231231cfcsvcxvwdfqsd"
     jwtExpirationMs: 600000
