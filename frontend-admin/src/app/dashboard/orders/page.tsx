@@ -47,7 +47,7 @@ export default function OrdersPage() {
     return (
         <PageContainer scrollable>
             <div className="space-y-4">
-                <Breadcrumbs items={breadcrumbItems} />
+                <Breadcrumbs />
 
                 <div className="flex items-start justify-between">
                     <Heading

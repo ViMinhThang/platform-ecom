@@ -159,6 +159,29 @@ public class GatewayConfig {
                         .uri("lb://product-service"))
 
                 // ============================================================
+                // INVENTORY - /api/v1/inventory
+                // ============================================================
+
+                // Public inventory (stock check)
+                .route("inventory-public", r -> r
+                        .path("/api/v1/inventory", "/api/v1/inventory/**")
+                        .uri("lb://inventory-service"))
+
+                // Seller inventory management
+                .route("seller-inventory", r -> r
+                        .path("/api/v1/sellers/inventory", "/api/v1/sellers/inventory/**")
+                        .filters(f -> f
+                                .filter(authFilter))
+                        .uri("lb://inventory-service"))
+
+                // Admin inventory management
+                .route("admin-inventory", r -> r
+                        .path("/api/v1/admin/inventory/**")
+                        .filters(f -> f
+                                .filter(authFilter))
+                        .uri("lb://inventory-service"))
+
+                // ============================================================
                 // SHOPPING CART - /api/v1/cart
                 // ============================================================
 

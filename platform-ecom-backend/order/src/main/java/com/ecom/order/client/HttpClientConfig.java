@@ -27,4 +27,10 @@ public class HttpClientConfig {
                 "http://user-service/api/v1/internal/user-service", UserServiceClient.class);
     }
 
+    @Bean
+    public InventoryServiceClient inventoryServiceClient(RestClient.Builder restClientBuilder) {
+        return RestClientFactory.createClient(restClientBuilder,
+                "http://inventory-service/internal/inventory", InventoryServiceClient.class);
+    }
+
 }

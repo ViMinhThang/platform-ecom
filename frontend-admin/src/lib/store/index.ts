@@ -8,6 +8,7 @@ import userReducer from './slices/userSlice';
 import kanbanReducer from './slices/kanbanSlice';
 import uiReducer from './slices/uiSlice';
 import orderReducer from './slices/orderSlice';
+import inventoryReducer from './slices/inventorySlice';
 
 export const store = configureStore({
     reducer: {
@@ -20,8 +21,10 @@ export const store = configureStore({
         kanban: kanbanReducer,
         ui: uiReducer,
         orders: orderReducer,
+        inventory: inventoryReducer,
     },
 });
 
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
+

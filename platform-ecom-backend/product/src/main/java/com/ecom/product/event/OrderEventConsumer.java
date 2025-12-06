@@ -16,7 +16,8 @@ import java.util.function.Consumer;
 
 /**
  * Kafka consumer for order events.
- * Updates product stock and sales counts when orders are created.
+ * Updates product sales counts when orders are created.
+ * NOTE: Stock is now managed by inventory-service, this only updates totalSold.
  */
 @Slf4j
 @Configuration
@@ -28,7 +29,8 @@ public class OrderEventConsumer {
 
     /**
      * Consumer bean for order created events.
-     * Updates variant stock (-quantity) and product totalSold (+quantity).
+     * Updates product and variant totalSold counts.
+     * Stock updates are handled by inventory-service via StockUpdatedEvent.
      */
     @Bean
     public Consumer<OrderCreatedEvent> orderCreated() {
@@ -41,24 +43,24 @@ public class OrderEventConsumer {
                 event.getOrderId(), event.getItems().size());
 
         for (OrderItemEvent item : event.getItems()) {
-            updateStockAndSales(item);
+            updateSalesCount(item);
         }
 
         log.info("Processed order {} - updated {} items",
                 event.getOrderNumber(), event.getItems().size());
     }
 
-    private void updateStockAndSales(OrderItemEvent item) {
-        // Update variant stock
+    /**
+     * Updates only the totalSold counts.
+     * Stock management has been moved to inventory-service.
+     */
+    private void updateSalesCount(OrderItemEvent item) {
+        // Update variant totalSold only (stock is managed by inventory service)
         if (item.getVariantId() != null) {
             variantRepository.findById(item.getVariantId()).ifPresent(variant -> {
-                int newStock = variant.getStock() - item.getQuantity();
-                variant.setStock(Math.max(0, newStock)); // Don't go negative
                 variant.setTotalSold(variant.getTotalSold() + item.getQuantity());
                 variantRepository.save(variant);
-
-                log.debug("Updated variant {}: stock={}, totalSold={}",
-                        variant.getId(), variant.getStock(), variant.getTotalSold());
+                log.debug("Updated variant {} totalSold={}", variant.getId(), variant.getTotalSold());
             });
         }
 
@@ -66,9 +68,7 @@ public class OrderEventConsumer {
         productRepository.findById(item.getProductId()).ifPresent(product -> {
             product.setTotalSold(product.getTotalSold() + item.getQuantity());
             productRepository.save(product);
-
-            log.debug("Updated product {}: totalSold={}",
-                    product.getId(), product.getTotalSold());
+            log.debug("Updated product {} totalSold={}", product.getId(), product.getTotalSold());
         });
     }
 }

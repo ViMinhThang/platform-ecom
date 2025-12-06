@@ -17,6 +17,11 @@ export const API_ENDPOINTS = {
     CATEGORIES_PUBLIC: `${env.apiBaseUrl}/api/v1/categories`,
     CATEGORIES_ADMIN: `${env.apiBaseUrl}/api/v1/admin/categories`,
 
+    // Inventory
+    INVENTORY_ADMIN: `${env.apiBaseUrl}/api/v1/admin/inventory`,
+    INVENTORY_SELLER: `${env.apiBaseUrl}/api/v1/sellers/inventory`,
+    INVENTORY_PUBLIC: `${env.apiBaseUrl}/api/v1/inventory`,
+
     // Users & Auth
     USERS: `${env.apiBaseUrl}/api/v1/users`,
     ADMIN_USERS: `${env.apiBaseUrl}/api/v1/admin/users`,

@@ -10,9 +10,12 @@ spring:
       max-request-size: 10MB
   cloud:
     function:
-      definition: orderCreated
+      definition: orderCreated;stockUpdated
     stream:
       bindings:
         orderCreated-in-0:
           destination: order-created-topic
+          group: product-service
+        stockUpdated-in-0:
+          destination: stock-updated-topic
           group: product-service

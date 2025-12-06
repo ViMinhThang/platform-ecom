@@ -4,6 +4,7 @@ import com.ecom.common.exception.InsufficientStockException;
 import com.ecom.common.exception.OrderGroupNotFoundException;
 import com.ecom.common.exception.PaymentException;
 import com.ecom.common.exception.UnauthorizedException;
+import com.ecom.order.client.InventoryServiceClient;
 import com.ecom.order.client.ProductServiceClient;
 import com.ecom.order.client.UserServiceClient;
 import com.ecom.order.dto.*;
@@ -52,6 +53,7 @@ public class OrderGroupServiceImpl implements OrderGroupService {
     private final PaymentTransactionRepository transactionRepository;
     private final PaymentService paymentService;
     private final ProductServiceClient productServiceClient;
+    private final InventoryServiceClient inventoryServiceClient;
     private final UserServiceClient userServiceClient;
     private final ModelMapper modelMapper;
     private final AdminOrderMapper adminOrderMapper;
@@ -232,11 +234,24 @@ public class OrderGroupServiceImpl implements OrderGroupService {
     }
 
     private void validateStockAvailability(CartItem item, ProductDetails details) {
-        boolean inStock = productServiceClient.validateStock(
-                item.getProductId(), item.getVariantId(), item.getQuantity());
+        try {
+            boolean inStock = inventoryServiceClient.checkStock(
+                    item.getVariantId(), item.getQuantity());
 
-        if (!inStock) {
-            throw new InsufficientStockException("Product " + details.getName() + " is out of stock");
+            if (!inStock) {
+                throw new InsufficientStockException(
+                        "Product " + details.getName() + " is out of stock or has insufficient quantity");
+            }
+        } catch (InsufficientStockException e) {
+            throw e;
+        } catch (Exception e) {
+            log.warn("Inventory service unavailable, falling back to product service for stock check", e);
+            // Fallback to product service if inventory service is unavailable
+            boolean inStock = productServiceClient.validateStock(
+                    item.getProductId(), item.getVariantId(), item.getQuantity());
+            if (!inStock) {
+                throw new InsufficientStockException("Product " + details.getName() + " is out of stock");
+            }
         }
     }
 
