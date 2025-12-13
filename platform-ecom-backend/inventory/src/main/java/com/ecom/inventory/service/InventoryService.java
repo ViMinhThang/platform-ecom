@@ -96,4 +96,9 @@ public interface InventoryService {
      * Create inventory entry for a variant
      */
     InventoryDTO createInventory(Long productId, Long variantId, String sku, int initialStock);
+
+    /**
+     * Delete inventory entry for a variant
+     */
+    void deleteInventory(Long variantId);
 }

@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.math.BigDecimal;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/products")
@@ -89,7 +90,7 @@ public class PublicProductController {
     }
 
     @GetMapping("/categories/{categorySlug}/top-sellers")
-    public ResponseEntity<APIResponse<TopSellerDTO>>> getTopSellers(
+    public ResponseEntity<APIResponse<List<TopSellerDTO>>> getTopSellers(
             @PathVariable String categorySlug,
             @RequestParam(defaultValue = "10") int limit) {
         var topSellers = productService.getTopSellersByCategory(categorySlug, limit);
@@ -98,7 +99,9 @@ public class PublicProductController {
 
     @GetMapping("/slug/{slug}")
     public ResponseEntity<APIResponse<ProductDetailDTO>> getProductBySlug(@PathVariable String slug) {
-        ProductDetailDTO product = productService.getProductBySlug(slug);
+        // Decode URL-encoded slug (handles cases where slug is stored encoded)
+        String decodedSlug = java.net.URLDecoder.decode(slug, java.nio.charset.StandardCharsets.UTF_8);
+        ProductDetailDTO product = productService.getProductBySlug(decodedSlug);
         return ResponseBuilder.success("Product retrieved successfully", product);
     }
 }

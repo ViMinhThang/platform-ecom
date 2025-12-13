@@ -20,4 +20,6 @@ public interface InventoryTransactionRepository extends JpaRepository<InventoryT
     List<InventoryTransaction> findByReferenceTypeAndReferenceId(String referenceType, String referenceId);
 
     List<InventoryTransaction> findByCreatedAtBetween(LocalDateTime start, LocalDateTime end);
+
+    void deleteByInventoryId(Long inventoryId);
 }

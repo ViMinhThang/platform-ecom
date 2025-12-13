@@ -1,11 +1,7 @@
+import inventoryService, { InventoryTransactionDTO } from '@/lib/services/inventory-service';
+import { InventoryDTO, InventorySettingsRequest, StockAdjustmentRequest } from '@/types/inventory/inventory';
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
-import inventoryService, {
-    InventoryDTO,
-    StockAdjustmentRequest,
-    InventorySettingsRequest,
-    InventoryTransactionDTO,
-    PaginatedResponse,
-} from '@/lib/services/inventory-service';
+
 
 interface InventoryState {
     items: InventoryDTO[];
@@ -151,6 +147,18 @@ export const createInventory = createAsyncThunk(
     }
 );
 
+export const deleteInventory = createAsyncThunk(
+    'inventory/delete',
+    async (variantId: number, { rejectWithValue }) => {
+        try {
+            await inventoryService.delete(variantId);
+            return variantId;
+        } catch (error: any) {
+            return rejectWithValue(error.response?.data?.message || 'Failed to delete inventory');
+        }
+    }
+);
+
 // ==================== Slice ====================
 
 const inventorySlice = createSlice({
@@ -278,6 +286,23 @@ const inventorySlice = createSlice({
         builder.addCase(createInventory.fulfilled, (state, action) => {
             state.items.unshift(action.payload);
             state.pagination.totalElements += 1;
+        });
+
+        // Delete Inventory
+        builder.addCase(deleteInventory.pending, (state) => {
+            state.loading = true;
+            state.error = null;
+        });
+        builder.addCase(deleteInventory.fulfilled, (state, action) => {
+            state.loading = false;
+            const variantId = action.payload;
+            state.items = state.items.filter((i) => i.variantId !== variantId);
+            state.lowStockItems = state.lowStockItems.filter((i) => i.variantId !== variantId);
+            state.pagination.totalElements = Math.max(0, state.pagination.totalElements - 1);
+        });
+        builder.addCase(deleteInventory.rejected, (state, action) => {
+            state.loading = false;
+            state.error = action.payload as string;
         });
     },
 });

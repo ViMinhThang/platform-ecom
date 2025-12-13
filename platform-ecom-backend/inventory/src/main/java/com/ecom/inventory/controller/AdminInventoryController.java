@@ -112,6 +112,15 @@ public class AdminInventoryController {
             @RequestParam(defaultValue = "0") int initialStock) {
 
         InventoryDTO inventory = inventoryService.createInventory(productId, variantId, sku, initialStock);
-        return ResponseBuilder.created("Inventory created successfully", inventory);
+        return ResponseBuilder.createdWithMessage("Inventory created successfully", inventory);
+    }
+
+    /**
+     * Delete inventory for a variant
+     */
+    @DeleteMapping("/{variantId}")
+    public ResponseEntity<APIResponse<Void>> deleteInventory(@PathVariable Long variantId) {
+        inventoryService.deleteInventory(variantId);
+        return ResponseBuilder.noContent();
     }
 }

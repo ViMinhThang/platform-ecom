@@ -42,15 +42,15 @@ const THROTTLE_MS = 50;
 
 interface UseDataTableProps<TData>
   extends Omit<
-      TableOptions<TData>,
-      | 'state'
-      | 'pageCount'
-      | 'getCoreRowModel'
-      | 'manualFiltering'
-      | 'manualPagination'
-      | 'manualSorting'
-    >,
-    Required<Pick<TableOptions<TData>, 'pageCount'>> {
+    TableOptions<TData>,
+    | 'state'
+    | 'pageCount'
+    | 'getCoreRowModel'
+    | 'manualFiltering'
+    | 'manualPagination'
+    | 'manualSorting'
+  >,
+  Required<Pick<TableOptions<TData>, 'pageCount'>> {
   initialState?: Omit<Partial<TableState>, 'sorting'> & {
     sorting?: ExtendedColumnSort<TData>[];
   };
@@ -282,7 +282,6 @@ export function useDataTable<TData>(props: UseDataTableProps<TData>) {
     onColumnVisibilityChange: setColumnVisibility,
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getFacetedRowModel: getFacetedRowModel(),
     getFacetedUniqueValues: getFacetedUniqueValues(),
@@ -294,3 +293,4 @@ export function useDataTable<TData>(props: UseDataTableProps<TData>) {
 
   return { table, shallow, debounceMs, throttleMs };
 }
+

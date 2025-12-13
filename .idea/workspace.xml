@@ -5,20 +5,53 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c48beeac-7758-42e4-81dd-f068fbcd38be" name="Changes" comment="update spring cloud stream dependency">
+      <change afterPath="$PROJECT_DIR$/platform-ecom-backend/inventory/.env" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/logs/order-service.log" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logs/order-service.log.2025-12-02.0.gz" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logs/order-service.log.2025-12-02.1.gz" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logs/order-service.log.2025-12-03.0.gz" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logs/product-service.log" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logs/product-service.log.2025-12-02.0.gz" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logs/product-service.log.2025-12-03.0.gz" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logs/user-service.log" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logs/user-service.log.2025-12-02.0.gz" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logs/user-service.log.2025-12-03.0.gz" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/order/src/main/java/com/ecom/order/client/UserServiceClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/order/src/main/java/com/ecom/order/client/UserServiceClient.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/user/src/main/java/com/ecom/user/controller/admin/InternalController.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/user/src/main/java/com/ecom/user/controller/admin/InternalController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-admin/src/app/dashboard/orders/[orderId]/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-admin/src/app/dashboard/orders/[orderId]/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-admin/src/components/layout/page-container.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-admin/src/components/layout/page-container.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-admin/src/features/inventory/components/inventory-listing-client.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-admin/src/features/inventory/components/inventory-listing-client.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-admin/src/features/inventory/components/inventory-table/columns.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-admin/src/features/inventory/components/inventory-table/inventory-table.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-admin/src/features/inventory/components/inventory-tables/columns.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-admin/src/features/inventory/components/inventory-tables/columns.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-admin/src/features/orders/components/order-tables/order-table.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-admin/src/features/orders/components/order-tables/order-table.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-admin/src/hooks/use-data-table.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-admin/src/hooks/use-data-table.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-admin/src/lib/services/inventory-service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-admin/src/lib/services/inventory-service.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-admin/src/lib/store/slices/inventorySlice.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-admin/src/lib/store/slices/inventorySlice.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-admin/src/types/order/order.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-admin/src/types/order/order.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-client/app/category/[slug]/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/app/category/[slug]/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-client/app/products/[id]/page.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-client/app/products/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/app/products/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-client/components/ProductCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/ProductCard.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-client/components/VariantSelector.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/VariantSelector.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-client/components/category/SellerCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/category/SellerCard.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-client/components/category/SellerGrid.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/category/SellerGrid.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-client/lib/utils/imageUrl.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/lib/utils/imageUrl.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/logs/order-service.log" beforeDir="false" afterPath="$PROJECT_DIR$/logs/order-service.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/logs/user-service.log" beforeDir="false" afterPath="$PROJECT_DIR$/logs/user-service.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/inventory/inventory-service-config.yml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/inventory/src/main/java/com/ecom/inventory/InventoryApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/inventory/src/main/java/com/ecom/inventory/InventoryApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/inventory/src/main/java/com/ecom/inventory/controller/AdminInventoryController.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/inventory/src/main/java/com/ecom/inventory/controller/AdminInventoryController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/inventory/src/main/java/com/ecom/inventory/event/InventoryEventPublisher.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/inventory/src/main/java/com/ecom/inventory/event/InventoryEventPublisher.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/inventory/src/main/java/com/ecom/inventory/repository/InventoryTransactionRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/inventory/src/main/java/com/ecom/inventory/repository/InventoryTransactionRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/inventory/src/main/java/com/ecom/inventory/repository/StockReservationRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/inventory/src/main/java/com/ecom/inventory/repository/StockReservationRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/inventory/src/main/java/com/ecom/inventory/service/InventoryService.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/inventory/src/main/java/com/ecom/inventory/service/InventoryService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/inventory/src/main/java/com/ecom/inventory/service/impl/InventoryServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/inventory/src/main/java/com/ecom/inventory/service/impl/InventoryServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/inventory/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/inventory/src/main/resources/application.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/order/src/main/java/com/ecom/order/payment/providers/StripePaymentProvider.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/order/src/main/java/com/ecom/order/payment/providers/StripePaymentProvider.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/order/src/main/java/com/ecom/order/service/impl/PaymentServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/order/src/main/java/com/ecom/order/service/impl/PaymentServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/order/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/order/src/main/resources/application.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/client/HttpClientConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/client/HttpClientConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/controller/PublicProductController.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/controller/PublicProductController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/dto/ProductRowDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/dto/ProductRowDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/entity/Product.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/entity/Product.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/mapper/ProductMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/mapper/ProductMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/service/impl/ProductOptionServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/service/impl/ProductOptionServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/resources/application.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -57,6 +90,13 @@
     &quot;accountId&quot;: &quot;bad502e8-e400-4f57-8bb0-9f8fba22be71&quot;
   }
 }</component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="mavenHomeTypeForPersistence" value="WRAPPER" />
+      </MavenGeneralSettings>
+    </option>
+  </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 1
 }</component>
@@ -67,11 +107,13 @@
   </component>
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
+    &quot;Application.Unnamed.executor&quot;: &quot;Run&quot;,
     &quot;Application.auth-service.executor&quot;: &quot;Run&quot;,
     &quot;Application.bff-service.executor&quot;: &quot;Run&quot;,
     &quot;Application.config-server.executor&quot;: &quot;Run&quot;,
     &quot;Application.eureka.executor&quot;: &quot;Run&quot;,
     &quot;Application.gateway.executor&quot;: &quot;Run&quot;,
+    &quot;Application.inventory-service.executor&quot;: &quot;Run&quot;,
     &quot;Application.notificaiton-service.executor&quot;: &quot;Run&quot;,
     &quot;Application.notification-service.executor&quot;: &quot;Run&quot;,
     &quot;Application.order-service.executor&quot;: &quot;Run&quot;,
@@ -129,10 +171,9 @@
             <map>
               <entry key="config-server" value="STOPPED" />
               <entry key="gateway" value="STOPPED" />
-              <entry key="notification-service" value="STOPPED" />
+              <entry key="inventory-service" value="STOPPED" />
               <entry key="order-service" value="STOPPED" />
               <entry key="product-service" value="STOPPED" />
-              <entry key="review-service" value="STOPPED" />
               <entry key="user-service" value="STOPPED" />
             </map>
           </value>
@@ -151,6 +192,18 @@
     <configuration name="gateway" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="com.ecom.gateway.GatewayApplication" />
       <module name="gateway" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="inventory-service" type="Application" factoryName="Application">
+      <option name="ALTERNATIVE_JRE_PATH" value="25" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
+      <option name="envFilePaths">
+        <option value="$PROJECT_DIR$/platform-ecom-backend/inventory/.env" />
+      </option>
+      <option name="MAIN_CLASS_NAME" value="com.ecom.inventory.InventoryApplication" />
+      <module name="inventory" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -222,12 +275,13 @@
       </method>
     </configuration>
     <list>
+      <item itemvalue="Application.inventory-service" />
+      <item itemvalue="Application.product-service" />
+      <item itemvalue="Application.gateway" />
       <item itemvalue="Application.review-service" />
       <item itemvalue="Application.notification-service" />
       <item itemvalue="Application.order-service" />
-      <item itemvalue="Application.product-service" />
       <item itemvalue="Application.config-server" />
-      <item itemvalue="Application.gateway" />
       <item itemvalue="Application.user-service" />
       <item itemvalue="JUnit.com.ecom.product.service in product" />
     </list>
@@ -416,6 +470,17 @@
     <MESSAGE value="fixing bugs" />
     <MESSAGE value="update spring cloud stream dependency" />
     <option name="LAST_COMMIT_MESSAGE" value="update spring cloud stream dependency" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/client/HttpClientConfig.java</url>
+          <line>28</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/platform_ecom$user_service.ic" NAME="user-service Coverage Results" MODIFIED="1758374933525" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true" />

@@ -1,4 +1,5 @@
 export interface Address {
+    zipCode: string;
     addressId: number;
     street: string;
     buildingName?: string;

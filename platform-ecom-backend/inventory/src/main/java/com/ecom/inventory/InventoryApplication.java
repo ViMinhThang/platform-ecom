@@ -11,6 +11,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 public class InventoryApplication {
 
     public static void main(String[] args) {
+        System.setProperty("user.timezone", "Asia/Ho_Chi_Minh");
         SpringApplication.run(InventoryApplication.class, args);
     }
 }

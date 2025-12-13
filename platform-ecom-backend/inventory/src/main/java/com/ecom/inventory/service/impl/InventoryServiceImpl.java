@@ -108,6 +108,7 @@ public class InventoryServiceImpl implements InventoryService {
         Inventory saved = inventoryRepository.save(inventory);
         publishStockUpdatedEvent(saved, previousStock, TransactionType.ADJUSTMENT, request.getReason(), performedBy);
         checkAndAlertLowStock(saved);
+        checkAndAlertOutOfStock(saved);
 
         log.info("Adjusted stock for variant {}: {} -> {}", variantId, previousStock, newStock);
         return mapper.toDTO(saved);
@@ -129,6 +130,7 @@ public class InventoryServiceImpl implements InventoryService {
         Inventory saved = inventoryRepository.save(inventory);
         publishStockUpdatedEvent(saved, previousStock, TransactionType.ADJUSTMENT, reason, performedBy);
         checkAndAlertLowStock(saved);
+        checkAndAlertOutOfStock(saved);
 
         return mapper.toDTO(saved);
     }
@@ -181,7 +183,8 @@ public class InventoryServiceImpl implements InventoryService {
                 .build();
 
         StockReservation saved = reservationRepository.save(reservation);
-        log.info("Created reservation {} for variant {} qty {}", saved.getId(), request.getVariantId(), request.getQuantity());
+        log.info("Created reservation {} for variant {} qty {}", saved.getId(), request.getVariantId(),
+                request.getQuantity());
 
         return mapper.toDTO(saved);
     }
@@ -212,7 +215,8 @@ public class InventoryServiceImpl implements InventoryService {
         reservation.confirm();
         reservationRepository.save(reservation);
 
-        publishStockUpdatedEvent(inventory, previousStock, TransactionType.SALE, "Order confirmed", reservation.getUserId());
+        publishStockUpdatedEvent(inventory, previousStock, TransactionType.SALE, "Order confirmed",
+                reservation.getUserId());
         checkAndAlertLowStock(inventory);
 
         log.info("Confirmed reservation {} for variant {}", reservationId, inventory.getVariantId());
@@ -288,6 +292,7 @@ public class InventoryServiceImpl implements InventoryService {
         Inventory saved = inventoryRepository.save(inventory);
         publishStockUpdatedEvent(saved, previousStock, TransactionType.SALE, "Order " + orderNumber, null);
         checkAndAlertLowStock(saved);
+        checkAndAlertOutOfStock(saved);
 
         log.info("Processed order {} for variant {}: {} -> {}", orderNumber, variantId, previousStock, newStock);
     }
@@ -322,6 +327,23 @@ public class InventoryServiceImpl implements InventoryService {
         return mapper.toDTO(saved);
     }
 
+    @Override
+    @Transactional
+    public void deleteInventory(Long variantId) {
+        Inventory inventory = findByVariantIdOrThrow(variantId);
+
+        // Delete related transactions first
+        transactionRepository.deleteByInventoryId(inventory.getId());
+
+        // Delete related reservations
+        reservationRepository.deleteByInventoryId(inventory.getId());
+
+        // Delete inventory
+        inventoryRepository.delete(inventory);
+
+        log.info("Deleted inventory for variant {}", variantId);
+    }
+
     // ==================== Private Helpers ====================
 
     private Inventory findByVariantIdOrThrow(Long variantId) {
@@ -335,8 +357,8 @@ public class InventoryServiceImpl implements InventoryService {
     }
 
     private void recordTransaction(Inventory inventory, TransactionType type, int quantityChange,
-                                   int stockBefore, int stockAfter, String referenceType,
-                                   String referenceId, String reason, Long performedBy) {
+            int stockBefore, int stockAfter, String referenceType,
+            String referenceId, String reason, Long performedBy) {
         InventoryTransaction transaction = InventoryTransaction.builder()
                 .inventory(inventory)
                 .type(type)
@@ -353,7 +375,7 @@ public class InventoryServiceImpl implements InventoryService {
     }
 
     private void publishStockUpdatedEvent(Inventory inventory, int previousStock,
-                                          TransactionType type, String reason, Long performedBy) {
+            TransactionType type, String reason, Long performedBy) {
         StockUpdatedEvent event = StockUpdatedEvent.builder()
                 .variantId(inventory.getVariantId())
                 .productId(inventory.getProductId())
@@ -381,8 +403,22 @@ public class InventoryServiceImpl implements InventoryService {
                     .build();
 
             eventPublisher.publishLowStockAlert(alert);
-            log.warn("Low stock alert for variant {}: {} <= {}", 
+            log.warn("Low stock alert for variant {}: {} <= {}",
                     inventory.getVariantId(), inventory.getAvailableStock(), inventory.getLowStockThreshold());
+        }
+    }
+
+    private void checkAndAlertOutOfStock(Inventory inventory) {
+        if (inventory.getAvailableStock() == 0) {
+            com.ecom.common.event.OutOfStockEvent event = com.ecom.common.event.OutOfStockEvent.builder()
+                    .productId(inventory.getProductId())
+                    .variantId(inventory.getVariantId())
+                    .sku(inventory.getSku())
+                    .timestamp(LocalDateTime.now())
+                    .build();
+
+            eventPublisher.publishOutOfStock(event);
+            log.warn("Out of stock alert for variant {}: availableStock=0", inventory.getVariantId());
         }
     }
 }

@@ -59,7 +59,7 @@ export function SellerGrid({ categorySlug }: SellerGridProps) {
                         key={seller.sellerId}
                         id={seller.sellerId.toString()}
                         name={seller.sellerName}
-                        imageUrl={seller.imageUrl || "https://placehold.co/400x400/png?text=Seller"}
+                        image={seller.imageUrl || "https://placehold.co/400x400/png?text=Seller"}
                     />
                 ))}
             </div>

@@ -28,4 +28,5 @@ public class ProductRowDTO {
     private Double averageRating;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+    private String slug;
 }

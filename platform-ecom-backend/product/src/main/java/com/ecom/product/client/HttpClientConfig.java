@@ -26,13 +26,13 @@ public class HttpClientConfig {
         return factory.createClient(UserServiceClient.class);
     }
 
-    @Bean
-    public CartServiceClient cartServiceClient(RestClient.Builder restClientBuilder) {
-        RestClient restClient = restClientBuilder
-                .baseUrl("http://order-service/api/carts")
-                .build();
-        RestClientAdapter adapter = RestClientAdapter.create(restClient);
-        HttpServiceProxyFactory factory = HttpServiceProxyFactory.builderFor(adapter).build();
-        return factory.createClient(CartServiceClient.class);
-    }
+//    @Bean
+//    public CartServiceClient cartServiceClient(RestClient.Builder restClientBuilder) {
+//        RestClient restClient = restClientBuilder
+//                .baseUrl("http://order-service/api/carts")
+//                .build();
+//        RestClientAdapter adapter = RestClientAdapter.create(restClient);
+//        HttpServiceProxyFactory factory = HttpServiceProxyFactory.builderFor(adapter).build();
+//        return factory.createClient(CartServiceClient.class);
+//    }
 }

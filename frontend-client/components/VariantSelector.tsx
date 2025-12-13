@@ -21,7 +21,12 @@ export function VariantSelector({
     {}
   );
 
-  const sortedOptions = [...options].sort((a, b) => a.sortOrder - b.sortOrder);
+  // Deduplicate options by id (in case API returns duplicates)
+  const uniqueOptions = options.filter(
+    (option, index, self) => self.findIndex(o => o.id === option.id) === index
+  );
+
+  const sortedOptions = [...uniqueOptions].sort((a, b) => a.sortOrder - b.sortOrder);
 
   const valueIdToOptionId = new Map<number, number>();
   options.forEach((option) => {
@@ -239,8 +244,8 @@ export function VariantSelector({
 
   return (
     <div className="space-y-6">
-      {sortedOptions.map((option) => (
-        <div key={option.id}>
+      {sortedOptions.map((option, index) => (
+        <div key={`option-${option.id}-${index}`}>
           <h4 className="font-medium mb-3 text-sm text-muted-foreground">
             {option.displayName}
           </h4>

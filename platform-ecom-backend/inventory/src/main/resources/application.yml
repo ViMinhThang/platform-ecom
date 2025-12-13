@@ -3,18 +3,4 @@ spring:
     name: inventory-service
   config:
     import: optional:configserver:http://localhost:8888
-  cloud:
-    function:
-      definition: orderCreated
-    stream:
-      bindings:
-        orderCreated-in-0:
-          destination: order-created-topic
-          group: inventory-service
-        stockUpdated-out-0:
-          destination: stock-updated-topic
-        lowStockAlert-out-0:
-          destination: low-stock-alert-topic
 
-server:
-  port: 8085

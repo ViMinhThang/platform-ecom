@@ -9,10 +9,8 @@ import org.hibernate.annotations.Type;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -75,18 +73,21 @@ public class Product {
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     @Builder.Default
     private Set<ProductVariant> variants = new HashSet<>();
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     @Builder.Default
     private Set<ProductImage> images = new HashSet<>();
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     @Builder.Default
-    private List<ProductOption> options = new ArrayList<>();
+    private Set<ProductOption> options = new HashSet<>();
 
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;

@@ -32,7 +32,7 @@ public class PaymentServiceImpl implements PaymentService {
 
     @Override
     public PaymentIntent createPaymentIntent(BigDecimal amount, String currency,
-                                              String description, Long userId, String idempotencyKey) {
+            String description, Long userId, String idempotencyKey) {
         checkIdempotency(idempotencyKey);
         PaymentIntent intent = executePaymentIntent(amount, currency, description, userId);
         trackIdempotencyKey(idempotencyKey, intent.getId());
@@ -64,7 +64,7 @@ public class PaymentServiceImpl implements PaymentService {
     }
 
     private PaymentIntent executePaymentIntent(BigDecimal amount, String currency,
-                                                String description, Long userId) {
+            String description, Long userId) {
         PaymentProvider provider = providerFactory.getProvider(DEFAULT_PROVIDER);
 
         PaymentRequest request = PaymentRequest.builder()
@@ -83,6 +83,18 @@ public class PaymentServiceImpl implements PaymentService {
     }
 
     private PaymentIntent retrievePaymentIntent(String paymentIntentId) {
+        // TEST MODE: Allow testing without real Stripe payment
+        if (paymentIntentId != null && paymentIntentId.startsWith("TEST_")) {
+            log.info("Using mock payment intent for testing: {}", paymentIntentId);
+            return PaymentIntent.builder()
+                    .id(paymentIntentId)
+                    .status(PAYMENT_SUCCEEDED_STATUS)
+                    .amount(10000L)
+                    .currency("USD")
+                    .clientSecret("test_secret")
+                    .build();
+        }
+
         PaymentProvider provider = providerFactory.getProvider(DEFAULT_PROVIDER);
         PaymentIntent intent = provider.getPaymentIntent(paymentIntentId);
 

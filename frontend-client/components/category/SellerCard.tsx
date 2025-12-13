@@ -1,21 +1,21 @@
 import Image from "next/image";
 import Link from "next/link";
-
+import { imageUrl } from "@/lib/utils/imageUrl";
 interface SellerCardProps {
     id: string;
     name: string;
-    imageUrl: string;
+    image: string;
 }
 
-export function SellerCard({ id, name, imageUrl }: SellerCardProps) {
+export function SellerCard({ id, name, image }: SellerCardProps) {
     return (
         <Link href={`/seller/${id}`} className="group block">
             <div className="relative aspect-square overflow-hidden bg-muted">
                 <Image
-                    src={imageUrl}
+                    src={imageUrl.avatar(image)}
                     alt={name}
                     fill
-                    className="object-cover transition-transform group-hover:scale-105"
+                    className="object-cover transition-transform"
                 />
             </div>
             <div className="mt-2">

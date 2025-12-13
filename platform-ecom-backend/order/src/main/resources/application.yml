@@ -3,8 +3,3 @@ spring:
     name: order-service
   config:
     import: "configserver:http://localhost:8888"
-  cloud:
-    stream:
-      bindings:
-        orderCreated-out-0:
-          destination: order-created-topic

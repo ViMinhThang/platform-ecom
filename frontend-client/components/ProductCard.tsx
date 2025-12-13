@@ -46,6 +46,7 @@ export function ProductCard({
     return count.toString();
   };
 
+
   return (
     <Link href={`/products/${slug}`}>
       <Card className="p-0 group overflow-hidden border border-border rounded-sm hover:shadow-md transition-shadow">

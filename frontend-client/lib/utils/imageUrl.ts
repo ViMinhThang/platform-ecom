@@ -34,6 +34,6 @@ export const imageUrl = {
     avatar: (path: string | undefined | null) => {
         if (!path) return 'https://placehold.co/100x100?text=User';
         if (path.startsWith('http://') || path.startsWith('https://')) return path;
-        return `${env.uploadsBaseUrl}/avatars/${path}`;
+        return `${env.uploadsBaseUrl}/products/${path}`;
     },
 };

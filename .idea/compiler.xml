@@ -33,6 +33,15 @@
         <module name="review" />
         <module name="order" />
       </profile>
+      <profile name="Annotation profile for inventory" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="false">
+          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.42/lombok-1.18.42.jar" />
+        </processorPath>
+        <module name="inventory" />
+      </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="auth-services" target="25" />
@@ -47,6 +56,7 @@
       <module name="configserver" options="-parameters" />
       <module name="eureka" options="-parameters" />
       <module name="gateway" options="-parameters" />
+      <module name="inventory" options="-parameters" />
       <module name="media" options="-parameters" />
       <module name="notification" options="-parameters" />
       <module name="order" options="-parameters" />

@@ -23,7 +23,7 @@ export default function CategoryPage({ params }: CategoryPageProps) {
     );
     const { slug } = React.use(params)
     const categorySlug = decodeURIComponent(slug);
-
+    console.log(products)
     // Extract all filter params from URL
     const page = Number(searchParams.get("page")) || 0;
     const sortBy = searchParams.get("sortBy") || "createdAt";

@@ -30,12 +30,12 @@ public class ProductOptionServiceImpl implements ProductOptionService {
     @Override
     public ProductOptionDTO createProductOption(ProductOptionDTO dto, Long productId) {
         Product product = findProductById(productId);
-        
+
         ProductOption option = buildProductOption(dto, product);
         ProductOption savedOption = productOptionRepository.save(option);
-        
+
         addProductOptionToProduct(product, savedOption);
-        
+
         return mapToProductOptionDTO(savedOption);
     }
 
@@ -70,11 +70,10 @@ public class ProductOptionServiceImpl implements ProductOptionService {
     public void deleteProductOption(Long optionId, Long productId) {
         Product product = findProductById(productId);
         ProductOption option = findProductOptionById(optionId);
-        
+
         product.getOptions().remove(option);
         productRepository.save(product);
     }
-
 
     private Product findProductById(Long productId) {
         return productRepository.findById(productId)
@@ -89,7 +88,7 @@ public class ProductOptionServiceImpl implements ProductOptionService {
     private ProductOption buildProductOption(ProductOptionDTO dto, Product product) {
         ProductOption option = modelMapper.map(dto, ProductOption.class);
         option.setProduct(product);
-        
+
         if (option.getValues() != null) {
             option.getValues().forEach(v -> v.setOption(option));
         }
@@ -110,7 +109,8 @@ public class ProductOptionServiceImpl implements ProductOptionService {
     }
 
     private void updateOptionValues(ProductOption option, List<ProductOptionValueDTO> valueDTOs) {
-        if (valueDTOs == null) return;
+        if (valueDTOs == null)
+            return;
 
         Map<Long, ProductOptionValue> existingValues = mapExistingValues(option);
         List<ProductOptionValue> updatedValues = new ArrayList<>();
@@ -129,9 +129,9 @@ public class ProductOptionServiceImpl implements ProductOptionService {
                 .collect(Collectors.toMap(ProductOptionValue::getId, v -> v));
     }
 
-    private ProductOptionValue processOptionValue(ProductOptionValueDTO valueDTO, 
-                                                  Map<Long, ProductOptionValue> existingValues, 
-                                                  ProductOption option) {
+    private ProductOptionValue processOptionValue(ProductOptionValueDTO valueDTO,
+            Map<Long, ProductOptionValue> existingValues,
+            ProductOption option) {
         if (isExistingValue(valueDTO, existingValues)) {
             return updateExistingValue(existingValues.get(valueDTO.getId()), valueDTO);
         } else {
@@ -170,7 +170,7 @@ public class ProductOptionServiceImpl implements ProductOptionService {
         return modelMapper.map(option, ProductOptionDTO.class);
     }
 
-    private List<ProductOptionDTO> mapToProductOptionDTOs(List<ProductOption> options) {
+    private List<ProductOptionDTO> mapToProductOptionDTOs(java.util.Collection<ProductOption> options) {
         return options.stream()
                 .map(this::mapToProductOptionDTO)
                 .collect(Collectors.toList());

@@ -20,11 +20,6 @@ export default function OrderDetailPage() {
         }
     }, [dispatch, orderId]);
 
-    const breadcrumbItems = [
-        { title: 'Dashboard', link: '/dashboard' },
-        { title: 'Orders', link: '/dashboard/orders' },
-        { title: `Order ${currentOrder?.groupNumber || '...'}`, link: `/dashboard/orders/${orderId}` },
-    ];
 
     if (loading && !currentOrder) {
         return <div className="p-8 text-center">Loading order details...</div>;
@@ -37,7 +32,7 @@ export default function OrderDetailPage() {
     return (
         <PageContainer scrollable>
             <div className="space-y-4">
-                <Breadcrumbs items={breadcrumbItems} />
+                <Breadcrumbs />
                 {currentOrder && <OrderDetailView order={currentOrder} />}
             </div>
         </PageContainer>

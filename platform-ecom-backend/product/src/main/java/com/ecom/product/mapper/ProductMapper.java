@@ -45,6 +45,7 @@ public class ProductMapper {
         dto.setTotalReviews(product.getTotalReviews());
         dto.setAverageRating(product.getAverageRating());
         dto.setUserId(product.getUserId());
+        dto.setSlug(product.getSlug());
 
         return dto;
     }
@@ -72,6 +73,7 @@ public class ProductMapper {
                 .averageRating(product.getAverageRating())
                 .createdAt(product.getCreatedAt())
                 .updatedAt(product.getUpdatedAt())
+                .slug(product.getSlug())
                 .build();
     }
 
@@ -98,7 +100,7 @@ public class ProductMapper {
         dto.setTotalSold(product.getTotalSold());
         dto.setTotalReviews(product.getTotalReviews());
         dto.setAverageRating(product.getAverageRating());
-
+        dto.setUserId(product.getUserId());
         // Map collections
         dto.setOptions(mapProductOptions(product));
         dto.setVariants(productVariantMapper.mapActiveVariants(product));

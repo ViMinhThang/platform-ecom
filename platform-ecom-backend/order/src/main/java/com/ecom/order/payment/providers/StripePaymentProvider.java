@@ -57,20 +57,28 @@ public class StripePaymentProvider implements PaymentProvider {
                     .multiply(BigDecimal.valueOf(100))
                     .longValue();
 
-            PaymentIntentCreateParams params = PaymentIntentCreateParams.builder()
+            PaymentIntentCreateParams.Builder paramsBuilder = PaymentIntentCreateParams.builder()
                     .setAmount(amountInCents)
                     .setCurrency(request.getCurrency().toLowerCase())
                     .setAutomaticPaymentMethods(
                             PaymentIntentCreateParams.AutomaticPaymentMethods.builder()
                                     .setEnabled(true)
                                     .build())
-                    .putMetadata("orderGroupId", request.getOrderGroupId().toString())
-                    .putMetadata("orderNumber", request.getOrderNumber())
-                    .putMetadata("userId", request.getUserId().toString())
-                    .setDescription(request.getDescription())
-                    .build();
+                    .setDescription(request.getDescription());
 
-            com.stripe.model.PaymentIntent stripeIntent = com.stripe.model.PaymentIntent.create(params);
+            if (request.getOrderGroupId() != null) {
+                paramsBuilder.putMetadata("orderGroupId", request.getOrderGroupId().toString());
+            }
+            if (request.getOrderNumber() != null) {
+                paramsBuilder.putMetadata("orderNumber", request.getOrderNumber());
+            }
+            if (request.getUserId() != null) {
+                paramsBuilder.putMetadata("userId", request.getUserId().toString());
+            }
+
+            PaymentIntentCreateParams createParams = paramsBuilder.build();
+
+            com.stripe.model.PaymentIntent stripeIntent = com.stripe.model.PaymentIntent.create(createParams);
 
             log.info("Created Stripe payment intent: {} for order: {}",
                     stripeIntent.getId(), request.getOrderNumber());

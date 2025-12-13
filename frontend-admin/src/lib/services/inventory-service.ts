@@ -49,11 +49,25 @@ export const inventoryService = {
         sortOrder = "asc"
     ) => {
         const response = await apiClient.get<{
-            data: PaginatedResponse<InventoryDTO>;
+            data: {
+                content: InventoryDTO[];
+                totalElements: number;
+                totalPages: number;
+                number: number; // Spring uses 'number' for page number
+                size: number;
+            };
         }>(INVENTORY_API, {
             params: { page, size, sortBy, sortOrder },
         });
-        return response.data.data;
+        // Map Spring Boot pagination to our interface
+        const data = response.data.data;
+        return {
+            content: data.content,
+            totalElements: data.totalElements,
+            totalPages: data.totalPages,
+            pageNumber: data.number, // Map 'number' to 'pageNumber'
+            pageSize: data.size,
+        } as PaginatedResponse<InventoryDTO>;
     },
 
     /**
@@ -130,6 +144,13 @@ export const inventoryService = {
             }
         );
         return response.data.data;
+    },
+
+    /**
+     * Delete inventory for a variant
+     */
+    delete: async (variantId: number) => {
+        await apiClient.delete(`${INVENTORY_API}/${variantId}`);
     },
 };
 

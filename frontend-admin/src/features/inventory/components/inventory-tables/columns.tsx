@@ -4,7 +4,7 @@ import { ColumnDef } from '@tanstack/react-table';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { InventoryDTO } from '@/types/inventory/inventory';
-import { ArrowUpDown, AlertTriangle, Edit } from 'lucide-react';
+import { ArrowUpDown, AlertTriangle, Edit, Trash2 } from 'lucide-react';
 
 export const columns: ColumnDef<InventoryDTO>[] = [
     {
@@ -108,6 +108,19 @@ export const columns: ColumnDef<InventoryDTO>[] = [
                     }}
                 >
                     <Edit className="h-4 w-4" />
+                </Button>
+                <Button
+                    variant="ghost"
+                    size="sm"
+                    className="text-destructive hover:text-destructive"
+                    onClick={() => {
+                        const event = new CustomEvent('inventory-delete', {
+                            detail: row.original,
+                        });
+                        window.dispatchEvent(event);
+                    }}
+                >
+                    <Trash2 className="h-4 w-4" />
                 </Button>
             </div>
         ),
