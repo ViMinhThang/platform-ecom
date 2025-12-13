@@ -1,29 +1,28 @@
 "use client";
 
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import { useOrders } from "@/hooks/useOrders";
 import { SubOrderCard } from "@/components/orders/SubOrderCard";
+import { TrackingTimeline } from "@/components/orders/TrackingTimeline";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { ChevronLeft, Loader2 } from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { ChevronLeft, Loader2, Truck } from "lucide-react";
 import Link from "next/link";
 import { format } from "date-fns";
-import { notFound } from "next/navigation";
 
 interface OrderDetailPageProps {
-    params: {
-        id: string;
-    };
+    params: Promise<{ id: string }>;
 }
 
 export default function OrderDetailPage({ params }: OrderDetailPageProps) {
     const { currentOrder, loading, loadOrderDetails } = useOrders();
-
+    const { id } = React.use(params);
     useEffect(() => {
-        if (params.id) {
-            loadOrderDetails(Number(params.id));
+        if (id) {
+            loadOrderDetails(Number(id));
         }
-    }, [params.id]);
+    }, [id]);
 
     if (loading) {
         return (
@@ -70,12 +69,29 @@ export default function OrderDetailPage({ params }: OrderDetailPageProps) {
             </div>
 
             <div className="grid lg:grid-cols-3 gap-8">
-                {/* Main Content - Sub Orders */}
-                <div className="lg:col-span-2">
-                    <h2 className="text-lg font-semibold mb-4">Shipments</h2>
-                    {currentOrder.subOrders.map((subOrder) => (
-                        <SubOrderCard key={subOrder.id} subOrder={subOrder} />
-                    ))}
+                <div className="lg:col-span-2 space-y-6">
+                    {currentOrder.subOrders.some(so => so.ghnOrderCode) && (
+                        <Card>
+                            <CardHeader>
+                                <CardTitle className="flex items-center gap-2">
+                                    <Truck className="h-5 w-5" />
+                                    Shipment Tracking
+                                </CardTitle>
+                            </CardHeader>
+                            <CardContent>
+                                <TrackingTimeline
+                                    ghnOrderCode={currentOrder.subOrders.find(so => so.ghnOrderCode)?.ghnOrderCode || ''}
+                                />
+                            </CardContent>
+                        </Card>
+                    )}
+
+                    <div>
+                        <h2 className="text-lg font-semibold mb-4">Shipments</h2>
+                        {currentOrder.subOrders.map((subOrder) => (
+                            <SubOrderCard key={subOrder.id} subOrder={subOrder} />
+                        ))}
+                    </div>
                 </div>
 
                 {/* Sidebar - Order Info */}

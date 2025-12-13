@@ -16,6 +16,13 @@ export interface CreateReviewPayload {
     comment?: string;
 }
 
+export interface CreateUnverifiedReviewPayload {
+    productId: number;
+    rating: number;
+    title?: string;
+    comment?: string;
+}
+
 /**
  * Get product reviews (public - no auth required)
  */
@@ -33,7 +40,7 @@ export async function getProductReviews(
     if (params.sortDir) searchParams.set('sortDir', params.sortDir);
 
     const query = searchParams.toString();
-    const endpoint = `/v1/products/${productId}/reviews${query ? `?${query}` : ''}`;
+    const endpoint = `/v1/reviews/public/product/${productId}${query ? `?${query}` : ''}`;
 
     const response = await apiClient.get<ReviewResponse>(endpoint);
     return response.data;
@@ -46,16 +53,28 @@ export async function getProductReviewSummary(
     productId: number | string
 ): Promise<ProductReviewSummary> {
     const response = await apiClient.get<ProductReviewSummary>(
-        `/v1/reviews/summary/product/${productId}`
+        `/v1/reviews/public/summary/product/${productId}`
     );
     return response.data;
 }
 
 /**
- * Create a review (requires auth)
+ * Create a verified review (requires auth + purchase)
  */
 export async function createReview(payload: CreateReviewPayload, token: string): Promise<void> {
     await apiClient.post('/v1/reviews', payload, {
+        headers: { Authorization: `Bearer ${token}` },
+    });
+}
+
+/**
+ * Create an unverified review (requires auth, no purchase needed)
+ */
+export async function createUnverifiedReview(
+    payload: CreateUnverifiedReviewPayload,
+    token: string
+): Promise<void> {
+    await apiClient.post('/v1/reviews/unverified', payload, {
         headers: { Authorization: `Bearer ${token}` },
     });
 }

@@ -1,17 +1,11 @@
 package com.ecom.order.payment.providers;
 
 import com.ecom.common.exception.PaymentException;
-import com.ecom.common.exception.WebhookException;
 import com.ecom.order.payment.*;
 import com.stripe.Stripe;
-import com.stripe.exception.SignatureVerificationException;
 import com.stripe.exception.StripeException;
-import com.stripe.model.Event;
-import com.stripe.model.Refund;
-import com.stripe.net.Webhook;
 import com.stripe.param.PaymentIntentCancelParams;
 import com.stripe.param.PaymentIntentCreateParams;
-import com.stripe.param.RefundCreateParams;
 import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -28,9 +22,6 @@ public class StripePaymentProvider implements PaymentProvider {
 
     @Value("${stripe.secret.key:123}")
     private String apiKey;
-
-    @Value("${stripe.secret.webhook:123}")
-    private String webhookSecret;
 
     @Value("${stripe.enabled:true}")
     private boolean enabled;
@@ -125,35 +116,6 @@ public class StripePaymentProvider implements PaymentProvider {
     @Override
     public PaymentIntent getPaymentIntent(String transactionId) {
         return capturePayment(transactionId);
-    }
-
-    @Override
-    public boolean verifyWebhookSignature(String payload, String signature) {
-        try {
-            Webhook.constructEvent(payload, signature, webhookSecret);
-            return true;
-        } catch (SignatureVerificationException e) {
-            log.warn("Invalid webhook signature");
-            return false;
-        }
-    }
-
-    @Override
-    public WebhookEvent parseWebhookPayload(String payload) {
-        try {
-            Event event = Webhook.constructEvent(payload, null, webhookSecret);
-
-            return WebhookEvent.builder()
-                    .id(event.getId())
-                    .type(event.getType())
-                    .data(event.getDataObjectDeserializer().getObject().orElse(null))
-                    .provider("stripe")
-                    .build();
-
-        } catch (Exception e) {
-            log.error("Failed to parse webhook payload", e);
-            throw new WebhookException("Invalid webhook payload");
-        }
     }
 
     @Override

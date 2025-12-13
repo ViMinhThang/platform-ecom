@@ -7,6 +7,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
+
 @Data
 @Builder
 @NoArgsConstructor
@@ -24,4 +26,7 @@ public class CreateOrderRequest {
 
     @NotNull(message = "Idempotency key is required")
     private String idempotencyKey;
+
+    @NotNull(message = "Shipping fee is required")
+    private BigDecimal shippingFee;
 }

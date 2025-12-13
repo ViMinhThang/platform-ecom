@@ -6,6 +6,7 @@ import {
     setCheckoutStep,
     setSelectedAddress,
     setPaymentProvider,
+    setShippingFee,
     resetCheckout
 } from '@/lib/store/slices/checkoutSlice';
 import type { CreateOrderRequest, ConfirmPaymentRequest } from '@/types/order.types';
@@ -17,44 +18,46 @@ export const useCheckout = () => {
     const checkout = useAppSelector((state) => state.checkout);
     const { currentOrder, checkoutSession, loading, error } = useAppSelector((state) => state.orders);
 
-    /**
-     * Step 1: Initiate checkout - creates Stripe PaymentIntent
-     * No order is created at this step
-     */
+
     const startCheckout = useCallback(async () => {
         if (!checkout.selectedAddressId) {
             throw new Error('Please select a delivery address');
+        }
+        if (!checkout.shippingFee || checkout.shippingFee <= 0) {
+            throw new Error('Shipping fee not calculated');
         }
 
         const request: CreateOrderRequest = {
             addressId: checkout.selectedAddressId,
             paymentProvider: checkout.paymentProvider,
             promoCode: checkout.promoCode || undefined,
-            idempotencyKey: `checkout-${Date.now()}-${uuidv4()}`
+            idempotencyKey: `checkout-${Date.now()}-${uuidv4()}`,
+            shippingFee: checkout.shippingFee
         };
 
         const session = await dispatch(initiateCheckout(request)).unwrap();
         dispatch(setCheckoutStep('payment'));
         return session;
-    }, [checkout.selectedAddressId, checkout.paymentProvider, checkout.promoCode, dispatch]);
+    }, [checkout.selectedAddressId, checkout.paymentProvider, checkout.promoCode, checkout.shippingFee, dispatch]);
 
-    /**
-     * Step 2: Confirm payment and create order
-     * Called after Stripe payment succeeds
-     */
+
     const confirmPaymentAndCreateOrder = useCallback(async (paymentIntentId: string) => {
         if (!checkout.selectedAddressId) {
             throw new Error('Address not selected');
         }
+        if (!checkout.shippingFee || checkout.shippingFee <= 0) {
+            throw new Error('Shipping fee not available');
+        }
 
         const request: ConfirmPaymentRequest = {
             paymentIntentId,
-            addressId: checkout.selectedAddressId
+            addressId: checkout.selectedAddressId,
+            shippingFee: checkout.shippingFee
         };
 
         const order = await dispatch(confirmPayment(request)).unwrap();
         return order;
-    }, [checkout.selectedAddressId, dispatch]);
+    }, [checkout.selectedAddressId, checkout.shippingFee, dispatch]);
 
     const completeCheckout = useCallback(() => {
         dispatch(setCheckoutStep('confirmation'));
@@ -64,6 +67,7 @@ export const useCheckout = () => {
     const setStep = useCallback((step: any) => dispatch(setCheckoutStep(step)), [dispatch]);
     const selectAddress = useCallback((id: number) => dispatch(setSelectedAddress(id)), [dispatch]);
     const setProvider = useCallback((provider: 'stripe' | 'paypal') => dispatch(setPaymentProvider(provider)), [dispatch]);
+    const setShipping = useCallback((fee: number) => dispatch(setShippingFee(fee)), [dispatch]);
 
     return {
         checkout,
@@ -74,6 +78,7 @@ export const useCheckout = () => {
         setStep,
         selectAddress,
         setProvider,
+        setShipping,
         startCheckout,
         confirmPaymentAndCreateOrder,
         completeCheckout

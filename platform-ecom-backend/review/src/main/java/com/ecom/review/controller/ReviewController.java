@@ -33,6 +33,17 @@ public class ReviewController {
         return new ResponseEntity<>(reviewDTO, HttpStatus.CREATED);
     }
 
+    @PostMapping("/unverified")
+    public ResponseEntity<ReviewDTO> createUnverifiedReview(
+            @Valid @RequestBody CreateUnverifiedReviewDTO createUnverifiedReviewDTO,
+            HttpServletRequest request) {
+        Long userId = authContext.getUserId(request);
+        String email = authContext.getEmail(request);
+
+        ReviewDTO reviewDTO = reviewService.createUnverifiedReview(createUnverifiedReviewDTO, userId, email);
+        return new ResponseEntity<>(reviewDTO, HttpStatus.CREATED);
+    }
+
     @PutMapping("/{reviewId}")
     public ResponseEntity<ReviewDTO> updateReview(
             @PathVariable Long reviewId,

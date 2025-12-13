@@ -44,6 +44,7 @@ export interface AdminSubOrder {
     trackingNumber?: string;
     trackingUrl?: string;
     carrier?: string;
+    ghnOrderCode?: string;
     estimatedDelivery?: string;
     createdAt: string;
     updatedAt: string;

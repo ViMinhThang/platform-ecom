@@ -8,17 +8,15 @@ import com.ecom.user.service.signature.AddressService;
 import com.ecom.user.service.signature.AdminUserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RequestMapping("/api/v1/internal/user-service")
 @RequiredArgsConstructor
 @RestController
 public class InternalController {
     private final AdminUserService adminUserService;
-    private final AddressService  addressService;
+    private final AddressService addressService;
+
     /**
      * GET /api/v1/internal/users/{userId}/email
      * Internal endpoint for other microservices to get user email
@@ -40,6 +38,7 @@ public class InternalController {
         UserDTO user = adminUserService.getUserById(userId);
         return ResponseBuilder.success("User retrieved successfully", user);
     }
+
     @GetMapping("addresses/{addressId}")
     public ResponseEntity<APIResponse<AddressDTO>> getAddressById(@PathVariable Long addressId) {
         AddressDTO addressDTO = addressService.getAddressByIdAdmin(addressId);

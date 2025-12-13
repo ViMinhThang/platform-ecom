@@ -309,4 +309,35 @@ public class ReviewServiceImpl implements ReviewService {
             return NEGATIVE_SENTIMENT;
         }
     }
+
+    @Override
+    @Transactional
+    public ReviewDTO createUnverifiedReview(CreateUnverifiedReviewDTO dto, Long userId, String email) {
+        validateNoDuplicateReview(userId, dto.getProductId());
+        validateProductExists(dto.getProductId());
+
+        Review review = buildUnverifiedReviewFromDTO(dto, userId, email);
+        Review savedReview = reviewRepository.save(review);
+
+        publishReviewEvent("CREATED", savedReview);
+
+        return mapToReviewDTO(savedReview);
+    }
+
+    private Review buildUnverifiedReviewFromDTO(CreateUnverifiedReviewDTO dto, Long userId, String email) {
+        Review review = new Review();
+        review.setProductId(dto.getProductId());
+        review.setUserId(userId);
+        review.setOrderId(null);
+        review.setEmail(email);
+        review.setRating(dto.getRating());
+        review.setTitle(dto.getTitle());
+        review.setComment(dto.getComment());
+        review.setImages(dto.getImages());
+        review.setVerifiedPurchase(false);
+        review.setStatus(APPROVED_STATUS);
+        review.setSentiment(calculateSentiment(dto.getRating()));
+
+        return review;
+    }
 }

@@ -58,8 +58,7 @@ export function FeaturedProducts() {
               image={product.imageUrl || "https://placehold.co/600x400"}
               category={product.category.name}
               isNew={false}
-              firstVariant={product.firstVariant}
-            />
+              firstVariant={product.firstVariant} slug={product.slug} />
           ))
         ) : (
           <p className="text-muted-foreground col-span-full text-center">

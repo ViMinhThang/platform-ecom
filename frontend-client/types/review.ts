@@ -4,7 +4,7 @@ export interface Review {
   id: number;
   productId: number;
   userId: number;
-  orderId: number;
+  orderId?: number | null;
   email: string;
   rating: number; // 1-5
   title?: string;

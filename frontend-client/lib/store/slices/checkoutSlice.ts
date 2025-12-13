@@ -5,13 +5,15 @@ interface CheckoutState {
     selectedAddressId: number | null;
     paymentProvider: 'stripe' | 'paypal';
     promoCode: string | null;
+    shippingFee: number;
 }
 
 const initialState: CheckoutState = {
     step: 'address',
     selectedAddressId: null,
     paymentProvider: 'stripe',
-    promoCode: null
+    promoCode: null,
+    shippingFee: 0
 };
 
 const checkoutSlice = createSlice({
@@ -30,6 +32,9 @@ const checkoutSlice = createSlice({
         setPromoCode: (state, action: PayloadAction<string | null>) => {
             state.promoCode = action.payload;
         },
+        setShippingFee: (state, action: PayloadAction<number>) => {
+            state.shippingFee = action.payload;
+        },
         resetCheckout: () => initialState
     }
 });
@@ -39,6 +44,7 @@ export const {
     setSelectedAddress,
     setPaymentProvider,
     setPromoCode,
+    setShippingFee,
     resetCheckout
 } = checkoutSlice.actions;
 

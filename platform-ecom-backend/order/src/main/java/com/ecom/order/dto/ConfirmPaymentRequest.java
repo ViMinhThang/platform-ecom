@@ -4,14 +4,16 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
-/**
- * Request DTO for confirming payment after Stripe payment succeeds
- */
+import java.math.BigDecimal;
+
 @Data
 public class ConfirmPaymentRequest {
     @NotBlank(message = "Payment intent ID is required")
     private String paymentIntentId;
-    
+
     @NotNull(message = "Address ID is required")
     private Long addressId;
+
+    @NotNull(message = "Shipping fee is required")
+    private BigDecimal shippingFee;
 }

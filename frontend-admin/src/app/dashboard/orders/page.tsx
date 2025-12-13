@@ -44,9 +44,15 @@ export default function OrdersPage() {
         dispatch(fetchOrders(filter));
     }, [dispatch, page, limit, searchQuery, status]);
 
+    const handlePageChange = (updater: any) => {
+        const current0BasedPage = page - 1;
+        const new0BasedPage = typeof updater === 'function' ? updater(current0BasedPage) : updater;
+        setPage(new0BasedPage + 1);
+    };
+
     return (
         <PageContainer scrollable>
-            <div className="space-y-4">
+            <div className="space-y-4 w-full">
                 <Breadcrumbs />
 
                 <div className="flex items-start justify-between">
@@ -66,8 +72,11 @@ export default function OrdersPage() {
                     pageCount={pagination.totalPages}
                     searchKey="groupNumber"
                     pageNo={page}
+                    pageSize={limit}
                     totalUsers={pagination.totalElements}
                     pageSizeOptions={[10, 20, 50, 100]}
+                    onPageChange={handlePageChange}
+                    onPageSizeChange={setLimit}
                 />
             </div>
         </PageContainer>

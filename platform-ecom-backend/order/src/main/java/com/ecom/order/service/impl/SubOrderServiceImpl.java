@@ -27,8 +27,6 @@ public class SubOrderServiceImpl implements SubOrderService {
     private final SubOrderRepository subOrderRepository;
     private final ModelMapper modelMapper;
 
-    // ==================== Public API ====================
-
     @Override
     @Transactional(readOnly = true)
     public SubOrderDTO getSubOrder(Long subOrderId, Long userId) {
@@ -47,7 +45,7 @@ public class SubOrderServiceImpl implements SubOrderService {
     @Override
     @Transactional
     public SubOrderDTO updateTracking(Long subOrderId, Long sellerId,
-                                       String trackingNumber, String carrier, String trackingUrl) {
+            String trackingNumber, String carrier, String trackingUrl) {
         SubOrder subOrder = findSubOrderById(subOrderId);
         verifySellerOwnership(subOrder, sellerId);
 
@@ -110,8 +108,6 @@ public class SubOrderServiceImpl implements SubOrderService {
         log.info("Sub-order {} cancelled by user {}", subOrderId, userId);
     }
 
-    // ==================== Private Helpers: Retrieval ====================
-
     private SubOrder findSubOrderById(Long subOrderId) {
         return subOrderRepository.findByIdWithItems(subOrderId)
                 .orElseThrow(() -> new SubOrderNotFoundException(subOrderId));
@@ -133,8 +129,6 @@ public class SubOrderServiceImpl implements SubOrderService {
         int end = Math.min(start + pageable.getPageSize(), list.size());
         return new PageImpl<>(list.subList(start, end), pageable, list.size());
     }
-
-    // ==================== Private Helpers: Authorization ====================
 
     private boolean isBuyer(SubOrder subOrder, Long userId) {
         return subOrder.getOrderGroup().getUserId().equals(userId);
@@ -162,8 +156,6 @@ public class SubOrderServiceImpl implements SubOrderService {
         }
     }
 
-    // ==================== Private Helpers: Validation ====================
-
     private void validateCanShip(SubOrder subOrder) {
         if (subOrder.getStatus() != SubOrderStatus.PROCESSING) {
             throw new IllegalStateException("Can only ship orders in PROCESSING status");
@@ -190,8 +182,6 @@ public class SubOrderServiceImpl implements SubOrderService {
         return subOrder.getStatus() == SubOrderStatus.PENDING
                 || subOrder.getStatus() == SubOrderStatus.PROCESSING;
     }
-
-    // ==================== Private Helpers: Conversion ====================
 
     private SubOrderDTO convertToDTO(SubOrder subOrder) {
         return modelMapper.map(subOrder, SubOrderDTO.class);

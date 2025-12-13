@@ -249,8 +249,15 @@ public class GatewayConfig {
                 // REVIEWS - /api/v1/reviews
                 // ============================================================
 
-                // Public reviews (read-only)
+                // Public reviews (read-only) - summary and product reviews
                 .route("reviews-public", r -> r
+                        .path("/api/v1/reviews/public/**")
+                        .filters(f -> f
+                                .rewritePath("/api/v1/reviews/(?<segment>.*)", "/api/reviews/${segment}"))
+                        .uri("lb://review-service"))
+
+                // Public reviews (legacy route for product reviews)
+                .route("reviews-product-public", r -> r
                         .path("/api/v1/products/{productId}/reviews")
                         .uri("lb://review-service"))
 
@@ -258,6 +265,7 @@ public class GatewayConfig {
                 .route("reviews-authenticated", r -> r
                         .path("/api/v1/reviews", "/api/v1/reviews/**")
                         .filters(f -> f
+                                .rewritePath("/api/v1/reviews(?<segment>.*)", "/api/reviews${segment}")
                                 .filter(authFilter))
                         .uri("lb://review-service"))
 

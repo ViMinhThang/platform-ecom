@@ -35,6 +35,7 @@ public class SubOrderDTO {
     private String trackingNumber;
     private String trackingUrl;
     private String carrier;
+    private String ghnOrderCode;
     private LocalDate estimatedDelivery;
 
     private LocalDateTime createdAt;

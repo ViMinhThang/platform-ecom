@@ -12,12 +12,12 @@ export function useOrderTableFilters() {
 
     const [page, setPage] = useQueryState(
         'page',
-        searchParams.page.withDefault(1)
+        searchParams.page.withOptions({ shallow: false }).withDefault(1)
     );
 
     const [limit, setLimit] = useQueryState(
         'limit',
-        searchParams.limit.withDefault(10)
+        searchParams.limit.withOptions({ shallow: false }).withDefault(10)
     );
 
     const [status, setStatus] = useQueryState(

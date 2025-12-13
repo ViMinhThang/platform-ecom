@@ -31,7 +31,7 @@ export default function OrderDetailPage() {
 
     return (
         <PageContainer scrollable>
-            <div className="space-y-4">
+            <div className="space-y-4 w-full">
                 <Breadcrumbs />
                 {currentOrder && <OrderDetailView order={currentOrder} />}
             </div>

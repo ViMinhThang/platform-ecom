@@ -11,10 +11,25 @@ export enum OrderGroupStatus {
 export enum SubOrderStatus {
     PENDING = 'PENDING',
     PROCESSING = 'PROCESSING',
+    READY_TO_PICK = 'READY_TO_PICK',
+    PICKING = 'PICKING',
+    PICKED = 'PICKED',
     SHIPPED = 'SHIPPED',
+    STORING = 'STORING',
+    TRANSPORTING = 'TRANSPORTING',
+    SORTING = 'SORTING',
+    DELIVERING = 'DELIVERING',
     DELIVERED = 'DELIVERED',
+    DELIVERY_FAIL = 'DELIVERY_FAIL',
+    WAITING_TO_RETURN = 'WAITING_TO_RETURN',
+    RETURNING = 'RETURNING',
+    RETURNED = 'RETURNED',
     CANCELLED = 'CANCELLED',
-    REFUNDED = 'REFUNDED'
+    REFUND_PENDING = 'REFUND_PENDING',
+    REFUNDED = 'REFUNDED',
+    EXCEPTION = 'EXCEPTION',
+    LOST = 'LOST',
+    DAMAGE = 'DAMAGE'
 }
 
 export enum PaymentStatus {
@@ -53,6 +68,7 @@ export interface SubOrderDTO {
     trackingNumber?: string;
     trackingUrl?: string;
     carrier?: string;
+    ghnOrderCode?: string;
     estimatedDelivery?: string;
     createdAt: string;
     shippedAt?: string;
@@ -84,12 +100,10 @@ export interface CreateOrderRequest {
     paymentProvider: string;
     promoCode?: string;
     idempotencyKey: string;
+    shippingFee: number;
 }
 
-/**
- * Checkout session returned from initiateCheckout
- * Contains Stripe client secret for payment
- */
+
 export interface CheckoutSession {
     clientSecret: string;
     paymentIntentId: string;
@@ -98,10 +112,8 @@ export interface CheckoutSession {
     addressId: number;
 }
 
-/**
- * Request to confirm payment and create order
- */
 export interface ConfirmPaymentRequest {
     paymentIntentId: string;
     addressId: number;
+    shippingFee: number;
 }

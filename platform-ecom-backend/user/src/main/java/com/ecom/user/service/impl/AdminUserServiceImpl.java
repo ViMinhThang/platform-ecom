@@ -1,14 +1,10 @@
 package com.ecom.user.service.impl;
 
-import com.ecom.common.exception.APIException;
-import com.ecom.common.exception.ResourceNotFoundException;
-import com.ecom.common.exception.UserAlreadyExistsException;
+import com.ecom.common.exception.*;
 import com.ecom.common.service.FileStorageService;
 import com.ecom.user.dtos.UserDTO;
 import com.ecom.user.dtos.UserResponse;
-import com.ecom.user.entity.AppRole;
-import com.ecom.user.entity.Role;
-import com.ecom.user.entity.User;
+import com.ecom.user.entity.*;
 import com.ecom.user.repositories.UserRepository;
 import com.ecom.user.service.signature.AdminUserService;
 import com.ecom.user.service.signature.RoleService;
@@ -59,7 +55,6 @@ public class AdminUserServiceImpl implements AdminUserService {
 
         user.setPassword(encoder.encode("12345678"));
 
-        // Default role if not provided or handle roles from DTO
         if (userDTO.getRoles() != null && !userDTO.getRoles().isEmpty()) {
             Set<Role> roles = userDTO.getRoles().stream()
                     .map(r -> roleService.getRole(r.getRoleName()))
@@ -79,10 +74,8 @@ public class AdminUserServiceImpl implements AdminUserService {
     public UserDTO updateUserByAdmin(Long userId, UserDTO userDTO) {
         User user = getUserByUserIdFromDatabase(userId);
 
-        // Validate unique data
         validateUniqueData(user.getUserId(), userDTO.getEmail(), userDTO.getUsername());
 
-        // Update fields
         user.setEmail(userDTO.getEmail());
         user.setUserName(userDTO.getUsername());
         user.setIsActive(userDTO.getIsActive());
@@ -91,7 +84,6 @@ public class AdminUserServiceImpl implements AdminUserService {
             user.setImageUrl(userDTO.getImageUrl());
         }
 
-        // Update Roles
         if (userDTO.getRoles() != null && !userDTO.getRoles().isEmpty()) {
             Set<Role> roles = userDTO.getRoles().stream()
                     .map(r -> roleService.getRole(r.getRoleName()))
@@ -120,18 +112,15 @@ public class AdminUserServiceImpl implements AdminUserService {
     public String uploadUserImage(Long userId, org.springframework.web.multipart.MultipartFile image) {
         User user = getUserByUserIdFromDatabase(userId);
 
-        // Delete old image if it exists and is not the default image
         String oldImageUrl = user.getImageUrl();
         if (oldImageUrl != null && !oldImageUrl.isEmpty() && !"31343C.svg".equals(oldImageUrl)) {
             try {
                 fileStorageService.deleteFile(oldImageUrl);
             } catch (Exception e) {
-                // Log but don't fail if old image deletion fails
-                // The new image upload should still proceed
+
             }
         }
 
-        // Store new image
         String fileName = fileStorageService.storeFile(image);
         user.setImageUrl(fileName);
         userRepository.save(user);

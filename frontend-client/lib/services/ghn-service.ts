@@ -55,15 +55,7 @@ export async function getDistricts(provinceId: number): Promise<GHNDistrict[]> {
  */
 export async function getWards(districtId: number): Promise<GHNWard[]> {
     try {
-        // GHN API for ward usually accepts post body or query params depending on version, 
-        // original code used POST with body { district_id: districtId } to `${GHN_API_BASE_URL}/ward?district_id`
-        // which looks a bit weird (query param key but no value, and body). 
-        // Let's stick to the original logic but use axios.
-        // Actually, looking at the original code:
-        // fetch(`${GHN_API_BASE_URL}/ward?district_id`, { method: 'POST', body: ... })
-        // It seems it might be a typo in the original code or a specific API requirement.
-        // Standard GHN API usually uses GET /master-data/ward?district_id={id} OR POST with body.
-        // Let's assume the original code was working and replicate the behavior: POST request.
+
 
         const response = await ghnClient.post<GHNResponse<GHNWard[]>>(`${GHN_API_BASE_URL}/ward`, {
             district_id: districtId
@@ -75,12 +67,7 @@ export async function getWards(districtId: number): Promise<GHNWard[]> {
     }
 }
 
-/**
- * Get available shipping services
- * @param fromDistrict - Sender district ID
- * @param toDistrict - Receiver district ID
- * @param shopId - Shop ID
- */
+
 export async function getAvailableServices(fromDistrict: number, toDistrict: number, shopId: number): Promise<GHNService[]> {
     try {
         const response = await ghnClient.post<GHNResponse<GHNService[]>>(`${GHN_API_ORDER_URL}/available-services`, {
@@ -95,11 +82,7 @@ export async function getAvailableServices(fromDistrict: number, toDistrict: num
     }
 }
 
-/**
- * Calculate shipping fee
- * @param params - Fee calculation parameters
- * @param shopId - Shop ID
- */
+
 export async function calculateShippingFee(params: GHNFeeRequest, shopId: number): Promise<GHNFeeResponse> {
     try {
         const response = await ghnClient.post<GHNResponse<GHNFeeResponse>>(`${GHN_API_ORDER_URL}/fee`, params, {

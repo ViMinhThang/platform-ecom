@@ -22,9 +22,6 @@ public class PaymentProviderFactory {
         providers.put(name.toLowerCase(), provider);
     }
 
-    /**
-     * Get provider by name
-     */
     public PaymentProvider getProvider(String providerName) {
         PaymentProvider provider = providers.get(providerName.toLowerCase());
         if (provider == null) {
@@ -36,9 +33,6 @@ public class PaymentProviderFactory {
         return provider;
     }
 
-    /**
-     * Get all available providers
-     */
     public List<String> getAvailableProviders() {
         return providers.entrySet().stream()
                 .filter(entry -> entry.getValue().isAvailable())
@@ -46,9 +40,6 @@ public class PaymentProviderFactory {
                 .toList();
     }
 
-    /**
-     * Check if provider exists
-     */
     public boolean hasProvider(String providerName) {
         return providers.containsKey(providerName.toLowerCase());
     }

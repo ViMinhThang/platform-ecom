@@ -1,14 +1,14 @@
 import { useSession } from 'next-auth/react';
 import { toast } from 'sonner';
 import { useAppDispatch, useAppSelector } from '@/lib/store/hooks';
-import { submitReview } from '@/lib/store/slices/reviewSlice';
-import { CreateReviewPayload } from '@/lib/services/review-service';
+import { submitReview, submitUnverifiedReview } from '@/lib/store/slices/reviewSlice';
+import { CreateReviewPayload, CreateUnverifiedReviewPayload } from '@/lib/services/review-service';
 
 /**
  * Custom hook for managing product review submission with Redux.
- * Handles review creation with loading states and error handling.
+ * Handles both verified and unverified review creation.
  * 
- * @returns Object containing submit handler and loading state
+ * @returns Object containing submit handlers and loading state
  */
 export function useReview() {
     const { data: session } = useSession();
@@ -31,8 +31,25 @@ export function useReview() {
         }
     };
 
+    const handleSubmitUnverifiedReview = async (payload: CreateUnverifiedReviewPayload): Promise<void> => {
+        const token = session?.accessToken as string;
+        if (!token) {
+            toast.error('You must be logged in to submit a review');
+            return;
+        }
+
+        try {
+            await dispatch(submitUnverifiedReview({ payload, token })).unwrap();
+            toast.success('Review submitted successfully');
+        } catch (error: any) {
+            toast.error(error || 'Failed to submit review');
+            throw error;
+        }
+    };
+
     return {
         submitReview: handleSubmitReview,
+        submitUnverifiedReview: handleSubmitUnverifiedReview,
         isSubmitting,
     };
 }

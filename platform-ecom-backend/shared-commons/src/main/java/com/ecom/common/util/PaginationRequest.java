@@ -1,13 +1,11 @@
 package com.ecom.common.util;
 
+import org.springframework.data.domain.Sort.Direction;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-/**
- * Standard pagination request DTO.
- * Reduces parameter clutter in controller methods.
- */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -17,12 +15,17 @@ public class PaginationRequest {
     private String sortBy = "id";
     private String sortOrder = "asc";
 
-    /**
-     * Get sort direction as Spring Sort.Direction
-     */
-    public org.springframework.data.domain.Sort.Direction getSortDirection() {
+    public void setPage(Integer page) {
+        this.pageNumber = page;
+    }
+
+    public void setSize(Integer size) {
+        this.pageSize = size;
+    }
+
+    public Direction getSortDirection() {
         return sortOrder.equalsIgnoreCase("desc")
-                ? org.springframework.data.domain.Sort.Direction.DESC
-                : org.springframework.data.domain.Sort.Direction.ASC;
+                ? Direction.DESC
+                : Direction.ASC;
     }
 }

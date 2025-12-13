@@ -28,7 +28,7 @@ public class Review {
     @Column(name = "user_id", nullable = false)
     private Long userId;
 
-    @Column(name = "order_id", nullable = false)
+    @Column(name = "order_id", nullable = true)
     private Long orderId;
 
     @Column(nullable = false)

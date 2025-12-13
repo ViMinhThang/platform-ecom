@@ -31,8 +31,6 @@ public class CartServiceImpl implements CartService {
     private final ModelMapper modelMapper;
     private final ProductServiceClient productServiceClient;
 
-    // ==================== Public API ====================
-
     @Override
     @Transactional
     public CartDTO getCartForUser(Long userId) {
@@ -104,8 +102,6 @@ public class CartServiceImpl implements CartService {
         log.info("Cleared cart: {}", cartId);
     }
 
-    // ==================== Private Helpers: Cart Retrieval ====================
-
     private Cart getOrCreateCart(Long userId) {
         return cartRepository.findByUserIdWithItems(userId)
                 .orElseGet(() -> createNewCart(userId));
@@ -124,8 +120,6 @@ public class CartServiceImpl implements CartService {
 
         return cartRepository.save(cart);
     }
-
-    // ==================== Private Helpers: Item Operations ====================
 
     private CartItem findExistingItem(Cart cart, Long productId, Long variantId) {
         return cart.getItems().stream()
@@ -161,8 +155,6 @@ public class CartServiceImpl implements CartService {
         cart.addItem(newItem);
     }
 
-    // ==================== Private Helpers: Enrichment ====================
-
     private void enrichCartItems(Cart cart) {
         for (CartItem item : cart.getItems()) {
             enrichCartItem(item);
@@ -187,8 +179,6 @@ public class CartServiceImpl implements CartService {
             item.setVariantName(details.getVariantName());
         }
     }
-
-    // ==================== Private Helpers: Conversion ====================
 
     private CartDTO convertToDTO(Cart cart) {
         CartDTO dto = modelMapper.map(cart, CartDTO.class);

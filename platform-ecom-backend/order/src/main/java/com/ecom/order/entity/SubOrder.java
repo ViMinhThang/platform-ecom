@@ -80,6 +80,9 @@ public class SubOrder {
     @Column(name = "carrier", length = 100)
     private String carrier;
 
+    @Column(name = "ghn_order_code", length = 50)
+    private String ghnOrderCode;
+
     @Column(name = "estimated_delivery")
     private LocalDate estimatedDelivery;
 

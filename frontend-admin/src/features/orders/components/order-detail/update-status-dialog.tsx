@@ -80,14 +80,32 @@ export const UpdateStatusDialog: React.FC<UpdateStatusDialogProps> = ({
     };
 
     const statuses = [
+        // Pre-shipping
         'PENDING',
-        'CONFIRMED',
         'PROCESSING',
+        'READY_TO_PICK',
+        'PICKING',
+        'PICKED',
+        // In transit
         'SHIPPED',
+        'STORING',
+        'TRANSPORTING',
+        'SORTING',
+        'DELIVERING',
+        // Completed
         'DELIVERED',
-        'CANCELLED',
+        // Failed/Return
+        'DELIVERY_FAIL',
+        'WAITING_TO_RETURN',
+        'RETURNING',
         'RETURNED',
+        // Cancelled/Exceptions
+        'CANCELLED',
+        'REFUND_PENDING',
         'REFUNDED',
+        'EXCEPTION',
+        'LOST',
+        'DAMAGE',
     ];
 
     return (

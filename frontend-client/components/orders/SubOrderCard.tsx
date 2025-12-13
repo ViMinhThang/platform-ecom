@@ -47,7 +47,8 @@ export function SubOrderCard({ subOrder }: SubOrderCardProps) {
                     {subOrder.items.map((item) => (
                         <div key={item.id} className="flex gap-4">
                             <div className="relative h-20 w-20 flex-shrink-0 overflow-hidden rounded-md border bg-zinc-100">
-                                {/* Placeholder image */}
+                                {/* Placeholder image */}Shipping Address
+
                                 <div className="w-full h-full flex items-center justify-center text-xs text-muted-foreground">Img</div>
                             </div>
                             <div className="flex-1">

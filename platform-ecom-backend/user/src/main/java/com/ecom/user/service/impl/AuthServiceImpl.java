@@ -1,8 +1,6 @@
 package com.ecom.user.service.impl;
 
-import com.ecom.common.exception.APIException;
-import com.ecom.common.exception.ResourceNotFoundException;
-import com.ecom.common.exception.UserAlreadyExistsException;
+import com.ecom.common.exception.*;
 import com.ecom.user.dtos.*;
 import com.ecom.user.entity.Role;
 import com.ecom.user.entity.User;
