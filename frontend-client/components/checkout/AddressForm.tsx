@@ -55,8 +55,8 @@ export function AddressForm() {
     if (addresses.length === 0) {
         return (
             <div className="text-center py-8 border-2 border-dashed rounded-lg">
-                <p className="text-muted-foreground mb-4">You don't have any saved addresses.</p>
-                <p className="text-sm text-muted-foreground">Please go to your profile to add an address.</p>
+                <p className="text-muted-foreground mb-4">Bạn chưa có địa chỉ nào được lưu.</p>
+                <p className="text-sm text-muted-foreground">Vui lòng truy cập hồ sơ của bạn để thêm địa chỉ.</p>
             </div>
         );
     }
@@ -64,7 +64,7 @@ export function AddressForm() {
     return (
         <div className="space-y-6">
             <div className="flex justify-between items-center">
-                <h2 className="text-xl font-semibold">Shipping Address</h2>
+                <h2 className="text-xl font-semibold">Địa chỉ giao hàng</h2>
             </div>
 
             <RadioGroup
@@ -82,9 +82,9 @@ export function AddressForm() {
                             <div className="flex justify-between items-start">
                                 <span className="font-semibold text-lg flex items-center gap-2">
                                     <MapPin className="h-5 w-5 text-primary" />
-                                    {addr.buildingName || "Address"}
+                                    {addr.buildingName || "Địa chỉ"}
                                     {addr.isDefault && (
-                                        <span className="text-xs bg-primary/10 text-primary px-2 py-0.5 rounded-full">Default</span>
+                                        <span className="text-xs bg-primary/10 text-primary px-2 py-0.5 rounded-full">Mặc định</span>
                                     )}
                                 </span>
                             </div>
@@ -101,10 +101,10 @@ export function AddressForm() {
             <Button
                 className="w-full md:w-auto min-w-[200px]"
                 size="lg"
-                disabled={!checkout.selectedAddressId}
+                disabled={!checkout.selectedAddressId || !checkout.shippingFee || checkout.shippingFee <= 0}
                 onClick={handleContinue}
             >
-                Continue to Payment
+                Tiếp tục thanh toán
             </Button>
         </div>
     );

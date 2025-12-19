@@ -8,7 +8,10 @@ import { AlertCircle, CheckCircle2, Loader2 } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { useRouter } from "next/navigation";
 
+import { formatCurrency } from "@/lib/utils/formatCurrency";
+
 export function PaymentForm() {
+    // ... hooks ...
     const stripe = useStripe();
     const elements = useElements();
     const { checkoutSession, confirmPaymentAndCreateOrder } = useCheckout();
@@ -27,47 +30,43 @@ export function PaymentForm() {
         setMessage(null);
 
         try {
-            // Step 1: Confirm payment with Stripe (no redirect)
             const { paymentIntent, error } = await stripe.confirmPayment({
                 elements,
                 redirect: "if_required",
                 confirmParams: {
-                    return_url: window.location.origin, // Fallback only
+                    return_url: window.location.origin,
                 }
             });
 
             if (error) {
-                // Payment failed
                 if (error.type === "card_error" || error.type === "validation_error") {
-                    setMessage(error.message || "Payment failed. Please try again.");
+                    setMessage(error.message || "Thanh toán thất bại. Vui lòng thử lại.");
                 } else {
-                    setMessage("An unexpected error occurred.");
+                    setMessage("Đã xảy ra lỗi không mong muốn.");
                 }
                 setIsLoading(false);
                 return;
             }
 
-            // Step 2: Payment succeeded - create order in backend
             if (paymentIntent && paymentIntent.status === "succeeded") {
                 try {
                     const order = await confirmPaymentAndCreateOrder(paymentIntent.id);
 
-                    // Navigate to success page
                     router.push(`/checkout/success?orderId=${order.id}`);
                 } catch (orderError: any) {
-                    setMessage(orderError.message || "Payment succeeded but failed to create order. Please contact support.");
+                    setMessage(orderError.message || "Thanh toán thành công nhưng tạo đơn hàng thất bại. Vui lòng liên hệ hỗ trợ.");
                     setIsLoading(false);
                 }
             } else if (paymentIntent && paymentIntent.status === "processing") {
-                setMessage("Your payment is processing. Please wait...");
+                setMessage("Thanh toán đang được xử lý. Vui lòng đợi...");
                 setIsLoading(false);
             } else {
-                setMessage("Payment was not completed. Please try again.");
+                setMessage("Thanh toán chưa hoàn tất. Vui lòng thử lại.");
                 setIsLoading(false);
             }
 
         } catch (err: any) {
-            setMessage(err.message || "An unexpected error occurred.");
+            setMessage(err.message || "Đã xảy ra lỗi không mong muốn.");
             setIsLoading(false);
         }
     };
@@ -75,14 +74,14 @@ export function PaymentForm() {
     return (
         <form id="payment-form" onSubmit={handleSubmit} className="space-y-6">
             <div className="bg-white dark:bg-zinc-900 p-6 rounded-lg border">
-                <h3 className="text-lg font-semibold mb-4">Payment Details</h3>
+                <h3 className="text-lg font-semibold mb-4">Thông tin thanh toán</h3>
                 <PaymentElement id="payment-element" options={{ layout: "tabs" }} />
             </div>
 
             {message && (
                 <Alert variant={message.includes("succeeded") ? "default" : "destructive"}>
                     {message.includes("succeeded") ? <CheckCircle2 className="h-4 w-4" /> : <AlertCircle className="h-4 w-4" />}
-                    <AlertTitle>{message.includes("succeeded") ? "Success" : "Error"}</AlertTitle>
+                    <AlertTitle>{message.includes("succeeded") ? "Thành công" : "Lỗi"}</AlertTitle>
                     <AlertDescription>{message}</AlertDescription>
                 </Alert>
             )}
@@ -96,10 +95,10 @@ export function PaymentForm() {
                 {isLoading ? (
                     <>
                         <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                        Processing...
+                        Đang xử lý...
                     </>
                 ) : (
-                    `Pay $${checkoutSession?.amount.toFixed(2) || '0.00'}`
+                    `Thanh toán ${formatCurrency(checkoutSession?.amount || 0)}`
                 )}
             </Button>
         </form>

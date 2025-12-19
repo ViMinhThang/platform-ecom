@@ -13,6 +13,8 @@ import { useRouter } from "next/navigation";
 import { addToCart } from "@/lib/store/slices/cartSlice";
 import { logger } from "@/lib/logger";
 
+import { formatCurrency } from "@/lib/utils/formatCurrency";
+
 export function ProductVariantSection({
   product,
   onVariantChange,
@@ -36,13 +38,13 @@ export function ProductVariantSection({
 
   const handleAddToCart = async () => {
     if (!session) {
-      toast.error("Please sign in to add items to cart");
+      toast.error("Vui lòng đăng nhập để thêm vào giỏ hàng");
       // router.push("/login"); 
       return;
     }
 
     if (product.variants && product.variants.length > 0 && !selectedVariant) {
-      toast.error("Please select a variant");
+      toast.error("Vui lòng chọn phân loại hàng");
       return;
     }
 
@@ -52,10 +54,10 @@ export function ProductVariantSection({
         quantity,
         variantId: selectedVariant ? selectedVariant.id : undefined,
       })).unwrap();
-      toast.success("Added to cart");
+      toast.success("Đã thêm vào giỏ hàng");
     } catch (error) {
       logger.error("Failed to add to cart:", error);
-      toast.error("Failed to add to cart");
+      toast.error("Thêm vào giỏ hàng thất bại");
     }
   };
 
@@ -67,32 +69,31 @@ export function ProductVariantSection({
   const canAddToCart = !hasVariants || (isVariantSelected && displayStock > 0);
 
   const getButtonText = () => {
-    if (hasVariants && !isVariantSelected) return "Select Options";
-    if (displayStock === 0) return "Out of Stock";
-    return "Add to Cart";
+    if (hasVariants && !isVariantSelected) return "Chọn phân loại";
+    if (displayStock === 0) return "Hết hàng";
+    return "Thêm vào giỏ hàng";
   };
 
   return (
     <div className="space-y-8">
       {/* Price Display */}
       <div>
-        <div className="text-3xl font-bold text-blue-600">
+        <div className="text-3xl font-bold text-primary">
           {selectedVariant && selectedVariant.salePrice !== undefined ? (
             <>
               <p className="text-base font-bold text-red-600">
-                $
                 {selectedVariant.salePrice !== null &&
-                  selectedVariant.salePrice!.toFixed(2)}
+                  formatCurrency(selectedVariant.salePrice)}
               </p>
               <p className="text-sm text-muted-foreground line-through">
-                ${selectedVariant.price.toFixed(2)}
+                {formatCurrency(selectedVariant.price)}
               </p>
             </>
           ) : (
             <p>
               {selectedVariant
-                ? `$${selectedVariant.price.toFixed(2)}`
-                : (hasVariants ? "Select an option" : `$${product.minPrice || 0}`)}
+                ? formatCurrency(selectedVariant.price)
+                : (hasVariants ? "Chọn tùy chọn" : formatCurrency(product.minPrice || 0))}
             </p>
           )}
         </div>
@@ -103,10 +104,10 @@ export function ProductVariantSection({
                 variant="outline"
                 className="bg-green-500/10 text-green-700 border-green-500/20"
               >
-                {displayStock} in stock
+                Còn {displayStock} sản phẩm
               </Badge>
             ) : (
-              <Badge variant="destructive">Out of Stock</Badge>
+              <Badge variant="destructive">Hết hàng</Badge>
             )}
           </div>
         )}
@@ -125,7 +126,7 @@ export function ProductVariantSection({
 
       {/* Quantity Selector */}
       <div className="flex items-center gap-4 pt-4">
-        <span className="text-sm font-medium">Quantity</span>
+        <span className="text-sm font-medium">Số lượng</span>
         <div className="flex items-center gap-2">
           <Button
             variant="outline"

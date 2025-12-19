@@ -312,11 +312,11 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Override
     @Transactional
-    public ReviewDTO createUnverifiedReview(CreateUnverifiedReviewDTO dto, Long userId, String email) {
+    public ReviewDTO createUnverifiedReview(CreateUnverifiedReviewDTO dto, Long userId) {
         validateNoDuplicateReview(userId, dto.getProductId());
         validateProductExists(dto.getProductId());
 
-        Review review = buildUnverifiedReviewFromDTO(dto, userId, email);
+        Review review = buildUnverifiedReviewFromDTO(dto, userId);
         Review savedReview = reviewRepository.save(review);
 
         publishReviewEvent("CREATED", savedReview);
@@ -324,12 +324,12 @@ public class ReviewServiceImpl implements ReviewService {
         return mapToReviewDTO(savedReview);
     }
 
-    private Review buildUnverifiedReviewFromDTO(CreateUnverifiedReviewDTO dto, Long userId, String email) {
+    private Review buildUnverifiedReviewFromDTO(CreateUnverifiedReviewDTO dto, Long userId) {
         Review review = new Review();
         review.setProductId(dto.getProductId());
         review.setUserId(userId);
         review.setOrderId(null);
-        review.setEmail(email);
+        review.setEmail(dto.getEmail());
         review.setRating(dto.getRating());
         review.setTitle(dto.getTitle());
         review.setComment(dto.getComment());

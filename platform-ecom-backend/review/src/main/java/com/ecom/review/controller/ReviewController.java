@@ -38,9 +38,8 @@ public class ReviewController {
             @Valid @RequestBody CreateUnverifiedReviewDTO createUnverifiedReviewDTO,
             HttpServletRequest request) {
         Long userId = authContext.getUserId(request);
-        String email = authContext.getEmail(request);
 
-        ReviewDTO reviewDTO = reviewService.createUnverifiedReview(createUnverifiedReviewDTO, userId, email);
+        ReviewDTO reviewDTO = reviewService.createUnverifiedReview(createUnverifiedReviewDTO, userId);
         return new ResponseEntity<>(reviewDTO, HttpStatus.CREATED);
     }
 

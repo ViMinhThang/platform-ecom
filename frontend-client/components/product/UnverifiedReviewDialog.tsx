@@ -19,9 +19,9 @@ import {
 import { Star, Loader2 } from 'lucide-react';
 
 const reviewSchema = z.object({
-    rating: z.number().min(1, 'Please select a rating').max(5),
+    rating: z.number().min(1, 'Vui lòng chọn số sao đánh giá').max(5),
     title: z.string().optional(),
-    comment: z.string().min(10, 'Review must be at least 10 characters'),
+    comment: z.string().min(10, 'Nội dung đánh giá phải có ít nhất 10 ký tự'),
 });
 
 type ReviewFormValues = z.infer<typeof reviewSchema>;
@@ -77,13 +77,13 @@ export function UnverifiedReviewDialog({
         <Dialog open={open} onOpenChange={onOpenChange}>
             <DialogContent className="max-w-md">
                 <DialogHeader>
-                    <DialogTitle>Write a Review</DialogTitle>
+                    <DialogTitle>Viết đánh giá</DialogTitle>
                 </DialogHeader>
 
                 <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
                     {/* Star Rating */}
                     <div className="space-y-2">
-                        <Label>Rating *</Label>
+                        <Label>Đánh giá *</Label>
                         <div className="flex gap-1">
                             {[1, 2, 3, 4, 5].map((star) => (
                                 <button
@@ -112,20 +112,20 @@ export function UnverifiedReviewDialog({
 
                     {/* Title (Optional) */}
                     <FormField
-                        label="Title (Optional)"
+                        label="Tiêu đề (Tùy chọn)"
                         id="title"
                         registration={form.register('title')}
                         error={form.formState.errors.title}
-                        placeholder="Sum up your review in a few words"
+                        placeholder="Tóm tắt đánh giá của bạn trong vài từ"
                     />
 
                     {/* Comment */}
                     <div className="space-y-2">
-                        <Label htmlFor="comment">Your Review *</Label>
+                        <Label htmlFor="comment">Nội dung đánh giá *</Label>
                         <Textarea
                             id="comment"
                             {...form.register('comment')}
-                            placeholder="Share your thoughts about this product..."
+                            placeholder="Chia sẻ suy nghĩ của bạn về sản phẩm này..."
                             rows={4}
                             className="resize-none"
                         />
@@ -143,11 +143,11 @@ export function UnverifiedReviewDialog({
                             onClick={() => onOpenChange(false)}
                             disabled={isSubmitting}
                         >
-                            Cancel
+                            Hủy
                         </Button>
                         <Button type="submit" disabled={isSubmitting}>
                             {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                            Submit Review
+                            Gửi đánh giá
                         </Button>
                     </DialogFooter>
                 </form>

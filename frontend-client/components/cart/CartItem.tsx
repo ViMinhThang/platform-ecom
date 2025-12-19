@@ -12,6 +12,8 @@ interface CartItemProps {
     item: CartItemDTO;
 }
 
+import { formatCurrency } from "@/lib/utils/formatCurrency";
+
 export function CartItem({ item }: CartItemProps) {
     const { updateQuantity, removeItem } = useCart();
     const [updating, setUpdating] = useState(false);
@@ -53,10 +55,10 @@ export function CartItem({ item }: CartItemProps) {
                 <div className="grid gap-1">
                     <h3 className="font-medium">{item.productName}</h3>
                     {item.variantName && (
-                        <p className="text-sm text-muted-foreground">Variant: {item.variantName}</p>
+                        <p className="text-sm text-muted-foreground">Phân loại: {item.variantName}</p>
                     )}
-                    <p className="text-sm font-medium text-blue-600">
-                        ${item.price.toFixed(2)}
+                    <p className="text-sm font-medium text-primary">
+                        {formatCurrency(item.price)}
                     </p>
                 </div>
 
@@ -93,14 +95,14 @@ export function CartItem({ item }: CartItemProps) {
                         disabled={updating}
                     >
                         <Trash2 className="h-4 w-4 mr-1" />
-                        Remove
+                        Xóa
                     </Button>
                 </div>
             </div>
 
             {/* Item Total */}
             <div className="text-right font-medium">
-                ${item.totalPrice.toFixed(2)}
+                {formatCurrency(item.totalPrice)}
             </div>
         </div>
     );

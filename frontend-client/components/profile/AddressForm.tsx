@@ -20,11 +20,11 @@ import {
 import { Loader2 } from 'lucide-react';
 
 const addressSchema = z.object({
-    street: z.string().min(5, 'Street must be at least 5 characters'),
-    buildingName: z.string().min(2, 'Building name must be at least 2 characters'),
-    provinceId: z.number().min(1, 'Province is required'),
-    districtId: z.number().min(1, 'District is required'),
-    wardCode: z.string().min(1, 'Ward is required'),
+    street: z.string().min(5, 'Địa chỉ đường phải có ít nhất 5 ký tự'),
+    buildingName: z.string().min(2, 'Tên tòa nhà phải có ít nhất 2 ký tự'),
+    provinceId: z.number().min(1, 'Tỉnh/Thành phố là bắt buộc'),
+    districtId: z.number().min(1, 'Quận/Huyện là bắt buộc'),
+    wardCode: z.string().min(1, 'Phường/Xã là bắt buộc'),
     isDefault: z.boolean().optional(),
     // Hidden fields to store names
     provinceName: z.string(),
@@ -107,7 +107,7 @@ export function AddressForm({ initialData, onSubmit, onCancel }: AddressFormProp
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {/* Province Select */}
                 <div className="space-y-2">
-                    <Label>Province/City</Label>
+                    <Label>Tỉnh/Thành phố</Label>
                     <Controller
                         control={form.control}
                         name="provinceId"
@@ -125,7 +125,7 @@ export function AddressForm({ initialData, onSubmit, onCancel }: AddressFormProp
                                 value={field.value?.toString()}
                             >
                                 <SelectTrigger>
-                                    <SelectValue placeholder="Select Province" />
+                                    <SelectValue placeholder="Chọn Tỉnh/Thành phố" />
                                 </SelectTrigger>
                                 <SelectContent>
                                     {provinces.map((province) => (
@@ -144,7 +144,7 @@ export function AddressForm({ initialData, onSubmit, onCancel }: AddressFormProp
 
                 {/* District Select */}
                 <div className="space-y-2">
-                    <Label>District</Label>
+                    <Label>Quận/Huyện</Label>
                     <Controller
                         control={form.control}
                         name="districtId"
@@ -161,7 +161,7 @@ export function AddressForm({ initialData, onSubmit, onCancel }: AddressFormProp
                                 value={field.value ? field.value.toString() : ''}
                             >
                                 <SelectTrigger>
-                                    <SelectValue placeholder="Select District" />
+                                    <SelectValue placeholder="Chọn Quận/Huyện" />
                                 </SelectTrigger>
                                 <SelectContent>
                                     {districts.map((district) => (
@@ -180,7 +180,7 @@ export function AddressForm({ initialData, onSubmit, onCancel }: AddressFormProp
 
                 {/* Ward Select */}
                 <div className="space-y-2">
-                    <Label>Ward</Label>
+                    <Label>Phường/Xã</Label>
                     <Controller
                         control={form.control}
                         name="wardCode"
@@ -195,7 +195,7 @@ export function AddressForm({ initialData, onSubmit, onCancel }: AddressFormProp
                                 value={field.value}
                             >
                                 <SelectTrigger>
-                                    <SelectValue placeholder="Select Ward" />
+                                    <SelectValue placeholder="Chọn Phường/Xã" />
                                 </SelectTrigger>
                                 <SelectContent>
                                     {wards.map((ward) => (
@@ -214,23 +214,23 @@ export function AddressForm({ initialData, onSubmit, onCancel }: AddressFormProp
             </div>
 
             <FormField
-                label="Street Address"
+                label="Địa chỉ đường"
                 id="street"
                 registration={form.register('street')}
                 error={form.formState.errors.street}
-                placeholder="e.g. 123 Nguyen Hue"
+                placeholder="ví dụ: 123 Nguyễn Huệ"
             />
 
             <FormField
-                label="Building / Apartment / House Number"
+                label="Tòa nhà / Căn hộ / Số nhà"
                 id="buildingName"
                 registration={form.register('buildingName')}
                 error={form.formState.errors.buildingName}
-                placeholder="e.g. Landmark 81, Apt 1204"
+                placeholder="ví dụ: Landmark 81, Căn hộ 1204"
             />
 
             <FormCheckbox
-                label="Set as default address"
+                label="Đặt làm địa chỉ mặc định"
                 id="isDefault"
                 name="isDefault"
                 control={form.control}
@@ -238,11 +238,11 @@ export function AddressForm({ initialData, onSubmit, onCancel }: AddressFormProp
 
             <div className="flex justify-end space-x-2 pt-4">
                 <Button type="button" variant="outline" onClick={onCancel} disabled={isSubmitting}>
-                    Cancel
+                    Hủy
                 </Button>
                 <Button type="submit" disabled={isSubmitting}>
                     {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                    Save Address
+                    Lưu địa chỉ
                 </Button>
             </div>
         </form>

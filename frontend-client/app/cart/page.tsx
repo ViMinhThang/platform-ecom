@@ -28,13 +28,13 @@ export default function CartPage() {
                     <div className="bg-zinc-100 p-6 rounded-full">
                         <ShoppingBag className="h-12 w-12 text-zinc-400" />
                     </div>
-                    <h1 className="text-2xl font-bold">Your cart is empty</h1>
+                    <h1 className="text-2xl font-bold">Giỏ hàng của bạn đang trống</h1>
                     <p className="text-muted-foreground max-w-md mx-auto">
-                        Looks like you haven't added anything to your cart yet.
-                        Explore our products and find something you love!
+                        Có vẻ như bạn chưa thêm gì vào giỏ hàng.
+                        Hãy khám phá các sản phẩm của chúng tôi và tìm món đồ bạn yêu thích!
                     </p>
                     <Button asChild className="mt-4">
-                        <Link href="/">Start Shopping</Link>
+                        <Link href="/">Bắt đầu mua sắm</Link>
                     </Button>
                 </div>
             </div>
@@ -43,7 +43,7 @@ export default function CartPage() {
 
     return (
         <div className="container mx-auto py-8 px-4 md:px-6">
-            <h1 className="text-2xl font-bold mb-8">Shopping Cart ({cart.totalItems} items)</h1>
+            <h1 className="text-2xl font-bold mb-8">Giỏ hàng ({cart.totalItems} sản phẩm)</h1>
 
             <div className="grid lg:grid-cols-3 gap-8">
                 {/* Cart Items Column */}

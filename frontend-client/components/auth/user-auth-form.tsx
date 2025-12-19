@@ -21,8 +21,8 @@ import {
 } from "@/components/ui/form";
 
 const formSchema = z.object({
-    email: z.string().email({ message: "Enter a valid email address" }),
-    password: z.string().min(1, { message: "Password is required" }),
+    email: z.string().email({ message: "Địa chỉ email không hợp lệ" }),
+    password: z.string().min(1, { message: "Mật khẩu là bắt buộc" }),
 });
 
 type UserFormValue = z.infer<typeof formSchema>;
@@ -56,7 +56,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
         setLoading(false);
 
         if (!signInResult?.ok) {
-            toast.error("Your sign in request failed. Please try again.");
+            toast.error("Đăng nhập thất bại. Vui lòng thử lại.");
             return;
         }
 
@@ -94,10 +94,10 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
                             name="password"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Password</FormLabel>
+                                    <FormLabel>Mật khẩu</FormLabel>
                                     <FormControl>
                                         <Input
-                                            placeholder="Password"
+                                            placeholder="Mật khẩu"
                                             type="password"
                                             autoCapitalize="none"
                                             autoComplete="current-password"
@@ -113,7 +113,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
                             {loading && (
                                 <span className="mr-2 h-4 w-4 animate-spin">...</span>
                             )}
-                            Sign In with Email
+                            Đăng nhập bằng Email
                         </Button>
                     </div>
                 </form>

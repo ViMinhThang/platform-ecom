@@ -22,8 +22,13 @@ export function useReview() {
             return;
         }
 
+        const payloadWithEmail = {
+            ...payload,
+            email: session?.user?.email || undefined,
+        };
+
         try {
-            await dispatch(submitReview({ payload, token })).unwrap();
+            await dispatch(submitReview({ payload: payloadWithEmail, token })).unwrap();
             toast.success('Review submitted successfully');
         } catch (error: any) {
             toast.error(error || 'Failed to submit review');
@@ -38,8 +43,13 @@ export function useReview() {
             return;
         }
 
+        const payloadWithEmail = {
+            ...payload,
+            email: session?.user?.email || undefined,
+        };
+
         try {
-            await dispatch(submitUnverifiedReview({ payload, token })).unwrap();
+            await dispatch(submitUnverifiedReview({ payload: payloadWithEmail, token })).unwrap();
             toast.success('Review submitted successfully');
         } catch (error: any) {
             toast.error(error || 'Failed to submit review');

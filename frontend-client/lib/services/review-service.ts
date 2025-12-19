@@ -14,6 +14,7 @@ export interface CreateReviewPayload {
     rating: number;
     title?: string;
     comment?: string;
+    email: string;
 }
 
 export interface CreateUnverifiedReviewPayload {
@@ -21,11 +22,10 @@ export interface CreateUnverifiedReviewPayload {
     rating: number;
     title?: string;
     comment?: string;
+    email: string;
 }
 
-/**
- * Get product reviews (public - no auth required)
- */
+
 export async function getProductReviews(
     productId: number | string,
     params: GetReviewsParams = {}

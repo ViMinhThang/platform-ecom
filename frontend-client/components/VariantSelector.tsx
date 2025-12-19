@@ -264,7 +264,7 @@ export function VariantSelector({
                     className={cn(
                       "px-4 py-2 rounded-md border text-sm font-medium transition-all",
                       isSelected
-                        ? "border-blue-600 bg-blue-50 dark:bg-blue-950 text-blue-700 dark:text-blue-300 ring-1 ring-blue-600"
+                        ? "border-primary bg-primary/5 text-primary ring-1 ring-primary"
                         : "border-input hover:border-zinc-400 hover:bg-accent",
                       !available &&
                       "opacity-50 cursor-not-allowed bg-muted text-muted-foreground"

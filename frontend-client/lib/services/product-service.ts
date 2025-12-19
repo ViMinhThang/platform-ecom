@@ -14,9 +14,7 @@ export interface GetProductsParams {
     minRating?: number;
 }
 
-/**
- * Fetch public products (no auth required)
- */
+
 export const getPublicProducts = async (params: GetProductsParams = {}): Promise<ProductResponse> => {
     const searchParams = new URLSearchParams();
 
@@ -37,42 +35,29 @@ export const getPublicProducts = async (params: GetProductsParams = {}): Promise
     return response.data.data;
 };
 
-/**
- * Fetch product by ID
- */
 export const getPublicProductById = async (id: number | string): Promise<Product> => {
     const response = await apiClient.get<APIResponse<Product>>(`/v1/products/${id}`);
     return response.data.data;
 };
 
-/**
- * Fetch product with variants
- */
+
 export const getPublicProductWithVariants = async (id: number | string): Promise<ProductDetail> => {
     const response = await apiClient.get<APIResponse<ProductDetail>>(`/v1/products/${id}/with-variants`);
     return response.data.data;
 };
 
-/**
- * Fetch all categories (public - no auth required)
- */
 export const getCategories = async (): Promise<Category[]> => {
     const response = await apiClient.get<APIResponse<CategoryResponse>>('/v1/categories');
     return response.data.data.content;
 };
 
-/**
- * Top seller information for a category
- */
 export interface TopSeller {
     sellerId: number;
     sellerName: string;
     imageUrl: string | null;
 }
 
-/**
- * Fetch top sellers for a category
- */
+
 export const getTopSellers = async (categorySlug: string, limit = 10): Promise<TopSeller[]> => {
     const response = await apiClient.get<APIResponse<TopSeller[]>>(
         `/v1/products/categories/${encodeURIComponent(categorySlug)}/top-sellers?limit=${limit}`
@@ -80,9 +65,7 @@ export const getTopSellers = async (categorySlug: string, limit = 10): Promise<T
     return response.data.data;
 };
 
-/**
- * Fetch product by slug with variants
- */
+
 export const getProductBySlug = async (slug: string): Promise<ProductDetail> => {
     const response = await apiClient.get<APIResponse<ProductDetail>>(`/v1/products/slug/${encodeURIComponent(slug)}`);
     return response.data.data;

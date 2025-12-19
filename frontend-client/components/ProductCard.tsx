@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
 import { ProductVariant } from "@/types/product";
 import { imageUrl } from "@/lib/utils/imageUrl";
+import { formatCurrency } from "@/lib/utils/formatCurrency";
 
 interface ProductCardProps {
   id: string;
@@ -49,62 +50,68 @@ export function ProductCard({
 
   return (
     <Link href={`/products/${slug}`}>
-      <Card className="p-0 group overflow-hidden border border-border rounded-sm hover:shadow-md transition-shadow">
-        <CardContent className="p-0 relative aspect-square bg-muted overflow-hidden">
+      <Card className="p-0 group overflow-hidden border border-zinc-200 dark:border-zinc-800 rounded-md bg-white dark:bg-card h-full flex flex-col hover:border-zinc-300 dark:hover:border-zinc-700 transition-colors">
+        <CardContent className="p-0 relative aspect-square bg-muted/20 overflow-hidden">
           {isNew && (
-            <Badge className="absolute top-1 left-1 z-10 bg-primary text-primary-foreground rounded-sm px-1.5 py-0.5 text-[9px]">
-              New
+            <Badge className="absolute top-2 left-2 z-10 bg-primary text-primary-foreground rounded-sm px-2 py-0.5 text-[10px] font-bold tracking-wider shadow-sm">
+              MỚI
             </Badge>
           )}
           {hasSale && (
-            <Badge className="absolute top-1 right-1 z-10 bg-red-500 text-white rounded-sm px-1.5 py-0.5 text-[9px]">
-              Sale
+            <Badge className="absolute top-2 right-2 z-10 bg-red-600 text-white rounded-sm px-2 py-0.5 text-[10px] font-bold tracking-wider shadow-sm">
+              GIẢM
             </Badge>
           )}
           {!inStock && (
-            <Badge variant="secondary" className="absolute top-1 right-1 z-10 text-[9px]">
-              Sold out
-            </Badge>
+            <div className="absolute inset-0 bg-white/60 dark:bg-black/60 z-20 flex items-center justify-center">
+              <Badge variant="secondary" className="text-xs font-bold px-3 py-1 rounded-sm">
+                HẾT HÀNG
+              </Badge>
+            </div>
           )}
           <Image
             src={imageUrl.product(displayImage)}
             alt={name}
             fill
-            className="object-cover transition-transform duration-300 group-hover:scale-105"
+            className="object-cover"
           />
         </CardContent>
-        <CardFooter className="flex flex-col items-start p-2 space-y-1">
-          <h3 className="font-normal text-xs leading-tight line-clamp-2 h-8 text-foreground group-hover:text-primary transition-colors w-full">
-            {name}
-          </h3>
-
-          {/* Price */}
-          <div className="flex items-center gap-1.5 w-full">
-            {hasSale ? (
-              <>
-                <span className="text-sm font-semibold text-red-500">
-                  ${salePrice!.toFixed(2)}
-                </span>
-                <span className="text-[10px] text-muted-foreground line-through">
-                  ${displayPrice.toFixed(2)}
-                </span>
-              </>
-            ) : (
-              <span className="text-sm font-semibold text-primary">
-                ${displayPrice.toFixed(2)}
-              </span>
-            )}
+        <CardFooter className="flex flex-col items-start p-4 space-y-2 flex-grow">
+          <div className="flex-grow w-full">
+            <h3 className="font-medium text-sm leading-snug line-clamp-2 text-foreground w-full">
+              {name}
+            </h3>
           </div>
 
-          {/* Rating & Sold */}
-          <div className="flex items-center justify-between w-full text-[10px] text-muted-foreground">
-            <div className="flex items-center gap-0.5">
-              <Star className="w-3 h-3 fill-yellow-400 text-yellow-400" />
-              <span>{rating > 0 ? rating.toFixed(1) : "0.0"}</span>
+          <div className="w-full pt-1">
+            {/* Price */}
+            <div className="flex items-baseline gap-2 w-full mb-1">
+              {hasSale ? (
+                <>
+                  <span className="text-lg font-bold text-red-600">
+                    {formatCurrency(salePrice)}
+                  </span>
+                  <span className="text-xs text-muted-foreground line-through decoration-muted-foreground/50">
+                    {formatCurrency(displayPrice)}
+                  </span>
+                </>
+              ) : (
+                <span className="text-lg font-bold text-primary">
+                  {formatCurrency(displayPrice)}
+                </span>
+              )}
             </div>
-            {totalSold > 0 && (
-              <span>{formatSoldCount(totalSold)} sold</span>
-            )}
+
+            {/* Rating & Sold */}
+            <div className="flex items-center justify-between w-full text-xs text-muted-foreground">
+              <div className="flex items-center gap-1 bg-zinc-100 dark:bg-zinc-800 px-1.5 py-0.5 rounded-sm">
+                <Star className="w-3.5 h-3.5 fill-yellow-400 text-yellow-400" />
+                <span className="font-medium">{rating > 0 ? rating.toFixed(1) : "Mới"}</span>
+              </div>
+              {totalSold > 0 && (
+                <span className="text-[10px]">Đã bán {formatSoldCount(totalSold)}</span>
+              )}
+            </div>
           </div>
         </CardFooter>
       </Card>

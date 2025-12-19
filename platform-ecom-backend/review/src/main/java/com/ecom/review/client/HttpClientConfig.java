@@ -23,7 +23,7 @@ public class HttpClientConfig {
 
     @Bean
     public ProductServiceClient productServiceClient(RestClient.Builder restClientBuilder) {
-        return RestClientFactory.createClient(restClientBuilder, "http://product-service/api/products",
+        return RestClientFactory.createClient(restClientBuilder, "http://product-service/api/v1/products",
                 ProductServiceClient.class);
     }
 }

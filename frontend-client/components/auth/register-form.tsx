@@ -22,9 +22,9 @@ import {
 } from "@/components/ui/form";
 
 const formSchema = z.object({
-    username: z.string().min(3, { message: "Username must be at least 3 characters" }).max(20),
-    email: z.string().email({ message: "Enter a valid email address" }),
-    password: z.string().min(6, { message: "Password must be at least 6 characters" }),
+    username: z.string().min(3, { message: "Tên đăng nhập phải có ít nhất 3 ký tự" }).max(20),
+    email: z.string().email({ message: "Địa chỉ email không hợp lệ" }),
+    password: z.string().min(6, { message: "Mật khẩu phải có ít nhất 6 ký tự" }),
 });
 
 type RegisterFormValue = z.infer<typeof formSchema>;
@@ -54,11 +54,11 @@ export function RegisterForm({ className, ...props }: RegisterFormProps) {
                 password: data.password,
             });
 
-            toast.success("Registration successful! Please sign in.");
+            toast.success("Đăng ký thành công! Vui lòng đăng nhập.");
             router.push("/auth/sign-in");
         } catch (error: any) {
             logger.error("Registration failed:", error);
-            toast.error(error.message || "Something went wrong");
+            toast.error(error.message || "Có lỗi xảy ra");
         } finally {
             setLoading(false);
         }
@@ -74,7 +74,7 @@ export function RegisterForm({ className, ...props }: RegisterFormProps) {
                             name="username"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Username</FormLabel>
+                                    <FormLabel>Tên đăng nhập</FormLabel>
                                     <FormControl>
                                         <Input
                                             placeholder="johndoe"
@@ -114,10 +114,10 @@ export function RegisterForm({ className, ...props }: RegisterFormProps) {
                             name="password"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Password</FormLabel>
+                                    <FormLabel>Mật khẩu</FormLabel>
                                     <FormControl>
                                         <Input
-                                            placeholder="Password"
+                                            placeholder="Mật khẩu"
                                             type="password"
                                             autoCapitalize="none"
                                             autoComplete="new-password"
@@ -133,7 +133,7 @@ export function RegisterForm({ className, ...props }: RegisterFormProps) {
                             {loading && (
                                 <span className="mr-2 h-4 w-4 animate-spin">...</span>
                             )}
-                            Create Account
+                            Tạo tài khoản
                         </Button>
                     </div>
                 </form>

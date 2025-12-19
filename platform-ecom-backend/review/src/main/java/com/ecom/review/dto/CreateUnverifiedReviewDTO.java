@@ -24,6 +24,7 @@ public class CreateUnverifiedReviewDTO {
     @Size(max = 200, message = "Title must not exceed 200 characters")
     private String title;
 
+    private String email;
     @Size(max = 5000, message = "Comment must not exceed 5000 characters")
     private String comment;
 

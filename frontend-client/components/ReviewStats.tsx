@@ -21,7 +21,7 @@ export function ReviewStats({ productId }: ReviewStatsProps) {
   if (loading && !summary) {
     return (
       <div className="text-center py-8 text-muted-foreground">
-        <p>Loading reviews...</p>
+        <p>Đang tải đánh giá...</p>
       </div>
     );
   }
@@ -38,9 +38,9 @@ export function ReviewStats({ productId }: ReviewStatsProps) {
   if (totalReviews === 0) {
     return (
       <div className="bg-muted/50 rounded-lg p-8 text-center">
-        <p className="text-muted-foreground">No reviews yet</p>
+        <p className="text-muted-foreground">Chưa có đánh giá nào</p>
         <p className="text-sm text-muted-foreground mt-2">
-          Be the first to review this product!
+          Hãy là người đầu tiên đánh giá sản phẩm này!
         </p>
       </div>
     );
@@ -55,7 +55,7 @@ export function ReviewStats({ productId }: ReviewStatsProps) {
         </div>
         <StarRating rating={averageRating} size="lg" />
         <p className="text-sm text-muted-foreground mt-2">
-          Based on {totalReviews} {totalReviews === 1 ? "review" : "reviews"}
+          Dựa trên {totalReviews} đánh giá
         </p>
       </div>
 

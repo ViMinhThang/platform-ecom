@@ -15,8 +15,8 @@ import { toast } from 'sonner';
 import { Loader2, Upload } from 'lucide-react';
 
 const profileSchema = z.object({
-    username: z.string().min(3, 'Username must be at least 3 characters'),
-    email: z.string().email('Invalid email address'),
+    username: z.string().min(3, 'Tên đăng nhập phải có ít nhất 3 ký tự'),
+    email: z.string().email('Địa chỉ email không hợp lệ'),
     currentPassword: z.string().optional(),
     password: z.string().optional(),
 }).refine((data) => {
@@ -25,7 +25,7 @@ const profileSchema = z.object({
     }
     return true;
 }, {
-    message: "Current password is required to change password",
+    message: "Mật khẩu hiện tại là bắt buộc để đổi mật khẩu",
     path: ["currentPassword"],
 });
 
@@ -60,7 +60,7 @@ export function ProfileInfoForm({ user, onUpdate }: ProfileInfoFormProps) {
     const onSubmit = async (data: ProfileFormValues) => {
         const token = session?.accessToken as string;
         if (!token) {
-            toast.error('You must be logged in to update your profile');
+            toast.error('Bạn phải đăng nhập để cập nhật hồ sơ');
             return;
         }
 
@@ -77,14 +77,14 @@ export function ProfileInfoForm({ user, onUpdate }: ProfileInfoFormProps) {
                 updateData.currentPassword = data.currentPassword;
             }
 
-            await updateUserInfo(updateData, token);
-            toast.success('Profile updated successfully');
+            await updateUserInfo(updateData);
+            toast.success('Cập nhật hồ sơ thành công');
             // Reset password fields
             form.setValue('currentPassword', '');
             form.setValue('password', '');
             onUpdate();
         } catch (error: any) {
-            toast.error(error.message || 'Failed to update profile');
+            toast.error(error.message || 'Cập nhật hồ sơ thất bại');
         } finally {
             setIsSaving(false);
         }
@@ -121,9 +121,9 @@ export function ProfileInfoForm({ user, onUpdate }: ProfileInfoFormProps) {
                         </div>
                     </div>
                     <div className="text-center">
-                        <p className="text-sm font-medium">Profile Picture</p>
+                        <p className="text-sm font-medium">Ảnh đại diện</p>
                         <p className="text-xs text-muted-foreground mt-1">
-                            JPG, GIF or PNG. Max 5MB.
+                            JPG, GIF hoặc PNG. Tối đa 5MB.
                         </p>
                     </div>
                 </div>
@@ -133,12 +133,12 @@ export function ProfileInfoForm({ user, onUpdate }: ProfileInfoFormProps) {
                     <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
                         <div className="grid gap-4">
                             <FormField
-                                label="Username"
+                                label="Tên đăng nhập"
                                 id="username"
                                 registration={form.register('username')}
                                 error={form.formState.errors.username}
                                 disabled={isSaving}
-                                placeholder="Enter your username"
+                                placeholder="Nhập tên đăng nhập"
                             />
 
                             <FormField
@@ -148,33 +148,33 @@ export function ProfileInfoForm({ user, onUpdate }: ProfileInfoFormProps) {
                                 registration={form.register('email')}
                                 error={form.formState.errors.email}
                                 disabled={isSaving}
-                                placeholder="Enter your email"
+                                placeholder="Nhập email của bạn"
                             />
 
                             <div className="pt-2 border-t mt-2">
-                                <h4 className="text-sm font-medium mb-3">Change Password</h4>
+                                <h4 className="text-sm font-medium mb-3">Đổi mật khẩu</h4>
                                 <div className="space-y-4">
                                     <FormField
-                                        label="Current Password"
+                                        label="Mật khẩu hiện tại"
                                         id="currentPassword"
                                         type="password"
                                         registration={form.register('currentPassword')}
                                         error={form.formState.errors.currentPassword}
                                         disabled={isSaving}
-                                        placeholder="Enter current password"
+                                        placeholder="Nhập mật khẩu hiện tại"
                                     />
 
                                     <FormField
-                                        label="New Password"
+                                        label="Mật khẩu mới"
                                         id="password"
                                         type="password"
                                         registration={form.register('password')}
                                         error={form.formState.errors.password}
                                         disabled={isSaving}
-                                        placeholder="Enter new password"
+                                        placeholder="Nhập mật khẩu mới"
                                     />
                                     <p className="text-xs text-muted-foreground">
-                                        Leave blank if you don't want to change your password.
+                                        Để trống nếu bạn không muốn đổi mật khẩu.
                                     </p>
                                 </div>
                             </div>
@@ -183,7 +183,7 @@ export function ProfileInfoForm({ user, onUpdate }: ProfileInfoFormProps) {
                         <div className="flex justify-end pt-4">
                             <Button type="submit" disabled={isSaving} className="w-full sm:w-auto">
                                 {isSaving && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                                Save Changes
+                                Lưu thay đổi
                             </Button>
                         </div>
                     </form>

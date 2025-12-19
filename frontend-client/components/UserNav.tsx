@@ -43,14 +43,14 @@ export function UserNav() {
                     </DropdownMenuLabel>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem asChild>
-                        <Link href="/profile">Profile</Link>
+                        <Link href="/profile">Hồ sơ</Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem asChild>
-                        <Link href="/orders">Orders</Link>
+                        <Link href="/orders">Đơn hàng</Link>
                     </DropdownMenuItem>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem onClick={() => signOut()}>
-                        Log out
+                        Đăng xuất
                     </DropdownMenuItem>
                 </DropdownMenuContent>
             </DropdownMenu>
@@ -61,7 +61,7 @@ export function UserNav() {
         <Button variant="ghost" size="icon" asChild>
             <Link href="/auth/sign-in">
                 <User className="h-5 w-5" />
-                <span className="sr-only">Sign In</span>
+                <span className="sr-only">Đăng nhập</span>
             </Link>
         </Button>
     );

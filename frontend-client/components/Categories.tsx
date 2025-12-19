@@ -21,7 +21,7 @@ export async function Categories() {
   return (
     <section className="container py-10 mx-auto">
       <h2 className="text-2xl font-bold tracking-tight mb-6">
-        Shop by Category
+        Mua sắm theo danh mục
       </h2>
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-6">
         {categories.map((category) => (
@@ -40,7 +40,7 @@ export async function Categories() {
                 />
               ) : (
                 <div className="w-full h-full flex items-center justify-center text-muted-foreground bg-muted">
-                  <span className="text-xs">No Image</span>
+                  <span className="text-xs">Không có ảnh</span>
                 </div>
               )}
             </div>

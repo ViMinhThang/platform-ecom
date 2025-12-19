@@ -23,5 +23,5 @@ public interface ReviewService {
 
     ProductReviewSummaryDTO getProductReviewSummary(Long productId);
 
-    ReviewDTO createUnverifiedReview(CreateUnverifiedReviewDTO dto, Long userId, String email);
+    ReviewDTO createUnverifiedReview(CreateUnverifiedReviewDTO dto, Long userId);
 }

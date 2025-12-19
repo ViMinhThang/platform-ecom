@@ -8,6 +8,7 @@ import { fetchProductReviews, resetReviews } from "@/lib/store/slices/reviewSlic
 import { GetReviewsParams } from "@/lib/services/review-service";
 import type { Review } from "@/types/review";
 import { StarRating } from "./ui/StarRating";
+import { ReviewForm } from "./ReviewForm";
 import { Button } from "./ui/button";
 import { useSession } from "next-auth/react";
 import { imageUrl } from "@/lib/utils/imageUrl";
@@ -34,7 +35,6 @@ export function ReviewList({ productId }: ReviewListProps) {
   const [sortDir, setSortDir] = useState<"asc" | "desc">("desc");
 
   useEffect(() => {
-    // Reset reviews when component unmounts or productId changes
     return () => {
       dispatch(resetReviews());
     };
@@ -80,69 +80,68 @@ export function ReviewList({ productId }: ReviewListProps) {
     );
   }
 
-  if (!loading && reviews.length === 0) {
-    return (
-      <div className="text-center py-8 text-muted-foreground">
-        <p>No reviews yet. Be the first to review!</p>
-      </div>
-    );
-  }
-
   return (
     <div className="space-y-6">
-      {/* Sort Selector */}
       <div className="flex justify-between items-center">
-        <h3 className="font-semibold">
-          {pagination.totalElements} {pagination.totalElements === 1 ? "Review" : "Reviews"}
-        </h3>
+        <div className="flex items-center gap-4">
+          <h3 className="font-semibold">
+            {pagination.totalElements} đánh giá
+          </h3>
+          <ReviewForm productId={productId} />
+        </div>
         <Select value={`${sortBy}-${sortDir}`} onValueChange={handleSortChange}>
           <SelectTrigger className="w-[200px]">
-            <SelectValue placeholder="Sort by" />
+            <SelectValue placeholder="Sắp xếp theo" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="createdAt-desc">Newest First</SelectItem>
-            <SelectItem value="createdAt-asc">Oldest First</SelectItem>
-            <SelectItem value="rating-desc">Highest Rated</SelectItem>
-            <SelectItem value="rating-asc">Lowest Rated</SelectItem>
-            <SelectItem value="helpfulCount-desc">Most Helpful</SelectItem>
+            <SelectItem value="createdAt-desc">Mới nhất</SelectItem>
+            <SelectItem value="createdAt-asc">Cũ nhất</SelectItem>
+            <SelectItem value="rating-desc">Đánh giá cao nhất</SelectItem>
+            <SelectItem value="rating-asc">Đánh giá thấp nhất</SelectItem>
+            <SelectItem value="helpfulCount-desc">Hữu ích nhất</SelectItem>
           </SelectContent>
         </Select>
       </div>
 
-      {/* Review Cards */}
-      <div className="space-y-4">
-        {reviews.map((review) => (
-          <ReviewCard key={review.id} review={review} />
-        ))}
-      </div>
-
-      {/* Pagination */}
-      {pagination.totalPages > 1 && (
-        <div className="flex justify-center gap-2 pt-4">
-          <Button
-            variant="outline"
-            onClick={() => setPage((p) => Math.max(0, p - 1))}
-            disabled={page === 0}
-          >
-            Previous
-          </Button>
-          <span className="flex items-center px-4 text-sm text-muted-foreground">
-            Page {page + 1} of {pagination.totalPages}
-          </span>
-          <Button
-            variant="outline"
-            onClick={() => setPage((p) => Math.min(pagination.totalPages - 1, p + 1))}
-            disabled={page >= pagination.totalPages - 1}
-          >
-            Next
-          </Button>
+      {!loading && reviews.length === 0 ? (
+        <div className="text-center py-8 text-muted-foreground border-2 border-dashed rounded-lg">
+          <p>Chưa có đánh giá nào. Hãy là người đầu tiên đánh giá!</p>
         </div>
+      ) : (
+        <>
+          <div className="space-y-4">
+            {reviews.map((review) => (
+              <ReviewCard key={review.id} review={review} />
+            ))}
+          </div>
+
+          {pagination.totalPages > 1 && (
+            <div className="flex justify-center gap-2 pt-4">
+              <Button
+                variant="outline"
+                onClick={() => setPage((p) => Math.max(0, p - 1))}
+                disabled={page === 0}
+              >
+                Trước
+              </Button>
+              <span className="flex items-center px-4 text-sm text-muted-foreground">
+                Trang {page + 1} trên {pagination.totalPages}
+              </span>
+              <Button
+                variant="outline"
+                onClick={() => setPage((p) => Math.min(pagination.totalPages - 1, p + 1))}
+                disabled={page >= pagination.totalPages - 1}
+              >
+                Sau
+              </Button>
+            </div>
+          )}
+        </>
       )}
     </div>
   );
 }
 
-// Individual Review Card Component
 function ReviewCard({ review }: { review: Review }) {
   const [showFullComment, setShowFullComment] = useState(false);
   const maxLength = 300;
@@ -153,7 +152,7 @@ function ReviewCard({ review }: { review: Review }) {
       ? review.comment!.substring(0, maxLength) + "..."
       : review.comment;
 
-  const reviewDate = new Date(review.createdAt).toLocaleDateString("en-US", {
+  const reviewDate = new Date(review.createdAt).toLocaleDateString("vi-VN", {
     year: "numeric",
     month: "long",
     day: "numeric",
@@ -177,7 +176,7 @@ function ReviewCard({ review }: { review: Review }) {
             <StarRating rating={review.rating} size="sm" />
             {review.verifiedPurchase && (
               <Badge variant="secondary" className="text-xs">
-                ✓ Verified Purchase
+                ✓ Đã mua hàng
               </Badge>
             )}
           </div>
@@ -200,7 +199,7 @@ function ReviewCard({ review }: { review: Review }) {
               onClick={() => setShowFullComment(!showFullComment)}
               className="text-primary text-sm font-medium hover:underline mt-1"
             >
-              {showFullComment ? "Show less" : "Read more"}
+              {showFullComment ? "Thu gọn" : "Xem thêm"}
             </button>
           )}
         </div>
@@ -229,7 +228,7 @@ function ReviewCard({ review }: { review: Review }) {
       {review.helpfulCount > 0 && (
         <div className="text-sm text-muted-foreground">
           {review.helpfulCount}{" "}
-          {review.helpfulCount === 1 ? "person" : "people"} found this helpful
+          người thấy đánh giá này hữu ích
         </div>
       )}
     </div>

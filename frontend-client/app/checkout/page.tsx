@@ -12,20 +12,22 @@ import { Button } from "@/components/ui/button";
 import { useShipping } from "@/hooks/useShipping";
 import { useAppSelector } from "@/lib/store/hooks";
 import { logger } from "@/lib/logger";
+import { formatCurrency } from "@/lib/utils/formatCurrency";
 
 export default function CheckoutPage() {
     const {
         checkout,
         checkoutSession,
+        currentOrder,
         startCheckout,
         loading: orderLoading,
-        error: orderError
+        error: orderError,
+        setShipping
     } = useCheckout();
     const { cart } = useCart();
     const [stripePromise] = useState(() => getStripe());
     const [elementsOptions, setElementsOptions] = useState<any>(null);
 
-    // Shipping calculation
     const { shippingFee, loading: shippingLoading, calculateTotalShipping } = useShipping();
     const { addresses } = useAppSelector((state) => state.address);
 
@@ -39,7 +41,14 @@ export default function CheckoutPage() {
         }
     }, [cart, checkout.selectedAddressId, addresses, calculateTotalShipping]);
 
-    // Initialize Stripe Elements when we have a client secret from checkout session
+    // Sync shipping fee to Redux store
+    // Sync shipping fee to Redux store
+    useEffect(() => {
+        if (shippingFee > 0) {
+            setShipping(shippingFee);
+        }
+    }, [shippingFee, setShipping]);
+
     useEffect(() => {
         if (checkoutSession?.clientSecret) {
             setElementsOptions({
@@ -53,24 +62,25 @@ export default function CheckoutPage() {
             });
         }
     }, [checkoutSession]);
-
-    // Handle transition to payment step - initiate checkout to get Stripe client secret
     useEffect(() => {
-        if (checkout.step === 'payment' && !checkoutSession && !orderLoading && !orderError) {
-            // If we are in payment step but no checkout session yet, initiate it
+        if (checkout.step === 'payment' && !checkoutSession && !orderLoading && !orderError && !currentOrder) {
             startCheckout().catch((err) => logger.error("Failed to initiate checkout", err));
         }
-    }, [checkout.step, checkoutSession, orderLoading, startCheckout, orderError]);
+    }, [checkout.step, checkoutSession, orderLoading, startCheckout, orderError, currentOrder]);
+
+    // ... inside component ...
+
+    // ... inside component ...
 
     if (!cart) {
-        return <div className="container py-12 text-center">Loading checkout...</div>;
+        return <div className="container py-12 text-center">Đang tải trang thanh toán...</div>;
     }
 
     const totalAmount = cart.totalAmount + shippingFee;
 
     return (
         <div className="container mx-auto py-8 px-4 md:px-6 max-w-4xl">
-            <h1 className="text-3xl font-bold mb-8">Checkout</h1>
+            <h1 className="text-3xl font-bold mb-8">Thanh toán</h1>
 
             <div className="grid md:grid-cols-3 gap-8">
                 {/* Main Checkout Flow */}
@@ -108,11 +118,11 @@ export default function CheckoutPage() {
                                         <AlertCircle className="h-6 w-6 text-destructive" />
                                     </div>
                                     <div className="space-y-2">
-                                        <h3 className="font-semibold text-lg">Failed to initiate checkout</h3>
+                                        <h3 className="font-semibold text-lg">Khởi tạo thanh toán thất bại</h3>
                                         <p className="text-muted-foreground max-w-xs mx-auto">{orderError}</p>
                                     </div>
                                     <Button onClick={() => startCheckout()} variant="outline">
-                                        Try Again
+                                        Thử lại
                                     </Button>
                                 </div>
                             ) : (
@@ -125,7 +135,7 @@ export default function CheckoutPage() {
                         )}
                         {checkout.step === 'address' && (
                             <div className="bg-muted/30 p-6 rounded-lg border border-dashed text-center text-muted-foreground">
-                                Complete address selection to proceed to payment
+                                Vui lòng chọn địa chỉ để tiếp tục thanh toán
                             </div>
                         )}
                     </div>
@@ -134,36 +144,36 @@ export default function CheckoutPage() {
                 {/* Order Summary Sidebar */}
                 <div className="md:col-span-1">
                     <div className="bg-zinc-50 dark:bg-zinc-900 p-6 rounded-lg border sticky top-24">
-                        <h3 className="font-semibold mb-4">Order Summary</h3>
+                        <h3 className="font-semibold mb-4">Tóm tắt đơn hàng</h3>
                         <div className="space-y-3 text-sm mb-6">
                             {cart.items.map((item) => (
                                 <div key={`${item.productId}-${item.variantId}`} className="flex justify-between gap-2">
                                     <span className="text-muted-foreground truncate flex-1">
                                         {item.quantity}x {item.productName}
                                     </span>
-                                    <span>${item.totalPrice.toFixed(2)}</span>
+                                    <span>{formatCurrency(item.totalPrice)}</span>
                                 </div>
                             ))}
                         </div>
 
                         <div className="border-t pt-4 space-y-2">
                             <div className="flex justify-between">
-                                <span className="text-muted-foreground">Subtotal</span>
-                                <span>${cart.totalAmount.toFixed(2)}</span>
+                                <span className="text-muted-foreground">Tạm tính</span>
+                                <span>{formatCurrency(cart.totalAmount)}</span>
                             </div>
                             <div className="flex justify-between">
-                                <span className="text-muted-foreground">Shipping</span>
+                                <span className="text-muted-foreground">Phí vận chuyển</span>
                                 <span>
                                     {shippingLoading ? (
                                         <Loader2 className="h-3 w-3 animate-spin inline" />
                                     ) : (
-                                        shippingFee > 0 ? `$${shippingFee.toLocaleString()}` : 'Calculated next'
+                                        shippingFee > 0 ? formatCurrency(shippingFee) : 'Tính ở bước tiếp theo'
                                     )}
                                 </span>
                             </div>
                             <div className="flex justify-between font-bold text-lg pt-2 border-t">
-                                <span>Total</span>
-                                <span>${totalAmount.toLocaleString()}</span>
+                                <span>Tổng cộng</span>
+                                <span>{formatCurrency(totalAmount)}</span>
                             </div>
                         </div>
                     </div>
