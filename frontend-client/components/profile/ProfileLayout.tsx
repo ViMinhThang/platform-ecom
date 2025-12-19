@@ -13,19 +13,14 @@ interface ProfileLayoutProps {
 
 const sidebarItems = [
     {
-        title: 'Profile',
+        title: 'Thông tin cá nhân',
         href: '/profile',
         icon: User,
     },
     {
-        title: 'Addresses',
+        title: 'Sổ địa chỉ',
         href: '/profile?tab=addresses',
         icon: MapPin,
-    },
-    {
-        title: 'Orders',
-        href: '/profile?tab=orders',
-        icon: ShoppingBag,
     },
 ];
 
@@ -67,7 +62,7 @@ export function ProfileLayout({ children }: ProfileLayoutProps) {
                             onClick={() => signOut({ callbackUrl: '/' })}
                         >
                             <LogOut className="h-4 w-4" />
-                            Sign Out
+                            Đăng xuất
                         </Button>
                     </nav>
                 </aside>

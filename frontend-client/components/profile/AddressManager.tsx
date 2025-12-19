@@ -84,9 +84,9 @@ export function AddressManager({ addresses, onUpdate }: AddressManagerProps) {
     return (
         <div className="space-y-6">
             <div className="flex items-center justify-between">
-                <h3 className="text-lg font-medium">My Addresses ({addresses.length}/5)</h3>
+                <h3 className="text-lg font-medium">Địa chỉ của tôi ({addresses.length}/5)</h3>
                 <Button onClick={handleAddClick} disabled={addresses.length >= 5}>
-                    <Plus className="mr-2 h-4 w-4" /> Add New Address
+                    <Plus className="mr-2 h-4 w-4" /> Thêm địa chỉ mới
                 </Button>
             </div>
 
@@ -106,10 +106,10 @@ export function AddressManager({ addresses, onUpdate }: AddressManagerProps) {
                         <div className="h-12 w-12 rounded-full bg-muted flex items-center justify-center mb-4">
                             <Plus className="h-6 w-6" />
                         </div>
-                        <h3 className="text-lg font-medium text-foreground">No addresses found</h3>
-                        <p className="text-sm mt-1 mb-4">Add a shipping address to get started.</p>
+                        <h3 className="text-lg font-medium text-foreground">Không tìm thấy địa chỉ</h3>
+                        <p className="text-sm mt-1 mb-4">Thêm địa chỉ giao hàng để bắt đầu.</p>
                         <Button onClick={handleAddClick} variant="outline">
-                            Add New Address
+                            Thêm địa chỉ mới
                         </Button>
                     </div>
                 )}
@@ -120,7 +120,7 @@ export function AddressManager({ addresses, onUpdate }: AddressManagerProps) {
                 <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
                     <DialogHeader>
                         <DialogTitle>
-                            {editingAddress ? 'Edit Address' : 'Add New Address'}
+                            {editingAddress ? 'Chỉnh sửa địa chỉ' : 'Thêm địa chỉ mới'}
                         </DialogTitle>
                     </DialogHeader>
                     <AddressForm
@@ -135,9 +135,9 @@ export function AddressManager({ addresses, onUpdate }: AddressManagerProps) {
             <Dialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
                 <DialogContent>
                     <DialogHeader>
-                        <DialogTitle>Delete Address</DialogTitle>
+                        <DialogTitle>Xóa địa chỉ</DialogTitle>
                         <DialogDescription>
-                            Are you sure you want to delete this address? This action cannot be undone.
+                            Bạn có chắc chắn muốn xóa địa chỉ này? Hành động này không thể hoàn tác.
                         </DialogDescription>
                     </DialogHeader>
                     <DialogFooter>
@@ -146,7 +146,7 @@ export function AddressManager({ addresses, onUpdate }: AddressManagerProps) {
                             onClick={() => setIsDeleteDialogOpen(false)}
                             disabled={isDeleting !== null}
                         >
-                            Cancel
+                            Hủy
                         </Button>
                         <Button
                             variant="destructive"
@@ -156,10 +156,10 @@ export function AddressManager({ addresses, onUpdate }: AddressManagerProps) {
                             {isDeleting !== null ? (
                                 <>
                                     <span className="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
-                                    Deleting...
+                                    Đang xóa...
                                 </>
                             ) : (
-                                'Delete'
+                                'Xóa'
                             )}
                         </Button>
                     </DialogFooter>

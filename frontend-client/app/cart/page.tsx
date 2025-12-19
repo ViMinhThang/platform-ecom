@@ -46,14 +46,12 @@ export default function CartPage() {
             <h1 className="text-2xl font-bold mb-8">Giỏ hàng ({cart.totalItems} sản phẩm)</h1>
 
             <div className="grid lg:grid-cols-3 gap-8">
-                {/* Cart Items Column */}
                 <div className="lg:col-span-2">
                     {cartBySeller.map((group) => (
                         <SellerGroup key={group.sellerId} group={group} />
                     ))}
                 </div>
 
-                {/* Summary Column */}
                 <div className="lg:col-span-1">
                     <CartSummary cart={cart} />
                 </div>

@@ -14,6 +14,7 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { imageUrl } from "@/lib/utils/imageUrl";
 
 export function UserNav() {
     const { data: session } = useSession();
@@ -24,8 +25,7 @@ export function UserNav() {
                 <DropdownMenuTrigger asChild>
                     <Button variant="ghost" className="relative h-8 w-8 rounded-full">
                         <Avatar className="h-8 w-8">
-                            {/* @ts-ignore */}
-                            <AvatarImage src={session.user?.imageUrl || "/avatars/01.png"} alt={session.user?.name || ""} />
+                            <AvatarImage src={imageUrl.avatar(session.user?.imageUrl)} alt={session.user?.name || ""} />
                             <AvatarFallback>{session.user?.name?.charAt(0) || "U"}</AvatarFallback>
                         </Avatar>
                     </Button>

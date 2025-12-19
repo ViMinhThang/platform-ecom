@@ -19,6 +19,8 @@ import org.springframework.transaction.annotation.Transactional;
 import com.ecom.product.client.UserServiceClient;
 import java.math.BigDecimal;
 import java.util.stream.Collectors;
+import org.owasp.html.PolicyFactory;
+import org.owasp.html.Sanitizers;
 
 @Service
 @RequiredArgsConstructor
@@ -59,7 +61,7 @@ public class ProductServiceImpl implements ProductService {
             existingProduct.setName(productDTO.getName());
         }
         if (productDTO.getDescription() != null) {
-            existingProduct.setDescription(productDTO.getDescription());
+            existingProduct.setDescription(sanitizeDescription(productDTO.getDescription()));
         }
         if (productDTO.getStatus() != null) {
             existingProduct.setStatus(productDTO.getStatus());
@@ -163,7 +165,7 @@ public class ProductServiceImpl implements ProductService {
     private Product buildProductFromDTO(ProductDTO productDTO, Category category, Long userId) {
         Product product = new Product();
         product.setName(productDTO.getName());
-        product.setDescription(productDTO.getDescription());
+        product.setDescription(sanitizeDescription(productDTO.getDescription()));
         product.setStatus(productDTO.getStatus());
         product.setSpecifications(productDTO.getSpecifications());
         product.setMetadata(productDTO.getMetadata());
@@ -237,7 +239,7 @@ public class ProductServiceImpl implements ProductService {
                 .map(row -> {
                     Long userId = (Long) row[0];
                     UserDTO user = userServiceClient.getUserSafe(userId);
-                    
+
                     return TopSellerDTO.builder()
                             .sellerId(userId)
                             .sellerName(user != null ? user.getUsername() : "Unknown Seller")
@@ -254,5 +256,19 @@ public class ProductServiceImpl implements ProductService {
                 .orElseThrow(() -> new ResourceNotFoundException("Product", "slug", slug));
         validateProductIsActive(product);
         return productMapper.toDetailDTO(product);
+    }
+
+    private String sanitizeDescription(String description) {
+        if (description == null)
+            return null;
+        PolicyFactory policy = Sanitizers.FORMATTING
+                .and(Sanitizers.LINKS)
+                .and(Sanitizers.BLOCKS)
+                .and(Sanitizers.STYLES)
+                .and(Sanitizers.IMAGES)
+                .and(new org.owasp.html.HtmlPolicyBuilder()
+                        .allowAttributes("data-image-id").onElements("img")
+                        .toFactory());
+        return policy.sanitize(description);
     }
 }

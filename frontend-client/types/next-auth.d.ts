@@ -10,6 +10,7 @@ declare module "next-auth" {
             name?: string;
             roles?: string[];
             accessToken?: string;
+            imageUrl?: string;
         };
     }
 
@@ -19,6 +20,7 @@ declare module "next-auth" {
         name?: string;
         roles: string[];
         accessToken?: string;
+        imageUrl?: string;
     }
 }
 

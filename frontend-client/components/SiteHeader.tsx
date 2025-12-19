@@ -27,15 +27,15 @@ export function SiteHeader() {
   const cartItemCount = cart?.items?.reduce((total, item) => total + item.quantity, 0) || 0;
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-background shadow-sm">
+    <header className="sticky top-0 z-50 w-full bg-primary text-primary-foreground shadow-md transition-all duration-300">
       <div className="container mx-auto flex h-16 items-center px-4 md:px-6">
-        <div className="mr-4 hidden md:flex">
-          <Link href="/" className="mr-6 flex items-center space-x-2 group">
-            <span className="hidden font-bold sm:inline-block text-xl tracking-tight group-hover:text-primary transition-colors">
-              ACME Store
+        <div className="mr-8 hidden md:flex">
+          <Link href="/" className="mr-8 flex items-center space-x-2">
+            <span className="hidden font-black sm:inline-block text-2xl tracking-tighter uppercase text-primary-foreground">
+              ACME
             </span>
           </Link>
-          <nav className="flex items-center space-x-6 text-sm font-medium">
+          <nav className="flex items-center space-x-8 text-[10px] font-black uppercase tracking-[0.2em]">
             {[
               { label: "Sản phẩm", href: "/products" },
               { label: "Khuyến mãi", href: "/deals" },
@@ -44,7 +44,7 @@ export function SiteHeader() {
               <Link
                 key={item.label}
                 href={item.href}
-                className="relative transition-colors hover:text-primary text-foreground/80 py-2 after:content-[''] after:absolute after:left-0 after:bottom-0 after:h-[2px] after:w-0 after:bg-primary after:transition-all after:duration-300 hover:after:w-full"
+                className="transition-colors hover:text-white/80 text-primary-foreground/90 py-1"
               >
                 {item.label}
               </Link>
@@ -55,18 +55,18 @@ export function SiteHeader() {
           <SheetTrigger asChild>
             <Button
               variant="ghost"
-              className="mr-2 px-0 text-base hover:bg-transparent focus-visible:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 md:hidden"
+              className="mr-2 px-0 text-base md:hidden text-primary-foreground hover:bg-white/10"
             >
-              <Menu className="h-5 w-5" />
+              <Menu className="h-6 w-6" />
               <span className="sr-only">Toggle Menu</span>
             </Button>
           </SheetTrigger>
-          <SheetContent side="left" className="pr-0">
-            <Link href="/" className="flex items-center">
-              <span className="font-bold">ACME Store</span>
+          <SheetContent side="left" className="pr-0 border-r-4 border-primary">
+            <Link href="/" className="flex items-center mb-10">
+              <span className="font-black text-2xl tracking-tighter uppercase text-primary">ACME</span>
             </Link>
-            <div className="my-4 h-[calc(100vh-8rem)] pb-10 pl-6">
-              <div className="flex flex-col space-y-3">
+            <div className="my-4 h-[calc(100vh-8rem)] pb-10 pl-2">
+              <div className="flex flex-col space-y-6 text-sm font-black uppercase tracking-widest">
                 <Link href="/products">Sản phẩm</Link>
                 <Link href="/categories">Danh mục</Link>
                 <Link href="/about">Giới thiệu</Link>
@@ -74,22 +74,22 @@ export function SiteHeader() {
             </div>
           </SheetContent>
         </Sheet>
-        <div className="flex flex-1 items-center justify-between space-x-2 md:justify-end">
+        <div className="flex flex-1 items-center justify-between space-x-4 md:justify-end">
           <div className="w-full flex-1 md:w-auto md:flex-none">
-            <div className="relative group">
-              <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground group-focus-within:text-primary transition-colors" />
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-primary-foreground/60" />
               <Input
-                placeholder="Tìm kiếm sản phẩm..."
-                className="pl-8 md:w-[300px] lg:w-[300px] bg-muted/50 focus:bg-background transition-all duration-300 border-transparent focus:border-primary/50 focus:ring-primary/20"
+                placeholder="Tìm sản phẩm..."
+                className="pl-10 md:w-[250px] lg:w-[350px] bg-white/10 focus:bg-white/20 border-white/20 focus:border-white/40 text-primary-foreground placeholder:text-primary-foreground/50 rounded-none h-10 text-xs font-medium transition-all"
               />
             </div>
           </div>
-          <nav className="flex items-center space-x-2">
+          <nav className="flex items-center space-x-3">
             <UserNav />
-            <Link href="/cart" className="relative p-2 hover:bg-muted rounded-full transition-colors group">
-              <ShoppingCart className="h-5 w-5 group-hover:text-primary transition-colors" />
+            <Link href="/cart" className="relative p-2.5 rounded-none group hover:bg-white/10 transition-colors">
+              <ShoppingCart className="h-5 w-5" />
               {cartItemCount > 0 && (
-                <Badge className="absolute -right-0.5 -top-0.5 h-4 w-4 rounded-full p-0 flex items-center justify-center text-[10px] bg-primary text-primary-foreground animate-in zoom-in spin-in-180 duration-300">
+                <Badge className="absolute -right-0 -top-0 h-4 w-4 rounded-full p-0 flex items-center justify-center text-[10px] font-bold bg-white text-primary border-2 border-primary">
                   {cartItemCount}
                 </Badge>
               )}

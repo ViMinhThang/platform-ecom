@@ -36,7 +36,7 @@ export function AddressCard({ address, onEdit, onDelete, isDeleting }: AddressCa
                     </CardTitle>
                     {address.isDefault && (
                         <Badge variant="secondary" className="bg-green-100 text-green-800 hover:bg-green-100">
-                            Default
+                            Mặc định
                         </Badge>
                     )}
                 </div>

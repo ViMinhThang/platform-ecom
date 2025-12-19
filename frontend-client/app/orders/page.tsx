@@ -19,15 +19,14 @@ import { imageUrl } from '@/lib/utils/imageUrl';
 type OrderTab = 'all' | 'to_ship' | 'shipping' | 'to_receive' | 'completed' | 'cancelled';
 
 const ORDER_TABS: { value: OrderTab; label: string }[] = [
-    { value: 'all', label: 'All' },
-    { value: 'to_ship', label: 'To Ship' },
-    { value: 'shipping', label: 'Shipping' },
-    { value: 'to_receive', label: 'To Receive' },
-    { value: 'completed', label: 'Completed' },
-    { value: 'cancelled', label: 'Cancelled' },
+    { value: 'all', label: 'Tất cả' },
+    { value: 'to_ship', label: 'Chờ giao hàng' },
+    { value: 'shipping', label: 'Đang giao' },
+    { value: 'to_receive', label: 'Chờ nhận hàng' },
+    { value: 'completed', label: 'Đã hoàn thành' },
+    { value: 'cancelled', label: 'Đã hủy' },
 ];
 
-// Map tab to SubOrderStatus values
 const TAB_STATUS_MAP: Record<OrderTab, SubOrderStatus[]> = {
     all: [],
     to_ship: [SubOrderStatus.PENDING, SubOrderStatus.PROCESSING, SubOrderStatus.READY_TO_PICK],
@@ -58,7 +57,6 @@ export default function OrdersPage() {
         }
     }, [dispatch, session]);
 
-    // Filter orders by tab
     const filteredOrders = orders.filter((order) => {
         if (activeTab === 'all') return true;
         const targetStatuses = TAB_STATUS_MAP[activeTab];
@@ -83,14 +81,13 @@ export default function OrdersPage() {
             <div className="container mx-auto py-6 px-4 max-w-5xl">
                 <h1 className="text-2xl font-bold mb-6">My Orders</h1>
 
-                {/* Status Tabs */}
-                <Tabs value={activeTab} onValueChange={handleTabChange} className="mb-6">
-                    <TabsList className="w-full justify-start overflow-x-auto flex-nowrap bg-background border">
+                <Tabs value={activeTab} onValueChange={handleTabChange} className="mb-3">
+                    <TabsList className="w-full justify-start overflow-x-auto flex-nowrap bg-white dark:bg-zinc-950 border-b rounded-none h-auto p-0 px-4 gap-10 scrollbar-hide shadow-sm sticky top-16 z-10">
                         {ORDER_TABS.map((tab) => (
                             <TabsTrigger
                                 key={tab.value}
                                 value={tab.value}
-                                className="flex-shrink-0 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+                                className="flex-shrink-0 h-16 px-0 rounded-none border-b-4 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:text-primary text-[10px] font-black uppercase tracking-[0.2em] transition-all bg-transparent shadow-none"
                             >
                                 {tab.label}
                             </TabsTrigger>
@@ -98,20 +95,26 @@ export default function OrdersPage() {
                     </TabsList>
                 </Tabs>
 
-                {/* Orders List */}
                 {filteredOrders.length === 0 ? (
-                    <Card>
-                        <CardContent className="py-16 text-center">
-                            <Package className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
-                            <h3 className="text-lg font-medium">No orders found</h3>
-                            <p className="text-muted-foreground mt-1">
+                    <Card className="border-2 border-dashed bg-zinc-50/50">
+                        <CardContent className="py-20 text-center">
+                            <Package className="h-16 w-16 mx-auto text-zinc-300 mb-6" />
+                            <h3 className="text-xl font-black uppercase tracking-tight">Không tìm thấy đơn hàng</h3>
+                            <p className="text-muted-foreground mt-2 text-sm font-medium uppercase tracking-tight">
                                 {activeTab === 'all'
-                                    ? "You haven't placed any orders yet."
-                                    : `No orders in "${ORDER_TABS.find(t => t.value === activeTab)?.label}" status.`
+                                    ? "Bạn chưa thực hiện bất kỳ đơn hàng nào."
+                                    : `Không có đơn hàng nào ở trạng thái "${{
+                                        all: 'Tất cả',
+                                        to_ship: 'Chờ giao hàng',
+                                        shipping: 'Đang giao',
+                                        to_receive: 'Chờ nhận hàng',
+                                        completed: 'Đã hoàn thành',
+                                        cancelled: 'Đã hủy'
+                                    }[activeTab]}".`
                                 }
                             </p>
-                            <Button asChild className="mt-4">
-                                <Link href="/products">Start Shopping</Link>
+                            <Button asChild className="mt-8 px-10 h-12 text-[10px] font-black uppercase tracking-[0.2em]">
+                                <Link href="/products">Bắt đầu mua sắm</Link>
                             </Button>
                         </CardContent>
                     </Card>
@@ -149,16 +152,16 @@ function OrderCard({ order }: { order: OrderGroupDTO }) {
             {order.subOrders.map((subOrder) => (
                 <div key={subOrder.id} className="border-b last:border-b-0">
                     {/* Seller Header */}
-                    <div className="bg-muted/50 px-4 py-3 flex items-center justify-between">
-                        <div className="flex items-center gap-2">
-                            <span className="font-medium">{subOrder.sellerName}</span>
-                            <Badge variant="outline" className={getStatusColor(subOrder.status)}>
+                    <div className="bg-zinc-50 dark:bg-zinc-800/50 px-4 py-3 flex items-center justify-between border-b">
+                        <div className="flex items-center gap-3">
+                            <span className="text-xs font-black uppercase tracking-wider">{subOrder.sellerName}</span>
+                            <Badge variant="outline" className={`text-[10px] font-bold uppercase tracking-tighter px-2 py-0 h-5 ${getStatusColor(subOrder.status)}`}>
                                 {subOrder.status.replace(/_/g, ' ')}
                             </Badge>
                         </div>
                         {subOrder.ghnOrderCode && (
-                            <div className="flex items-center gap-1 text-sm text-muted-foreground">
-                                <Truck className="h-4 w-4" />
+                            <div className="flex items-center gap-1 text-[10px] font-bold uppercase tracking-tight text-muted-foreground">
+                                <Truck className="h-3 w-3" />
                                 <span>GHN: {subOrder.ghnOrderCode}</span>
                             </div>
                         )}
@@ -198,19 +201,19 @@ function OrderCard({ order }: { order: OrderGroupDTO }) {
                     </div>
 
                     {/* Footer */}
-                    <div className="px-4 py-3 border-t bg-muted/30 flex items-center justify-between">
-                        <div className="text-sm text-muted-foreground">
-                            {format(new Date(order.createdAt), 'MMM d, yyyy')}
+                    <div className="px-4 py-4 border-t bg-zinc-50/50 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                        <div className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
+                            {format(new Date(order.createdAt), 'dd/MM/yyyy')}
                         </div>
-                        <div className="flex items-center gap-4">
+                        <div className="flex items-center justify-between w-full sm:w-auto gap-6">
                             <div className="text-right">
-                                <span className="text-sm text-muted-foreground">Order Total: </span>
-                                <span className="font-bold text-lg">${subOrder.total.toFixed(2)}</span>
+                                <span className="text-[10px] font-black uppercase tracking-widest text-muted-foreground mr-2">Tổng tiền: </span>
+                                <span className="font-black text-xl tracking-tighter text-primary">${subOrder.total.toFixed(2)}</span>
                             </div>
-                            <Button variant="outline" size="sm" asChild>
+                            <Button variant="outline" size="sm" asChild className="h-9 px-4 text-[10px] font-black uppercase tracking-widest border-2">
                                 <Link href={`/orders/${order.id}?subOrder=${subOrder.id}`}>
-                                    View Details
-                                    <ChevronRight className="h-4 w-4 ml-1" />
+                                    Chi tiết
+                                    <ChevronRight className="h-3 w-3 ml-1" />
                                 </Link>
                             </Button>
                         </div>

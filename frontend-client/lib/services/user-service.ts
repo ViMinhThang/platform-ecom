@@ -67,3 +67,22 @@ export const uploadProfileImage = async (
     return response.data.data;
 };
 
+/**
+ * Seller info for public display
+ */
+export interface SellerInfo {
+    userId: number;
+    username: string;
+    imageUrl?: string;
+}
+
+/**
+ * Get seller/user info by ID (public info only)
+ */
+export const getSellerInfo = async (userId: number): Promise<SellerInfo> => {
+    const response = await apiClient.get<APIResponse<SellerInfo>>(
+        `/v1/internal/user-service/users/${userId}`
+    );
+    return response.data.data;
+};
+

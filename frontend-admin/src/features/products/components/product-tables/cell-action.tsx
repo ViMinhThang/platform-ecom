@@ -19,6 +19,7 @@ import {
 import {
   IconDotsVertical,
   IconEdit,
+  IconFileDescription,
   IconPhoto,
   IconTools,
   IconTrash,
@@ -31,14 +32,17 @@ import { ProductDialog } from "../product-form/product-form";
 import { VariantFormValues } from "@/types/product/product-variant";
 import { ProductOptionProvider } from "@/providers/product-option-provider";
 import { ProductVariantProvider } from "@/providers/product-variant-provider";
+import { useRouter } from "next/navigation";
 
 interface CellActionProps {
   data: ProductRow;
 }
 
 export const CellAction: React.FC<CellActionProps> = ({ data }) => {
+  const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [deleteOpen, setDeleteOpen] = useState(false);
+  // ... existing states ...
   const [updateProductOpen, setUpdateProductOpen] = useState(false);
   const [updateOptionsOpen, setUpdateOptionsOpen] = useState(false);
   const [updateVariantsOpen, setUpdateVariantsOpen] = useState(false);
@@ -105,9 +109,14 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
               <IconEdit className="mr-2 h-4 w-4" /> Update Product
             </DropdownMenuItem>
 
+            <DropdownMenuItem onClick={() => router.push(`/dashboard/product/${data.id}/description`)}>
+              <IconFileDescription className="mr-2 h-4 w-4" /> Edit Description
+            </DropdownMenuItem>
+
             <DropdownMenuItem onClick={() => setUpdateOptionsOpen(true)}>
               <IconTools className="mr-2 h-4 w-4" /> Update Options
             </DropdownMenuItem>
+// ...
 
             <DropdownMenuItem onClick={() => setUpdateVariantsOpen(true)}>
               <IconTools className="mr-2 h-4 w-4" /> Update Variants

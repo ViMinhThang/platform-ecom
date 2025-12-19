@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
+import Link from "next/link";
 import { ProductCard } from "@/components/ProductCard";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import { fetchProducts } from "@/lib/store/slices/productSlice";
@@ -32,20 +33,20 @@ export function FeaturedProducts() {
   }
 
   return (
-    <section className="container mx-auto py-16 md:py-24 px-4 md:px-6">
-      <div className="flex items-center justify-between mb-10">
+    <section className="container mx-auto py-16 md:py-24 px-4 md:px-6 bg-white/50">
+      <div className="flex items-center justify-between mb-12">
         <div>
-          <h2 className="text-3xl font-bold tracking-tight">
-            Featured Products
+          <h2 className="text-4xl font-black tracking-tighter uppercase leading-none">
+            Sản phẩm <span className="text-primary italic">nổi bật</span>
           </h2>
-          <p className="text-muted-foreground mt-2">Handpicked for you.</p>
+          <p className="text-muted-foreground mt-2 text-sm font-medium uppercase tracking-widest">Tuyển chọn dành riêng cho bạn</p>
         </div>
-        <a
+        <Link
           href="/products"
-          className="text-sm font-medium hover:underline underline-offset-4"
+          className="text-[10px] font-black uppercase tracking-[0.2em] px-6 py-3 border-2 border-zinc-900"
         >
-          View all products
-        </a>
+          Xem tất cả
+        </Link>
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         {products.length > 0 ? (

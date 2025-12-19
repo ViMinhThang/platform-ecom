@@ -46,20 +46,17 @@
 :root {
   --radius: 0.25rem;
   --background: oklch(0.99 0.01 80);
-  /* Warm Sand/White */
   --foreground: oklch(0.2 0.04 40);
-  /* Warm Dark Grey */
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.2 0.04 40);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.2 0.04 40);
 
-  /* Vibrant Orange/Coral Primary */
   --primary: oklch(0.6 0.18 35);
+  --primary-rgb: 228, 93, 30;
   --primary-foreground: oklch(0.98 0 0);
 
   --secondary: oklch(0.96 0.03 80);
-  /* Warm Light Beige */
   --secondary-foreground: oklch(0.3 0.05 40);
 
   --muted: oklch(0.96 0.02 85);
@@ -74,18 +71,12 @@
   --border: oklch(0.92 0.02 85);
   --input: oklch(0.92 0.02 85);
   --ring: oklch(0.6 0.18 35);
-  /* Match Primary */
 
   --chart-1: oklch(0.6 0.18 35);
-  /* Orange */
   --chart-2: oklch(0.65 0.15 50);
-  /* Gold */
   --chart-3: oklch(0.5 0.15 15);
-  /* Red/Rust */
   --chart-4: oklch(0.7 0.1 80);
-  /* Sand */
   --chart-5: oklch(0.5 0.1 300);
-  /* Complementary Purple */
 
   --sidebar: oklch(0.98 0.01 80);
   --sidebar-foreground: oklch(0.2 0.04 40);
@@ -107,7 +98,7 @@
   --popover-foreground: oklch(0.98 0.01 80);
 
   --primary: oklch(0.65 0.18 35);
-  /* Slightly lighter Orange */
+  --primary-rgb: 245, 110, 48;
   --primary-foreground: oklch(0.12 0.03 40);
 
   --secondary: oklch(0.25 0.04 40);
@@ -148,7 +139,29 @@
   }
 
   body {
-    @apply bg-background text-foreground antialiased selection:bg-primary/20 selection:text-primary;
+    @apply bg-background text-foreground antialiased selection:bg-primary/30 selection:text-primary-foreground;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply tracking-tighter uppercase font-black;
+  }
+
+  /* Custom Scrollbar */
+  ::-webkit-scrollbar {
+    width: 10px;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-muted/30;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-primary/40 hover:bg-primary/60 transition-colors border-4 border-transparent bg-clip-padding rounded-full;
   }
 }
 

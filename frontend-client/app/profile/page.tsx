@@ -67,9 +67,9 @@ export default function ProfilePage() {
                 return (
                     <Card>
                         <CardHeader>
-                            <CardTitle>Address Book</CardTitle>
+                            <CardTitle>Sổ địa chỉ</CardTitle>
                             <CardDescription>
-                                Manage your shipping addresses. You can add up to 5 addresses.
+                                Quản lý địa chỉ giao hàng của bạn. Bạn có thể thêm tối đa 5 địa chỉ.
                             </CardDescription>
                         </CardHeader>
                         <CardContent>
@@ -80,28 +80,14 @@ export default function ProfilePage() {
                         </CardContent>
                     </Card>
                 );
-            case 'orders':
-                return (
-                    <Card>
-                        <CardHeader>
-                            <CardTitle>Order History</CardTitle>
-                            <CardDescription>
-                                View your past orders and their status.
-                            </CardDescription>
-                        </CardHeader>
-                        <CardContent>
-                            <OrderHistory />
-                        </CardContent>
-                    </Card>
-                );
             case 'profile':
             default:
                 return (
                     <Card >
                         <CardHeader>
-                            <CardTitle>Personal Information</CardTitle>
+                            <CardTitle>Thông tin cá nhân</CardTitle>
                             <CardDescription>
-                                Update your personal details and profile picture.
+                                Cập nhật thông tin cá nhân và ảnh đại diện của bạn.
                             </CardDescription>
                         </CardHeader>
                         <CardContent>
@@ -116,9 +102,8 @@ export default function ProfilePage() {
         <ProfileLayout>
             <div className="mb-6 lg:hidden">
                 <h1 className="text-2xl font-bold tracking-tight">
-                    {currentTab === 'profile' && 'Profile'}
-                    {currentTab === 'addresses' && 'Addresses'}
-                    {currentTab === 'orders' && 'Orders'}
+                    {currentTab === 'profile' && 'Thông tin cá nhân'}
+                    {currentTab === 'addresses' && 'Sổ địa chỉ'}
                 </h1>
             </div>
             {renderContent()}

@@ -50,21 +50,21 @@ export function ProductCard({
 
   return (
     <Link href={`/products/${slug}`}>
-      <Card className="p-0 group overflow-hidden border border-zinc-200 dark:border-zinc-800 rounded-md bg-white dark:bg-card h-full flex flex-col hover:border-zinc-300 dark:hover:border-zinc-700 transition-colors">
+      <Card className="p-0 group overflow-hidden border border-zinc-200 dark:border-zinc-800 rounded-none bg-white dark:bg-card h-full flex flex-col transition-none">
         <CardContent className="p-0 relative aspect-square bg-muted/20 overflow-hidden">
           {isNew && (
-            <Badge className="absolute top-2 left-2 z-10 bg-primary text-primary-foreground rounded-sm px-2 py-0.5 text-[10px] font-bold tracking-wider shadow-sm">
+            <Badge className="absolute top-3 left-3 z-10 bg-primary text-primary-foreground rounded-none px-2 py-0.5 text-[9px] font-black tracking-widest uppercase">
               MỚI
             </Badge>
           )}
           {hasSale && (
-            <Badge className="absolute top-2 right-2 z-10 bg-red-600 text-white rounded-sm px-2 py-0.5 text-[10px] font-bold tracking-wider shadow-sm">
+            <Badge className="absolute top-3 right-3 z-10 bg-black text-white rounded-none px-2 py-0.5 text-[9px] font-black tracking-widest uppercase">
               GIẢM
             </Badge>
           )}
           {!inStock && (
-            <div className="absolute inset-0 bg-white/60 dark:bg-black/60 z-20 flex items-center justify-center">
-              <Badge variant="secondary" className="text-xs font-bold px-3 py-1 rounded-sm">
+            <div className="absolute inset-0 bg-white/80 dark:bg-black/80 z-20 flex items-center justify-center backdrop-blur-[2px]">
+              <Badge variant="secondary" className="text-[10px] font-black px-4 py-1.5 rounded-none border-2 border-zinc-900 bg-transparent text-zinc-900 uppercase tracking-widest">
                 HẾT HÀNG
               </Badge>
             </div>
@@ -76,40 +76,40 @@ export function ProductCard({
             className="object-cover"
           />
         </CardContent>
-        <CardFooter className="flex flex-col items-start p-4 space-y-2 flex-grow">
+        <CardFooter className="flex flex-col items-start p-4 space-y-3 flex-grow bg-white dark:bg-zinc-950">
           <div className="flex-grow w-full">
-            <h3 className="font-medium text-sm leading-snug line-clamp-2 text-foreground w-full">
+            <h3 className="font-bold text-xs uppercase tracking-tight leading-tight line-clamp-2 text-foreground w-full">
               {name}
             </h3>
           </div>
 
-          <div className="w-full pt-1">
+          <div className="w-full pt-1 border-t border-zinc-100 dark:border-zinc-900 pt-3">
             {/* Price */}
-            <div className="flex items-baseline gap-2 w-full mb-1">
+            <div className="flex items-baseline gap-2 w-full mb-2">
               {hasSale ? (
                 <>
-                  <span className="text-lg font-bold text-red-600">
+                  <span className="text-lg font-black tracking-tighter text-primary">
                     {formatCurrency(salePrice)}
                   </span>
-                  <span className="text-xs text-muted-foreground line-through decoration-muted-foreground/50">
+                  <span className="text-[10px] font-medium text-muted-foreground line-through decoration-muted-foreground/50">
                     {formatCurrency(displayPrice)}
                   </span>
                 </>
               ) : (
-                <span className="text-lg font-bold text-primary">
+                <span className="text-lg font-black tracking-tighter text-primary">
                   {formatCurrency(displayPrice)}
                 </span>
               )}
             </div>
 
             {/* Rating & Sold */}
-            <div className="flex items-center justify-between w-full text-xs text-muted-foreground">
-              <div className="flex items-center gap-1 bg-zinc-100 dark:bg-zinc-800 px-1.5 py-0.5 rounded-sm">
-                <Star className="w-3.5 h-3.5 fill-yellow-400 text-yellow-400" />
-                <span className="font-medium">{rating > 0 ? rating.toFixed(1) : "Mới"}</span>
+            <div className="flex items-center justify-between w-full text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
+              <div className="flex items-center gap-1.5 bg-primary/5 text-primary px-2 py-1">
+                <Star className="w-3 h-3 fill-primary text-primary" />
+                <span>{rating > 0 ? rating.toFixed(1) : "New"}</span>
               </div>
               {totalSold > 0 && (
-                <span className="text-[10px]">Đã bán {formatSoldCount(totalSold)}</span>
+                <span>Sold {formatSoldCount(totalSold)}</span>
               )}
             </div>
           </div>
