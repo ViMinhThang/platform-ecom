@@ -32,11 +32,14 @@ import { toast } from "sonner";
 import { Loader2, Upload, X } from "lucide-react";
 import { useAppDispatch } from "@/lib/store/hooks";
 import { fetchProductReviews } from "@/lib/store/slices/reviewSlice";
+import { ReviewRichTextEditor } from "./review/ReviewRichTextEditor";
+import { ReviewImageUploader } from "./review/ReviewImageUploader";
 
 const reviewSchema = z.object({
     rating: z.number().min(1, "Vui lòng chọn số sao đánh giá").max(5),
     title: z.string().min(1, "Tiêu đề là bắt buộc").max(100, "Tiêu đề quá dài"),
-    comment: z.string().min(10, "Nội dung đánh giá phải có ít nhất 10 ký tự").max(1000, "Nội dung đánh giá quá dài"),
+    comment: z.string().min(10, "Nội dung đánh giá phải có ít nhất 10 ký tự").max(5000, "Nội dung đánh giá quá dài"),
+    images: z.array(z.any()).optional(),
 });
 
 type ReviewFormValues = z.infer<typeof reviewSchema>;
@@ -61,6 +64,7 @@ export function ReviewForm({ productId, purchaseVerified = false, orderId }: Rev
             rating: 0,
             title: "",
             comment: "",
+            images: [],
         },
     });
 
@@ -77,6 +81,7 @@ export function ReviewForm({ productId, purchaseVerified = false, orderId }: Rev
 
         setIsSubmitting(true);
         try {
+            const images = data.images as File[];
             if (purchaseVerified && orderId) {
                 await createReview({
                     productId,
@@ -85,7 +90,7 @@ export function ReviewForm({ productId, purchaseVerified = false, orderId }: Rev
                     title: data.title,
                     comment: data.comment,
                     email: session.user.email,
-                }, session.accessToken);
+                }, session.accessToken, images);
             } else {
                 await createUnverifiedReview({
                     productId,
@@ -93,7 +98,7 @@ export function ReviewForm({ productId, purchaseVerified = false, orderId }: Rev
                     title: data.title,
                     comment: data.comment,
                     email: session.user.email,
-                }, session.accessToken);
+                }, session.accessToken, images);
             }
 
             toast.success("Gửi đánh giá thành công!");
@@ -130,7 +135,7 @@ export function ReviewForm({ productId, purchaseVerified = false, orderId }: Rev
             <DialogTrigger asChild>
                 <Button>Viết đánh giá</Button>
             </DialogTrigger>
-            <DialogContent className="sm:max-w-[500px]">
+            <DialogContent className="sm:max-w-[700px]">
                 <DialogHeader>
                     <DialogTitle>Viết đánh giá</DialogTitle>
                     <DialogDescription>
@@ -139,7 +144,7 @@ export function ReviewForm({ productId, purchaseVerified = false, orderId }: Rev
                 </DialogHeader>
 
                 <Form {...form}>
-                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
 
                         {/* Rating Field */}
                         <FormField
@@ -154,7 +159,7 @@ export function ReviewForm({ productId, purchaseVerified = false, orderId }: Rev
                                                 <button
                                                     key={star}
                                                     type="button"
-                                                    className={`text-2xl focus:outline-none transition-colors ${star <= (rating || field.value || 0) ? "text-yellow-400" : "text-gray-300"
+                                                    className={`text-2xl focus:outline-none transition-colors ${star <= (rating || field.value || 0) ? "text-primary" : "text-gray-300"
                                                         }`}
                                                     onClick={() => handleRatingChange(star)}
                                                     onMouseEnter={() => setRating(star)}
@@ -191,10 +196,10 @@ export function ReviewForm({ productId, purchaseVerified = false, orderId }: Rev
                                 <FormItem>
                                     <FormLabel>Nội dung</FormLabel>
                                     <FormControl>
-                                        <Textarea
+                                        <ReviewRichTextEditor
+                                            value={field.value || ""}
+                                            onChange={field.onChange}
                                             placeholder="Hãy cho chúng tôi biết bạn thích hoặc không thích điều gì..."
-                                            className="min-h-[100px]"
-                                            {...field}
                                         />
                                     </FormControl>
                                     <FormMessage />
@@ -202,8 +207,28 @@ export function ReviewForm({ productId, purchaseVerified = false, orderId }: Rev
                             )}
                         />
 
+                        <FormField
+                            control={form.control}
+                            name="images"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Hình ảnh thực tế</FormLabel>
+                                    <FormControl>
+                                        <ReviewImageUploader
+                                            value={field.value}
+                                            onChange={field.onChange}
+                                        />
+                                    </FormControl>
+                                    <FormDescription>
+                                        Bạn có thể tải lên tối đa 5 hình ảnh.
+                                    </FormDescription>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+
                         <DialogFooter>
-                            <Button type="submit" disabled={isSubmitting}>
+                            <Button type="submit" disabled={isSubmitting} className="w-full sm:w-auto">
                                 {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                                 Gửi đánh giá
                             </Button>

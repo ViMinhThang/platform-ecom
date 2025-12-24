@@ -1,4 +1,5 @@
 import {
+  Be_Vietnam_Pro,
   Geist,
   Geist_Mono,
   Instrument_Sans,
@@ -9,8 +10,9 @@ import {
 
 import { cn } from '@/lib/utils';
 
-const fontSans = Geist({
-  subsets: ['latin'],
+const fontSans = Be_Vietnam_Pro({
+  weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'],
+  subsets: ['latin', 'vietnamese'],
   variable: '--font-sans'
 });
 
@@ -25,17 +27,17 @@ const fontInstrument = Instrument_Sans({
 });
 
 const fontNotoMono = Noto_Sans_Mono({
-  subsets: ['latin'],
+  subsets: ['latin', 'vietnamese'],
   variable: '--font-noto-mono'
 });
 
 const fontMullish = Mulish({
-  subsets: ['latin'],
+  subsets: ['latin', 'vietnamese'],
   variable: '--font-mullish'
 });
 
 const fontInter = Inter({
-  subsets: ['latin'],
+  subsets: ['latin', 'vietnamese'],
   variable: '--font-inter'
 });
 

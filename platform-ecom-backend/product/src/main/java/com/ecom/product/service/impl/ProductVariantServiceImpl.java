@@ -9,6 +9,8 @@ import com.ecom.product.entity.ProductVariant;
 import com.ecom.product.entity.VariantOptionValue;
 import com.ecom.common.exception.APIException;
 import com.ecom.common.exception.ResourceNotFoundException;
+import java.math.BigDecimal;
+import java.util.Objects;
 import com.ecom.product.mapper.ProductVariantMapper;
 import com.ecom.product.repository.ProductOptionValueRepository;
 import com.ecom.product.repository.ProductRepository;
@@ -44,6 +46,10 @@ public class ProductVariantServiceImpl implements ProductVariantService {
         updateVariantOptionValues(productVariant, productVariantDTO.getOptionValues());
 
         ProductVariant savedVariant = productVariantRepository.save(productVariant);
+
+        // Update product min price
+        updateProductMinPrice(productId);
+
         return productVariantMapper.toDTO(savedVariant);
     }
 
@@ -88,6 +94,10 @@ public class ProductVariantServiceImpl implements ProductVariantService {
         updateVariantOptionValues(variant, dto.getOptionValues());
 
         ProductVariant saved = productVariantRepository.save(variant);
+
+        // Update product min price
+        updateProductMinPrice(productId);
+
         return productVariantMapper.toDTO(saved);
     }
 
@@ -111,7 +121,28 @@ public class ProductVariantServiceImpl implements ProductVariantService {
         ProductVariant variant = findProductVariant(productId, variantId);
         variant.setHidden(!Boolean.TRUE.equals(variant.getHidden()));
         ProductVariant saved = productVariantRepository.save(variant);
+
+        // Update product min price because visibility changed
+        updateProductMinPrice(productId);
+
         return productVariantMapper.toDTO(saved);
+    }
+
+    private void updateProductMinPrice(Long productId) {
+        Product product = findProductById(productId);
+        List<ProductVariant> activeVariants = productVariantRepository.findByProductIdAndHiddenFalse(productId);
+
+        if (activeVariants.isEmpty()) {
+            product.setMinPrice(null);
+        } else {
+            BigDecimal minPrice = activeVariants.stream()
+                    .map(ProductVariant::getPrice)
+                    .filter(Objects::nonNull)
+                    .min(BigDecimal::compareTo)
+                    .orElse(null);
+            product.setMinPrice(minPrice);
+        }
+        productRepository.save(product);
     }
 
     // ==================== Private Helper Methods ====================

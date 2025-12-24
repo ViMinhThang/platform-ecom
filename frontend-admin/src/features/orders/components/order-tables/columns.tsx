@@ -15,14 +15,14 @@ export const columns: ColumnDef<AdminOrderGroup>[] = [
             <Checkbox
                 checked={table.getIsAllPageRowsSelected()}
                 onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-                aria-label="Select all"
+                aria-label="Chọn tất cả"
             />
         ),
         cell: ({ row }) => (
             <Checkbox
                 checked={row.getIsSelected()}
                 onCheckedChange={(value) => row.toggleSelected(!!value)}
-                aria-label="Select row"
+                aria-label="Chọn hàng"
             />
         ),
         enableSorting: false,
@@ -30,12 +30,12 @@ export const columns: ColumnDef<AdminOrderGroup>[] = [
     },
     {
         accessorKey: 'groupNumber',
-        header: 'Order Number',
+        header: 'Mã đơn hàng',
         cell: ({ row }) => <span className="font-medium">{row.original.groupNumber}</span>,
     },
     {
         accessorKey: 'userName',
-        header: 'Customer',
+        header: 'Khách hàng',
         cell: ({ row }) => (
             <div className="flex flex-col">
                 <span className="font-medium">{row.original.userName}</span>
@@ -45,42 +45,44 @@ export const columns: ColumnDef<AdminOrderGroup>[] = [
     },
     {
         accessorKey: 'totalAmount',
-        header: 'Total',
+        header: 'Tổng tiền',
         cell: ({ row }) => formatCurrency(row.original.totalAmount),
     },
     {
         accessorKey: 'paymentStatus',
-        header: 'Payment',
+        header: 'Thanh toán',
         cell: ({ row }) => {
             const status = row.original.paymentStatus;
             let variant: 'default' | 'secondary' | 'destructive' | 'outline' = 'outline';
+            let label = status;
 
-            if (status === 'COMPLETED') variant = 'default'; // Green-ish usually
-            if (status === 'PENDING') variant = 'secondary';
-            if (status === 'FAILED') variant = 'destructive';
+            if (status === 'COMPLETED') { variant = 'default'; label = 'Hoàn tất'; }
+            if (status === 'PENDING') { variant = 'secondary'; label = 'Chờ xử lý'; }
+            if (status === 'FAILED') { variant = 'destructive'; label = 'Thất bại'; }
 
-            return <Badge variant={variant}>{status}</Badge>;
+            return <Badge variant={variant}>{label}</Badge>;
         },
     },
     {
         accessorKey: 'overallStatus',
-        header: 'Status',
+        header: 'Trạng thái',
         cell: ({ row }) => {
             const status = row.original.overallStatus;
             let variant: 'default' | 'secondary' | 'destructive' | 'outline' = 'outline';
+            let label = status;
 
-            if (status === 'DELIVERED') variant = 'default';
-            if (status === 'SHIPPED') variant = 'secondary';
-            if (status === 'CANCELLED') variant = 'destructive';
-            if (status === 'PENDING') variant = 'outline';
+            if (status === 'DELIVERED') { variant = 'default'; label = 'Đã giao'; }
+            if (status === 'SHIPPED') { variant = 'secondary'; label = 'Đang giao'; }
+            if (status === 'CANCELLED') { variant = 'destructive'; label = 'Đã hủy'; }
+            if (status === 'PENDING') { variant = 'outline'; label = 'Chờ xử lý'; }
 
-            return <Badge variant={variant}>{status}</Badge>;
+            return <Badge variant={variant}>{label}</Badge>;
         },
     },
     {
         accessorKey: 'createdAt',
-        header: 'Date',
-        cell: ({ row }) => format(new Date(row.original.createdAt), 'MMM dd, yyyy'),
+        header: 'Ngày đặt',
+        cell: ({ row }) => format(new Date(row.original.createdAt), 'dd/MM/yyyy'),
     },
     {
         id: 'actions',

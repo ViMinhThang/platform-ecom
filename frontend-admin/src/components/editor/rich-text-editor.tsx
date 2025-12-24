@@ -220,7 +220,7 @@ export const RichTextEditor = ({ value, onChange, className, productId }: RichTe
             }),
             CustomImage.configure({
                 HTMLAttributes: {
-                    class: 'rounded-lg border shadow-sm max-h-[500px] w-auto mx-auto my-4',
+                    class: 'rounded-lg shadow-sm max-h-[500px] w-auto mx-auto my-4',
                 },
             }),
             Placeholder.configure({

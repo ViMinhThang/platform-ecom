@@ -11,7 +11,7 @@ import { SearchParams } from "nuqs/server";
 import { Suspense } from "react";
 
 export const metadata = {
-  title: "Dashboard: Users",
+  title: "Bảng điều khiển: Người dùng",
 };
 
 type pageProps = {
@@ -24,14 +24,14 @@ export default async function Page(props: pageProps) {
   const session = await getServerSession(authOptions);
 
   if (!session?.accessToken) {
-    return <div>You must be signed in to view categories.</div>;
+    return <div>Bạn phải đăng nhập để xem người dùng.</div>;
   }
 
   return (
     <PageContainer scrollable={false}>
       <div className="flex flex-1 flex-col space-y-4">
         <div className="flex items-start justify-between">
-          <Heading title="Users" description="Manage users" />
+          <Heading title="Người dùng" description="Quản lý người dùng trong hệ thống" />
           <CreateUserButton />
         </div>
         <Separator />

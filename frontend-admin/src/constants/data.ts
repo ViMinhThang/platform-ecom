@@ -10,7 +10,7 @@ export type User = {
 };
 export const navItems: NavItem[] = [
   {
-    title: 'Dashboard',
+    title: 'Tổng quan',
     url: '/dashboard/overview',
     icon: 'dashboard',
     isActive: true,
@@ -18,7 +18,7 @@ export const navItems: NavItem[] = [
     items: [] // Empty array as there are no child items for Dashboard
   },
   {
-    title: 'User',
+    title: 'Người dùng',
     url: '/dashboard/user',
     icon: 'user',
     isActive: false,
@@ -26,7 +26,7 @@ export const navItems: NavItem[] = [
     items: []
   },
   {
-    title: 'Product',
+    title: 'Sản phẩm',
     url: '/dashboard/product',
     icon: 'product',
     shortcut: ['p', 'p'],
@@ -34,7 +34,7 @@ export const navItems: NavItem[] = [
     items: [] // No child items
   },
   {
-    title: 'Category',
+    title: 'Danh mục',
     url: '/dashboard/category',
     icon: 'category',
     shortcut: ['p', 'p'],
@@ -42,7 +42,7 @@ export const navItems: NavItem[] = [
     items: [] // No child items
   },
   {
-    title: 'Orders',
+    title: 'Đơn hàng',
     url: '/dashboard/orders',
     icon: 'media',
     shortcut: ['p', 'p'],
@@ -50,7 +50,7 @@ export const navItems: NavItem[] = [
     items: [] // No child items
   },
   {
-    title: 'Inventory',
+    title: 'Kho hàng',
     url: '/dashboard/inventory',
     icon: 'package',
     shortcut: ['i', 'i'],
@@ -58,20 +58,20 @@ export const navItems: NavItem[] = [
     items: [] // No child items
   },
   {
-    title: 'Account',
+    title: 'Tài khoản',
     url: '#', // Placeholder as there is no direct link for the parent
     icon: 'billing',
     isActive: true,
 
     items: [
       {
-        title: 'Profile',
+        title: 'Hồ sơ',
         url: '/dashboard/profile',
         icon: 'userPen',
         shortcut: ['m', 'm']
       },
       {
-        title: 'Login',
+        title: 'Đăng nhập',
         shortcut: ['l', 'l'],
         url: '/',
         icon: 'login'

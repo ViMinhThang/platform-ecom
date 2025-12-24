@@ -42,11 +42,13 @@ export default function CartPage() {
     }
 
     return (
-        <div className="container mx-auto py-8 px-4 md:px-6">
-            <h1 className="text-2xl font-bold mb-8">Giỏ hàng ({cart.totalItems} sản phẩm)</h1>
+        <div className="max-w-7xl mx-auto py-12 px-4 md:px-8">
+            <h1 className="text-3xl md:text-4xl font-black mb-12 font-header tracking-tight text-zinc-900">
+                Giỏ hàng <span className="text-primary/50 text-2xl font-bold ml-2">({cart.totalItems} sản phẩm)</span>
+            </h1>
 
-            <div className="grid lg:grid-cols-3 gap-8">
-                <div className="lg:col-span-2">
+            <div className="grid lg:grid-cols-[1fr_380px] gap-12 items-start">
+                <div className="space-y-2">
                     {cartBySeller.map((group) => (
                         <SellerGroup key={group.sellerId} group={group} />
                     ))}

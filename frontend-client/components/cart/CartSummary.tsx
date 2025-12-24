@@ -15,41 +15,46 @@ export function CartSummary({ cart }: CartSummaryProps) {
     const router = useRouter();
 
     return (
-        <div className="bg-white dark:bg-zinc-900 rounded-lg border shadow-sm p-6 sticky top-24">
-            <h2 className="text-lg font-semibold mb-4">Tóm tắt đơn hàng</h2>
+        <div className="bg-white dark:bg-zinc-900 rounded-none border shadow-sm p-8 sticky top-24">
+            <h2 className="text-xl md:text-2xl font-bold mb-8 font-header tracking-tight">Tóm tắt đơn hàng</h2>
 
-            <div className="space-y-3 text-sm">
-                <div className="flex justify-between">
-                    <span className="text-muted-foreground">Tạm tính</span>
-                    <span>{formatCurrency(cart.totalAmount)}</span>
-                </div>
-                <div className="flex justify-between">
-                    <span className="text-muted-foreground">Phí vận chuyển</span>
-                    <span className="text-muted-foreground italic">Tính khi thanh toán</span>
-                </div>
-                <div className="flex justify-between">
-                    <span className="text-muted-foreground">Thuế</span>
-                    <span className="text-muted-foreground italic">Tính khi thanh toán</span>
+            <div className="space-y-4 text-sm font-medium">
+                <div className="flex justify-between items-center text-zinc-600">
+                    <span>Mặt hàng ({cart.totalItems})</span>
+                    <span className="tabular-nums">{formatCurrency(cart.totalAmount)}</span>
                 </div>
 
-                <div className="border-t pt-3 mt-3 flex justify-between font-bold text-lg">
-                    <span>Tổng cộng</span>
-                    <span>{formatCurrency(cart.totalAmount)}</span>
+                <div className="flex justify-between items-center text-zinc-400 italic text-[11px]">
+                    <span>Phí vận chuyển</span>
+                    <span>Tính khi thanh toán</span>
+                </div>
+
+                <div className="border-t pt-6 mt-6 flex justify-between items-center">
+                    <span className="text-lg font-bold">Tổng cộng</span>
+                    <span className="text-2xl font-black tracking-tighter text-zinc-900 tabular-nums">
+                        {formatCurrency(cart.totalAmount)}
+                    </span>
                 </div>
             </div>
 
             <Button
-                className="w-full mt-6"
+                className="w-full mt-8 rounded-none h-12 font-bold text-sm uppercase tracking-widest shadow-lg shadow-primary/20"
                 size="lg"
                 onClick={() => router.push("/checkout")}
             >
                 Tiến hành thanh toán
-                <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
 
-            <div className="mt-6 flex items-center justify-center gap-2 text-xs text-muted-foreground bg-zinc-50 dark:bg-zinc-800/50 p-3 rounded-md">
-                <ShieldCheck className="h-4 w-4 text-green-600" />
-                <span>Thanh toán an toàn với Stripe</span>
+            <div className="mt-8 pt-8 border-t">
+                <div className="flex items-start gap-3 text-xs text-zinc-500">
+                    <div className="h-5 w-5 rounded-none bg-primary/10 flex items-center justify-center flex-shrink-0">
+                        <ShieldCheck className="h-3.5 w-3.5 text-primary" />
+                    </div>
+                    <div className="space-y-1">
+                        <p className="font-bold text-zinc-700">Chương trình Bảo vệ Người mua</p>
+                        <p className="leading-relaxed">Giao dịch của bạn được bảo mật và hỗ trợ hoàn tiền nếu có sự cố.</p>
+                    </div>
+                </div>
             </div>
         </div>
     );

@@ -48,9 +48,9 @@ export function DataTable<TData>({
                         {header.isPlaceholder
                           ? null
                           : flexRender(
-                              header.column.columnDef.header,
-                              header.getContext()
-                            )}
+                            header.column.columnDef.header,
+                            header.getContext()
+                          )}
                       </TableHead>
                     ))}
                   </TableRow>
@@ -84,7 +84,7 @@ export function DataTable<TData>({
                       colSpan={table.getAllColumns().length}
                       className='h-24 text-center'
                     >
-                      No results.
+                      Không có kết quả.
                     </TableCell>
                   </TableRow>
                 )}
@@ -95,8 +95,8 @@ export function DataTable<TData>({
         </div>
       </div>
       <div className='flex flex-col gap-2.5'>
-        <DataTablePagination 
-          table={table} 
+        <DataTablePagination
+          table={table}
           onPageChange={onPageChange}
           onPageSizeChange={onPageSizeChange}
         />

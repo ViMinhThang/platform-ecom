@@ -76,7 +76,7 @@ export function SellerInfoCard({
     }
 
     return (
-        <div className="border p-4 space-y-4 sticky top-24">
+        <div className="bg-white border p-4 space-y-4 sticky top-24 shadow-sm">
             <h3 className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">
                 Thông tin người bán
             </h3>

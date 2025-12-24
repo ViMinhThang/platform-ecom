@@ -72,35 +72,47 @@ export function PaymentForm() {
     };
 
     return (
-        <form id="payment-form" onSubmit={handleSubmit} className="space-y-6">
-            <div className="bg-white dark:bg-zinc-900 p-6 rounded-lg border">
-                <h3 className="text-lg font-semibold mb-4">Thông tin thanh toán</h3>
-                <PaymentElement id="payment-element" options={{ layout: "tabs" }} />
+        <form id="payment-form" onSubmit={handleSubmit} className="space-y-10">
+            <div className="space-y-6">
+                <div className="flex items-center gap-3 border-b pb-4">
+                    <CheckCircle2 className="h-5 w-5 text-green-500" />
+                    <p className="text-sm font-bold text-zinc-700 uppercase tracking-widest">Thông tin thẻ tín dụng / Ghi nợ</p>
+                </div>
+
+                <div className="bg-zinc-50/50 p-6 rounded-xl border border-zinc-100">
+                    <PaymentElement id="payment-element" options={{ layout: "tabs" }} />
+                </div>
             </div>
 
             {message && (
-                <Alert variant={message.includes("succeeded") ? "default" : "destructive"}>
+                <Alert variant={message.includes("succeeded") ? "default" : "destructive"} className="rounded-xl">
                     {message.includes("succeeded") ? <CheckCircle2 className="h-4 w-4" /> : <AlertCircle className="h-4 w-4" />}
-                    <AlertTitle>{message.includes("succeeded") ? "Thành công" : "Lỗi"}</AlertTitle>
-                    <AlertDescription>{message}</AlertDescription>
+                    <AlertTitle className="font-bold">{message.includes("succeeded") ? "Thành công" : "Thông báo lỗi"}</AlertTitle>
+                    <AlertDescription className="text-zinc-600 font-medium">{message}</AlertDescription>
                 </Alert>
             )}
 
-            <Button
-                disabled={isLoading || !stripe || !elements}
-                id="submit"
-                className="w-full"
-                size="lg"
-            >
-                {isLoading ? (
-                    <>
-                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                        Đang xử lý...
-                    </>
-                ) : (
-                    `Thanh toán ${formatCurrency(checkoutSession?.amount || 0)}`
-                )}
-            </Button>
+            <div className="space-y-4">
+                <Button
+                    disabled={isLoading || !stripe || !elements}
+                    id="submit"
+                    className="w-full rounded-none h-14 font-black text-base uppercase tracking-[0.2em] shadow-xl shadow-primary/25 hover:shadow-primary/40 transition-all active:scale-[0.98]"
+                    size="lg"
+                >
+                    {isLoading ? (
+                        <>
+                            <Loader2 className="mr-3 h-5 w-5 animate-spin" />
+                            Đang xử lý thanh toán...
+                        </>
+                    ) : (
+                        `Xác nhận & Thanh toán`
+                    )}
+                </Button>
+
+                <p className="text-[10px] text-center text-zinc-400 font-medium px-8 leading-relaxed">
+                    Thông tin thanh toán của bạn được mã hóa và xử lý an toàn bởi Stripe. Chúng tôi không bao giờ lưu trữ thông tin thẻ của bạn.
+                </p>
+            </div>
         </form>
     );
 }

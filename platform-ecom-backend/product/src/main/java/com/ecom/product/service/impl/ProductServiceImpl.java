@@ -258,6 +258,18 @@ public class ProductServiceImpl implements ProductService {
         return productMapper.toDetailDTO(product);
     }
 
+    @Override
+    @Transactional(readOnly = true)
+    public ProductResponse getAllPublicProductsBySeller(Long userId, Integer page, Integer perPage, String category,
+            String sortBy, String sortOrder, BigDecimal minPrice, BigDecimal maxPrice, Double minRating) {
+        Pageable pageable = PageableUtils.createPageable(page, perPage, sortBy, sortOrder);
+
+        Specification<Product> specification = buildPublicProductSpecification(null, category, minPrice, maxPrice,
+                minRating).and(ProductUtils.userIdEquals(userId));
+
+        return fetchAndMapProducts(specification, pageable);
+    }
+
     private String sanitizeDescription(String description) {
         if (description == null)
             return null;

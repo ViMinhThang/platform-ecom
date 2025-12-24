@@ -16,7 +16,7 @@ import { SearchParams } from "nuqs/server";
 import { Suspense } from "react";
 
 export const metadata = {
-  title: "Dashboard: Categories",
+  title: "Bảng điều khiển: Danh mục",
 };
 
 type pageProps = {
@@ -29,7 +29,7 @@ export default async function Page(props: pageProps) {
   const session = await getServerSession(authOptions);
 
   if (!session?.accessToken) {
-    return <div>You must be signed in to view categories.</div>;
+    return <div>Bạn phải đăng nhập để xem danh mục.</div>;
   }
 
   return (
@@ -37,8 +37,8 @@ export default async function Page(props: pageProps) {
       <div className="flex flex-1 flex-col space-y-4">
         <div className="flex items-start justify-between">
           <Heading
-            title="Categories"
-            description="Manage categories"
+            title="Danh mục"
+            description="Quản lý danh mục sản phẩm"
           />
           <CreateCategoryButton token={session?.accessToken} />
         </div>

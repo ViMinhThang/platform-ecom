@@ -54,7 +54,7 @@ export function FilterPanel() {
     return (
         <div className="space-y-8">
             <div>
-                <h3 className="font-semibold mb-4">Price Range</h3>
+                <h3 className="font-semibold mb-4 text-xs font-header uppercase tracking-widest text-muted-foreground">Khoảng giá</h3>
                 <div className="space-y-4">
                     <Slider
                         defaultValue={[0, 10000000]}
@@ -64,7 +64,7 @@ export function FilterPanel() {
                         onValueChange={handlePriceChange}
                         onValueCommit={applyPriceFilter}
                     />
-                    <div className="flex items-center justify-between text-sm">
+                    <div className="flex items-center justify-between text-sm font-header tabular-nums">
                         <span>
                             {new Intl.NumberFormat("vi-VN", {
                                 style: "currency",
@@ -82,7 +82,7 @@ export function FilterPanel() {
             </div>
 
             <div>
-                <h3 className="font-semibold mb-4">Minimum Rating</h3>
+                <h3 className="font-semibold mb-4 text-xs font-header uppercase tracking-widest text-muted-foreground">Đánh giá tối thiểu</h3>
                 <RadioGroup value={selectedRating} onValueChange={handleRatingChange}>
                     {[5, 4, 3, 2, 1].map((rating) => (
                         <div key={rating} className="flex items-center space-x-2">
@@ -91,18 +91,18 @@ export function FilterPanel() {
                                 htmlFor={`rating-${rating}`}
                                 className="flex items-center cursor-pointer"
                             >
-                                <div className="flex items-center text-yellow-400 mr-2">
+                                <div className="flex items-center text-primary mr-2">
                                     {Array.from({ length: 5 }).map((_, i) => (
                                         <Star
                                             key={i}
                                             size={14}
                                             className={
-                                                i < rating ? "fill-current" : "text-muted-foreground"
+                                                i < rating ? "fill-current" : "text-muted-foreground/30"
                                             }
                                         />
                                     ))}
                                 </div>
-                                <span className="text-sm text-muted-foreground">& Up</span>
+                                <span className="text-sm text-muted-foreground font-medium italic translate-y-[1px]">trở lên</span>
                             </Label>
                         </div>
                     ))}

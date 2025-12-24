@@ -19,28 +19,32 @@ export const ProductFormFields: React.FC<ProductFormFieldsProps> = ({ control, c
       <FormInput
         control={control}
         name="name"
-        label="Name"
+        label="Tên sản phẩm"
         required
-        placeholder="Enter product name"
+        placeholder="Nhập tên sản phẩm"
       />
       <FormInput
         control={control}
         name="slug"
-        label="Slug"
+        label="Đường dẫn (Slug)"
         required
-        placeholder="Enter slug"
+        placeholder="Nhập đường dẫn"
       />
       <FormSelect
         control={control}
         name="status"
-        label="Status"
+        label="Trạng thái"
         required
-        options={statusOptions}
+        options={[
+          { label: "Hoạt động", value: "ACTIVE" },
+          { label: "Bản nháp", value: "DRAFT" },
+          { label: "Hết hàng", value: "OUT_OF_STOCK" },
+        ]}
       />
       <FormSelect
         control={control}
         name="cate"
-        label="Category"
+        label="Danh mục"
         required
         disabled={categories.length === 0 || loading}
         options={categories.map((c) => ({
@@ -53,19 +57,19 @@ export const ProductFormFields: React.FC<ProductFormFieldsProps> = ({ control, c
       <FormTextarea
         control={control}
         name="description"
-        label="Description"
-        placeholder="Enter product description"
+        label="Mô tả"
+        placeholder="Nhập mô tả sản phẩm"
         config={{ rows: 6, showCharCount: true, maxLength: 500 }}
       />
       <JsonKeyValueEditor
         control={control}
         name="specifications"
-        label="Specifications"
+        label="Thông số kỹ thuật"
       />
       <JsonKeyValueEditor
         control={control}
         name="metadata"
-        label="Metadata"
+        label="Dữ liệu Meta"
       />
     </div>
   </div>

@@ -52,10 +52,10 @@ export const CategoryDialog: React.FC<CategoryDialogProps> = ({
   );
 
   const isEditing = Boolean(categoryId);
-  const dialogTitle = isEditing ? "Update Category" : "Create Category";
+  const dialogTitle = isEditing ? "Cập nhật danh mục" : "Tạo danh mục mới";
   const dialogDescription = isEditing
-    ? "Update category details"
-    : "Create a new category";
+    ? "Cập nhật thông tin chi tiết danh mục"
+    : "Tạo một danh mục sản phẩm mới";
 
   const methods = useForm<CategoryFormValues>({
     resolver: zodResolver(CategoryFormSchema),
@@ -90,7 +90,7 @@ export const CategoryDialog: React.FC<CategoryDialogProps> = ({
    */
   const handleSubmit = methods.handleSubmit(async (formData) => {
     if (!session?.accessToken) {
-      toast.error("Authentication required");
+      toast.error("Cần phải đăng nhập");
       return;
     }
 
@@ -115,18 +115,18 @@ export const CategoryDialog: React.FC<CategoryDialogProps> = ({
         updateCategory.fulfilled.match(resultAction)
       ) {
         toast.success(
-          `Category ${isEditing ? "updated" : "created"} successfully`
+          `${isEditing ? "Cập nhật" : "Tạo mới"} danh mục thành công`
         );
         onOpenChange(false);
       } else {
-        toast.error(`Failed to ${isEditing ? "update" : "create"} category`);
+        toast.error(`${isEditing ? "Cập nhật" : "Tạo mới"} danh mục thất bại`);
       }
     } catch (error) {
       logger.error("Category form submission failed", error as Error, {
         isEditing,
         categoryId,
       });
-      toast.error(`Failed to ${isEditing ? "update" : "create"} category`);
+      toast.error(`${isEditing ? "Cập nhật" : "Tạo mới"} danh mục thất bại`);
     }
   });
 
@@ -153,17 +153,17 @@ export const CategoryDialog: React.FC<CategoryDialogProps> = ({
                 onClick={() => onOpenChange(false)}
                 disabled={loading || methods.formState.isSubmitting}
               >
-                Cancel
+                Hủy
               </Button>
               <Button
                 type="submit"
                 disabled={loading || methods.formState.isSubmitting}
               >
                 {loading || methods.formState.isSubmitting
-                  ? "Saving..."
+                  ? "Đang lưu..."
                   : isEditing
-                    ? "Update Category"
-                    : "Create Category"}
+                    ? "Cập nhật danh mục"
+                    : "Tạo danh mục mới"}
               </Button>
             </div>
           </form>

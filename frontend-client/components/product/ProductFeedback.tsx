@@ -11,10 +11,10 @@ interface ProductFeedbackProps {
 
 export const ProductFeedback = ({ product }: ProductFeedbackProps) => {
     return (
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 border-t pt-12">
-            <div className="lg:col-span-1 border-t-2 border-primary pt-6">
-                <h2 className="text-xl font-black uppercase tracking-tighter text-foreground mb-4">
-                    Người <span className="text-primary italic">bán</span>
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 pt-16">
+            <div className="lg:col-span-3 border-t-4 border-primary pt-8">
+                <h2 className="text-3xl font-black uppercase tracking-tighter text-foreground mb-6 leading-tight">
+                    Người <br /><span className="text-primary italic">bán</span>
                 </h2>
                 <SellerInfoCard
                     sellerId={product.userId || 0}
@@ -23,13 +23,13 @@ export const ProductFeedback = ({ product }: ProductFeedbackProps) => {
                 />
             </div>
 
-            <div className="lg:col-span-3 border-t-2 border-primary pt-6">
-                <h2 className="text-xl font-black uppercase tracking-tighter text-foreground mb-6">
+            <div className="lg:col-span-9 border-t-4 border-primary pt-8">
+                <h2 className="text-3xl font-black uppercase tracking-tighter text-foreground mb-8">
                     Đánh giá <span className="text-primary italic">khách hàng</span>
                 </h2>
-                <div className="bg-card border p-4 sm:p-6">
+                <div className="bg-white border shadow-sm p-8 md:p-12">
                     <ReviewStats productId={product.id} />
-                    <div className="mt-8">
+                    <div className="mt-12">
                         <ReviewList productId={product.id} />
                     </div>
                 </div>

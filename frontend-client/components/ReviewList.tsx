@@ -142,16 +142,9 @@ export function ReviewList({ productId }: ReviewListProps) {
   );
 }
 
+import { RichTextPreview } from "./RichTextPreview";
+
 function ReviewCard({ review }: { review: Review }) {
-  const [showFullComment, setShowFullComment] = useState(false);
-  const maxLength = 300;
-  const shouldTruncate = review.comment && review.comment.length > maxLength;
-
-  const displayComment =
-    shouldTruncate && !showFullComment
-      ? review.comment!.substring(0, maxLength) + "..."
-      : review.comment;
-
   const reviewDate = new Date(review.createdAt).toLocaleDateString("vi-VN", {
     year: "numeric",
     month: "long",
@@ -190,19 +183,7 @@ function ReviewCard({ review }: { review: Review }) {
 
       {/* Comment */}
       {review.comment && (
-        <div className="prose prose-sm max-w-none">
-          <p className="text-muted-foreground whitespace-pre-wrap">
-            {displayComment}
-          </p>
-          {shouldTruncate && (
-            <button
-              onClick={() => setShowFullComment(!showFullComment)}
-              className="text-primary text-sm font-medium hover:underline mt-1"
-            >
-              {showFullComment ? "Thu gọn" : "Xem thêm"}
-            </button>
-          )}
-        </div>
+        <RichTextPreview content={review.comment} className="p-0 bg-transparent rounded-none" />
       )}
 
       {/* Images */}

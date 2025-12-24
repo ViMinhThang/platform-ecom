@@ -70,7 +70,7 @@ export function ReviewStats({ productId }: ReviewStatsProps) {
             <div key={star} className="flex items-center gap-3">
               <div className="flex items-center gap-1 w-16">
                 <span className="text-sm font-medium">{star}</span>
-                <span className="text-yellow-500">★</span>
+                <span className="text-primary">★</span>
               </div>
               <Progress value={percentage} className="flex-1 h-2" />
               <span className="text-sm text-muted-foreground w-12 text-right">

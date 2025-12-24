@@ -1,14 +1,15 @@
 import { format, formatDistanceToNow } from 'date-fns';
+import { vi } from 'date-fns/locale';
 
 /**
- * Format date for order display (e.g., "Jan 15, 2024")
+ * Format date for order display (e.g., "15 thg 1, 2024")
  */
 export function formatOrderDate(date: string | Date | null | undefined): string {
     if (!date) return 'N/A';
 
     try {
         const dateObj = typeof date === 'string' ? new Date(date) : date;
-        return format(dateObj, 'MMM dd, yyyy');
+        return format(dateObj, 'dd MMM, yyyy', { locale: vi });
     } catch {
         return 'N/A';
     }

@@ -12,32 +12,35 @@ interface ProductEssentialsProps {
 
 export const ProductEssentials = ({ product, setSelectedVariant }: ProductEssentialsProps) => {
     return (
-        <div className="space-y-8">
+        <div className="space-y-12">
             <div>
-                <Badge className="mb-3 rounded-none bg-zinc-100 text-zinc-900 hover:bg-zinc-200 border-none px-3 py-1 text-[10px] font-bold tracking-widest uppercase">
+                <Badge className="mb-4 rounded-none bg-zinc-100/80 text-zinc-900 hover:bg-zinc-200 border-none px-4 py-1.5 text-[10px] font-semibold tracking-widest uppercase font-header">
                     {product.cate.name}
                 </Badge>
-                <h1 className="text-3xl font-extrabold tracking-tight uppercase">{product.name}</h1>
+                <h1 className="text-4xl font-bold tracking-tight leading-[1.2] font-header text-zinc-900">{product.name}</h1>
 
-                <div className="flex items-center gap-4 mt-3 text-xs text-muted-foreground uppercase font-bold tracking-wider">
-                    <div className="flex items-center gap-1">
-                        <span className="text-foreground">
+                <div className="flex items-center gap-6 mt-6 text-sm text-muted-foreground font-medium">
+                    <div className="flex items-center gap-2">
+                        <span className="text-foreground text-lg font-semibold font-header">
                             {product.averageRating?.toFixed(1) || "0.0"}
                         </span>
-                        <Star className="w-3.5 h-3.5 fill-yellow-400 text-yellow-400" />
+                        <Star className="w-4 h-4 fill-primary text-primary" />
                     </div>
-                    <div className="h-3 w-px bg-border" />
-                    <div>
-                        {new Intl.NumberFormat("en-US", { notation: "compact", maximumFractionDigits: 1 })
-                            .format(product.totalReviews || 0)
-                            .toLowerCase()}{" "}
-                        đánh giá
+                    <div className="h-4 w-px bg-border/60" />
+                    <div className="flex items-center gap-1.5">
+                        <span className="text-foreground font-semibold">
+                            {new Intl.NumberFormat("en-US", { notation: "compact", maximumFractionDigits: 1 })
+                                .format(product.totalReviews || 0)}{" "}
+                        </span>
+                        <span>đánh giá</span>
                     </div>
-                    <div className="h-3 w-px bg-border" />
-                    <div>
-                        {new Intl.NumberFormat("en-US", { notation: "compact", maximumFractionDigits: 1 })
-                            .format(product.totalSold || 0)
-                            .toLowerCase()}+ đã bán
+                    <div className="h-4 w-px bg-border/60" />
+                    <div className="flex items-center gap-1.5">
+                        <span className="text-foreground font-semibold">
+                            {new Intl.NumberFormat("en-US", { notation: "compact", maximumFractionDigits: 1 })
+                                .format(product.totalSold || 0)}
+                        </span>
+                        <span>đã bán</span>
                     </div>
                 </div>
             </div>
@@ -45,15 +48,15 @@ export const ProductEssentials = ({ product, setSelectedVariant }: ProductEssent
             <ProductVariantSection product={product} onVariantChange={setSelectedVariant} />
 
             {product.specifications && Object.keys(product.specifications).length > 0 && (
-                <div className="border-t pt-8">
-                    <h3 className="text-sm font-black mb-6 uppercase tracking-[0.2em] text-muted-foreground">Thông số kỹ thuật</h3>
-                    <dl className="space-y-4">
+                <div className="border-t pt-12">
+                    <h3 className="text-base font-bold mb-8 uppercase tracking-widest text-zinc-400 font-header">Thông số kỹ thuật</h3>
+                    <dl className="space-y-6">
                         {Object.entries(product.specifications).map(([key, value]) => (
-                            <div key={key} className="flex justify-between items-end border-b border-zinc-100 pb-2">
-                                <dt className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">
+                            <div key={key} className="flex justify-between items-end border-b border-zinc-100 pb-3">
+                                <dt className="text-[11px] font-bold text-zinc-500 uppercase tracking-widest">
                                     {key.replace(/_/g, " ")}
                                 </dt>
-                                <dd className="font-bold text-sm tracking-tight">{String(value)}</dd>
+                                <dd className="font-semibold text-lg tracking-tight text-zinc-800">{String(value)}</dd>
                             </div>
                         ))}
                     </dl>

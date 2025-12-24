@@ -8,6 +8,7 @@ import Image from "next/image";
 import { Product, ProductRow } from "@/types/product/product";
 import { CellAction } from "./cell-action";
 import { formatDistanceToNow } from "date-fns";
+import { vi } from "date-fns/locale";
 
 const formatCurrency = (value: number | undefined) => {
   if (!value) return "N/A";
@@ -20,7 +21,7 @@ const formatCurrency = (value: number | undefined) => {
 const formatDate = (dateString: string | undefined) => {
   if (!dateString) return "N/A";
   try {
-    return formatDistanceToNow(new Date(dateString), { addSuffix: true });
+    return formatDistanceToNow(new Date(dateString), { addSuffix: true, locale: vi });
   } catch {
     return "N/A";
   }
@@ -39,10 +40,23 @@ const getStatusVariant = (status: string): "default" | "secondary" | "destructiv
   }
 };
 
+const getStatusLabel = (status: string) => {
+  switch (status) {
+    case "ACTIVE":
+      return "Hoạt động";
+    case "DRAFT":
+      return "Bản nháp";
+    case "OUT_OF_STOCK":
+      return "Hết hàng";
+    default:
+      return status;
+  }
+};
+
 export const columns: ColumnDef<ProductRow>[] = [
   {
     id: "image",
-    header: "IMAGE",
+    header: "HÌNH ẢNH",
     cell: ({ row }) => {
       const ProductRow = row.original;
       const imageUrl = ProductRow.imageUrl || "/placeholder.png";
@@ -63,12 +77,12 @@ export const columns: ColumnDef<ProductRow>[] = [
     id: "name",
     accessorKey: "name",
     header: ({ column }: { column: Column<ProductRow, unknown> }) => (
-      <DataTableColumnHeader column={column} title="Name" />
+      <DataTableColumnHeader column={column} title="Tên sản phẩm" />
     ),
     cell: ({ cell }) => <div className="font-medium">{cell.getValue<ProductRow["name"]>()}</div>,
     meta: {
-      label: "Name",
-      placeholder: "Search products...",
+      label: "Tên sản phẩm",
+      placeholder: "Tìm kiếm sản phẩm...",
       variant: "text",
       icon: Text,
     },
@@ -78,7 +92,7 @@ export const columns: ColumnDef<ProductRow>[] = [
     id: "category",
     accessorKey: "category",
     header: ({ column }: { column: Column<ProductRow, unknown> }) => (
-      <DataTableColumnHeader column={column} title="Category" />
+      <DataTableColumnHeader column={column} title="Danh mục" />
     ),
     cell: ({ cell }) => {
       const category = cell.getValue<ProductRow["category"]>();
@@ -94,24 +108,24 @@ export const columns: ColumnDef<ProductRow>[] = [
     id: "status",
     accessorKey: "status",
     header: ({ column }: { column: Column<ProductRow, unknown> }) => (
-      <DataTableColumnHeader column={column} title="Status" />
+      <DataTableColumnHeader column={column} title="Trạng thái" />
     ),
     cell: ({ cell }) => {
       const status = cell.getValue<ProductRow["status"]>();
       return (
         <Badge variant={getStatusVariant(status)} className="capitalize">
-          {status.replace('_', ' ')}
+          {getStatusLabel(status)}
         </Badge>
       );
     },
     meta: {
-      label: "Status",
-      placeholder: "Filter by status...",
+      label: "Trạng thái",
+      placeholder: "Lọc theo trạng thái...",
       variant: "select",
       options: [
-        { label: "Active", value: "ACTIVE" },
-        { label: "Draft", value: "DRAFT" },
-        { label: "Out of Stock", value: "OUT_OF_STOCK" },
+        { label: "Hoạt động", value: "ACTIVE" },
+        { label: "Bản nháp", value: "DRAFT" },
+        { label: "Hết hàng", value: "OUT_OF_STOCK" },
       ],
     },
     enableColumnFilter: true,
@@ -120,7 +134,7 @@ export const columns: ColumnDef<ProductRow>[] = [
     id: "minPrice",
     accessorKey: "minPrice",
     header: ({ column }: { column: Column<ProductRow, unknown> }) => (
-      <DataTableColumnHeader column={column} title="Price" />
+      <DataTableColumnHeader column={column} title="Giá" />
     ),
     cell: ({ cell }) => {
       const price = cell.getValue<number>();
@@ -130,14 +144,14 @@ export const columns: ColumnDef<ProductRow>[] = [
   {
     id: "variants",
     accessorKey: "variants",
-    header: "VARIANTS",
+    header: "BIẾN THỂ",
     cell: ({ cell }) => <div>{cell.getValue<number>()}</div>,
   },
   {
     id: "totalSold",
     accessorKey: "totalSold",
     header: ({ column }: { column: Column<ProductRow, unknown> }) => (
-      <DataTableColumnHeader column={column} title="Sold" />
+      <DataTableColumnHeader column={column} title="Đã bán" />
     ),
     cell: ({ cell }) => {
       const sold = cell.getValue<number>() || 0;
@@ -148,7 +162,7 @@ export const columns: ColumnDef<ProductRow>[] = [
     id: "rating",
     accessorKey: "averageRating",
     header: ({ column }: { column: Column<ProductRow, unknown> }) => (
-      <DataTableColumnHeader column={column} title="Rating" />
+      <DataTableColumnHeader column={column} title="Đánh giá" />
     ),
     cell: ({ cell, row }) => {
       const rating = cell.getValue<number>() || 0;
@@ -166,7 +180,7 @@ export const columns: ColumnDef<ProductRow>[] = [
     id: "createdAt",
     accessorKey: "createdAt",
     header: ({ column }: { column: Column<ProductRow, unknown> }) => (
-      <DataTableColumnHeader column={column} title="Created" />
+      <DataTableColumnHeader column={column} title="Ngày tạo" />
     ),
     cell: ({ cell }) => {
       const date = cell.getValue<string>();

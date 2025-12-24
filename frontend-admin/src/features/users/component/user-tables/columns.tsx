@@ -10,7 +10,7 @@ import Image from "next/image";
 export const columns: ColumnDef<UserRow>[] = [
   {
     id: "image",
-    header: "IMAGE",
+    header: "HÌNH ẢNH",
     cell: ({ row }) => {
       const userRow = row.original;
       const imageUrl = userRow.imageUrl || "/placeholder.png";
@@ -28,18 +28,18 @@ export const columns: ColumnDef<UserRow>[] = [
   },
   {
     accessorKey: "userId",
-    header: "id",
+    header: "ID",
   },
   {
     id: "username",
     accessorKey: "username",
     header: ({ column }: { column: Column<UserRow, unknown> }) => (
-      <DataTableColumnHeader column={column} title="username" />
+      <DataTableColumnHeader column={column} title="Tên đăng nhập" />
     ),
     cell: ({ cell }) => <div>{cell.getValue<UserRow["username"]>()}</div>,
     meta: {
-      label: "Name",
-      placeholder: "Search user...",
+      label: "Tên đăng nhập",
+      placeholder: "Tìm kiếm người dùng...",
       variant: "text",
       icon: Text,
     },
@@ -49,12 +49,12 @@ export const columns: ColumnDef<UserRow>[] = [
     id: "email",
     accessorKey: "email",
     header: ({ column }: { column: Column<UserRow, unknown> }) => (
-      <DataTableColumnHeader column={column} title="email" />
+      <DataTableColumnHeader column={column} title="Email" />
     ),
     cell: ({ cell }) => <div>{cell.getValue<UserRow["email"]>()}</div>,
     meta: {
-      label: "email",
-      placeholder: "Search email...",
+      label: "Email",
+      placeholder: "Tìm kiếm email...",
       variant: "text",
       icon: Text,
     },
@@ -64,29 +64,29 @@ export const columns: ColumnDef<UserRow>[] = [
     id: "isActive",
     accessorKey: "isActive",
     header: ({ column }: { column: Column<UserRow, unknown> }) => (
-      <DataTableColumnHeader column={column} title="Status" />
+      <DataTableColumnHeader column={column} title="Trạng thái" />
     ),
     cell: ({ cell }) => {
       const isActive = cell.getValue<boolean>();
       return isActive === true ? (
         <Badge variant="default" className="flex items-center gap-1">
           <CheckCircle2 size={16} />
-          Active
+          Hoạt động
         </Badge>
       ) : (
         <Badge variant="destructive" className="flex items-center gap-1">
           <XCircle size={16} />
-          Inactive
+          Bị khóa
         </Badge>
       );
     },
     meta: {
-      label: "Status",
-      placeholder: "Filter by status...",
+      label: "Trạng thái",
+      placeholder: "Lọc theo trạng thái...",
       variant: "select",
       options: [
-        { label: "Active", value: "true" },
-        { label: "Inactive", value: "false" },
+        { label: "Hoạt động", value: "true" },
+        { label: "Bị khóa", value: "false" },
       ],
     },
     enableColumnFilter: true,
@@ -94,15 +94,15 @@ export const columns: ColumnDef<UserRow>[] = [
   {
     accessorKey: "roles",
     header: ({ column }: { column: Column<UserRow, unknown> }) => (
-      <DataTableColumnHeader column={column} title="Roles" />
+      <DataTableColumnHeader column={column} title="Quyền hạn" />
     ),
     cell: ({ cell }) => {
       const roles = cell.getValue<UserRow["roles"]>();
       return <div>{roles.map((role) => role.roleName).join(",")}</div>;
     },
     meta: {
-      label: "Roles",
-      placeholder: "Search roles...",
+      label: "Quyền hạn",
+      placeholder: "Tìm kiếm quyền...",
       variant: "text",
       icon: Text,
     },
@@ -112,7 +112,7 @@ export const columns: ColumnDef<UserRow>[] = [
     id: "addresses",
     accessorKey: "addresses",
     header: ({ column }: { column: Column<UserRow, unknown> }) => (
-      <DataTableColumnHeader column={column} title="Addresses" />
+      <DataTableColumnHeader column={column} title="Địa chỉ" />
     ),
     cell: ({ cell }) => {
       const addresses = cell.getValue<UserRow["addresses"]>();
@@ -123,7 +123,7 @@ export const columns: ColumnDef<UserRow>[] = [
         <div className="flex items-center gap-2">
           <MapPin size={16} className="text-muted-foreground" />
           <div className="flex flex-col">
-            <span className="font-medium">{count} {count === 1 ? 'address' : 'addresses'}</span>
+            <span className="font-medium">{count} địa chỉ</span>
             {defaultAddress && (
               <span className="text-xs text-muted-foreground truncate max-w-[200px]">
                 {defaultAddress.city}, {defaultAddress.country}

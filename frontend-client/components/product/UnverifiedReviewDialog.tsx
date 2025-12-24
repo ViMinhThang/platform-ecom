@@ -16,7 +16,9 @@ import {
     DialogTitle,
     DialogFooter,
 } from '@/components/ui/dialog';
+import { useSession } from 'next-auth/react';
 import { Star, Loader2 } from 'lucide-react';
+import { toast } from 'sonner';
 
 const reviewSchema = z.object({
     rating: z.number().min(1, 'Vui lòng chọn số sao đánh giá').max(5),
@@ -33,16 +35,14 @@ interface UnverifiedReviewDialogProps {
     onSuccess?: () => void;
 }
 
-/**
- * Dialog component for submitting unverified product reviews.
- * Used when the user hasn't purchased the product.
- */
+
 export function UnverifiedReviewDialog({
     open,
     onOpenChange,
     productId,
     onSuccess
 }: UnverifiedReviewDialogProps) {
+    const { data: session } = useSession();
     const [hoveredRating, setHoveredRating] = useState(0);
     const { submitUnverifiedReview, isSubmitting } = useReview();
 
@@ -58,16 +58,23 @@ export function UnverifiedReviewDialog({
     const selectedRating = form.watch('rating');
 
     const handleSubmit = async (data: ReviewFormValues) => {
+        if (!session?.user?.email) {
+            toast.error("Vui lòng đăng nhập để gửi đánh giá.");
+            return;
+        }
+
         try {
             await submitUnverifiedReview({
                 productId,
                 rating: data.rating,
                 title: data.title,
                 comment: data.comment,
+                email: session.user.email,
             });
             onOpenChange(false);
             form.reset();
             onSuccess?.();
+            toast.success("Gửi đánh giá thành công!");
         } catch (error) {
             // Error handled by hook
         }
@@ -96,7 +103,7 @@ export function UnverifiedReviewDialog({
                                 >
                                     <Star
                                         className={`h-8 w-8 ${star <= (hoveredRating || selectedRating)
-                                            ? 'fill-yellow-400 text-yellow-400'
+                                            ? 'fill-primary text-primary'
                                             : 'text-gray-300'
                                             }`}
                                     />

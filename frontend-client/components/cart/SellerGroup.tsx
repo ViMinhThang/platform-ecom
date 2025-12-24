@@ -34,44 +34,20 @@ export function SellerGroup({ group }: SellerGroupProps) {
     const sellerName = sellerInfo?.username || group.sellerName || "Người bán";
 
     return (
-        <div className="bg-white dark:bg-zinc-900 rounded-lg border shadow-sm overflow-hidden mb-6">
-            <div className="bg-zinc-50 dark:bg-zinc-800/50 px-4 py-3 border-b flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                    {isLoading ? (
-                        <div className="h-8 w-8 rounded-full bg-muted animate-pulse" />
-                    ) : (
-                        <Avatar className="h-8 w-8 border border-border">
-                            <AvatarImage src={imageUrl.avatar(sellerInfo?.imageUrl)} />
-                            <AvatarFallback className="text-[10px] font-bold">
-                                {sellerName.substring(0, 2).toUpperCase()}
-                            </AvatarFallback>
-                        </Avatar>
-                    )}
-                    <div className="flex flex-col">
-                        <span className="font-bold text-xs uppercase tracking-tight leading-none mb-1">Bán bởi</span>
-                        <div className="flex items-center gap-1.5">
-                            <Store className="h-3 w-3 text-primary" />
-                            <span className="font-black text-[10px] uppercase tracking-wider text-foreground">
-                                {sellerName}
-                            </span>
-                        </div>
-                    </div>
+        <div className="bg-white dark:bg-zinc-900 border rounded-lg shadow-sm overflow-hidden mb-8">
+            <div className="px-6 py-4 border-b flex items-center justify-between bg-zinc-50/30">
+                <div className="flex items-center gap-2">
+                    <Store className="h-4 w-4 text-zinc-400" />
+                    <span className="font-bold text-sm tracking-tight hover:underline cursor-pointer">
+                        {sellerName}
+                    </span>
                 </div>
             </div>
 
-            <div className="px-4">
+            <div className="px-6">
                 {group.items.map((item) => (
                     <CartItem key={`${item.productId}-${item.variantId || 'base'}`} item={item} />
                 ))}
-            </div>
-
-            <div className="bg-zinc-50/50 dark:bg-zinc-800/30 px-4 py-4 border-t flex justify-between items-center group/total hover:bg-zinc-100 dark:hover:bg-zinc-800/50 transition-colors">
-                <span className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">
-                    Tạm tính ({group.items.length} sản phẩm)
-                </span>
-                <span className="font-black text-lg tracking-tighter text-primary">
-                    {formatCurrency(group.subtotal)}
-                </span>
             </div>
         </div>
     );

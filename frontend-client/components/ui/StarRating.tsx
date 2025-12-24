@@ -35,7 +35,7 @@ export function StarRating({
         <span className="absolute inset-0 text-gray-300">☆</span>
         {/* Filled star overlay */}
         <span
-          className="absolute inset-0 overflow-hidden text-yellow-500"
+          className="absolute inset-0 overflow-hidden text-primary"
           style={{ width: `${fillPercentage}%` }}
         >
           ★

@@ -30,7 +30,7 @@ export const ProductGallery = ({
 }: ProductGalleryProps) => {
     return (
         <div className="space-y-6">
-            <div className="aspect-square relative bg-zinc-100 dark:bg-zinc-800 overflow-hidden border">
+            <div className="aspect-square relative bg-zinc-100 dark:bg-zinc-800 overflow-hidden">
                 <Image
                     width={700}
                     height={700}

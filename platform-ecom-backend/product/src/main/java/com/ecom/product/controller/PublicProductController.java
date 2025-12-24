@@ -104,4 +104,25 @@ public class PublicProductController {
         ProductDetailDTO product = productService.getProductBySlug(decodedSlug);
         return ResponseBuilder.success("Product retrieved successfully", product);
     }
+
+    @GetMapping("/seller/{userId}")
+    public ResponseEntity<APIResponse<ProductResponse>> getProductsBySeller(
+            @PathVariable Long userId,
+            PaginationRequest paginationRequest,
+            @RequestParam(name = "category", required = false) String category,
+            @RequestParam(name = "minPrice", required = false) BigDecimal minPrice,
+            @RequestParam(name = "maxPrice", required = false) BigDecimal maxPrice,
+            @RequestParam(name = "minRating", required = false) Double minRating) {
+        ProductResponse productResponse = productService.getAllPublicProductsBySeller(
+                userId,
+                paginationRequest.getPageNumber(),
+                paginationRequest.getPageSize(),
+                category,
+                paginationRequest.getSortBy(),
+                paginationRequest.getSortOrder(),
+                minPrice,
+                maxPrice,
+                minRating);
+        return ResponseBuilder.success("Products retrieved successfully", productResponse);
+    }
 }

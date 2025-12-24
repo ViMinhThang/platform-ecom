@@ -71,3 +71,28 @@ export const getProductBySlug = async (slug: string): Promise<ProductDetail> => 
     return response.data.data;
 };
 
+export interface GetSellerProductsParams extends GetProductsParams {
+    sellerId: number;
+}
+
+export const getProductsBySeller = async (params: GetSellerProductsParams): Promise<ProductResponse> => {
+    const { sellerId, ...rest } = params;
+    const searchParams = new URLSearchParams();
+
+    if (rest.page !== undefined) searchParams.set('page', rest.page.toString());
+    if (rest.perPage !== undefined) searchParams.set('size', rest.perPage.toString());
+    if (rest.category) searchParams.set('category', rest.category);
+    if (rest.search) searchParams.set('search', rest.search);
+    if (rest.sortBy) searchParams.set('sortBy', rest.sortBy);
+    if (rest.sortOrder) searchParams.set('sortOrder', rest.sortOrder);
+    if (rest.minPrice !== undefined) searchParams.set('minPrice', rest.minPrice.toString());
+    if (rest.maxPrice !== undefined) searchParams.set('maxPrice', rest.maxPrice.toString());
+    if (rest.minRating !== undefined) searchParams.set('minRating', rest.minRating.toString());
+
+    const query = searchParams.toString();
+    const endpoint = `/v1/products/seller/${sellerId}${query ? `?${query}` : ''}`;
+
+    const response = await apiClient.get<APIResponse<ProductResponse>>(endpoint);
+    return response.data.data;
+};
+

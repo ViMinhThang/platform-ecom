@@ -9,14 +9,15 @@ interface ProductDetailedDescriptionProps {
 
 export const ProductDetailedDescription = ({ product }: ProductDetailedDescriptionProps) => {
     return (
-        <section className="bg-card border-y p-6 sm:p-8">
-            <h2 className="text-xl font-black mb-6 flex items-center gap-3 uppercase tracking-widest text-muted-foreground/80">
-                <span className="w-1 h-6 bg-primary" />
+        <section className="p-0">
+            <h2 className="text-2xl font-black mb-10 flex items-center gap-4 uppercase tracking-[0.2em] text-muted-foreground/80 border-b pb-6">
                 Mô tả sản phẩm
             </h2>
-            <RichTextPreview
-                content={product.description || "<p className='text-muted-foreground italic text-sm'>Chưa có mô tả cho sản phẩm này.</p>"}
-            />
+            <div className="prose prose-lg max-w-none">
+                <RichTextPreview
+                    content={product.description || "<p className='text-muted-foreground italic text-lg'>Chưa có mô tả cho sản phẩm này.</p>"}
+                />
+            </div>
         </section>
     );
 };

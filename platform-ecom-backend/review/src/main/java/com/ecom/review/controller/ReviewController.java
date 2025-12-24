@@ -1,6 +1,5 @@
 package com.ecom.review.controller;
 
-import com.ecom.review.config.AppConstants;
 import com.ecom.common.security.AuthContext;
 import com.ecom.review.dto.*;
 import com.ecom.review.service.ReviewService;
@@ -11,8 +10,10 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/api/reviews")
@@ -22,24 +23,26 @@ public class ReviewController {
     private final ReviewService reviewService;
     private final AuthContext authContext;
 
-    @PostMapping
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<ReviewDTO> createReview(
-            @Valid @RequestBody CreateReviewDTO createReviewDTO,
+            @RequestPart("review") @Valid CreateReviewDTO createReviewDTO,
+            @RequestPart(value = "images", required = false) MultipartFile[] images,
             HttpServletRequest request) {
         Long userId = authContext.getUserId(request);
         String email = authContext.getEmail(request);
 
-        ReviewDTO reviewDTO = reviewService.createReview(createReviewDTO, userId, email);
+        ReviewDTO reviewDTO = reviewService.createReview(createReviewDTO, images, userId, email);
         return new ResponseEntity<>(reviewDTO, HttpStatus.CREATED);
     }
 
-    @PostMapping("/unverified")
+    @PostMapping(value = "/unverified", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<ReviewDTO> createUnverifiedReview(
-            @Valid @RequestBody CreateUnverifiedReviewDTO createUnverifiedReviewDTO,
+            @RequestPart("review") @Valid CreateUnverifiedReviewDTO createUnverifiedReviewDTO,
+            @RequestPart(value = "images", required = false) MultipartFile[] images,
             HttpServletRequest request) {
         Long userId = authContext.getUserId(request);
 
-        ReviewDTO reviewDTO = reviewService.createUnverifiedReview(createUnverifiedReviewDTO, userId);
+        ReviewDTO reviewDTO = reviewService.createUnverifiedReview(createUnverifiedReviewDTO, images, userId);
         return new ResponseEntity<>(reviewDTO, HttpStatus.CREATED);
     }
 

@@ -46,9 +46,7 @@ export async function getProductReviews(
     return response.data;
 }
 
-/**
- * Get product review summary (public - no auth required)
- */
+
 export async function getProductReviewSummary(
     productId: number | string
 ): Promise<ProductReviewSummary> {
@@ -58,23 +56,47 @@ export async function getProductReviewSummary(
     return response.data;
 }
 
-/**
- * Create a verified review (requires auth + purchase)
- */
-export async function createReview(payload: CreateReviewPayload, token: string): Promise<void> {
-    await apiClient.post('/v1/reviews', payload, {
-        headers: { Authorization: `Bearer ${token}` },
+
+export async function createReview(
+    payload: CreateReviewPayload,
+    token: string,
+    images?: File[]
+): Promise<void> {
+    const formData = new FormData();
+    formData.append('review', new Blob([JSON.stringify(payload)], { type: 'application/json' }));
+
+    if (images && images.length > 0) {
+        images.forEach((image) => {
+            formData.append('images', image);
+        });
+    }
+
+    await apiClient.post('/v1/reviews', formData, {
+        headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'multipart/form-data',
+        },
     });
 }
 
-/**
- * Create an unverified review (requires auth, no purchase needed)
- */
 export async function createUnverifiedReview(
     payload: CreateUnverifiedReviewPayload,
-    token: string
+    token: string,
+    images?: File[]
 ): Promise<void> {
-    await apiClient.post('/v1/reviews/unverified', payload, {
-        headers: { Authorization: `Bearer ${token}` },
+    const formData = new FormData();
+    formData.append('review', new Blob([JSON.stringify(payload)], { type: 'application/json' }));
+
+    if (images && images.length > 0) {
+        images.forEach((image) => {
+            formData.append('images', image);
+        });
+    }
+
+    await apiClient.post('/v1/reviews/unverified', formData, {
+        headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'multipart/form-data',
+        },
     });
 }

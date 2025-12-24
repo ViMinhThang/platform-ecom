@@ -67,7 +67,7 @@ export const ProductListingClient: React.FC<ProductListingClientProps> = ({
     router.replace(`/dashboard/product?${params.toString()}`);
   }, [page, perPage, searchParams, router]);
 
-  if (loading && products.length === 0) return <div>Loading products...</div>;
+  if (loading && products.length === 0) return <div>Đang tải sản phẩm...</div>;
   // if (!products || products.length === 0) return <div>No products found.</div>; 
   // Better to show empty table than just text if loading is done
 

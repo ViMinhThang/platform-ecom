@@ -32,7 +32,7 @@ export const ProductImageCard: React.FC<ProductImageCardProps> = ({
     <Card
       key={image.id}
       className={cn(
-        "relative group overflow-hidden border shadow-sm rounded-lg w-[350px] h-[200px] p-0"
+        "relative group overflow-hidden shadow-sm rounded-lg w-[350px] h-[200px] p-0"
       )}
     >
       <CardContent className="p-0 relative w-full h-full">

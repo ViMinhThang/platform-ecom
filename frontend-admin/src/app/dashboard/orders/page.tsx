@@ -13,8 +13,8 @@ import { OrderFilterRequest } from '@/types/order/order';
 import PageContainer from '@/components/layout/page-container';
 
 const breadcrumbItems = [
-    { title: 'Dashboard', link: '/dashboard' },
-    { title: 'Orders', link: '/dashboard/orders' },
+    { title: 'Tổng quan', link: '/dashboard' },
+    { title: 'Đơn hàng', link: '/dashboard/orders' },
 ];
 
 export default function OrdersPage() {
@@ -57,8 +57,8 @@ export default function OrdersPage() {
 
                 <div className="flex items-start justify-between">
                     <Heading
-                        title={`Orders (${pagination.totalElements})`}
-                        description="Manage orders and view their status."
+                        title={`Đơn hàng (${pagination.totalElements})`}
+                        description="Quản lý đơn hàng và theo dõi trạng thái."
                     />
                 </div>
 

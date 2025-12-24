@@ -53,8 +53,13 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
 
     if (loading) {
         return (
-            <div className="container mx-auto py-8 px-4 md:px-6">
-                <div className="text-center">Đang tải...</div>
+            <div className="min-h-screen bg-background py-8 px-4 md:px-6">
+                <div className="max-w-[1600px] mx-auto bg-card shadow-sm border border-border/50 p-12">
+                    <div className="flex flex-col items-center justify-center min-h-[400px] animate-pulse">
+                        <div className="w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
+                        <p className="mt-4 text-muted-foreground font-medium">Đang tải sản phẩm...</p>
+                    </div>
+                </div>
             </div>
         );
     }
@@ -69,29 +74,33 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
         "https://placehold.co/600x600";
 
     return (
-        <div className="container mx-auto py-8 px-4 md:px-6">
-            <div className="max-w-5xl mx-auto grid md:grid-cols-[42%_1fr] gap-12 items-start">
-                <ProductGallery
-                    product={product}
-                    currentImageIndex={currentImageIndex}
-                    setCurrentImageIndex={setCurrentImageIndex}
-                    setApi={setApi}
-                    api={api}
-                    displayImage={displayImage}
-                />
+        <div className="min-h-screen bg-background py-8 px-4 md:px-6">
+            <div className="max-w-[1600px] mx-auto bg-card shadow-sm border border-border/50 p-10 md:p-16 lg:p-24">
+                <div className="max-w-5xl mx-auto grid md:grid-cols-[42%_1fr] gap-12 items-start">
+                    <ProductGallery
+                        product={product}
+                        currentImageIndex={currentImageIndex}
+                        setCurrentImageIndex={setCurrentImageIndex}
+                        setApi={setApi}
+                        api={api}
+                        displayImage={displayImage}
+                    />
 
-                <ProductEssentials
-                    product={product}
-                    setSelectedVariant={setSelectedVariant}
-                />
+                    <ProductEssentials
+                        product={product}
+                        setSelectedVariant={setSelectedVariant}
+                    />
+                </div>
+
+                <div className="mt-32 space-y-32 max-w-7xl mx-auto">
+                    <ProductDetailedDescription product={product} />
+                    <ProductFeedback product={product} />
+                </div>
+
+                <div className="mt-32">
+                    <RelatedProducts productId={product.id} />
+                </div>
             </div>
-
-            <div className="mt-16 space-y-16 max-w-5xl mx-auto">
-                <ProductDetailedDescription product={product} />
-                <ProductFeedback product={product} />
-            </div>
-
-            <RelatedProducts productId={product.id} />
         </div>
     );
 }

@@ -17,6 +17,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -39,14 +40,22 @@ public class ReviewServiceImpl implements ReviewService {
     private final ProductServiceClient productServiceClient;
     private final ModelMapper modelMapper;
     private final StreamBridge streamBridge;
+    private final FileStorageService fileStorageService;
 
     @Override
     @Transactional
-    public ReviewDTO createReview(CreateReviewDTO createReviewDTO, Long userId, String email) {
+    public ReviewDTO createReview(CreateReviewDTO createReviewDTO, MultipartFile[] images, Long userId, String email) {
         validateNoDuplicateReview(userId, createReviewDTO.getProductId());
         validateProductExists(createReviewDTO.getProductId());
         validateOrderAndOwnership(createReviewDTO.getOrderId(), email);
         validatePurchaseVerification(email, createReviewDTO.getProductId());
+
+        if (images != null && images.length > 0) {
+            for (MultipartFile file : images) {
+                String fileName = fileStorageService.storeFile(file);
+                createReviewDTO.getImages().add(fileName);
+            }
+        }
 
         Review review = buildReviewFromDTO(createReviewDTO, userId, email);
         Review savedReview = reviewRepository.save(review);
@@ -75,6 +84,13 @@ public class ReviewServiceImpl implements ReviewService {
     public void deleteReview(Long reviewId, Long userId) {
         Review review = findReviewById(reviewId);
         validateReviewOwnership(review, userId);
+
+        // Delete associated images
+        if (review.getImages() != null) {
+            for (String fileName : review.getImages()) {
+                fileStorageService.deleteFile(fileName);
+            }
+        }
 
         reviewRepository.delete(review);
         publishReviewEvent("DELETED", review);
@@ -312,9 +328,16 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Override
     @Transactional
-    public ReviewDTO createUnverifiedReview(CreateUnverifiedReviewDTO dto, Long userId) {
+    public ReviewDTO createUnverifiedReview(CreateUnverifiedReviewDTO dto, MultipartFile[] images, Long userId) {
         validateNoDuplicateReview(userId, dto.getProductId());
         validateProductExists(dto.getProductId());
+
+        if (images != null && images.length > 0) {
+            for (MultipartFile file : images) {
+                String fileName = fileStorageService.storeFile(file);
+                dto.getImages().add(fileName);
+            }
+        }
 
         Review review = buildUnverifiedReviewFromDTO(dto, userId);
         Review savedReview = reviewRepository.save(review);

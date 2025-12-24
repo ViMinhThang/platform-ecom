@@ -16,7 +16,9 @@ import {
     DialogTitle,
     DialogFooter,
 } from '@/components/ui/dialog';
+import { useSession } from 'next-auth/react';
 import { Star, Loader2 } from 'lucide-react';
+import { toast } from 'sonner';
 
 const reviewSchema = z.object({
     rating: z.number().min(1, 'Please select a rating').max(5),
@@ -44,6 +46,7 @@ export function ReviewDialog({
     orderId,
     onSuccess
 }: ReviewDialogProps) {
+    const { data: session } = useSession();
     const [hoveredRating, setHoveredRating] = useState(0);
     const { submitReview, isSubmitting } = useReview();
 
@@ -59,6 +62,11 @@ export function ReviewDialog({
     const selectedRating = form.watch('rating');
 
     const handleSubmit = async (data: ReviewFormValues) => {
+        if (!session?.user?.email) {
+            toast.error("Vui lòng đăng nhập để gửi đánh giá.");
+            return;
+        }
+
         try {
             await submitReview({
                 productId,
@@ -66,10 +74,12 @@ export function ReviewDialog({
                 rating: data.rating,
                 title: data.title,
                 comment: data.comment,
+                email: session.user.email,
             });
             onOpenChange(false);
             form.reset();
             onSuccess?.();
+            toast.success("Gửi đánh giá thành công!");
         } catch (error) {
             // Error handled by hook
         }
@@ -79,13 +89,13 @@ export function ReviewDialog({
         <Dialog open={open} onOpenChange={onOpenChange}>
             <DialogContent className="max-w-md">
                 <DialogHeader>
-                    <DialogTitle>Write a Review</DialogTitle>
+                    <DialogTitle>Viết đánh giá</DialogTitle>
                 </DialogHeader>
 
                 <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
                     {/* Star Rating */}
                     <div className="space-y-2">
-                        <Label>Rating *</Label>
+                        <Label>Đánh giá *</Label>
                         <div className="flex gap-1">
                             {[1, 2, 3, 4, 5].map((star) => (
                                 <button
@@ -98,7 +108,7 @@ export function ReviewDialog({
                                 >
                                     <Star
                                         className={`h-8 w-8 ${star <= (hoveredRating || selectedRating)
-                                            ? 'fill-yellow-400 text-yellow-400'
+                                            ? 'fill-primary text-primary'
                                             : 'text-gray-300'
                                             }`}
                                     />
@@ -114,20 +124,20 @@ export function ReviewDialog({
 
                     {/* Title (Optional) */}
                     <FormField
-                        label="Title (Optional)"
+                        label="Tiêu đề (Tùy chọn)"
                         id="title"
                         registration={form.register('title')}
                         error={form.formState.errors.title}
-                        placeholder="Sum up your review in a few words"
+                        placeholder="Tóm tắt đánh giá của bạn trong vài từ"
                     />
 
                     {/* Comment */}
                     <div className="space-y-2">
-                        <Label htmlFor="comment">Your Review *</Label>
+                        <Label htmlFor="comment">Đánh giá của bạn *</Label>
                         <Textarea
                             id="comment"
                             {...form.register('comment')}
-                            placeholder="Share your thoughts about this product..."
+                            placeholder="Chia sẻ suy nghĩ của bạn về sản phẩm này..."
                             rows={4}
                             className="resize-none"
                         />
@@ -145,11 +155,11 @@ export function ReviewDialog({
                             onClick={() => onOpenChange(false)}
                             disabled={isSubmitting}
                         >
-                            Cancel
+                            Hủy
                         </Button>
                         <Button type="submit" disabled={isSubmitting}>
                             {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                            Submit Review
+                            Gửi đánh giá
                         </Button>
                     </DialogFooter>
                 </form>
