@@ -1,0 +1,49 @@
+spring:
+  application:
+    name: chatbot-service
+  config:
+    import: "optional:configserver:http://localhost:8888"
+  datasource:
+    url: jdbc:postgresql://localhost:5432/chatbot_db
+    username: ${DB_USER:fragile}
+    password: ${DB_PASSWORD:204863}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: false
+
+gemini:
+  model:
+    chat: gemini-2.5-flash
+    embedding: gemini-embedding-001
+  embedding:
+    dimensions: 768
+    sync-interval: 3600000
+
+server:
+  port: 8100
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    preferIpAddress: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus
+  endpoint:
+    health:
+      show-details: always
+
+logging:
+  level:
+    com.ecom.chatbot: DEBUG
+    org.springframework.web: INFO

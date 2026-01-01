@@ -18,6 +18,7 @@
         <option value="$PROJECT_DIR$/platform-ecom-backend/review/pom.xml" />
         <option value="$PROJECT_DIR$/platform-ecom-backend/shared-commons/pom.xml" />
         <option value="$PROJECT_DIR$/platform-ecom-backend/inventory/pom.xml" />
+        <option value="$PROJECT_DIR$/platform-ecom-backend/chatbot/pom.xml" />
       </list>
     </option>
     <option name="ignoredFiles">

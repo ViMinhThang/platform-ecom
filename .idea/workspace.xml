@@ -5,74 +5,24 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c48beeac-7758-42e4-81dd-f068fbcd38be" name="Changes" comment="update spring cloud stream dependency">
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-admin/src/app/dashboard/category/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-admin/src/app/dashboard/category/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-admin/src/app/dashboard/layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-admin/src/app/dashboard/layout.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-admin/src/app/dashboard/orders/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-admin/src/app/dashboard/orders/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-admin/src/app/dashboard/overview/layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-admin/src/app/dashboard/overview/layout.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-admin/src/app/dashboard/user/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-admin/src/app/dashboard/user/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-admin/src/components/editor/rich-text-editor.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-admin/src/components/editor/rich-text-editor.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-admin/src/components/layout/app-sidebar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-admin/src/components/layout/app-sidebar.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-admin/src/components/layout/user-nav.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-admin/src/components/layout/user-nav.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-admin/src/components/ui/table/data-table-pagination.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-admin/src/components/ui/table/data-table-pagination.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-admin/src/components/ui/table/data-table-toolbar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-admin/src/components/ui/table/data-table-toolbar.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-admin/src/components/ui/table/data-table.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-admin/src/components/ui/table/data-table.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-admin/src/constants/data.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-admin/src/constants/data.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-admin/src/features/categories/components/category-form/category-dialog.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-admin/src/features/categories/components/category-form/category-dialog.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-admin/src/features/categories/components/create-category.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-admin/src/features/categories/components/create-category.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-admin/src/features/orders/components/order-tables/columns.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-admin/src/features/orders/components/order-tables/columns.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-admin/src/features/overview/components/area-graph.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-admin/src/features/overview/components/area-graph.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-admin/src/features/overview/components/bar-graph.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-admin/src/features/overview/components/bar-graph.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-admin/src/features/overview/components/pie-graph.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-admin/src/features/overview/components/pie-graph.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-admin/src/features/overview/components/recent-sales.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-admin/src/features/overview/components/recent-sales.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-admin/src/features/products/components/product-form/product-form-fields.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-admin/src/features/products/components/product-form/product-form-fields.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-admin/src/features/products/components/product-form/product-form.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-admin/src/features/products/components/product-form/product-form.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-admin/src/features/products/components/product-image-cart.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-admin/src/features/products/components/product-image-cart.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-admin/src/features/products/components/product-listing-client.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-admin/src/features/products/components/product-listing-client.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-admin/src/features/products/components/product-tables/columns.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-admin/src/features/products/components/product-tables/columns.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-admin/src/features/users/component/user-tables/columns.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-admin/src/features/users/component/user-tables/columns.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-admin/src/lib/font.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-admin/src/lib/font.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/app/cart/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/app/cart/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/app/checkout/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/app/checkout/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/app/globals.css" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/app/globals.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend-client/app/layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/app/layout.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-client/app/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/app/page.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend-client/app/products/[slug]/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/app/products/[slug]/page.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend-client/components/Categories.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/Categories.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/ReviewForm.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/ReviewForm.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/ReviewList.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/ReviewList.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/ReviewStats.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/ReviewStats.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-client/components/FeaturedProducts.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/FeaturedProducts.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-client/components/Hero.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/Hero.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend-client/components/RichTextPreview.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/RichTextPreview.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/SiteHeader.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/SiteHeader.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/UserNav.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/UserNav.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/cart/CartItem.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/cart/CartItem.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/cart/CartSummary.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/cart/CartSummary.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/cart/SellerGroup.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/cart/SellerGroup.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/category/FilterPanel.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/category/FilterPanel.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/checkout/AddressForm.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/checkout/AddressForm.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/checkout/PaymentForm.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/checkout/PaymentForm.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend-client/components/product/ProductDetailedDescription.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/product/ProductDetailedDescription.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/product/ProductEssentials.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/product/ProductEssentials.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/product/ProductFeedback.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/product/ProductFeedback.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/product/ProductGallery.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/product/ProductGallery.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/product/SellerInfoCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/product/SellerInfoCard.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/product/UnverifiedReviewDialog.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/product/UnverifiedReviewDialog.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/profile/ReviewDialog.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/profile/ReviewDialog.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/ui/StarRating.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/ui/StarRating.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/lib/services/product-service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/lib/services/product-service.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/lib/services/review-service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/lib/services/review-service.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/lib/utils/dateUtils.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/lib/utils/dateUtils.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/lib/utils/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/lib/utils/index.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend-client/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/package-lock.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend-client/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/logs/order-service.log" beforeDir="false" afterPath="$PROJECT_DIR$/logs/order-service.log" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/logs/user-service.log" beforeDir="false" afterPath="$PROJECT_DIR$/logs/user-service.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/controller/PublicProductController.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/controller/PublicProductController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/service/impl/ProductServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/service/impl/ProductServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/service/impl/ProductVariantServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/service/impl/ProductVariantServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/service/signature/ProductService.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/service/signature/ProductService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/review/src/main/java/com/ecom/review/controller/ReviewController.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/review/src/main/java/com/ecom/review/controller/ReviewController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/review/src/main/java/com/ecom/review/service/ReviewService.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/review/src/main/java/com/ecom/review/service/ReviewService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/review/src/main/java/com/ecom/review/service/ReviewServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/review/src/main/java/com/ecom/review/service/ReviewServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/gateway/src/main/java/com/ecom/gateway/security/GatewayConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/gateway/src/main/java/com/ecom/gateway/security/GatewayConfig.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -126,37 +76,38 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Application.Unnamed.executor&quot;: &quot;Run&quot;,
-    &quot;Application.auth-service.executor&quot;: &quot;Run&quot;,
-    &quot;Application.bff-service.executor&quot;: &quot;Run&quot;,
-    &quot;Application.config-server.executor&quot;: &quot;Run&quot;,
-    &quot;Application.eureka.executor&quot;: &quot;Run&quot;,
-    &quot;Application.gateway.executor&quot;: &quot;Run&quot;,
-    &quot;Application.inventory-service.executor&quot;: &quot;Run&quot;,
-    &quot;Application.notificaiton-service.executor&quot;: &quot;Run&quot;,
-    &quot;Application.notification-service.executor&quot;: &quot;Run&quot;,
-    &quot;Application.order-service.executor&quot;: &quot;Run&quot;,
-    &quot;Application.product-service.executor&quot;: &quot;Run&quot;,
-    &quot;Application.review-service.executor&quot;: &quot;Run&quot;,
-    &quot;Application.user-service.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.com.ecom.product.service in product.executor&quot;: &quot;Debug&quot;,
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;feature/nextjs&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/huynh/OneDrive/Desktop/platform-ecom&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Libraries&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.keymap&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.Unnamed.executor": "Run",
+    "Application.auth-service.executor": "Run",
+    "Application.bff-service.executor": "Run",
+    "Application.chatbot-service.executor": "Run",
+    "Application.config-server.executor": "Run",
+    "Application.eureka.executor": "Run",
+    "Application.gateway.executor": "Run",
+    "Application.inventory-service.executor": "Run",
+    "Application.notificaiton-service.executor": "Run",
+    "Application.notification-service.executor": "Run",
+    "Application.order-service.executor": "Run",
+    "Application.product-service.executor": "Run",
+    "Application.review-service.executor": "Run",
+    "Application.user-service.executor": "Run",
+    "JUnit.com.ecom.product.service in product.executor": "Debug",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "git-widget-placeholder": "feature/nextjs",
+    "ignore.virus.scanning.warn.message": "true",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/huynh/OneDrive/Desktop/platform-ecom",
+    "project.structure.last.edited": "Libraries",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "preferences.keymap"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/uploads/products" />
@@ -190,6 +141,7 @@
         <entry key="Application">
           <value>
             <map>
+              <entry key="chatbot-service" value="STOPPED" />
               <entry key="config-server" value="STOPPED" />
               <entry key="gateway" value="STOPPED" />
               <entry key="inventory-service" value="STOPPED" />
@@ -204,6 +156,18 @@
     </option>
   </component>
   <component name="RunManager" selected="JUnit.com.ecom.product.service in product">
+    <configuration name="chatbot-service" type="Application" factoryName="Application">
+      <option name="ALTERNATIVE_JRE_PATH" value="25" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
+      <option name="envFilePaths">
+        <option value="$PROJECT_DIR$/platform-ecom-backend/chatbot/.env" />
+      </option>
+      <option name="MAIN_CLASS_NAME" value="com.ecom.chatbot.ChatbotApplication" />
+      <module name="chatbot" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="config-server" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="com.ecom.config.configserver.ConfigserverApplication" />
       <module name="configserver" />
@@ -289,11 +253,12 @@
     <list>
       <item itemvalue="Application.config-server" />
       <item itemvalue="Application.gateway" />
+      <item itemvalue="Application.user-service" />
+      <item itemvalue="Application.product-service" />
+      <item itemvalue="Application.chatbot-service" />
       <item itemvalue="Application.inventory-service" />
       <item itemvalue="Application.order-service" />
-      <item itemvalue="Application.product-service" />
       <item itemvalue="Application.review-service" />
-      <item itemvalue="Application.user-service" />
       <item itemvalue="JUnit.com.ecom.product.service in product" />
     </list>
     <recent_temporary>

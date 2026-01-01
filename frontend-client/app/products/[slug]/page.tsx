@@ -11,6 +11,7 @@ import { ReviewList } from "@/components/ReviewList";
 import { ProductGallery } from "@/components/product/ProductGallery";
 import { ProductEssentials } from "@/components/product/ProductEssentials";
 import { ProductDetailedDescription } from "@/components/product/ProductDetailedDescription";
+import { ProductSpecifications } from "@/components/product/ProductSpecifications";
 import { ProductFeedback } from "@/components/product/ProductFeedback";
 import { RelatedProducts } from "@/components/product/RelatedProducts";
 import { ProductDetail, ProductVariant } from "@/types/product";
@@ -93,6 +94,7 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
                 </div>
 
                 <div className="mt-32 space-y-32 max-w-7xl mx-auto">
+                    <ProductSpecifications product={product} />
                     <ProductDetailedDescription product={product} />
                     <ProductFeedback product={product} />
                 </div>

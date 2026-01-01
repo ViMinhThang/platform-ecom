@@ -4,6 +4,7 @@ import "./globals.css";
 import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
 import { Providers } from "@/components/providers";
+import { ChatbotWidget } from "@/components/chatbot/ChatbotWidget";
 
 const beVietnam = Be_Vietnam_Pro({
   weight: ['400', '500', '600', '700', '800', '900'],
@@ -40,6 +41,7 @@ export default function RootLayout({
             {children}
           </main>
           <SiteFooter />
+          <ChatbotWidget />
         </Providers>
       </body>
     </html>

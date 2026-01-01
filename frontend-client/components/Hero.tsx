@@ -1,46 +1,126 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
+import Autoplay from "embla-carousel-autoplay";
+import React from "react";
+
+const HERO_SLIDES = [
+  {
+    image: "/hero.jpg",
+    title: "Nâng tầm phong cách",
+    subtitle: "Bộ sưu tập mới nhất đã sẵn sàng để cùng bạn tỏa sáng.",
+    badge: "New Arrival",
+    buttonText: "Khám phá ngay",
+  },
+  {
+    image: "/banner-2.jpg",
+    title: "Công nghệ đỉnh cao",
+    subtitle: "Trải nghiệm những thiết bị hiện đại nhất cho cuộc sống thông minh.",
+    badge: "Tech Trend",
+    buttonText: "Xem chi tiết",
+  },
+  {
+    image: "/banner-3.jpg",
+    title: "Không gian sống lý tưởng",
+    subtitle: "Mang lại sự tiện nghi và sang trọng cho ngôi nhà của bạn.",
+    badge: "Home Style",
+    buttonText: "Mua sắm ngay",
+  },
+];
 
 export function Hero() {
-  return (
-    <section className="relative flex items-center h-[600px] w-full rounded-md overflow-hidden border border-border">
-      <div className="absolute inset-0 bg-zinc-900">
-        <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/40 to-transparent z-10" />
-        <div className="absolute inset-0 bg-gradient-to-tr from-primary/20 via-transparent to-transparent z-10 opacity-60" />
-        <div className="w-full h-full bg-center">
-          <Image src="/hero.jpg" alt="Hero" fill className="object-cover opacity-80" priority />
-        </div>
-      </div>
+  const plugin = React.useRef(
+    Autoplay({ delay: 5000, stopOnInteraction: true })
+  );
 
-      <div className="relative z-20 px-10 md:px-16 flex flex-col items-start max-w-2xl">
-        <div className="inline-block px-4 py-1.5 mb-6 text-[10px] font-black tracking-[0.2em] text-primary-foreground uppercase bg-primary rounded-none">
-          Bộ sưu tập mới
+  return (
+    <section className="w-full">
+      <Carousel
+        plugins={[plugin.current]}
+        className="w-full"
+        onMouseEnter={plugin.current.stop}
+        onMouseLeave={plugin.current.reset}
+        opts={{
+          loop: true,
+        }}
+      >
+        <CarouselContent className="m-0">
+          {HERO_SLIDES.map((slide, index) => (
+            <CarouselItem key={index} className="p-0">
+              <div className="relative h-[500px] md:h-[650px] w-full overflow-hidden">
+                {/* Background Image */}
+                <div className="absolute inset-0 bg-slate-900">
+                  <Image
+                    src={slide.image}
+                    alt={slide.title}
+                    fill
+                    className="object-cover opacity-60"
+                    priority={index === 0}
+                  />
+                  {/* Gradients for text readability */}
+                  <div className="absolute inset-0 bg-gradient-to-r from-slate-950 via-slate-900/40 to-transparent z-10" />
+                  <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-slate-950 to-transparent z-10 opacity-60" />
+                </div>
+
+                {/* Content */}
+                <div className="relative z-20 container mx-auto h-full px-6 flex flex-col justify-center items-start">
+                  <div className="max-w-3xl animate-in fade-in slide-in-from-left-4 duration-700">
+                    <div className="inline-flex items-center px-3 py-1 mb-6 rounded-none bg-primary/20 border border-primary/30">
+                      <span className="text-[10px] font-bold tracking-widest text-primary uppercase">
+                        {slide.badge}
+                      </span>
+                    </div>
+
+                    <h1 className="text-5xl md:text-7xl font-black tracking-tight text-white mb-6 leading-none">
+                      {slide.title.split(' ').map((word, i) => (
+                        <span key={i} className={i === 1 ? "text-primary" : ""}>
+                          {word}{' '}
+                        </span>
+                      ))}
+                    </h1>
+
+                    <p className="text-lg md:text-xl text-slate-300 mb-10 max-w-lg leading-relaxed font-medium">
+                      {slide.subtitle}
+                    </p>
+
+                    <div className="flex flex-wrap gap-4">
+                      <Button
+                        size="lg"
+                        className="h-14 px-10 text-xs font-black uppercase tracking-widest rounded-none transition-all"
+                      >
+                        {slide.buttonText}
+                      </Button>
+                      <Button
+                        size="lg"
+                        variant="outline"
+                        className="h-14 px-10 text-xs font-black uppercase tracking-widest border-white/20 text-white rounded-none bg-white/5 hover:bg-white/10"
+                      >
+                        Xem ưu đãi
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </CarouselItem>
+          ))}
+        </CarouselContent>
+
+        {/* Navigation - hidden on small screens */}
+        <div className="hidden md:block">
+          <CarouselPrevious className="left-8 bg-black/40 border-none text-white hover:bg-black/60 hover:text-white h-12 w-12 rounded-none" />
+          <CarouselNext className="right-8 bg-black/40 border-none text-white hover:bg-black/60 hover:text-white h-12 w-12 rounded-none" />
         </div>
-        <h1 className="text-5xl font-black tracking-tighter text-white sm:text-6xl md:text-7xl mb-6 leading-[0.9] uppercase">
-          Mọi thứ <br />
-          <span className="text-primary italic">
-            bạn cần
-          </span>
-        </h1>
-        <p className="text-lg md:text-xl text-zinc-300 mb-8 max-w-sm leading-relaxed font-medium">
-          Khám phá bộ sưu tập được tuyển chọn mang lại phong cách và sự tiện nghi cho ngôi nhà của bạn.
-        </p>
-        <div className="flex gap-4">
-          <Button
-            size="lg"
-            className="h-14 px-10 text-xs font-black uppercase tracking-[0.2em] bg-primary text-primary-foreground hover:bg-primary rounded-none transition-none"
-          >
-            Mua ngay
-          </Button>
-          <Button
-            size="lg"
-            variant="outline"
-            className="h-14 px-10 text-xs font-black uppercase tracking-[0.2em] border-white/40 text-white rounded-none backdrop-blur-sm transition-none"
-          >
-            Xem ưu đãi
-          </Button>
-        </div>
-      </div>
+
+        {/* Custom Progress/Indicators could go here */}
+      </Carousel>
     </section>
   );
 }
