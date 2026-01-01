@@ -9,7 +9,9 @@ import { Button } from "@/components/ui/button";
 import { CheckCircle2, Package, Loader2, ArrowRight } from "lucide-react";
 import Link from "next/link";
 
-export default function CheckoutSuccessPage() {
+import { Suspense } from "react";
+
+function CheckoutSuccessContent() {
     const searchParams = useSearchParams();
     const router = useRouter();
     const dispatch = useAppDispatch();
@@ -111,5 +113,13 @@ export default function CheckoutSuccessPage() {
                 </div>
             </div>
         </div>
+    );
+}
+
+export default function CheckoutSuccessPage() {
+    return (
+        <Suspense fallback={<div>Loading...</div>}>
+            <CheckoutSuccessContent />
+        </Suspense>
     );
 }

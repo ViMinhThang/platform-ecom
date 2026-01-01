@@ -270,17 +270,18 @@ public class ProductServiceImpl implements ProductService {
         return fetchAndMapProducts(specification, pageable);
     }
 
+    private static final PolicyFactory SANITIZER_POLICY = Sanitizers.FORMATTING
+            .and(Sanitizers.LINKS)
+            .and(Sanitizers.BLOCKS)
+            .and(Sanitizers.STYLES)
+            .and(Sanitizers.IMAGES)
+            .and(new org.owasp.html.HtmlPolicyBuilder()
+                    .allowAttributes("data-image-id").onElements("img")
+                    .toFactory());
+
     private String sanitizeDescription(String description) {
         if (description == null)
             return null;
-        PolicyFactory policy = Sanitizers.FORMATTING
-                .and(Sanitizers.LINKS)
-                .and(Sanitizers.BLOCKS)
-                .and(Sanitizers.STYLES)
-                .and(Sanitizers.IMAGES)
-                .and(new org.owasp.html.HtmlPolicyBuilder()
-                        .allowAttributes("data-image-id").onElements("img")
-                        .toFactory());
-        return policy.sanitize(description);
+        return SANITIZER_POLICY.sanitize(description);
     }
 }

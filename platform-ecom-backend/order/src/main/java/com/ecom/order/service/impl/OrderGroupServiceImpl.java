@@ -2,12 +2,14 @@ package com.ecom.order.service.impl;
 
 import com.ecom.common.exception.*;
 import com.ecom.order.client.UserServiceClient;
+import com.ecom.order.config.OrderConfigurationProperties;
 import com.ecom.order.dto.*;
 import com.ecom.order.entity.*;
 import com.ecom.order.event.OrderEventPublisher;
 import com.ecom.order.mapper.AdminOrderMapper;
 import com.ecom.order.payment.PaymentIntent;
 import com.ecom.order.repository.*;
+import com.ecom.order.service.OrderCalculator;
 import com.ecom.order.service.OrderQueryHelper;
 import com.ecom.order.service.signature.CartValidationService;
 import com.ecom.order.service.signature.*;
@@ -30,11 +32,6 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class OrderGroupServiceImpl implements OrderGroupService {
 
-    private static final String DEFAULT_CURRENCY = "USD";
-    private static final BigDecimal TAX_RATE = BigDecimal.valueOf(0.10);
-    private static final String PAYMENT_PROVIDER = "stripe";
-    private static final String PAYMENT_METHOD = "card";
-
     // Dependencies
     private final OrderGroupRepository orderGroupRepository;
     private final CartRepository cartRepository;
@@ -47,6 +44,8 @@ public class OrderGroupServiceImpl implements OrderGroupService {
 
     private final CartValidationService cartValidationService;
     private final OrderQueryHelper orderQueryHelper;
+    private final OrderConfigurationProperties properties;
+    private final OrderCalculator orderCalculator;
 
     @Override
     @Transactional(readOnly = true)
@@ -54,11 +53,11 @@ public class OrderGroupServiceImpl implements OrderGroupService {
         Cart cart = cartValidationService.getValidatedCart(userId);
         cartValidationService.enrichAndValidateCartItems(cart);
 
-        BigDecimal grandTotal = calculateGrandTotal(cart, request.getShippingFee());
+        BigDecimal grandTotal = orderCalculator.calculateGrandTotal(cart, request.getShippingFee());
         log.info("Initiating checkout for user {} with total: {}", userId, grandTotal);
 
         PaymentIntent paymentIntent = paymentService.createPaymentIntent(
-                grandTotal, DEFAULT_CURRENCY, "Checkout for user " + userId,
+                grandTotal, properties.getDefaultCurrency(), "Checkout for user " + userId,
                 userId, request.getIdempotencyKey());
 
         return buildCheckoutSession(paymentIntent, grandTotal, request.getAddressId(), cart);
@@ -180,15 +179,6 @@ public class OrderGroupServiceImpl implements OrderGroupService {
         return adminOrderMapper.toAdminSubOrderDTO(subOrder);
     }
 
-    private BigDecimal calculateGrandTotal(Cart cart, BigDecimal shippingFee) {
-        BigDecimal subtotal = cart.getItems().stream()
-                .map(item -> item.getPrice().multiply(BigDecimal.valueOf(item.getQuantity())))
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
-
-        BigDecimal tax = subtotal.multiply(TAX_RATE);
-        return subtotal.add(shippingFee).add(tax);
-    }
-
     private OrderGroup createOrderGroup(Long userId, Cart cart, Long addressId, BigDecimal shippingFee) {
         Map<Long, List<CartItem>> itemsBySeller = groupItemsBySeller(cart);
 
@@ -203,7 +193,7 @@ public class OrderGroupServiceImpl implements OrderGroupService {
                 .overallStatus(OrderGroupStatus.PAID)
                 .paymentStatus(PaymentStatus.SUCCEEDED)
                 .shippingAddressId(addressId)
-                .currency(DEFAULT_CURRENCY)
+                .currency(properties.getDefaultCurrency())
                 .build();
 
         BigDecimal totalAmount = BigDecimal.ZERO;
@@ -231,7 +221,7 @@ public class OrderGroupServiceImpl implements OrderGroupService {
                 .build();
 
         BigDecimal subtotal = addItemsToSubOrder(subOrder, items);
-        setSubOrderFinancials(subOrder, subtotal, shippingFee);
+        orderCalculator.setSubOrderFinancials(subOrder, subtotal, shippingFee);
 
         return subOrder;
     }
@@ -258,15 +248,6 @@ public class OrderGroupServiceImpl implements OrderGroupService {
         return subtotal;
     }
 
-    private void setSubOrderFinancials(SubOrder subOrder, BigDecimal subtotal, BigDecimal shippingFee) {
-        BigDecimal tax = subtotal.add(shippingFee).multiply(TAX_RATE);
-
-        subOrder.setSubtotal(subtotal);
-        subOrder.setShippingCost(shippingFee);
-        subOrder.setTax(tax);
-        subOrder.setTotal(subtotal.add(shippingFee).add(tax));
-    }
-
     private Map<Long, List<CartItem>> groupItemsBySeller(Cart cart) {
         return cart.getItems().stream().collect(Collectors.groupingBy(CartItem::getSellerId));
     }
@@ -283,11 +264,11 @@ public class OrderGroupServiceImpl implements OrderGroupService {
     private void recordPaymentTransaction(OrderGroup group, String paymentIntentId) {
         PaymentTransaction transaction = PaymentTransaction.builder()
                 .orderGroup(group)
-                .provider(PAYMENT_PROVIDER)
+                .provider(properties.getPaymentProvider())
                 .providerTransactionId(paymentIntentId)
-                .paymentMethod(PAYMENT_METHOD)
+                .paymentMethod(properties.getPaymentMethod())
                 .amount(group.getTotalAmount())
-                .currency(DEFAULT_CURRENCY)
+                .currency(properties.getDefaultCurrency())
                 .status(PaymentStatus.SUCCEEDED)
                 .idempotencyKey(paymentIntentId)
                 .completedAt(LocalDateTime.now())
@@ -395,7 +376,7 @@ public class OrderGroupServiceImpl implements OrderGroupService {
                 .clientSecret(intent.getClientSecret())
                 .paymentIntentId(intent.getId())
                 .amount(amount)
-                .currency(DEFAULT_CURRENCY)
+                .currency(properties.getDefaultCurrency())
                 .addressId(addressId)
                 .items(items)
                 .build();

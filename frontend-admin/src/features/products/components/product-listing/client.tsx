@@ -2,8 +2,8 @@
 
 import { useEffect, useState, useRef } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { columns } from "./product-tables/columns";
-import { ProductTable } from "./product-tables";
+import { columns } from "../product-tables/columns";
+import { ProductTable } from "../product-tables";
 import { useSession } from "next-auth/react";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import { fetchProducts } from "@/lib/store/slices/productSlice";
@@ -42,7 +42,6 @@ export const ProductListingClient: React.FC<ProductListingClientProps> = ({
     if (!session?.accessToken) return;
 
     dispatch(fetchProducts({
-      token: session.accessToken,
       params: {
         ...searchParams,
         page: page,

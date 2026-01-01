@@ -6,7 +6,9 @@ import { ProductCard } from "@/components/ProductCard";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import { fetchProducts } from "@/lib/store/slices/productSlice";
 
-export default function ProductsPage() {
+import { Suspense } from "react";
+
+function ProductsPageContent() {
   const dispatch = useAppDispatch();
   const searchParams = useSearchParams();
   const { products, loading, error, pagination } = useAppSelector(
@@ -76,5 +78,13 @@ export default function ProductsPage() {
         </div>
       )}
     </div>
+  );
+}
+
+export default function ProductsPage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <ProductsPageContent />
+    </Suspense>
   );
 }

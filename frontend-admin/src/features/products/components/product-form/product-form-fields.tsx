@@ -2,7 +2,7 @@ import { Control } from "react-hook-form";
 import { FormInput } from "@/components/forms/form-input";
 import { FormSelect } from "@/components/forms/form-select";
 import { FormTextarea } from "@/components/forms/form-textarea";
-import { JsonKeyValueEditor } from "../key-value-editor";
+import { JsonKeyValueEditor } from "./key-value-editor";
 import { statusOptions } from "../../../../constants/product-form.constants";
 import { ProductFormValues } from "../../../../types/product/product-form";
 import { Category } from "@/types/category/category";

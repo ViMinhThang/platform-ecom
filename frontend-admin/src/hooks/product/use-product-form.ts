@@ -136,7 +136,7 @@ export const useProductForm = ({
     const loadProduct = async () => {
       try {
         const action = await dispatch(
-          fetchProductById({ id: productId, token: session.accessToken! })
+          fetchProductById({ id: productId })
         );
 
         if (fetchProductById.fulfilled.match(action)) {
@@ -172,13 +172,11 @@ export const useProductForm = ({
             updateProduct({
               id: productId!,
               data: payload as any,
-              token: session.accessToken,
             })
           )
           : await dispatch(
             createProduct({
               data: payload as any,
-              token: session.accessToken,
             })
           );
 

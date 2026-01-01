@@ -1,7 +1,7 @@
 "use client";
 
 import { ProductImage } from "@/types/product/product";
-import { ProductImageCard } from "../product-image-cart";
+import { ProductImageCard } from "./product-image-cart";
 
 interface ProductImageListProps {
   images: ProductImage[];

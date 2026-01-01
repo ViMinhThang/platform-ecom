@@ -14,7 +14,9 @@ public class ProductUtils {
     public static Specification<Product> nameContains(String name) {
         if (name == null || name.isEmpty())
             return null;
-        return (root, query, cb) -> cb.like(cb.lower(root.get("name")), "%" + name.toLowerCase() + "%");
+        return (root, query, cb) -> cb.greaterThan(
+                cb.function("similarity", Double.class, root.get("name"), cb.literal(name)),
+                0.3);
     }
 
     public static Specification<Product> categoryEquals(String category) {

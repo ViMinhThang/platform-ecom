@@ -26,7 +26,7 @@ export const updateUser = createAsyncThunk(
     'auth/updateUser',
     async ({ data, token }: { data: { username: string; email: string }; token: string }, { rejectWithValue }) => {
         try {
-            const user = await updateUserInfo(data, token);
+            const user = await updateUserInfo(data);
             return user;
         } catch (error) {
             return rejectWithValue(getErrorMessage(error));
@@ -41,7 +41,7 @@ export const fetchUserProfile = createAsyncThunk(
     'auth/fetchUserProfile',
     async ({ token }: { token: string }, { rejectWithValue }) => {
         try {
-            const user = await getUserProfile(token);
+            const user = await getUserProfile();
             return user;
         } catch (error) {
             return rejectWithValue(getErrorMessage(error));

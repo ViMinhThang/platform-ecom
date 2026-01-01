@@ -42,7 +42,6 @@ export function useProductActions() {
     const resultAction = await dispatch(
       createProduct({
         data: productData,
-        token,
       })
     );
 
@@ -79,7 +78,6 @@ export function useProductActions() {
       updateProduct({
         id: productId,
         data: productData,
-        token,
       })
     );
 

@@ -1,5 +1,6 @@
 import { Metadata } from "next";
 import Link from "next/link";
+import { Suspense } from "react";
 import { UserAuthForm } from "@/components/auth/user-auth-form";
 
 export const metadata: Metadata = {
@@ -48,7 +49,9 @@ export default function AuthenticationPage() {
                             Enter your email below to create your account
                         </p>
                     </div>
-                    <UserAuthForm />
+                    <Suspense fallback={<div>Loading...</div>}>
+                        <UserAuthForm />
+                    </Suspense>
                     <p className="px-8 text-center text-sm text-muted-foreground">
                         By clicking continue, you agree to our{" "}
                         <Link

@@ -72,7 +72,7 @@ export function useListingData<TParams>({
     const [perPage, setPerPage] = useState(initialPerPage);
 
     const refresh = useCallback(() => {
-        dispatch(fetchAction(buildParams(page, perPage)));
+        dispatch(fetchAction(buildParams(page, perPage) as any));
     }, [dispatch, fetchAction, buildParams, page, perPage]);
 
     useEffect(() => {

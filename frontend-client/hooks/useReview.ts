@@ -22,9 +22,14 @@ export function useReview() {
             return;
         }
 
+        if (!session?.user?.email) {
+            toast.error('Could not determine user email');
+            return;
+        }
+
         const payloadWithEmail = {
             ...payload,
-            email: session?.user?.email || undefined,
+            email: session.user.email,
         };
 
         try {
@@ -43,9 +48,14 @@ export function useReview() {
             return;
         }
 
+        if (!session?.user?.email) {
+            toast.error('Could not determine user email');
+            return;
+        }
+
         const payloadWithEmail = {
             ...payload,
-            email: session?.user?.email || undefined,
+            email: session.user.email,
         };
 
         try {

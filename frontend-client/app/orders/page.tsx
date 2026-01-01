@@ -36,7 +36,9 @@ const TAB_STATUS_MAP: Record<OrderTab, SubOrderStatus[]> = {
     cancelled: [SubOrderStatus.CANCELLED, SubOrderStatus.RETURNING, SubOrderStatus.RETURNED, SubOrderStatus.REFUNDED],
 };
 
-export default function OrdersPage() {
+import { Suspense } from 'react';
+
+function OrdersPageContent() {
     const dispatch = useAppDispatch();
     const { data: session, status: authStatus } = useSession();
     const router = useRouter();
@@ -127,6 +129,14 @@ export default function OrdersPage() {
                 )}
             </div>
         </div>
+    );
+}
+
+export default function OrdersPage() {
+    return (
+        <Suspense fallback={<div>Loading...</div>}>
+            <OrdersPageContent />
+        </Suspense>
     );
 }
 

@@ -10,7 +10,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { ProductImageCard } from "../product-image-cart";
+import { ProductImageCard } from "../product-image/product-image-cart";
 
 interface VariantImagePickerProps {
   productId: number;

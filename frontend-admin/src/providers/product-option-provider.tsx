@@ -55,7 +55,7 @@ export const ProductOptionProvider: React.FC<ProductOptionProviderProps> = ({
     if (!productId || !session?.accessToken) return;
 
     try {
-      await dispatch(fetchOptions({ productId, token: session.accessToken })).unwrap();
+      await dispatch(fetchOptions({ productId })).unwrap();
     } catch (error) {
       console.error(error);
       toast.error("Failed to fetch product options");
@@ -74,7 +74,6 @@ export const ProductOptionProvider: React.FC<ProductOptionProviderProps> = ({
       const result = await dispatch(createOptionAction({
         productId,
         data: option,
-        token: session.accessToken
       })).unwrap();
 
       toast.success("Option created successfully");
@@ -100,7 +99,6 @@ export const ProductOptionProvider: React.FC<ProductOptionProviderProps> = ({
         productId,
         optionId,
         data: option,
-        token: session.accessToken
       })).unwrap();
 
       toast.success("Option updated successfully");
@@ -122,7 +120,6 @@ export const ProductOptionProvider: React.FC<ProductOptionProviderProps> = ({
       await dispatch(deleteOptionAction({
         productId,
         optionId,
-        token: session.accessToken
       })).unwrap();
 
       toast.success("Option deleted successfully");

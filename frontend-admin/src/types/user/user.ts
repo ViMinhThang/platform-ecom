@@ -6,6 +6,7 @@ export interface User {
   isActive: boolean;
   roles: role[];
   addresses: Address[];
+  password?: string;
 }
 
 export interface UserResponse {

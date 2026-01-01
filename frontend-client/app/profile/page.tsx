@@ -12,7 +12,9 @@ import { fetchAddresses } from '@/lib/store/slices/addressSlice';
 import { fetchUserProfile } from '@/lib/store/slices/authSlice';
 import { ProfileLayout } from '@/components/profile/ProfileLayout';
 
-export default function ProfilePage() {
+import { Suspense } from 'react';
+
+function ProfilePageContent() {
     const { data: session, status } = useSession();
     const router = useRouter();
     const dispatch = useAppDispatch();
@@ -108,5 +110,13 @@ export default function ProfilePage() {
             </div>
             {renderContent()}
         </ProfileLayout>
+    );
+}
+
+export default function ProfilePage() {
+    return (
+        <Suspense fallback={<div>Loading...</div>}>
+            <ProfilePageContent />
+        </Suspense>
     );
 }

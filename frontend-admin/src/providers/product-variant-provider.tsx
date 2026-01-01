@@ -62,7 +62,7 @@ export const ProductVariantProvider: React.FC<ProductVariantProviderProps> = ({
     if (!productId || !session?.accessToken) return;
 
     try {
-      await dispatch(fetchVariants({ productId, token: session.accessToken })).unwrap();
+      await dispatch(fetchVariants({ productId })).unwrap();
     } catch (error) {
       console.error(error);
       toast.error("Failed to fetch product variants");
@@ -84,7 +84,6 @@ export const ProductVariantProvider: React.FC<ProductVariantProviderProps> = ({
         await dispatch(deleteVariantAction({
           productId,
           variantId,
-          token: session.accessToken
         })).unwrap();
         toast.success("Variant deleted successfully");
       } else {
@@ -122,14 +121,12 @@ export const ProductVariantProvider: React.FC<ProductVariantProviderProps> = ({
           productId,
           variantId,
           data: variant,
-          token: session.accessToken
         })).unwrap();
         toast.success("Variant updated successfully");
       } else {
         result = await dispatch(createVariantAction({
           productId,
           data: variant,
-          token: session.accessToken
         })).unwrap();
         toast.success("Variant created successfully");
       }

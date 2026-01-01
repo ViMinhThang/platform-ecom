@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
+import { useRouter } from "next/navigation"
 import Link from "next/link"
 import { Search, ShoppingCart, Menu } from "lucide-react"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { useSession } from "next-auth/react"
-
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
@@ -13,16 +13,31 @@ import { UserNav } from "@/components/UserNav"
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks"
 import { fetchCart } from "@/lib/store/slices/cartSlice"
 
-export function SiteHeader() {
+export const SiteHeader = () => {
+
   const dispatch = useAppDispatch();
   const { data: session } = useSession();
   const { cart } = useAppSelector((state) => state.cart);
+  const router = useRouter();
+  const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
     if (session?.accessToken) {
       dispatch(fetchCart());
     }
   }, [dispatch, session]);
+
+  const handleSearch = () => {
+    if (searchQuery.trim()) {
+      router.push(`/products?search=${encodeURIComponent(searchQuery.trim())}`);
+    }
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      handleSearch();
+    }
+  };
 
   const cartItemCount = cart?.items?.reduce((total, item) => total + item.quantity, 0) || 0;
 
@@ -41,10 +56,16 @@ export function SiteHeader() {
         {/* Big Search Bar Section */}
         <div className="flex-1 flex items-center justify-center">
           <div className="relative w-full max-w-2xl group">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-primary/40 group-focus-within:text-primary transition-colors z-10" />
+            <Search
+              className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-primary/40 group-focus-within:text-primary transition-colors z-10 cursor-pointer"
+              onClick={handleSearch}
+            />
             <Input
               placeholder="Bạn đang tìm kiếm sản phẩm nào?"
               className="pl-12 w-full bg-white text-zinc-900 border-none rounded-none h-12 text-sm font-medium transition-all shadow-inner focus-visible:ring-offset-0 focus-visible:ring-white placeholder:text-zinc-400"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              onKeyDown={handleKeyDown}
             />
           </div>
         </div>

@@ -50,7 +50,7 @@ export const CreateUserButton: React.FC<CreateUserButtonProps> = ({ }) => {
       email: `user-${Date.now()}@example.com`,
       roles: [{ roleId: 0, roleName: "ROLE_USER" }], // Simplified, or map from allRoles if needed
       password: "123456",
-      isActive: "true",
+      isActive: true,
     };
 
     setLoading(true);
