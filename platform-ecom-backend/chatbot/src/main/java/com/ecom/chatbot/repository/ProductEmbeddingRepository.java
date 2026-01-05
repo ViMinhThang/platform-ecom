@@ -11,17 +11,11 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
-/**
- * Repository for ProductEmbedding with vector similarity search.
- */
+
 @Repository
 public interface ProductEmbeddingRepository extends JpaRepository<ProductEmbedding, Long> {
 
-        /**
-         * Find similar products using cosine similarity.
-         * The <=> operator computes cosine distance in pgvector.
-         * Result includes product data and similarity score (1 - distance).
-         */
+
         @Query(value = """
                         SELECT pe.product_id, pe.product_name, pe.product_slug, pe.description,
                                pe.category_name, pe.min_price, pe.average_rating, pe.total_sold,
@@ -36,10 +30,6 @@ public interface ProductEmbeddingRepository extends JpaRepository<ProductEmbeddi
                         @Param("queryVector") String queryVector,
                         @Param("limit") int limit);
 
-        /**
-         * Insert or update product embedding using native SQL with proper vector
-         * casting.
-         */
         @Modifying
         @Query(value = """
                         INSERT INTO product_embeddings
@@ -70,24 +60,14 @@ public interface ProductEmbeddingRepository extends JpaRepository<ProductEmbeddi
                         @Param("averageRating") Double averageRating,
                         @Param("totalSold") Long totalSold);
 
-        /**
-         * Find product embedding by slug
-         */
         Optional<ProductEmbedding> findByProductSlug(String productSlug);
 
-        /**
-         * Find products by IDs
-         */
         List<ProductEmbedding> findByProductIdIn(List<Long> productIds);
 
-        /**
-         * Check if embedding exists for product
-         */
+
         boolean existsByProductId(Long productId);
 
-        /**
-         * Count products with embeddings
-         */
+
         @Query(value = "SELECT COUNT(*) FROM product_embeddings WHERE embedding IS NOT NULL", nativeQuery = true)
         long countWithEmbeddings();
 }

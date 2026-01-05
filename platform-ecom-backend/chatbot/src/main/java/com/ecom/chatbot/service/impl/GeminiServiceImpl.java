@@ -1,6 +1,7 @@
-package com.ecom.chatbot.service;
+package com.ecom.chatbot.service.impl;
 
 import com.ecom.chatbot.dto.ProductSummaryDTO;
+import com.ecom.chatbot.service.signature.GeminiService;
 import com.google.genai.Client;
 import com.google.genai.types.EmbedContentConfig;
 import com.google.genai.types.EmbedContentResponse;
@@ -12,13 +13,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-/**
- * Service for interacting with Google Gemini AI.
- * Handles both text generation (chat) and embedding generation.
- */
 @Service
 @Slf4j
-public class GeminiService {
+public class GeminiServiceImpl implements GeminiService {
 
     private Client client;
 
@@ -33,19 +30,12 @@ public class GeminiService {
 
     @PostConstruct
     public void init() {
-        // Client automatically reads GEMINI_API_KEY from environment variable
         this.client = new Client();
         log.info("Gemini client initialized with chat model: {}, embedding model: {}",
                 chatModel, embeddingModel);
     }
 
-    /**
-     * Generate AI response for product query.
-     *
-     * @param products  List of products to include in context
-     * @param userQuery User's original query
-     * @return AI-generated response text
-     */
+    @Override
     public String generateProductSummary(List<ProductSummaryDTO> products, String userQuery) {
         String prompt = buildProductPrompt(products, userQuery);
 
@@ -61,31 +51,21 @@ public class GeminiService {
         }
     }
 
-    /**
-     * Generate embedding vector for user queries.
-     * Uses RETRIEVAL_QUERY task type for optimal query matching.
-     *
-     * @param text Text to embed
-     * @return float array of embedding values
-     */
+    @Override
     public float[] generateQueryEmbedding(String text) {
         return generateEmbedding(text, "RETRIEVAL_QUERY");
     }
 
-    /**
-     * Generate embedding vector for product documents.
-     * Uses RETRIEVAL_DOCUMENT task type for optimal document indexing.
-     *
-     * @param text Text to embed
-     * @return float array of embedding values
-     */
+    @Override
     public float[] generateDocumentEmbedding(String text) {
         return generateEmbedding(text, "RETRIEVAL_DOCUMENT");
     }
 
-    /**
-     * Generate embedding with specified task type.
-     */
+    @Override
+    public int getEmbeddingDimensions() {
+        return embeddingDimensions;
+    }
+
     private float[] generateEmbedding(String text, String taskType) {
         try {
             EmbedContentConfig config = EmbedContentConfig.builder()
@@ -98,7 +78,6 @@ public class GeminiService {
                     text,
                     config);
 
-            // embeddings() returns Optional<List<ContentEmbedding>>
             var embeddingsOptional = response.embeddings();
             if (embeddingsOptional.isPresent() && !embeddingsOptional.get().isEmpty()) {
                 var firstEmbedding = embeddingsOptional.get().get(0);
@@ -115,10 +94,6 @@ public class GeminiService {
         }
     }
 
-    /**
-     * Build prompt for product summary generation.
-     * Instructs the AI to respond in Vietnamese.
-     */
     private String buildProductPrompt(List<ProductSummaryDTO> products, String userQuery) {
         StringBuilder sb = new StringBuilder();
         sb.append("Bạn là trợ lý mua sắm thông minh cho một nền tảng thương mại điện tử. ");
@@ -135,11 +110,9 @@ public class GeminiService {
                 ProductSummaryDTO product = products.get(i);
                 sb.append(String.format("%d. **%s**\n", i + 1, product.getName()));
 
-                // Handle price - use doubleValue() to ensure proper float formatting
                 double price = product.getPrice() != null ? product.getPrice().doubleValue() : 0.0;
                 sb.append(String.format("   - Giá: %,.0f VNĐ\n", price));
 
-                // Handle rating - ensure it's a double
                 double rating = product.getAverageRating() != null ? product.getAverageRating() : 0.0;
                 sb.append(String.format("   - Đánh giá: %.1f/5\n", rating));
 
@@ -148,7 +121,6 @@ public class GeminiService {
                 }
                 if (product.getDescription() != null && !product.getDescription().isEmpty()) {
                     String desc = product.getDescription();
-                    // Remove HTML tags
                     desc = desc.replaceAll("<[^>]*>", "");
                     if (desc.length() > 200) {
                         desc = desc.substring(0, 200) + "...";
@@ -176,10 +148,6 @@ public class GeminiService {
         return sb.toString();
     }
 
-    /**
-     * Build fallback response when AI generation fails.
-     * Response in Vietnamese.
-     */
     private String buildFallbackResponse(List<ProductSummaryDTO> products, String userQuery) {
         if (products == null || products.isEmpty()) {
             return "Không tìm thấy sản phẩm phù hợp với yêu cầu: \"" + userQuery +
@@ -200,21 +168,11 @@ public class GeminiService {
         return sb.toString();
     }
 
-    /**
-     * Convert List<Float> to float[].
-     */
     private float[] toFloatArray(List<Float> values) {
         float[] result = new float[values.size()];
         for (int i = 0; i < values.size(); i++) {
             result[i] = values.get(i);
         }
         return result;
-    }
-
-    /**
-     * Get the embedding dimensions configured.
-     */
-    public int getEmbeddingDimensions() {
-        return embeddingDimensions;
     }
 }

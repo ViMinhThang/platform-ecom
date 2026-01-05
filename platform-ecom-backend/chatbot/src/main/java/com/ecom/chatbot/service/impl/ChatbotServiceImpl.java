@@ -1,9 +1,12 @@
-package com.ecom.chatbot.service;
+package com.ecom.chatbot.service.impl;
 
 import com.ecom.chatbot.client.ProductServiceClient;
 import com.ecom.chatbot.dto.*;
 import com.ecom.chatbot.entity.ProductEmbedding;
 import com.ecom.chatbot.repository.ProductEmbeddingRepository;
+import com.ecom.chatbot.service.signature.ChatbotService;
+import com.ecom.chatbot.service.signature.EmbeddingService;
+import com.ecom.chatbot.service.signature.GeminiService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -11,25 +14,17 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
 
-/**
- * Main chatbot service that orchestrates AI responses.
- */
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class ChatbotService {
+public class ChatbotServiceImpl implements ChatbotService {
 
     private final EmbeddingService embeddingService;
     private final GeminiService geminiService;
     private final ProductServiceClient productClient;
     private final ProductEmbeddingRepository embeddingRepository;
 
-    /**
-     * Process user chat message and return AI-generated response.
-     *
-     * @param request Chat request containing user message and options
-     * @return Chat response with AI message and relevant products
-     */
+    @Override
     public ChatResponseDTO chat(ChatRequestDTO request) {
         long startTime = System.currentTimeMillis();
         log.info("Processing chat request: '{}'", request.getMessage());
@@ -37,7 +32,6 @@ public class ChatbotService {
         List<ProductSummaryDTO> similarProducts;
 
         try {
-            // If specific product requested, fetch it directly
             if (request.getProductSlug() != null && !request.getProductSlug().isEmpty()) {
                 log.debug("Fetching specific product by slug: {}", request.getProductSlug());
                 similarProducts = fetchProductBySlug(request.getProductSlug());
@@ -45,14 +39,12 @@ public class ChatbotService {
                 log.debug("Fetching specific product by ID: {}", request.getProductId());
                 similarProducts = fetchProductById(request.getProductId());
             } else {
-                // Find similar products via semantic search
                 log.debug("Performing semantic search for: '{}'", request.getMessage());
                 similarProducts = embeddingService.findSimilarProducts(
                         request.getMessage(),
                         request.getMaxResults() != null ? request.getMaxResults() : 5);
             }
 
-            // Generate AI response
             String aiResponse = geminiService.generateProductSummary(
                     similarProducts,
                     request.getMessage());
@@ -82,12 +74,7 @@ public class ChatbotService {
         }
     }
 
-    /**
-     * Get AI summary for a specific product by slug.
-     *
-     * @param slug Product slug
-     * @return Chat response with product summary
-     */
+    @Override
     public ChatResponseDTO getProductSummary(String slug) {
         long startTime = System.currentTimeMillis();
         log.info("Getting product summary for slug: {}", slug);
@@ -126,15 +113,10 @@ public class ChatbotService {
         }
     }
 
-    /**
-     * Fetch product by slug from embeddings or product service.
-     */
     private List<ProductSummaryDTO> fetchProductBySlug(String slug) {
-        // First try to get from embeddings cache
         return embeddingRepository.findByProductSlug(slug)
                 .map(embedding -> List.of(mapEmbeddingToSummary(embedding, 1.0)))
                 .orElseGet(() -> {
-                    // Fall back to product service
                     try {
                         var apiResponse = productClient.getProductBySlug(slug);
                         if (apiResponse != null && apiResponse.isSuccess() && apiResponse.getData() != null) {
@@ -148,15 +130,10 @@ public class ChatbotService {
                 });
     }
 
-    /**
-     * Fetch product by ID from embeddings or product service.
-     */
     private List<ProductSummaryDTO> fetchProductById(Long productId) {
-        // First try to get from embeddings cache
         return embeddingRepository.findById(productId)
                 .map(embedding -> List.of(mapEmbeddingToSummary(embedding, 1.0)))
                 .orElseGet(() -> {
-                    // Fall back to product service
                     try {
                         var apiResponse = productClient.getProductById(productId);
                         if (apiResponse != null && apiResponse.isSuccess() && apiResponse.getData() != null) {
@@ -170,9 +147,6 @@ public class ChatbotService {
                 });
     }
 
-    /**
-     * Map ProductEmbedding entity to ProductSummaryDTO.
-     */
     private ProductSummaryDTO mapEmbeddingToSummary(ProductEmbedding embedding, Double similarity) {
         return ProductSummaryDTO.builder()
                 .id(embedding.getProductId())
@@ -187,9 +161,6 @@ public class ChatbotService {
                 .build();
     }
 
-    /**
-     * Map ProductDTO to ProductSummaryDTO.
-     */
     private ProductSummaryDTO mapProductToSummary(ProductDTO product, Double similarity) {
         return ProductSummaryDTO.builder()
                 .id(product.getId())
