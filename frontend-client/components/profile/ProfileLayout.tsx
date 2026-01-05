@@ -13,12 +13,12 @@ interface ProfileLayoutProps {
 
 const sidebarItems = [
     {
-        title: 'Thông tin cá nhân',
+        title: 'THÔNG TIN CÁ NHÂN',
         href: '/profile',
         icon: User,
     },
     {
-        title: 'Sổ địa chỉ',
+        title: 'SỔ ĐỊA CHỈ',
         href: '/profile?tab=addresses',
         icon: MapPin,
     },
@@ -31,10 +31,15 @@ export function ProfileLayout({ children }: ProfileLayoutProps) {
 
 
     return (
-        <div className="container max-w-5xl py-10 mx-auto ">
-            <div className="flex flex-col space-y-8 lg:flex-row lg:space-y-0 gap-8">
+        <div className="container max-w-6xl py-12 mx-auto">
+            <div className="flex flex-col space-y-8 lg:flex-row lg:space-y-0 gap-12">
                 <aside className="lg:w-1/4">
-                    <nav className="flex space-x-2 overflow-x-auto px-4 lg:flex-col lg:space-x-0 lg:space-y-1 lg:overflow-visible bg-white dark:bg-zinc-900 rounded-lg p-4 border shadow-sm">
+                    <nav className="flex space-x-2 overflow-x-auto lg:flex-col lg:space-x-0 lg:space-y-1 bg-white border-2 border-black p-0">
+                        <div className="p-4 bg-zinc-100 border-b-2 border-black mb-1 hidden lg:block">
+                            <div className="text-[10px] font-mono text-zinc-500 uppercase tracking-widest">
+                                CONTROL_PANEL // USER
+                            </div>
+                        </div>
                         {sidebarItems.map((item) => {
                             // Determine if this item is active
                             // For "Profile" (default), check if tab is missing or 'profile'
@@ -47,8 +52,10 @@ export function ProfileLayout({ children }: ProfileLayoutProps) {
                                     key={item.href}
                                     href={item.href}
                                     className={cn(
-                                        "flex items-center justify-start gap-2 rounded-md p-3 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground",
-                                        isActive ? "bg-accent text-accent-foreground" : "text-muted-foreground"
+                                        "flex items-center justify-start gap-3 p-4 text-sm font-bold uppercase tracking-wider transition-all rounded-none border-l-4",
+                                        isActive
+                                            ? "bg-black text-white border-black"
+                                            : "text-zinc-500 hover:bg-zinc-100 border-transparent hover:border-zinc-300"
                                     )}
                                 >
                                     <item.icon className="h-4 w-4" />
@@ -58,16 +65,18 @@ export function ProfileLayout({ children }: ProfileLayoutProps) {
                         })}
                         <Button
                             variant="ghost"
-                            className="justify-start gap-2 w-full text-muted-foreground hover:text-destructive hover:bg-destructive/10"
+                            className="justify-start gap-3 w-full rounded-none p-4 h-auto text-red-600 hover:text-white hover:bg-red-600 font-bold uppercase tracking-wider transition-all"
                             onClick={() => signOut({ callbackUrl: '/' })}
                         >
                             <LogOut className="h-4 w-4" />
-                            Đăng xuất
+                            ĐĂNG XUẤT
                         </Button>
                     </nav>
                 </aside>
-                <div className="flex-1 lg:max-w-3xl">
-                    {children}
+                <div className="flex-1 lg:max-w-4xl">
+                    <div className="bg-white border-2 border-black p-8 min-h-[500px]">
+                        {children}
+                    </div>
                 </div>
             </div>
         </div>

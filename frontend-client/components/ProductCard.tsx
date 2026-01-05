@@ -50,67 +50,69 @@ export function ProductCard({
 
   return (
     <Link href={`/products/${slug}`}>
-      <Card className="p-0 group overflow-hidden border border-zinc-200 dark:border-zinc-800 rounded-none bg-white dark:bg-card h-full flex flex-col transition-none">
-        <CardContent className="p-0 relative aspect-square bg-muted/20 overflow-hidden">
+      <Card className="p-0 border-2 border-black rounded-none bg-white h-full flex flex-col transition-all hover:bg-black group">
+        <CardContent className="p-0 relative aspect-square bg-zinc-100 overflow-hidden border-b-2 border-black grayscale group-hover:grayscale-0 transition-all duration-500">
           {isNew && (
-            <Badge className="absolute top-3 left-3 z-10 bg-primary text-primary-foreground rounded-none px-2 py-0.5 text-[9px] font-black tracking-widest uppercase">
-              MỚI
+            <Badge className="absolute top-0 left-0 z-10 bg-primary text-white rounded-none px-2 py-1 text-[8px] font-black tracking-widest uppercase">
+              HÀNG MỚI
             </Badge>
           )}
           {hasSale && (
-            <Badge className="absolute top-3 right-3 z-10 bg-black text-white rounded-none px-2 py-0.5 text-[9px] font-black tracking-widest uppercase">
-              GIẢM
+            <Badge className="absolute top-0 right-0 z-10 bg-black text-white rounded-none px-2 py-1 text-[8px] font-black tracking-widest uppercase">
+              GIẢM GIÁ
             </Badge>
           )}
           {!inStock && (
-            <div className="absolute inset-0 bg-white/80 dark:bg-black/80 z-20 flex items-center justify-center backdrop-blur-[2px]">
-              <Badge variant="secondary" className="text-[10px] font-black px-4 py-1.5 rounded-none border-2 border-zinc-900 bg-transparent text-zinc-900 uppercase tracking-widest">
+            <div className="absolute inset-0 bg-white/90 z-20 flex items-center justify-center">
+              <span className="text-[10px] font-black px-4 py-2 border-2 border-black text-black uppercase tracking-widest">
                 HẾT HÀNG
-              </Badge>
+              </span>
             </div>
           )}
           <Image
             src={imageUrl.product(displayImage)}
             alt={name}
             fill
-            className="object-cover"
+            className="object-cover group-hover:scale-105 transition-transform duration-700"
           />
         </CardContent>
-        <CardFooter className="flex flex-col items-start p-4 space-y-3 flex-grow bg-white dark:bg-zinc-950">
-          <div className="flex-grow w-full">
-            <h3 className="font-bold text-xs uppercase tracking-tight leading-tight line-clamp-2 text-foreground w-full">
+        <CardFooter className="flex flex-col items-start p-4 space-y-4 grow bg-white group-hover:bg-black transition-colors">
+          <div className="grow w-full">
+            <h3 className="font-black text-[10px] uppercase tracking-widest leading-tight line-clamp-2 text-black group-hover:text-white transition-colors h-8">
               {name}
             </h3>
           </div>
 
-          <div className="w-full pt-1 border-t border-zinc-100 dark:border-zinc-900 pt-3">
+          <div className="w-full pt-4 border-t border-black/10 group-hover:border-white/10 transition-colors">
             {/* Price */}
-            <div className="flex items-baseline gap-2 w-full mb-2">
+            <div className="flex items-baseline gap-2 w-full mb-3 font-mono">
               {hasSale ? (
                 <>
                   <span className="text-lg font-black tracking-tighter text-primary">
                     {formatCurrency(salePrice)}
                   </span>
-                  <span className="text-[10px] font-medium text-muted-foreground line-through decoration-muted-foreground/50">
+                  <span className="text-[10px] font-bold text-zinc-400 line-through group-hover:text-zinc-600">
                     {formatCurrency(displayPrice)}
                   </span>
                 </>
               ) : (
-                <span className="text-lg font-black tracking-tighter text-primary">
+                <span className="text-xl font-black tracking-tighter text-black group-hover:text-primary transition-colors">
                   {formatCurrency(displayPrice)}
                 </span>
               )}
             </div>
 
-            {/* Rating & Sold */}
-            <div className="flex items-center justify-between w-full text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
-              <div className="flex items-center gap-1.5 bg-primary/5 text-primary px-2 py-1">
-                <Star className="w-3 h-3 fill-primary text-primary" />
-                <span>{rating > 0 ? rating.toFixed(1) : "New"}</span>
+            {/* Rating & Sold - Technical Style */}
+            <div className="flex items-center justify-between w-full font-mono">
+              <div className="flex items-center gap-1 bg-zinc-100 px-1.5 py-0.5 group-hover:bg-white/10 transition-colors">
+                <Star className="w-2.5 h-2.5 fill-current text-primary" />
+                <span className="text-[8px] font-black text-black group-hover:text-white uppercase leading-none">
+                  {rating > 0 ? rating.toFixed(1) : "N/A"}
+                </span>
               </div>
-              {totalSold > 0 && (
-                <span>Sold {formatSoldCount(totalSold)}</span>
-              )}
+              <div className="text-[8px] font-black text-zinc-400 group-hover:text-zinc-500 uppercase tracking-tighter">
+                ĐÃ BÁN {formatSoldCount(totalSold)}
+              </div>
             </div>
           </div>
         </CardFooter>

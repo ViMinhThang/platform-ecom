@@ -32,40 +32,41 @@ export const ProductDetailedDescription = ({ product }: ProductDetailedDescripti
     }, [product.description]);
 
     return (
-        <section className="p-0">
-            <h2 className="text-2xl font-black mb-10 flex items-center gap-4 uppercase tracking-[0.2em] text-muted-foreground/80 border-b pb-6">
-                Mô tả sản phẩm
+        <section className="space-y-8">
+            <h2 className="text-xl font-black flex items-center gap-3 uppercase tracking-[0.2em] text-black">
+                <span className="bg-black text-white px-2 py-0.5 text-xs">02</span>
+                MÔ TẢ CHI TIẾT // CORE_FEATURES
             </h2>
 
             <div className="relative">
                 <div
                     ref={contentRef}
                     className={cn(
-                        "prose prose-lg max-w-none overflow-hidden transition-[max-height] duration-500 ease-in-out",
-                        !isExpanded && shouldShowButton ? "max-h-[800px]" : "max-h-[10000px]"
+                        "prose prose-zinc max-w-none overflow-hidden transition-[max-height] duration-500 ease-in-out font-medium text-sm leading-relaxed",
+                        !isExpanded && shouldShowButton ? "max-h-[600px]" : "max-h-[10000px]"
                     )}
                 >
                     <RichTextPreview
-                        content={product.description || "<p className='text-muted-foreground italic text-lg'>Chưa có mô tả cho sản phẩm này.</p>"}
+                        content={product.description || "<p className='text-zinc-400 italic'>DỮ LIỆU MÔ TẢ TRỐNG // NO_DESCRIPTION_AVAILABLE</p>"}
                     />
                 </div>
 
                 {!isExpanded && shouldShowButton && (
-                    <div className="absolute bottom-0 left-0 right-0 h-48 bg-gradient-to-t from-white via-white/80 to-transparent pointer-events-none z-10" />
+                    <div className="absolute bottom-0 left-0 right-0 h-32 bg-linear-to-t from-white to-transparent pointer-events-none z-10" />
                 )}
             </div>
 
             {shouldShowButton && (
-                <div className="flex justify-center mt-12 relative z-20">
+                <div className="flex justify-center mt-8">
                     <Button
                         variant="outline"
                         onClick={() => setIsExpanded(!isExpanded)}
-                        className="rounded-none border-2 border-slate-900 font-black uppercase tracking-[0.2em] px-12 hover:bg-slate-900 hover:text-white transition-all h-14 text-xs"
+                        className="rounded-none border-2 border-black font-black uppercase tracking-[0.2em] px-10 hover:bg-black hover:text-white transition-all h-12 text-[10px]"
                     >
                         {isExpanded ? (
-                            <> Thu Gọn <ChevronUp className="ml-3 w-4 h-4" /> </>
+                            <> THU GỌN // COLLAPSE <ChevronUp className="ml-2 w-3 h-3" /> </>
                         ) : (
-                            <> Xem Thêm <ChevronDown className="ml-3 w-4 h-4" /> </>
+                            <> XEM THÊM // EXPAND <ChevronDown className="ml-2 w-3 h-3" /> </>
                         )}
                     </Button>
                 </div>

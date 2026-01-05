@@ -58,7 +58,7 @@ export function RegisterForm({ className, ...props }: RegisterFormProps) {
             router.push("/auth/sign-in");
         } catch (error: any) {
             logger.error("Registration failed:", error);
-            toast.error(error.message || "Có lỗi xảy ra");
+            toast.error(error.message || "Có lỗi xảy ra trong quá trình đăng ký");
         } finally {
             setLoading(false);
         }
@@ -68,23 +68,24 @@ export function RegisterForm({ className, ...props }: RegisterFormProps) {
         <div className={cn("grid gap-6", className)} {...props}>
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)}>
-                    <div className="grid gap-4">
+                    <div className="grid gap-6">
                         <FormField
                             control={form.control}
                             name="username"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Tên đăng nhập</FormLabel>
+                                    <FormLabel className="text-xs font-black uppercase tracking-widest">Tên Định Danh</FormLabel>
                                     <FormControl>
                                         <Input
-                                            placeholder="johndoe"
+                                            placeholder="username"
                                             autoCapitalize="none"
                                             autoCorrect="off"
                                             disabled={loading}
+                                            className="rounded-none border-2 border-black focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-black font-mono text-sm h-12"
                                             {...field}
                                         />
                                     </FormControl>
-                                    <FormMessage />
+                                    <FormMessage className="font-mono text-xs text-red-600" />
                                 </FormItem>
                             )}
                         />
@@ -93,7 +94,7 @@ export function RegisterForm({ className, ...props }: RegisterFormProps) {
                             name="email"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Email</FormLabel>
+                                    <FormLabel className="text-xs font-black uppercase tracking-widest">Email Liên Hệ</FormLabel>
                                     <FormControl>
                                         <Input
                                             placeholder="name@example.com"
@@ -102,10 +103,11 @@ export function RegisterForm({ className, ...props }: RegisterFormProps) {
                                             autoComplete="email"
                                             autoCorrect="off"
                                             disabled={loading}
+                                            className="rounded-none border-2 border-black focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-black font-mono text-sm h-12"
                                             {...field}
                                         />
                                     </FormControl>
-                                    <FormMessage />
+                                    <FormMessage className="font-mono text-xs text-red-600" />
                                 </FormItem>
                             )}
                         />
@@ -114,26 +116,27 @@ export function RegisterForm({ className, ...props }: RegisterFormProps) {
                             name="password"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Mật khẩu</FormLabel>
+                                    <FormLabel className="text-xs font-black uppercase tracking-widest">Mật Khẩu Bảo Mật</FormLabel>
                                     <FormControl>
                                         <Input
-                                            placeholder="Mật khẩu"
+                                            placeholder="••••••••"
                                             type="password"
                                             autoCapitalize="none"
                                             autoComplete="new-password"
                                             disabled={loading}
+                                            className="rounded-none border-2 border-black focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-black font-mono text-sm h-12"
                                             {...field}
                                         />
                                     </FormControl>
-                                    <FormMessage />
+                                    <FormMessage className="font-mono text-xs text-red-600" />
                                 </FormItem>
                             )}
                         />
-                        <Button disabled={loading}>
+                        <Button disabled={loading} className="rounded-none h-12 bg-black text-white hover:bg-black/80 font-black uppercase tracking-widest transition-all">
                             {loading && (
-                                <span className="mr-2 h-4 w-4 animate-spin">...</span>
+                                <span className="mr-2 h-4 w-4 animate-spin border-2 border-white border-t-transparent rounded-full" />
                             )}
-                            Tạo tài khoản
+                            {loading ? "ĐANG KHỞI TẠO..." : "XÁC NHẬN ĐĂNG KÝ"}
                         </Button>
                     </div>
                 </form>

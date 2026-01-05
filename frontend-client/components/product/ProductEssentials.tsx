@@ -12,51 +12,59 @@ interface ProductEssentialsProps {
 
 export const ProductEssentials = ({ product, setSelectedVariant }: ProductEssentialsProps) => {
     return (
-        <div className="space-y-12">
-            <div>
-                <Badge className="mb-4 rounded-none bg-zinc-100/80 text-zinc-900 hover:bg-zinc-200 border-none px-4 py-1.5 text-[10px] font-semibold tracking-widest uppercase font-header">
-                    {product.cate.name}
-                </Badge>
-                <h1 className="text-4xl font-bold tracking-tight leading-[1.2] font-header text-zinc-900">{product.name}</h1>
+        <div className="space-y-10">
+            <div className="space-y-4">
+                <div className="flex items-center gap-2">
+                    <Badge className="bg-black text-white rounded-none border-none px-3 py-1 text-[9px] font-black tracking-[0.2em] uppercase">
+                        {product.cate.name}
+                    </Badge>
+                    <span className="text-[9px] font-bold text-zinc-400 uppercase tracking-widest">CERTIFIED_COMPONENT</span>
+                </div>
 
-                <div className="flex items-center gap-6 mt-6 text-sm text-muted-foreground font-medium">
-                    <div className="flex items-center gap-2">
-                        <span className="text-foreground text-lg font-semibold font-header">
+                <h1 className="text-3xl md:text-4xl font-black tracking-tighter leading-tight uppercase">
+                    {product.name}
+                </h1>
+
+                <div className="flex items-center gap-6 text-[10px] font-black uppercase tracking-widest text-zinc-500">
+                    <div className="flex items-center gap-2 text-black">
+                        <span className="text-sm">
                             {product.averageRating?.toFixed(1) || "0.0"}
                         </span>
-                        <Star className="w-4 h-4 fill-primary text-primary" />
+                        <Star className="w-3.5 h-3.5 fill-black text-black" />
                     </div>
-                    <div className="h-4 w-px bg-border/60" />
+                    <div className="w-1 h-1 bg-zinc-300 rounded-full" />
                     <div className="flex items-center gap-1.5">
-                        <span className="text-foreground font-semibold">
+                        <span className="text-black">
                             {new Intl.NumberFormat("en-US", { notation: "compact", maximumFractionDigits: 1 })
                                 .format(product.totalReviews || 0)}{" "}
                         </span>
-                        <span>đánh giá</span>
+                        <span>ĐÁNH GIÁ</span>
                     </div>
-                    <div className="h-4 w-px bg-border/60" />
+                    <div className="w-1 h-1 bg-zinc-300 rounded-full" />
                     <div className="flex items-center gap-1.5">
-                        <span className="text-foreground font-semibold">
+                        <span className="text-black">
                             {new Intl.NumberFormat("en-US", { notation: "compact", maximumFractionDigits: 1 })
                                 .format(product.totalSold || 0)}
                         </span>
-                        <span>đã bán</span>
+                        <span>ĐÃ BÁN</span>
                     </div>
                 </div>
             </div>
 
-            <ProductVariantSection product={product} onVariantChange={setSelectedVariant} />
+            <div className="pt-8 border-t-2 border-dashed border-black/10">
+                <ProductVariantSection product={product} onVariantChange={setSelectedVariant} />
+            </div>
 
             {product.specifications && Object.keys(product.specifications).length > 0 && (
-                <div className="border-t pt-12">
-                    <h3 className="text-base font-bold mb-8 uppercase tracking-widest text-zinc-400 font-header">Thông số kỹ thuật</h3>
-                    <dl className="space-y-6">
-                        {Object.entries(product.specifications).map(([key, value]) => (
-                            <div key={key} className="flex justify-between items-end border-b border-zinc-100 pb-3">
-                                <dt className="text-[11px] font-bold text-zinc-500 uppercase tracking-widest">
+                <div className="pt-8 border-t-2 border-black">
+                    <h3 className="text-[10px] font-black mb-6 uppercase tracking-[0.3em] text-zinc-400">THÔNG SỐ CƠ BẢN // BASIC_SPECS</h3>
+                    <dl className="grid grid-cols-2 gap-4">
+                        {Object.entries(product.specifications).slice(0, 4).map(([key, value]) => (
+                            <div key={key} className="space-y-1">
+                                <dt className="text-[9px] font-bold text-zinc-500 uppercase tracking-widest">
                                     {key.replace(/_/g, " ")}
                                 </dt>
-                                <dd className="font-semibold text-lg tracking-tight text-zinc-800">{String(value)}</dd>
+                                <dd className="font-mono text-xs font-bold text-black uppercase">{String(value)}</dd>
                             </div>
                         ))}
                     </dl>

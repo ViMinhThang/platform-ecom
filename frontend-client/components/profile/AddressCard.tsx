@@ -27,53 +27,51 @@ interface AddressCardProps {
  */
 export function AddressCard({ address, onEdit, onDelete, isDeleting }: AddressCardProps) {
     return (
-        <Card className="relative">
-            <CardHeader className="pb-2">
-                <div className="flex justify-between items-start">
-                    <CardTitle className="text-base font-medium flex items-center">
-                        <MapPin className="mr-2 h-4 w-4 text-muted-foreground" />
+        <div className="relative bg-white border-2 border-black p-6 group transition-all hover:bg-zinc-50 h-full">
+            <div className="pb-4 border-b-2 border-dashed border-zinc-200 mb-4 flex justify-between items-start">
+                <div className="flex items-center gap-2">
+                    <MapPin className="h-4 w-4 text-black" />
+                    <h4 className="font-black text-sm uppercase tracking-wider">
                         {address.buildingName}
-                    </CardTitle>
-                    {address.isDefault && (
-                        <Badge variant="secondary" className="bg-green-100 text-green-800 hover:bg-green-100">
-                            Mặc định
-                        </Badge>
-                    )}
+                    </h4>
                 </div>
-            </CardHeader>
-            <CardContent>
-                <div className="text-sm text-muted-foreground space-y-1">
-                    <p>{address.street}</p>
-                    <p>
-                        {address.wardName}, {address.districtName}
-                    </p>
-                    <p>{address.provinceName}</p>
-                    <p>{address.country}</p>
-                </div>
+                {address.isDefault && (
+                    <span className="text-[10px] font-mono font-bold bg-black text-white px-2 py-0.5 border border-black uppercase">
+                        DEFAULT_ADDR
+                    </span>
+                )}
+            </div>
 
-                <div className="flex justify-end space-x-2 mt-4">
-                    <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => onEdit(address)}
-                    >
-                        <Pencil className="h-4 w-4" />
-                    </Button>
-                    <Button
-                        variant="outline"
-                        size="sm"
-                        className="text-red-500 hover:text-red-600"
-                        onClick={() => address.addressId && onDelete(address.addressId)}
-                        disabled={isDeleting}
-                    >
-                        {isDeleting ? (
-                            <span className="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
-                        ) : (
-                            <Trash2 className="h-4 w-4" />
-                        )}
-                    </Button>
-                </div>
-            </CardContent>
-        </Card>
+            <div className="text-xs font-mono text-zinc-600 space-y-1 mb-6">
+                <p className="uppercase">{address.street}</p>
+                <p className="uppercase">
+                    {address.wardName}, {address.districtName}
+                </p>
+                <p className="uppercase">{address.provinceName}</p>
+                <p className="uppercase">{address.country}</p>
+            </div>
+
+            <div className="flex justify-start space-x-0 border-t-2 border-black absolute bottom-0 left-0 right-0">
+                <button
+                    className="flex-1 py-2 text-xs font-bold uppercase hover:bg-black hover:text-white border-r-2 border-black transition-colors flex items-center justify-center gap-2"
+                    onClick={() => onEdit(address)}
+                >
+                    <Pencil className="h-3 w-3" /> CHỈNH SỬA
+                </button>
+                <button
+                    className="flex-1 py-2 text-xs font-bold uppercase hover:bg-red-600 hover:text-white text-red-600 transition-colors flex items-center justify-center gap-2"
+                    onClick={() => address.addressId && onDelete(address.addressId)}
+                    disabled={isDeleting}
+                >
+                    {isDeleting ? (
+                        <span className="h-3 w-3 animate-spin rounded-full border-2 border-current border-t-transparent" />
+                    ) : (
+                        <>
+                            <Trash2 className="h-3 w-3" /> XÓA
+                        </>
+                    )}
+                </button>
+            </div>
+        </div>
     );
 }

@@ -11,10 +11,11 @@ interface ProductFeedbackProps {
 
 export const ProductFeedback = ({ product }: ProductFeedbackProps) => {
     return (
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 pt-16">
-            <div className="lg:col-span-3 border-t-4 border-primary pt-8">
-                <h2 className="text-3xl font-black uppercase tracking-tighter text-foreground mb-6 leading-tight">
-                    Người <br /><span className="text-primary italic">bán</span>
+        <div className="grid grid-cols-1 lg:grid-cols-12 border-t-2 border-black divide-x-0 lg:divide-x-2 divide-black">
+            <div className="lg:col-span-4 p-8 md:p-12">
+                <h2 className="text-xl font-black flex items-center gap-3 uppercase tracking-[0.2em] text-black mb-10">
+                    <span className="bg-black text-white px-2 py-0.5 text-xs">03</span>
+                    NHÀ CUNG CẤP // VENDOR_INFO
                 </h2>
                 <SellerInfoCard
                     sellerId={product.userId || 0}
@@ -23,13 +24,14 @@ export const ProductFeedback = ({ product }: ProductFeedbackProps) => {
                 />
             </div>
 
-            <div className="lg:col-span-9 border-t-4 border-primary pt-8">
-                <h2 className="text-3xl font-black uppercase tracking-tighter text-foreground mb-8">
-                    Đánh giá <span className="text-primary italic">khách hàng</span>
+            <div className="lg:col-span-8 p-8 md:p-12 border-t-2 lg:border-t-0 border-black">
+                <h2 className="text-xl font-black flex items-center gap-3 uppercase tracking-[0.2em] text-black mb-10">
+                    <span className="bg-black text-white px-2 py-0.5 text-xs">04</span>
+                    BÁO CÁO NGƯỜI DÙNG // FIELD_REPORTS
                 </h2>
-                <div className="bg-white border shadow-sm p-8 md:p-12">
+                <div className="bg-zinc-50 border-2 border-black p-6 md:p-10">
                     <ReviewStats productId={product.id} />
-                    <div className="mt-12">
+                    <div className="mt-10 pt-10 border-t-2 border-dashed border-black/10">
                         <ReviewList productId={product.id} />
                     </div>
                 </div>

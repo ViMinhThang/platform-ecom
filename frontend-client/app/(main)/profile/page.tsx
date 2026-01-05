@@ -67,35 +67,37 @@ function ProfilePageContent() {
         switch (currentTab) {
             case 'addresses':
                 return (
-                    <Card>
-                        <CardHeader>
-                            <CardTitle>Sổ địa chỉ</CardTitle>
-                            <CardDescription>
-                                Quản lý địa chỉ giao hàng của bạn. Bạn có thể thêm tối đa 5 địa chỉ.
-                            </CardDescription>
-                        </CardHeader>
-                        <CardContent>
-                            <AddressManager
-                                addresses={addresses}
-                                onUpdate={handleAddressUpdate}
-                            />
-                        </CardContent>
-                    </Card>
+                    <div>
+                        <div className="mb-8 border-b-2 border-black pb-4 flex justify-between items-end">
+                            <div>
+                                <h2 className="text-2xl font-black uppercase tracking-tight">Sổ địa chỉ</h2>
+                                <p className="text-sm font-mono text-zinc-500 mt-1">
+                                    QUẢN LÝ ĐỊA CHỈ GIAO HÀNG (TỐI ĐA 5)
+                                </p>
+                            </div>
+                            <div className="hidden sm:block font-mono text-xs bg-zinc-100 px-2 py-1">ADDR_MGR_v1.0</div>
+                        </div>
+                        <AddressManager
+                            addresses={addresses}
+                            onUpdate={handleAddressUpdate}
+                        />
+                    </div>
                 );
             case 'profile':
             default:
                 return (
-                    <Card >
-                        <CardHeader>
-                            <CardTitle>Thông tin cá nhân</CardTitle>
-                            <CardDescription>
-                                Cập nhật thông tin cá nhân và ảnh đại diện của bạn.
-                            </CardDescription>
-                        </CardHeader>
-                        <CardContent>
-                            <ProfileInfoForm user={user} onUpdate={handleProfileUpdate} />
-                        </CardContent>
-                    </Card>
+                    <div>
+                        <div className="mb-8 border-b-2 border-black pb-4 flex justify-between items-end">
+                            <div>
+                                <h2 className="text-2xl font-black uppercase tracking-tight">Hồ sơ cá nhân</h2>
+                                <p className="text-sm font-mono text-zinc-500 mt-1">
+                                    CẬP NHẬT THÔNG TIN ĐỊNH DANH
+                                </p>
+                            </div>
+                            <div className="hidden sm:block font-mono text-xs bg-zinc-100 px-2 py-1">ID_PROFILE_v2.0</div>
+                        </div>
+                        <ProfileInfoForm user={user} onUpdate={handleProfileUpdate} />
+                    </div>
                 );
         }
     };
@@ -103,9 +105,9 @@ function ProfilePageContent() {
     return (
         <ProfileLayout>
             <div className="mb-6 lg:hidden">
-                <h1 className="text-2xl font-bold tracking-tight">
-                    {currentTab === 'profile' && 'Thông tin cá nhân'}
-                    {currentTab === 'addresses' && 'Sổ địa chỉ'}
+                <h1 className="text-xl font-black uppercase tracking-tight">
+                    {currentTab === 'profile' && 'THÔNG TIN CÁ NHÂN'}
+                    {currentTab === 'addresses' && 'SỔ ĐỊA CHỈ'}
                 </h1>
             </div>
             {renderContent()}

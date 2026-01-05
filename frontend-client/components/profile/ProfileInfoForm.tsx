@@ -92,17 +92,17 @@ export function ProfileInfoForm({ user, onUpdate }: ProfileInfoFormProps) {
 
     return (
         <div className="space-y-8">
-            <div className="flex flex-col sm:flex-row gap-8 items-start">
+            <div className="flex flex-col sm:flex-row gap-12 items-start">
                 {/* Avatar Section */}
                 <div className="flex flex-col items-center gap-4">
                     <div className="relative group">
-                        <Avatar className="h-32 w-32 border-2 border-border">
+                        <Avatar className="h-32 w-32 border-2 border-black rounded-none">
                             <AvatarImage src={user.imageUrl} alt={user.username} className="object-cover" />
-                            <AvatarFallback className="text-4xl bg-muted">
+                            <AvatarFallback className="text-4xl bg-zinc-100 rounded-none font-black text-zinc-300">
                                 {user.username.substring(0, 2).toUpperCase()}
                             </AvatarFallback>
                         </Avatar>
-                        <div className="absolute inset-0 flex items-center justify-center bg-black/60 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-200 cursor-pointer backdrop-blur-sm">
+                        <div className="absolute inset-0 flex items-center justify-center bg-black/80 opacity-0 group-hover:opacity-100 transition-all duration-200 cursor-pointer">
                             <label htmlFor="image-upload" className="cursor-pointer p-2 text-white hover:scale-110 transition-transform">
                                 {isUploading ? (
                                     <Loader2 className="h-8 w-8 animate-spin" />
@@ -121,69 +121,73 @@ export function ProfileInfoForm({ user, onUpdate }: ProfileInfoFormProps) {
                         </div>
                     </div>
                     <div className="text-center">
-                        <p className="text-sm font-medium">Ảnh đại diện</p>
-                        <p className="text-xs text-muted-foreground mt-1">
-                            JPG, GIF hoặc PNG. Tối đa 5MB.
+                        <p className="text-xs font-black uppercase tracking-widest">Avatar</p>
+                        <p className="text-[10px] text-zinc-500 font-mono mt-1">
+                            JPG, PNG. MAX 5MB.
                         </p>
                     </div>
                 </div>
 
                 {/* Form Section */}
-                <div className="flex-1 w-full max-w-md">
+                <div className="flex-1 w-full max-w-lg">
                     <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-                        <div className="grid gap-4">
+                        <div className="grid gap-6">
                             <FormField
-                                label="Tên đăng nhập"
+                                label="TÊN ĐỊNH DANH"
                                 id="username"
                                 registration={form.register('username')}
                                 error={form.formState.errors.username}
                                 disabled={isSaving}
-                                placeholder="Nhập tên đăng nhập"
+                                placeholder="NHẬP TÊN ĐĂNG NHẬP (USERNAME)"
+                                className="font-mono text-xs uppercase"
                             />
 
                             <FormField
-                                label="Email"
+                                label="EMAIL LIÊN HỆ"
                                 id="email"
                                 type="email"
                                 registration={form.register('email')}
                                 error={form.formState.errors.email}
                                 disabled={isSaving}
-                                placeholder="Nhập email của bạn"
+                                placeholder="NHẬP EMAIL"
+                                className="font-mono text-xs uppercase"
                             />
 
-                            <div className="pt-2 border-t mt-2">
-                                <h4 className="text-sm font-medium mb-3">Đổi mật khẩu</h4>
-                                <div className="space-y-4">
+                            <div className="pt-6 border-t-2 border-dashed border-zinc-200 mt-6">
+                                <h4 className="text-sm font-black uppercase tracking-widest mb-6">Bảo mật & Mật khẩu</h4>
+                                <div className="space-y-6">
                                     <FormField
-                                        label="Mật khẩu hiện tại"
+                                        label="MẬT KHẨU HIỆN TẠI"
                                         id="currentPassword"
                                         type="password"
                                         registration={form.register('currentPassword')}
                                         error={form.formState.errors.currentPassword}
                                         disabled={isSaving}
-                                        placeholder="Nhập mật khẩu hiện tại"
+                                        placeholder="XÁC THỰC MẬT KHẨU CŨ"
+                                        className="font-mono text-xs uppercase"
                                     />
 
                                     <FormField
-                                        label="Mật khẩu mới"
+                                        label="MẬT KHẨU MỚI"
                                         id="password"
                                         type="password"
                                         registration={form.register('password')}
                                         error={form.formState.errors.password}
                                         disabled={isSaving}
-                                        placeholder="Nhập mật khẩu mới"
+                                        placeholder="THIẾT LẬP MẬT KHẨU MỚI"
+                                        className="font-mono text-xs uppercase"
                                     />
-                                    <p className="text-xs text-muted-foreground">
-                                        Để trống nếu bạn không muốn đổi mật khẩu.
+                                    <p className="text-[10px] text-zinc-500 font-mono uppercase">
+                                        * ĐỂ TRỐNG NẾU KHÔNG THAY ĐỔI
                                     </p>
                                 </div>
                             </div>
                         </div>
 
-                        <div className="flex justify-end pt-4">
-                            <Button type="submit" disabled={isSaving} className="w-full sm:w-auto">
+                        <div className="flex justify-start pt-4">
+                            <Button type="submit" disabled={isSaving} className="w-full sm:w-auto rounded-none h-12 px-8 bg-black hover:bg-[#FF4400] text-white font-black uppercase tracking-[0.2em] transition-all">
                                 {isSaving && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                                Lưu thay đổi
+                                LƯU THAY ĐỔI
                             </Button>
                         </div>
                     </form>
