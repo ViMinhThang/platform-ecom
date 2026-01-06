@@ -60,3 +60,41 @@ logging:
     rollingpolicy:
       max-file-size: 5MB
       max-history: 7
+
+# Resilience4j Configuration for inter-service communication
+resilience4j:
+  retry:
+    instances:
+      productService:
+        max-attempts: 3
+        wait-duration: 500ms
+        retry-exceptions:
+          - java.io.IOException
+          - java.net.SocketTimeoutException
+          - org.springframework.web.client.ResourceAccessException
+      userService:
+        max-attempts: 3
+        wait-duration: 500ms
+        retry-exceptions:
+          - java.io.IOException
+          - java.net.SocketTimeoutException
+          - org.springframework.web.client.ResourceAccessException
+      inventoryService:
+        max-attempts: 3
+        wait-duration: 500ms
+        retry-exceptions:
+          - java.io.IOException
+          - java.net.SocketTimeoutException
+  circuitbreaker:
+    instances:
+      productService:
+        sliding-window-size: 10
+        failure-rate-threshold: 50
+        wait-duration-in-open-state: 10s
+        permitted-number-of-calls-in-half-open-state: 3
+      userService:
+        sliding-window-size: 10
+        failure-rate-threshold: 50
+        wait-duration-in-open-state: 10s
+        permitted-number-of-calls-in-half-open-state: 3
+

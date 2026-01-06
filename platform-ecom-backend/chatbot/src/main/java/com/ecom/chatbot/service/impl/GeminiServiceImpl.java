@@ -66,6 +66,49 @@ public class GeminiServiceImpl implements GeminiService {
         return embeddingDimensions;
     }
 
+    @Override
+    public String extractProductKeywords(String userMessage) {
+        if (userMessage == null || userMessage.trim().isEmpty()) {
+            return "";
+        }
+
+        String prompt = buildKeywordExtractionPrompt(userMessage);
+
+        try {
+            GenerateContentResponse response = client.models.generateContent(
+                    chatModel,
+                    prompt,
+                    null);
+            String extracted = response.text().trim();
+            log.debug("Extracted keywords from '{}' -> '{}'", userMessage, extracted);
+            return extracted.isEmpty() ? userMessage : extracted;
+        } catch (Exception e) {
+            log.warn("Failed to extract keywords, using original message: {}", e.getMessage());
+            return userMessage;
+        }
+    }
+
+    private String buildKeywordExtractionPrompt(String userMessage) {
+        return """
+                Extract only the product-related keywords from the following user message.
+                Return ONLY the product names, categories, or key product attributes.
+                Do NOT include action words like "find", "search", "show", "tìm", "cho tôi", etc.
+                Do NOT add any explanation, just return the extracted keywords.
+                If there are multiple products, separate them with spaces.
+                If no product keywords found, return the original message.
+                
+                Examples:
+                - "Tìm iPhone cho tôi" → "iPhone"
+                - "Show me laptops under 1000$" → "laptops"
+                - "I want a red Samsung phone" → "red Samsung phone"
+                - "điện thoại Apple giá rẻ" → "điện thoại Apple giá rẻ"
+                - "looking for wireless headphones" → "wireless headphones"
+                
+                User message: "%s"
+                
+                Extracted keywords:""".formatted(userMessage);
+    }
+
     private float[] generateEmbedding(String text, String taskType) {
         try {
             EmbedContentConfig config = EmbedContentConfig.builder()

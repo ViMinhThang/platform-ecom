@@ -10,7 +10,7 @@ public class StaticResourceConfig implements WebFluxConfigurer {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry
-                .addResourceHandler("/uploads/**") // URL pattern bạn muốn expose
+                .addResourceHandler("/uploads/**") // URL pattern to expose for static files
                 .addResourceLocations("file:/home/fragile/platform-ecom/uploads/");
     }
 }

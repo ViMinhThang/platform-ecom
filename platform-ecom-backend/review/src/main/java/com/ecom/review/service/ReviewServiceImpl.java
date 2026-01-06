@@ -6,6 +6,7 @@ import com.ecom.review.dto.*;
 import com.ecom.review.entity.Review;
 import com.ecom.common.exception.APIException;
 import com.ecom.common.exception.ResourceNotFoundException;
+import com.ecom.common.service.FileStorageService;
 import com.ecom.review.repository.ReviewRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;

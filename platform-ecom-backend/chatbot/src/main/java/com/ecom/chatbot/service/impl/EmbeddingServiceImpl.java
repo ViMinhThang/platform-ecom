@@ -78,7 +78,11 @@ public class EmbeddingServiceImpl implements EmbeddingService {
     public List<ProductSummaryDTO> findSimilarProducts(String query, int limit) {
         log.debug("Finding similar products for query: '{}'", query);
 
-        float[] queryEmbedding = geminiService.generateQueryEmbedding(query);
+        // Extract product keywords from the query
+        String keywords = geminiService.extractProductKeywords(query);
+        log.debug("Extracted keywords: '{}'", keywords);
+
+        float[] queryEmbedding = geminiService.generateQueryEmbedding(keywords);
 
         String vectorString = arrayToVectorString(queryEmbedding);
 

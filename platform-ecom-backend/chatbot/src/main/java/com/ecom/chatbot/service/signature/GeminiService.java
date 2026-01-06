@@ -13,4 +13,6 @@ public interface GeminiService {
     float[] generateDocumentEmbedding(String text);
 
     int getEmbeddingDimensions();
+
+    String extractProductKeywords(String userMessage);
 }
