@@ -45,10 +45,7 @@ interface AddressFormProps {
     onCancel: () => void;
 }
 
-/**
- * Form component for creating/editing addresses.
- * Refactored to use reusable components and custom hooks following clean code principles.
- */
+
 export function AddressForm({ initialData, onSubmit, onCancel }: AddressFormProps) {
     const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -74,7 +71,6 @@ export function AddressForm({ initialData, onSubmit, onCancel }: AddressFormProp
     const selectedProvinceId = form.watch('provinceId');
     const selectedDistrictId = form.watch('districtId');
 
-    // Use custom hook for address data management
     const {
         provinces,
         districts,
@@ -103,11 +99,11 @@ export function AddressForm({ initialData, onSubmit, onCancel }: AddressFormProp
     };
 
     return (
-        <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {/* Province Select */}
                 <div className="space-y-2">
-                    <Label>Tỉnh/Thành phố</Label>
+                    <Label className="text-xs font-black uppercase tracking-widest">TỈNH / THÀNH PHỐ</Label>
                     <Controller
                         control={form.control}
                         name="provinceId"
@@ -124,12 +120,12 @@ export function AddressForm({ initialData, onSubmit, onCancel }: AddressFormProp
                                 }}
                                 value={field.value?.toString()}
                             >
-                                <SelectTrigger>
-                                    <SelectValue placeholder="Chọn Tỉnh/Thành phố" />
+                                <SelectTrigger className="rounded-none border-2 border-black h-12 font-mono text-xs uppercase focus:ring-0">
+                                    <SelectValue placeholder="CHỌN TỈNH / THÀNH PHỐ" />
                                 </SelectTrigger>
-                                <SelectContent>
+                                <SelectContent className="rounded-none border-2 border-black max-h-[300px]">
                                     {provinces.map((province) => (
-                                        <SelectItem key={province.ProvinceID} value={province.ProvinceID.toString()}>
+                                        <SelectItem key={province.ProvinceID} value={province.ProvinceID.toString()} className="font-mono text-xs uppercase text-zinc-600 focus:bg-zinc-100 focus:text-black">
                                             {province.ProvinceName}
                                         </SelectItem>
                                     ))}
@@ -138,13 +134,13 @@ export function AddressForm({ initialData, onSubmit, onCancel }: AddressFormProp
                         )}
                     />
                     {form.formState.errors.provinceId && (
-                        <p className="text-sm text-red-500">{form.formState.errors.provinceId.message}</p>
+                        <p className="text-[10px] uppercase font-bold text-red-600 mt-1">{form.formState.errors.provinceId.message}</p>
                     )}
                 </div>
 
                 {/* District Select */}
                 <div className="space-y-2">
-                    <Label>Quận/Huyện</Label>
+                    <Label className="text-xs font-black uppercase tracking-widest">QUẬN / HUYỆN</Label>
                     <Controller
                         control={form.control}
                         name="districtId"
@@ -160,12 +156,12 @@ export function AddressForm({ initialData, onSubmit, onCancel }: AddressFormProp
                                 }}
                                 value={field.value ? field.value.toString() : ''}
                             >
-                                <SelectTrigger>
-                                    <SelectValue placeholder="Chọn Quận/Huyện" />
+                                <SelectTrigger className="rounded-none border-2 border-black h-12 font-mono text-xs uppercase focus:ring-0">
+                                    <SelectValue placeholder="CHỌN QUẬN / HUYỆN" />
                                 </SelectTrigger>
-                                <SelectContent>
+                                <SelectContent className="rounded-none border-2 border-black max-h-[300px]">
                                     {districts.map((district) => (
-                                        <SelectItem key={district.DistrictID} value={district.DistrictID.toString()}>
+                                        <SelectItem key={district.DistrictID} value={district.DistrictID.toString()} className="font-mono text-xs uppercase text-zinc-600 focus:bg-zinc-100 focus:text-black">
                                             {district.DistrictName}
                                         </SelectItem>
                                     ))}
@@ -174,13 +170,13 @@ export function AddressForm({ initialData, onSubmit, onCancel }: AddressFormProp
                         )}
                     />
                     {form.formState.errors.districtId && (
-                        <p className="text-sm text-red-500">{form.formState.errors.districtId.message}</p>
+                        <p className="text-[10px] uppercase font-bold text-red-600 mt-1">{form.formState.errors.districtId.message}</p>
                     )}
                 </div>
 
                 {/* Ward Select */}
                 <div className="space-y-2">
-                    <Label>Phường/Xã</Label>
+                    <Label className="text-xs font-black uppercase tracking-widest">PHƯỜNG / XÃ</Label>
                     <Controller
                         control={form.control}
                         name="wardCode"
@@ -194,12 +190,12 @@ export function AddressForm({ initialData, onSubmit, onCancel }: AddressFormProp
                                 }}
                                 value={field.value}
                             >
-                                <SelectTrigger>
-                                    <SelectValue placeholder="Chọn Phường/Xã" />
+                                <SelectTrigger className="rounded-none border-2 border-black h-12 font-mono text-xs uppercase focus:ring-0">
+                                    <SelectValue placeholder="CHỌN PHƯỜNG / XÃ" />
                                 </SelectTrigger>
-                                <SelectContent>
+                                <SelectContent className="rounded-none border-2 border-black max-h-[300px]">
                                     {wards.map((ward) => (
-                                        <SelectItem key={ward.WardCode} value={ward.WardCode}>
+                                        <SelectItem key={ward.WardCode} value={ward.WardCode} className="font-mono text-xs uppercase text-zinc-600 focus:bg-zinc-100 focus:text-black">
                                             {ward.WardName}
                                         </SelectItem>
                                     ))}
@@ -208,41 +204,43 @@ export function AddressForm({ initialData, onSubmit, onCancel }: AddressFormProp
                         )}
                     />
                     {form.formState.errors.wardCode && (
-                        <p className="text-sm text-red-500">{form.formState.errors.wardCode.message}</p>
+                        <p className="text-[10px] uppercase font-bold text-red-600 mt-1">{form.formState.errors.wardCode.message}</p>
                     )}
                 </div>
             </div>
 
             <FormField
-                label="Địa chỉ đường"
+                label="ĐỊA CHỈ ĐƯỜNG"
                 id="street"
                 registration={form.register('street')}
                 error={form.formState.errors.street}
-                placeholder="ví dụ: 123 Nguyễn Huệ"
+                placeholder="VÍ DỤ: 123 NGUYỄN HUỆ"
+                className="font-mono text-xs uppercase"
             />
 
             <FormField
-                label="Tòa nhà / Căn hộ / Số nhà"
+                label="CHI TIẾT (TÒA NHÀ / SỐ NHÀ)"
                 id="buildingName"
                 registration={form.register('buildingName')}
                 error={form.formState.errors.buildingName}
-                placeholder="ví dụ: Landmark 81, Căn hộ 1204"
+                placeholder="VÍ DỤ: LANDMARK 81, CĂN HỘ 1204"
+                className="font-mono text-xs uppercase"
             />
 
             <FormCheckbox
-                label="Đặt làm địa chỉ mặc định"
+                label="ĐẶT LÀM ĐỊA CHỈ MẶC ĐỊNH"
                 id="isDefault"
                 name="isDefault"
                 control={form.control}
             />
 
-            <div className="flex justify-end space-x-2 pt-4">
-                <Button type="button" variant="outline" onClick={onCancel} disabled={isSubmitting}>
-                    Hủy
+            <div className="flex justify-end space-x-0 border-t-2 border-dashed border-zinc-200 pt-6 gap-4">
+                <Button type="button" variant="ghost" onClick={onCancel} disabled={isSubmitting} className="rounded-none font-bold uppercase tracking-wider hover:bg-zinc-100">
+                    HỦY BỎ
                 </Button>
-                <Button type="submit" disabled={isSubmitting}>
+                <Button type="submit" disabled={isSubmitting} className="rounded-none bg-black text-white hover:bg-[#FF4400] font-black uppercase tracking-wider px-8">
                     {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                    Lưu địa chỉ
+                    LƯU ĐỊA CHỈ
                 </Button>
             </div>
         </form>

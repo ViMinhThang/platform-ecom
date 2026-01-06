@@ -35,7 +35,7 @@ public class UserServiceImpl implements UserService {
     public UserInfoResponse updateMyProfile(Long userId, UpdateUserRequest request) {
         User user = getUserByUserIdFromDatabase(userId);
 
-        // Check password cũ
+        // Verify current password
         if (!encoder.matches(request.getCurrentPassword(), user.getPassword())) {
             throw new APIException("Incorrect Password");
         }

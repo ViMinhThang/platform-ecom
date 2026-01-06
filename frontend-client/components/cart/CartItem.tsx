@@ -38,9 +38,9 @@ export function CartItem({ item }: CartItemProps) {
     };
 
     return (
-        <div className="flex gap-6 py-6 border-b last:border-0">
+        <div className="flex gap-6 py-6 border-b border-zinc-200 last:border-0 items-start">
             {/* Product Image */}
-            <div className="relative h-32 w-32 flex-shrink-0 bg-zinc-50 border border-zinc-100 rounded-sm overflow-hidden">
+            <div className="relative h-28 w-28 shrink-0 bg-white border-2 border-black rounded-none overflow-hidden">
                 <Image
                     src={imageUrl.product(item.imageUrl)}
                     alt={item.productName}
@@ -53,75 +53,78 @@ export function CartItem({ item }: CartItemProps) {
             {/* Product Details & Actions */}
             <div className="flex flex-1 flex-col">
                 <div className="flex justify-between items-start gap-4">
-                    <div className="space-y-1">
-                        {/* Status Badge Placeholder (eBay style) */}
-                        <div className="flex items-center gap-2 mb-1.5">
-                            <span className="text-[10px] font-bold bg-blue-50 text-blue-600 px-2 py-0.5 rounded-full uppercase tracking-wider">
-                                SỐ LƯỢNG CÓ HẠN
+                    <div className="space-y-2">
+                        {/* Status Badge */}
+                        <div className="flex items-center gap-2">
+                            <span className="text-[10px] font-bold bg-black text-white px-2 py-0.5 rounded-none uppercase tracking-widest">
+                                SẴN SÀNG
                             </span>
                         </div>
 
-                        <h3 className="font-bold text-sm md:text-base hover:underline cursor-pointer leading-snug">
+                        <h3 className="font-black text-sm uppercase md:text-base hover:underline cursor-pointer leading-snug tracking-tight">
                             {item.productName}
                         </h3>
 
                         {item.variantName && (
-                            <p className="text-xs text-muted-foreground font-medium italic">
-                                {item.variantName}
+                            <p className="text-xs font-mono text-zinc-500 border-l-2 border-black pl-2">
+                                PHIÊN BẢN: {item.variantName.toUpperCase()}
                             </p>
                         )}
-
-                        <p className="text-[11px] text-muted-foreground mt-1">
-                            Người bán cam kết chất lượng sản phẩm
-                        </p>
                     </div>
 
                     <div className="text-right">
-                        <div className="font-black text-lg tracking-tighter">
+                        <div className="font-mono font-bold text-lg tracking-tight">
                             {formatCurrency(item.price)}
                         </div>
-                        <p className="text-[10px] text-muted-foreground font-bold uppercase tracking-widest mt-1">
-                            {formatCurrency(item.totalPrice)} Tổng
+                        <p className="text-[10px] text-zinc-400 font-mono mt-1">
+                            ĐƠN GIÁ
                         </p>
                     </div>
                 </div>
 
                 {/* Bottom Actions Row */}
-                <div className="flex flex-wrap items-center gap-6 mt-6">
+                <div className="flex flex-wrap items-end justify-between mt-4">
                     {/* Quantity Block */}
-                    <div className="flex items-center border-2 border-zinc-200 rounded-md h-9">
-                        <button
-                            className="px-3 h-full hover:bg-zinc-50 disabled:opacity-30 flex items-center justify-center transition-colors"
-                            onClick={() => handleQuantityChange(item.quantity - 1)}
-                            disabled={item.quantity <= 1 || updating}
-                        >
-                            <Minus className="h-3.5 w-3.5" />
-                        </button>
-                        <span className="w-10 text-center text-xs font-black tabular-nums border-x-2 border-zinc-200 h-full flex items-center justify-center">
-                            {item.quantity}
-                        </span>
-                        <button
-                            className="px-3 h-full hover:bg-zinc-50 disabled:opacity-30 flex items-center justify-center transition-colors"
-                            onClick={() => handleQuantityChange(item.quantity + 1)}
-                            disabled={updating}
-                        >
-                            <Plus className="h-3.5 w-3.5" />
-                        </button>
+                    <div className="flex items-center gap-3">
+                        <span className="text-[10px] font-bold uppercase tracking-wider">SỐ LƯỢNG:</span>
+                        <div className="flex items-center border-2 border-black rounded-none h-8 bg-white">
+                            <button
+                                className="px-2 h-full hover:bg-black hover:text-white disabled:opacity-30 flex items-center justify-center transition-colors border-r-2 border-black"
+                                onClick={() => handleQuantityChange(item.quantity - 1)}
+                                disabled={item.quantity <= 1 || updating}
+                            >
+                                <Minus className="h-3 w-3" />
+                            </button>
+                            <span className="w-10 text-center text-sm font-mono font-bold tabular-nums h-full flex items-center justify-center">
+                                {item.quantity}
+                            </span>
+                            <button
+                                className="px-2 h-full hover:bg-black hover:text-white disabled:opacity-30 flex items-center justify-center transition-colors border-l-2 border-black"
+                                onClick={() => handleQuantityChange(item.quantity + 1)}
+                                disabled={updating}
+                            >
+                                <Plus className="h-3 w-3" />
+                            </button>
+                        </div>
                     </div>
 
                     <div className="flex items-center gap-4">
+                        <div className="text-right mr-4">
+                            <div className="font-black text-lg tracking-tighter text-[#FF4400] tabular-nums">
+                                {formatCurrency(item.totalPrice)}
+                            </div>
+                            <p className="text-[10px] font-bold uppercase tracking-widest text-zinc-400">
+                                TỔNG CỘNG
+                            </p>
+                        </div>
+
                         <button
-                            className="text-xs font-bold text-zinc-500 hover:text-primary transition-colors hover:underline underline-offset-4"
-                        >
-                            Lưu lại
-                        </button>
-                        <div className="w-px h-3 bg-zinc-200" />
-                        <button
-                            className="text-xs font-bold text-red-500 hover:text-red-700 transition-colors hover:underline underline-offset-4 disabled:opacity-50"
+                            className="bg-zinc-100 hover:bg-red-600 hover:text-white p-2 border-2 border-transparent hover:border-black transition-all"
                             onClick={handleRemove}
                             disabled={updating}
+                            title="Xóa sản phẩm"
                         >
-                            Xóa
+                            <Trash2 className="h-4 w-4" />
                         </button>
                     </div>
                 </div>

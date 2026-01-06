@@ -9,6 +9,7 @@ import kanbanReducer from './slices/kanbanSlice';
 import uiReducer from './slices/uiSlice';
 import orderReducer from './slices/orderSlice';
 import inventoryReducer from './slices/inventorySlice';
+import flashSaleReducer from './slices/flashSaleSlice';
 
 export const store = configureStore({
     reducer: {
@@ -22,6 +23,7 @@ export const store = configureStore({
         ui: uiReducer,
         orders: orderReducer,
         inventory: inventoryReducer,
+        flashSales: flashSaleReducer,
     },
 });
 

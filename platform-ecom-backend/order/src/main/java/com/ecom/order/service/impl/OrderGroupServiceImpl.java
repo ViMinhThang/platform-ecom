@@ -10,7 +10,10 @@ import com.ecom.order.mapper.AdminOrderMapper;
 import com.ecom.order.payment.PaymentIntent;
 import com.ecom.order.repository.*;
 import com.ecom.order.service.OrderCalculator;
+import com.ecom.order.service.OrderCreationHelper;
+import com.ecom.order.service.OrderNumberGenerator;
 import com.ecom.order.service.OrderQueryHelper;
+import com.ecom.order.service.OrderValidationHelper;
 import com.ecom.order.service.signature.CartValidationService;
 import com.ecom.order.service.signature.*;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -32,7 +35,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class OrderGroupServiceImpl implements OrderGroupService {
 
-    // Dependencies
+    // Core Dependencies
     private final OrderGroupRepository orderGroupRepository;
     private final CartRepository cartRepository;
     private final PaymentTransactionRepository transactionRepository;
@@ -42,10 +45,17 @@ public class OrderGroupServiceImpl implements OrderGroupService {
     private final AdminOrderMapper adminOrderMapper;
     private final OrderEventPublisher orderEventPublisher;
 
+    // Helpers
     private final CartValidationService cartValidationService;
     private final OrderQueryHelper orderQueryHelper;
-    private final OrderConfigurationProperties properties;
     private final OrderCalculator orderCalculator;
+    private final OrderCreationHelper orderCreationHelper;
+    private final OrderValidationHelper orderValidationHelper;
+    private final OrderNumberGenerator orderNumberGenerator;
+
+    private final OrderConfigurationProperties properties;
+
+    // ==================== Public API ====================
 
     @Override
     @Transactional(readOnly = true)
@@ -74,11 +84,12 @@ public class OrderGroupServiceImpl implements OrderGroupService {
         Cart cart = cartValidationService.getValidatedCart(userId);
         cartValidationService.enrichAndValidateCartItems(cart);
 
-        OrderGroup orderGroup = createOrderGroup(userId, cart, request.getAddressId(), request.getShippingFee());
+        OrderGroup orderGroup = orderCreationHelper.buildOrderGroup(
+                userId, cart, request.getAddressId(), request.getShippingFee());
+        orderGroup = orderGroupRepository.save(orderGroup);
+
         recordPaymentTransaction(orderGroup, request.getPaymentIntentId());
-
         orderEventPublisher.publishOrderCreated(orderGroup);
-
         clearCart(cart);
 
         log.info("Created order {} with {} sub-orders, total: {}",
@@ -90,8 +101,8 @@ public class OrderGroupServiceImpl implements OrderGroupService {
     @Override
     @Transactional(readOnly = true)
     public OrderGroupDTO getOrderGroup(Long groupId, Long userId) {
-        OrderGroup group = findOrderGroupById(groupId);
-        verifyUserOwnership(group, userId);
+        OrderGroup group = orderValidationHelper.findOrderGroupById(groupId);
+        orderValidationHelper.verifyUserOwnership(group, userId);
         return convertToDTO(group);
     }
 
@@ -104,9 +115,9 @@ public class OrderGroupServiceImpl implements OrderGroupService {
     @Override
     @Transactional
     public void cancelOrderGroup(Long groupId, Long userId) {
-        OrderGroup group = findOrderGroupById(groupId);
-        verifyUserOwnership(group, userId);
-        validateCancellable(group);
+        OrderGroup group = orderValidationHelper.findOrderGroupById(groupId);
+        orderValidationHelper.verifyUserOwnership(group, userId);
+        orderValidationHelper.validateCancellable(group);
 
         cancelAllSubOrders(group, userId);
         group.setOverallStatus(OrderGroupStatus.CANCELLED);
@@ -129,7 +140,7 @@ public class OrderGroupServiceImpl implements OrderGroupService {
     @Override
     @Transactional(readOnly = true)
     public AdminOrderGroupDTO getOrderDetailsAdmin(Long groupId) {
-        OrderGroup group = findOrderGroupById(groupId);
+        OrderGroup group = orderValidationHelper.findOrderGroupById(groupId);
 
         UserDTO user = userServiceClient.getUserSafe(group.getUserId());
         AddressDTO shippingAddress = userServiceClient.getAddressSafe(group.getShippingAddressId());
@@ -141,8 +152,8 @@ public class OrderGroupServiceImpl implements OrderGroupService {
     @Override
     @Transactional
     public AdminOrderGroupDTO updateOrderStatus(Long groupId, String newStatus, String notes) {
-        OrderGroup group = findOrderGroupById(groupId);
-        OrderGroupStatus status = parseOrderGroupStatus(newStatus);
+        OrderGroup group = orderValidationHelper.findOrderGroupById(groupId);
+        OrderGroupStatus status = orderValidationHelper.parseOrderGroupStatus(newStatus);
 
         group.setOverallStatus(status);
         if (status == OrderGroupStatus.CANCELLED) {
@@ -157,10 +168,10 @@ public class OrderGroupServiceImpl implements OrderGroupService {
     @Transactional
     public AdminSubOrderDTO updateSubOrderStatus(Long groupId, Long subOrderId, String newStatus,
             Long adminId, String notes) {
-        OrderGroup group = findOrderGroupById(groupId);
-        SubOrder subOrder = findSubOrderInGroup(group, subOrderId);
+        OrderGroup group = orderValidationHelper.findOrderGroupById(groupId);
+        SubOrder subOrder = orderValidationHelper.findSubOrderInGroup(group, subOrderId);
 
-        SubOrderStatus status = parseSubOrderStatus(newStatus);
+        SubOrderStatus status = orderValidationHelper.parseSubOrderStatus(newStatus);
         subOrder.updateStatus(status, adminId, notes);
         orderGroupRepository.save(group);
 
@@ -170,86 +181,13 @@ public class OrderGroupServiceImpl implements OrderGroupService {
     @Override
     @Transactional
     public AdminSubOrderDTO updateSubOrderTracking(Long groupId, Long subOrderId, TrackingUpdateRequest request) {
-        OrderGroup group = findOrderGroupById(groupId);
-        SubOrder subOrder = findSubOrderInGroup(group, subOrderId);
+        OrderGroup group = orderValidationHelper.findOrderGroupById(groupId);
+        SubOrder subOrder = orderValidationHelper.findSubOrderInGroup(group, subOrderId);
 
         applyTrackingUpdates(subOrder, request);
         orderGroupRepository.save(group);
 
         return adminOrderMapper.toAdminSubOrderDTO(subOrder);
-    }
-
-    private OrderGroup createOrderGroup(Long userId, Cart cart, Long addressId, BigDecimal shippingFee) {
-        Map<Long, List<CartItem>> itemsBySeller = groupItemsBySeller(cart);
-
-        // Distribute shipping fee equally among sub-orders (sellers)
-        int sellerCount = itemsBySeller.size();
-        BigDecimal shippingPerSeller = shippingFee.divide(BigDecimal.valueOf(sellerCount), 2,
-                java.math.RoundingMode.HALF_UP);
-
-        OrderGroup group = OrderGroup.builder()
-                .groupNumber(generateGroupNumber())
-                .userId(userId)
-                .overallStatus(OrderGroupStatus.PAID)
-                .paymentStatus(PaymentStatus.SUCCEEDED)
-                .shippingAddressId(addressId)
-                .currency(properties.getDefaultCurrency())
-                .build();
-
-        BigDecimal totalAmount = BigDecimal.ZERO;
-        for (Map.Entry<Long, List<CartItem>> entry : itemsBySeller.entrySet()) {
-            SubOrder subOrder = createSubOrder(group, entry.getKey(), entry.getValue(), shippingPerSeller);
-            group.addSubOrder(subOrder);
-            totalAmount = totalAmount.add(subOrder.getTotal());
-        }
-
-        group.setTotalAmount(totalAmount);
-        group.recalculateTotals();
-
-        return orderGroupRepository.save(group);
-    }
-
-    private SubOrder createSubOrder(OrderGroup group, Long sellerId, List<CartItem> items, BigDecimal shippingFee) {
-        String sellerName = items.get(0).getSellerName();
-
-        SubOrder subOrder = SubOrder.builder()
-                .subOrderNumber(generateSubOrderNumber(group.getGroupNumber(), sellerId))
-                .orderGroup(group)
-                .sellerId(sellerId)
-                .sellerName(sellerName)
-                .status(SubOrderStatus.PENDING)
-                .build();
-
-        BigDecimal subtotal = addItemsToSubOrder(subOrder, items);
-        orderCalculator.setSubOrderFinancials(subOrder, subtotal, shippingFee);
-
-        return subOrder;
-    }
-
-    private BigDecimal addItemsToSubOrder(SubOrder subOrder, List<CartItem> items) {
-        BigDecimal subtotal = BigDecimal.ZERO;
-
-        for (CartItem cartItem : items) {
-            SubOrderItem orderItem = SubOrderItem.builder()
-                    .subOrder(subOrder)
-                    .productId(cartItem.getProductId())
-                    .variantId(cartItem.getVariantId())
-                    .productName(cartItem.getProductName())
-                    .variantName(cartItem.getVariantName())
-                    .imageUrl(cartItem.getImageUrl())
-                    .quantity(cartItem.getQuantity())
-                    .unitPrice(cartItem.getPrice())
-                    .build();
-
-            orderItem.calculateTotalPrice();
-            subOrder.addItem(orderItem);
-            subtotal = subtotal.add(orderItem.getTotalPrice());
-        }
-        return subtotal;
-    }
-
-    private Map<Long, List<CartItem>> groupItemsBySeller(Cart cart) {
-        return cart.getItems().stream().collect(Collectors.groupingBy(CartItem::getSellerId));
     }
 
     // ==================== Private Helpers: Payment ====================
@@ -277,33 +215,7 @@ public class OrderGroupServiceImpl implements OrderGroupService {
         transactionRepository.save(transaction);
     }
 
-    private OrderGroup findOrderGroupById(Long groupId) {
-        return orderGroupRepository.findByIdWithSubOrders(groupId)
-                .orElseThrow(() -> new OrderGroupNotFoundException(groupId));
-    }
-
-    private SubOrder findSubOrderInGroup(OrderGroup group, Long subOrderId) {
-        return group.getSubOrders().stream()
-                .filter(so -> so.getId().equals(subOrderId))
-                .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("Sub-order not found: " + subOrderId));
-    }
-
-    private void verifyUserOwnership(OrderGroup group, Long userId) {
-        if (!group.getUserId().equals(userId)) {
-            throw new UnauthorizedException("Not authorized to access this order");
-        }
-    }
-
-    private void validateCancellable(OrderGroup group) {
-        boolean allCancellable = group.getSubOrders().stream()
-                .allMatch(so -> so.getStatus() == SubOrderStatus.PENDING
-                        || so.getStatus() == SubOrderStatus.PROCESSING);
-
-        if (!allCancellable) {
-            throw new IllegalStateException("Cannot cancel order - items already shipped");
-        }
-    }
+    // ==================== Private Helpers: Cancellation ====================
 
     private void cancelAllSubOrders(OrderGroup group, Long userId) {
         for (SubOrder subOrder : group.getSubOrders()) {
@@ -337,31 +249,6 @@ public class OrderGroupServiceImpl implements OrderGroupService {
             subOrder.setEstimatedDelivery(request.getEstimatedDelivery());
         if (request.getFulfillmentStatus() != null)
             subOrder.setFulfillmentStatus(request.getFulfillmentStatus());
-    }
-
-    private OrderGroupStatus parseOrderGroupStatus(String status) {
-        try {
-            return OrderGroupStatus.valueOf(status);
-        } catch (IllegalArgumentException e) {
-            throw new IllegalArgumentException("Invalid order status: " + status);
-        }
-    }
-
-    private SubOrderStatus parseSubOrderStatus(String status) {
-        try {
-            return SubOrderStatus.valueOf(status);
-        } catch (IllegalArgumentException e) {
-            throw new IllegalArgumentException("Invalid sub-order status: " + status);
-        }
-    }
-
-    private String generateGroupNumber() {
-        return "OG-" + System.currentTimeMillis() + "-"
-                + UUID.randomUUID().toString().substring(0, 8).toUpperCase();
-    }
-
-    private String generateSubOrderNumber(String groupNumber, Long sellerId) {
-        return groupNumber + "-S" + sellerId;
     }
 
     // ==================== Private Helpers: Conversion ====================

@@ -49,7 +49,7 @@ public class AddressServiceImpl implements AddressService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("User", "id", userId));
 
-        long count = addressRepository.countByUserUserId(userId); // Tối ưu dùng countByUserId
+        long count = addressRepository.countByUserUserId(userId); // Optimized using countByUserId
         if (count >= 5) {
             throw new IllegalStateException("Maximum of 5 addresses allowed per user");
         }

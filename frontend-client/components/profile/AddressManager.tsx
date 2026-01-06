@@ -83,14 +83,26 @@ export function AddressManager({ addresses, onUpdate }: AddressManagerProps) {
 
     return (
         <div className="space-y-6">
-            <div className="flex items-center justify-between">
+            <div className="items-center justify-between mb-8 hidden"> {/* Hidden because handled in parent page but keeping structure if needed later */}
                 <h3 className="text-lg font-medium">Địa chỉ của tôi ({addresses.length}/5)</h3>
                 <Button onClick={handleAddClick} disabled={addresses.length >= 5}>
                     <Plus className="mr-2 h-4 w-4" /> Thêm địa chỉ mới
                 </Button>
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {/* Add New Button Card */}
+                <button
+                    onClick={handleAddClick}
+                    disabled={addresses.length >= 5}
+                    className="flex flex-col items-center justify-center h-full min-h-[160px] border-2 border-dashed border-zinc-300 hover:border-black hover:bg-zinc-50 transition-all group disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                    <div className="h-10 w-10 bg-zinc-100 group-hover:bg-black group-hover:text-white flex items-center justify-center transition-colors mb-4">
+                        <Plus className="h-6 w-6" />
+                    </div>
+                    <span className="font-black uppercase tracking-widest text-sm">Thêm địa chỉ giao hàng</span>
+                </button>
+
                 {addresses.map((address) => (
                     <AddressCard
                         key={address.addressId}
@@ -102,15 +114,8 @@ export function AddressManager({ addresses, onUpdate }: AddressManagerProps) {
                 ))}
 
                 {addresses.length === 0 && (
-                    <div className="col-span-full flex flex-col items-center justify-center py-16 border-2 border-dashed rounded-xl bg-muted/30 text-muted-foreground">
-                        <div className="h-12 w-12 rounded-full bg-muted flex items-center justify-center mb-4">
-                            <Plus className="h-6 w-6" />
-                        </div>
-                        <h3 className="text-lg font-medium text-foreground">Không tìm thấy địa chỉ</h3>
-                        <p className="text-sm mt-1 mb-4">Thêm địa chỉ giao hàng để bắt đầu.</p>
-                        <Button onClick={handleAddClick} variant="outline">
-                            Thêm địa chỉ mới
-                        </Button>
+                    <div className="col-span-full py-10 flex flex-col items-center justify-center text-center">
+                        <p className="text-sm font-mono text-zinc-500 uppercase">CHƯA CÓ ĐỊA CHỈ NÀO ĐƯỢC LƯU.</p>
                     </div>
                 )}
             </div>

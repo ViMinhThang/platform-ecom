@@ -1,6 +1,7 @@
 package com.ecom.gateway.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.gateway.filter.ratelimit.KeyResolver;
 import org.springframework.cloud.gateway.filter.ratelimit.RedisRateLimiter;
 import org.springframework.context.annotation.Bean;
@@ -21,6 +22,9 @@ public class GatewayConfig {
 
         @Autowired
         private AuthenticationFilter authFilter;
+
+        @Value("${eureka.discovery.web-url:http://localhost:8761}")
+        private String eurekaUrl;
 
         // @Bean
         // @Primary
@@ -154,6 +158,22 @@ public class GatewayConfig {
                                 // Admin category management
                                 .route("admin-categories", r -> r
                                                 .path("/api/v1/admin/categories/**")
+                                                .filters(f -> f
+                                                                .filter(authFilter))
+                                                .uri("lb://product-service"))
+
+                                // ============================================================
+                                // FLASH SALES - /api/v1/flash-sales
+                                // ============================================================
+
+                                // Public flash sales (view active sales, get by slug, items)
+                                .route("flash-sales-public", r -> r
+                                                .path("/api/v1/flash-sales", "/api/v1/flash-sales/**")
+                                                .uri("lb://product-service"))
+
+                                // Admin flash sales management
+                                .route("admin-flash-sales", r -> r
+                                                .path("/api/v1/admin/flash-sales", "/api/v1/admin/flash-sales/**")
                                                 .filters(f -> f
                                                                 .filter(authFilter))
                                                 .uri("lb://product-service"))
@@ -312,11 +332,11 @@ public class GatewayConfig {
                                 .route("eureka-web", r -> r
                                                 .path("/eureka/web")
                                                 .filters(f -> f.rewritePath("/eureka/web", "/"))
-                                                .uri("http://localhost:8761"))
+                                                .uri(eurekaUrl))
 
                                 .route("eureka-static", r -> r
                                                 .path("/eureka/**")
-                                                .uri("http://localhost:8761"))
+                                                .uri(eurekaUrl))
                                 .build();
         }
 }

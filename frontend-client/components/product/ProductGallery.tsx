@@ -29,46 +29,51 @@ export const ProductGallery = ({
     displayImage
 }: ProductGalleryProps) => {
     return (
-        <div className="space-y-6">
-            <div className="aspect-square relative bg-zinc-100 dark:bg-zinc-800 overflow-hidden">
+        <div className="space-y-4">
+            {/* MAIN DISPLAY */}
+            <div className="aspect-square relative bg-white border-2 border-black overflow-hidden group">
+                {/* BLUEPRINT GRID OVERLAY */}
+                <div className="absolute inset-0 z-10 pointer-events-none bg-[linear-gradient(to_right,#0000000a_1px,transparent_1px),linear-gradient(to_bottom,#0000000a_1px,transparent_1px)] bg-size-[20px_20px]"></div>
+
                 <Image
-                    width={700}
-                    height={700}
+                    width={800}
+                    height={800}
                     src={imageUrl.product(
                         product.images && product.images.length > 0
                             ? product.images[currentImageIndex]?.imageUrl || product.images[0].imageUrl
                             : displayImage
                     )}
                     alt={product.name}
-                    className="object-cover w-full h-full transition-all duration-300"
+                    className="object-contain w-full h-full p-4"
                     unoptimized
                     priority
                 />
             </div>
 
+            {/* THUMBNAIL TRACKER */}
             {product.images && product.images.length > 0 && (
-                <div className="px-6">
+                <div className="relative">
                     <Carousel setApi={setApi} opts={{ align: "start", loop: true }}>
-                        <CarouselContent className="ml-1">
+                        <CarouselContent className="-ml-2">
                             {product.images.map((image, index) => (
-                                <CarouselItem key={index} className="pl-1 basis-1/4">
+                                <CarouselItem key={index} className="pl-2 basis-1/5">
                                     <div
-                                        className={`cursor-pointer overflow-hidden border-2 transition-all ${currentImageIndex === index
-                                            ? "border-primary"
-                                            : "border-transparent hover:border-zinc-300"
+                                        className={`cursor-pointer border-2 transition-all p-1 ${currentImageIndex === index
+                                            ? "border-black bg-zinc-100"
+                                            : "border-zinc-200 hover:border-black/50"
                                             }`}
                                         onClick={() => {
                                             setCurrentImageIndex(index);
                                             api?.scrollTo(index);
                                         }}
                                     >
-                                        <div className="aspect-square relative bg-zinc-100 dark:bg-zinc-800">
+                                        <div className="aspect-square relative bg-white">
                                             <Image
                                                 width={150}
                                                 height={150}
                                                 src={imageUrl.product(image.imageUrl)}
                                                 alt={`${product.name} thumbnail ${index + 1}`}
-                                                className="object-cover w-full h-full"
+                                                className="object-contain w-full h-full"
                                                 unoptimized
                                             />
                                         </div>
@@ -76,8 +81,8 @@ export const ProductGallery = ({
                                 </CarouselItem>
                             ))}
                         </CarouselContent>
-                        <CarouselPrevious className="-left-8 rounded-none h-full border-none bg-transparent hover:bg-zinc-100 w-8" />
-                        <CarouselNext className="-right-8 rounded-none h-full border-none bg-transparent hover:bg-zinc-100 w-8" />
+                        <CarouselPrevious className="h-full rounded-none border-2 border-black bg-white hover:bg-black hover:text-white -left-4 w-10 disabled:opacity-0" />
+                        <CarouselNext className="h-full rounded-none border-2 border-black bg-white hover:bg-black hover:text-white -right-4 w-10 disabled:opacity-0" />
                     </Carousel>
                 </div>
             )}

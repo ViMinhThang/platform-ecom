@@ -1,10 +1,7 @@
 import type { Metadata } from "next";
-import { Be_Vietnam_Pro, Inter } from "next/font/google";
+import { Be_Vietnam_Pro, Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
-import { SiteHeader } from "@/components/SiteHeader";
-import { SiteFooter } from "@/components/SiteFooter";
 import { Providers } from "@/components/providers";
-import { ChatbotWidget } from "@/components/chatbot/ChatbotWidget";
 
 const beVietnam = Be_Vietnam_Pro({
   weight: ['400', '500', '600', '700', '800', '900'],
@@ -16,6 +13,12 @@ const beVietnam = Be_Vietnam_Pro({
 const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin", "vietnamese"],
+  display: 'swap',
+});
+
+const jetBrainsMono = JetBrains_Mono({
+  variable: "--font-mono",
+  subsets: ["latin"],
   display: 'swap',
 });
 
@@ -32,16 +35,11 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${beVietnam.variable} ${inter.variable} antialiased min-h-screen flex flex-col font-inter`}
+        className={`${beVietnam.variable} ${inter.variable} ${jetBrainsMono.variable} antialiased min-h-screen flex flex-col font-inter`}
         suppressHydrationWarning
       >
         <Providers>
-          <SiteHeader />
-          <main className="flex-1">
-            {children}
-          </main>
-          <SiteFooter />
-          <ChatbotWidget />
+          {children}
         </Providers>
       </body>
     </html>
