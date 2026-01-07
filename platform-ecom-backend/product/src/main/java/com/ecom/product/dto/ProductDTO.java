@@ -18,6 +18,7 @@ public class ProductDTO {
     private Map<String, Object> metadata;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+    private String description;
     private Long totalSold;
     private Long totalReviews;
     private Double averageRating;

@@ -24,7 +24,6 @@ export const ProductDetailedDescription = ({ product }: ProductDetailedDescripti
                 setShouldShowButton(contentRef.current.scrollHeight > MAX_COLLAPSED_HEIGHT);
             }
         };
-
         checkHeight();
         // Re-check after a short delay to ensure images/content are rendered
         const timer = setTimeout(checkHeight, 500);
@@ -35,7 +34,7 @@ export const ProductDetailedDescription = ({ product }: ProductDetailedDescripti
         <section className="space-y-8">
             <h2 className="text-xl font-black flex items-center gap-3 uppercase tracking-[0.2em] text-black">
                 <span className="bg-black text-white px-2 py-0.5 text-xs">02</span>
-                MÔ TẢ CHI TIẾT // CORE_FEATURES
+                MÔ TẢ CHI TIẾT
             </h2>
 
             <div className="relative">
@@ -47,7 +46,7 @@ export const ProductDetailedDescription = ({ product }: ProductDetailedDescripti
                     )}
                 >
                     <RichTextPreview
-                        content={product.description || "<p className='text-zinc-400 italic'>DỮ LIỆU MÔ TẢ TRỐNG // NO_DESCRIPTION_AVAILABLE</p>"}
+                        content={product.description || "<p className='text-zinc-400 italic'>DỮ LIỆU MÔ TẢ TRỐNG</p>"}
                     />
                 </div>
 
@@ -64,9 +63,9 @@ export const ProductDetailedDescription = ({ product }: ProductDetailedDescripti
                         className="rounded-none border-2 border-black font-black uppercase tracking-[0.2em] px-10 hover:bg-black hover:text-white transition-all h-12 text-[10px]"
                     >
                         {isExpanded ? (
-                            <> THU GỌN // COLLAPSE <ChevronUp className="ml-2 w-3 h-3" /> </>
+                            <> THU GỌN <ChevronUp className="ml-2 w-3 h-3" /> </>
                         ) : (
-                            <> XEM THÊM // EXPAND <ChevronDown className="ml-2 w-3 h-3" /> </>
+                            <> XEM THÊM <ChevronDown className="ml-2 w-3 h-3" /> </>
                         )}
                     </Button>
                 </div>

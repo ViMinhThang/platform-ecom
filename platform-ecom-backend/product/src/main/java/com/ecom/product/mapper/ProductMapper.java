@@ -38,6 +38,7 @@ public class ProductMapper {
         dto.setMinPrice(product.getMinPrice());
         dto.setSpecifications(product.getSpecifications());
         dto.setMetadata(product.getMetadata());
+        dto.setDescription(product.getDescription());
         dto.setCreatedAt(product.getCreatedAt());
         dto.setUpdatedAt(product.getUpdatedAt());
         dto.setTotalSold(product.getTotalSold());
@@ -91,6 +92,7 @@ public class ProductMapper {
         dto.setMetadata(product.getMetadata());
         dto.setCreatedAt(product.getCreatedAt());
         dto.setUpdatedAt(product.getUpdatedAt());
+        dto.setDescription(product.getDescription());
         dto.setTotalSold(product.getTotalSold());
         dto.setTotalReviews(product.getTotalReviews());
         dto.setAverageRating(product.getAverageRating());

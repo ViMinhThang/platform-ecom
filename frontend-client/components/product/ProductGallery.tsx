@@ -31,10 +31,7 @@ export const ProductGallery = ({
     return (
         <div className="space-y-4">
             {/* MAIN DISPLAY */}
-            <div className="aspect-square relative bg-white border-2 border-black overflow-hidden group">
-                {/* BLUEPRINT GRID OVERLAY */}
-                <div className="absolute inset-0 z-10 pointer-events-none bg-[linear-gradient(to_right,#0000000a_1px,transparent_1px),linear-gradient(to_bottom,#0000000a_1px,transparent_1px)] bg-size-[20px_20px]"></div>
-
+            <div className="aspect-square relative bg-white border border-slate-100 overflow-hidden rounded-lg cursor-zoom-in group">
                 <Image
                     width={800}
                     height={800}
@@ -44,46 +41,36 @@ export const ProductGallery = ({
                             : displayImage
                     )}
                     alt={product.name}
-                    className="object-contain w-full h-full p-4"
+                    className="object-contain w-full h-full p-2 group-hover:scale-105 transition-transform duration-300"
                     unoptimized
                     priority
                 />
             </div>
 
-            {/* THUMBNAIL TRACKER */}
+            {/* THUMBNAIL STRIP */}
             {product.images && product.images.length > 0 && (
-                <div className="relative">
-                    <Carousel setApi={setApi} opts={{ align: "start", loop: true }}>
-                        <CarouselContent className="-ml-2">
-                            {product.images.map((image, index) => (
-                                <CarouselItem key={index} className="pl-2 basis-1/5">
-                                    <div
-                                        className={`cursor-pointer border-2 transition-all p-1 ${currentImageIndex === index
-                                            ? "border-black bg-zinc-100"
-                                            : "border-zinc-200 hover:border-black/50"
-                                            }`}
-                                        onClick={() => {
-                                            setCurrentImageIndex(index);
-                                            api?.scrollTo(index);
-                                        }}
-                                    >
-                                        <div className="aspect-square relative bg-white">
-                                            <Image
-                                                width={150}
-                                                height={150}
-                                                src={imageUrl.product(image.imageUrl)}
-                                                alt={`${product.name} thumbnail ${index + 1}`}
-                                                className="object-contain w-full h-full"
-                                                unoptimized
-                                            />
-                                        </div>
-                                    </div>
-                                </CarouselItem>
-                            ))}
-                        </CarouselContent>
-                        <CarouselPrevious className="h-full rounded-none border-2 border-black bg-white hover:bg-black hover:text-white -left-4 w-10 disabled:opacity-0" />
-                        <CarouselNext className="h-full rounded-none border-2 border-black bg-white hover:bg-black hover:text-white -right-4 w-10 disabled:opacity-0" />
-                    </Carousel>
+                <div className="grid grid-cols-5 gap-3">
+                    {product.images.map((image, index) => (
+                        <div
+                            key={index}
+                            className={`cursor-pointer aspect-square rounded-md overflow-hidden bg-white border transition-all ${currentImageIndex === index
+                                    ? "border-[#FF4F00] ring-1 ring-[#FF4F00] shadow-sm"
+                                    : "border-slate-200 hover:border-[#FF4F00]/50"
+                                }`}
+                            onMouseEnter={() => setCurrentImageIndex(index)}
+                        >
+                            <div className="w-full h-full relative p-1">
+                                <Image
+                                    width={100}
+                                    height={100}
+                                    src={imageUrl.product(image.imageUrl)}
+                                    alt={`${product.name} thumbnail ${index + 1}`}
+                                    className="object-contain w-full h-full"
+                                    unoptimized
+                                />
+                            </div>
+                        </div>
+                    ))}
                 </div>
             )}
         </div>

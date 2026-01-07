@@ -1,6 +1,6 @@
 import { HomeBanner } from "@/components/home/HomeBanner";
 import { QuickLinks } from "@/components/home/QuickLinks";
-import { FlashSale } from "@/components/home/FlashSale";
+import { SingleActiveCampaign } from "@/components/home/SingleActiveCampaign";
 import { ProductFeed } from "@/components/home/ProductFeed";
 
 export default function Home() {
@@ -13,13 +13,11 @@ export default function Home() {
         <div className="h-px bg-black/10 w-full" />
       </div>
 
-      {/* SECTION 2: QUICK LINKS */}
       <QuickLinks />
 
       {/* SECTION 3: FLASH SALE */}
-      <FlashSale />
+      <SingleActiveCampaign />
 
-      {/* SECTION 5: PRODUCT FEED */}
       <ProductFeed />
     </div>
   );

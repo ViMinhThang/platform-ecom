@@ -77,95 +77,89 @@ export function ProductVariantSection({
   return (
     <div className="space-y-10">
       {/* Price Display */}
-      <div className="bg-black text-white p-6 md:p-8">
-        <div className="text-[10px] font-bold uppercase tracking-[0.3em] mb-4 text-zinc-400">ĐƠN GIÁ // UNIT_PRICE</div>
-        <div className="text-4xl md:text-5xl font-mono font-black tracking-tighter">
-          <p>
-            {selectedVariant
-              ? formatCurrency(selectedVariant.price)
-              : (hasVariants ? "0.000" : formatCurrency(product.minPrice || 0))}
-          </p>
+      <div className="space-y-8">
+        {/* Price Display - Modern Clean */}
+        <div className="py-4 px-5 bg-slate-50 rounded-lg border border-slate-100/50">
+          <div className="flex items-baseline gap-3">
+            <span className="text-3xl font-bold text-slate-900">
+              {selectedVariant
+                ? formatCurrency(selectedVariant.price)
+                : (hasVariants ? `${formatCurrency(product.minPrice || 0)} - ...` : formatCurrency(product.minPrice || 0))
+              }
+            </span>
+          </div>
         </div>
-        {selectedVariant && (
-          <div className="mt-6">
-            {displayStock > 0 ? (
-              <span className="text-[10px] font-black tracking-widest uppercase border border-white/20 px-2 py-1">
-                SẴN SÀNG: {displayStock} ĐƠN VỊ
-              </span>
-            ) : (
-              <span className="text-[10px] font-black tracking-widest uppercase bg-[#FF4400] px-2 py-1">
-                HẾT HÀNG // OUT_OF_STOCK
-              </span>
-            )}
+
+        {/* Variant Selector - Standard */}
+        {product.options && product.options.length > 0 && (
+          <div className="space-y-6">
+            <VariantSelector
+              options={product.options}
+              variants={product.variants}
+              onVariantChange={handleVariantChange}
+            />
           </div>
         )}
-      </div>
 
-      {/* Variant Selector */}
-      {product.options && product.options.length > 0 && (
-        <div className="pt-8 border-t-2 border-black">
-          <h3 className="text-[10px] font-black mb-6 uppercase tracking-[0.3em] text-zinc-400">CẤU HÌNH // CONFIGURATION</h3>
-          <VariantSelector
-            options={product.options}
-            variants={product.variants}
-            onVariantChange={handleVariantChange}
-          />
-        </div>
-      )}
-
-      {/* Quantity Selector */}
-      <div className="flex flex-col gap-4 pt-4 border-t-2 border-dashed border-black/10">
-        <span className="text-[10px] font-black uppercase tracking-widest text-zinc-400">SỐ LƯỢNG // QUANTITY</span>
-        <div className="flex items-center gap-px bg-black border-2 border-black w-fit">
-          <Button
-            variant="ghost"
-            size="icon"
-            className="h-10 w-10 rounded-none bg-white hover:bg-zinc-100"
-            onClick={() => setQuantity(Math.max(1, quantity - 1))}
-            disabled={quantity <= 1}
-          >
-            <Minus className="h-4 w-4" />
-          </Button>
-          <span className="w-16 h-10 flex items-center justify-center bg-white font-mono font-bold">{quantity}</span>
-          <Button
-            variant="ghost"
-            size="icon"
-            className="h-10 w-10 rounded-none bg-white hover:bg-zinc-100 border-l-2 border-black"
-            onClick={() => setQuantity(Math.min(displayStock || 99, quantity + 1))}
-            disabled={selectedVariant ? quantity >= displayStock : false}
-          >
-            <Plus className="h-4 w-4" />
-          </Button>
+        {/* Quantity Selector - Standard */}
+        <div className="flex items-center gap-6">
+          <span className="text-sm font-medium text-slate-600">Số Lượng</span>
+          <div className="flex items-center gap-4">
+            <div className="flex items-center border border-slate-200 rounded-md bg-white">
+              <Button
+                variant="ghost"
+                size="icon"
+                className="h-9 w-9 rounded-l-md rounded-r-none hover:bg-slate-50 border-r border-slate-200"
+                onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                disabled={quantity <= 1}
+              >
+                <Minus className="h-3.5 w-3.5 text-slate-600" />
+              </Button>
+              <div className="w-12 text-center text-sm font-semibold text-slate-900">{quantity}</div>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="h-9 w-9 rounded-r-md rounded-l-none hover:bg-slate-50 border-l border-slate-200"
+                onClick={() => setQuantity(Math.min(displayStock || 99, quantity + 1))}
+                disabled={selectedVariant ? quantity >= displayStock : false}
+              >
+                <Plus className="h-3.5 w-3.5 text-slate-600" />
+              </Button>
+            </div>
+            <span className="text-xs text-slate-500">
+              {displayStock} sản phẩm có sẵn
+            </span>
+          </div>
         </div>
       </div>
 
       {/* Add to Cart */}
-      <div className="flex flex-col gap-4 pt-6">
+      <div className="flex items-center gap-4 pt-4">
         <Button
           size="lg"
-          className="w-full h-16 rounded-none bg-black text-white hover:bg-[#FF4400] font-black uppercase tracking-widest text-sm transition-all"
+          variant="outline"
+          className="flex-1 h-12 rounded-lg border-black text-black bg-white hover:bg-zinc-50 hover:border-[#FF4F00] hover:text-[#FF4F00] font-semibold text-sm shadow-sm transition-all"
           disabled={!canAddToCart}
           onClick={handleAddToCart}
         >
-          <ShoppingCart className="mr-3 h-5 w-5" />
-          {getButtonText().toUpperCase()} // INITIATE_TRANSFER
+          <ShoppingCart className="w-4 h-4 mr-2" />
+          Thêm Vào Giỏ
         </Button>
-
-        <div className="grid grid-cols-2 gap-4">
-          <Button variant="outline" className="h-12 rounded-none border-2 border-black font-black uppercase tracking-widest text-[10px] hover:bg-zinc-100">
-            LƯU VÀO DANH SÁCH
-          </Button>
-          <Button variant="outline" className="h-12 rounded-none border-2 border-black font-black uppercase tracking-widest text-[10px] hover:bg-zinc-100">
-            CHIA SẺ DỮ LIỆU
-          </Button>
-        </div>
+        <Button
+          size="lg"
+          className="flex-1 h-12 rounded-lg bg-black text-white hover:bg-[#FF4F00] font-semibold text-sm shadow-sm border-none transition-all"
+          disabled={!canAddToCart}
+        // onClick={handleBuyNow}
+        >
+          Mua Ngay
+        </Button>
       </div>
 
       {/* SKU Info */}
       {selectedVariant && (
-        <div className="flex items-center gap-4 text-[10px] font-bold text-zinc-400 pt-8 border-t-2 border-black">
-          <span className="uppercase tracking-widest">PRODUCT_IDENTIFIER:</span>
-          <span className="font-mono text-black">{selectedVariant.sku}</span>
+        <div className="flex items-center justify-between text-xs text-zinc-400 pt-4">
+          {displayStock > 0 && <span className="text-green-600 font-medium">Còn hàng</span>}
+          <span className="font-mono">{selectedVariant.sku}</span>
         </div>
       )}
     </div>

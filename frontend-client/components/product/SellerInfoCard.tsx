@@ -76,65 +76,45 @@ export function SellerInfoCard({
     }
 
     return (
-        <div className="bg-white border-2 border-black p-4 space-y-4 sticky top-24">
-            <h3 className="text-[10px] font-black text-zinc-400 uppercase tracking-[0.2em] flex items-center gap-2">
-                <span className="w-2 h-2 bg-black"></span>
-                NHÀ CUNG CẤP // VENDOR_PROFILE
-            </h3>
-
-            <div className="flex items-center gap-4 py-2">
-                <div className="w-14 h-14 border-2 border-black bg-zinc-100 overflow-hidden relative shrink-0">
-                    {sellerImage ? (
-                        <Image
-                            src={imageUrl.avatar(sellerImage)}
-                            alt={sellerName}
-                            fill
-                            className="object-cover"
-                        />
-                    ) : (
-                        <div className="w-full h-full flex items-center justify-center bg-black text-white text-lg font-black">
-                            {sellerName.charAt(0).toUpperCase()}
-                        </div>
-                    )}
-                </div>
-                <div className="min-w-0">
-                    <p className="font-black truncate text-sm uppercase tracking-tight text-black">{sellerName}</p>
-                    <p className="text-[9px] font-bold text-zinc-400 uppercase tracking-widest mt-0.5">AUTH_ID: {sellerId}</p>
-                </div>
+        <div className="flex items-start gap-4 p-4 border border-zinc-100 rounded-lg">
+            <div className="w-12 h-12 rounded-full bg-zinc-100 overflow-hidden relative shrink-0">
+                {sellerImage ? (
+                    <Image
+                        src={imageUrl.avatar(sellerImage)}
+                        alt={sellerName}
+                        fill
+                        className="object-cover"
+                    />
+                ) : (
+                    <div className="w-full h-full flex items-center justify-center text-zinc-400 font-bold">
+                        {sellerName.charAt(0).toUpperCase()}
+                    </div>
+                )}
             </div>
 
-            <div className="grid grid-cols-2 gap-px bg-black border-2 border-black">
-                <div className="bg-white p-3">
-                    <div className="flex items-center gap-1.5 text-zinc-400 mb-1">
-                        <ShoppingBag className="w-3 h-3" />
-                        <span className="text-[9px] font-black uppercase tracking-widest">ĐÃ BÁN</span>
+            <div className="flex-1 min-w-0">
+                <div className="flex justify-between items-start">
+                    <div>
+                        <p className="font-medium text-sm text-black">{sellerName}</p>
+                        <p className="text-xs text-zinc-500 mt-0.5">Online vừa xong</p>
                     </div>
-                    <p className="font-mono font-black text-sm text-black">
-                        {new Intl.NumberFormat("en-US").format(totalSold)}+
-                    </p>
+                    <Link href={`/seller/${sellerId}`}>
+                        <Button variant="ghost" size="sm" className="h-8 px-3 text-xs font-normal hover:bg-zinc-50">
+                            Xem Shop
+                        </Button>
+                    </Link>
                 </div>
-                <div className="bg-white p-3">
-                    <div className="flex items-center gap-1.5 text-zinc-400 mb-1">
-                        <Calendar className="w-3 h-3" />
-                        <span className="text-[9px] font-black uppercase tracking-widest">THAM GIA</span>
-                    </div>
-                    <p className="font-mono font-black text-sm text-black">
-                        {formatOrderDate(createdAt)}
-                    </p>
-                </div>
-            </div>
 
-            <div className="space-y-2 pt-2">
-                <Link href={`/seller/${sellerId}`} className="block">
-                    <Button variant="outline" size="sm" className="w-full gap-2 rounded-none border-black border-2 bg-white text-black font-black text-[10px] uppercase tracking-[0.2em] h-10 hover:bg-black hover:text-white transition-all shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] active:shadow-none active:translate-x-1 active:translate-y-1">
-                        <Store className="w-3.5 h-3.5" />
-                        XEM GIAN HÀNG
-                    </Button>
-                </Link>
-                <Button variant="ghost" size="sm" className="w-full gap-2 rounded-none font-black text-[10px] uppercase tracking-[0.2em] h-10 hover:bg-zinc-100 text-zinc-500 hover:text-black">
-                    <MessageCircle className="w-3.5 h-3.5" />
-                    LIÊN HỆ TRỰC TIẾP
-                </Button>
+                <div className="flex items-center gap-4 mt-3 pt-3 border-t border-zinc-50">
+                    <div className="flex gap-1 text-xs">
+                        <span className="text-zinc-500">Đánh giá:</span>
+                        <span className="font-medium">4.9/5</span>
+                    </div>
+                    <div className="flex gap-1 text-xs">
+                        <span className="text-zinc-500">Sản phẩm:</span>
+                        <span className="font-medium">{totalSold || 150}</span>
+                    </div>
+                </div>
             </div>
         </div>
     );

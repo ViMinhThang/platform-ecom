@@ -7,38 +7,29 @@ interface ProductSpecificationsProps {
 }
 
 export const ProductSpecifications = ({ product }: ProductSpecificationsProps) => {
-    const specs = product.specifications;
+    const specs = product.specifications || {};
 
-    if (!specs || Object.keys(specs).length === 0) {
+    if (Object.keys(specs).length === 0) {
         return null;
     }
 
     return (
-        <section className="space-y-8">
-            <h2 className="text-xl font-black flex items-center gap-3 uppercase tracking-[0.2em] text-black">
-                <span className="bg-black text-white px-2 py-0.5 text-xs">01</span>
-                THÔNG SỐ KỸ THUẬT // TECH_SPECS
-            </h2>
-
-            <div className="grid grid-cols-1 gap-px bg-black border-2 border-black">
+        <div className="space-y-6">
+            <div className="space-y-0 divide-y divide-zinc-100 border-t border-b border-zinc-100">
                 {Object.entries(specs).map(([key, value]) => (
                     <div
                         key={key}
-                        className="grid grid-cols-[1fr_2fr] bg-white divide-x-2 divide-black"
+                        className="grid grid-cols-[140px_1fr] md:grid-cols-[200px_1fr] py-4"
                     >
-                        <div className="p-4 bg-zinc-50 flex items-center">
-                            <span className="text-[10px] font-black uppercase tracking-widest text-zinc-500">
-                                {key.replace(/_/g, " ")}
-                            </span>
+                        <div className="text-zinc-500 text-sm capitalize">
+                            {key.replace(/_/g, " ")}
                         </div>
-                        <div className="p-4 flex items-center bg-white">
-                            <span className="text-xs font-mono font-bold text-black uppercase">
-                                {String(value)}
-                            </span>
+                        <div className="text-black font-medium text-sm">
+                            {String(value)}
                         </div>
                     </div>
                 ))}
             </div>
-        </section>
+        </div>
     );
 };

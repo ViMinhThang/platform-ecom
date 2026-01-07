@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/inventory_db?currentSchema=public&stringtype=unspecified&serverTimezone=Asia/Ho_Chi_Minh
+    url: jdbc:postgresql://localhost:5432/inventory?currentSchema=public&stringtype=unspecified&serverTimezone=Asia/Ho_Chi_Minh
     username: ${DB_USER}
     password: ${DB_PASSWORD}
   jpa:
@@ -23,14 +23,14 @@ spring:
           destination: low-stock-alert-topic
       kafka:
         binder:
-          brokers: ${KAFKA_BROKERS:localhost:9092}
+          brokers: ${KAFKA_BROKERS:localhost:9093}
   app:
     jwtSecret: "qweqweqweqweqweqw123123131231231cfcsvcxvwdfqsd"
     jwtExpirationMs: 600000
     jwtCookieName: "ecom"
 
 server:
-  port: 8085
+  port: 8088
 
 management:
   endpoints:

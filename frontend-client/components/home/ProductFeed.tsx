@@ -13,7 +13,7 @@ export function ProductFeed() {
 
     useEffect(() => {
         dispatch(fetchProducts({
-            sortBy: activeTab === 'top' ? 'price' : 'created_at',
+            sortBy: activeTab === 'top' ? 'price' : 'createdAt',
             sortOrder: activeTab === 'top' ? 'asc' : 'desc',
             perPage: 24
         }));

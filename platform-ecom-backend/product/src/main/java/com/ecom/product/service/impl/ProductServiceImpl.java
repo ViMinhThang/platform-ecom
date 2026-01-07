@@ -177,7 +177,6 @@ public class ProductServiceImpl implements ProductService {
 
     private Specification<Product> buildPublicProductSpecification(String search, String category, BigDecimal minPrice,
             BigDecimal maxPrice, Double minRating) {
-        // Start with base filters: ACTIVE status AND not deleted
         Specification<Product> spec = ProductUtils.statusEquals(ProductStatus.ACTIVE.getValue())
                 .and(ProductUtils.isNotDeleted());
 
@@ -185,19 +184,15 @@ public class ProductServiceImpl implements ProductService {
             spec = spec.and(ProductUtils.nameContains(search));
         }
 
-        // Support both category name and slug
         if (category != null && !category.isEmpty()) {
-            // Try slug first, fall back to name for backward compatibility
             spec = spec.and(ProductUtils.categorySlugEquals(category)
                     .or(ProductUtils.categoryEquals(category)));
         }
 
-        // Apply price range filter
         if (minPrice != null || maxPrice != null) {
             spec = spec.and(ProductUtils.priceRange(minPrice, maxPrice));
         }
 
-        // Apply rating filter
         if (minRating != null) {
             spec = spec.and(ProductUtils.ratingGreaterThanOrEqual(minRating));
         }

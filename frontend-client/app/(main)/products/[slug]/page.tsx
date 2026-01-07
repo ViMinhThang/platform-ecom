@@ -3,8 +3,8 @@
 import { useEffect, useState } from "react";
 import { getProductBySlug } from "@/lib/services/product-service";
 import { notFound } from "next/navigation";
-import Image from "next/image";
-import { Star } from "lucide-react";
+import Link from "next/link";
+import { Star, ChevronRight } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { ReviewStats } from "@/components/ReviewStats";
 import { ReviewList } from "@/components/ReviewList";
@@ -14,6 +14,7 @@ import { ProductDetailedDescription } from "@/components/product/ProductDetailed
 import { ProductSpecifications } from "@/components/product/ProductSpecifications";
 import { ProductFeedback } from "@/components/product/ProductFeedback";
 import { RelatedProducts } from "@/components/product/RelatedProducts";
+import { SellerInfoCard } from "@/components/product/SellerInfoCard";
 import { ProductDetail, ProductVariant } from "@/types/product";
 import { logger } from "@/lib/logger";
 
@@ -79,21 +80,22 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
         "https://placeholder.com/600";
 
     return (
-        <div className="min-h-screen bg-zinc-50 py-6 md:py-12">
-            <div className="max-w-[1400px] mx-auto px-4 md:px-6">
-                {/* SYSTEM PATH / BREADCRUMBS */}
-                <div className="mb-6 flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-zinc-400">
-                    <span>TRANG CHỦ</span>
-                    <span>/</span>
-                    <span>{product.cate.name}</span>
-                    <span>/</span>
-                    <span className="text-black">MÃ SP: #{product.id}</span>
+        <div className="min-h-screen bg-slate-50/50 pb-12 font-sans text-slate-900">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6">
+                {/* BREADCRUMBS */}
+                <div className="mb-6 flex items-center gap-2 text-sm text-slate-500">
+                    <Link href="/" className="hover:text-[#FF4F00] transition-colors">Trang Chủ</Link>
+                    <ChevronRight className="w-4 h-4" />
+                    <span className="hover:text-[#FF4F00] transition-colors cursor-pointer">{product.cate.name}</span>
+                    <ChevronRight className="w-4 h-4" />
+                    <span className="text-slate-900 font-medium truncate max-w-[500px]">{product.name}</span>
                 </div>
 
-                <div className="bg-white border-2 border-black">
-                    <div className="grid lg:grid-cols-[1fr_450px] xl:grid-cols-[1fr_500px] items-start divide-x-2 divide-black">
-                        {/* LEFT: MEDIA SECTION */}
-                        <div className="p-8 md:p-12 lg:p-16">
+                {/* MAIN PRODUCT CARD */}
+                <div className="bg-white rounded-xl shadow-sm border border-slate-200/60 overflow-hidden mb-6">
+                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-0 lg:divide-x divide-slate-100">
+                        {/* LEFT: GALLERY */}
+                        <div className="lg:col-span-5 p-6 xl:p-8">
                             <ProductGallery
                                 product={product}
                                 currentImageIndex={currentImageIndex}
@@ -104,36 +106,52 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
                             />
                         </div>
 
-                        {/* RIGHT: CONFIGURATION SECTION */}
-                        <div className="p-8 md:p-12 lg:p-16 bg-zinc-50/30">
+                        {/* RIGHT: ESSENTIALS */}
+                        <div className="lg:col-span-7 p-6 xl:p-8 flex flex-col">
                             <ProductEssentials
                                 product={product}
                                 setSelectedVariant={setSelectedVariant}
                             />
                         </div>
                     </div>
+                </div>
 
-                    {/* FULL WIDTH SPEC SHEET SECTION */}
-                    <div className="border-t-2 border-black">
-                        <div className="grid lg:grid-cols-2 divide-x-2 divide-black divide-y-2 lg:divide-y-0">
-                            <div className="p-8 md:p-12">
-                                <ProductSpecifications product={product} />
-                            </div>
-                            <div className="p-8 md:p-12">
+                {/* CONTENT STACK */}
+                <div className="space-y-6">
+
+
+                    {/* PRODUCT DETAILS */}
+                    <div className="bg-white rounded-xl shadow-sm border border-slate-200/60 overflow-hidden">
+                        <div className="bg-slate-50/50 border-b border-slate-100 px-6 py-4">
+                            <h3 className="text-lg font-semibold text-slate-800">Chi Tiết Sản Phẩm</h3>
+                        </div>
+                        <div className="p-6 space-y-8">
+                            <ProductSpecifications product={product} />
+                            <div className="prose prose-slate max-w-none">
                                 <ProductDetailedDescription product={product} />
                             </div>
                         </div>
                     </div>
 
-                    {/* FIELD REPORTS / FEEDBACK */}
-                    <div className="border-t-2 border-black p-8 md:p-12">
-                        <ProductFeedback product={product} />
+                    {/* REVIEWS */}
+                    <div className="bg-white rounded-xl shadow-sm border border-slate-200/60 overflow-hidden">
+                        <div className="bg-slate-50/50 border-b border-slate-100 px-6 py-4">
+                            <h3 className="text-lg font-semibold text-slate-800">Đánh Giá ({product.totalReviews})</h3>
+                        </div>
+                        <div className="p-6">
+                            <ProductFeedback product={product} />
+                        </div>
                     </div>
-                </div>
 
-                {/* RELATED COMPONENTS SECTION */}
-                <div className="mt-12">
-                    <RelatedProducts productId={product.id} />
+                    {/* RELATED PRODUCTS */}
+                    <div className="bg-white rounded-xl shadow-sm border border-slate-200/60 overflow-hidden">
+                        <div className="bg-slate-50/50 border-b border-slate-100 px-6 py-4">
+                            <h3 className="text-lg font-semibold text-slate-800">Có Thể Bạn Thích</h3>
+                        </div>
+                        <div className="p-6">
+                            <RelatedProducts productId={product.id} />
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
