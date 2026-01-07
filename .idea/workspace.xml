@@ -5,29 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c48beeac-7758-42e4-81dd-f068fbcd38be" name="Changes" comment="update spring cloud stream dependency">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/app/(main)/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/app/(main)/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/app/(main)/products/[slug]/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/app/(main)/products/[slug]/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/ProductVariantSection.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/ProductVariantSection.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/VariantSelector.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/VariantSelector.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/home/FlashSale.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/home/ProductFeed.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/home/ProductFeed.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/product/ProductDetailedDescription.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/product/ProductDetailedDescription.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/product/ProductEssentials.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/product/ProductEssentials.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/product/ProductFeedback.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/product/ProductFeedback.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/product/ProductGallery.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/product/ProductGallery.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/product/ProductSpecifications.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/product/ProductSpecifications.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/product/RelatedProducts.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/product/RelatedProducts.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/product/SellerInfoCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/product/SellerInfoCard.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/lib/services/flash-sale-service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/lib/services/flash-sale-service.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/logs/order-service.log" beforeDir="false" afterPath="$PROJECT_DIR$/logs/order-service.log" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/logs/user-service.log" beforeDir="false" afterPath="$PROJECT_DIR$/logs/user-service.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/configserver/src/main/resources/config/inventory-service.yml" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/configserver/src/main/resources/config/inventory-service.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/configserver/src/main/resources/config/order-service.yml" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/configserver/src/main/resources/config/order-service.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/dto/ProductDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/dto/ProductDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/mapper/ProductMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/mapper/ProductMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/seeder/FakeDataSeeder.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/seeder/FakeDataSeeder.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/service/impl/ProductServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/service/impl/ProductServiceImpl.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -149,6 +128,7 @@
               <entry key="chatbot-service" value="STOPPED" />
               <entry key="config-server" value="STOPPED" />
               <entry key="gateway" value="STOPPED" />
+              <entry key="inventory-service" value="STOPPED" />
               <entry key="order-service" value="STOPPED" />
               <entry key="product-service" value="STOPPED" />
               <entry key="review-service" value="STOPPED" />
