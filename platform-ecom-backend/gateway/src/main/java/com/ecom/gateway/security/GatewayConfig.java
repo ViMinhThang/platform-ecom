@@ -163,17 +163,17 @@ public class GatewayConfig {
                                                 .uri("lb://product-service"))
 
                                 // ============================================================
-                                // FLASH SALES - /api/v1/flash-sales
+                                // SALE CAMPAIGNS - /api/v1/sale-campaigns
                                 // ============================================================
 
-                                // Public flash sales (view active sales, get by slug, items)
-                                .route("flash-sales-public", r -> r
-                                                .path("/api/v1/flash-sales", "/api/v1/flash-sales/**")
+                                // Public sale campaigns (view active campaigns, get by slug, items)
+                                .route("sale-campaigns-public", r -> r
+                                                .path("/api/v1/sale-campaigns", "/api/v1/sale-campaigns/**")
                                                 .uri("lb://product-service"))
 
-                                // Admin flash sales management
-                                .route("admin-flash-sales", r -> r
-                                                .path("/api/v1/admin/flash-sales", "/api/v1/admin/flash-sales/**")
+                                // Admin sale campaigns management
+                                .route("admin-sale-campaigns", r -> r
+                                                .path("/api/v1/admin/sale-campaigns", "/api/v1/admin/sale-campaigns/**")
                                                 .filters(f -> f
                                                                 .filter(authFilter))
                                                 .uri("lb://product-service"))

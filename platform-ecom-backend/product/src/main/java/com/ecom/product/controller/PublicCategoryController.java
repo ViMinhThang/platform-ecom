@@ -4,7 +4,7 @@ import com.ecom.common.util.APIResponse;
 import com.ecom.common.util.PaginationRequest;
 import com.ecom.common.util.ResponseBuilder;
 import com.ecom.product.dto.CategoryDTO;
-import com.ecom.product.dto.CategoryResponse;
+import com.ecom.product.dto.response.CategoryResponse;
 import com.ecom.product.service.signature.CategoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

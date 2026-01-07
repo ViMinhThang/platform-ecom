@@ -1,7 +1,7 @@
 package com.ecom.product.service.impl;
 
 import com.ecom.product.dto.CategoryDTO;
-import com.ecom.product.dto.CategoryResponse;
+import com.ecom.product.dto.response.CategoryResponse;
 import com.ecom.product.entity.Category;
 import com.ecom.common.exception.APIException;
 import com.ecom.common.exception.ResourceNotFoundException;

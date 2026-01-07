@@ -5,18 +5,12 @@ import com.ecom.common.util.APIResponse;
 import com.ecom.common.util.PaginationRequest;
 import com.ecom.common.util.ResponseBuilder;
 import com.ecom.product.dto.CategoryDTO;
-import com.ecom.product.dto.CategoryResponse;
+import com.ecom.product.dto.response.CategoryResponse;
 import com.ecom.product.service.signature.CategoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-/**
- * Controller for seller-level category access (READ-ONLY)
- * Sellers can view categories to assign products
- * All write operations are restricted to admins only
- * Base path: /api/v1/sellers/categories
- */
 @RestController
 @RequestMapping("/api/v1/sellers/categories")
 @RequiredArgsConstructor

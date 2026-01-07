@@ -116,7 +116,6 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
             <DropdownMenuItem onClick={() => setUpdateOptionsOpen(true)}>
               <IconTools className="mr-2 h-4 w-4" /> Update Options
             </DropdownMenuItem>
-// ...
 
             <DropdownMenuItem onClick={() => setUpdateVariantsOpen(true)}>
               <IconTools className="mr-2 h-4 w-4" /> Update Variants

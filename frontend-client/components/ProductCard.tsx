@@ -36,8 +36,6 @@ export function ProductCard({
   const displayImage = firstVariant?.imageUrl || image;
   const inStock = firstVariant ? firstVariant.stock > 0 : true;
 
-  const hasSale = firstVariant?.salePrice !== undefined && firstVariant?.salePrice !== null;
-  const salePrice = firstVariant?.salePrice;
   const totalSold = soldCount || firstVariant?.totalSold || 0;
 
   const formatSoldCount = (count: number) => {
@@ -57,11 +55,7 @@ export function ProductCard({
               HÀNG MỚI
             </Badge>
           )}
-          {hasSale && (
-            <Badge className="absolute top-0 right-0 z-10 bg-black text-white rounded-none px-2 py-1 text-[8px] font-black tracking-widest uppercase">
-              GIẢM GIÁ
-            </Badge>
-          )}
+
           {!inStock && (
             <div className="absolute inset-0 bg-white/90 z-20 flex items-center justify-center">
               <span className="text-[10px] font-black px-4 py-2 border-2 border-black text-black uppercase tracking-widest">
@@ -86,20 +80,9 @@ export function ProductCard({
           <div className="w-full pt-4 border-t border-black/10 group-hover:border-white/10 transition-colors">
             {/* Price */}
             <div className="flex items-baseline gap-2 w-full mb-3 font-mono">
-              {hasSale ? (
-                <>
-                  <span className="text-lg font-black tracking-tighter text-primary">
-                    {formatCurrency(salePrice)}
-                  </span>
-                  <span className="text-[10px] font-bold text-zinc-400 line-through group-hover:text-zinc-600">
-                    {formatCurrency(displayPrice)}
-                  </span>
-                </>
-              ) : (
-                <span className="text-xl font-black tracking-tighter text-black group-hover:text-primary transition-colors">
-                  {formatCurrency(displayPrice)}
-                </span>
-              )}
+              <span className="text-xl font-black tracking-tighter text-black group-hover:text-primary transition-colors">
+                {formatCurrency(displayPrice)}
+              </span>
             </div>
 
             {/* Rating & Sold - Technical Style */}

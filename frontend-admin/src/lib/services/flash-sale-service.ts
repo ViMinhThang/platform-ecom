@@ -108,4 +108,20 @@ export const flashSaleService = {
         );
         return response.data.data;
     },
+
+    async uploadBanner(id: number, file: File): Promise<FlashSale> {
+        const formData = new FormData();
+        formData.append('banner', file);
+
+        const response = await apiClient.post<APIResponse<FlashSale>>(
+            `/api/v1/admin/flash-sales/${id}/banner`,
+            formData,
+            {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            }
+        );
+        return response.data.data;
+    },
 };

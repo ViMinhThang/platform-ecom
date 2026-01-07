@@ -42,6 +42,14 @@ export const navItems: NavItem[] = [
     items: [] // No child items
   },
   {
+    title: 'Chiến dịch KM',
+    url: '/dashboard/sale-campaigns',
+    icon: 'flashSale',
+    shortcut: ['s', 's'],
+    isActive: false,
+    items: [] // No child items
+  },
+  {
     title: 'Đơn hàng',
     url: '/dashboard/orders',
     icon: 'media',

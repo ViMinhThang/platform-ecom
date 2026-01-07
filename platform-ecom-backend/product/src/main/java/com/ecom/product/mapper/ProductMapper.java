@@ -33,7 +33,6 @@ public class ProductMapper {
         dto.setId(product.getId());
         dto.setName(product.getName());
         dto.setSlug(product.getSlug());
-        dto.setDescription(product.getDescription());
         dto.setCate(categoryMapper.toDTO(product.getCategory()));
         dto.setStatus(product.getStatus());
         dto.setMinPrice(product.getMinPrice());
@@ -61,7 +60,6 @@ public class ProductMapper {
         return ProductRowDTO.builder()
                 .id(product.getId())
                 .name(product.getName())
-                .description(product.getDescription())
                 .category(categoryMapper.toDTO(product.getCategory()))
                 .imageUrl(getFirstImageUrl(product))
                 .status(product.getStatus())
@@ -77,9 +75,6 @@ public class ProductMapper {
                 .build();
     }
 
-    /**
-     * Maps Product entity to ProductDetailDTO for detailed views
-     */
     public ProductDetailDTO toDetailDTO(Product product) {
         if (product == null) {
             return null;
@@ -89,7 +84,6 @@ public class ProductMapper {
         dto.setId(product.getId());
         dto.setName(product.getName());
         dto.setSlug(product.getSlug());
-        dto.setDescription(product.getDescription());
         dto.setCate(categoryMapper.toDTO(product.getCategory()));
         dto.setStatus(product.getStatus());
         dto.setMinPrice(product.getMinPrice());
@@ -109,9 +103,6 @@ public class ProductMapper {
         return dto;
     }
 
-    /**
-     * Maps list of products to list of ProductRowDTOs
-     */
     public List<ProductRowDTO> toRowDTOs(List<Product> products) {
         if (products == null) {
             return List.of();
@@ -122,9 +113,6 @@ public class ProductMapper {
                 .collect(Collectors.toList());
     }
 
-    /**
-     * Gets the first image URL from product or returns default
-     */
     private String getFirstImageUrl(Product product) {
         if (product.getImages() == null || product.getImages().isEmpty()) {
             return DEFAULT_IMAGE_URL;
@@ -132,9 +120,6 @@ public class ProductMapper {
         return product.getImages().iterator().next().getImageUrl();
     }
 
-    /**
-     * Maps product options to DTOs
-     */
     private List<ProductOptionDTO> mapProductOptions(Product product) {
         if (product.getOptions() == null) {
             return List.of();
@@ -145,9 +130,6 @@ public class ProductMapper {
                 .collect(Collectors.toList());
     }
 
-    /**
-     * Maps single product option to DTO
-     */
     private ProductOptionDTO mapProductOptionToDTO(ProductOption option) {
         ProductOptionDTO dto = new ProductOptionDTO();
         dto.setId(option.getId());
@@ -163,9 +145,6 @@ public class ProductMapper {
         return dto;
     }
 
-    /**
-     * Maps product option value to DTO
-     */
     private ProductOptionValueDTO mapProductOptionValueToDTO(ProductOptionValue value) {
         ProductOptionValueDTO dto = new ProductOptionValueDTO();
         dto.setId(value.getId());
@@ -174,9 +153,6 @@ public class ProductMapper {
         return dto;
     }
 
-    /**
-     * Maps product images to DTOs
-     */
     private List<ProductImageDTO> mapProductImages(Product product) {
         if (product.getImages() == null) {
             return List.of();
@@ -187,9 +163,6 @@ public class ProductMapper {
                 .collect(Collectors.toList());
     }
 
-    /**
-     * Maps single product image to DTO
-     */
     private ProductImageDTO mapProductImageToDTO(ProductImage image) {
         ProductImageDTO dto = new ProductImageDTO();
         dto.setId(image.getId());

@@ -3,6 +3,8 @@ package com.ecom.user.controller.admin;
 import com.ecom.common.aspect.RequireRole;
 import com.ecom.common.util.*;
 import com.ecom.user.dtos.*;
+import com.ecom.user.dtos.response.RoleResponse;
+import com.ecom.user.dtos.response.UserResponse;
 import com.ecom.user.service.signature.AdminUserService;
 import com.ecom.user.service.signature.RoleService;
 import jakarta.validation.Valid;
@@ -11,11 +13,6 @@ import org.springframework.data.domain.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-/**
- * Controller for admin-level user management
- * All endpoints require ROLE_ADMIN
- * Base path: /api/v1
- */
 @RestController
 @RequestMapping("/api/v1/admin/users")
 @RequiredArgsConstructor

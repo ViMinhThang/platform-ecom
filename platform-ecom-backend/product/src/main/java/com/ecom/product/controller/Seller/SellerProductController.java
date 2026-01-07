@@ -6,7 +6,7 @@ import com.ecom.common.util.APIResponse;
 import com.ecom.common.util.PaginationRequest;
 import com.ecom.common.util.ResponseBuilder;
 import com.ecom.product.dto.ProductDTO;
-import com.ecom.product.dto.ProductResponse;
+import com.ecom.product.dto.response.ProductResponse;
 import com.ecom.product.dto.ProductRowDTO;
 import com.ecom.product.service.signature.ProductService;
 import jakarta.servlet.http.HttpServletRequest;

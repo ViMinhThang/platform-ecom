@@ -33,6 +33,7 @@ import {
   IconBrandGithub,
   IconCategory,
   IconPackage,
+  IconBolt,
 } from '@tabler/icons-react';
 
 export type Icon = React.ComponentType<IconProps>;
@@ -71,5 +72,6 @@ export const Icons = {
   twitter: IconBrandTwitter,
   check: IconCheck,
   package: IconPackage,
+  flashSale: IconBolt,
 };
 

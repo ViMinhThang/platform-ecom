@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.http.ResponseCookie;
 
+import com.ecom.user.dtos.response.UserInfoResponse;
+
 @Data
 @AllArgsConstructor
 public class AuthenticationResult {

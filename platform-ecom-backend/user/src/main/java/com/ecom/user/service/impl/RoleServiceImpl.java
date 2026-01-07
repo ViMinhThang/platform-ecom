@@ -1,7 +1,7 @@
 package com.ecom.user.service.impl;
 
 import com.ecom.user.dtos.RoleDTO;
-import com.ecom.user.dtos.RoleResponse;
+import com.ecom.user.dtos.response.RoleResponse;
 import com.ecom.user.entity.AppRole;
 import com.ecom.user.entity.Role;
 import com.ecom.user.repositories.RoleRepository;

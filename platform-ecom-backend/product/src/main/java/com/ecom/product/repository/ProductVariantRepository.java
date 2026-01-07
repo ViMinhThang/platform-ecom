@@ -14,10 +14,8 @@ public interface ProductVariantRepository extends JpaRepository<ProductVariant, 
 
         List<ProductVariant> findByProductId(Long productId);
 
-        // For public routes - exclude hidden variants
         List<ProductVariant> findByProductIdAndHiddenFalse(Long productId);
 
-        // For seller routes with filter
         List<ProductVariant> findByProductIdAndHidden(Long productId, Boolean hidden);
 
         Optional<ProductVariant> findByProductIdAndId(Long productId, Long variantId);
@@ -30,4 +28,13 @@ public interface ProductVariantRepository extends JpaRepository<ProductVariant, 
         Optional<ProductVariant> findUniqueVariantByOptionValueIds(
                         @Param("optionValueIds") List<Long> optionValueIds,
                         @Param("size") long size);
+
+        @Query("SELECT pv FROM ProductVariant pv " +
+                        "JOIN pv.product p " +
+                        "WHERE p.category.id IN :categoryIds " +
+                        "AND p.deleted = false AND p.status = 'ACTIVE' " +
+                        "AND pv.isActive = true AND pv.hidden = false " +
+                        "AND pv.stock > 0 " +
+                        "ORDER BY pv.price ASC")
+        List<ProductVariant> findActiveByCategoryIds(@Param("categoryIds") List<Long> categoryIds);
 }

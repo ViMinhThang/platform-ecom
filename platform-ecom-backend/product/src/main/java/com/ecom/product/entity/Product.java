@@ -49,8 +49,7 @@ public class Product {
     private Category category;
 
     @Column(name = "status", length = 20)
-    private String status = "DRAFT"; // DRAFT, ACTIVE, OUT_OF_STOCK
-
+    private String status = "DRAFT";
     @Column(name = "user_id")
     private Long userId;
 

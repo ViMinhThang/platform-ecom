@@ -2,6 +2,7 @@ package com.ecom.review.controller;
 
 import com.ecom.common.security.AuthContext;
 import com.ecom.review.dto.*;
+import com.ecom.review.dto.response.ReviewResponse;
 import com.ecom.review.service.ReviewService;
 import com.ecom.common.util.PaginationRequest;
 import com.ecom.common.util.ResponseBuilder;

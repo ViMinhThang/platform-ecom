@@ -1,6 +1,8 @@
 package com.ecom.review.service;
 
 import com.ecom.review.dto.*;
+import com.ecom.review.dto.response.ReviewResponse;
+
 import org.springframework.web.multipart.MultipartFile;
 
 public interface ReviewService {

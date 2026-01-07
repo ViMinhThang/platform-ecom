@@ -3,7 +3,7 @@ package com.ecom.user.service.impl;
 import com.ecom.common.exception.*;
 import com.ecom.common.service.FileStorageService;
 import com.ecom.user.dtos.UserDTO;
-import com.ecom.user.dtos.UserResponse;
+import com.ecom.user.dtos.response.UserResponse;
 import com.ecom.user.entity.*;
 import com.ecom.user.repositories.UserRepository;
 import com.ecom.user.service.signature.AdminUserService;

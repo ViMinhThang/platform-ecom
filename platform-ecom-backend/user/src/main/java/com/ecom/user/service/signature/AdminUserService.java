@@ -1,7 +1,8 @@
 package com.ecom.user.service.signature;
 
 import com.ecom.user.dtos.UserDTO;
-import com.ecom.user.dtos.UserResponse;
+import com.ecom.user.dtos.response.UserResponse;
+
 import org.springframework.data.domain.Pageable;
 
 public interface AdminUserService {

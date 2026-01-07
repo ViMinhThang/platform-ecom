@@ -54,13 +54,6 @@ export const ProductFormFields: React.FC<ProductFormFieldsProps> = ({ control, c
       />
     </div>
     <div className="space-y-4">
-      <FormTextarea
-        control={control}
-        name="description"
-        label="Mô tả"
-        placeholder="Nhập mô tả sản phẩm"
-        config={{ rows: 6, showCharCount: true, maxLength: 500 }}
-      />
       <JsonKeyValueEditor
         control={control}
         name="specifications"

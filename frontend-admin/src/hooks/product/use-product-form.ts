@@ -19,36 +19,27 @@ import { fetchCategories } from "@/lib/store/slices/categorySlice";
 import { logger } from "@/lib/logger";
 import { Product } from "@/types/product/product";
 
-/**
- * Parameters for useProductForm hook
- */
+
 interface UseProductFormParams {
   productId?: number;
   open?: boolean;
   onOpenChange?: (open: boolean) => void;
 }
 
-/**
- * Default values for product form
- */
 const DEFAULT_FORM_VALUES: ProductFormValues = {
   name: "",
   slug: "",
-  description: "",
   status: "DRAFT",
   cate: "{}",
   specifications: "{}",
   metadata: "{}",
 };
 
-/**
- * Transforms Product data to form values
- */
+
 function transformProductToFormValues(product: Product): ProductFormValues {
   return {
     name: product.name,
     slug: product.slug,
-    description: product.description,
     status: product.status,
     cate: JSON.stringify(product.cate || {}),
     specifications: JSON.stringify(product.specifications || {}, null, 2),
@@ -56,9 +47,7 @@ function transformProductToFormValues(product: Product): ProductFormValues {
   };
 }
 
-/**
- * Transforms form values to Product payload
- */
+
 function transformFormValuesToProduct(values: ProductFormValues) {
   const cateData = parseJsonOrDefault(values.cate, {});
 

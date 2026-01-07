@@ -1,7 +1,7 @@
 package com.ecom.user.mapper;
 
 import com.ecom.user.dtos.AddressDTO;
-import com.ecom.user.dtos.UserInfoResponse;
+import com.ecom.user.dtos.response.UserInfoResponse;
 import com.ecom.user.entity.Address;
 import com.ecom.user.entity.User;
 import org.springframework.stereotype.Component;
@@ -9,10 +9,6 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 import java.util.stream.Collectors;
 
-/**
- * Mapper utility for converting User entities to DTOs.
- * Centralizes mapping logic to avoid duplication across service classes.
- */
 @Component
 public class UserMapper {
 
@@ -46,7 +42,7 @@ public class UserMapper {
                 .roles(roles)
                 .addresses(addresses)
                 .build();
-   }
+    }
 
     /**
      * Convert Address entity to AddressDTO

@@ -21,7 +21,6 @@ public class ProductRowDTO {
     private String status;
     private BigDecimal minPrice;
     private Integer variants;
-    private String description;
     private ProductVariantDTO firstVariant;
     private Long totalSold;
     private Long totalReviews;

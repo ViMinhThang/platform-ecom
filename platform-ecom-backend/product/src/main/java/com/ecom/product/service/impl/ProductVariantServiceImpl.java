@@ -1,10 +1,9 @@
 package com.ecom.product.service.impl;
 
-import com.ecom.product.dto.ProductOptionValueDTO;
 import com.ecom.product.dto.ProductVariantDTO;
 import com.ecom.product.dto.VariantOptionValueDTO;
 import com.ecom.product.entity.Product;
-import com.ecom.product.entity.ProductOptionValue;
+
 import com.ecom.product.entity.ProductVariant;
 import com.ecom.product.entity.VariantOptionValue;
 import com.ecom.common.exception.APIException;
@@ -206,9 +205,6 @@ public class ProductVariantServiceImpl implements ProductVariantService {
     private void updateVariantDetails(ProductVariant variant, ProductVariantDTO dto) {
         variant.setSku(dto.getSku());
         variant.setPrice(dto.getPrice());
-        variant.setSalePrice(dto.getSalePrice());
-        variant.setSaleStart(dto.getSaleStart());
-        variant.setSaleEnd(dto.getSaleEnd());
         variant.setStock(dto.getStock());
         variant.setIsActive(dto.getIsActive());
         variant.setImageUrl(dto.getImageUrl());

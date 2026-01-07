@@ -80,23 +80,11 @@ export function ProductVariantSection({
       <div className="bg-black text-white p-6 md:p-8">
         <div className="text-[10px] font-bold uppercase tracking-[0.3em] mb-4 text-zinc-400">ĐƠN GIÁ // UNIT_PRICE</div>
         <div className="text-4xl md:text-5xl font-mono font-black tracking-tighter">
-          {selectedVariant && selectedVariant.salePrice !== undefined ? (
-            <div className="space-y-2">
-              <p className="text-[#FF4400]">
-                {selectedVariant.salePrice !== null &&
-                  formatCurrency(selectedVariant.salePrice)}
-              </p>
-              <p className="text-xs text-zinc-500 line-through">
-                {formatCurrency(selectedVariant.price)}
-              </p>
-            </div>
-          ) : (
-            <p>
-              {selectedVariant
-                ? formatCurrency(selectedVariant.price)
-                : (hasVariants ? "0.000" : formatCurrency(product.minPrice || 0))}
-            </p>
-          )}
+          <p>
+            {selectedVariant
+              ? formatCurrency(selectedVariant.price)
+              : (hasVariants ? "0.000" : formatCurrency(product.minPrice || 0))}
+          </p>
         </div>
         {selectedVariant && (
           <div className="mt-6">

@@ -2,19 +2,19 @@ package com.ecom.product.service.impl;
 
 import com.ecom.product.dto.FlashSaleDTO;
 import com.ecom.product.dto.FlashSaleItemDTO;
-import com.ecom.product.dto.FlashSaleResponse;
 import com.ecom.product.dto.request.AddFlashSaleItemRequest;
 import com.ecom.product.dto.request.CreateFlashSaleRequest;
 import com.ecom.product.dto.request.UpdateFlashSaleItemRequest;
 import com.ecom.product.dto.request.UpdateFlashSaleRequest;
+import com.ecom.product.dto.response.FlashSaleResponse;
 import com.ecom.product.entity.FlashSale;
 import com.ecom.product.entity.FlashSaleItem;
 import com.ecom.product.enums.FlashSaleStatus;
 import com.ecom.product.mapper.FlashSaleMapper;
 import com.ecom.product.repository.FlashSaleItemRepository;
 import com.ecom.product.repository.FlashSaleRepository;
-import com.ecom.product.service.FlashSaleItemHelper;
-import com.ecom.product.service.FlashSaleStatusHelper;
+import com.ecom.product.helper.FlashSaleItemHelper;
+import com.ecom.product.helper.FlashSaleStatusHelper;
 import com.ecom.product.service.signature.FlashSaleService;
 import com.ecom.common.exception.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +25,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.ecom.common.service.FileStorageService;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -43,6 +46,7 @@ public class FlashSaleServiceImpl implements FlashSaleService {
     // Helpers
     private final FlashSaleStatusHelper statusHelper;
     private final FlashSaleItemHelper itemHelper;
+    private final FileStorageService fileStorageService;
 
     // ==================== CRUD Operations ====================
 
@@ -251,5 +255,29 @@ public class FlashSaleServiceImpl implements FlashSaleService {
     @Override
     public boolean decrementFlashSaleStock(Long variantId, int quantity) {
         return itemHelper.decrementStock(variantId, quantity);
+    }
+
+    // ==================== Banner Upload ====================
+
+    @Override
+    public FlashSaleDTO uploadBanner(Long id, MultipartFile file) {
+        FlashSale flashSale = statusHelper.findFlashSaleOrThrow(id);
+
+        if (flashSale.getStatus() == FlashSaleStatus.ACTIVE) {
+            throw new IllegalStateException("Cannot update banner for an active flash sale");
+        }
+
+        // Delete old banner if exists
+        if (flashSale.getBannerUrl() != null && !flashSale.getBannerUrl().isEmpty()) {
+            fileStorageService.deleteFile(flashSale.getBannerUrl());
+        }
+
+        // Store new banner
+        String bannerUrl = fileStorageService.storeFile(file);
+        flashSale.setBannerUrl(bannerUrl);
+        flashSale = flashSaleRepository.save(flashSale);
+
+        log.info("Uploaded banner for flash sale {}: {}", id, bannerUrl);
+        return flashSaleMapper.toDTO(flashSale, true);
     }
 }

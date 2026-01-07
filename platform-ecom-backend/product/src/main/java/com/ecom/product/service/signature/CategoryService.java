@@ -1,7 +1,8 @@
 package com.ecom.product.service.signature;
 
 import com.ecom.product.dto.CategoryDTO;
-import com.ecom.product.dto.CategoryResponse;
+import com.ecom.product.dto.response.CategoryResponse;
+
 import jakarta.validation.Valid;
 import org.springframework.web.multipart.MultipartFile;
 

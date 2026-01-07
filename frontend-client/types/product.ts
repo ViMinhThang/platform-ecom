@@ -89,9 +89,6 @@ export interface ProductVariant {
   id: number;
   sku: string;
   price: number;
-  salePrice?: number;
-  saleStart?: string;
-  saleEnd?: string;
   stock: number;
   totalSold?: number;
   isActive: boolean;
