@@ -30,16 +30,15 @@ public class ProductEmbedding {
     @Column(name = "product_slug", nullable = false, length = 255)
     private String productSlug;
 
+    @Column(name = "price", precision = 19, scale = 2)
+    private BigDecimal price;
+
     @Column(name = "description", columnDefinition = "TEXT")
     private String description;
 
     @Column(name = "category_name", length = 255)
     private String categoryName;
 
-    /**
-     * Vector embedding (768 dimensions)
-     * Stored as a PostgreSQL vector type via pgvector extension
-     */
     @Column(name = "embedding", columnDefinition = "vector(768)")
     private String embedding;
 

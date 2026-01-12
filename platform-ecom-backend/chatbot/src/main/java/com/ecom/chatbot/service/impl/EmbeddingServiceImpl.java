@@ -6,9 +6,9 @@ import com.ecom.chatbot.dto.ProductResponse;
 import com.ecom.chatbot.dto.ProductSummaryDTO;
 import com.ecom.chatbot.repository.ProductEmbeddingRepository;
 import com.ecom.chatbot.service.signature.EmbeddingService;
-import com.ecom.chatbot.service.signature.GeminiService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.ai.embedding.EmbeddingModel;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 public class EmbeddingServiceImpl implements EmbeddingService {
 
     private final ProductEmbeddingRepository repository;
-    private final GeminiService geminiService;
+    private final EmbeddingModel embeddingModel;
     private final ProductServiceClient productClient;
 
     @Override
@@ -78,13 +78,7 @@ public class EmbeddingServiceImpl implements EmbeddingService {
     public List<ProductSummaryDTO> findSimilarProducts(String query, int limit) {
         log.debug("Finding similar products for query: '{}'", query);
 
-        // Extract product keywords from the query
-        String keywords = geminiService.extractProductKeywords(query);
-        log.debug("Extracted keywords: '{}'", keywords);
-
-        float[] queryEmbedding = geminiService.generateQueryEmbedding(keywords);
-
-        String vectorString = arrayToVectorString(queryEmbedding);
+        String vectorString = generateQueryVector(query);
 
         List<Object[]> results = repository.findSimilarProducts(vectorString, limit);
 
@@ -97,13 +91,13 @@ public class EmbeddingServiceImpl implements EmbeddingService {
     @Transactional
     public void updateProductEmbedding(ProductDTO product) {
         String textToEmbed = buildEmbeddingText(product);
-        float[] embedding = geminiService.generateDocumentEmbedding(textToEmbed);
-        String vectorString = arrayToVectorString(embedding);
+        String vectorString = generateEmbeddingVector(textToEmbed);
 
         repository.upsertProductEmbedding(
                 product.getId(),
                 product.getName(),
                 product.getSlug(),
+                product.getPrice(),
                 product.getDescription(),
                 product.getCate() != null ? product.getCate().getName() : null,
                 vectorString,
@@ -124,6 +118,16 @@ public class EmbeddingServiceImpl implements EmbeddingService {
         return repository.existsByProductId(productId);
     }
 
+    @Override
+    public String generateQueryVector(String query) {
+        return generateEmbeddingVector(query);
+    }
+
+    private String generateEmbeddingVector(String text) {
+        float[] embedding = embeddingModel.embed(text);
+        return arrayToVectorString(embedding);
+    }
+
     private String buildEmbeddingText(ProductDTO product) {
         StringBuilder sb = new StringBuilder();
 
@@ -134,6 +138,9 @@ public class EmbeddingServiceImpl implements EmbeddingService {
         }
         if (product.getCate() != null && product.getCate().getName() != null) {
             sb.append(". Category: ").append(product.getCate().getName());
+        }
+        if (product.getMinPrice() != null) {
+            sb.append(". Price: ").append(product.getMinPrice()).append(" VND");
         }
 
         String text = sb.toString();

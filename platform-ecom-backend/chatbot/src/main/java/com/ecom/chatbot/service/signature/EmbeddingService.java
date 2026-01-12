@@ -16,4 +16,6 @@ public interface EmbeddingService {
     long getEmbeddingCount();
 
     boolean hasEmbedding(Long productId);
+
+    String generateQueryVector(String query);
 }

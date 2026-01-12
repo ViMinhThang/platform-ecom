@@ -5,8 +5,23 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c48beeac-7758-42e4-81dd-f068fbcd38be" name="Changes" comment="update spring cloud stream dependency">
-      <change beforePath="$PROJECT_DIR$/logs/order-service.log" beforeDir="false" afterPath="$PROJECT_DIR$/logs/order-service.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-client/components/ProductCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/ProductCard.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-client/components/home/ProductFeed.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/home/ProductFeed.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/logs/user-service.log" beforeDir="false" afterPath="$PROJECT_DIR$/logs/user-service.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/chatbot/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/chatbot/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/chatbot/src/main/java/com/ecom/chatbot/client/ApiResponseWrapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/chatbot/src/main/java/com/ecom/chatbot/client/ApiResponseWrapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/chatbot/src/main/java/com/ecom/chatbot/client/ProductServiceClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/chatbot/src/main/java/com/ecom/chatbot/client/ProductServiceClient.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/chatbot/src/main/java/com/ecom/chatbot/dto/ChatRequestDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/chatbot/src/main/java/com/ecom/chatbot/dto/ChatRequestDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/chatbot/src/main/java/com/ecom/chatbot/dto/ProductDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/chatbot/src/main/java/com/ecom/chatbot/dto/ProductDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/chatbot/src/main/java/com/ecom/chatbot/entity/ProductEmbedding.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/chatbot/src/main/java/com/ecom/chatbot/entity/ProductEmbedding.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/chatbot/src/main/java/com/ecom/chatbot/repository/ProductEmbeddingRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/chatbot/src/main/java/com/ecom/chatbot/repository/ProductEmbeddingRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/chatbot/src/main/java/com/ecom/chatbot/service/impl/ChatbotServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/chatbot/src/main/java/com/ecom/chatbot/service/impl/ChatbotServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/chatbot/src/main/java/com/ecom/chatbot/service/impl/EmbeddingServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/chatbot/src/main/java/com/ecom/chatbot/service/impl/EmbeddingServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/chatbot/src/main/java/com/ecom/chatbot/service/impl/GeminiServiceImpl.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/chatbot/src/main/java/com/ecom/chatbot/service/signature/EmbeddingService.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/chatbot/src/main/java/com/ecom/chatbot/service/signature/EmbeddingService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/chatbot/src/main/java/com/ecom/chatbot/service/signature/GeminiService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/configserver/src/main/resources/config/chatbot-service.yml" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/configserver/src/main/resources/config/chatbot-service.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

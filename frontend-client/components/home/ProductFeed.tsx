@@ -66,6 +66,7 @@ export function ProductFeed() {
                                 image={product.imageUrl || ''}
                                 category={product.category.name}
                                 soldCount={124}
+                                firstVariant={product.firstVariant}
                             />
                         </div>
                     ))

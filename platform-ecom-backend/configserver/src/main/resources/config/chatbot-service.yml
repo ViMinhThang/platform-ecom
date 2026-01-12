@@ -11,14 +11,22 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
     show-sql: false
+  ai:
+    vertex:
+      ai:
+        gemini:
+          project-id: ${GCP-ID}
+          location: "europe-west1"
+          model: "gemini-2.0-flash-lite"
+        embedding:
+          project-id: ${GCP-ID}
+          location: "asia-east1"
+    mcp:
+      server:
+        type: SYNC
+        annotation-scanner:
+          enabled: true
 
-gemini:
-  model:
-    chat: gemini-2.5-flash
-    embedding: gemini-embedding-001
-  embedding:
-    dimensions: 768
-    sync-interval: 3600000
 
 server:
   port: 8100

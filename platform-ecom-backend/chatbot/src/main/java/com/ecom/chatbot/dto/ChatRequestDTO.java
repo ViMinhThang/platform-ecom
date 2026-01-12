@@ -17,6 +17,8 @@ public class ChatRequestDTO {
     @NotBlank(message = "Message is required")
     private String message;
 
+    private String conversationId;
+
     private String productSlug;
 
     private Long productId;

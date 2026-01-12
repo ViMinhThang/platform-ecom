@@ -32,6 +32,7 @@ export function ProductCard({
   soldCount = 0,
   firstVariant,
 }: ProductCardProps) {
+  console.log(firstVariant);
   const displayPrice = firstVariant ? firstVariant.price : price;
   const displayImage = firstVariant?.imageUrl || image;
   const inStock = firstVariant ? firstVariant.stock > 0 : true;

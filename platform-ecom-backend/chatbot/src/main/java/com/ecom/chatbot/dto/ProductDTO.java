@@ -23,12 +23,12 @@ public class ProductDTO {
     private String slug;
     private String description;
 
-    // API returns 'category' but we also accept 'cate' for flexibility
     @JsonAlias({ "cate", "category" })
     private CategoryDTO category;
 
     private String status;
     private BigDecimal minPrice;
+    private BigDecimal price;
     private String imageUrl;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
@@ -37,9 +37,6 @@ public class ProductDTO {
     private Double averageRating;
     private Long userId;
 
-    /**
-     * Convenience getter for category (alias for getCate compatibility)
-     */
     public CategoryDTO getCate() {
         return category;
     }
