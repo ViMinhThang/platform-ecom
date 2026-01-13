@@ -21,8 +21,8 @@ public class ProductOptionValue {
     @Column(name = "display_value", nullable = false, length = 100)
     private String displayValue;
 
-
     @Column(name = "sort_order")
+    @Builder.Default
     private Integer sortOrder = 0;
 
     @ManyToOne(fetch = FetchType.LAZY)

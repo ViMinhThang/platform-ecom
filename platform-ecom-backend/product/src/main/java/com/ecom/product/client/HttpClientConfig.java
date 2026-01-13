@@ -9,7 +9,7 @@ import org.springframework.web.service.invoker.HttpServiceProxyFactory;
 
 @Configuration
 public class HttpClientConfig {
-    
+
     @Bean
     @LoadBalanced
     public RestClient.Builder restClientBuilder() {
@@ -26,13 +26,25 @@ public class HttpClientConfig {
         return factory.createClient(UserServiceClient.class);
     }
 
-//    @Bean
-//    public CartServiceClient cartServiceClient(RestClient.Builder restClientBuilder) {
-//        RestClient restClient = restClientBuilder
-//                .baseUrl("http://order-service/api/carts")
-//                .build();
-//        RestClientAdapter adapter = RestClientAdapter.create(restClient);
-//        HttpServiceProxyFactory factory = HttpServiceProxyFactory.builderFor(adapter).build();
-//        return factory.createClient(CartServiceClient.class);
-//    }
+    @Bean
+    public PromotionServiceClient promotionServiceClient(RestClient.Builder restClientBuilder) {
+        RestClient restClient = restClientBuilder
+                .baseUrl("http://promotion-service/api/v1/internal/promotion")
+                .build();
+        RestClientAdapter adapter = RestClientAdapter.create(restClient);
+        HttpServiceProxyFactory factory = HttpServiceProxyFactory.builderFor(adapter).build();
+        return factory.createClient(PromotionServiceClient.class);
+    }
+
+    // @Bean
+    // public CartServiceClient cartServiceClient(RestClient.Builder
+    // restClientBuilder) {
+    // RestClient restClient = restClientBuilder
+    // .baseUrl("http://order-service/api/carts")
+    // .build();
+    // RestClientAdapter adapter = RestClientAdapter.create(restClient);
+    // HttpServiceProxyFactory factory =
+    // HttpServiceProxyFactory.builderFor(adapter).build();
+    // return factory.createClient(CartServiceClient.class);
+    // }
 }

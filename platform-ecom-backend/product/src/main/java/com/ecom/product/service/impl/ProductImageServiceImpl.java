@@ -3,9 +3,9 @@ package com.ecom.product.service.impl;
 import com.ecom.product.dto.ProductImageDTO;
 import com.ecom.product.entity.Product;
 import com.ecom.product.entity.ProductImage;
-import com.ecom.common.exception.ResourceNotFoundException;
+import com.ecom.product.helper.ProductHelper;
+import com.ecom.product.helper.ProductImageHelper;
 import com.ecom.product.repository.ProductImageRepository;
-import com.ecom.product.repository.ProductRepository;
 import com.ecom.common.service.FileStorageService;
 import com.ecom.product.service.signature.ProductImageService;
 import lombok.RequiredArgsConstructor;
@@ -21,13 +21,14 @@ import java.util.stream.Collectors;
 public class ProductImageServiceImpl implements ProductImageService {
 
     private final ProductImageRepository productImageRepository;
-    private final ProductRepository productRepository;
     private final ModelMapper modelMapper;
     private final FileStorageService fileStorageService;
+    private final ProductHelper productHelper;
+    private final ProductImageHelper productImageHelper;
 
     @Override
     public ProductImageDTO addImageToProduct(Long productId, MultipartFile image) {
-        Product product = findProductById(productId);
+        Product product = productHelper.findByIdOrThrow(productId);
         String imageUrl = fileStorageService.storeFile(image);
 
         ProductImage productImage = createProductImage(product, imageUrl);
@@ -44,13 +45,13 @@ public class ProductImageServiceImpl implements ProductImageService {
 
     @Override
     public ProductImageDTO getProductImageById(Long productId, Long imageId) {
-        ProductImage image = findProductImage(productId, imageId);
+        ProductImage image = productImageHelper.findByProductIdAndIdOrThrow(productId, imageId);
         return mapToProductImageDTO(image);
     }
 
     @Override
     public ProductImageDTO updateProductImage(Long productId, Long imageId, MultipartFile imageFile) {
-        ProductImage image = findProductImage(productId, imageId);
+        ProductImage image = productImageHelper.findByProductIdAndIdOrThrow(productId, imageId);
 
         if (hasNewImageFile(imageFile)) {
             updateImageFile(image, imageFile);
@@ -62,22 +63,13 @@ public class ProductImageServiceImpl implements ProductImageService {
 
     @Override
     public void deleteProductImage(Long productId, Long imageId) {
-        ProductImage image = findProductImage(productId, imageId);
+        ProductImage image = productImageHelper.findByProductIdAndIdOrThrow(productId, imageId);
 
         fileStorageService.deleteFile(image.getImageUrl());
         productImageRepository.delete(image);
     }
 
-
-    private Product findProductById(Long productId) {
-        return productRepository.findById(productId)
-                .orElseThrow(() -> new ResourceNotFoundException("Product", "productId", productId));
-    }
-
-    private ProductImage findProductImage(Long productId, Long imageId) {
-        return productImageRepository.findByProductIdAndId(productId, imageId)
-                .orElseThrow(() -> new ResourceNotFoundException("ProductImage", "imageId", imageId));
-    }
+    // ==================== Private Helper Methods ====================
 
     private ProductImage createProductImage(Product product, String imageUrl) {
         ProductImage productImage = new ProductImage();

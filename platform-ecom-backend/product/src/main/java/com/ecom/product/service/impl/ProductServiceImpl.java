@@ -3,7 +3,6 @@ package com.ecom.product.service.impl;
 import com.ecom.product.dto.*;
 import com.ecom.product.dto.response.ProductResponse;
 import com.ecom.product.entity.*;
-import com.ecom.product.enums.ProductStatus;
 import com.ecom.product.mapper.ProductMapper;
 import com.ecom.product.mapper.ProductVariantMapper;
 import com.ecom.product.utils.PageableUtils;
@@ -11,10 +10,11 @@ import java.util.*;
 import com.ecom.product.repository.*;
 import com.ecom.product.service.signature.ProductService;
 import org.springframework.data.domain.*;
-import com.ecom.common.exception.ResourceNotFoundException;
-import com.ecom.product.utils.ProductUtils;
+import com.ecom.product.helper.CategoryHelper;
+import com.ecom.product.helper.ProductHelper;
+import com.ecom.product.helper.ProductSearchHelper;
+import com.ecom.product.helper.ProductVariantHelper;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.ecom.product.client.UserServiceClient;
@@ -26,16 +26,18 @@ import java.util.stream.Collectors;
 public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;
-    private final CategoryRepository categoryRepository;
-    private final ProductVariantRepository productVariantRepository;
     private final ProductMapper productMapper;
     private final ProductVariantMapper productVariantMapper;
     private final UserServiceClient userServiceClient;
+    private final ProductHelper productHelper;
+    private final CategoryHelper categoryHelper;
+    private final ProductVariantHelper productVariantHelper;
+    private final ProductSearchHelper searchHelper;
 
     @Override
     @Transactional
     public ProductRowDTO createProduct(ProductDTO productDTO, Long userId) {
-        Category category = findCategoryById(productDTO.getCate().getId());
+        Category category = categoryHelper.findByIdOrThrow(productDTO.getCate().getId());
 
         Product product = buildProductFromDTO(productDTO, category, userId);
         Product savedProduct = productRepository.save(product);
@@ -46,41 +48,23 @@ public class ProductServiceImpl implements ProductService {
     @Override
     @Transactional(readOnly = true)
     public ProductDTO getProductById(Long productId) {
-        Product product = findProductById(productId);
-        return productMapper.toDTO(product);
+        return productMapper.toDTO(productHelper.findByIdOrThrow(productId));
     }
 
     @Override
     @Transactional
     public ProductDTO updateProduct(Long productId, ProductDTO productDTO) {
-        Product existingProduct = findProductById(productId);
+        Product existingProduct = productHelper.findByIdOrThrow(productId);
 
-        // Explicit field updates - safer than modelMapper.map()
-        if (productDTO.getName() != null) {
-            existingProduct.setName(productDTO.getName());
-        }
-        if (productDTO.getStatus() != null) {
-            existingProduct.setStatus(productDTO.getStatus());
-        }
-        if (productDTO.getSpecifications() != null) {
-            existingProduct.setSpecifications(productDTO.getSpecifications());
-        }
-        if (productDTO.getMetadata() != null) {
-            existingProduct.setMetadata(productDTO.getMetadata());
-        }
-        if (productDTO.getCate() != null && productDTO.getCate().getId() != null) {
-            Category category = findCategoryById(productDTO.getCate().getId());
-            existingProduct.setCategory(category);
-        }
+        updateProductFields(existingProduct, productDTO);
 
-        Product updatedProduct = productRepository.save(existingProduct);
-        return productMapper.toDTO(updatedProduct);
+        return productMapper.toDTO(productRepository.save(existingProduct));
     }
 
     @Override
     @Transactional
     public ProductDTO deleteProduct(Long productId) {
-        Product product = findProductById(productId);
+        Product product = productHelper.findByIdOrThrow(productId);
         ProductDTO productDTO = productMapper.toDTO(product);
         productRepository.delete(product);
 
@@ -94,10 +78,7 @@ public class ProductServiceImpl implements ProductService {
             String sortBy, String sortOrder,
             Long userId) {
         Pageable pageable = PageableUtils.createPageable(page, perPage, sortBy, sortOrder);
-
-        Specification<Product> specification = buildSellerProductSpecification(userId, name, category);
-
-        return fetchAndMapProducts(specification, pageable);
+        return searchHelper.getAllProductsForSeller(pageable, userId, name, category);
     }
 
     @Override
@@ -107,18 +88,14 @@ public class ProductServiceImpl implements ProductService {
             String sortBy, String sortOrder,
             BigDecimal minPrice, BigDecimal maxPrice, Double minRating) {
         Pageable pageable = PageableUtils.createPageable(page, perPage, sortBy, sortOrder);
-
-        Specification<Product> specification = buildPublicProductSpecification(search, category, minPrice, maxPrice,
-                minRating);
-
-        return fetchAndMapProducts(specification, pageable);
+        return searchHelper.getAllPublicProducts(pageable, category, search, minPrice, maxPrice, minRating);
     }
 
     @Override
     @Transactional(readOnly = true)
     public ProductDTO getPublicProductById(Long productId) {
-        Product product = findProductById(productId);
-        validateProductIsActive(product);
+        Product product = productHelper.findByIdOrThrow(productId);
+        productHelper.validateProductIsActive(product);
 
         return productMapper.toDTO(product);
     }
@@ -126,8 +103,8 @@ public class ProductServiceImpl implements ProductService {
     @Override
     @Transactional(readOnly = true)
     public ProductDetailDTO getProductWithVariants(Long productId) {
-        Product product = findProductById(productId);
-        validateProductIsActive(product);
+        Product product = productHelper.findByIdOrThrow(productId);
+        productHelper.validateProductIsActive(product);
 
         return productMapper.toDetailDTO(product);
     }
@@ -135,88 +112,8 @@ public class ProductServiceImpl implements ProductService {
     @Override
     @Transactional(readOnly = true)
     public ProductVariantDTO getVariantById(Long variantId) {
-        ProductVariant variant = productVariantRepository.findById(variantId)
-                .orElseThrow(() -> new ResourceNotFoundException("ProductVariant", "Id", variantId));
+        ProductVariant variant = productVariantHelper.findByIdOrThrow(variantId);
         return productVariantMapper.toDTO(variant);
-    }
-
-    // ==================== Private Helper Methods ====================
-
-    private Category findCategoryById(Long categoryId) {
-        return categoryRepository.findById(categoryId)
-                .orElseThrow(() -> new ResourceNotFoundException("Category", "Id", categoryId));
-    }
-
-    private Product findProductById(Long productId) {
-        return productRepository.findById(productId)
-                .orElseThrow(() -> new ResourceNotFoundException("Product", "ProductId", productId));
-    }
-
-    private void validateProductIsActive(Product product) {
-        if (!ProductStatus.ACTIVE.getValue().equals(product.getStatus()) || Boolean.TRUE.equals(product.getDeleted())) {
-            throw new ResourceNotFoundException("Product", "ProductId", product.getId());
-        }
-    }
-
-    private Product buildProductFromDTO(ProductDTO productDTO, Category category, Long userId) {
-        Product product = new Product();
-        product.setName(productDTO.getName());
-        product.setStatus(productDTO.getStatus());
-        product.setSpecifications(productDTO.getSpecifications());
-        product.setMetadata(productDTO.getMetadata());
-        product.setCategory(category);
-        product.setUserId(userId);
-        return product;
-    }
-
-    private Specification<Product> buildSellerProductSpecification(Long userId, String name, String category) {
-        return Specification.allOf(ProductUtils.userIdEquals(userId))
-                .and(ProductUtils.nameContains(name))
-                .and(ProductUtils.categoryEquals(category));
-    }
-
-    private Specification<Product> buildPublicProductSpecification(String search, String category, BigDecimal minPrice,
-            BigDecimal maxPrice, Double minRating) {
-        Specification<Product> spec = ProductUtils.statusEquals(ProductStatus.ACTIVE.getValue())
-                .and(ProductUtils.isNotDeleted());
-
-        if (search != null && !search.isEmpty()) {
-            spec = spec.and(ProductUtils.nameContains(search));
-        }
-
-        if (category != null && !category.isEmpty()) {
-            spec = spec.and(ProductUtils.categorySlugEquals(category)
-                    .or(ProductUtils.categoryEquals(category)));
-        }
-
-        if (minPrice != null || maxPrice != null) {
-            spec = spec.and(ProductUtils.priceRange(minPrice, maxPrice));
-        }
-
-        if (minRating != null) {
-            spec = spec.and(ProductUtils.ratingGreaterThanOrEqual(minRating));
-        }
-
-        return spec;
-    }
-
-    private ProductResponse fetchAndMapProducts(Specification<Product> specification, Pageable pageable) {
-        Page<Product> productPage = productRepository.findAll(specification, pageable);
-        List<ProductRowDTO> productRows = productMapper.toRowDTOs(productPage.getContent());
-
-        return buildProductResponse(productPage, productRows);
-    }
-
-    private ProductResponse buildProductResponse(Page<Product> productPage, List<ProductRowDTO> productRows) {
-        ProductResponse response = new ProductResponse();
-        response.setContent(productRows);
-        response.setPageNumber(productPage.getNumber());
-        response.setPageSize(productPage.getSize());
-        response.setTotalElements(productPage.getTotalElements());
-        response.setTotalPages(productPage.getTotalPages());
-        response.setLastPage(productPage.isLast());
-
-        return response;
     }
 
     @Override
@@ -242,9 +139,8 @@ public class ProductServiceImpl implements ProductService {
     @Override
     @Transactional(readOnly = true)
     public ProductDetailDTO getProductBySlug(String slug) {
-        Product product = productRepository.findBySlugAndDeletedFalse(slug)
-                .orElseThrow(() -> new ResourceNotFoundException("Product", "slug", slug));
-        validateProductIsActive(product);
+        Product product = productHelper.findBySlugOrThrow(slug);
+        productHelper.validateProductIsActive(product);
         return productMapper.toDetailDTO(product);
     }
 
@@ -253,10 +149,33 @@ public class ProductServiceImpl implements ProductService {
     public ProductResponse getAllPublicProductsBySeller(Long userId, Integer page, Integer perPage, String category,
             String sortBy, String sortOrder, BigDecimal minPrice, BigDecimal maxPrice, Double minRating) {
         Pageable pageable = PageableUtils.createPageable(page, perPage, sortBy, sortOrder);
+        return searchHelper.getAllPublicProductsBySeller(userId, pageable, category, minPrice, maxPrice, minRating);
+    }
 
-        Specification<Product> specification = buildPublicProductSpecification(null, category, minPrice, maxPrice,
-                minRating).and(ProductUtils.userIdEquals(userId));
+    // ==================== Private Helper Methods ====================
 
-        return fetchAndMapProducts(specification, pageable);
+    private Product buildProductFromDTO(ProductDTO productDTO, Category category, Long userId) {
+        Product product = new Product();
+        product.setName(productDTO.getName());
+        product.setStatus(productDTO.getStatus());
+        product.setSpecifications(productDTO.getSpecifications());
+        product.setMetadata(productDTO.getMetadata());
+        product.setCategory(category);
+        product.setUserId(userId);
+        return product;
+    }
+
+    private void updateProductFields(Product existingProduct, ProductDTO productDTO) {
+        if (productDTO.getName() != null)
+            existingProduct.setName(productDTO.getName());
+        if (productDTO.getStatus() != null)
+            existingProduct.setStatus(productDTO.getStatus());
+        if (productDTO.getSpecifications() != null)
+            existingProduct.setSpecifications(productDTO.getSpecifications());
+        if (productDTO.getMetadata() != null)
+            existingProduct.setMetadata(productDTO.getMetadata());
+        if (productDTO.getCate() != null && productDTO.getCate().getId() != null) {
+            existingProduct.setCategory(categoryHelper.findByIdOrThrow(productDTO.getCate().getId()));
+        }
     }
 }

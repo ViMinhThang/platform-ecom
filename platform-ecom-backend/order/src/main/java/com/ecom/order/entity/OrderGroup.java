@@ -50,6 +50,12 @@ public class OrderGroup {
     @Builder.Default
     private BigDecimal discountAmount = BigDecimal.ZERO;
 
+    @Column(name = "applied_product_voucher_id")
+    private Long appliedProductVoucherId;
+
+    @Column(name = "applied_shipping_voucher_id")
+    private Long appliedShippingVoucherId;
+
     @Column(name = "currency", length = 3, nullable = false)
     @Builder.Default
     private String currency = "USD";

@@ -3,8 +3,7 @@ package com.ecom.product.service.impl;
 import com.ecom.product.dto.CategoryDTO;
 import com.ecom.product.dto.response.CategoryResponse;
 import com.ecom.product.entity.Category;
-import com.ecom.common.exception.APIException;
-import com.ecom.common.exception.ResourceNotFoundException;
+import com.ecom.product.helper.CategoryHelper;
 import com.ecom.product.mapper.CategoryMapper;
 import com.ecom.product.repository.CategoryRepository;
 import com.ecom.common.service.FileStorageService;
@@ -25,11 +24,12 @@ public class CategoryServiceImpl implements CategoryService {
     private final CategoryRepository categoryRepository;
     private final CategoryMapper categoryMapper;
     private final FileStorageService fileStorageService;
+    private final CategoryHelper categoryHelper;
 
     @Override
     @Transactional
     public CategoryDTO createCategory(CategoryDTO categoryDTO) {
-        validateCategoryNameDoesNotExist(categoryDTO.getName());
+        categoryHelper.validateCategoryNameDoesNotExist(categoryDTO.getName());
 
         Category category = new Category();
         category.setName(categoryDTO.getName());
@@ -55,22 +55,21 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     @Transactional(readOnly = true)
     public CategoryDTO getCategoryById(Long categoryId) {
-        Category category = findCategoryById(categoryId);
+        Category category = categoryHelper.findByIdOrThrow(categoryId);
         return categoryMapper.toDTO(category);
     }
 
     @Override
     @Transactional(readOnly = true)
     public CategoryDTO getCategoryBySlug(String slug) {
-        Category category = categoryRepository.findBySlug(slug)
-                .orElseThrow(() -> new ResourceNotFoundException("Category", "slug", slug));
+        Category category = categoryHelper.findBySlugOrThrow(slug);
         return categoryMapper.toDTO(category);
     }
 
     @Override
     @Transactional
     public CategoryDTO updateCategory(CategoryDTO categoryDTO, Long categoryId) {
-        Category category = findCategoryById(categoryId);
+        Category category = categoryHelper.findByIdOrThrow(categoryId);
 
         category.setName(categoryDTO.getName());
         Category updatedCategory = categoryRepository.save(category);
@@ -81,7 +80,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     @Transactional
     public CategoryDTO deleteCategory(Long categoryId) {
-        Category category = findCategoryById(categoryId);
+        Category category = categoryHelper.findByIdOrThrow(categoryId);
         CategoryDTO categoryDTO = categoryMapper.toDTO(category);
 
         categoryRepository.delete(category);
@@ -92,7 +91,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     @Transactional
     public String updateCategoryImage(Long categoryId, MultipartFile image) {
-        Category category = findCategoryById(categoryId);
+        Category category = categoryHelper.findByIdOrThrow(categoryId);
 
         deleteOldImageIfExists(category);
 
@@ -101,18 +100,6 @@ public class CategoryServiceImpl implements CategoryService {
         categoryRepository.save(category);
 
         return imageUrl;
-    }
-
-    private Category findCategoryById(Long categoryId) {
-        return categoryRepository.findById(categoryId)
-                .orElseThrow(() -> new ResourceNotFoundException("Category", "categoryId", categoryId));
-    }
-
-    private void validateCategoryNameDoesNotExist(String name) {
-        Category existingCategory = categoryRepository.findByName(name);
-        if (existingCategory != null) {
-            throw new APIException("Category with the name " + name + " already exists!");
-        }
     }
 
     private CategoryResponse buildCategoryResponse(Page<Category> categoryPage, List<CategoryDTO> categoryDTOs) {
@@ -127,7 +114,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     private void deleteOldImageIfExists(Category category) {
-        if (!category.getImageUrl().isEmpty()) {
+        if (category.getImageUrl() != null && !category.getImageUrl().isEmpty()) {
             fileStorageService.deleteFile(category.getImageUrl());
         }
     }

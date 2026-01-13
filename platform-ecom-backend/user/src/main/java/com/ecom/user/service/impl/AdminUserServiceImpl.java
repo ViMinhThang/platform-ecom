@@ -1,14 +1,15 @@
 package com.ecom.user.service.impl;
 
-import com.ecom.common.exception.*;
 import com.ecom.common.service.FileStorageService;
 import com.ecom.user.dtos.UserDTO;
 import com.ecom.user.dtos.response.UserResponse;
 import com.ecom.user.entity.*;
+import com.ecom.user.helper.UserHelper;
 import com.ecom.user.repositories.UserRepository;
 import com.ecom.user.service.signature.AdminUserService;
 import com.ecom.user.service.signature.RoleService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -21,6 +22,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class AdminUserServiceImpl implements AdminUserService {
 
@@ -29,6 +31,7 @@ public class AdminUserServiceImpl implements AdminUserService {
     private final PasswordEncoder encoder;
     private final RoleService roleService;
     private final FileStorageService fileStorageService;
+    private final UserHelper userHelper;
 
     @Override
     public UserResponse getAllUsers(Pageable pageable) {
@@ -49,7 +52,7 @@ public class AdminUserServiceImpl implements AdminUserService {
     @Override
     @Transactional
     public UserDTO createUserByAdmin(UserDTO userDTO) {
-        checkEmailAndUsernameExists(userDTO.getEmail(), userDTO.getUsername());
+        userHelper.checkEmailAndUsernameExists(userDTO.getEmail(), userDTO.getUsername());
 
         User user = modelMapper.map(userDTO, User.class);
 
@@ -72,9 +75,9 @@ public class AdminUserServiceImpl implements AdminUserService {
     @Override
     @Transactional
     public UserDTO updateUserByAdmin(Long userId, UserDTO userDTO) {
-        User user = getUserByUserIdFromDatabase(userId);
+        User user = userHelper.findByIdOrThrow(userId);
 
-        validateUniqueData(user.getUserId(), userDTO.getEmail(), userDTO.getUsername());
+        userHelper.validateUniqueData(user.getUserId(), userDTO.getEmail(), userDTO.getUsername());
 
         user.setEmail(userDTO.getEmail());
         user.setUserName(userDTO.getUsername());
@@ -98,26 +101,26 @@ public class AdminUserServiceImpl implements AdminUserService {
     @Override
     @Transactional
     public void deleteUser(Long userId) {
-        User user = getUserByUserIdFromDatabase(userId);
+        User user = userHelper.findByIdOrThrow(userId);
         userRepository.delete(user);
     }
 
     @Override
     public UserDTO getUserById(Long userId) {
-        return modelMapper.map(getUserByUserIdFromDatabase(userId), UserDTO.class);
+        return modelMapper.map(userHelper.findByIdOrThrow(userId), UserDTO.class);
     }
 
     @Override
     @Transactional
     public String uploadUserImage(Long userId, org.springframework.web.multipart.MultipartFile image) {
-        User user = getUserByUserIdFromDatabase(userId);
+        User user = userHelper.findByIdOrThrow(userId);
 
         String oldImageUrl = user.getImageUrl();
         if (oldImageUrl != null && !oldImageUrl.isEmpty() && !"31343C.svg".equals(oldImageUrl)) {
             try {
                 fileStorageService.deleteFile(oldImageUrl);
             } catch (Exception e) {
-
+                log.error("Failed to delete old image {}: {}", oldImageUrl, e.getMessage());
             }
         }
 
@@ -126,31 +129,4 @@ public class AdminUserServiceImpl implements AdminUserService {
         userRepository.save(user);
         return fileName;
     }
-
-    private User getUserByUserIdFromDatabase(Long userId) {
-        return userRepository.findById(userId)
-                .orElseThrow(() -> new ResourceNotFoundException("User", "UserId", userId));
-    }
-
-    private void checkEmailAndUsernameExists(String email, String username) {
-        if (userRepository.existsByUserName(username)) {
-            throw new UserAlreadyExistsException("Error: Username is already taken!");
-        }
-        if (userRepository.existsByEmail(email)) {
-            throw new UserAlreadyExistsException("Error: Email is already in use");
-        }
-    }
-
-    private void validateUniqueData(Long currentUserId, String newEmail, String newUsername) {
-        User currentUser = getUserByUserIdFromDatabase(currentUserId);
-
-        if (!currentUser.getUserName().equals(newUsername) && userRepository.existsByUserName(newUsername)) {
-            throw new APIException("Username is already taken!");
-        }
-
-        if (!currentUser.getEmail().equals(newEmail) && userRepository.existsByEmail(newEmail)) {
-            throw new APIException("Email is already in use!");
-        }
-    }
-
 }

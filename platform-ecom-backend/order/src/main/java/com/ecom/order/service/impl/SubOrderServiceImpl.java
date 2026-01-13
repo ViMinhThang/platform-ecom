@@ -1,10 +1,9 @@
 package com.ecom.order.service.impl;
 
-import com.ecom.common.exception.SubOrderNotFoundException;
-import com.ecom.common.exception.UnauthorizedException;
 import com.ecom.order.dto.SubOrderDTO;
 import com.ecom.order.entity.SubOrder;
 import com.ecom.order.entity.SubOrderStatus;
+import com.ecom.order.helper.SubOrderHelper;
 import com.ecom.order.repository.SubOrderRepository;
 import com.ecom.order.service.signature.SubOrderService;
 import lombok.RequiredArgsConstructor;
@@ -26,12 +25,13 @@ public class SubOrderServiceImpl implements SubOrderService {
 
     private final SubOrderRepository subOrderRepository;
     private final ModelMapper modelMapper;
+    private final SubOrderHelper subOrderHelper;
 
     @Override
     @Transactional(readOnly = true)
     public SubOrderDTO getSubOrder(Long subOrderId, Long userId) {
-        SubOrder subOrder = findSubOrderById(subOrderId);
-        verifyBuyerOrSellerAccess(subOrder, userId);
+        SubOrder subOrder = subOrderHelper.findByIdOrThrow(subOrderId);
+        subOrderHelper.verifyBuyerOrSellerAccess(subOrder, userId);
         return convertToDTO(subOrder);
     }
 
@@ -46,8 +46,8 @@ public class SubOrderServiceImpl implements SubOrderService {
     @Transactional
     public SubOrderDTO updateTracking(Long subOrderId, Long sellerId,
             String trackingNumber, String carrier, String trackingUrl) {
-        SubOrder subOrder = findSubOrderById(subOrderId);
-        verifySellerOwnership(subOrder, sellerId);
+        SubOrder subOrder = subOrderHelper.findByIdOrThrow(subOrderId);
+        subOrderHelper.verifySellerOwnership(subOrder, sellerId);
 
         subOrder.setTrackingNumber(trackingNumber);
         subOrder.setCarrier(carrier);
@@ -62,9 +62,9 @@ public class SubOrderServiceImpl implements SubOrderService {
     @Override
     @Transactional
     public SubOrderDTO markAsShipped(Long subOrderId, Long sellerId) {
-        SubOrder subOrder = findSubOrderById(subOrderId);
-        verifySellerOwnership(subOrder, sellerId);
-        validateCanShip(subOrder);
+        SubOrder subOrder = subOrderHelper.findByIdOrThrow(subOrderId);
+        subOrderHelper.verifySellerOwnership(subOrder, sellerId);
+        subOrderHelper.validateCanShip(subOrder);
 
         subOrder.updateStatus(SubOrderStatus.SHIPPED, sellerId, "Order shipped");
         subOrder.setShippedAt(LocalDateTime.now());
@@ -78,9 +78,9 @@ public class SubOrderServiceImpl implements SubOrderService {
     @Override
     @Transactional
     public SubOrderDTO markAsDelivered(Long subOrderId, Long sellerId) {
-        SubOrder subOrder = findSubOrderById(subOrderId);
-        verifySellerOwnership(subOrder, sellerId);
-        validateCanDeliver(subOrder);
+        SubOrder subOrder = subOrderHelper.findByIdOrThrow(subOrderId);
+        subOrderHelper.verifySellerOwnership(subOrder, sellerId);
+        subOrderHelper.validateCanDeliver(subOrder);
 
         subOrder.updateStatus(SubOrderStatus.DELIVERED, sellerId, "Order delivered");
         subOrder.setDeliveredAt(LocalDateTime.now());
@@ -94,23 +94,15 @@ public class SubOrderServiceImpl implements SubOrderService {
     @Override
     @Transactional
     public void cancelSubOrder(Long subOrderId, Long userId, String reason) {
-        SubOrder subOrder = findSubOrderById(subOrderId);
-        boolean isBuyer = isBuyer(subOrder, userId);
-        boolean isSeller = isSeller(subOrder, userId);
-
-        verifyBuyerOrSellerAccess(isBuyer, isSeller);
-        validateBuyerCanCancel(subOrder, isBuyer);
+        SubOrder subOrder = subOrderHelper.findByIdOrThrow(subOrderId);
+        subOrderHelper.verifyBuyerOrSellerAccess(subOrder, userId);
+        subOrderHelper.validateBuyerCanCancel(subOrder, userId);
 
         subOrder.updateStatus(SubOrderStatus.CANCELLED, userId, reason);
         subOrder.setCancelledAt(LocalDateTime.now());
 
         subOrderRepository.save(subOrder);
         log.info("Sub-order {} cancelled by user {}", subOrderId, userId);
-    }
-
-    private SubOrder findSubOrderById(Long subOrderId) {
-        return subOrderRepository.findByIdWithItems(subOrderId)
-                .orElseThrow(() -> new SubOrderNotFoundException(subOrderId));
     }
 
     private Page<SubOrder> fetchSellerSubOrders(Long sellerId, String status, Pageable pageable) {
@@ -128,59 +120,6 @@ public class SubOrderServiceImpl implements SubOrderService {
         int start = (int) pageable.getOffset();
         int end = Math.min(start + pageable.getPageSize(), list.size());
         return new PageImpl<>(list.subList(start, end), pageable, list.size());
-    }
-
-    private boolean isBuyer(SubOrder subOrder, Long userId) {
-        return subOrder.getOrderGroup().getUserId().equals(userId);
-    }
-
-    private boolean isSeller(SubOrder subOrder, Long userId) {
-        return subOrder.getSellerId().equals(userId);
-    }
-
-    private void verifySellerOwnership(SubOrder subOrder, Long sellerId) {
-        if (!isSeller(subOrder, sellerId)) {
-            throw new UnauthorizedException("Not authorized to modify this sub-order");
-        }
-    }
-
-    private void verifyBuyerOrSellerAccess(SubOrder subOrder, Long userId) {
-        if (!isBuyer(subOrder, userId) && !isSeller(subOrder, userId)) {
-            throw new UnauthorizedException("Not authorized to view this sub-order");
-        }
-    }
-
-    private void verifyBuyerOrSellerAccess(boolean isBuyer, boolean isSeller) {
-        if (!isBuyer && !isSeller) {
-            throw new UnauthorizedException("Not authorized");
-        }
-    }
-
-    private void validateCanShip(SubOrder subOrder) {
-        if (subOrder.getStatus() != SubOrderStatus.PROCESSING) {
-            throw new IllegalStateException("Can only ship orders in PROCESSING status");
-        }
-
-        if (subOrder.getTrackingNumber() == null || subOrder.getTrackingNumber().isEmpty()) {
-            throw new IllegalStateException("Tracking number required before shipping");
-        }
-    }
-
-    private void validateCanDeliver(SubOrder subOrder) {
-        if (subOrder.getStatus() != SubOrderStatus.SHIPPED) {
-            throw new IllegalStateException("Can only deliver shipped orders");
-        }
-    }
-
-    private void validateBuyerCanCancel(SubOrder subOrder, boolean isBuyer) {
-        if (isBuyer && !isCancellableByBuyer(subOrder)) {
-            throw new IllegalStateException("Cannot cancel order after shipping");
-        }
-    }
-
-    private boolean isCancellableByBuyer(SubOrder subOrder) {
-        return subOrder.getStatus() == SubOrderStatus.PENDING
-                || subOrder.getStatus() == SubOrderStatus.PROCESSING;
     }
 
     private SubOrderDTO convertToDTO(SubOrder subOrder) {

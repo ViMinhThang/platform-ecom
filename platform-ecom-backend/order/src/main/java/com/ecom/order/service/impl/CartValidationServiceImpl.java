@@ -7,7 +7,7 @@ import com.ecom.order.client.ProductServiceClient;
 import com.ecom.order.dto.ProductDetails;
 import com.ecom.order.entity.Cart;
 import com.ecom.order.entity.CartItem;
-import com.ecom.order.repository.CartRepository;
+import com.ecom.order.helper.CartHelper;
 import com.ecom.order.service.signature.CartValidationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,15 +18,13 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class CartValidationServiceImpl implements CartValidationService {
 
-    private final CartRepository cartRepository;
     private final ProductServiceClient productServiceClient;
     private final InventoryServiceClient inventoryServiceClient;
+    private final CartHelper cartHelper;
 
     @Override
     public Cart getValidatedCart(Long userId) {
-        Cart cart = cartRepository.findByUserIdWithItems(userId)
-                .orElseThrow(() -> new APIException(
-                        "Cart is empty. Please add items to your cart before checkout."));
+        Cart cart = cartHelper.findByUserIdOrThrow(userId);
 
         if (cart.getItems().isEmpty()) {
             throw new APIException(

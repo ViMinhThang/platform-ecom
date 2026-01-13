@@ -1,9 +1,6 @@
 package com.ecom.product.config;
 
-
-import com.ecom.product.dto.CategoryDTO;
 import com.ecom.product.dto.ProductDTO;
-import com.ecom.product.entity.Category;
 import com.ecom.product.entity.Product;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
@@ -17,6 +14,7 @@ public class WebConfig {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
     @Bean
     public ModelMapper modelMapper() {
         ModelMapper modelMapper = new ModelMapper();

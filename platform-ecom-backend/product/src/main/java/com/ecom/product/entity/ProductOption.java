@@ -24,18 +24,19 @@ public class ProductOption {
     @Column(name = "display_name", nullable = false, length = 100)
     private String displayName;
 
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id", nullable = false)
     private Product product;
 
-    @Column(name = "is_required")
+    @Builder.Default
     private Boolean isRequired = false;
 
     @Column(name = "sort_order")
+    @Builder.Default
     private Integer sortOrder = 0;
 
     @OneToMany(mappedBy = "option", cascade = CascadeType.ALL, orphanRemoval = true)
     @OrderBy("sortOrder ASC")
+    @Builder.Default
     private List<ProductOptionValue> values = new ArrayList<>();
 }

@@ -102,6 +102,7 @@ public class EmbeddingServiceImpl implements EmbeddingService {
                 product.getCate() != null ? product.getCate().getName() : null,
                 vectorString,
                 product.getMinPrice(),
+                product.getMaxPrice(),
                 product.getAverageRating(),
                 product.getTotalSold());
 

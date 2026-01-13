@@ -1,6 +1,5 @@
 package com.ecom.product.dto;
 
-import com.ecom.product.entity.ProductImage;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

@@ -16,4 +16,6 @@ public class ConfirmPaymentRequest {
 
     @NotNull(message = "Shipping fee is required")
     private BigDecimal shippingFee;
+
+    private String voucherCode;
 }

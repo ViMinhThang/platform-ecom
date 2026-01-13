@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 public class OrderQueryHelper {
 
     public Specification<OrderGroup> buildFilterSpecification(OrderFilterRequest filter) {
-        Specification<OrderGroup> spec = Specification.where(null);
+        Specification<OrderGroup> spec = (root, query, cb) -> cb.conjunction();
 
         if (filter.getGroupNumber() != null) {
             spec = spec.and(OrderUtils.groupNumberContains(filter.getGroupNumber()));

@@ -3,7 +3,7 @@ package com.ecom.order.event;
 import com.ecom.common.event.OrderCreatedEvent;
 import com.ecom.common.event.OrderCreatedEvent.OrderItemEvent;
 import com.ecom.order.entity.OrderGroup;
-import com.ecom.order.entity.SubOrder;
+
 import com.ecom.order.entity.SubOrderItem;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

@@ -1,6 +1,5 @@
 package com.ecom.product.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
@@ -13,7 +12,7 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@ToString(exclude = {"variant", "optionValue"})
+@ToString(exclude = { "variant", "optionValue" })
 public class VariantOptionValue {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

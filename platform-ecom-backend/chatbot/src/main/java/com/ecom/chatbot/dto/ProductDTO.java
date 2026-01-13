@@ -28,6 +28,7 @@ public class ProductDTO {
 
     private String status;
     private BigDecimal minPrice;
+    private BigDecimal maxPrice;
     private BigDecimal price;
     private String imageUrl;
     private LocalDateTime createdAt;

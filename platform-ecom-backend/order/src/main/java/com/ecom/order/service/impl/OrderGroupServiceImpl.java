@@ -1,24 +1,20 @@
 package com.ecom.order.service.impl;
 
-import com.ecom.common.exception.*;
 import com.ecom.order.client.UserServiceClient;
 import com.ecom.order.config.OrderConfigurationProperties;
 import com.ecom.order.dto.*;
 import com.ecom.order.entity.*;
 import com.ecom.order.event.OrderEventPublisher;
-import com.ecom.order.helper.OrderCreationHelper;
-import com.ecom.order.helper.OrderQueryHelper;
-import com.ecom.order.helper.OrderValidationHelper;
+import com.ecom.order.helper.*;
 import com.ecom.order.mapper.AdminOrderMapper;
 import com.ecom.order.payment.PaymentIntent;
 import com.ecom.order.repository.*;
 import com.ecom.order.service.OrderCalculator;
-import com.ecom.order.service.OrderNumberGenerator;
+
 import com.ecom.order.service.signature.CartValidationService;
 import com.ecom.order.service.signature.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -26,36 +22,30 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class OrderGroupServiceImpl implements OrderGroupService {
 
-    // Core Dependencies
     private final OrderGroupRepository orderGroupRepository;
-    private final CartRepository cartRepository;
-    private final PaymentTransactionRepository transactionRepository;
     private final PaymentService paymentService;
     private final UserServiceClient userServiceClient;
-    private final ModelMapper modelMapper;
     private final AdminOrderMapper adminOrderMapper;
     private final OrderEventPublisher orderEventPublisher;
 
-    // Helpers
     private final CartValidationService cartValidationService;
     private final OrderQueryHelper orderQueryHelper;
     private final OrderCalculator orderCalculator;
     private final OrderCreationHelper orderCreationHelper;
     private final OrderValidationHelper orderValidationHelper;
-    private final OrderNumberGenerator orderNumberGenerator;
+    private final OrderPaymentHelper paymentHelper;
+    private final OrderMappingHelper mappingHelper;
+    private final OrderActionHelper actionHelper;
+    private final CartHelper cartHelper;
 
+    private final DiscountService discountService;
     private final OrderConfigurationProperties properties;
-
-    // ==================== Public API ====================
 
     @Override
     @Transactional(readOnly = true)
@@ -70,7 +60,7 @@ public class OrderGroupServiceImpl implements OrderGroupService {
                 grandTotal, properties.getDefaultCurrency(), "Checkout for user " + userId,
                 userId, request.getIdempotencyKey());
 
-        return buildCheckoutSession(paymentIntent, grandTotal, request.getAddressId(), cart);
+        return mappingHelper.buildCheckoutSession(paymentIntent, grandTotal, request.getAddressId(), cart);
     }
 
     @Override
@@ -78,7 +68,7 @@ public class OrderGroupServiceImpl implements OrderGroupService {
     public OrderGroupDTO confirmPaymentAndCreateOrder(Long userId, ConfirmPaymentRequest request) {
         log.info("Confirming payment {} for user {}", request.getPaymentIntentId(), userId);
 
-        verifyPaymentNotDuplicate(request.getPaymentIntentId());
+        paymentHelper.verifyPaymentNotDuplicate(request.getPaymentIntentId());
         paymentService.verifyPaymentSucceeded(request.getPaymentIntentId());
 
         Cart cart = cartValidationService.getValidatedCart(userId);
@@ -88,14 +78,17 @@ public class OrderGroupServiceImpl implements OrderGroupService {
                 userId, cart, request.getAddressId(), request.getShippingFee());
         orderGroup = orderGroupRepository.save(orderGroup);
 
-        recordPaymentTransaction(orderGroup, request.getPaymentIntentId());
+        applyDiscounts(orderGroup, cart, request);
+
+        paymentHelper.recordPaymentTransaction(orderGroup, request.getPaymentIntentId());
         orderEventPublisher.publishOrderCreated(orderGroup);
-        clearCart(cart);
+        cartHelper.clearCart(cart);
 
-        log.info("Created order {} with {} sub-orders, total: {}",
-                orderGroup.getGroupNumber(), orderGroup.getSubOrders().size(), orderGroup.getTotalAmount());
+        log.info("Created order {} with {} sub-orders, total: {}, discount: {}",
+                orderGroup.getGroupNumber(), orderGroup.getSubOrders().size(),
+                orderGroup.getTotalAmount(), orderGroup.getDiscountAmount());
 
-        return convertToDTO(orderGroup);
+        return mappingHelper.convertToDTO(orderGroup);
     }
 
     @Override
@@ -103,13 +96,13 @@ public class OrderGroupServiceImpl implements OrderGroupService {
     public OrderGroupDTO getOrderGroup(Long groupId, Long userId) {
         OrderGroup group = orderValidationHelper.findOrderGroupById(groupId);
         orderValidationHelper.verifyUserOwnership(group, userId);
-        return convertToDTO(group);
+        return mappingHelper.convertToDTO(group);
     }
 
     @Override
     @Transactional(readOnly = true)
     public Page<OrderGroupDTO> getUserOrderGroups(Long userId, Pageable pageable) {
-        return orderGroupRepository.findByUserId(userId, pageable).map(this::convertToDTO);
+        return orderGroupRepository.findByUserId(userId, pageable).map(mappingHelper::convertToDTO);
     }
 
     @Override
@@ -119,7 +112,7 @@ public class OrderGroupServiceImpl implements OrderGroupService {
         orderValidationHelper.verifyUserOwnership(group, userId);
         orderValidationHelper.validateCancellable(group);
 
-        cancelAllSubOrders(group, userId);
+        actionHelper.cancelAllSubOrders(group, userId);
         group.setOverallStatus(OrderGroupStatus.CANCELLED);
         orderGroupRepository.save(group);
 
@@ -157,7 +150,7 @@ public class OrderGroupServiceImpl implements OrderGroupService {
 
         group.setOverallStatus(status);
         if (status == OrderGroupStatus.CANCELLED) {
-            cancelActiveSubOrders(group, notes);
+            actionHelper.cancelActiveSubOrders(group, notes);
         }
 
         orderGroupRepository.save(group);
@@ -184,51 +177,29 @@ public class OrderGroupServiceImpl implements OrderGroupService {
         OrderGroup group = orderValidationHelper.findOrderGroupById(groupId);
         SubOrder subOrder = orderValidationHelper.findSubOrderInGroup(group, subOrderId);
 
-        applyTrackingUpdates(subOrder, request);
+        actionHelper.applyTrackingUpdates(subOrder, request);
         orderGroupRepository.save(group);
 
         return adminOrderMapper.toAdminSubOrderDTO(subOrder);
     }
 
-    // ==================== Private Helpers: Payment ====================
+    // ==================== Private Helper Methods ====================
 
-    private void verifyPaymentNotDuplicate(String paymentIntentId) {
-        if (transactionRepository.existsByProviderTransactionId(paymentIntentId)) {
-            log.warn("Order already created for payment: {}", paymentIntentId);
-            throw new PaymentException("Order already created for this payment");
-        }
-    }
+    private void applyDiscounts(OrderGroup orderGroup, Cart cart, ConfirmPaymentRequest request) {
+        DiscountResultDTO discountResult = discountService.applyVouchers(
+                orderGroup.getId(), cart, request.getShippingFee(),
+                request.getVoucherCode(), orderGroup.getUserId());
 
-    private void recordPaymentTransaction(OrderGroup group, String paymentIntentId) {
-        PaymentTransaction transaction = PaymentTransaction.builder()
-                .orderGroup(group)
-                .provider(properties.getPaymentProvider())
-                .providerTransactionId(paymentIntentId)
-                .paymentMethod(properties.getPaymentMethod())
-                .amount(group.getTotalAmount())
-                .currency(properties.getDefaultCurrency())
-                .status(PaymentStatus.SUCCEEDED)
-                .idempotencyKey(paymentIntentId)
-                .completedAt(LocalDateTime.now())
-                .build();
-
-        transactionRepository.save(transaction);
-    }
-
-    // ==================== Private Helpers: Cancellation ====================
-
-    private void cancelAllSubOrders(OrderGroup group, Long userId) {
-        for (SubOrder subOrder : group.getSubOrders()) {
-            subOrder.updateStatus(SubOrderStatus.CANCELLED, userId, "Order group cancelled");
-        }
-    }
-
-    private void cancelActiveSubOrders(OrderGroup group, String notes) {
-        for (SubOrder subOrder : group.getSubOrders()) {
-            if (subOrder.getStatus() != SubOrderStatus.CANCELLED
-                    && subOrder.getStatus() != SubOrderStatus.DELIVERED) {
-                subOrder.updateStatus(SubOrderStatus.CANCELLED, null, "Admin cancelled: " + notes);
+        if (discountResult.getTotalDiscount().compareTo(BigDecimal.ZERO) > 0) {
+            orderGroup.setDiscountAmount(discountResult.getTotalDiscount());
+            if (discountResult.getAppliedProductVoucher() != null) {
+                orderGroup.setAppliedProductVoucherId(discountResult.getAppliedProductVoucher().getId());
             }
+            if (discountResult.getAppliedShippingVoucher() != null) {
+                orderGroup.setAppliedShippingVoucherId(discountResult.getAppliedShippingVoucher().getId());
+            }
+            orderGroup.setTotalAmount(orderGroup.getTotalAmount().subtract(discountResult.getTotalDiscount()));
+            orderGroupRepository.save(orderGroup);
         }
     }
 
@@ -236,49 +207,5 @@ public class OrderGroupServiceImpl implements OrderGroupService {
         return group.getBillingAddressId() != null
                 ? userServiceClient.getAddressSafe(group.getBillingAddressId())
                 : null;
-    }
-
-    private void applyTrackingUpdates(SubOrder subOrder, TrackingUpdateRequest request) {
-        if (request.getTrackingNumber() != null)
-            subOrder.setTrackingNumber(request.getTrackingNumber());
-        if (request.getTrackingUrl() != null)
-            subOrder.setTrackingUrl(request.getTrackingUrl());
-        if (request.getCarrier() != null)
-            subOrder.setCarrier(request.getCarrier());
-        if (request.getEstimatedDelivery() != null)
-            subOrder.setEstimatedDelivery(request.getEstimatedDelivery());
-        if (request.getFulfillmentStatus() != null)
-            subOrder.setFulfillmentStatus(request.getFulfillmentStatus());
-    }
-
-    // ==================== Private Helpers: Conversion ====================
-
-    private CheckoutSessionDTO buildCheckoutSession(PaymentIntent intent, BigDecimal amount,
-            Long addressId, Cart cart) {
-        List<CartItemDTO> items = cart.getItems().stream()
-                .map(item -> modelMapper.map(item, CartItemDTO.class))
-                .collect(Collectors.toList());
-
-        return CheckoutSessionDTO.builder()
-                .clientSecret(intent.getClientSecret())
-                .paymentIntentId(intent.getId())
-                .amount(amount)
-                .currency(properties.getDefaultCurrency())
-                .addressId(addressId)
-                .items(items)
-                .build();
-    }
-
-    private OrderGroupDTO convertToDTO(OrderGroup group) {
-        OrderGroupDTO dto = modelMapper.map(group, OrderGroupDTO.class);
-        dto.setSubOrders(group.getSubOrders().stream()
-                .map(so -> modelMapper.map(so, SubOrderDTO.class))
-                .collect(Collectors.toList()));
-        return dto;
-    }
-
-    private void clearCart(Cart cart) {
-        cart.clearItems();
-        cartRepository.save(cart);
     }
 }

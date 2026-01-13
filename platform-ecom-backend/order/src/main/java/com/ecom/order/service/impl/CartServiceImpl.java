@@ -1,6 +1,5 @@
 package com.ecom.order.service.impl;
 
-import com.ecom.common.exception.CartItemNotFoundException;
 import com.ecom.common.exception.CartNotFoundException;
 import com.ecom.order.client.ProductServiceClient;
 import com.ecom.order.dto.AddToCartRequest;
@@ -8,6 +7,7 @@ import com.ecom.order.dto.CartDTO;
 import com.ecom.order.dto.ProductDetails;
 import com.ecom.order.entity.Cart;
 import com.ecom.order.entity.CartItem;
+import com.ecom.order.helper.CartHelper;
 import com.ecom.order.repository.CartRepository;
 import com.ecom.order.service.signature.CartService;
 import lombok.RequiredArgsConstructor;
@@ -17,24 +17,23 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class CartServiceImpl implements CartService {
 
-    private static final int CART_EXPIRY_DAYS = 30;
     private static final int MIN_QUANTITY = 1;
 
     private final CartRepository cartRepository;
     private final ModelMapper modelMapper;
     private final ProductServiceClient productServiceClient;
+    private final CartHelper cartHelper;
 
     @Override
     @Transactional
     public CartDTO getCartForUser(Long userId) {
-        Cart cart = getOrCreateCart(userId);
+        Cart cart = cartHelper.getOrCreateCart(userId);
         enrichCartItems(cart);
         return convertToDTO(cart);
     }
@@ -42,8 +41,8 @@ public class CartServiceImpl implements CartService {
     @Override
     @Transactional
     public CartDTO addToCart(Long userId, AddToCartRequest request) {
-        Cart cart = getOrCreateCart(userId);
-        CartItem existingItem = findExistingItem(cart, request.getProductId(), request.getVariantId());
+        Cart cart = cartHelper.getOrCreateCart(userId);
+        CartItem existingItem = cartHelper.findExistingItem(cart, request.getProductId(), request.getVariantId());
 
         if (existingItem != null) {
             existingItem.updateQuantity(request.getQuantity());
@@ -63,8 +62,8 @@ public class CartServiceImpl implements CartService {
     @Override
     @Transactional
     public CartDTO updateCartItemQuantity(Long userId, Long productId, Long variantId, Integer quantityChange) {
-        Cart cart = findCartByUserId(userId);
-        CartItem item = findCartItem(cart, productId, variantId);
+        Cart cart = cartHelper.findByUserIdOrThrow(userId);
+        CartItem item = cartHelper.findItemInCart(cart, productId, variantId);
 
         item.updateQuantity(quantityChange);
 
@@ -81,8 +80,8 @@ public class CartServiceImpl implements CartService {
     @Override
     @Transactional
     public void removeFromCart(Long userId, Long productId, Long variantId) {
-        Cart cart = findCartByUserId(userId);
-        CartItem item = findCartItem(cart, productId, variantId);
+        Cart cart = cartHelper.findByUserIdOrThrow(userId);
+        CartItem item = cartHelper.findItemInCart(cart, productId, variantId);
 
         cart.removeItem(item);
         cartRepository.save(cart);
@@ -100,45 +99,6 @@ public class CartServiceImpl implements CartService {
         cartRepository.save(cart);
 
         log.info("Cleared cart: {}", cartId);
-    }
-
-    private Cart getOrCreateCart(Long userId) {
-        return cartRepository.findByUserIdWithItems(userId)
-                .orElseGet(() -> createNewCart(userId));
-    }
-
-    private Cart findCartByUserId(Long userId) {
-        return cartRepository.findByUserIdWithItems(userId)
-                .orElseThrow(() -> new CartNotFoundException("Cart not found for user: " + userId));
-    }
-
-    private Cart createNewCart(Long userId) {
-        Cart cart = Cart.builder()
-                .userId(userId)
-                .expiresAt(LocalDateTime.now().plusDays(CART_EXPIRY_DAYS))
-                .build();
-
-        return cartRepository.save(cart);
-    }
-
-    private CartItem findExistingItem(Cart cart, Long productId, Long variantId) {
-        return cart.getItems().stream()
-                .filter(item -> matchesProduct(item, productId, variantId))
-                .findFirst()
-                .orElse(null);
-    }
-
-    private CartItem findCartItem(Cart cart, Long productId, Long variantId) {
-        return cart.getItems().stream()
-                .filter(item -> matchesProduct(item, productId, variantId))
-                .findFirst()
-                .orElseThrow(() -> new CartItemNotFoundException("Item not found in cart"));
-    }
-
-    private boolean matchesProduct(CartItem item, Long productId, Long variantId) {
-        boolean productMatches = item.getProductId().equals(productId);
-        boolean variantMatches = variantId == null || item.getVariantId().equals(variantId);
-        return productMatches && variantMatches;
     }
 
     private void addNewItemToCart(Cart cart, AddToCartRequest request) {

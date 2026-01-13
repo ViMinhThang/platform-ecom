@@ -1,6 +1,7 @@
 package com.ecom.chatbot.config;
 
 import com.ecom.chatbot.client.ProductServiceClient;
+import com.ecom.chatbot.client.PromotionServiceClient;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -28,5 +29,15 @@ public class HttpClientConfig {
         RestClientAdapter adapter = RestClientAdapter.create(restClient);
         HttpServiceProxyFactory factory = HttpServiceProxyFactory.builderFor(adapter).build();
         return factory.createClient(ProductServiceClient.class);
+    }
+
+    @Bean
+    public PromotionServiceClient promotionServiceClient(RestClient.Builder restClientBuilder) {
+        RestClient restClient = restClientBuilder
+                .baseUrl("http://promotion-service/api/v1")
+                .build();
+        RestClientAdapter adapter = RestClientAdapter.create(restClient);
+        HttpServiceProxyFactory factory = HttpServiceProxyFactory.builderFor(adapter).build();
+        return factory.createClient(PromotionServiceClient.class);
     }
 }

@@ -1,12 +1,12 @@
 package com.ecom.product.service.impl;
 
-import com.ecom.common.exception.ResourceNotFoundException;
 import com.ecom.common.service.FileStorageService;
 import com.ecom.product.dto.DescriptionImageDTO;
 import com.ecom.product.entity.DescriptionImage;
 import com.ecom.product.entity.Product;
+import com.ecom.product.helper.DescriptionImageHelper;
+import com.ecom.product.helper.ProductHelper;
 import com.ecom.product.repository.DescriptionImageRepository;
-import com.ecom.product.repository.ProductRepository;
 import com.ecom.product.service.signature.DescriptionImageService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,15 +25,15 @@ import java.util.List;
 public class DescriptionImageServiceImpl implements DescriptionImageService {
 
     private final DescriptionImageRepository descriptionImageRepository;
-    private final ProductRepository productRepository;
     private final FileStorageService fileStorageService;
     private final ModelMapper modelMapper;
+    private final ProductHelper productHelper;
+    private final DescriptionImageHelper descriptionImageHelper;
 
     @Override
     @Transactional
     public DescriptionImageDTO uploadImage(Long productId, MultipartFile file) {
-        Product product = productRepository.findById(productId)
-                .orElseThrow(() -> new ResourceNotFoundException("Product", "id", productId));
+        Product product = productHelper.findByIdOrThrow(productId);
 
         String imageUrl = fileStorageService.storeFile(file);
 
@@ -52,8 +52,7 @@ public class DescriptionImageServiceImpl implements DescriptionImageService {
     @Override
     @Transactional
     public void markAsDeleted(Long productId, Long imageId) {
-        DescriptionImage image = descriptionImageRepository.findByProductIdAndId(productId, imageId)
-                .orElseThrow(() -> new ResourceNotFoundException("DescriptionImage", "id", imageId));
+        DescriptionImage image = descriptionImageHelper.findByProductIdAndIdOrThrow(productId, imageId);
 
         image.setDeleted(true);
         image.setDeletedAt(LocalDateTime.now());

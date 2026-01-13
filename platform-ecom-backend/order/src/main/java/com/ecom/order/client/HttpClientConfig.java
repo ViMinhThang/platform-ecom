@@ -33,4 +33,10 @@ public class HttpClientConfig {
                 "http://inventory-service/internal/inventory", InventoryServiceClient.class);
     }
 
+    @Bean
+    public PromotionServiceClient promotionServiceClient(RestClient.Builder restClientBuilder) {
+        return RestClientFactory.createClient(restClientBuilder,
+                "http://promotion-service/api/v1/vouchers", PromotionServiceClient.class);
+    }
+
 }

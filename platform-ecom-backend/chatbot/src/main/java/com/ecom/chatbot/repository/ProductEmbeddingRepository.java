@@ -50,10 +50,10 @@ public interface ProductEmbeddingRepository extends JpaRepository<ProductEmbeddi
        @Query(value = """
                      INSERT INTO product_embeddings
                          (product_id, product_name, product_slug, description, category_name,
-                          embedding, min_price, price, average_rating, total_sold, updated_at)
+                          embedding, min_price, max_price, price, average_rating, total_sold, updated_at)
                      VALUES
                          (:productId, :productName, :productSlug, :description, :categoryName,
-                          cast(:embedding as vector), :minPrice, :price, :averageRating, :totalSold, NOW())
+                          cast(:embedding as vector), :minPrice, :maxPrice, :price, :averageRating, :totalSold, NOW())
                      ON CONFLICT (product_id) DO UPDATE SET
                          product_name = EXCLUDED.product_name,
                          product_slug = EXCLUDED.product_slug,
@@ -61,6 +61,7 @@ public interface ProductEmbeddingRepository extends JpaRepository<ProductEmbeddi
                          category_name = EXCLUDED.category_name,
                          embedding = EXCLUDED.embedding,
                          min_price = EXCLUDED.min_price,
+                         max_price = EXCLUDED.max_price,
                          price = EXCLUDED.price,
                          average_rating = EXCLUDED.average_rating,
                          total_sold = EXCLUDED.total_sold,
@@ -75,6 +76,7 @@ public interface ProductEmbeddingRepository extends JpaRepository<ProductEmbeddi
                      @Param("categoryName") String categoryName,
                      @Param("embedding") String embedding,
                      @Param("minPrice") BigDecimal minPrice,
+                     @Param("maxPrice") BigDecimal maxPrice,
                      @Param("averageRating") Double averageRating,
                      @Param("totalSold") Long totalSold);
 

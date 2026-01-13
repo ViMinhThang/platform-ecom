@@ -2,8 +2,7 @@ package com.ecom.product.event;
 
 import com.ecom.common.event.OrderCreatedEvent;
 import com.ecom.common.event.OrderCreatedEvent.OrderItemEvent;
-import com.ecom.product.entity.Product;
-import com.ecom.product.entity.ProductVariant;
+
 import com.ecom.product.repository.ProductRepository;
 import com.ecom.product.repository.ProductVariantRepository;
 import lombok.RequiredArgsConstructor;

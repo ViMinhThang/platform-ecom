@@ -16,7 +16,7 @@ interface FormInputProps<
   TFieldValues extends FieldValues,
   TName extends FieldPath<TFieldValues>
 > extends BaseFormFieldProps<TFieldValues, TName> {
-  type?: "text" | "email" | "password" | "number" | "tel" | "url";
+  type?: "text" | "email" | "password" | "number" | "tel" | "url" | "datetime-local";
   placeholder?: string;
   step?: string | number;
   min?: string | number;
@@ -54,7 +54,7 @@ export function FormInput<
           )}
           <FormControl>
             <Input
-            className="rounded-sm"
+              className="rounded-sm"
               type={type}
               placeholder={placeholder}
               step={step}

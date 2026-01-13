@@ -45,6 +45,9 @@ public class ProductEmbedding {
     @Column(name = "min_price", precision = 19, scale = 2)
     private BigDecimal minPrice;
 
+    @Column(name = "max_price", precision = 19, scale = 2)
+    private BigDecimal maxPrice;
+
     @Column(name = "average_rating")
     private Double averageRating;
 

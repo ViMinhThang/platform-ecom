@@ -4,7 +4,7 @@ import com.ecom.order.config.OrderConfigurationProperties;
 import com.ecom.order.entity.Cart;
 import com.ecom.order.entity.CartItem;
 import com.ecom.order.entity.SubOrder;
-import com.ecom.order.entity.SubOrderItem;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

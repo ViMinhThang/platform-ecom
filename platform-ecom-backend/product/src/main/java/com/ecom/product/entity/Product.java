@@ -49,12 +49,16 @@ public class Product {
     private Category category;
 
     @Column(name = "status", length = 20)
+    @Builder.Default
     private String status = "DRAFT";
     @Column(name = "user_id")
     private Long userId;
 
     @Column(name = "min_price")
     private BigDecimal minPrice;
+
+    @Column(name = "max_price")
+    private BigDecimal maxPrice;
 
     @Column(name = "deleted")
     @Builder.Default

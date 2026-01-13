@@ -2,7 +2,9 @@ package com.ecom.product.service.impl;
 
 import com.ecom.product.dto.VariantOptionValueDTO;
 import com.ecom.product.entity.*;
-import com.ecom.common.exception.ResourceNotFoundException;
+import com.ecom.product.helper.ProductOptionValueHelper;
+import com.ecom.product.helper.ProductVariantHelper;
+import com.ecom.product.helper.VariantOptionValueHelper;
 import com.ecom.product.repository.*;
 import com.ecom.product.service.signature.VariantOptionValueService;
 import lombok.RequiredArgsConstructor;
@@ -17,18 +19,19 @@ import java.util.stream.Collectors;
 public class VariantOptionValueServiceImpl implements VariantOptionValueService {
 
     private final VariantOptionValueRepository variantOptionValueRepository;
-    private final ProductVariantRepository productVariantRepository;
-    private final ProductOptionValueRepository productOptionValueRepository;
     private final ModelMapper modelMapper;
+    private final ProductVariantHelper productVariantHelper;
+    private final ProductOptionValueHelper productOptionValueHelper;
+    private final VariantOptionValueHelper variantOptionValueHelper;
 
     @Override
     public VariantOptionValueDTO createVariantOptionValue(VariantOptionValueDTO dto) {
-        ProductVariant variant = findProductVariant(dto.getVariantId());
-        ProductOptionValue optionValue = findProductOptionValue(dto.getProductOptionValue().getId());
+        ProductVariant variant = productVariantHelper.findByIdOrThrow(dto.getVariantId());
+        ProductOptionValue optionValue = productOptionValueHelper.findByIdOrThrow(dto.getProductOptionValue().getId());
 
         VariantOptionValue variantOptionValue = createVariantOptionValueEntity(variant, optionValue);
         VariantOptionValue savedValue = variantOptionValueRepository.save(variantOptionValue);
-        
+
         return mapToDTO(savedValue);
     }
 
@@ -40,26 +43,11 @@ public class VariantOptionValueServiceImpl implements VariantOptionValueService 
 
     @Override
     public void deleteVariantOptionValue(Long variantOptionValueId) {
-        VariantOptionValue value = findVariantOptionValue(variantOptionValueId);
+        VariantOptionValue value = variantOptionValueHelper.findByIdOrThrow(variantOptionValueId);
         variantOptionValueRepository.delete(value);
     }
 
     // ==================== Private Helper Methods ====================
-
-    private ProductVariant findProductVariant(Long variantId) {
-        return productVariantRepository.findById(variantId)
-                .orElseThrow(() -> new ResourceNotFoundException("ProductVariant", "variantId", variantId));
-    }
-
-    private ProductOptionValue findProductOptionValue(Long optionValueId) {
-        return productOptionValueRepository.findById(optionValueId)
-                .orElseThrow(() -> new ResourceNotFoundException("ProductOptionValue", "optionValueId", optionValueId));
-    }
-
-    private VariantOptionValue findVariantOptionValue(Long id) {
-        return variantOptionValueRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("VariantOptionValue", "variantOptionValueId", id));
-    }
 
     private VariantOptionValue createVariantOptionValueEntity(ProductVariant variant, ProductOptionValue optionValue) {
         VariantOptionValue variantOptionValue = new VariantOptionValue();
