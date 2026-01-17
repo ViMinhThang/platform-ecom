@@ -9,6 +9,7 @@ import com.ecom.product.dto.response.SaleCampaignResponse;
 import com.ecom.product.entity.*;
 import com.ecom.product.enums.SaleCampaignStatus;
 import com.ecom.product.helper.*;
+import com.ecom.product.validator.SaleCampaignValidator;
 import com.ecom.product.mapper.SaleCampaignMapper;
 import com.ecom.product.repository.SaleCampaignItemRepository;
 import com.ecom.product.repository.SaleCampaignRepository;
@@ -174,8 +175,9 @@ public class SaleCampaignServiceImpl implements SaleCampaignService {
         saleCampaignItemRepository.deleteBySaleCampaignId(id);
 
         List<SaleCampaignItem> items = itemGenerator.generateItems(saleCampaign);
-        if (items.isEmpty())
-            throw new IllegalStateException("No products match selection");
+        if (items.isEmpty()) {
+            log.warn("Activating campaign {} with 0 items (no products matched criteria)", id);
+        }
 
         items.forEach(saleCampaign::addItem);
 

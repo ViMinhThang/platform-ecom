@@ -5,6 +5,8 @@ import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import { ShieldCheck } from "lucide-react";
 import { formatCurrency } from "@/lib/utils/formatCurrency";
+import { useAppSelector } from "@/lib/store/hooks";
+import { VoucherSection } from "@/components/checkout/VoucherSection";
 
 interface CartSummaryProps {
     cart: CartDTO;
@@ -12,6 +14,9 @@ interface CartSummaryProps {
 
 export function CartSummary({ cart }: CartSummaryProps) {
     const router = useRouter();
+    const { discountResult } = useAppSelector((state) => state.promotion);
+
+    const finalTotal = discountResult ? discountResult.finalTotal : cart.totalAmount;
 
     return (
         <div className="bg-white border-2 border-black sticky top-24 p-0">
@@ -21,6 +26,7 @@ export function CartSummary({ cart }: CartSummaryProps) {
             </div>
 
             <div className="p-6 space-y-6">
+
                 <div className="space-y-4 text-sm">
                     <div className="flex justify-between items-center">
                         <span className="font-mono text-xs uppercase text-zinc-500">Tạm tính ({cart.totalItems} SP)</span>
@@ -32,10 +38,22 @@ export function CartSummary({ cart }: CartSummaryProps) {
                         <span className="font-mono text-[10px] bg-zinc-100 px-2 py-1">TÍNH LÚC THANH TOÁN</span>
                     </div>
 
+                    {discountResult && discountResult.totalDiscount > 0 && (
+                        <div className="flex justify-between items-center text-[#FF4400]">
+                            <span className="font-mono text-xs uppercase font-bold">Giảm giá voucher</span>
+                            <span className="font-mono font-bold">-{formatCurrency(discountResult.totalDiscount)}</span>
+                        </div>
+                    )}
+
+                    {/* Voucher Section Integration */}
+                    <div className="pt-2">
+                        <VoucherSection />
+                    </div>
+
                     <div className="border-t-2 border-black mt-4 pt-4 flex justify-between items-end">
                         <span className="font-black uppercase tracking-tight text-lg">Tổng cộng</span>
                         <span className="text-2xl font-black tracking-tighter tabular-nums text-[#FF4400]">
-                            {formatCurrency(cart.totalAmount)}
+                            {formatCurrency(finalTotal)}
                         </span>
                     </div>
                 </div>

@@ -42,8 +42,8 @@ export default function EditVoucherPage({ params }: PageProps) {
             setLoading(true);
             await voucherService.update(parseInt(id), {
                 ...data,
-                startTime: data.startTime.toISOString(),
-                endTime: data.endTime.toISOString(),
+                startTime: new Date(data.startTime).toISOString(),
+                endTime: new Date(data.endTime).toISOString(),
             });
             toast.success('Cập nhật voucher thành công');
             router.push('/dashboard/vouchers');

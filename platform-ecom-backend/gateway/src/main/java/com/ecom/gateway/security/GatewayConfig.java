@@ -326,6 +326,30 @@ public class GatewayConfig {
                                                 .uri("lb://chatbot-service"))
 
                                 // ============================================================
+                                // PROMOTIONS & VOUCHERS - /api/v1/vouchers
+                                // ============================================================
+
+                                // Public voucher endpoints
+                                .route("vouchers-public", r -> r
+                                                .path("/api/v1/vouchers/auto-apply", "/api/v1/vouchers/code/**", "/api/v1/vouchers/available")
+                                                .uri("lb://promotion-service"))
+
+                                // Authenticated voucher actions
+                                .route("vouchers-authenticated", r -> r
+                                                .path("/api/v1/vouchers/validate/**", "/api/v1/vouchers/calculate",
+                                                                "/api/v1/vouchers/apply")
+                                                .filters(f -> f
+                                                                .filter(authFilter))
+                                                .uri("lb://promotion-service"))
+
+                                // Admin voucher management
+                                .route("admin-vouchers", r -> r
+                                                .path("/api/v1/admin/vouchers/**")
+                                                .filters(f -> f
+                                                                .filter(authFilter))
+                                                .uri("lb://promotion-service"))
+
+                                // ============================================================
                                 // SERVICE DISCOVERY (Internal/Admin only)
                                 // ============================================================
 

@@ -34,6 +34,7 @@ import {
   IconCategory,
   IconPackage,
   IconBolt,
+  IconTicket,
 } from '@tabler/icons-react';
 
 export type Icon = React.ComponentType<IconProps>;
@@ -73,5 +74,6 @@ export const Icons = {
   check: IconCheck,
   package: IconPackage,
   flashSale: IconBolt,
+  voucher: IconTicket,
 };
 

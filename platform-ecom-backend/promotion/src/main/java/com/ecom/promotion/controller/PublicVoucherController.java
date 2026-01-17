@@ -28,7 +28,7 @@ public class PublicVoucherController {
         DiscountResult result = discountCalculator.calculateDiscount(
                 request.getItems(),
                 request.getShippingFee(),
-                request.getVoucherCode(),
+                request.getVoucherCodes(),
                 request.getUserId());
         return ResponseBuilder.success("Discount calculated successfully", result);
     }
@@ -40,7 +40,7 @@ public class PublicVoucherController {
                 request.getOrderId(),
                 request.getItems(),
                 request.getShippingFee(),
-                request.getVoucherCode(),
+                request.getVoucherCodes(),
                 request.getUserId());
         return ResponseBuilder.success("Vouchers applied successfully", result);
     }
@@ -64,5 +64,11 @@ public class PublicVoucherController {
     public ResponseEntity<APIResponse<List<VoucherDTO>>> getActiveAutoApplyVouchers() {
         List<VoucherDTO> vouchers = voucherService.getActiveAutoApplyVouchers();
         return ResponseBuilder.success("Auto-apply vouchers retrieved", vouchers);
+    }
+
+    @GetMapping("/available")
+    public ResponseEntity<APIResponse<List<VoucherDTO>>> getAllAvailableVouchers() {
+        List<VoucherDTO> vouchers = voucherService.getAllActiveVouchers();
+        return ResponseBuilder.success("Available vouchers retrieved", vouchers);
     }
 }

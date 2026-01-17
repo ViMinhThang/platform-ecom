@@ -7,6 +7,7 @@ import addressReducer from './slices/addressSlice';
 import orderReducer from './slices/orderSlice';
 import reviewReducer from './slices/reviewSlice';
 import checkoutReducer from './slices/checkoutSlice';
+import promotionReducer from './slices/promotionSlice';
 
 export const store = configureStore({
     reducer: {
@@ -18,6 +19,7 @@ export const store = configureStore({
         orders: orderReducer,
         reviews: reviewReducer,
         checkout: checkoutReducer,
+        promotion: promotionReducer,
     },
 });
 

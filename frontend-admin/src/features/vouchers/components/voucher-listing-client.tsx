@@ -87,7 +87,7 @@ export function VoucherListingClient({ searchParams }: VoucherListingClientProps
     }
 
     return (
-        <div className="space-y-4">
+        <div className="flex flex-1 flex-col space-y-4">
             <div className="flex flex-wrap items-center gap-4">
                 <Select value={currentStatus || 'all'} onValueChange={(v) => updateFilter('status', v)}>
                     <SelectTrigger className="w-[180px]">
@@ -122,6 +122,7 @@ export function VoucherListingClient({ searchParams }: VoucherListingClientProps
             </div>
 
             <VoucherTable
+                key={vouchers.length} // Force re-render when data changes
                 data={vouchers}
                 totalItems={totalItems}
                 columns={columns}

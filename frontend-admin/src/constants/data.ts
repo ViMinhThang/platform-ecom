@@ -50,6 +50,14 @@ export const navItems: NavItem[] = [
     items: [] // No child items
   },
   {
+    title: 'Mã giảm giá',
+    url: '/dashboard/vouchers',
+    icon: 'voucher',
+    shortcut: ['v', 'v'],
+    isActive: false,
+    items: []
+  },
+  {
     title: 'Đơn hàng',
     url: '/dashboard/orders',
     icon: 'media',

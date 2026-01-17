@@ -3,28 +3,28 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { Zap, ArrowLeft } from 'lucide-react';
-import { FlashSale, FlashSaleItem } from '@/types/flash-sale';
-import { CountdownTimer } from '@/components/flash-sale';
+import { SaleCampaign, SaleCampaignItem } from '@/types/sale-campaign';
+import { CountdownTimer } from '@/components/sale-campaign';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { imageUrl } from '@/lib/utils/imageUrl';
 import { formatCurrency } from '@/lib/utils/formatCurrency';
 
-interface FlashSaleDetailClientProps {
-    flashSale: FlashSale;
-    items: FlashSaleItem[];
+interface SaleCampaignDetailClientProps {
+    saleCampaign: SaleCampaign;
+    items: SaleCampaignItem[];
 }
 
-export function FlashSaleDetailClient({ flashSale, items }: FlashSaleDetailClientProps) {
+export function SaleCampaignDetailClient({ saleCampaign, items }: SaleCampaignDetailClientProps) {
     return (
         <div>
             {/* Header Banner */}
             <div className="relative bg-gradient-to-r from-black via-zinc-900 to-black border-b-4 border-primary">
-                {flashSale.bannerUrl && (
+                {saleCampaign.bannerUrl && (
                     <div className="absolute inset-0 opacity-30">
                         <Image
-                            src={flashSale.bannerUrl}
+                            src={saleCampaign.bannerUrl}
                             alt=""
                             fill
                             className="object-cover"
@@ -34,9 +34,9 @@ export function FlashSaleDetailClient({ flashSale, items }: FlashSaleDetailClien
 
                 <div className="relative container mx-auto px-4 py-12">
                     <Button asChild variant="outline" size="sm" className="mb-6 rounded-none border-white text-white hover:bg-white hover:text-black">
-                        <Link href="/flash-sales">
+                        <Link href="/sale-campaigns">
                             <ArrowLeft className="mr-2 h-4 w-4" />
-                            Tất cả Flash Sales
+                            Tất cả Sale Campaigns
                         </Link>
                     </Button>
 
@@ -47,10 +47,10 @@ export function FlashSaleDetailClient({ flashSale, items }: FlashSaleDetailClien
                             </div>
                             <div>
                                 <h1 className="text-3xl md:text-4xl font-black text-white uppercase tracking-wider">
-                                    {flashSale.name}
+                                    {saleCampaign.name}
                                 </h1>
-                                {flashSale.description && (
-                                    <p className="text-white/70 mt-2 max-w-xl">{flashSale.description}</p>
+                                {saleCampaign.description && (
+                                    <p className="text-white/70 mt-2 max-w-xl">{saleCampaign.description}</p>
                                 )}
                                 <div className="text-white/50 text-sm mt-2">
                                     {items.length} sản phẩm đang giảm giá
@@ -62,7 +62,7 @@ export function FlashSaleDetailClient({ flashSale, items }: FlashSaleDetailClien
                             <div className="text-white/50 text-xs uppercase tracking-widest font-bold mb-2">
                                 Kết thúc trong
                             </div>
-                            <CountdownTimer endTime={flashSale.endTime} variant="banner" />
+                            <CountdownTimer endTime={saleCampaign.endTime} variant="banner" />
                         </div>
                     </div>
                 </div>
@@ -85,10 +85,10 @@ export function FlashSaleDetailClient({ flashSale, items }: FlashSaleDetailClien
                                             -{item.discountPercent}%
                                         </Badge>
 
-                                        {/* Flash Badge */}
+                                        {/* Sale Badge */}
                                         <Badge className="absolute top-0 right-0 z-10 bg-black text-white rounded-none px-2 py-1 text-[8px] font-black tracking-widest flex items-center gap-1">
                                             <Zap className="h-3 w-3" />
-                                            FLASH
+                                            SALE
                                         </Badge>
 
                                         {/* Out of stock overlay */}
@@ -117,7 +117,7 @@ export function FlashSaleDetailClient({ flashSale, items }: FlashSaleDetailClien
                                             {/* Price */}
                                             <div className="flex items-baseline gap-2 font-mono mb-2">
                                                 <span className="text-lg font-black tracking-tighter text-primary">
-                                                    {formatCurrency(item.flashSalePrice)}
+                                                    {formatCurrency(item.salePrice)}
                                                 </span>
                                                 <span className="text-[10px] font-bold text-zinc-400 line-through">
                                                     {formatCurrency(item.originalPrice)}

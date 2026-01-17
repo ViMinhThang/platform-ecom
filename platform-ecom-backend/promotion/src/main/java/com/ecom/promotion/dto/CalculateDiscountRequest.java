@@ -15,6 +15,6 @@ public class CalculateDiscountRequest {
     private Long orderId; // Required for apply, null for calculate
     private java.util.List<CartItemDTO> items;
     private BigDecimal shippingFee;
-    private String voucherCode; // Optional user-entered code
+    private java.util.List<String> voucherCodes; // Optional user-entered codes
     private Long userId;
 }

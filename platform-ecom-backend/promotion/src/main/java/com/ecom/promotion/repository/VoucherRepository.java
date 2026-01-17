@@ -40,9 +40,18 @@ public interface VoucherRepository extends JpaRepository<Voucher, Long> {
                         """)
         List<Voucher> findActiveAutoApplyVouchers(@Param("now") LocalDateTime now);
 
-        /**
-         * Find active vouchers by category
-         */
+    @Query("""
+            SELECT v FROM Voucher v
+            WHERE v.status = 'ACTIVE'
+            AND v.startTime <= :now
+            AND v.endTime > :now
+            AND (v.usageLimit IS NULL OR v.currentUsageCount < v.usageLimit)
+            """)
+    List<Voucher> findAllActiveVouchers(@Param("now") LocalDateTime now);
+
+    /**
+     * Find active vouchers by category
+     */
         @Query("""
                         SELECT v FROM Voucher v
                         WHERE v.status = 'ACTIVE'

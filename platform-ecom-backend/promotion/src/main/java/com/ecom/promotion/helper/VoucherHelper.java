@@ -101,6 +101,24 @@ public class VoucherHelper {
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
+    public BigDecimal calculateScopedTotal(Voucher voucher, List<CartItemDTO> items) {
+        if (voucher.getScopes() == null || voucher.getScopes().isEmpty()) {
+            return calculateItemsTotal(items);
+        }
+
+        boolean hasAllScope = voucher.getScopes().stream()
+                .anyMatch(s -> s.getScopeType() == ScopeType.ALL);
+        if (hasAllScope) {
+            return calculateItemsTotal(items);
+        }
+
+        return items.stream()
+                .filter(item -> voucher.getScopes().stream()
+                        .anyMatch(scope -> scope.matches(item.getProductId(), item.getVariantId(), item.getCategoryId())))
+                .map(i -> i.getPrice().multiply(BigDecimal.valueOf(i.getQuantity())))
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
     public Voucher buildVoucher(com.ecom.promotion.dto.request.CreateVoucherRequest request) {
         Voucher voucher = Voucher.builder()
                 .code(request.getCode())

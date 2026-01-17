@@ -37,13 +37,13 @@ public class DiscountCalculatorImpl implements DiscountCalculator {
     public DiscountResult calculateDiscount(
             List<CartItemDTO> items,
             BigDecimal shippingFee,
-            String voucherCode,
+            List<String> voucherCodes,
             Long userId) {
 
         BigDecimal itemsTotal = voucherHelper.calculateItemsTotal(items);
 
         // Get all applicable vouchers
-        List<Voucher> applicableVouchers = findApplicableVouchers(items, voucherCode, userId);
+        List<Voucher> applicableVouchers = findApplicableVouchers(items, voucherCodes, userId);
 
         // Separate by category
         List<Voucher> productVouchers = filterByCategory(applicableVouchers, VoucherCategory.PRODUCT);
@@ -79,10 +79,10 @@ public class DiscountCalculatorImpl implements DiscountCalculator {
             Long orderId,
             List<CartItemDTO> items,
             BigDecimal shippingFee,
-            String voucherCode,
+            List<String> voucherCodes,
             Long userId) {
 
-        DiscountResult result = calculateDiscount(items, shippingFee, voucherCode, userId);
+        DiscountResult result = calculateDiscount(items, shippingFee, voucherCodes, userId);
 
         // Record usage for applied vouchers
         if (result.getAppliedProductVoucher() != null) {
@@ -96,18 +96,22 @@ public class DiscountCalculatorImpl implements DiscountCalculator {
         return result;
     }
 
-    private List<Voucher> findApplicableVouchers(List<CartItemDTO> items, String voucherCode, Long userId) {
+    private List<Voucher> findApplicableVouchers(List<CartItemDTO> items, List<String> voucherCodes, Long userId) {
         LocalDateTime now = LocalDateTime.now();
         List<Voucher> vouchers = new ArrayList<>();
 
         // Get auto-apply vouchers
         vouchers.addAll(voucherRepository.findActiveAutoApplyVouchers(now));
 
-        // Add code voucher if provided
-        if (voucherCode != null && !voucherCode.isBlank()) {
-            voucherRepository.findByCodeAndStatus(voucherCode, VoucherStatus.ACTIVE)
-                    .filter(v -> v.isActiveNow() && voucherHelper.canUserUseVoucher(v, userId))
-                    .ifPresent(vouchers::add);
+        // Add code vouchers if provided
+        if (voucherCodes != null && !voucherCodes.isEmpty()) {
+            for (String code : voucherCodes) {
+                if (code != null && !code.isBlank()) {
+                    voucherRepository.findByCodeAndStatus(code, VoucherStatus.ACTIVE)
+                            .filter(v -> v.isActiveNow() && voucherHelper.canUserUseVoucher(v, userId))
+                            .ifPresent(vouchers::add);
+                }
+            }
         }
 
         // Filter by scope and min order amount
@@ -132,7 +136,8 @@ public class DiscountCalculatorImpl implements DiscountCalculator {
         BigDecimal bestDiscount = BigDecimal.ZERO;
 
         for (Voucher voucher : vouchers) {
-            BigDecimal discount = voucher.calculateDiscount(total);
+            BigDecimal scopedTotal = voucherHelper.calculateScopedTotal(voucher, items);
+            BigDecimal discount = voucher.calculateDiscount(scopedTotal);
             if (discount.compareTo(bestDiscount) > 0) {
                 bestDiscount = discount;
                 best = voucher;

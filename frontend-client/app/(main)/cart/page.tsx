@@ -7,8 +7,11 @@ import { Button } from "@/components/ui/button";
 import { ShoppingBag } from "lucide-react";
 import Link from "next/link";
 
+import { usePromotion } from "@/hooks/usePromotion";
+
 export default function CartPage() {
     const { cart, cartBySeller, loading } = useCart();
+    usePromotion(cart);
 
     if (loading && !cart) {
         return (

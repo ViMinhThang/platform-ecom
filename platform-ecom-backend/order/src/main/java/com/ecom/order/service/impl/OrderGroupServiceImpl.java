@@ -7,6 +7,7 @@ import com.ecom.order.entity.*;
 import com.ecom.order.event.OrderEventPublisher;
 import com.ecom.order.helper.*;
 import com.ecom.order.mapper.AdminOrderMapper;
+import com.ecom.order.mapper.OrderMapping;
 import com.ecom.order.payment.PaymentIntent;
 import com.ecom.order.repository.*;
 import com.ecom.order.service.OrderCalculator;
@@ -40,7 +41,7 @@ public class OrderGroupServiceImpl implements OrderGroupService {
     private final OrderCreationHelper orderCreationHelper;
     private final OrderValidationHelper orderValidationHelper;
     private final OrderPaymentHelper paymentHelper;
-    private final OrderMappingHelper mappingHelper;
+    private final OrderMapping mappingHelper;
     private final OrderActionHelper actionHelper;
     private final CartHelper cartHelper;
 

@@ -6,31 +6,31 @@ import Image from 'next/image';
 import { Zap, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { CountdownTimer } from './CountdownTimer';
-import { FlashSale } from '@/types/flash-sale';
-import { getActiveFlashSales } from '@/lib/services/flash-sale-service';
+import { SaleCampaign } from '@/types/sale-campaign';
+import { getActiveSaleCampaigns } from '@/lib/services/sale-campaign-service';
 
-export function FlashSaleBanner() {
-    const [flashSale, setFlashSale] = useState<FlashSale | null>(null);
+export function SaleCampaignBanner() {
+    const [saleCampaign, setSaleCampaign] = useState<SaleCampaign | null>(null);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        const fetchFlashSales = async () => {
+        const fetchSaleCampaigns = async () => {
             try {
-                const sales = await getActiveFlashSales();
+                const sales = await getActiveSaleCampaigns();
                 if (sales.length > 0) {
-                    setFlashSale(sales[0]); // Show the first active flash sale
+                    setSaleCampaign(sales[0]); // Show the first active sale campaign
                 }
             } catch (error) {
-                console.error('Failed to fetch flash sales:', error);
+                console.error('Failed to fetch sale campaigns:', error);
             } finally {
                 setLoading(false);
             }
         };
 
-        fetchFlashSales();
+        fetchSaleCampaigns();
     }, []);
 
-    if (loading || !flashSale) {
+    if (loading || !saleCampaign) {
         return null;
     }
 
@@ -50,10 +50,10 @@ export function FlashSaleBanner() {
             </div>
 
             {/* Banner Image (if exists) */}
-            {flashSale.bannerUrl && (
+            {saleCampaign.bannerUrl && (
                 <div className="absolute inset-0 opacity-20">
                     <Image
-                        src={flashSale.bannerUrl}
+                        src={saleCampaign.bannerUrl}
                         alt=""
                         fill
                         className="object-cover"
@@ -71,19 +71,19 @@ export function FlashSaleBanner() {
                         <div>
                             <div className="flex items-center gap-2">
                                 <h2 className="text-2xl md:text-3xl font-black text-white uppercase tracking-wider">
-                                    {flashSale.name}
+                                    {saleCampaign.name}
                                 </h2>
                                 <span className="px-2 py-1 bg-primary text-white text-[10px] font-black uppercase tracking-widest animate-pulse">
                                     Live Now
                                 </span>
                             </div>
-                            {flashSale.description && (
+                            {saleCampaign.description && (
                                 <p className="text-white/70 text-sm mt-1 max-w-md">
-                                    {flashSale.description}
+                                    {saleCampaign.description}
                                 </p>
                             )}
                             <div className="text-white/50 text-xs mt-2 font-mono">
-                                {flashSale.totalItems} sản phẩm đang giảm giá
+                                {saleCampaign.totalItems} sản phẩm đang giảm giá
                             </div>
                         </div>
                     </div>
@@ -93,7 +93,7 @@ export function FlashSaleBanner() {
                         <div className="text-white/50 text-xs uppercase tracking-widest font-bold">
                             Kết thúc trong
                         </div>
-                        <CountdownTimer endTime={flashSale.endTime} variant="banner" />
+                        <CountdownTimer endTime={saleCampaign.endTime} variant="banner" />
                     </div>
 
                     {/* Right side - CTA */}
@@ -102,7 +102,7 @@ export function FlashSaleBanner() {
                         size="lg"
                         className="bg-primary hover:bg-primary/90 text-white rounded-none font-black uppercase tracking-wider px-8 group"
                     >
-                        <Link href={`/flash-sales/${flashSale.slug}`}>
+                        <Link href={`/sale-campaigns/${saleCampaign.slug}`}>
                             Xem ngay
                             <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
                         </Link>

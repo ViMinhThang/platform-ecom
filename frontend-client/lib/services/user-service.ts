@@ -14,7 +14,7 @@ export interface RegisterUserData {
 
 export const registerUser = async (data: RegisterUserData): Promise<{ message: string }> => {
     const response = await apiClient.post<APIResponse<{ message: string }>>(
-        '/auth/signup',
+        '/v1/auth/signup',
         {
             username: data.username,
             email: data.email,

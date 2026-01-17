@@ -1,4 +1,4 @@
-package com.ecom.product.helper;
+package com.ecom.product.validator;
 
 import com.ecom.product.dto.request.DiscountTierRequest;
 import com.ecom.product.entity.SaleCampaign;

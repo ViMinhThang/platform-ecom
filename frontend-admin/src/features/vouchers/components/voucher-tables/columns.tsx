@@ -98,14 +98,20 @@ export const columns: ColumnDef<Voucher>[] = [
     {
         accessorKey: 'startTime',
         header: 'Thời gian',
-        cell: ({ row }) => (
-            <div className="text-xs">
-                <div>{format(new Date(row.original.startTime), 'dd/MM/yyyy HH:mm', { locale: vi })}</div>
-                <div className="text-muted-foreground">
-                    → {format(new Date(row.original.endTime), 'dd/MM/yyyy HH:mm', { locale: vi })}
-                </div>
-            </div>
-        ),
+        cell: ({ row }) => {
+            try {
+                return (
+                    <div className="text-xs">
+                        <div>{format(new Date(row.original.startTime), 'dd/MM/yyyy HH:mm', { locale: vi })}</div>
+                        <div className="text-muted-foreground">
+                            → {format(new Date(row.original.endTime), 'dd/MM/yyyy HH:mm', { locale: vi })}
+                        </div>
+                    </div>
+                );
+            } catch (e) {
+                return <span className="text-red-500">Lỗi ngày tháng</span>;
+            }
+        },
     },
     {
         id: 'actions',

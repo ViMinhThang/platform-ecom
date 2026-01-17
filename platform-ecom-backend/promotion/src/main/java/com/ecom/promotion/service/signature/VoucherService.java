@@ -30,6 +30,8 @@ public interface VoucherService {
 
     List<VoucherDTO> getActiveAutoApplyVouchers();
 
+    List<VoucherDTO> getAllActiveVouchers();
+
     VoucherDTO activateVoucher(Long id);
 
     VoucherDTO cancelVoucher(Long id);

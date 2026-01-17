@@ -29,8 +29,8 @@ public class User {
         @Column(name = "email")
         private String email;
 
-        @Column(name = "is_active", nullable = false, columnDefinition = "boolean default true")
-        private Boolean isActive = true;
+	    @Column(name = "is_active", nullable = false)
+	    private Boolean isActive = true;
 
         @NotBlank
         @Size(max = 120)

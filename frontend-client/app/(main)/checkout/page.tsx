@@ -15,6 +15,9 @@ import { logger } from "@/lib/logger";
 import { formatCurrency } from "@/lib/utils/formatCurrency";
 import { imageUrl } from "@/lib/utils/imageUrl";
 
+import { usePromotion } from "@/hooks/usePromotion";
+import { VoucherSection } from "@/components/checkout/VoucherSection";
+
 export default function CheckoutPage() {
     const {
         checkout,
@@ -31,8 +34,8 @@ export default function CheckoutPage() {
 
     const { shippingFee, loading: shippingLoading, calculateTotalShipping } = useShipping();
     const { addresses } = useAppSelector((state) => state.address);
+    const { discountResult } = usePromotion(cart, shippingFee);
 
-    // Calculate shipping when address is selected
     useEffect(() => {
         if (cart && checkout.selectedAddressId && addresses.length > 0) {
             const selectedAddress = addresses.find(a => a.addressId === checkout.selectedAddressId);
@@ -42,8 +45,6 @@ export default function CheckoutPage() {
         }
     }, [cart, checkout.selectedAddressId, addresses, calculateTotalShipping]);
 
-    // Sync shipping fee to Redux store
-    // Sync shipping fee to Redux store
     useEffect(() => {
         if (shippingFee > 0) {
             setShipping(shippingFee);
@@ -69,15 +70,11 @@ export default function CheckoutPage() {
         }
     }, [checkout.step, checkoutSession, orderLoading, startCheckout, orderError, currentOrder]);
 
-    // ... inside component ...
-
-    // ... inside component ...
-
     if (!cart) {
         return <div className="container py-12 text-center">Đang tải trang thanh toán...</div>;
     }
 
-    const totalAmount = cart.totalAmount + shippingFee;
+    const totalAmount = discountResult ? discountResult.finalTotal : (cart.totalAmount + shippingFee);
 
     return (
         <div className="bg-zinc-50/30 min-h-screen">
@@ -229,6 +226,11 @@ export default function CheckoutPage() {
                                             )
                                         )}
                                     </span>
+                                </div>
+
+                                {/* Voucher Section */}
+                                <div className="pt-2">
+                                    <VoucherSection />
                                 </div>
 
                                 <div className="border-t border-dashed pt-4 mt-4 flex justify-between items-center">

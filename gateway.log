@@ -1,0 +1,160 @@
+WARNING: A terminally deprecated method in sun.misc.Unsafe has been called
+WARNING: sun.misc.Unsafe::staticFieldBase has been called by com.google.inject.internal.aop.HiddenClassDefiner (file:/home/fragile/.m2/wrapper/dists/apache-maven-3.9.11/a2d47e15/lib/guice-5.1.0-classes.jar)
+WARNING: Please consider reporting this to the maintainers of class com.google.inject.internal.aop.HiddenClassDefiner
+WARNING: sun.misc.Unsafe::staticFieldBase will be removed in a future release
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] --------------------------< com.ecom:gateway >--------------------------
+[INFO] Building gateway 0.0.1-SNAPSHOT
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.4.1:clean (default-clean) @ gateway ---
+[INFO] Deleting /home/fragile/platform-ecom/platform-ecom-backend/gateway/target
+[INFO] 
+[INFO] >>> spring-boot:3.5.6:run (default-cli) > test-compile @ gateway >>>
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ gateway ---
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] Copying 0 resource from src/main/resources to target/classes
+[INFO] 
+[INFO] --- compiler:3.14.0:compile (default-compile) @ gateway ---
+[INFO] Recompiling the module because of changed source code.
+[INFO] Compiling 7 source files with javac [debug parameters release 25] to target/classes
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ gateway ---
+[INFO] skip non existing resourceDirectory /home/fragile/platform-ecom/platform-ecom-backend/gateway/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.14.0:testCompile (default-testCompile) @ gateway ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 1 source file with javac [debug parameters release 25] to target/test-classes
+[INFO] 
+[INFO] <<< spring-boot:3.5.6:run (default-cli) < test-compile @ gateway <<<
+[INFO] 
+[INFO] 
+[INFO] --- spring-boot:3.5.6:run (default-cli) @ gateway ---
+[INFO] Attaching agents: []
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v3.5.6)
+
+2026-01-17T15:20:20.620+07:00  INFO 124436 --- [gateway-service] [           main] [                                                 ] com.ecom.gateway.GatewayApplication      : Starting GatewayApplication using Java 25.0.1 with PID 124436 (/home/fragile/platform-ecom/platform-ecom-backend/gateway/target/classes started by fragile in /home/fragile/platform-ecom/platform-ecom-backend/gateway)
+2026-01-17T15:20:20.624+07:00  INFO 124436 --- [gateway-service] [           main] [                                                 ] com.ecom.gateway.GatewayApplication      : No active profile set, falling back to 1 default profile: "default"
+2026-01-17T15:20:20.687+07:00  INFO 124436 --- [gateway-service] [           main] [                                                 ] o.s.c.c.c.ConfigServerConfigDataLoader   : Fetching config from server at : http://localhost:8888
+2026-01-17T15:20:20.688+07:00  INFO 124436 --- [gateway-service] [           main] [                                                 ] o.s.c.c.c.ConfigServerConfigDataLoader   : Located environment: name=gateway-service, profiles=[default], label=null, version=null, state=null
+2026-01-17T15:20:22.694+07:00  INFO 124436 --- [gateway-service] [           main] [                                                 ] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode
+2026-01-17T15:20:22.699+07:00  INFO 124436 --- [gateway-service] [           main] [                                                 ] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2026-01-17T15:20:22.749+07:00  INFO 124436 --- [gateway-service] [           main] [                                                 ] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 19 ms. Found 0 Redis repository interfaces.
+2026-01-17T15:20:23.070+07:00  INFO 124436 --- [gateway-service] [           main] [                                                 ] o.s.cloud.context.scope.GenericScope     : BeanFactory id=72eeb1c0-bdeb-3a71-9426-9ce871a9f0fe
+WARNING: A terminally deprecated method in sun.misc.Unsafe has been called
+WARNING: sun.misc.Unsafe::allocateMemory has been called by io.netty.util.internal.PlatformDependent0$2 (file:/home/fragile/.m2/repository/io/netty/netty-common/4.1.127.Final/netty-common-4.1.127.Final.jar)
+WARNING: Please consider reporting this to the maintainers of class io.netty.util.internal.PlatformDependent0$2
+WARNING: sun.misc.Unsafe::allocateMemory will be removed in a future release
+WARNING: A restricted method in java.lang.System has been called
+WARNING: java.lang.System::loadLibrary has been called by io.netty.util.internal.NativeLibraryUtil in an unnamed module (file:/home/fragile/.m2/repository/io/netty/netty-common/4.1.127.Final/netty-common-4.1.127.Final.jar)
+WARNING: Use --enable-native-access=ALL-UNNAMED to avoid a warning for callers in this module
+WARNING: Restricted methods will be blocked in a future release unless native access is enabled
+
+2026-01-17T15:20:24.374+07:00  INFO 124436 --- [gateway-service] [           main] [                                                 ] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [After]
+2026-01-17T15:20:24.374+07:00  INFO 124436 --- [gateway-service] [           main] [                                                 ] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [Before]
+2026-01-17T15:20:24.374+07:00  INFO 124436 --- [gateway-service] [           main] [                                                 ] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [Between]
+2026-01-17T15:20:24.374+07:00  INFO 124436 --- [gateway-service] [           main] [                                                 ] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [Cookie]
+2026-01-17T15:20:24.374+07:00  INFO 124436 --- [gateway-service] [           main] [                                                 ] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [Header]
+2026-01-17T15:20:24.374+07:00  INFO 124436 --- [gateway-service] [           main] [                                                 ] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [Host]
+2026-01-17T15:20:24.374+07:00  INFO 124436 --- [gateway-service] [           main] [                                                 ] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [Method]
+2026-01-17T15:20:24.375+07:00  INFO 124436 --- [gateway-service] [           main] [                                                 ] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [Path]
+2026-01-17T15:20:24.376+07:00  INFO 124436 --- [gateway-service] [           main] [                                                 ] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [Query]
+2026-01-17T15:20:24.376+07:00  INFO 124436 --- [gateway-service] [           main] [                                                 ] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [ReadBody]
+2026-01-17T15:20:24.376+07:00  INFO 124436 --- [gateway-service] [           main] [                                                 ] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [RemoteAddr]
+2026-01-17T15:20:24.376+07:00  INFO 124436 --- [gateway-service] [           main] [                                                 ] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [XForwardedRemoteAddr]
+2026-01-17T15:20:24.376+07:00  INFO 124436 --- [gateway-service] [           main] [                                                 ] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [Weight]
+2026-01-17T15:20:24.376+07:00  INFO 124436 --- [gateway-service] [           main] [                                                 ] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [CloudFoundryRouteService]
+2026-01-17T15:20:24.446+07:00 DEBUG 124436 --- [gateway-service] [           main] [                                                 ] s.w.r.r.m.a.RequestMappingHandlerMapping : 0 mappings in 'requestMappingHandlerMapping'
+2026-01-17T15:20:24.448+07:00 TRACE 124436 --- [gateway-service] [           main] [                                                 ] o.s.w.r.f.s.s.RouterFunctionMapping      : 0 RouterFunction(s) in 'routerFunctionMapping'
+2026-01-17T15:20:24.457+07:00 TRACE 124436 --- [gateway-service] [           main] [                                                 ] o.s.w.r.handler.SimpleUrlHandlerMapping  : Mapped [/webjars/**] onto ResourceWebHandler [classpath [META-INF/resources/webjars/]]
+2026-01-17T15:20:24.457+07:00 TRACE 124436 --- [gateway-service] [           main] [                                                 ] o.s.w.r.handler.SimpleUrlHandlerMapping  : Mapped [/**] onto ResourceWebHandler [classpath [META-INF/resources/], classpath [resources/], classpath [static/], classpath [public/]]
+2026-01-17T15:20:24.458+07:00 TRACE 124436 --- [gateway-service] [           main] [                                                 ] o.s.w.r.handler.SimpleUrlHandlerMapping  : Mapped [/uploads/**] onto ResourceWebHandler [URL [file:/home/fragile/platform-ecom/uploads/]]
+2026-01-17T15:20:24.458+07:00 DEBUG 124436 --- [gateway-service] [           main] [                                                 ] o.s.w.r.handler.SimpleUrlHandlerMapping  : Patterns [/webjars/**, /**, /uploads/**] in 'resourceHandlerMapping'
+2026-01-17T15:20:24.658+07:00  INFO 124436 --- [gateway-service] [           main] [                                                 ] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 16 endpoints beneath base path '/actuator'
+2026-01-17T15:20:24.700+07:00 DEBUG 124436 --- [gateway-service] [           main] [                                                 ] o.s.w.r.r.m.a.ControllerMethodResolver   : ControllerAdvice beans: none
+2026-01-17T15:20:24.952+07:00 DEBUG 124436 --- [gateway-service] [           main] [                                                 ] o.s.w.s.adapter.HttpWebHandlerAdapter    : enableLoggingRequestDetails='false': form data and headers will be masked to prevent unsafe logging of potentially sensitive data
+2026-01-17T15:20:25.144+07:00  INFO 124436 --- [gateway-service] [           main] [                                                 ] DiscoveryClientOptionalArgsConfiguration : Eureka HTTP Client uses RestTemplate.
+2026-01-17T15:20:25.170+07:00  WARN 124436 --- [gateway-service] [           main] [                                                 ] iguration$LoadBalancerCaffeineWarnLogger : Spring Cloud LoadBalancer is currently working with the default cache. While this cache implementation is useful for development and tests, it's recommended to use Caffeine cache in production.You can switch to using Caffeine cache, by adding it and org.springframework.cache.caffeine.CaffeineCacheManager to the classpath.
+2026-01-17T15:20:25.228+07:00  INFO 124436 --- [gateway-service] [           main] [                                                 ] o.s.c.n.eureka.InstanceInfoFactory       : Setting initial instance status as: STARTING
+2026-01-17T15:20:25.258+07:00  INFO 124436 --- [gateway-service] [           main] [                                                 ] com.netflix.discovery.DiscoveryClient    : Initializing Eureka in region us-east-1
+2026-01-17T15:20:25.265+07:00  INFO 124436 --- [gateway-service] [           main] [                                                 ] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2026-01-17T15:20:25.279+07:00  INFO 124436 --- [gateway-service] [           main] [                                                 ] com.netflix.discovery.DiscoveryClient    : Disable delta property : false
+2026-01-17T15:20:25.280+07:00  INFO 124436 --- [gateway-service] [           main] [                                                 ] com.netflix.discovery.DiscoveryClient    : Single vip registry refresh property : null
+2026-01-17T15:20:25.280+07:00  INFO 124436 --- [gateway-service] [           main] [                                                 ] com.netflix.discovery.DiscoveryClient    : Force full registry fetch : false
+2026-01-17T15:20:25.280+07:00  INFO 124436 --- [gateway-service] [           main] [                                                 ] com.netflix.discovery.DiscoveryClient    : Application is null : false
+2026-01-17T15:20:25.280+07:00  INFO 124436 --- [gateway-service] [           main] [                                                 ] com.netflix.discovery.DiscoveryClient    : Registered Applications size is zero : true
+2026-01-17T15:20:25.280+07:00  INFO 124436 --- [gateway-service] [           main] [                                                 ] com.netflix.discovery.DiscoveryClient    : Application version is -1: true
+2026-01-17T15:20:25.280+07:00  INFO 124436 --- [gateway-service] [           main] [                                                 ] com.netflix.discovery.DiscoveryClient    : Getting all instance registry info from the eureka server
+2026-01-17T15:20:25.377+07:00 DEBUG 124436 --- [gateway-service] [           main] [                                                 ] o.s.web.client.RestTemplate              : HTTP GET http://localhost:8761/eureka/apps/
+2026-01-17T15:20:25.463+07:00 DEBUG 124436 --- [gateway-service] [           main] [                                                 ] o.s.web.client.RestTemplate              : Accept=[application/json, application/*+json]
+2026-01-17T15:20:25.512+07:00 DEBUG 124436 --- [gateway-service] [           main] [                                                 ] o.s.web.client.RestTemplate              : Response 200 OK
+2026-01-17T15:20:25.514+07:00 DEBUG 124436 --- [gateway-service] [           main] [                                                 ] o.s.web.client.RestTemplate              : Reading to [org.springframework.cloud.netflix.eureka.http.EurekaApplications]
+2026-01-17T15:20:25.546+07:00  INFO 124436 --- [gateway-service] [           main] [                                                 ] com.netflix.discovery.DiscoveryClient    : The response status is 200
+2026-01-17T15:20:25.550+07:00  INFO 124436 --- [gateway-service] [           main] [                                                 ] com.netflix.discovery.DiscoveryClient    : Starting heartbeat executor: renew interval is: 30
+2026-01-17T15:20:25.554+07:00  INFO 124436 --- [gateway-service] [           main] [                                                 ] c.n.discovery.InstanceInfoReplicator     : InstanceInfoReplicator onDemand update allowed rate per min is 4
+2026-01-17T15:20:25.560+07:00  INFO 124436 --- [gateway-service] [           main] [                                                 ] com.netflix.discovery.DiscoveryClient    : Discovery Client initialized at timestamp 1768638025559 with initial instances count: 5
+2026-01-17T15:20:25.572+07:00  INFO 124436 --- [gateway-service] [           main] [                                                 ] o.s.c.n.e.s.EurekaServiceRegistry        : Registering application GATEWAY-SERVICE with eureka with status UP
+2026-01-17T15:20:25.573+07:00  INFO 124436 --- [gateway-service] [           main] [                                                 ] com.netflix.discovery.DiscoveryClient    : Saw local status change event StatusChangeEvent [timestamp=1768638025573, current=UP, previous=STARTING]
+2026-01-17T15:20:25.575+07:00  INFO 124436 --- [gateway-service] [foReplicator-%d] [                                                 ] com.netflix.discovery.DiscoveryClient    : DiscoveryClient_GATEWAY-SERVICE/archlinux:gateway-service:8080: registering service...
+2026-01-17T15:20:25.578+07:00 DEBUG 124436 --- [gateway-service] [foReplicator-%d] [                                                 ] o.s.web.client.RestTemplate              : HTTP POST http://localhost:8761/eureka/apps/GATEWAY-SERVICE
+2026-01-17T15:20:25.581+07:00 DEBUG 124436 --- [gateway-service] [foReplicator-%d] [                                                 ] o.s.web.client.RestTemplate              : Accept=[application/json, application/*+json]
+2026-01-17T15:20:25.611+07:00 DEBUG 124436 --- [gateway-service] [foReplicator-%d] [                                                 ] o.s.web.client.RestTemplate              : Writing [InstanceInfo [instanceId = archlinux:gateway-service:8080, appName = GATEWAY-SERVICE, hostName = 192.168.1.90, status = UP, ipAddr = 192.168.1.90, port = 8080, securePort = 443, dataCenterInfo = com.netflix.appinfo.MyDataCenterInfo@19c69a42] as "application/json"
+2026-01-17T15:20:25.645+07:00 DEBUG 124436 --- [gateway-service] [foReplicator-%d] [                                                 ] o.s.web.client.RestTemplate              : Response 204 NO_CONTENT
+2026-01-17T15:20:25.646+07:00  INFO 124436 --- [gateway-service] [foReplicator-%d] [                                                 ] com.netflix.discovery.DiscoveryClient    : DiscoveryClient_GATEWAY-SERVICE/archlinux:gateway-service:8080 - registration status: 204
+2026-01-17T15:20:27.760+07:00  INFO 124436 --- [gateway-service] [           main] [                                                 ] o.s.c.n.e.s.EurekaServiceRegistry        : Unregistering application GATEWAY-SERVICE with eureka with status DOWN
+2026-01-17T15:20:27.760+07:00  INFO 124436 --- [gateway-service] [           main] [                                                 ] com.netflix.discovery.DiscoveryClient    : Saw local status change event StatusChangeEvent [timestamp=1768638027760, current=DOWN, previous=UP]
+2026-01-17T15:20:27.761+07:00  INFO 124436 --- [gateway-service] [foReplicator-%d] [                                                 ] com.netflix.discovery.DiscoveryClient    : DiscoveryClient_GATEWAY-SERVICE/archlinux:gateway-service:8080: registering service...
+2026-01-17T15:20:27.761+07:00  WARN 124436 --- [gateway-service] [           main] [                                                 ] onfigReactiveWebServerApplicationContext : Exception encountered during context initialization - cancelling refresh attempt: org.springframework.context.ApplicationContextException: Failed to start bean 'webServerStartStop'
+2026-01-17T15:20:27.761+07:00 DEBUG 124436 --- [gateway-service] [foReplicator-%d] [                                                 ] o.s.web.client.RestTemplate              : HTTP POST http://localhost:8761/eureka/apps/GATEWAY-SERVICE
+2026-01-17T15:20:27.762+07:00 DEBUG 124436 --- [gateway-service] [foReplicator-%d] [                                                 ] o.s.web.client.RestTemplate              : Accept=[application/json, application/*+json]
+2026-01-17T15:20:27.762+07:00 DEBUG 124436 --- [gateway-service] [foReplicator-%d] [                                                 ] o.s.web.client.RestTemplate              : Writing [InstanceInfo [instanceId = archlinux:gateway-service:8080, appName = GATEWAY-SERVICE, hostName = 192.168.1.90, status = DOWN, ipAddr = 192.168.1.90, port = 8080, securePort = 443, dataCenterInfo = com.netflix.appinfo.MyDataCenterInfo@19c69a42] as "application/json"
+2026-01-17T15:20:27.770+07:00 DEBUG 124436 --- [gateway-service] [foReplicator-%d] [                                                 ] o.s.web.client.RestTemplate              : Response 204 NO_CONTENT
+2026-01-17T15:20:27.770+07:00  INFO 124436 --- [gateway-service] [foReplicator-%d] [                                                 ] com.netflix.discovery.DiscoveryClient    : DiscoveryClient_GATEWAY-SERVICE/archlinux:gateway-service:8080 - registration status: 204
+2026-01-17T15:20:28.788+07:00  INFO 124436 --- [gateway-service] [           main] [                                                 ] com.netflix.discovery.DiscoveryClient    : Shutting down DiscoveryClient ...
+2026-01-17T15:20:31.788+07:00  INFO 124436 --- [gateway-service] [           main] [                                                 ] com.netflix.discovery.DiscoveryClient    : Unregistering ...
+2026-01-17T15:20:31.789+07:00 DEBUG 124436 --- [gateway-service] [           main] [                                                 ] o.s.web.client.RestTemplate              : HTTP DELETE http://localhost:8761/eureka/apps/GATEWAY-SERVICE/archlinux:gateway-service:8080
+2026-01-17T15:20:31.789+07:00 DEBUG 124436 --- [gateway-service] [           main] [                                                 ] o.s.web.client.RestTemplate              : Accept=[application/json, application/*+json]
+2026-01-17T15:20:31.793+07:00 DEBUG 124436 --- [gateway-service] [           main] [                                                 ] o.s.web.client.RestTemplate              : Response 200 OK
+2026-01-17T15:20:31.793+07:00  INFO 124436 --- [gateway-service] [           main] [                                                 ] com.netflix.discovery.DiscoveryClient    : DiscoveryClient_GATEWAY-SERVICE/archlinux:gateway-service:8080 - deregister  status: 200
+2026-01-17T15:20:31.793+07:00  INFO 124436 --- [gateway-service] [           main] [                                                 ] com.netflix.discovery.DiscoveryClient    : Completed shut down of DiscoveryClient
+2026-01-17T15:20:31.805+07:00  INFO 124436 --- [gateway-service] [           main] [                                                 ] .s.b.a.l.ConditionEvaluationReportLogger : 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2026-01-17T15:20:31.815+07:00 ERROR 124436 --- [gateway-service] [           main] [                                                 ] o.s.b.d.LoggingFailureAnalysisReporter   : 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Web server failed to start. Port 8080 was already in use.
+
+Action:
+
+Identify and stop the process that's listening on port 8080 or configure this application to listen on another port.
+
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  21.370 s
+[INFO] Finished at: 2026-01-17T15:20:32+07:00
+[INFO] ------------------------------------------------------------------------
+[ERROR] Failed to execute goal org.springframework.boot:spring-boot-maven-plugin:3.5.6:run (default-cli) on project gateway: Process terminated with exit code: 1 -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoExecutionException

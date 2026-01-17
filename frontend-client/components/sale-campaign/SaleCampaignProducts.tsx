@@ -8,39 +8,39 @@ import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { CountdownTimer } from './CountdownTimer';
-import { FlashSale, FlashSaleItem } from '@/types/flash-sale';
-import { getActiveFlashSales, getFlashSaleItems } from '@/lib/services/flash-sale-service';
+import { SaleCampaign, SaleCampaignItem } from '@/types/sale-campaign';
+import { getActiveSaleCampaigns, getSaleCampaignItems } from '@/lib/services/sale-campaign-service';
 import { imageUrl } from '@/lib/utils/imageUrl';
 import { formatCurrency } from '@/lib/utils/formatCurrency';
 
-export function FlashSaleProducts() {
-    const [flashSale, setFlashSale] = useState<FlashSale | null>(null);
-    const [items, setItems] = useState<FlashSaleItem[]>([]);
+export function SaleCampaignProducts() {
+    const [saleCampaign, setSaleCampaign] = useState<SaleCampaign | null>(null);
+    const [items, setItems] = useState<SaleCampaignItem[]>([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        const fetchFlashSales = async () => {
+        const fetchSaleCampaigns = async () => {
             try {
-                const sales = await getActiveFlashSales();
+                const sales = await getActiveSaleCampaigns();
                 if (sales.length > 0) {
                     const sale = sales[0];
-                    setFlashSale(sale);
+                    setSaleCampaign(sale);
 
                     // Fetch items
-                    const saleItems = await getFlashSaleItems(sale.slug, 8);
+                    const saleItems = await getSaleCampaignItems(sale.slug, 8);
                     setItems(saleItems);
                 }
             } catch (error) {
-                console.error('Failed to fetch flash sales:', error);
+                console.error('Failed to fetch sale campaigns:', error);
             } finally {
                 setLoading(false);
             }
         };
 
-        fetchFlashSales();
+        fetchSaleCampaigns();
     }, []);
 
-    if (loading || !flashSale || items.length === 0) {
+    if (loading || !saleCampaign || items.length === 0) {
         return null;
     }
 
@@ -54,15 +54,15 @@ export function FlashSaleProducts() {
                             <Zap className="h-6 w-6" />
                         </div>
                         <div>
-                            <h2 className="text-2xl font-black uppercase tracking-wider">Flash Sale</h2>
+                            <h2 className="text-2xl font-black uppercase tracking-wider">Sale Campaign</h2>
                             <div className="flex items-center gap-2 mt-1">
                                 <span className="text-sm text-muted-foreground">Kết thúc trong:</span>
-                                <CountdownTimer endTime={flashSale.endTime} variant="inline" />
+                                <CountdownTimer endTime={saleCampaign.endTime} variant="inline" />
                             </div>
                         </div>
                     </div>
                     <Button asChild variant="outline" className="rounded-none border-2 border-black font-bold">
-                        <Link href={`/flash-sales/${flashSale.slug}`}>
+                        <Link href={`/sale-campaigns/${saleCampaign.slug}`}>
                             Xem tất cả
                             <ArrowRight className="ml-2 h-4 w-4" />
                         </Link>
@@ -80,10 +80,10 @@ export function FlashSaleProducts() {
                                         -{item.discountPercent}%
                                     </Badge>
 
-                                    {/* Flash Sale Badge */}
+                                    {/* Sale Badge */}
                                     <Badge className="absolute top-0 right-0 z-10 bg-black text-white rounded-none px-2 py-1 text-[8px] font-black tracking-widest flex items-center gap-1">
                                         <Zap className="h-3 w-3" />
-                                        FLASH
+                                        SALE
                                     </Badge>
 
                                     {/* Stock indicator */}
@@ -112,7 +112,7 @@ export function FlashSaleProducts() {
                                         {/* Price */}
                                         <div className="flex items-baseline gap-2 font-mono mb-2">
                                             <span className="text-lg font-black tracking-tighter text-primary">
-                                                {formatCurrency(item.flashSalePrice)}
+                                                {formatCurrency(item.salePrice)}
                                             </span>
                                             <span className="text-[10px] font-bold text-zinc-400 line-through">
                                                 {formatCurrency(item.originalPrice)}

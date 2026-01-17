@@ -101,6 +101,12 @@ public class VoucherServiceImpl implements VoucherService {
     }
 
     @Override
+    @Transactional(readOnly = true)
+    public List<VoucherDTO> getAllActiveVouchers() {
+        return voucherMapper.toDTOs(voucherRepository.findAllActiveVouchers(LocalDateTime.now()));
+    }
+
+    @Override
     @Transactional
     public VoucherDTO activateVoucher(Long id) {
         Voucher voucher = voucherHelper.findByIdOrThrow(id);

@@ -3,14 +3,14 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, Timer } from "lucide-react";
-import { getActiveFlashSales } from "@/lib/services/flash-sale-service";
-import { FlashSale } from "@/types/flash-sale";
+import { ArrowRight } from "lucide-react";
+import { getActiveSaleCampaigns } from "@/lib/services/sale-campaign-service";
+import { SaleCampaign } from "@/types/sale-campaign";
 import { formatCurrency } from "@/lib/utils/formatCurrency";
 import { imageUrl } from "@/lib/utils/imageUrl";
 
 export const SingleActiveCampaign = () => {
-    const [campaign, setCampaign] = useState<FlashSale | null>(null);
+    const [campaign, setCampaign] = useState<SaleCampaign | null>(null);
     const [timeLeft, setTimeLeft] = useState<{ hours: string; minutes: string; seconds: string }>({
         hours: "00",
         minutes: "00",
@@ -20,7 +20,7 @@ export const SingleActiveCampaign = () => {
     useEffect(() => {
         const fetchCampaign = async () => {
             try {
-                const campaigns = await getActiveFlashSales();
+                const campaigns = await getActiveSaleCampaigns();
                 if (campaigns && campaigns.length > 0) {
                     setCampaign(campaigns[0]);
                 }
@@ -129,7 +129,7 @@ export const SingleActiveCampaign = () => {
                             </div>
 
                             <Link
-                                href="/flash-sale"
+                                href="/sale-campaigns"
                                 className="group flex items-center gap-2 text-[10px] font-black uppercase tracking-widest hover:text-[#FF4400] transition-colors"
                             >
                                 XEM TẤT CẢ <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
@@ -172,7 +172,7 @@ export const SingleActiveCampaign = () => {
                                         </h3>
                                         <div className="flex flex-col font-mono">
                                             <span className="text-[#FF4400] font-black text-lg not-italic">
-                                                {formatCurrency(item.flashSalePrice)}
+                                                {formatCurrency(item.salePrice)}
                                             </span>
                                             <span className="text-[10px] text-zinc-400 line-through decoration-zinc-400/50">
                                                 {formatCurrency(item.originalPrice)}

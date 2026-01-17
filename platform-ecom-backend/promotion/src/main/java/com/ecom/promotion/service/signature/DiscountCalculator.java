@@ -20,7 +20,7 @@ public interface DiscountCalculator {
     DiscountResult calculateDiscount(
             List<CartItemDTO> items,
             BigDecimal shippingFee,
-            String voucherCode,
+            List<String> voucherCodes,
             Long userId);
 
     /**
@@ -30,6 +30,6 @@ public interface DiscountCalculator {
             Long orderId,
             List<CartItemDTO> items,
             BigDecimal shippingFee,
-            String voucherCode,
+            List<String> voucherCodes,
             Long userId);
 }

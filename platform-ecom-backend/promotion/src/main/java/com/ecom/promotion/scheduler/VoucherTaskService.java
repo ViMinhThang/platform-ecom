@@ -1,4 +1,4 @@
-package com.ecom.promotion.service.impl;
+package com.ecom.promotion.scheduler;
 
 import com.ecom.promotion.entity.Voucher;
 import com.ecom.promotion.enums.VoucherStatus;

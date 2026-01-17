@@ -18,8 +18,8 @@ export default function NewVoucherPage() {
             setLoading(true);
             await voucherService.create({
                 ...data,
-                startTime: data.startTime.toISOString(),
-                endTime: data.endTime.toISOString(),
+                startTime: new Date(data.startTime).toISOString(),
+                endTime: new Date(data.endTime).toISOString(),
             });
             toast.success('Tạo voucher thành công');
             router.push('/dashboard/vouchers');

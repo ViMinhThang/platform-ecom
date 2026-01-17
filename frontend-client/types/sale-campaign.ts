@@ -1,6 +1,6 @@
-// Flash Sale Types for Client (Customer View)
+// Sale Campaign Types for Client (Customer View)
 
-export interface FlashSaleItem {
+export interface SaleCampaignItem {
     id: number;
     variantId: number;
     productId: number;
@@ -9,7 +9,7 @@ export interface FlashSaleItem {
     variantSku: string;
     imageUrl: string | null;
     originalPrice: number;
-    flashSalePrice: number;
+    salePrice: number;
     discountPercent: number;
     stockLimit: number;
     soldCount: number;
@@ -17,7 +17,7 @@ export interface FlashSaleItem {
     isAvailable: boolean;
 }
 
-export interface FlashSale {
+export interface SaleCampaign {
     id: number;
     name: string;
     slug: string;
@@ -26,7 +26,7 @@ export interface FlashSale {
     status: string;
     startTime: string;
     endTime: string;
-    items: FlashSaleItem[];
+    items: SaleCampaignItem[];
     totalItems: number;
     remainingSeconds: number;
 }

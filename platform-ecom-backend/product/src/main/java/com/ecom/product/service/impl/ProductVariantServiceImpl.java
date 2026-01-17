@@ -4,6 +4,7 @@ import com.ecom.product.dto.ProductVariantDTO;
 import com.ecom.product.dto.VariantOptionValueDTO;
 import com.ecom.product.entity.*;
 import com.ecom.product.helper.*;
+import com.ecom.product.validator.ProductVariantValidator;
 import com.ecom.product.mapper.ProductVariantMapper;
 import com.ecom.product.repository.ProductOptionValueRepository;
 import com.ecom.product.repository.ProductVariantRepository;
