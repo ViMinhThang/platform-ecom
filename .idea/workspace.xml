@@ -4,66 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c48beeac-7758-42e4-81dd-f068fbcd38be" name="Changes" comment="update spring cloud stream dependency">
-      <change afterPath="$PROJECT_DIR$/platform-ecom-backend/configserver/src/main/resources/config/promotion-service.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-admin/src/app/dashboard/vouchers/[id]/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-admin/src/app/dashboard/vouchers/[id]/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-admin/src/app/dashboard/vouchers/new/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-admin/src/app/dashboard/vouchers/new/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-admin/src/components/icons.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-admin/src/components/icons.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-admin/src/components/ui/table/data-table.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-admin/src/components/ui/table/data-table.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-admin/src/constants/data.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-admin/src/constants/data.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-admin/src/features/vouchers/components/voucher-listing-client.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-admin/src/features/vouchers/components/voucher-listing-client.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-admin/src/features/vouchers/components/voucher-listing.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-admin/src/features/vouchers/components/voucher-listing.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-admin/src/features/vouchers/components/voucher-tables/columns.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-admin/src/features/vouchers/components/voucher-tables/columns.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/app/(main)/cart/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/app/(main)/cart/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/app/(main)/checkout/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/app/(main)/checkout/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/app/(main)/flash-sales/[slug]/flash-sale-detail-client.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/app/(main)/flash-sales/[slug]/page.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/app/(main)/flash-sales/flash-sale-page-client.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/app/(main)/flash-sales/page.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/cart/CartSummary.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/cart/CartSummary.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/flash-sale/CountdownTimer.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/flash-sale/FlashSaleBanner.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/flash-sale/FlashSaleProducts.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/flash-sale/index.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/home/SingleActiveCampaign.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/home/SingleActiveCampaign.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/providers.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/providers.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/hooks/useCheckout.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/hooks/useCheckout.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/lib/services/cart.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/lib/services/cart.service.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/lib/services/flash-sale-service.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/lib/services/user-service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/lib/services/user-service.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/lib/store/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/lib/store/index.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/types/flash-sale.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logs/order-service.log" beforeDir="false" afterPath="$PROJECT_DIR$/logs/order-service.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/logs/user-service.log" beforeDir="false" afterPath="$PROJECT_DIR$/logs/user-service.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/gateway/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/gateway/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/gateway/src/main/java/com/ecom/gateway/security/GatewayConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/gateway/src/main/java/com/ecom/gateway/security/GatewayConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/order/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/order/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/order/src/main/java/com/ecom/order/helper/OrderMappingHelper.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/order/src/main/java/com/ecom/order/service/impl/OrderGroupServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/order/src/main/java/com/ecom/order/service/impl/OrderGroupServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/product/logs/product-service.log" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/product/logs/product-service.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/dto/request/CreateSaleCampaignRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/dto/request/CreateSaleCampaignRequest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/helper/ProductVariantValidator.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/helper/SaleCampaignValidator.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/scheduler/FlashSaleScheduler.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/service/impl/ProductVariantServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/service/impl/ProductVariantServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/service/impl/SaleCampaignServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/service/impl/SaleCampaignServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/promotion/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/promotion/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/promotion/src/main/java/com/ecom/promotion/controller/PublicVoucherController.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/promotion/src/main/java/com/ecom/promotion/controller/PublicVoucherController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/promotion/src/main/java/com/ecom/promotion/dto/CalculateDiscountRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/promotion/src/main/java/com/ecom/promotion/dto/CalculateDiscountRequest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/promotion/src/main/java/com/ecom/promotion/helper/VoucherHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/promotion/src/main/java/com/ecom/promotion/helper/VoucherHelper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/promotion/src/main/java/com/ecom/promotion/repository/VoucherRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/promotion/src/main/java/com/ecom/promotion/repository/VoucherRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/promotion/src/main/java/com/ecom/promotion/service/impl/DiscountCalculatorImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/promotion/src/main/java/com/ecom/promotion/service/impl/DiscountCalculatorImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/promotion/src/main/java/com/ecom/promotion/service/impl/VoucherServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/promotion/src/main/java/com/ecom/promotion/service/impl/VoucherServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/promotion/src/main/java/com/ecom/promotion/service/impl/VoucherTaskService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/promotion/src/main/java/com/ecom/promotion/service/signature/DiscountCalculator.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/promotion/src/main/java/com/ecom/promotion/service/signature/DiscountCalculator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/promotion/src/main/java/com/ecom/promotion/service/signature/VoucherService.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/promotion/src/main/java/com/ecom/promotion/service/signature/VoucherService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/review/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/review/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/user/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/user/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/user/src/main/java/com/ecom/user/entity/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/user/src/main/java/com/ecom/user/entity/User.java" afterDir="false" />
-    </list>
+    <list default="true" id="c48beeac-7758-42e4-81dd-f068fbcd38be" name="Changes" comment="update spring cloud stream dependency" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -184,11 +125,11 @@
             <map>
               <entry key="chatbot-service" value="STOPPED" />
               <entry key="config-server" value="STOPPED" />
-              <entry key="gateway" value="FAILED" />
+              <entry key="gateway" value="STOPPED" />
               <entry key="inventory-service" value="STOPPED" />
               <entry key="order-service" value="STOPPED" />
-              <entry key="product-service" value="FAILED" />
-              <entry key="promotion-service" value="FAILED" />
+              <entry key="product-service" value="STOPPED" />
+              <entry key="promotion-service" value="STOPPED" />
               <entry key="review-service" value="STOPPED" />
               <entry key="user-service" value="STOPPED" />
             </map>
