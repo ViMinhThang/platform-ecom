@@ -361,6 +361,28 @@ public class GatewayConfig {
                                 .route("eureka-static", r -> r
                                                 .path("/eureka/**")
                                                 .uri(eurekaUrl))
+
+                                // ============================================================
+                                // ANALYTICS & RECOMMENDATIONS - /api/v1/analytics
+                                // ============================================================
+
+                                // Public event tracking
+                                .route("analytics-events", r -> r
+                                                .path("/api/v1/analytics/events", "/api/v1/analytics/events/**")
+                                                .uri("lb://analytics-service"))
+
+                                // Seller analytics (protected)
+                                .route("seller-analytics", r -> r
+                                                .path("/api/v1/analytics/sellers/**")
+                                                .filters(f -> f
+                                                                .filter(authFilter))
+                                                .uri("lb://analytics-service"))
+
+                                // Recommendations (from recommendation-service)
+                                .route("recommendations", r -> r
+                                                .path("/api/v1/recommendations/**")
+                                                .uri("lb://recommendation-service"))
+
                                 .build();
         }
 }

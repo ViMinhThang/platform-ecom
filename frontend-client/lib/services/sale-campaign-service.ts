@@ -1,5 +1,5 @@
 import apiClient from '@/lib/api-client';
-import { APIResponse } from '@/types/common.types';
+import { APIResponse, PaginatedResponse } from '@/types/common.types';
 import { SaleCampaign, SaleCampaignItem } from '@/types/sale-campaign';
 
 /**
@@ -19,9 +19,21 @@ export const getSaleCampaignBySlug = async (slug: string): Promise<SaleCampaign>
     return response.data.data;
 };
 
-export const getSaleCampaignItems = async (slug: string, limit = 20): Promise<SaleCampaignItem[]> => {
-    const response = await apiClient.get<APIResponse<SaleCampaignItem[]>>(
-        `/v1/sale-campaigns/${encodeURIComponent(slug)}/items?limit=${limit}`
+export const getSaleCampaignItems = async (
+    slug: string, 
+    params?: {
+        minPrice?: number;
+        maxPrice?: number;
+        inStockOnly?: boolean;
+        page?: number;
+        size?: number;
+        sortBy?: string;
+        sortOrder?: 'asc' | 'desc';
+    }
+): Promise<PaginatedResponse<SaleCampaignItem>> => {
+    const response = await apiClient.get<APIResponse<PaginatedResponse<SaleCampaignItem>>>(
+        `/v1/sale-campaigns/${encodeURIComponent(slug)}/items`,
+        { params }
     );
     return response.data.data;
 };

@@ -63,6 +63,7 @@ public class OrderEventPublisher {
                 .variantId(item.getVariantId())
                 .quantity(item.getQuantity())
                 .productName(item.getProductName())
+                .price(item.getUnitPrice())
                 .build();
     }
 }

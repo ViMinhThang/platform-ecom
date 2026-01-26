@@ -43,7 +43,7 @@ export function SaleCampaignPageClient({ initialSaleCampaigns }: SaleCampaignPag
                                     {saleCampaign.bannerUrl && (
                                         <div className="relative w-full md:w-80 h-48 md:h-auto bg-zinc-100">
                                             <Image
-                                                src={saleCampaign.bannerUrl}
+                                                src={"http://localhost:8080/upload/products" + saleCampaign.bannerUrl}
                                                 alt={saleCampaign.name}
                                                 fill
                                                 className="object-cover"

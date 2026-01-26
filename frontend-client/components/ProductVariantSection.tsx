@@ -5,15 +5,19 @@ import { ProductDetail, ProductVariant } from "@/types/product";
 import { VariantSelector } from "./VariantSelector";
 import { Button } from "./ui/button";
 import { Badge } from "./ui/badge";
-import { ShoppingCart, Minus, Plus } from "lucide-react";
+import { ShoppingCart, Minus, Plus, Zap } from "lucide-react";
 import { useAppDispatch } from "@/lib/store/hooks";
 import { useSession } from "next-auth/react";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { addToCart } from "@/lib/store/slices/cartSlice";
 import { logger } from "@/lib/logger";
+import { useAnalytics } from "@/hooks/useAnalytics";
 
 import { formatCurrency } from "@/lib/utils/formatCurrency";
+import { getSaleCampaignPriceForVariant } from "@/lib/services/sale-campaign-service";
+import { SaleCampaignItem } from "@/types/sale-campaign";
+import { useEffect } from "react";
 
 export function ProductVariantSection({
   product,
@@ -22,13 +26,32 @@ export function ProductVariantSection({
   product: ProductDetail;
   onVariantChange?: (variant: ProductVariant | null) => void;
 }) {
+  const { trackAddToCart } = useAnalytics();
   const [selectedVariant, setSelectedVariant] = useState<ProductVariant | null>(
     null
   );
+  const [saleInfo, setSaleInfo] = useState<SaleCampaignItem | null>(null);
   const [quantity, setQuantity] = useState(1);
   const dispatch = useAppDispatch();
   const { data: session } = useSession();
   const router = useRouter();
+
+  useEffect(() => {
+    const fetchSalePrice = async () => {
+      if (selectedVariant) {
+        try {
+          const data = await getSaleCampaignPriceForVariant(selectedVariant.id);
+          setSaleInfo(data);
+        } catch (error) {
+          logger.error("Failed to fetch sale price:", error);
+          setSaleInfo(null);
+        }
+      } else {
+        setSaleInfo(null);
+      }
+    };
+    fetchSalePrice();
+  }, [selectedVariant]);
 
   const handleVariantChange = (variant: ProductVariant | null) => {
     setSelectedVariant(variant);
@@ -54,6 +77,15 @@ export function ProductVariantSection({
         quantity,
         variantId: selectedVariant ? selectedVariant.id : undefined,
       })).unwrap();
+      
+      // Track add to cart
+      trackAddToCart(
+        product.id, 
+        selectedVariant ? selectedVariant.id : 0, 
+        quantity, 
+        saleInfo ? saleInfo.salePrice : (selectedVariant ? selectedVariant.price : (product.minPrice || 0))
+      );
+
       toast.success("Đã thêm vào giỏ hàng");
     } catch (error) {
       logger.error("Failed to add to cart:", error);
@@ -80,13 +112,36 @@ export function ProductVariantSection({
       <div className="space-y-8">
         {/* Price Display - Modern Clean */}
         <div className="py-4 px-5 bg-slate-50 rounded-lg border border-slate-100/50">
-          <div className="flex items-baseline gap-3">
-            <span className="text-3xl font-bold text-slate-900">
-              {selectedVariant
-                ? formatCurrency(selectedVariant.price)
-                : (hasVariants ? `${formatCurrency(product.minPrice || 0)} - ...` : formatCurrency(product.minPrice || 0))
-              }
-            </span>
+          <div className="flex flex-col gap-1">
+            <div className="flex items-baseline gap-3">
+              {selectedVariant ? (
+                <>
+                  <span className="text-3xl font-bold text-[#FF4F00]">
+                    {formatCurrency(saleInfo ? saleInfo.salePrice : selectedVariant.price)}
+                  </span>
+                  {saleInfo && (
+                    <>
+                      <span className="text-sm text-slate-400 line-through">
+                        {formatCurrency(selectedVariant.price)}
+                      </span>
+                      <Badge className="bg-[#FF4F00] hover:bg-[#FF4F00] text-white border-none text-[10px] font-bold px-1.5 py-0">
+                        -{saleInfo.discountPercent}%
+                      </Badge>
+                    </>
+                  )}
+                </>
+              ) : (
+                <span className="text-3xl font-bold text-slate-900">
+                  {hasVariants ? `${formatCurrency(product.minPrice || 0)} - ...` : formatCurrency(product.minPrice || 0)}
+                </span>
+              )}
+            </div>
+            {saleInfo && (
+              <div className="flex items-center gap-1.5 text-[#FF4F00] text-[10px] font-bold uppercase tracking-wider">
+                <Zap className="w-3 h-3 fill-current" />
+                <span>Đang giảm</span>
+              </div>
+            )}
           </div>
         </div>
 

@@ -22,13 +22,25 @@ export async function generateMetadata({ params }: SaleCampaignDetailPageProps):
 }
 
 export default async function SaleCampaignDetailPage({ params }: SaleCampaignDetailPageProps) {
-    try {
-        const saleCampaign = await getSaleCampaignBySlug(params.slug);
-        const items = await getSaleCampaignItems(params.slug, 50);
+    let saleCampaign = null;
+    let initialData = null;
 
-        return <SaleCampaignDetailClient saleCampaign={saleCampaign} items={items} />;
+    try {
+        saleCampaign = await getSaleCampaignBySlug(params.slug);
+        // Fetch first page of items (24 items)
+        initialData = await getSaleCampaignItems(params.slug, {
+            page: 0,
+            size: 24,
+            sortBy: 'soldCount',
+            sortOrder: 'desc'
+        });
     } catch (error) {
         console.error('Failed to fetch sale campaign:', error);
+    }
+
+    if (!saleCampaign || !initialData) {
         notFound();
     }
+
+    return <SaleCampaignDetailClient saleCampaign={saleCampaign} initialData={initialData} />;
 }

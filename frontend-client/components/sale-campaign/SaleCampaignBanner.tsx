@@ -102,7 +102,7 @@ export function SaleCampaignBanner() {
                         size="lg"
                         className="bg-primary hover:bg-primary/90 text-white rounded-none font-black uppercase tracking-wider px-8 group"
                     >
-                        <Link href={`/sale-campaigns/${saleCampaign.slug}`}>
+                        <Link href="/sale-campaigns">
                             Xem ngay
                             <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
                         </Link>

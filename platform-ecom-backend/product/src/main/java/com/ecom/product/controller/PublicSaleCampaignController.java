@@ -6,9 +6,14 @@ import com.ecom.product.dto.SaleCampaignDTO;
 import com.ecom.product.dto.SaleCampaignItemDTO;
 import com.ecom.product.service.signature.SaleCampaignService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
@@ -31,10 +36,20 @@ public class PublicSaleCampaignController {
     }
 
     @GetMapping("/{slug}/items")
-    public ResponseEntity<APIResponse<List<SaleCampaignItemDTO>>> getSaleCampaignItems(
+    public ResponseEntity<APIResponse<Page<SaleCampaignItemDTO>>> getSaleCampaignItems(
             @PathVariable String slug,
-            @RequestParam(defaultValue = "20") int limit) {
-        List<SaleCampaignItemDTO> items = saleCampaignService.getSaleCampaignItems(slug, limit);
+            @RequestParam(required = false) BigDecimal minPrice,
+            @RequestParam(required = false) BigDecimal maxPrice,
+            @RequestParam(required = false) Boolean inStockOnly,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "20") int size,
+            @RequestParam(defaultValue = "sortOrder") String sortBy,
+            @RequestParam(defaultValue = "asc") String sortOrder) {
+        
+        Sort sort = Sort.by(Sort.Direction.fromString(sortOrder), sortBy);
+        Pageable pageable = PageRequest.of(page, size, sort);
+        
+        Page<SaleCampaignItemDTO> items = saleCampaignService.getSaleCampaignItems(slug, minPrice, maxPrice, inStockOnly, pageable);
         return ResponseBuilder.success("Sale campaign items retrieved successfully", items);
     }
 

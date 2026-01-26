@@ -17,12 +17,14 @@ import { RelatedProducts } from "@/components/product/RelatedProducts";
 import { SellerInfoCard } from "@/components/product/SellerInfoCard";
 import { ProductDetail, ProductVariant } from "@/types/product";
 import { logger } from "@/lib/logger";
+import { useAnalytics } from "@/hooks/useAnalytics";
 
 interface ProductDetailPageProps {
     params: any;
 }
 
 export default function ProductDetailPage({ params }: ProductDetailPageProps) {
+    const { trackProductView } = useAnalytics();
     const [product, setProduct] = useState<ProductDetail | null>(null);
     const [selectedVariant, setSelectedVariant] = useState<ProductVariant | null>(null);
     const [loading, setLoading] = useState(true);
@@ -43,6 +45,9 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
                 const data = await getProductBySlug(slug);
                 logger.debug('Fetched product data:', { data });
                 setProduct(data);
+                
+                // Track view
+                trackProductView(data.id, undefined, data.cate.id, data.userId);
             } catch (error) {
                 logger.error("Failed to fetch product:", error);
                 notFound();

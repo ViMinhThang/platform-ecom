@@ -8,9 +8,9 @@ import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { CountdownTimer } from './CountdownTimer';
+import { SaleCampaignProductCard } from './SaleCampaignProductCard';
 import { SaleCampaign, SaleCampaignItem } from '@/types/sale-campaign';
 import { getActiveSaleCampaigns, getSaleCampaignItems } from '@/lib/services/sale-campaign-service';
-import { imageUrl } from '@/lib/utils/imageUrl';
 import { formatCurrency } from '@/lib/utils/formatCurrency';
 
 export function SaleCampaignProducts() {
@@ -27,8 +27,8 @@ export function SaleCampaignProducts() {
                     setSaleCampaign(sale);
 
                     // Fetch items
-                    const saleItems = await getSaleCampaignItems(sale.slug, 8);
-                    setItems(saleItems);
+                    const response = await getSaleCampaignItems(sale.slug, { size: 8 });
+                    setItems(response.content);
                 }
             } catch (error) {
                 console.error('Failed to fetch sale campaigns:', error);
@@ -62,7 +62,7 @@ export function SaleCampaignProducts() {
                         </div>
                     </div>
                     <Button asChild variant="outline" className="rounded-none border-2 border-black font-bold">
-                        <Link href={`/sale-campaigns/${saleCampaign.slug}`}>
+                        <Link href="/sale-campaigns">
                             Xem tất cả
                             <ArrowRight className="ml-2 h-4 w-4" />
                         </Link>
@@ -72,70 +72,7 @@ export function SaleCampaignProducts() {
                 {/* Product Grid */}
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                     {items.map((item) => (
-                        <Link key={item.id} href={`/products/${item.productSlug}`}>
-                            <Card className="p-0 border-2 border-black rounded-none bg-white h-full flex flex-col transition-all hover:bg-black group overflow-hidden">
-                                <CardContent className="p-0 relative aspect-square bg-zinc-100 overflow-hidden border-b-2 border-black">
-                                    {/* Discount Badge */}
-                                    <Badge className="absolute top-0 left-0 z-10 bg-primary text-white rounded-none px-2 py-1 text-[10px] font-black tracking-widest">
-                                        -{item.discountPercent}%
-                                    </Badge>
-
-                                    {/* Sale Badge */}
-                                    <Badge className="absolute top-0 right-0 z-10 bg-black text-white rounded-none px-2 py-1 text-[8px] font-black tracking-widest flex items-center gap-1">
-                                        <Zap className="h-3 w-3" />
-                                        SALE
-                                    </Badge>
-
-                                    {/* Stock indicator */}
-                                    {!item.isAvailable && (
-                                        <div className="absolute inset-0 bg-white/90 z-20 flex items-center justify-center">
-                                            <span className="text-[10px] font-black px-4 py-2 border-2 border-black text-black uppercase tracking-widest">
-                                                Hết hàng
-                                            </span>
-                                        </div>
-                                    )}
-
-                                    <Image
-                                        src={imageUrl.product(item.imageUrl || '')}
-                                        alt={item.productName}
-                                        fill
-                                        className="object-cover group-hover:scale-105 transition-transform duration-700"
-                                    />
-                                </CardContent>
-
-                                <CardFooter className="flex flex-col items-start p-4 space-y-3 grow bg-white group-hover:bg-black transition-colors">
-                                    <h3 className="font-black text-[10px] uppercase tracking-widest leading-tight line-clamp-2 text-black group-hover:text-white transition-colors">
-                                        {item.productName}
-                                    </h3>
-
-                                    <div className="w-full">
-                                        {/* Price */}
-                                        <div className="flex items-baseline gap-2 font-mono mb-2">
-                                            <span className="text-lg font-black tracking-tighter text-primary">
-                                                {formatCurrency(item.salePrice)}
-                                            </span>
-                                            <span className="text-[10px] font-bold text-zinc-400 line-through">
-                                                {formatCurrency(item.originalPrice)}
-                                            </span>
-                                        </div>
-
-                                        {/* Stock progress */}
-                                        <div className="space-y-1">
-                                            <div className="h-1.5 bg-zinc-200 group-hover:bg-zinc-700 overflow-hidden">
-                                                <div
-                                                    className="h-full bg-primary transition-all"
-                                                    style={{ width: `${(item.soldCount / item.stockLimit) * 100}%` }}
-                                                />
-                                            </div>
-                                            <div className="flex justify-between text-[8px] font-bold uppercase tracking-wider text-zinc-500 group-hover:text-zinc-400">
-                                                <span>Đã bán: {item.soldCount}</span>
-                                                <span>Còn: {item.remainingStock}</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </CardFooter>
-                            </Card>
-                        </Link>
+                        <SaleCampaignProductCard key={item.id} item={item} />
                     ))}
                 </div>
             </div>

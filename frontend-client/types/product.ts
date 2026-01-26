@@ -91,6 +91,8 @@ export interface ProductVariant {
   price: number;
   stock: number;
   totalSold?: number;
+  salePrice?: number;
+  discountPercent?: number;
   isActive: boolean;
   hidden?: boolean;
   imageUrl?: string;

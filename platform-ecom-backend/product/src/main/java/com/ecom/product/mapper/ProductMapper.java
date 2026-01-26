@@ -13,13 +13,17 @@ import java.util.stream.Collectors;
  * Extracted from ProductServiceImpl to follow Single Responsibility Principle.
  */
 @Component
-@RequiredArgsConstructor
 public class ProductMapper {
 
     private static final String DEFAULT_IMAGE_URL = "placehold.co/600x400";
 
     private final CategoryMapper categoryMapper;
     private final ProductVariantMapper productVariantMapper;
+
+    public ProductMapper(CategoryMapper categoryMapper, ProductVariantMapper productVariantMapper) {
+        this.categoryMapper = categoryMapper;
+        this.productVariantMapper = productVariantMapper;
+    }
 
     /**
      * Maps Product entity to ProductDTO
@@ -64,7 +68,7 @@ public class ProductMapper {
                 .category(categoryMapper.toDTO(product.getCategory()))
                 .imageUrl(getFirstImageUrl(product))
                 .status(product.getStatus())
-                .minPrice(product.getMinPrice())
+                .minPrice(productVariantMapper.calculateMinPrice(product))
                 .variants(product.getVariants() != null ? product.getVariants().size() : 0)
                 .firstVariant(productVariantMapper.findFirstAvailableVariant(product))
                 .totalSold(product.getTotalSold())

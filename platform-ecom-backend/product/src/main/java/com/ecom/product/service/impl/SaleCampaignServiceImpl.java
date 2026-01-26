@@ -14,6 +14,7 @@ import com.ecom.product.mapper.SaleCampaignMapper;
 import com.ecom.product.repository.SaleCampaignItemRepository;
 import com.ecom.product.repository.SaleCampaignRepository;
 import com.ecom.product.service.signature.SaleCampaignService;
+import com.ecom.product.specification.SaleCampaignItemSpecification;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.*;
@@ -21,6 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -224,16 +226,22 @@ public class SaleCampaignServiceImpl implements SaleCampaignService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<SaleCampaignItemDTO> getSaleCampaignItems(String slug, int limit) {
+    public Page<SaleCampaignItemDTO> getSaleCampaignItems(
+            String slug, 
+            BigDecimal minPrice, 
+            BigDecimal maxPrice, 
+            Boolean inStockOnly, 
+            Pageable pageable) {
+            
         SaleCampaign campaign = saleCampaignRepository.findBySlugAndDeletedFalse(slug)
                 .orElseThrow(() -> new ResourceNotFoundException("Sale campaign not found: " + slug));
 
-        List<SaleCampaignItem> items = saleCampaignItemRepository
-                .findBySaleCampaignIdOrderBySortOrderAsc(campaign.getId());
-        if (limit > 0 && items.size() > limit)
-            items = items.subList(0, limit);
+        Page<SaleCampaignItem> itemsPage = saleCampaignItemRepository.findAll(
+                SaleCampaignItemSpecification.filter(campaign.getId(), minPrice, maxPrice, inStockOnly),
+                pageable
+        );
 
-        return saleCampaignMapper.toItemDTOList(items);
+        return itemsPage.map(saleCampaignMapper::toItemDTO);
     }
 
     @Override

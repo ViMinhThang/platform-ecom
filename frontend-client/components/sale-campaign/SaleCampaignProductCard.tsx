@@ -1,0 +1,138 @@
+'use client';
+
+import { useState } from 'react';
+import Link from 'next/link';
+import Image from 'next/image';
+import { Zap, ShoppingCart, Loader2 } from 'lucide-react';
+import { SaleCampaignItem } from '@/types/sale-campaign';
+import { Card, CardContent, CardFooter } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { formatCurrency } from '@/lib/utils/formatCurrency';
+import { useAppDispatch } from '@/lib/store/hooks';
+import { addToCart } from '@/lib/store/slices/cartSlice';
+import { toast } from 'sonner';
+
+interface SaleCampaignProductCardProps {
+    item: SaleCampaignItem;
+}
+
+export function SaleCampaignProductCard({ item }: SaleCampaignProductCardProps) {
+    const dispatch = useAppDispatch();
+    const [isAdding, setIsAdding] = useState(false);
+
+    const handleAddToCart = async (e: React.MouseEvent) => {
+        // No need for preventDefault as button is not inside Link anymore
+        e.stopPropagation();
+
+        if (!item.isAvailable) return;
+
+        setIsAdding(true);
+        try {
+            await dispatch(addToCart({
+                productId: item.productId,
+                variantId: item.variantId,
+                quantity: 1
+            })).unwrap();
+            toast.success('Đã thêm vào giỏ hàng');
+        } catch (error) {
+            toast.error('Không thể thêm vào giỏ hàng');
+        } finally {
+            setIsAdding(false);
+        }
+    };
+
+    return (
+        <Card className="p-0 border-2 border-black rounded-none bg-white h-full flex flex-col transition-all hover:bg-black group overflow-hidden relative">
+            <div className="relative">
+                {/* Link covering the image area */}
+                <Link href={`/products/${item.productSlug}`} className="absolute inset-0 z-10">
+                    <span className="sr-only">View {item.productName}</span>
+                </Link>
+
+                <CardContent className="p-0 relative aspect-square bg-zinc-100 overflow-hidden border-b-2 border-black">
+                    {/* Discount Badge */}
+                    <Badge className="absolute top-0 left-0 z-10 bg-primary text-white rounded-none px-2 py-1 text-[10px] font-black tracking-widest pointer-events-none">
+                        -{item.discountPercent}%
+                    </Badge>
+
+                    {/* Sale Badge */}
+                    <Badge className="absolute top-0 right-0 z-10 bg-black text-white rounded-none px-2 py-1 text-[8px] font-black tracking-widest flex items-center gap-1 pointer-events-none">
+                        <Zap className="h-3 w-3" />
+                        SALE
+                    </Badge>
+
+                    {/* Out of stock overlay */}
+                    {!item.isAvailable && (
+                        <div className="absolute inset-0 bg-white/90 z-20 flex items-center justify-center pointer-events-none">
+                            <span className="text-[10px] font-black px-4 py-2 border-2 border-black text-black uppercase tracking-widest">
+                                Hết hàng
+                            </span>
+                        </div>
+                    )}
+
+                    <Image
+                        src={"http://localhost:8080/uploads/products/" + item.imageUrl || ''}
+                        alt={item.productName}
+                        fill
+                        className="object-cover group-hover:scale-105 transition-transform duration-700"
+                    />
+                </CardContent>
+
+                {/* Add to Cart Button - Positioned absolutely but structurally outside the Link */}
+                {item.isAvailable && (
+                    <div className="absolute bottom-2 right-2 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        <Button
+                            size="icon"
+                            variant="default"
+                            className="rounded-full h-10 w-10 bg-primary hover:bg-primary/90 text-white shadow-lg"
+                            onClick={handleAddToCart}
+                            disabled={isAdding}
+                            aria-label="Thêm vào giỏ hàng"
+                        >
+                            {isAdding ? (
+                                <Loader2 className="h-4 w-4 animate-spin" />
+                            ) : (
+                                <ShoppingCart className="h-4 w-4" />
+                            )}
+                        </Button>
+                    </div>
+                )}
+            </div>
+
+            <Link href={`/products/${item.productSlug}`} className="grow flex flex-col">
+                <CardFooter className="flex flex-col items-start p-4 space-y-3 grow bg-white group-hover:bg-black transition-colors">
+                    <h3 className="font-black text-[10px] uppercase tracking-widest leading-tight line-clamp-2 text-black group-hover:text-white transition-colors h-8 w-full">
+                        {item.productName}
+                    </h3>
+
+                    <div className="w-full">
+                        {/* Price */}
+                        <div className="flex items-baseline gap-2 font-mono mb-2">
+                            <span className="text-lg font-black tracking-tighter text-primary">
+                                {formatCurrency(item.salePrice)}
+                            </span>
+                            <span className="text-[10px] font-bold text-zinc-400 line-through">
+                                {formatCurrency(item.originalPrice)}
+                            </span>
+                        </div>
+
+                        {/* Stock progress */}
+                        <div className="space-y-1">
+                            <div className="h-1.5 bg-zinc-200 group-hover:bg-zinc-700 overflow-hidden">
+                                <div
+                                    className="h-full bg-primary transition-all"
+                                    style={{ width: `${Math.min((item.soldCount / item.stockLimit) * 100, 100)}%` }}
+                                />
+                            </div>
+                            <div className="flex justify-between text-[8px] font-bold uppercase tracking-wider text-zinc-500 group-hover:text-zinc-400">
+                                <span>Đã bán: {item.soldCount}</span>
+                                <span>Còn: {item.remainingStock}</span>
+                            </div>
+                        </div>
+                    </div>
+                </CardFooter>
+            </Link>
+        </Card>
+    );
+}

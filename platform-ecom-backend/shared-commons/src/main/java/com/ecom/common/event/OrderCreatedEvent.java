@@ -27,6 +27,13 @@ public class OrderCreatedEvent implements Serializable {
     private LocalDateTime createdAt;
     private List<OrderItemEvent> items;
 
+    // Manual Getters
+    public Long getOrderId() { return orderId; }
+    public String getOrderNumber() { return orderNumber; }
+    public Long getUserId() { return userId; }
+    public LocalDateTime getCreatedAt() { return createdAt; }
+    public List<OrderItemEvent> getItems() { return items; }
+
     /**
      * Individual item in the order
      */
@@ -41,5 +48,13 @@ public class OrderCreatedEvent implements Serializable {
         private Long variantId;
         private Integer quantity;
         private String productName;
+        private java.math.BigDecimal price;
+
+        // Manual Getters
+        public Long getProductId() { return productId; }
+        public Long getVariantId() { return variantId; }
+        public Integer getQuantity() { return quantity; }
+        public String getProductName() { return productName; }
+        public java.math.BigDecimal getPrice() { return price; }
     }
 }

@@ -4,7 +4,41 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c48beeac-7758-42e4-81dd-f068fbcd38be" name="Changes" comment="update spring cloud stream dependency" />
+    <list default="true" id="c48beeac-7758-42e4-81dd-f068fbcd38be" name="Changes" comment="update spring cloud stream dependency">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-client/app/(main)/cart/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/app/(main)/cart/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-client/app/(main)/category/[slug]/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/app/(main)/category/[slug]/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-client/app/(main)/products/[slug]/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/app/(main)/products/[slug]/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-client/app/(main)/sale-campaigns/[slug]/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/app/(main)/sale-campaigns/[slug]/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-client/app/(main)/sale-campaigns/[slug]/sale-campaign-detail-client.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/app/(main)/sale-campaigns/[slug]/sale-campaign-detail-client.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-client/app/(main)/sale-campaigns/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/app/(main)/sale-campaigns/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-client/app/(main)/sale-campaigns/sale-campaign-page-client.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/app/(main)/sale-campaigns/sale-campaign-page-client.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-client/app/(main)/seller/[sellerId]/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/app/(main)/seller/[sellerId]/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-client/app/layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/app/layout.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-client/components/ProductCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/ProductCard.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-client/components/ProductVariantSection.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/ProductVariantSection.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-client/components/home/ProductFeed.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/home/ProductFeed.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-client/components/home/SingleActiveCampaign.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/home/SingleActiveCampaign.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-client/components/product/RelatedProducts.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/product/RelatedProducts.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-client/components/sale-campaign/SaleCampaignBanner.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/sale-campaign/SaleCampaignBanner.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-client/components/sale-campaign/SaleCampaignProducts.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/sale-campaign/SaleCampaignProducts.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-client/components/sale-campaign/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/sale-campaign/index.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-client/lib/services/sale-campaign-service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/lib/services/sale-campaign-service.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-client/types/product.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/types/product.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/logs/order-service.log" beforeDir="false" afterPath="$PROJECT_DIR$/logs/order-service.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/logs/user-service.log" beforeDir="false" afterPath="$PROJECT_DIR$/logs/user-service.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/gateway/src/main/java/com/ecom/gateway/security/GatewayConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/gateway/src/main/java/com/ecom/gateway/security/GatewayConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/order/src/main/java/com/ecom/order/event/OrderEventPublisher.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/order/src/main/java/com/ecom/order/event/OrderEventPublisher.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/controller/PublicSaleCampaignController.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/controller/PublicSaleCampaignController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/dto/ProductVariantDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/dto/ProductVariantDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/mapper/ProductMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/mapper/ProductMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/mapper/ProductVariantMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/mapper/ProductVariantMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/repository/SaleCampaignItemRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/repository/SaleCampaignItemRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/service/impl/SaleCampaignServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/service/impl/SaleCampaignServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/service/signature/SaleCampaignService.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/service/signature/SaleCampaignService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/shared-commons/src/main/java/com/ecom/common/event/OrderCreatedEvent.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/shared-commons/src/main/java/com/ecom/common/event/OrderCreatedEvent.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -123,15 +157,8 @@
         <entry key="Application">
           <value>
             <map>
-              <entry key="chatbot-service" value="STOPPED" />
-              <entry key="config-server" value="STOPPED" />
-              <entry key="gateway" value="STOPPED" />
-              <entry key="inventory-service" value="STOPPED" />
-              <entry key="order-service" value="STOPPED" />
-              <entry key="product-service" value="STOPPED" />
-              <entry key="promotion-service" value="STOPPED" />
-              <entry key="review-service" value="STOPPED" />
-              <entry key="user-service" value="STOPPED" />
+              <entry key="gateway" value="FAILED" />
+              <entry key="user-service" value="FAILED" />
             </map>
           </value>
         </entry>

@@ -7,8 +7,11 @@ import com.ecom.product.dto.request.DiscountTierRequest;
 import com.ecom.product.dto.request.UpdateSaleCampaignRequest;
 import com.ecom.product.dto.response.SaleCampaignResponse;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -40,7 +43,13 @@ public interface SaleCampaignService {
 
     SaleCampaignDTO getSaleCampaignBySlug(String slug);
 
-    List<SaleCampaignItemDTO> getSaleCampaignItems(String slug, int limit);
+    Page<SaleCampaignItemDTO> getSaleCampaignItems(
+        String slug, 
+        BigDecimal minPrice, 
+        BigDecimal maxPrice, 
+        Boolean inStockOnly, 
+        Pageable pageable
+    );
 
     Optional<SaleCampaignItemDTO> getActiveSalePrice(Long variantId);
 

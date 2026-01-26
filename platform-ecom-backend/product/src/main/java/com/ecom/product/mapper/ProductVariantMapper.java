@@ -3,10 +3,8 @@ package com.ecom.product.mapper;
 import com.ecom.product.dto.ProductOptionValueDTO;
 import com.ecom.product.dto.ProductVariantDTO;
 import com.ecom.product.dto.VariantOptionValueDTO;
-import com.ecom.product.entity.Product;
-import com.ecom.product.entity.ProductOptionValue;
-import com.ecom.product.entity.ProductVariant;
-import com.ecom.product.entity.VariantOptionValue;
+import com.ecom.product.entity.*;
+import com.ecom.product.repository.SaleCampaignItemRepository;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
@@ -21,6 +19,12 @@ import java.util.stream.Collectors;
  */
 @Component
 public class ProductVariantMapper {
+
+    private final SaleCampaignItemRepository saleCampaignItemRepository;
+
+    public ProductVariantMapper(SaleCampaignItemRepository saleCampaignItemRepository) {
+        this.saleCampaignItemRepository = saleCampaignItemRepository;
+    }
 
     public ProductVariantDTO toDTO(ProductVariant variant) {
         if (variant == null) {
@@ -43,6 +47,12 @@ public class ProductVariantMapper {
         if (variant.getOptionValues() != null) {
             dto.setOptionValues(mapVariantOptionValues(variant));
         }
+
+        // Check for active sale campaign
+        saleCampaignItemRepository.findActiveSaleForVariant(variant.getId()).ifPresent(saleItem -> {
+            dto.setSalePrice(saleItem.getSalePrice());
+            dto.setDiscountPercent(saleItem.getDiscountPercent());
+        });
 
         return dto;
     }
@@ -87,7 +97,12 @@ public class ProductVariantMapper {
 
         return product.getVariants().stream()
                 .filter(this::isAvailableVariant)
-                .map(ProductVariant::getPrice)
+                .map(v -> {
+                    BigDecimal basePrice = v.getPrice();
+                    return saleCampaignItemRepository.findActiveSaleForVariant(v.getId())
+                            .map(SaleCampaignItem::getSalePrice)
+                            .orElse(basePrice);
+                })
                 .min(Comparator.naturalOrder())
                 .orElse(null);
     }

@@ -16,6 +16,8 @@ public class ProductVariantDTO {
     private Boolean isActive;
     private String imageUrl;
     private Integer totalSold;
+    private BigDecimal salePrice;
+    private Integer discountPercent;
     private List<VariantOptionValueDTO> optionValues;
     private Boolean hidden;
     private LocalDateTime createdAt;

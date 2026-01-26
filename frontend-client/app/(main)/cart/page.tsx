@@ -6,6 +6,7 @@ import { CartSummary } from "@/components/cart/CartSummary";
 import { Button } from "@/components/ui/button";
 import { ShoppingBag } from "lucide-react";
 import Link from "next/link";
+import { CartRecommendations } from "@/components/recommendations/CartRecommendations";
 
 import { usePromotion } from "@/hooks/usePromotion";
 
@@ -61,6 +62,8 @@ export default function CartPage() {
                     <CartSummary cart={cart} />
                 </div>
             </div>
+
+            <CartRecommendations />
         </div>
     );
 }
