@@ -37,4 +37,6 @@ public interface ProductService {
                         String sortBy, String sortOrder, BigDecimal minPrice, BigDecimal maxPrice, Double minRating);
 
         ProductDetailDTO getProductBySlug(String slug);
+
+        List<ProductRowDTO> getProductsByIds(List<Long> productIds);
 }

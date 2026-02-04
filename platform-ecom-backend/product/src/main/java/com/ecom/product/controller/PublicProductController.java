@@ -4,8 +4,10 @@ import com.ecom.common.util.APIResponse;
 import com.ecom.common.util.PaginationRequest;
 import com.ecom.common.util.ResponseBuilder;
 import com.ecom.product.dto.*;
+import com.ecom.product.dto.request.BatchProductRequest;
 import com.ecom.product.dto.response.ProductResponse;
 import com.ecom.product.service.signature.ProductService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -125,5 +127,12 @@ public class PublicProductController {
                 maxPrice,
                 minRating);
         return ResponseBuilder.success("Products retrieved successfully", productResponse);
+    }
+
+    @PostMapping("/batch")
+    public ResponseEntity<APIResponse<List<ProductRowDTO>>> getProductsByIds(
+            @RequestBody @Valid BatchProductRequest request) {
+        List<ProductRowDTO> products = productService.getProductsByIds(request.getProductIds());
+        return ResponseBuilder.success("Products retrieved successfully", products);
     }
 }

@@ -46,5 +46,10 @@ class RecommendationService:
         sorted_products = sorted(products, key=lambda x: x.score, reverse=True)
         return sorted_products[offset : offset + limit]
 
+    def reload_models(self):
+        """Reload ML models from disk after training."""
+        self.collaborative_model.reload()
+        self.content_model = ContentBasedModel()  # Reloads from disk
+
 
 recommendation_service = RecommendationService()

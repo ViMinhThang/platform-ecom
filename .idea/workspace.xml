@@ -5,9 +5,42 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c48beeac-7758-42e4-81dd-f068fbcd38be" name="Changes" comment="update spring cloud stream dependency">
-      <change beforePath="$PROJECT_DIR$/.opencode/agent-skills" beforeDir="false" afterPath="$PROJECT_DIR$/.opencode/agent-skills" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/logs/order-service.log" beforeDir="false" afterPath="$PROJECT_DIR$/logs/order-service.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/logs/user-service.log" beforeDir="false" afterPath="$PROJECT_DIR$/logs/user-service.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/analytics/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/analytics/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/analytics/src/main/java/com/ecom/analytics/repository/UserEventRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/analytics/src/main/java/com/ecom/analytics/repository/UserEventRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/chatbot/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/chatbot/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/configserver/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/configserver/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/configserver/src/main/resources/config/auth-service.yml" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/configserver/src/main/resources/config/auth-service.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/configserver/src/main/resources/config/bff-service.yml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/configserver/src/main/resources/config/inventory-service.yml" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/configserver/src/main/resources/config/inventory-service.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/configserver/src/main/resources/config/notification-service.yml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/configserver/src/main/resources/config/order-service.yml" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/configserver/src/main/resources/config/order-service.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/configserver/src/main/resources/config/product-service.yml" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/configserver/src/main/resources/config/product-service.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/configserver/src/main/resources/config/promotion-service.yml" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/configserver/src/main/resources/config/promotion-service.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/configserver/src/main/resources/config/review-service.yml" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/configserver/src/main/resources/config/review-service.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/configserver/src/main/resources/config/user-service.yml" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/configserver/src/main/resources/config/user-service.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/eureka/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/eureka/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/gateway/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/gateway/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/inventory/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/inventory/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/order/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/order/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/product/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/product/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/controller/PublicProductController.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/controller/PublicProductController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/service/impl/ProductServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/service/impl/ProductServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/service/signature/ProductService.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/service/signature/ProductService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/promotion/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/promotion/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/review/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/review/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/shared-commons/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/shared-commons/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/user/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/user/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/recommendation-service/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/recommendation-service/Dockerfile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/recommendation-service/app/api/routes/recommendations.py" beforeDir="false" afterPath="$PROJECT_DIR$/recommendation-service/app/api/routes/recommendations.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/recommendation-service/app/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/recommendation-service/app/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/recommendation-service/app/models/collaborative.py" beforeDir="false" afterPath="$PROJECT_DIR$/recommendation-service/app/models/collaborative.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/recommendation-service/app/services/feature_store.py" beforeDir="false" afterPath="$PROJECT_DIR$/recommendation-service/app/services/feature_store.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/recommendation-service/app/services/recommendation_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/recommendation-service/app/services/recommendation_service.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/recommendation-service/ml/training/train_collaborative.py" beforeDir="false" afterPath="$PROJECT_DIR$/recommendation-service/ml/training/train_collaborative.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/recommendation-service/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/recommendation-service/requirements.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -87,7 +120,7 @@
     &quot;git-widget-placeholder&quot;: &quot;feature/nextjs&quot;,
     &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/home/fragile/platform-ecom/platform-ecom-backend/configserver/src/main/resources/config&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/fragile/platform-ecom&quot;,
     &quot;project.structure.last.edited&quot;: &quot;Libraries&quot;,
     &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
     &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
@@ -448,6 +481,10 @@
           <url>file://$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/client/HttpClientConfig.java</url>
           <line>38</line>
           <option name="timeStamp" value="1" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/recommendation-service/app/services/feature_store.py</url>
+          <option name="timeStamp" value="2" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

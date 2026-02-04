@@ -152,6 +152,15 @@ public class ProductServiceImpl implements ProductService {
         return searchHelper.getAllPublicProductsBySeller(userId, pageable, category, minPrice, maxPrice, minRating);
     }
 
+    @Override
+    @Transactional(readOnly = true)
+    public List<ProductRowDTO> getProductsByIds(List<Long> productIds) {
+        return productRepository.findAllById(productIds).stream()
+                .filter(product -> "ACTIVE".equals(product.getStatus()))
+                .map(productMapper::toRowDTO)
+                .collect(Collectors.toList());
+    }
+
     // ==================== Private Helper Methods ====================
 
     private Product buildProductFromDTO(ProductDTO productDTO, Category category, Long userId) {

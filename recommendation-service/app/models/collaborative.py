@@ -1,11 +1,73 @@
-from typing import List
-import random
+import logging
+import os
+import pickle
+from typing import List, Optional, Dict
+from implicit.als import AlternatingLeastSquares
+
+from app.config import settings
+
+logger = logging.getLogger(__name__)
 
 
 class CollaborativeModel:
+    """Collaborative filtering model using ALS algorithm."""
+    
+    def __init__(self):
+        self.model: Optional[AlternatingLeastSquares] = None
+        self.user_to_idx: Dict[int, int] = {}
+        self.idx_to_user: Dict[int, int] = {}
+        self.idx_to_product: Dict[int, int] = {}
+        self.model_path = settings.collaborative_model_path
+        self._load_model()
+    
+    def _load_model(self):
+        """Load trained model from disk."""
+        if not os.path.exists(self.model_path):
+            logger.warning("No collaborative model found - cold start mode")
+            return
+        
+        try:
+            with open(self.model_path, "rb") as f:
+                data = pickle.load(f)
+                self.model = data.get("model")
+                self.user_to_idx = data.get("user_to_idx", {})
+                self.idx_to_user = data.get("idx_to_user", {})
+                self.idx_to_product = data.get("idx_to_product", {})
+            logger.info(f"Collaborative model loaded successfully from {self.model_path}")
+        except Exception as e:
+            logger.error(f"Failed to load collaborative model: {e}")
+            self.model = None
+    
     def get_recommendations(self, user_id: int, limit: int) -> List[int]:
+        """Get recommendations for a user.
+        
+        Returns empty list if model not loaded (cold start) or user unknown.
         """
-        Matrix Factorization (ALS) based recommendations.
-        """
-        # Mocking finding relevant products based on user history
-        return [random.randint(1, 1000) for _ in range(limit)]
+        if self.model is None:
+            return []
+        
+        if user_id not in self.user_to_idx:
+            return []
+        
+        try:
+            user_idx = self.user_to_idx[user_id]
+            ids, scores = self.model.recommend(
+                userid=user_idx,
+                user_items=None,
+                N=limit,
+                filter_already_liked_items=False
+            )
+            
+            return [
+                self.idx_to_product.get(int(i), 0) 
+                for i in ids 
+                if int(i) in self.idx_to_product
+            ]
+        except Exception as e:
+            logger.error(f"Failed to get recommendations for user {user_id}: {e}")
+            return []
+    
+    def reload(self):
+        """Reload model from disk (call after training)."""
+        logger.info("Reloading collaborative model...")
+        self._load_model()
