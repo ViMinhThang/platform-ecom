@@ -1,21 +1,49 @@
 "use client";
 
-import { Search, ShoppingCart } from "lucide-react";
+import { Search, ShoppingCart, Clock, X } from "lucide-react";
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useAppSelector } from "@/lib/store/hooks";
 import { Badge } from "@/components/ui/badge";
 import { UserNav } from "@/components/UserNav";
+import { useSearchHistory } from "@/hooks/useSearchHistory";
 
 export const SearchHeader = () => {
     const [searchQuery, setSearchQuery] = useState("");
+    const [showHistory, setShowHistory] = useState(false);
     const router = useRouter();
     const { cart } = useAppSelector((state) => state.cart);
     const cartItemCount = cart?.items?.reduce((total, item) => total + item.quantity, 0) || 0;
+    const { history, addSearch, removeSearch, clearHistory } = useSearchHistory();
+    const searchContainerRef = useRef<HTMLDivElement>(null);
+    const blurTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+    // Close dropdown when clicking outside
+    useEffect(() => {
+        const handleClickOutside = (e: MouseEvent) => {
+            if (
+                searchContainerRef.current &&
+                !searchContainerRef.current.contains(e.target as Node)
+            ) {
+                setShowHistory(false);
+            }
+        };
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => document.removeEventListener("mousedown", handleClickOutside);
+    }, []);
+
+    // Cleanup timeout on unmount
+    useEffect(() => {
+        return () => {
+            if (blurTimeoutRef.current) clearTimeout(blurTimeoutRef.current);
+        };
+    }, []);
 
     const handleSearch = () => {
         if (searchQuery.trim()) {
+            addSearch(searchQuery.trim());
+            setShowHistory(false);
             router.push(`/products?search=${encodeURIComponent(searchQuery.trim())}`);
         }
     };
@@ -24,6 +52,40 @@ export const SearchHeader = () => {
         if (e.key === "Enter") {
             handleSearch();
         }
+        if (e.key === "Escape") {
+            setShowHistory(false);
+        }
+    };
+
+    const handleHistoryClick = (query: string) => {
+        setSearchQuery(query);
+        addSearch(query);
+        setShowHistory(false);
+        router.push(`/products?search=${encodeURIComponent(query)}`);
+    };
+
+    const handleRemoveEntry = (e: React.MouseEvent, query: string) => {
+        e.stopPropagation();
+        removeSearch(query);
+    };
+
+    const handleClearAll = () => {
+        clearHistory();
+        setShowHistory(false);
+    };
+
+    const handleFocus = () => {
+        if (blurTimeoutRef.current) clearTimeout(blurTimeoutRef.current);
+        if (history.length > 0) {
+            setShowHistory(true);
+        }
+    };
+
+    const handleBlur = () => {
+        // Small delay so click events on dropdown items can register
+        blurTimeoutRef.current = setTimeout(() => {
+            setShowHistory(false);
+        }, 200);
     };
 
     return (
@@ -41,15 +103,20 @@ export const SearchHeader = () => {
                 </Link>
 
                 {/* Search Bar */}
-                <div className="flex-1 max-w-4xl relative">
+                <div className="flex-1 max-w-4xl relative" ref={searchContainerRef}>
                     <div className="relative flex bg-white ring-2 ring-white/10 focus-within:ring-primary transition-all">
                         <input
                             type="text"
                             placeholder="Tìm tên sản phẩm hoặc mã hàng..."
                             className="flex-1 px-4 py-3 text-black placeholder:text-zinc-400 text-sm font-bold outline-none"
                             value={searchQuery}
-                            onChange={(e) => setSearchQuery(e.target.value)}
+                            onChange={(e) => {
+                                setSearchQuery(e.target.value);
+                                if (history.length > 0) setShowHistory(true);
+                            }}
                             onKeyDown={handleKeyDown}
+                            onFocus={handleFocus}
+                            onBlur={handleBlur}
                         />
                         <button
                             onClick={handleSearch}
@@ -59,6 +126,41 @@ export const SearchHeader = () => {
                             <span className="hidden sm:inline">Tìm kiếm</span>
                         </button>
                     </div>
+
+                    {/* Search History Dropdown */}
+                    {showHistory && history.length > 0 && (
+                        <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-zinc-200 shadow-xl z-[60] overflow-hidden rounded-sm animate-in fade-in slide-in-from-top-1 duration-150">
+                            <div className="py-1">
+                                {history.map((item) => (
+                                    <button
+                                        key={item}
+                                        onClick={() => handleHistoryClick(item)}
+                                        className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-zinc-700 hover:bg-zinc-100 transition-colors group"
+                                    >
+                                        <Clock className="h-4 w-4 text-zinc-400 shrink-0" />
+                                        <span className="flex-1 text-left truncate font-medium">{item}</span>
+                                        <span
+                                            role="button"
+                                            onClick={(e) => handleRemoveEntry(e, item)}
+                                            className="opacity-0 group-hover:opacity-100 p-1 hover:bg-zinc-200 rounded transition-all shrink-0"
+                                            title="Xóa"
+                                        >
+                                            <X className="h-3.5 w-3.5 text-zinc-400 hover:text-zinc-600" />
+                                        </span>
+                                    </button>
+                                ))}
+                            </div>
+                            <div className="border-t border-zinc-200 px-4 py-2">
+                                <button
+                                    onClick={handleClearAll}
+                                    className="text-xs text-primary hover:text-primary/80 font-bold transition-colors"
+                                >
+                                    Xóa lịch sử tìm kiếm
+                                </button>
+                            </div>
+                        </div>
+                    )}
+
                     {/* Quick Search Tags */}
                     <div className="hidden md:flex items-center gap-4 mt-2 text-[10px] text-white/40 font-bold uppercase tracking-widest overflow-hidden whitespace-nowrap">
                         <span className="text-primary font-black">Xu hướng:</span>
