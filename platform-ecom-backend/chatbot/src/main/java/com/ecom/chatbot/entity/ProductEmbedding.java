@@ -54,6 +54,9 @@ public class ProductEmbedding {
     @Column(name = "total_sold")
     private Long totalSold;
 
+    @Column(name = "image_url", length = 2000)
+    private String imageUrl;
+
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 

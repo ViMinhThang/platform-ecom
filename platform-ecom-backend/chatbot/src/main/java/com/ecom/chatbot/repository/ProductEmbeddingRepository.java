@@ -17,7 +17,7 @@ public interface ProductEmbeddingRepository extends JpaRepository<ProductEmbeddi
        @Query(value = """
                      SELECT pe.product_id, pe.product_name, pe.product_slug, pe.description,
                             pe.category_name, pe.min_price, pe.price, pe.average_rating, pe.total_sold,
-                            pe.updated_at, pe.embedding,
+                            pe.updated_at, pe.embedding, pe.image_url,
                             1 - (pe.embedding <=> cast(:queryVector as vector)) as similarity
                      FROM product_embeddings pe
                      WHERE pe.embedding IS NOT NULL
@@ -31,7 +31,7 @@ public interface ProductEmbeddingRepository extends JpaRepository<ProductEmbeddi
        @Query(value = """
                      SELECT pe.product_id, pe.product_name, pe.product_slug, pe.description,
                             pe.category_name, pe.min_price, pe.price, pe.average_rating, pe.total_sold,
-                            pe.updated_at, pe.embedding,
+                            pe.updated_at, pe.embedding, pe.image_url,
                             1 - (pe.embedding <=> cast(:queryVector as vector)) as similarity
                      FROM product_embeddings pe
                      WHERE pe.embedding IS NOT NULL
@@ -50,10 +50,10 @@ public interface ProductEmbeddingRepository extends JpaRepository<ProductEmbeddi
        @Query(value = """
                      INSERT INTO product_embeddings
                          (product_id, product_name, product_slug, description, category_name,
-                          embedding, min_price, max_price, price, average_rating, total_sold, updated_at)
+                          embedding, min_price, max_price, price, average_rating, total_sold, image_url, updated_at)
                      VALUES
                          (:productId, :productName, :productSlug, :description, :categoryName,
-                          cast(:embedding as vector), :minPrice, :maxPrice, :price, :averageRating, :totalSold, NOW())
+                          cast(:embedding as vector), :minPrice, :maxPrice, :price, :averageRating, :totalSold, :imageUrl, NOW())
                      ON CONFLICT (product_id) DO UPDATE SET
                          product_name = EXCLUDED.product_name,
                          product_slug = EXCLUDED.product_slug,
@@ -65,6 +65,7 @@ public interface ProductEmbeddingRepository extends JpaRepository<ProductEmbeddi
                          price = EXCLUDED.price,
                          average_rating = EXCLUDED.average_rating,
                          total_sold = EXCLUDED.total_sold,
+                         image_url = EXCLUDED.image_url,
                          updated_at = NOW()
                      """, nativeQuery = true)
        void upsertProductEmbedding(
@@ -78,7 +79,8 @@ public interface ProductEmbeddingRepository extends JpaRepository<ProductEmbeddi
                      @Param("minPrice") BigDecimal minPrice,
                      @Param("maxPrice") BigDecimal maxPrice,
                      @Param("averageRating") Double averageRating,
-                     @Param("totalSold") Long totalSold);
+                     @Param("totalSold") Long totalSold,
+                     @Param("imageUrl") String imageUrl);
 
        Optional<ProductEmbedding> findByProductSlug(String productSlug);
 
@@ -92,7 +94,7 @@ public interface ProductEmbeddingRepository extends JpaRepository<ProductEmbeddi
        @Query(value = """
                      SELECT pe.product_id, pe.product_name, pe.product_slug, pe.description,
                             pe.category_name, pe.min_price, pe.price, pe.average_rating, pe.total_sold,
-                            pe.updated_at, pe.embedding, 1.0 as similarity
+                            pe.updated_at, pe.embedding, pe.image_url, 1.0 as similarity
                      FROM product_embeddings pe
                      WHERE pe.min_price BETWEEN :minPrice AND :maxPrice
                      ORDER BY pe.total_sold DESC NULLS LAST
@@ -106,7 +108,7 @@ public interface ProductEmbeddingRepository extends JpaRepository<ProductEmbeddi
        @Query(value = """
                      SELECT pe.product_id, pe.product_name, pe.product_slug, pe.description,
                             pe.category_name, pe.min_price, pe.price, pe.average_rating, pe.total_sold,
-                            pe.updated_at, pe.embedding, 1.0 as similarity
+                            pe.updated_at, pe.embedding, pe.image_url, 1.0 as similarity
                      FROM product_embeddings pe
                      WHERE LOWER(pe.product_name) LIKE LOWER(CONCAT('%', :brand, '%'))
                         OR LOWER(pe.category_name) LIKE LOWER(CONCAT('%', :brand, '%'))

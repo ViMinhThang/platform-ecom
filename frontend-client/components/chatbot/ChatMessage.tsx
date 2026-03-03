@@ -5,6 +5,7 @@ import { Star, ShoppingCart, ExternalLink } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import Image from "next/image";
 
 interface ChatMessageProps {
     role: "user" | "assistant";
@@ -42,10 +43,10 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({
         >
             <div
                 className={cn(
-                    "max-w-[85%] rounded-2xl p-3 shadow-sm",
+                    "max-w-[85%] rounded-none p-3 shadow-sm",
                     isAssistant
-                        ? "bg-white text-slate-800 border border-slate-100 rounded-tl-none"
-                        : "bg-primary text-primary-foreground rounded-tr-none"
+                        ? "bg-white text-slate-800 border border-slate-100"
+                        : "bg-primary text-primary-foreground"
                 )}
             >
                 <div className="text-sm leading-relaxed">
@@ -61,7 +62,7 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({
                             {products.map((product) => (
                                 <div
                                     key={product.id}
-                                    className="flex flex-col p-2 bg-slate-50 rounded-xl border border-slate-100 hover:border-primary/30 transition-colors group"
+                                    className="flex flex-col p-2 bg-slate-50 rounded-none border border-slate-100 hover:border-primary/30 transition-colors group"
                                 >
                                     <div className="flex justify-between items-start mb-1">
                                         <h4 className="text-xs font-bold text-slate-800 line-clamp-1 group-hover:text-primary transition-colors">
@@ -72,22 +73,36 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({
                                         </Badge>
                                     </div>
 
-                                    <div className="flex items-center gap-2 mb-2">
-                                        <span className="text-xs font-bold text-primary">
-                                            {product.price?.toLocaleString('vi-VN')} VNĐ
-                                        </span>
-                                        <div className="flex items-center text-[10px] text-orange-500 bg-orange-50 px-1 rounded">
-                                            <Star className="w-2.5 h-2.5 fill-current mr-0.5" />
-                                            {product.averageRating?.toFixed(1) || "0.0"}
-                                        </div>
-                                    </div>
+                                    <div className="flex gap-3 mt-1">
+                                        {product.imageUrl && (
+                                            <div className="relative w-16 h-16 shrink-0 border border-slate-100 bg-white">
+                                                <Image 
+                                                    src={"http://localhost:8080/uploads/" + product.imageUrl} 
+                                                    alt={product.name}
+                                                    fill
+                                                    className="object-cover p-1"
+                                                />
+                                            </div>
+                                        )}
+                                        <div className="flex flex-col flex-1 justify-between">
+                                            <div className="flex items-center gap-2 mb-2">
+                                                <span className="text-xs font-bold text-primary">
+                                                    {product.price?.toLocaleString('vi-VN')} VNĐ
+                                                </span>
+                                                <div className="flex items-center text-[10px] text-orange-500 bg-orange-50 px-1 rounded-none">
+                                                    <Star className="w-2.5 h-2.5 fill-current mr-0.5" />
+                                                    {product.averageRating?.toFixed(1) || "0.0"}
+                                                </div>
+                                            </div>
 
-                                    <div className="flex gap-2">
-                                        <Button asChild size="sm" variant="outline" className="h-7 text-[10px] flex-1 bg-white">
-                                            <Link href={`/products/${product.slug}`}>
-                                                Chi tiết <ExternalLink className="w-2.5 h-2.5 ml-1" />
-                                            </Link>
-                                        </Button>
+                                            <div className="flex gap-2">
+                                                <Button asChild size="sm" variant="outline" className="h-7 text-[10px] flex-1 bg-white rounded-none">
+                                                    <Link href={`/products/${product.slug}`}>
+                                                        Chi tiết <ExternalLink className="w-2.5 h-2.5 ml-1" />
+                                                    </Link>
+                                                </Button>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             ))}

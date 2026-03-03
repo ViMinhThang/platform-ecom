@@ -21,13 +21,26 @@ public class ProductTools {
     private final EmbeddingService embeddingService;
     private final ProductEmbeddingRepository repository;
 
+    private static final ThreadLocal<List<ProductSummaryDTO>> lastFoundProducts = new ThreadLocal<>();
+
+    public static List<ProductSummaryDTO> getLastFoundProducts() {
+        return lastFoundProducts.get();
+    }
+
+    public static void clearLastFoundProducts() {
+        lastFoundProducts.remove();
+    }
+
     @Tool(description = "Semantic search for products by text query. Use for general searches like 'find phones' or 'show me laptops'")
     public List<ProductSummaryDTO> searchProducts(
             @ToolParam(description = "Search query text") String query,
             @ToolParam(description = "Max results (1-20), defaults to 5") Integer limit) {
         log.info("Tool searchProducts called with query='{}', limit={}", query, limit);
         int maxResults = (limit != null && limit > 0 && limit <= 20) ? limit : 5;
-        return embeddingService.findSimilarProducts(query, maxResults);
+
+        List<ProductSummaryDTO> results = embeddingService.findSimilarProducts(query, maxResults);
+        lastFoundProducts.set(results);
+        return results;
     }
 
     @Tool(description = "Search products within a specific price range in VND. Use when user mentions price like '240k', '240 nghìn', 'dưới 10 triệu', or 'từ 5 đến 10 triệu'")
@@ -39,7 +52,9 @@ public class ProductTools {
         int maxResults = (limit != null && limit > 0) ? limit : 5;
 
         List<Object[]> results = repository.findByPriceRange(minPrice, maxPrice, maxResults);
-        return results.stream().map(this::mapToProductSummary).toList();
+        List<ProductSummaryDTO> products = results.stream().map(this::mapToProductSummary).toList();
+        lastFoundProducts.set(products);
+        return products;
     }
 
     @Tool(description = "Search products by brand name. Use when user asks for specific brand like 'Samsung', 'Apple', 'iPhone', 'Xiaomi'")
@@ -50,16 +65,22 @@ public class ProductTools {
         int maxResults = (limit != null && limit > 0) ? limit : 5;
 
         List<Object[]> results = repository.findByBrand(brand, maxResults);
-        return results.stream().map(this::mapToProductSummary).toList();
+        List<ProductSummaryDTO> products = results.stream().map(this::mapToProductSummary).toList();
+        lastFoundProducts.set(products);
+        return products;
     }
 
     @Tool(description = "Get detailed information about a specific product by its URL slug")
     public ProductSummaryDTO getProductBySlug(
             @ToolParam(description = "Product URL slug") String slug) {
         log.info("Tool getProductBySlug called with slug='{}'", slug);
-        return repository.findByProductSlug(slug)
+        ProductSummaryDTO result = repository.findByProductSlug(slug)
                 .map(this::embeddingToSummary)
                 .orElse(null);
+        if (result != null) {
+            lastFoundProducts.set(List.of(result));
+        }
+        return result;
     }
 
     @Tool(description = "Combined search with both text query and optional price range filter")
@@ -72,16 +93,21 @@ public class ProductTools {
                 query, minPrice, maxPrice, limit);
         int maxResults = (limit != null && limit > 0) ? limit : 5;
 
+        List<ProductSummaryDTO> products;
+
         // If price range is specified, use filtered search
         if (minPrice != null && maxPrice != null) {
             String vectorString = embeddingService.generateQueryVector(query);
             List<Object[]> results = repository.findSimilarProductsWithPriceRange(
                     vectorString, minPrice, maxPrice, maxResults);
-            return results.stream().map(this::mapToProductSummary).toList();
+            products = results.stream().map(this::mapToProductSummary).toList();
+        } else {
+            // Otherwise, use standard semantic search
+            products = embeddingService.findSimilarProducts(query, maxResults);
         }
 
-        // Otherwise, use standard semantic search
-        return embeddingService.findSimilarProducts(query, maxResults);
+        lastFoundProducts.set(products);
+        return products;
     }
 
     private ProductSummaryDTO mapToProductSummary(Object[] row) {
@@ -95,7 +121,8 @@ public class ProductTools {
                         : (row[5] != null ? new BigDecimal(row[5].toString()) : null))
                 .averageRating(row[7] != null ? ((Number) row[7]).doubleValue() : null)
                 .totalSold(row[8] != null ? ((Number) row[8]).longValue() : null)
-                .similarityScore(row.length > 11 && row[11] != null ? ((Number) row[11]).doubleValue() : 1.0)
+                .imageUrl(row.length > 11 && row[11] != null ? (String) row[11] : null)
+                .similarityScore(row.length > 12 && row[12] != null ? ((Number) row[12]).doubleValue() : 1.0)
                 .build();
     }
 
@@ -109,6 +136,7 @@ public class ProductTools {
                 .price(embedding.getMinPrice())
                 .averageRating(embedding.getAverageRating())
                 .totalSold(embedding.getTotalSold())
+                .imageUrl(embedding.getImageUrl())
                 .similarityScore(1.0)
                 .build();
     }

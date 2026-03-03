@@ -82,7 +82,6 @@ export const SearchHeader = () => {
     };
 
     const handleBlur = () => {
-        // Small delay so click events on dropdown items can register
         blurTimeoutRef.current = setTimeout(() => {
             setShowHistory(false);
         }, 200);

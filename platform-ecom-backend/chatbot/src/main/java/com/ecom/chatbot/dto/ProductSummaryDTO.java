@@ -24,9 +24,6 @@ public class ProductSummaryDTO {
     private BigDecimal price;
     private Double averageRating;
     private Long totalSold;
-
-    /**
-     * Similarity score from vector search (0-1, higher is more similar)
-     */
+    private String imageUrl;
     private Double similarityScore;
 }

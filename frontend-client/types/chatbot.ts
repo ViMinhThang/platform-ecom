@@ -8,6 +8,7 @@ export interface ProductSummary {
     averageRating: number;
     totalSold: number;
     similarityScore: number;
+    imageUrl?: string;
 }
 
 export interface ChatRequest {

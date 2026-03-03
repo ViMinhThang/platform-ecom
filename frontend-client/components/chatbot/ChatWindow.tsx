@@ -93,17 +93,17 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
     };
 
     return (
-        <div className="flex flex-col h-[500px] w-[350px] md:w-[400px] bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden animate-in slide-in-from-bottom-5 fade-in duration-300">
+        <div className="flex flex-col h-[540px] w-[480px] md:w-[520px] bg-white rounded-none shadow-2xl border border-slate-200 overflow-hidden animate-in slide-in-from-bottom-5 fade-in duration-300">
             {/* Header */}
             <div className="bg-primary p-4 flex justify-between items-center text-primary-foreground">
                 <div className="flex items-center gap-2">
-                    <div className="bg-white/20 p-1.5 rounded-lg">
+                    <div className="bg-white/20 p-1.5 rounded-none">
                         <Bot className="w-5 h-5" />
                     </div>
                     <div>
                         <h3 className="font-bold text-sm">Trợ lý mua sắm AI</h3>
                         <div className="flex items-center gap-1">
-                            <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
+                            <span className="w-2 h-2 bg-green-400 rounded-sm animate-pulse" />
                             <span className="text-[10px] opacity-80">Trực tuyến</span>
                         </div>
                     </div>
@@ -112,7 +112,7 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
                     variant="ghost"
                     size="icon"
                     onClick={onClose}
-                    className="text-primary-foreground hover:bg-white/10 rounded-full h-8 w-8"
+                    className="text-primary-foreground hover:bg-white/10 rounded-none h-8 w-8"
                 >
                     <X className="w-5 h-5" />
                 </Button>
@@ -128,7 +128,7 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
                 ))}
                 {isLoading && (
                     <div className="flex justify-start mb-4">
-                        <div className="bg-white rounded-2xl p-3 shadow-sm border border-slate-100 rounded-tl-none flex items-center gap-2">
+                        <div className="bg-white rounded-none p-3 shadow-sm border border-slate-100 flex items-center gap-2">
                             <Loader2 className="w-4 h-4 animate-spin text-primary" />
                             <span className="text-xs text-slate-500 italic">Đang suy nghĩ...</span>
                         </div>
@@ -144,14 +144,14 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
                         onChange={(e) => setInput(e.target.value)}
                         onKeyDown={handleKeyPress}
                         placeholder="Nhập tin nhắn..."
-                        className="flex-1 h-11 pr-12 rounded-xl focus-visible:ring-primary/30 border-slate-200"
+                        className="flex-1 h-11 pr-12 rounded-none focus-visible:ring-primary/30 border-slate-200"
                         disabled={isLoading}
                     />
                     <Button
                         size="icon"
                         onClick={handleSend}
                         disabled={!input.trim() || isLoading}
-                        className="absolute right-1 top-1 bottom-1 h-9 w-9 rounded-lg"
+                        className="absolute right-1 top-1 bottom-1 h-9 w-9 rounded-none"
                     >
                         {isLoading ? (
                             <Loader2 className="w-4 h-4 animate-spin" />

@@ -104,7 +104,8 @@ public class EmbeddingServiceImpl implements EmbeddingService {
                 product.getMinPrice(),
                 product.getMaxPrice(),
                 product.getAverageRating(),
-                product.getTotalSold());
+                product.getTotalSold(),
+                product.getImageUrl());
 
         log.debug("Updated embedding for product: {} ({})", product.getName(), product.getId());
     }
@@ -173,7 +174,8 @@ public class EmbeddingServiceImpl implements EmbeddingService {
                 .price(row[5] != null ? new BigDecimal(row[5].toString()) : null)
                 .averageRating(row[6] != null ? ((Number) row[6]).doubleValue() : null)
                 .totalSold(row[7] != null ? ((Number) row[7]).longValue() : null)
-                .similarityScore(row.length > 10 && row[10] != null ? ((Number) row[10]).doubleValue() : null)
+                .imageUrl(row.length > 11 && row[11] != null ? (String) row[11] : null)
+                .similarityScore(row.length > 12 && row[12] != null ? ((Number) row[12]).doubleValue() : null)
                 .build();
     }
 }
