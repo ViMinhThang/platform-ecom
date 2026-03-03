@@ -76,7 +76,7 @@ const MenuBar = ({ editor, productId }: { editor: any, productId: number }) => {
                 const file = input.files[0];
                 try {
                     const uploaded = await descriptionImageService.uploadImage(productId, file);
-                    const fullUrl = `${env.uploadsBaseUrl}/products/${uploaded.imageUrl}`;
+                    const fullUrl = `${env.uploadsBaseUrl}/${uploaded.imageUrl}`;
                     editor.chain().focus().setImage({
                         src: fullUrl,
                         'data-image-id': uploaded.id
@@ -252,16 +252,22 @@ export const RichTextEditor = ({ value, onChange, className, productId }: RichTe
     });
 
     useEffect(() => {
-        if (editor && value !== editor.getHTML()) {
-            editor.commands.setContent(value);
+        if (editor && value !== undefined) {
+            // Normalize HTML by removing trailing newlines for comparison
+            const currentHTML = editor.getHTML()?.replace(/\n$/, '') || '';
+            const newValue = value?.replace(/\n$/, '') || '';
 
-            const currentImageIds = new Set<number>();
-            const doc = new DOMParser().parseFromString(value, 'text/html');
-            doc.querySelectorAll('img').forEach(img => {
-                const id = img.getAttribute('data-image-id');
-                if (id) currentImageIds.add(parseInt(id));
-            });
-            previousImageIds.current = currentImageIds;
+            if (currentHTML !== newValue) {
+                editor.commands.setContent(value, false);
+
+                const currentImageIds = new Set<number>();
+                const doc = new DOMParser().parseFromString(value, 'text/html');
+                doc.querySelectorAll('img').forEach(img => {
+                    const id = img.getAttribute('data-image-id');
+                    if (id) currentImageIds.add(parseInt(id));
+                });
+                previousImageIds.current = currentImageIds;
+            }
         }
     }, [value, editor]);
 

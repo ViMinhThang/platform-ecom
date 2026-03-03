@@ -7,7 +7,7 @@
     "url": "https://github.com/Kiranism"
   },
   "scripts": {
-    "dev": "NODE_OPTIONS=--no-experimental-webstorage next dev --turbopack",
+    "dev": "cross-env NODE_OPTIONS=--no-experimental-webstorage next dev --turbopack",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
@@ -113,6 +113,7 @@
     "@types/sort-by": "^1.2.3",
     "@types/uuid": "^10.0.0",
     "@typescript-eslint/eslint-plugin": "^6.11.0",
+    "cross-env": "^10.1.0",
     "husky": "^9.1.7",
     "lint-staged": "^15.2.11",
     "prettier": "3.4.2",

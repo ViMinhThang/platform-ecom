@@ -13,16 +13,16 @@ type ImageType = 'products' | 'categories';
  * @param type - Type of image (products, categories)
  * @returns Full URL to the image or placeholder
  */
-export const getImageUrl = (path: string | undefined | null, type: ImageType): string => {
+export const getImageUrl = (path: string | undefined | null, type?: ImageType): string => {
     if (!path) return '/placeholder.png';
     if (path.startsWith('http://') || path.startsWith('https://')) return path;
-    return `${env.uploadsBaseUrl}/${type}/${path}`;
+    return `${env.uploadsBaseUrl}/${path}`;
 };
 
 /**
  * Convenience methods for specific image types
  */
 export const imageUrl = {
-    product: (path: string | undefined | null) => getImageUrl(path, 'products'),
-    category: (path: string | undefined | null) => getImageUrl(path, 'categories'),
+    product: (path: string | undefined | null) => getImageUrl(path),
+    category: (path: string | undefined | null) => getImageUrl(path),
 };

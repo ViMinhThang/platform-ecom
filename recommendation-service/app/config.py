@@ -1,3 +1,4 @@
+import os
 from pydantic_settings import BaseSettings
 
 
@@ -21,7 +22,8 @@ class Settings(BaseSettings):
     collaborative_model_path: str = "ml/models/collaborative_als.pkl"
 
     class Config:
-        env_file = ".env"
+        # Look for .env in parent directory (project root) since config.py is in app/
+        env_file = os.path.join(os.path.dirname(os.path.dirname(__file__)), ".env")
         case_sensitive = False
 
 

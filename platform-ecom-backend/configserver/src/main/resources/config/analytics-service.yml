@@ -3,7 +3,7 @@ server:
 
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/analytics_db
+    url: jdbc:postgresql://localhost:5432/analytics
     username: fragile
     password: ${DB_PASSWORD:204863}
     driver-class-name: org.postgresql.Driver
@@ -20,7 +20,7 @@ spring:
     stream:
       kafka:
         binder:
-          brokers: localhost:9092
+          brokers: localhost:9093
       bindings:
         user-event-out-0:
           destination: user-event-topic

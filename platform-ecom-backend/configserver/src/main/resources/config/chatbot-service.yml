@@ -1,12 +1,12 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/chatbot_db
+    url: jdbc:postgresql://localhost:5432/chatbot
     username: ${DB_USER:fragile}
     password: ${DB_PASSWORD:204863}
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: create-drop
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect

@@ -8,11 +8,13 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Type;
 
 import java.math.BigDecimal;
+import java.text.Normalizer;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 @Entity
 @Table(name = "products", indexes = {
@@ -114,8 +116,7 @@ public class Product {
     protected void onCreate() {
         createdAt = LocalDateTime.now();
         updatedAt = LocalDateTime.now();
-        if (slug == null)
-            slug = name.toLowerCase().replaceAll("\\s+", "-");
+        this.slug = generateSlug(name);
     }
 
     public void addImage(ProductImage image) {
@@ -131,5 +132,21 @@ public class Product {
     @PreUpdate
     protected void onUpdate() {
         updatedAt = LocalDateTime.now();
+        this.slug = generateSlug(name);
+    }
+
+    private String generateSlug(String input) {
+        if (input == null) return null;
+        String normalized = Normalizer.normalize(input, Normalizer.Form.NFD);
+        Pattern pattern = Pattern.compile("\\p{InCombiningDiacriticalMarks}+");
+        return pattern.matcher(normalized).replaceAll("")
+                .toLowerCase()
+                .replace('đ', 'd')
+                .replace('Đ', 'd')
+                .replaceAll("[^a-z0-9\\s/]", "")
+                .replace('/', '-')
+                .replaceAll("\\s+", "-")
+                .replaceAll("-+", "-")
+                .replaceAll("^-|-$", "");
     }
 }

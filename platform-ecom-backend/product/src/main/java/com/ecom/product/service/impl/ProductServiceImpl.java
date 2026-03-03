@@ -169,6 +169,7 @@ public class ProductServiceImpl implements ProductService {
         product.setStatus(productDTO.getStatus());
         product.setSpecifications(productDTO.getSpecifications());
         product.setMetadata(productDTO.getMetadata());
+        product.setDescription(productDTO.getDescription());
         product.setCategory(category);
         product.setUserId(userId);
         return product;
@@ -183,6 +184,8 @@ public class ProductServiceImpl implements ProductService {
             existingProduct.setSpecifications(productDTO.getSpecifications());
         if (productDTO.getMetadata() != null)
             existingProduct.setMetadata(productDTO.getMetadata());
+        if (productDTO.getDescription() != null)
+            existingProduct.setDescription(productDTO.getDescription());
         if (productDTO.getCate() != null && productDTO.getCate().getId() != null) {
             existingProduct.setCategory(categoryHelper.findByIdOrThrow(productDTO.getCate().getId()));
         }

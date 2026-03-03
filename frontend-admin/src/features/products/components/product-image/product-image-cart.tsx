@@ -37,7 +37,7 @@ export const ProductImageCard: React.FC<ProductImageCardProps> = ({
     >
       <CardContent className="p-0 relative w-full h-full">
         <Image
-          src={`http://localhost:8080/uploads/products/${image.imageUrl}`}
+          src={`http://localhost:8080/uploads/${image.imageUrl}`}
           alt="Product image"
           fill
           className="object-cover w-full h-full"

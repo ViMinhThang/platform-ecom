@@ -7,6 +7,8 @@ import { ArrowRight } from "lucide-react";
 import { getActiveSaleCampaigns } from "@/lib/services/sale-campaign-service";
 import { SaleCampaign } from "@/types/sale-campaign";
 import { formatCurrency } from "@/lib/utils/formatCurrency";
+import { imageUrl } from "@/lib/utils/imageUrl";
+
 
 export const SingleActiveCampaign = () => {
     const [campaign, setCampaign] = useState<SaleCampaign | null>(null);
@@ -156,7 +158,7 @@ export const SingleActiveCampaign = () => {
                                     <div className="relative aspect-square mb-6 grayscale group-hover:grayscale-0 transition-all duration-500">
                                         {item.imageUrl && (
                                             <Image
-                                                src={"http://localhost:8080/uploads/products/" + item.imageUrl}
+                                                src={imageUrl.product(item.imageUrl)}
                                                 alt={item.productName}
                                                 fill
                                                 className="object-contain p-4 group-hover:scale-110 transition-transform duration-500"

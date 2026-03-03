@@ -5,40 +5,64 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c48beeac-7758-42e4-81dd-f068fbcd38be" name="Changes" comment="update spring cloud stream dependency">
+      <change afterPath="$PROJECT_DIR$/platform-ecom-backend/chatbot/src/main/resources/db/03-chatbot-db.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/analytics/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/analytics/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/analytics/src/main/java/com/ecom/analytics/repository/UserEventRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/analytics/src/main/java/com/ecom/analytics/repository/UserEventRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/chatbot/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/chatbot/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/configserver/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/configserver/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/configserver/src/main/resources/config/auth-service.yml" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/configserver/src/main/resources/config/auth-service.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/configserver/src/main/resources/config/bff-service.yml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/configserver/src/main/resources/config/inventory-service.yml" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/configserver/src/main/resources/config/inventory-service.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/configserver/src/main/resources/config/notification-service.yml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/configserver/src/main/resources/config/order-service.yml" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/configserver/src/main/resources/config/order-service.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-admin/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-admin/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-admin/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-admin/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-admin/src/app/dashboard/product/[id]/description/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-admin/src/app/dashboard/product/[id]/description/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-admin/src/components/editor/rich-text-editor.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-admin/src/components/editor/rich-text-editor.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-admin/src/config/constants.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-admin/src/config/constants.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-admin/src/features/categories/components/category-tables/columns.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-admin/src/features/categories/components/category-tables/columns.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-admin/src/features/products/components/product-form/product-form-fields.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-admin/src/features/products/components/product-form/product-form-fields.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-admin/src/features/products/components/product-image/product-image-cart.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-admin/src/features/products/components/product-image/product-image-cart.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-admin/src/features/products/components/product-tables/columns.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-admin/src/features/products/components/product-tables/columns.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-admin/src/features/products/components/product-variant/product-variant-image-picker.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-admin/src/features/products/components/product-variant/product-variant-image-picker.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-admin/src/features/sale-campaigns/components/category-multi-select.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-admin/src/features/sale-campaigns/components/category-multi-select.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-admin/src/features/sale-campaigns/components/sale-campaign-form.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-admin/src/features/sale-campaigns/components/sale-campaign-form.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-admin/src/features/users/component/user-form/user-image-upload-field.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-admin/src/features/users/component/user-form/user-image-upload-field.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-admin/src/features/users/component/user-tables/columns.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-admin/src/features/users/component/user-tables/columns.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-admin/src/hooks/product/use-product-form.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-admin/src/hooks/product/use-product-form.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-admin/src/lib/auth-options.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-admin/src/lib/auth-options.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-admin/src/lib/store/slices/productSlice.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-admin/src/lib/store/slices/productSlice.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-admin/src/lib/utils/imageUrl.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-admin/src/lib/utils/imageUrl.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-admin/src/types/product/product-form.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-admin/src/types/product/product-form.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-client/app/(main)/checkout/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/app/(main)/checkout/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-client/app/(main)/products/[slug]/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/app/(main)/products/[slug]/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-client/app/(main)/sale-campaigns/[slug]/sale-campaign-detail-client.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/app/(main)/sale-campaigns/[slug]/sale-campaign-detail-client.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-client/components/ProductCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/ProductCard.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-client/components/home/SingleActiveCampaign.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/home/SingleActiveCampaign.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-client/components/sale-campaign/SaleCampaignProductCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/sale-campaign/SaleCampaignProductCard.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-client/lib/services/stripe.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/lib/services/stripe.service.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-client/lib/utils/imageUrl.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/lib/utils/imageUrl.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-client/next.config.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/next.config.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-client/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/init-multi-db.sql/02-review-db.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/init-multi-db.sql/03-chatbot-db.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/logs/order-service.log" beforeDir="false" afterPath="$PROJECT_DIR$/logs/order-service.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/logs/user-service.log" beforeDir="false" afterPath="$PROJECT_DIR$/logs/user-service.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/analytics/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/analytics/Dockerfile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/chatbot/src/main/resources/db/migration/V1__init_pgvector.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/configserver/src/main/resources/config/analytics-service.yml" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/configserver/src/main/resources/config/analytics-service.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/configserver/src/main/resources/config/chatbot-service.yml" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/configserver/src/main/resources/config/chatbot-service.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/platform-ecom-backend/configserver/src/main/resources/config/product-service.yml" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/configserver/src/main/resources/config/product-service.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/configserver/src/main/resources/config/promotion-service.yml" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/configserver/src/main/resources/config/promotion-service.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/configserver/src/main/resources/config/review-service.yml" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/configserver/src/main/resources/config/review-service.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/configserver/src/main/resources/config/user-service.yml" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/configserver/src/main/resources/config/user-service.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/eureka/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/eureka/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/gateway/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/gateway/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/inventory/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/inventory/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/order/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/order/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/product/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/product/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/controller/PublicProductController.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/controller/PublicProductController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/gateway/src/main/java/com/ecom/gateway/security/StaticResourceConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/gateway/src/main/java/com/ecom/gateway/security/StaticResourceConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/entity/Product.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/entity/Product.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/service/impl/ProductServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/service/impl/ProductServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/service/signature/ProductService.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/service/signature/ProductService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/promotion/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/promotion/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/review/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/review/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/shared-commons/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/shared-commons/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/user/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/user/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/recommendation-service/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/recommendation-service/Dockerfile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/resources/db/migration/V1.1__enable_pg_trgm_and_index.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/resources/db/migration/V1.2__create_sale_campaign_tables.sql" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/recommendation-service/app/api/routes/recommendations.py" beforeDir="false" afterPath="$PROJECT_DIR$/recommendation-service/app/api/routes/recommendations.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/recommendation-service/app/clients/analytics_client.py" beforeDir="false" afterPath="$PROJECT_DIR$/recommendation-service/app/clients/analytics_client.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/recommendation-service/app/clients/base_client.py" beforeDir="false" afterPath="$PROJECT_DIR$/recommendation-service/app/clients/base_client.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/recommendation-service/app/clients/product_client.py" beforeDir="false" afterPath="$PROJECT_DIR$/recommendation-service/app/clients/product_client.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/recommendation-service/app/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/recommendation-service/app/config.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/recommendation-service/app/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/recommendation-service/app/main.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/recommendation-service/app/models/collaborative.py" beforeDir="false" afterPath="$PROJECT_DIR$/recommendation-service/app/models/collaborative.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/recommendation-service/app/services/feature_store.py" beforeDir="false" afterPath="$PROJECT_DIR$/recommendation-service/app/services/feature_store.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/recommendation-service/app/services/recommendation_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/recommendation-service/app/services/recommendation_service.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/recommendation-service/ml/training/train_collaborative.py" beforeDir="false" afterPath="$PROJECT_DIR$/recommendation-service/ml/training/train_collaborative.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/recommendation-service/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/recommendation-service/requirements.txt" afterDir="false" />
     </list>
@@ -79,6 +103,10 @@
     &quot;accountId&quot;: &quot;bad502e8-e400-4f57-8bb0-9f8fba22be71&quot;
   }
 }</component>
+  <component name="KubernetesApiPersistence">{}</component>
+  <component name="KubernetesApiProvider">{
+  &quot;isMigrated&quot;: true
+}</component>
   <component name="MavenImportPreferences">
     <option name="generalSettings">
       <MavenGeneralSettings>
@@ -97,6 +125,7 @@
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
     &quot;Application.Unnamed.executor&quot;: &quot;Run&quot;,
+    &quot;Application.analytics-server.executor&quot;: &quot;Run&quot;,
     &quot;Application.auth-service.executor&quot;: &quot;Run&quot;,
     &quot;Application.bff-service.executor&quot;: &quot;Run&quot;,
     &quot;Application.chatbot-service.executor&quot;: &quot;Run&quot;,
@@ -113,27 +142,34 @@
     &quot;Application.user-service.executor&quot;: &quot;Run&quot;,
     &quot;JUnit.com.ecom.product.service in product.executor&quot;: &quot;Debug&quot;,
     &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;Python.main (1).executor&quot;: &quot;Run&quot;,
+    &quot;Python.main.executor&quot;: &quot;Run&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
     &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;Spring Boot.AnalyticsApplication.executor&quot;: &quot;Run&quot;,
     &quot;git-widget-placeholder&quot;: &quot;feature/nextjs&quot;,
     &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/home/fragile/platform-ecom&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Libraries&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/huynh/Desktop/platform-ecom&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15845825&quot;,
     &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;reference.projectsettings.compiler.annotationProcessors&quot;
+    &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;,
+    &quot;run.configurations.included.in.services&quot;: &quot;true&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\huynh\Desktop\platform-ecom\platform-ecom-backend\chatbot" />
+      <recent name="C:\Users\huynh\Desktop\platform-ecom\platform-ecom-backend\promotion" />
       <recent name="$PROJECT_DIR$/platform-ecom-backend/configserver/src/main/resources/config" />
       <recent name="$PROJECT_DIR$/uploads/products" />
       <recent name="$PROJECT_DIR$/uploads/categories" />
-      <recent name="$PROJECT_DIR$/uploads/reviews" />
-      <recent name="$PROJECT_DIR$/platform-ecom-backend/user/src/main/java/com/ecom/user/service" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\huynh\OneDrive\Desktop\platform-ecom\platform-ecom-backend\user\src\main\java\com\ecom\user\controller\admin" />
@@ -153,6 +189,10 @@
     <option name="configurationTypes">
       <set>
         <option value="Application" />
+        <option value="KtorApplicationConfigurationType" />
+        <option value="MicronautRunConfigurationType" />
+        <option value="QuarkusRunConfigurationType" />
+        <option value="SpringBootApplicationConfigurationType" />
       </set>
     </option>
     <option name="configurationStatuses">
@@ -160,16 +200,42 @@
         <entry key="Application">
           <value>
             <map>
+              <entry key="analytics-server" value="STOPPED" />
+              <entry key="chatbot-service" value="STOPPED" />
               <entry key="config-server" value="STOPPED" />
-              <entry key="gateway" value="FAILED" />
-              <entry key="user-service" value="FAILED" />
+              <entry key="gateway" value="STOPPED" />
+              <entry key="inventory-service" value="STOPPED" />
+              <entry key="order-service" value="STOPPED" />
+              <entry key="product-service" value="STOPPED" />
+              <entry key="promotion-service" value="STOPPED" />
+              <entry key="review-service" value="STOPPED" />
+              <entry key="user-service" value="STOPPED" />
+            </map>
+          </value>
+        </entry>
+        <entry key="SpringBootApplicationConfigurationType">
+          <value>
+            <map>
+              <entry key="AnalyticsApplication" value="FAILED" />
             </map>
           </value>
         </entry>
       </map>
     </option>
   </component>
-  <component name="RunManager" selected="JUnit.com.ecom.product.service in product">
+  <component name="RunManager" selected="Python.main">
+    <configuration name="analytics-server" type="Application" factoryName="Application" focusToolWindowBeforeRun="true">
+      <option name="ALTERNATIVE_JRE_PATH" value="25" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
+      <option name="envFilePaths">
+        <option value="$PROJECT_DIR$/platform-ecom-backend/analytics/.env" />
+      </option>
+      <option name="MAIN_CLASS_NAME" value="com.ecom.analytics.AnalyticsApplication" />
+      <module name="analytics" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="chatbot-service" type="Application" factoryName="Application">
       <option name="ALTERNATIVE_JRE_PATH" value="25" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
@@ -182,7 +248,7 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="config-server" type="Application" factoryName="Application">
+    <configuration name="config-server" type="Application" factoryName="Application" focusToolWindowBeforeRun="true">
       <option name="MAIN_CLASS_NAME" value="com.ecom.config.configserver.ConfigserverApplication" />
       <module name="configserver" />
       <method v="2">
@@ -276,23 +342,159 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="main" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="platform-ecom" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="SDK_NAME" value="Python 3.12 (platform-ecom)" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/recommendation-service/app" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="net.ashald.envfile">
+        <option name="IS_ENABLED" value="false" />
+        <option name="IS_SUBST" value="false" />
+        <option name="IS_PATH_MACRO_SUPPORTED" value="false" />
+        <option name="IS_IGNORE_MISSING_FILES" value="false" />
+        <option name="IS_ENABLE_EXPERIMENTAL_INTEGRATIONS" value="false" />
+        <ENTRIES>
+          <ENTRY IS_ENABLED="true" PARSER="runconfig" IS_EXECUTABLE="false" />
+        </ENTRIES>
+      </EXTENSION>
+      <option name="RUN_TOOL" value="" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/recommendation-service/app/main.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="AnalyticsApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="analytics" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.ecom.analytics.AnalyticsApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ChatbotApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="chatbot" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.ecom.chatbot.ChatbotApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ConfigserverApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="configserver" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.ecom.config.configserver.ConfigserverApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="EurekaApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="eureka" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.ecom.eureka.EurekaApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="GatewayApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="gateway" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.ecom.gateway.GatewayApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="InventoryApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="inventory" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.ecom.inventory.InventoryApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="OrderApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="order" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.ecom.order.OrderApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ProductApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="product" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.ecom.product.ProductApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="PromotionApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="promotion" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.ecom.promotion.PromotionApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ReviewApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="review" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.ecom.review.ReviewApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="UserApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="user" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.ecom.user.UserApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <list>
+      <item itemvalue="Application.analytics-server" />
+      <item itemvalue="Application.chatbot-service" />
       <item itemvalue="Application.config-server" />
       <item itemvalue="Application.gateway" />
-      <item itemvalue="Application.user-service" />
-      <item itemvalue="Application.product-service" />
-      <item itemvalue="Application.promotion-service" />
-      <item itemvalue="Application.chatbot-service" />
       <item itemvalue="Application.inventory-service" />
       <item itemvalue="Application.order-service" />
+      <item itemvalue="Application.product-service" />
+      <item itemvalue="Application.promotion-service" />
       <item itemvalue="Application.review-service" />
+      <item itemvalue="Application.user-service" />
       <item itemvalue="JUnit.com.ecom.product.service in product" />
+      <item itemvalue="Python.main" />
+      <item itemvalue="Spring Boot.AnalyticsApplication" />
+      <item itemvalue="Spring Boot.ChatbotApplication" />
+      <item itemvalue="Spring Boot.ConfigserverApplication" />
+      <item itemvalue="Spring Boot.EurekaApplication" />
+      <item itemvalue="Spring Boot.GatewayApplication" />
+      <item itemvalue="Spring Boot.InventoryApplication" />
+      <item itemvalue="Spring Boot.OrderApplication" />
+      <item itemvalue="Spring Boot.ProductApplication" />
+      <item itemvalue="Spring Boot.PromotionApplication" />
+      <item itemvalue="Spring Boot.ReviewApplication" />
+      <item itemvalue="Spring Boot.UserApplication" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.main" />
         <item itemvalue="JUnit.com.ecom.product.service in product" />
       </list>
     </recent_temporary>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-30f59d01ecdd-2fc7cc6b9a17-intellij.indexing.shared.core-IU-253.30387.90" />
+        <option value="bundled-js-predefined-d6986cc7102b-9b0f141eb926-JavaScript-IU-253.30387.90" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="StructureViewState">
+    <option name="selectedTab" value="Logical" />
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -301,6 +503,15 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1758349288711</updated>
+      <workItem from="1770205570396" duration="896000" />
+      <workItem from="1770206512986" duration="9136000" />
+      <workItem from="1770273747382" duration="2280000" />
+      <workItem from="1770276296568" duration="349000" />
+      <workItem from="1770280937350" duration="591000" />
+      <workItem from="1770282404528" duration="1046000" />
+      <workItem from="1770736758815" duration="1228000" />
+      <workItem from="1770738820171" duration="5803000" />
+      <workItem from="1772278202472" duration="22000" />
     </task>
     <task id="LOCAL-00001" summary="new config">
       <option name="closed" value="true" />
@@ -433,6 +644,9 @@
     <option name="localTasksCounter" value="17" />
     <servers />
   </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
   <component name="UnknownFeatures">
     <option featureType="dependencySupport" implementationName="java:org.springframework.security:spring-security-core" />
     <option featureType="dependencySupport" implementationName="java:org.springframework:spring-core" />
@@ -481,10 +695,6 @@
           <url>file://$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/client/HttpClientConfig.java</url>
           <line>38</line>
           <option name="timeStamp" value="1" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/recommendation-service/app/services/feature_store.py</url>
-          <option name="timeStamp" value="2" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

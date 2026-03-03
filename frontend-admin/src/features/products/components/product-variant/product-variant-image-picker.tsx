@@ -48,7 +48,7 @@ export const VariantImagePicker: React.FC<VariantImagePickerProps> = ({
       >
         {value ? (
           <Image
-            src={`http://localhost:8080/uploads/products/${value}`}
+            src={`http://localhost:8080/uploads/${value}`}
             alt="Variant Image"
             fill
             className="object-cover"

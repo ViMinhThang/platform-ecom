@@ -226,12 +226,7 @@ const productSlice = createSlice({
                 // Update in list if exists
                 const index = state.items.findIndex((p) => p.id === action.payload.id);
                 if (index !== -1) {
-                    // Note: ProductRow might have different fields than Product, mapping might be needed if types diverge significantly
-                    // For now assuming compatible or just updating what we can
-                    // Ideally we should refetch or map properly. Let's assume we refresh list or just update what we have.
-                    // Since ProductRow is a subset/different view, we might not be able to fully update it from Product response without mapping.
-                    // For simplicity, we'll leave the list update for a refetch or optimistic update if needed.
-                    // But let's try to update at least the common fields if possible.
+
                 }
             })
             .addCase(updateProduct.rejected, (state, action) => {

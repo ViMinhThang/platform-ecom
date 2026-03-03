@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { useCheckout } from "@/hooks/useCheckout";
 import { useCart } from "@/hooks/useCart";
 import { AddressForm } from "@/components/checkout/AddressForm";
@@ -29,7 +30,19 @@ export default function CheckoutPage() {
         setShipping
     } = useCheckout();
     const { cart } = useCart();
-    const [stripePromise] = useState(() => getStripe());
+    const [stripePromise, setStripePromise] = useState<Promise<any>>(Promise.resolve(null));
+    const [stripeError, setStripeError] = useState<string | null>(null);
+
+    useEffect(() => {
+        const initStripe = async () => {
+            const stripe = getStripe();
+            if (!stripe) {
+                setStripeError('Payment system is not configured. Please contact support.');
+            }
+            setStripePromise(Promise.resolve(stripe));
+        };
+        initStripe();
+    }, []);
     const [elementsOptions, setElementsOptions] = useState<any>(null);
 
     const { shippingFee, loading: shippingLoading, calculateTotalShipping } = useShipping();
@@ -114,7 +127,13 @@ export default function CheckoutPage() {
 
                             <div className="bg-white border rounded-none p-8 shadow-sm">
                                 {checkout.step === 'payment' && (
-                                    orderLoading ? (
+                                    stripeError ? (
+                                        <Alert variant="destructive" className="rounded-none">
+                                            <AlertCircle className="h-4 w-4" />
+                                            <AlertTitle className="font-bold">Lỗi cấu hình thanh toán</AlertTitle>
+                                            <AlertDescription className="text-zinc-600 font-medium">{stripeError}</AlertDescription>
+                                        </Alert>
+                                    ) : orderLoading ? (
                                         <div className="flex flex-col items-center justify-center py-20 space-y-4">
                                             <Loader2 className="h-10 w-10 animate-spin text-primary" />
                                             <p className="text-sm font-bold text-zinc-500 uppercase tracking-widest animate-pulse">Đang thiết lập thanh toán bảo mật...</p>

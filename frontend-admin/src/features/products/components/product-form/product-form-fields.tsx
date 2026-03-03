@@ -23,13 +23,6 @@ export const ProductFormFields: React.FC<ProductFormFieldsProps> = ({ control, c
         required
         placeholder="Nhập tên sản phẩm"
       />
-      <FormInput
-        control={control}
-        name="slug"
-        label="Đường dẫn (Slug)"
-        required
-        placeholder="Nhập đường dẫn"
-      />
       <FormSelect
         control={control}
         name="status"

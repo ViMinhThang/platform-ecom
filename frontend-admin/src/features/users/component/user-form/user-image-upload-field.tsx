@@ -75,7 +75,7 @@ export const UserImageUploadField: React.FC<UserImageUploadFieldProps> = ({
     };
 
     const displayImageUrl = imageUrl
-        ? (imageUrl.startsWith('http') ? imageUrl : `http://localhost:8080/uploads/products/${imageUrl}`)
+        ? (imageUrl.startsWith('http') ? imageUrl : `http://localhost:8080/uploads/${imageUrl}`)
         : null;
 
     return (

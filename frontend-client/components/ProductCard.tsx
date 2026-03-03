@@ -6,6 +6,8 @@ import Link from "next/link";
 import { ProductVariant } from "@/types/product";
 import { formatCurrency } from "@/lib/utils/formatCurrency";
 import { useAnalytics } from "@/hooks/useAnalytics";
+import { imageUrl } from "@/lib/utils/imageUrl";
+
 
 interface ProductCardProps {
   id: string;
@@ -86,7 +88,7 @@ export function ProductCard({
             </div>
           )}
           <Image
-            src={"http://localhost:8080/uploads/products/" + displayImage}
+            src={imageUrl.product(displayImage)}
             alt={name}
             fill
             className="object-cover group-hover:scale-105 transition-transform duration-700"

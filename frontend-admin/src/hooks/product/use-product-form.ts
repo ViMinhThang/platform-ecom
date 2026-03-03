@@ -28,7 +28,6 @@ interface UseProductFormParams {
 
 const DEFAULT_FORM_VALUES: ProductFormValues = {
   name: "",
-  slug: "",
   status: "DRAFT",
   cate: "{}",
   specifications: "{}",
@@ -39,7 +38,6 @@ const DEFAULT_FORM_VALUES: ProductFormValues = {
 function transformProductToFormValues(product: Product): ProductFormValues {
   return {
     name: product.name,
-    slug: product.slug,
     status: product.status,
     cate: JSON.stringify(product.cate || {}),
     specifications: JSON.stringify(product.specifications || {}, null, 2),

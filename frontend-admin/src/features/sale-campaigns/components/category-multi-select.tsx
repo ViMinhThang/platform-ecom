@@ -128,7 +128,7 @@ export function CategoryMultiSelect({ selectedIds, onChange, disabled }: Categor
                                         />
                                         {category.imageUrl ? (
                                             <Image
-                                                src={"http://localhost:8080/uploads/products/" + category.imageUrl}
+                                                src={"http://localhost:8080/uploads/" + category.imageUrl}
                                                 alt={category.name}
                                                 width={32}
                                                 height={32}

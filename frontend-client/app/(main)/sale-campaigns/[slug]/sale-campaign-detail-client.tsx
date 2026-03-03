@@ -25,6 +25,8 @@ import {
 import { getSaleCampaignItems } from '@/lib/services/sale-campaign-service';
 import { useDebounce } from '@/hooks/useDebounce';
 import { toast } from 'sonner';
+import { imageUrl } from '@/lib/utils/imageUrl';
+
 
 interface SaleCampaignDetailClientProps {
     saleCampaign: SaleCampaign;
@@ -168,7 +170,7 @@ export function SaleCampaignDetailClient({ saleCampaign, initialData, isMainPage
                 {saleCampaign.bannerUrl && (
                     <div className="absolute inset-0 opacity-30">
                         <Image
-                            src={"http://localhost:8080/uploads/products/" + saleCampaign.bannerUrl}
+                            src={imageUrl.product(saleCampaign.bannerUrl)}
                             alt=""
                             fill
                             className="object-cover"

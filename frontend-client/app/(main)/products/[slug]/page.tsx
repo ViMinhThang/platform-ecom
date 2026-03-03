@@ -30,7 +30,6 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
     const [loading, setLoading] = useState(true);
     const [api, setApi] = useState<any>();
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
-
     useEffect(() => {
         if (!api) return;
         api.on("select", () => {
@@ -46,7 +45,6 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
                 logger.debug('Fetched product data:', { data });
                 setProduct(data);
                 
-                // Track view
                 trackProductView(data.id, undefined, data.cate.id, data.userId);
             } catch (error) {
                 logger.error("Failed to fetch product:", error);

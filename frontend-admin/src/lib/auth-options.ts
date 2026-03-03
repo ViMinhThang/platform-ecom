@@ -4,16 +4,21 @@ import { logger } from "@/lib/logger";
 import { API_ENDPOINTS } from "@/config/constants";
 
 interface AuthResponse {
-    response: {
-        userId: number;
-        username: string;
-        email: string;
-        roles: string[];
-    };
-    jwtCookie: {
-        value: string;
+    success: boolean;
+    message: string;
+    data: {
+        response: {
+            userId: number;
+            username: string;
+            email: string;
+            roles: string[];
+        };
+        jwtCookie: {
+            value: string;
+        };
     };
 }
+
 
 interface CustomUser {
     id: string;
@@ -33,7 +38,7 @@ export const authOptions: AuthOptions = {
             },
             async authorize(credentials) {
                 try {
-                    const res = await fetch(`${API_ENDPOINTS.BASE_URL}${API_ENDPOINTS.AUTH}/login`, {
+                    const res = await fetch(`${API_ENDPOINTS.AUTH}/login`, {
                         method: "POST",
                         headers: { "Content-Type": "application/json" },
                         body: JSON.stringify({
@@ -44,27 +49,29 @@ export const authOptions: AuthOptions = {
 
                     const data: AuthResponse = await res.json();
 
-                    if (!res.ok) {
-                        throw new Error(data?.response?.username || "Invalid email or password");
+                    if (!res.ok || !data.success) {
+                        throw new Error(data?.message || "Invalid email or password");
                     }
 
+                    const authData = data.data;
+
                     logger.debug("User authorization successful", {
-                        userId: data.response?.userId,
-                        username: data.response?.username,
+                        userId: authData.response?.userId,
+                        username: authData.response?.username,
                         responseStructure: JSON.stringify(data)
                     });
 
                     // Handle missing user ID
-                    if (!data.response?.userId && !data.response?.username) {
+                    if (!authData.response?.userId && !authData.response?.username) {
                         throw new Error("Invalid response from authentication server");
                     }
 
                     const user: CustomUser = {
-                        id: String(data.response.userId),
-                        name: data.response.username,
-                        email: data.response.email,
-                        roles: data.response.roles || [],
-                        accessToken: data.jwtCookie.value,
+                        id: String(authData.response.userId),
+                        name: authData.response.username,
+                        email: authData.response.email,
+                        roles: authData.response.roles || [],
+                        accessToken: authData.jwtCookie.value,
                     };
                     return user;
                 } catch (error) {

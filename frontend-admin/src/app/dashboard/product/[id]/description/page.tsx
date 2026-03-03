@@ -88,12 +88,15 @@ export default function ProductDescriptionPage() {
                         <span className="text-[10px] normal-case bg-background px-1 rounded border">Real-time sync enabled</span>
                     </div>
                     <ScrollArea className="flex-1">
-                        <RichTextEditor
-                            value={description || ''}
-                            onChange={setDescription}
-                            productId={productId}
-                            className="border-none rounded-none h-full"
-                        />
+                        {!loading && (
+                            <RichTextEditor
+                                key={productId}
+                                value={description || ''}
+                                onChange={setDescription}
+                                productId={productId}
+                                className="border-none rounded-none h-full"
+                            />
+                        )}
                     </ScrollArea>
                 </Card>
 

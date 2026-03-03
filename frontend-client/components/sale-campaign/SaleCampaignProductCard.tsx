@@ -8,7 +8,8 @@ import { SaleCampaignItem } from '@/types/sale-campaign';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { formatCurrency } from '@/lib/utils/formatCurrency';
+import { imageUrl } from '@/lib/utils/imageUrl';
+
 import { useAppDispatch } from '@/lib/store/hooks';
 import { addToCart } from '@/lib/store/slices/cartSlice';
 import { toast } from 'sonner';
@@ -72,7 +73,7 @@ export function SaleCampaignProductCard({ item }: SaleCampaignProductCardProps) 
                     )}
 
                     <Image
-                        src={"http://localhost:8080/uploads/products/" + item.imageUrl || ''}
+                        src={imageUrl.product(item.imageUrl)}
                         alt={item.productName}
                         fill
                         className="object-cover group-hover:scale-105 transition-transform duration-700"
