@@ -21,6 +21,7 @@ export interface ChatRequest {
 export interface ChatResponse {
     message: string;
     products: ProductSummary[];
+    showSupportInfo?: boolean;
     timestamp: string;
     processingTimeMs: number;
 }

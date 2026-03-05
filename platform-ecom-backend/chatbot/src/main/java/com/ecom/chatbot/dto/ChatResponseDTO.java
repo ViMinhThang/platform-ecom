@@ -36,4 +36,10 @@ public class ChatResponseDTO {
      * Query processing time in milliseconds
      */
     private Long processingTimeMs;
+
+    /**
+     * Whether to show support info (product not found or error)
+     */
+    @Builder.Default
+    private Boolean showSupportInfo = false;
 }

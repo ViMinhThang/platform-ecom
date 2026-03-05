@@ -14,6 +14,7 @@ interface Message {
     role: "user" | "assistant";
     content: string;
     products?: ProductSummary[];
+    showSupportInfo?: boolean;
     timestamp: Date;
 }
 
@@ -66,6 +67,7 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
                 role: "assistant",
                 content: response.message,
                 products: response.products,
+                showSupportInfo: response.showSupportInfo,
                 timestamp: new Date(),
             };
 
@@ -78,6 +80,7 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
                 id: (Date.now() + 1).toString(),
                 role: "assistant",
                 content: "Xin lỗi, tôi gặp chút trục trặc kỹ thuật. Bạn vui lòng thử lại sau giây lát nhé!",
+                showSupportInfo: true,
                 timestamp: new Date(),
             };
             setMessages((prev) => [...prev, errorMessage]);

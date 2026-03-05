@@ -1,7 +1,7 @@
 import React from "react";
 import { cn } from "@/lib/utils";
 import { ProductSummary } from "@/types/chatbot";
-import { Star, ShoppingCart, ExternalLink } from "lucide-react";
+import { Star, ShoppingCart, ExternalLink, Search, Phone, Mail, HelpCircle } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -11,6 +11,7 @@ interface ChatMessageProps {
     role: "user" | "assistant";
     content: string;
     products?: ProductSummary[];
+    showSupportInfo?: boolean;
     timestamp: Date;
 }
 
@@ -18,6 +19,7 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({
     role,
     content,
     products,
+    showSupportInfo,
 }) => {
     const isAssistant = role === "assistant";
 
@@ -106,6 +108,37 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({
                                     </div>
                                 </div>
                             ))}
+                        </div>
+                    </div>
+                )}
+
+                {/* Support Info Card - shown on product not found or errors */}
+                {isAssistant && showSupportInfo && (
+                    <div className="mt-4 pt-3 border-t border-slate-100">
+                        <div className="bg-blue-50 border border-blue-100 p-3 space-y-2.5">
+                            <div className="flex items-center gap-2">
+                                <div className="bg-blue-100 p-1 rounded-none">
+                                    <HelpCircle className="w-3.5 h-3.5 text-blue-600" />
+                                </div>
+                                <p className="text-xs font-semibold text-blue-800">
+                                    Thông tin hỗ trợ
+                                </p>
+                            </div>
+
+                            <div className="space-y-1.5 text-[11px] text-blue-700">
+                                <div className="flex items-start gap-2">
+                                    <Search className="w-3 h-3 mt-0.5 shrink-0 text-blue-500" />
+                                    <span>Thử tìm kiếm với từ khóa khác hoặc <Link href="/products" className="font-semibold underline underline-offset-2 hover:text-blue-900">duyệt tất cả sản phẩm</Link></span>
+                                </div>
+                                <div className="flex items-start gap-2">
+                                    <Phone className="w-3 h-3 mt-0.5 shrink-0 text-blue-500" />
+                                    <span>Hotline hỗ trợ: <span className="font-semibold">1900-xxxx</span> (8h - 22h)</span>
+                                </div>
+                                <div className="flex items-start gap-2">
+                                    <Mail className="w-3 h-3 mt-0.5 shrink-0 text-blue-500" />
+                                    <span>Email: <a href="mailto:support@acme-ecom.vn" className="font-semibold underline underline-offset-2 hover:text-blue-900">support@acme-ecom.vn</a></span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 )}

@@ -33,8 +33,11 @@ public class ChatbotServiceImpl implements ChatbotService {
                         Quy tắc quan trọng:
                         - Luôn trả lời bằng tiếng Việt.
                         - Sử dụng các công cụ (tools) được cung cấp để truy vấn dữ liệu sản phẩm thực tế.
-                        - Nếu KHÔNG tìm thấy sản phẩm nào phù hợp với yêu cầu cụ thể (ví dụ: thương hiệu hoặc khoảng giá nhất định), hãy trả lời lịch sự rằng không tìm thấy sản phẩm phù hợp.
-                        - KHÔNG gợi ý sản phẩm thay thế hoặc cách tìm kiếm khác nếu người dùng đã đưa ra yêu cầu cụ thể mà không có kết quả.
+                        - Nếu KHÔNG tìm thấy sản phẩm nào phù hợp với yêu cầu cụ thể, hãy trả lời lịch sự rằng không tìm thấy sản phẩm phù hợp.
+                        - Khi không tìm thấy sản phẩm, hãy gợi ý người dùng:
+                          + Thử tìm kiếm với từ khóa khác.
+                          + Duyệt qua các danh mục sản phẩm trên trang web.
+                          + Liên hệ bộ phận hỗ trợ nếu cần giúp đỡ thêm.
                         - Trình bày thông tin sản phẩm một cách dễ nhìn (sử dụng danh sách hoặc bảng nếu cần).
                         """;
 
@@ -64,13 +67,17 @@ public class ChatbotServiceImpl implements ChatbotService {
                         log.info("Chat request processed in {}ms", processingTime);
 
                         List<ProductSummaryDTO> foundProducts = ProductTools.getLastFoundProducts();
+                        boolean productSearchAttempted = foundProducts != null;
                         if (foundProducts == null) {
                                 foundProducts = List.of();
                         }
 
+                        boolean showSupport = productSearchAttempted && foundProducts.isEmpty();
+
                         return ChatResponseDTO.builder()
                                         .message(aiResponse)
                                         .products(foundProducts)
+                                        .showSupportInfo(showSupport)
                                         .timestamp(LocalDateTime.now())
                                         .processingTimeMs(processingTime)
                                         .build();
@@ -81,6 +88,7 @@ public class ChatbotServiceImpl implements ChatbotService {
                         return ChatResponseDTO.builder()
                                         .message("Xin lỗi, tôi gặp lỗi khi xử lý yêu cầu của bạn. Vui lòng thử lại sau.")
                                         .products(List.of())
+                                        .showSupportInfo(true)
                                         .timestamp(LocalDateTime.now())
                                         .processingTimeMs(System.currentTimeMillis() - startTime)
                                         .build();
