@@ -8,6 +8,7 @@ import { ChatMessage } from "./ChatMessage";
 import { chatbotService } from "@/lib/services/chatbot-service";
 import { ProductSummary } from "@/types/chatbot";
 import { toast } from "sonner";
+import { v4 as uuidv4 } from "uuid";
 
 interface Message {
     id: string;
@@ -23,6 +24,7 @@ interface ChatWindowProps {
 }
 
 export const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
+    const [conversationId] = useState(() => uuidv4());
     const [messages, setMessages] = useState<Message[]>([
         {
             id: "welcome",
@@ -60,7 +62,10 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
         setIsLoading(true);
 
         try {
-            const response = await chatbotService.chat({ message: input });
+            const response = await chatbotService.chat({ 
+                message: input,
+                conversationId: conversationId
+            });
 
             const assistantMessage: Message = {
                 id: (Date.now() + 1).toString(),
@@ -163,9 +168,7 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
                         )}
                     </Button>
                 </div>
-                <p className="text-[10px] text-center text-slate-400 mt-2">
-                    Powered by Gemini 1.5 Flash
-                </p>
+
             </div>
         </div>
     );

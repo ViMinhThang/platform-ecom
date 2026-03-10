@@ -55,9 +55,9 @@ public class FakeDataSeeder implements CommandLineRunner {
 
             // Random user (assuming users 1-100 exist)
             Long userId = (long) faker.number().numberBetween(1, 101);
-            
+
             Long productId = (long) faker.number().numberBetween(1, 151);
-            
+
             String uniqueKey = userId + "-" + productId;
 
             // Skip if this combination already exists
@@ -67,7 +67,7 @@ public class FakeDataSeeder implements CommandLineRunner {
 
             // Random order (assuming orders exist)
             Long orderId = (long) faker.number().numberBetween(1, 101);
-            
+
             // Generate email (matches user pattern)
             String email = "user" + userId + "@ecom.com";
 
@@ -81,8 +81,7 @@ public class FakeDataSeeder implements CommandLineRunner {
             int rating = generateWeightedRating();
             review.setRating(rating);
 
-            // Generate review title and comment
-            review.setTitle(generateReviewTitle(rating));
+            // Generate review comment
             review.setComment(generateReviewComment(rating));
             // 30% chance to have images
             if (faker.number().numberBetween(1, 100) <= 30) {
@@ -91,15 +90,9 @@ public class FakeDataSeeder implements CommandLineRunner {
                 review.setImages(new ArrayList<>());
             }
 
-            // Most reviews are verified purchases
-            review.setVerifiedPurchase(faker.number().numberBetween(1, 100) <= 85);
-
             // Random helpful/not helpful counts
             review.setHelpfulCount(faker.number().numberBetween(0, 50));
             review.setNotHelpfulCount(faker.number().numberBetween(0, 15));
-
-            // Most reviews are approved
-            review.setStatus(faker.options().option("APPROVED", "APPROVED", "APPROVED", "PENDING", "REJECTED"));
 
             // Set sentiment based on rating
             review.setSentiment(calculateSentiment(rating));
@@ -107,8 +100,7 @@ public class FakeDataSeeder implements CommandLineRunner {
             // Random creation date within last 6 months
             LocalDateTime createdAt = LocalDateTime.ofInstant(
                     faker.date().past(180, TimeUnit.DAYS).toInstant(),
-                    ZoneId.systemDefault()
-            );
+                    ZoneId.systemDefault());
             review.setCreatedAt(createdAt);
             review.setUpdatedAt(createdAt);
 
@@ -123,48 +115,15 @@ public class FakeDataSeeder implements CommandLineRunner {
     private int generateWeightedRating() {
         // Weight towards higher ratings (more realistic distribution)
         int random = faker.number().numberBetween(1, 100);
-        if (random <= 50) return 5;  // 50% - 5 stars
-        if (random <= 75) return 4;  // 25% - 4 stars
-        if (random <= 90) return 3;  // 15% - 3 stars
-        if (random <= 97) return 2;  //  7% - 2 stars
-        return 1;                     //  3% - 1 star
-    }
-
-    private String generateReviewTitle(int rating) {
-        if (rating >= 4) {
-            return faker.options().option(
-                    "Excellent product!",
-                    "Highly recommended",
-                    "Great quality",
-                    "Very satisfied",
-                    "Love it!",
-                    "Amazing purchase",
-                    "Worth every penny",
-                    "Exceeded expectations",
-                    "Perfect!",
-                    "Fantastic product"
-            );
-        } else if (rating == 3) {
-            return faker.options().option(
-                    "It's okay",
-                    "Decent product",
-                    "Average quality",
-                    "Could be better",
-                    "Fair purchase",
-                    "Nothing special",
-                    "Acceptable"
-            );
-        } else {
-            return faker.options().option(
-                    "Disappointed",
-                    "Not as expected",
-                    "Poor quality",
-                    "Would not recommend",
-                    "Below expectations",
-                    "Not satisfied",
-                    "Waste of money"
-            );
-        }
+        if (random <= 50)
+            return 5; // 50% - 5 stars
+        if (random <= 75)
+            return 4; // 25% - 4 stars
+        if (random <= 90)
+            return 3; // 15% - 3 stars
+        if (random <= 97)
+            return 2; // 7% - 2 stars
+        return 1; // 3% - 1 star
     }
 
     private String generateReviewComment(int rating) {
@@ -177,38 +136,35 @@ public class FakeDataSeeder implements CommandLineRunner {
                     "I love this product! It's exactly what I was looking for. Fast shipping and great packaging too.",
                     "Absolutely fantastic! Exceeded my expectations in every way. Would give 6 stars if I could.",
                     "Best purchase I've made in a while. Quality is top-notch and it does exactly what it's supposed to do.",
-                    "Really happy with this purchase. Good quality, fair price, and fast delivery. What more could you ask for?"
-            );
+                    "Really happy with this purchase. Good quality, fair price, and fast delivery. What more could you ask for?");
         } else if (rating == 3) {
             return faker.options().option(
                     faker.lorem().sentence(12),
                     "The product is okay, but nothing special. It works as advertised but I expected a bit more quality.",
                     "Decent product for the price. Does the job but could be better. Shipping was a bit slow.",
                     "It's fine. Not the best quality but not terrible either. You get what you pay for.",
-                    "Average product. Works as expected but nothing impressive. Might look for alternatives next time."
-            );
+                    "Average product. Works as expected but nothing impressive. Might look for alternatives next time.");
         } else {
             return faker.options().option(
                     faker.lorem().sentence(10),
                     "Very disappointed with this purchase. The quality is much lower than expected. Would not recommend.",
                     "Not worth the money. The product arrived damaged and customer service was unhelpful.",
                     "Poor quality materials. Broke after just a few uses. Save your money and buy something else.",
-                    "Does not match the description at all. Very misleading. Requesting a refund."
-            );
+                    "Does not match the description at all. Very misleading. Requesting a refund.");
         }
     }
 
     private List<String> generateReviewImages() {
         int imageCount = faker.number().numberBetween(1, 4);
         List<String> images = new ArrayList<>();
-        
+
         for (int i = 0; i < imageCount; i++) {
             images.add("1.png");
             images.add("2.png");
             images.add("3.png");
 
         }
-        
+
         return images;
     }
 

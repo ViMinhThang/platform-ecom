@@ -8,7 +8,6 @@ import { formatCurrency } from "@/lib/utils/formatCurrency";
 import { useAnalytics } from "@/hooks/useAnalytics";
 import { imageUrl } from "@/lib/utils/imageUrl";
 
-
 interface ProductCardProps {
   id: string;
   slug: string;
@@ -60,8 +59,8 @@ export function ProductCard({
 
   return (
     <Link href={`/products/${slug}`} onClick={handleTrackClick}>
-      <Card className="p-0 border-2 border-black rounded-none bg-white h-full flex flex-col transition-all hover:bg-black group">
-        <CardContent className="p-0 relative aspect-square bg-zinc-100 overflow-hidden border-b-2 border-black grayscale group-hover:grayscale-0 transition-all duration-500">
+      <Card className="p-0 border-2 border-black rounded-none bg-white h-full flex flex-col transition-all group overflow-hidden">
+        <CardContent className="p-0 relative aspect-square bg-zinc-100 overflow-hidden border-b-2 border-black transition-all duration-500">
           {isNew && !hasSale && (
             <Badge className="absolute top-0 left-0 z-10 bg-primary text-white rounded-none px-2 py-1 text-[8px] font-black tracking-widest uppercase">
               HÀNG MỚI
@@ -94,14 +93,14 @@ export function ProductCard({
             className="object-cover group-hover:scale-105 transition-transform duration-700"
           />
         </CardContent>
-        <CardFooter className="flex flex-col items-start p-4 space-y-4 grow bg-white group-hover:bg-black transition-colors">
+        <CardFooter className="flex flex-col items-start p-4 space-y-4 grow bg-white transition-colors">
           <div className="grow w-full">
-            <h3 className="font-black text-[10px] uppercase tracking-widest leading-tight line-clamp-2 text-black group-hover:text-white transition-colors h-8">
+            <h3 className="font-black text-[10px] uppercase tracking-widest leading-tight line-clamp-2 text-black transition-colors h-8">
               {name}
             </h3>
           </div>
 
-          <div className="w-full pt-4 border-t border-black/10 group-hover:border-white/10 transition-colors">
+          <div className="w-full pt-4 border-t border-black/10 transition-colors">
             {/* Price */}
             <div className="flex items-baseline gap-2 w-full mb-3 font-mono">
               <span className="text-xl font-black tracking-tighter text-primary">
@@ -116,13 +115,13 @@ export function ProductCard({
 
             {/* Rating & Sold - Technical Style */}
             <div className="flex items-center justify-between w-full font-mono">
-              <div className="flex items-center gap-1 bg-zinc-100 px-1.5 py-0.5 group-hover:bg-white/10 transition-colors">
+              <div className="flex items-center gap-1 bg-zinc-100 px-1.5 py-0.5 transition-colors">
                 <Star className="w-2.5 h-2.5 fill-current text-primary" />
-                <span className="text-[8px] font-black text-black group-hover:text-white uppercase leading-none">
+                <span className="text-[8px] font-black text-black uppercase leading-none">
                   {rating > 0 ? rating.toFixed(1) : "N/A"}
                 </span>
               </div>
-              <div className="text-[8px] font-black text-zinc-400 group-hover:text-zinc-500 uppercase tracking-tighter">
+              <div className="text-[8px] font-black text-zinc-400 uppercase tracking-tighter">
                 ĐÃ BÁN {formatSoldCount(totalSold)}
               </div>
             </div>

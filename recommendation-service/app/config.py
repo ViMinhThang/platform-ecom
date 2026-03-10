@@ -7,6 +7,7 @@ class Settings(BaseSettings):
     eureka_server: str = "http://eureka:8761/eureka"
     service_name: str = "recommendation-service"
     service_port: int = 8200
+    instance_host: str = "127.0.0.1"
 
     # Redis
     redis_host: str = "redis"

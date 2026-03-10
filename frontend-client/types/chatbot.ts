@@ -13,6 +13,7 @@ export interface ProductSummary {
 
 export interface ChatRequest {
     message: string;
+    conversationId?: string;
     productSlug?: string;
     productId?: number;
     limit?: number;

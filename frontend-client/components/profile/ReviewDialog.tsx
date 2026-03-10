@@ -22,7 +22,6 @@ import { toast } from 'sonner';
 
 const reviewSchema = z.object({
     rating: z.number().min(1, 'Please select a rating').max(5),
-    title: z.string().optional(),
     comment: z.string().min(10, 'Review must be at least 10 characters'),
 });
 
@@ -54,7 +53,6 @@ export function ReviewDialog({
         resolver: zodResolver(reviewSchema),
         defaultValues: {
             rating: 0,
-            title: '',
             comment: '',
         },
     });
@@ -72,7 +70,6 @@ export function ReviewDialog({
                 productId,
                 orderId,
                 rating: data.rating,
-                title: data.title,
                 comment: data.comment,
                 email: session.user.email,
             });
@@ -122,14 +119,6 @@ export function ReviewDialog({
                         )}
                     </div>
 
-                    {/* Title (Optional) */}
-                    <FormField
-                        label="Tiêu đề (Tùy chọn)"
-                        id="title"
-                        registration={form.register('title')}
-                        error={form.formState.errors.title}
-                        placeholder="Tóm tắt đánh giá của bạn trong vài từ"
-                    />
 
                     {/* Comment */}
                     <div className="space-y-2">

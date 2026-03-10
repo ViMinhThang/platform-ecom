@@ -12,18 +12,10 @@ export interface CreateReviewPayload {
     productId: number;
     orderId: number;
     rating: number;
-    title?: string;
     comment?: string;
     email: string;
 }
 
-export interface CreateUnverifiedReviewPayload {
-    productId: number;
-    rating: number;
-    title?: string;
-    comment?: string;
-    email: string;
-}
 
 
 export async function getProductReviews(
@@ -79,24 +71,3 @@ export async function createReview(
     });
 }
 
-export async function createUnverifiedReview(
-    payload: CreateUnverifiedReviewPayload,
-    token: string,
-    images?: File[]
-): Promise<void> {
-    const formData = new FormData();
-    formData.append('review', new Blob([JSON.stringify(payload)], { type: 'application/json' }));
-
-    if (images && images.length > 0) {
-        images.forEach((image) => {
-            formData.append('images', image);
-        });
-    }
-
-    await apiClient.post('/v1/reviews/unverified', formData, {
-        headers: {
-            Authorization: `Bearer ${token}`,
-            'Content-Type': 'multipart/form-data',
-        },
-    });
-}

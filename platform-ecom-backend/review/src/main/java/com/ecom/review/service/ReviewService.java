@@ -26,5 +26,4 @@ public interface ReviewService {
 
         ProductReviewSummaryDTO getProductReviewSummary(Long productId);
 
-        ReviewDTO createUnverifiedReview(CreateUnverifiedReviewDTO dto, MultipartFile[] images, Long userId);
 }

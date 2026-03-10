@@ -36,17 +36,6 @@ public class ReviewController {
         return new ResponseEntity<>(reviewDTO, HttpStatus.CREATED);
     }
 
-    @PostMapping(value = "/unverified", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<ReviewDTO> createUnverifiedReview(
-            @RequestPart("review") @Valid CreateUnverifiedReviewDTO createUnverifiedReviewDTO,
-            @RequestPart(value = "images", required = false) MultipartFile[] images,
-            HttpServletRequest request) {
-        Long userId = authContext.getUserId(request);
-
-        ReviewDTO reviewDTO = reviewService.createUnverifiedReview(createUnverifiedReviewDTO, images, userId);
-        return new ResponseEntity<>(reviewDTO, HttpStatus.CREATED);
-    }
-
     @PutMapping("/{reviewId}")
     public ResponseEntity<ReviewDTO> updateReview(
             @PathVariable Long reviewId,

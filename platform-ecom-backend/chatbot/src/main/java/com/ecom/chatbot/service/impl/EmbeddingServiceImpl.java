@@ -88,6 +88,24 @@ public class EmbeddingServiceImpl implements EmbeddingService {
     }
 
     @Override
+    public List<ProductSummaryDTO> findProductsWithSorting(String keyword, String sortBy, String sortDirection,
+            int limit) {
+        log.debug("Finding products with dynamic sorting. keyword='{}', sortBy='{}', sortDirection='{}', limit={}",
+                keyword, sortBy, sortDirection, limit);
+
+        List<Object[]> results;
+        if ("DESC".equalsIgnoreCase(sortDirection)) {
+            results = repository.findProductsDynamicSortDesc(keyword == null ? "" : keyword, sortBy, limit);
+        } else {
+            results = repository.findProductsDynamicSortAsc(keyword == null ? "" : keyword, sortBy, limit);
+        }
+
+        return results.stream()
+                .map(this::mapToProductSummary)
+                .collect(Collectors.toList());
+    }
+
+    @Override
     @Transactional
     public void updateProductEmbedding(ProductDTO product) {
         String textToEmbed = buildEmbeddingText(product);

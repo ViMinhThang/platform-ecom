@@ -167,19 +167,10 @@ function ReviewCard({ review }: { review: Review }) {
           </div>
           <div className="flex items-center gap-2">
             <StarRating rating={review.rating} size="sm" />
-            {review.verifiedPurchase && (
-              <Badge variant="secondary" className="text-xs">
-                ✓ Đã mua hàng
-              </Badge>
-            )}
           </div>
         </div>
       </div>
 
-      {/* Title */}
-      {review.title && (
-        <h4 className="font-semibold text-lg">{review.title}</h4>
-      )}
 
       {/* Comment */}
       {review.comment && (

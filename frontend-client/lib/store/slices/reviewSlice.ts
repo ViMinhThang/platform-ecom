@@ -4,10 +4,8 @@ import {
     getProductReviews,
     getProductReviewSummary,
     createReview,
-    createUnverifiedReview,
     GetReviewsParams,
-    CreateReviewPayload,
-    CreateUnverifiedReviewPayload
+    CreateReviewPayload
 } from '@/lib/services/review-service';
 import { getErrorMessage } from '@/lib/errors';
 import { logger } from '@/lib/logger';
@@ -79,17 +77,6 @@ export const submitReview = createAsyncThunk(
     }
 );
 
-export const submitUnverifiedReview = createAsyncThunk(
-    'reviews/submitUnverifiedReview',
-    async ({ payload, token }: { payload: CreateUnverifiedReviewPayload; token: string }, { rejectWithValue }) => {
-        try {
-            await createUnverifiedReview(payload, token);
-            return payload;
-        } catch (error) {
-            return rejectWithValue(getErrorMessage(error));
-        }
-    }
-);
 
 const reviewSlice = createSlice({
     name: 'reviews',
@@ -153,18 +140,6 @@ const reviewSlice = createSlice({
                 state.error = action.payload as string;
             })
 
-            // Submit Unverified Review
-            .addCase(submitUnverifiedReview.pending, (state) => {
-                state.submitting = true;
-                state.error = null;
-            })
-            .addCase(submitUnverifiedReview.fulfilled, (state) => {
-                state.submitting = false;
-            })
-            .addCase(submitUnverifiedReview.rejected, (state, action) => {
-                state.submitting = false;
-                state.error = action.payload as string;
-            });
     },
 });
 

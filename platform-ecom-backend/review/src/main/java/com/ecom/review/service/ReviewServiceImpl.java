@@ -31,7 +31,6 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class ReviewServiceImpl implements ReviewService {
 
-    private static final String APPROVED_STATUS = "APPROVED";
     private static final String DELIVERED_STATUS = "DELIVERED";
     private static final String POSITIVE_SENTIMENT = "POSITIVE";
     private static final String NEUTRAL_SENTIMENT = "NEUTRAL";
@@ -221,11 +220,8 @@ public class ReviewServiceImpl implements ReviewService {
         review.setOrderId(createReviewDTO.getOrderId());
         review.setEmail(email);
         review.setRating(createReviewDTO.getRating());
-        review.setTitle(createReviewDTO.getTitle());
         review.setComment(createReviewDTO.getComment());
         review.setImages(createReviewDTO.getImages());
-        review.setVerifiedPurchase(true);
-        review.setStatus(APPROVED_STATUS);
         review.setSentiment(calculateSentiment(createReviewDTO.getRating()));
 
         return review;
@@ -235,9 +231,6 @@ public class ReviewServiceImpl implements ReviewService {
         if (updateReviewDTO.getRating() != null) {
             review.setRating(updateReviewDTO.getRating());
             review.setSentiment(calculateSentiment(updateReviewDTO.getRating()));
-        }
-        if (updateReviewDTO.getTitle() != null) {
-            review.setTitle(updateReviewDTO.getTitle());
         }
         if (updateReviewDTO.getComment() != null) {
             review.setComment(updateReviewDTO.getComment());
@@ -328,41 +321,4 @@ public class ReviewServiceImpl implements ReviewService {
         }
     }
 
-    @Override
-    @Transactional
-    public ReviewDTO createUnverifiedReview(CreateUnverifiedReviewDTO dto, MultipartFile[] images, Long userId) {
-        validateNoDuplicateReview(userId, dto.getProductId());
-        validateProductExists(dto.getProductId());
-
-        if (images != null && images.length > 0) {
-            for (MultipartFile file : images) {
-                String fileName = fileStorageService.storeFile(file);
-                dto.getImages().add(fileName);
-            }
-        }
-
-        Review review = buildUnverifiedReviewFromDTO(dto, userId);
-        Review savedReview = reviewRepository.save(review);
-
-        publishReviewEvent("CREATED", savedReview);
-
-        return mapToReviewDTO(savedReview);
-    }
-
-    private Review buildUnverifiedReviewFromDTO(CreateUnverifiedReviewDTO dto, Long userId) {
-        Review review = new Review();
-        review.setProductId(dto.getProductId());
-        review.setUserId(userId);
-        review.setOrderId(null);
-        review.setEmail(dto.getEmail());
-        review.setRating(dto.getRating());
-        review.setTitle(dto.getTitle());
-        review.setComment(dto.getComment());
-        review.setImages(dto.getImages());
-        review.setVerifiedPurchase(false);
-        review.setStatus(APPROVED_STATUS);
-        review.setSentiment(calculateSentiment(dto.getRating()));
-
-        return review;
-    }
 }

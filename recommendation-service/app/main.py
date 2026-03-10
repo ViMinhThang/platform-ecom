@@ -43,6 +43,7 @@ async def lifespan(app: FastAPI):
             eureka_server=settings.eureka_server,
             app_name=settings.service_name,
             instance_port=settings.service_port,
+            instance_host=settings.instance_host,
         )
         logger.info(f"Registered with Eureka: {settings.service_name}")
     except Exception as e:

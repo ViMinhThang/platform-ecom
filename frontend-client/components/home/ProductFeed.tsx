@@ -18,7 +18,7 @@ export function ProductFeed() {
     const [recLoading, setRecLoading] = useState(false);
 
     useEffect(() => {
-        if (activeTab === 'personalized' && session?.user?.id) {
+        if (activeTab === 'personalized') {
             fetchPersonalized();
         } else if (activeTab !== 'personalized') {
             dispatch(fetchProducts({
@@ -31,8 +31,13 @@ export function ProductFeed() {
 
     const fetchPersonalized = async () => {
         setRecLoading(true);
-        const data = await getPersonalizedFeed(Number(session?.user?.id), 24);
-        setPersonalizedProducts(data);
+        try {
+            const data = await getPersonalizedFeed(session?.user?.id ? Number(session.user.id) : 1, 24); // Fallback to 1 or any logic if no session, or just undefined
+            setPersonalizedProducts(data || []);
+        } catch (error) {
+            console.error(error);
+            setPersonalizedProducts([]);
+        }
         setRecLoading(false);
     };
 
@@ -50,30 +55,15 @@ export function ProductFeed() {
                     >
                         Gợi ý hàng ngày
                     </button>
-                    {session && (
-                        <button
-                            onClick={() => setActiveTab('personalized')}
-                            className={`flex-1 px-6 py-4 text-[11px] font-black uppercase tracking-[0.2em] transition-all border-l border-black ${activeTab === 'personalized'
-                                ? 'bg-black text-white'
-                                : 'bg-white text-zinc-400 hover:text-black'
-                                }`}
-                        >
-                            Dành riêng cho bạn
-                        </button>
-                    )}
                     <button
-                        onClick={() => setActiveTab('top')}
-                        className={`flex-1 px-6 py-4 text-[11px] font-black uppercase tracking-[0.2em] transition-all border-l border-black ${activeTab === 'top'
+                        onClick={() => setActiveTab('personalized')}
+                        className={`flex-1 px-6 py-4 text-[11px] font-black uppercase tracking-[0.2em] transition-all border-l border-black ${activeTab === 'personalized'
                             ? 'bg-black text-white'
                             : 'bg-white text-zinc-400 hover:text-black'
                             }`}
                     >
-                        Xu hướng tìm kiếm
+                        Dành riêng cho bạn
                     </button>
-                </div>
-                <div className="px-6 py-2 bg-zinc-50 flex justify-between items-center border-t border-black/5">
-                    <span className="text-[9px] font-bold opacity-40">HỆ THỐNG ĐÃ CẬP NHẬT</span>
-                    <span className="text-[9px] font-bold opacity-40">PHIÊN BẢN v1.2</span>
                 </div>
             </div>
 

@@ -21,13 +21,13 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
 
     Optional<Review> findByUserIdAndProductId(Long userId, Long productId);
 
-    @Query("SELECT AVG(r.rating) FROM Review r WHERE r.productId = :productId AND r.status = 'APPROVED'")
+    @Query("SELECT AVG(r.rating) FROM Review r WHERE r.productId = :productId")
     Double findAverageRatingByProductId(@Param("productId") Long productId);
 
-    @Query("SELECT COUNT(r) FROM Review r WHERE r.productId = :productId AND r.status = 'APPROVED'")
+    @Query("SELECT COUNT(r) FROM Review r WHERE r.productId = :productId")
     Long countByProductId(@Param("productId") Long productId);
 
-    @Query("SELECT r.rating as rating, COUNT(r) as count FROM Review r WHERE r.productId = :productId AND r.status = 'APPROVED' GROUP BY r.rating")
+    @Query("SELECT r.rating as rating, COUNT(r) as count FROM Review r WHERE r.productId = :productId GROUP BY r.rating")
     java.util.List<Object[]> getRatingDistributionByProductId(@Param("productId") Long productId);
 
     boolean existsByUserIdAndProductId(Long userId, Long productId);

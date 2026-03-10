@@ -118,4 +118,42 @@ public interface ProductEmbeddingRepository extends JpaRepository<ProductEmbeddi
        List<Object[]> findByBrand(
                      @Param("brand") String brand,
                      @Param("limit") int limit);
+
+       @Query(value = """
+                     SELECT pe.product_id, pe.product_name, pe.product_slug, pe.description,
+                            pe.category_name, pe.min_price, pe.price, pe.average_rating, pe.total_sold,
+                            pe.updated_at, pe.embedding, pe.image_url, 1.0 as similarity
+                     FROM product_embeddings pe
+                     WHERE (:keyword = '' OR LOWER(pe.product_name) LIKE LOWER(CONCAT('%', :keyword, '%'))
+                        OR LOWER(pe.category_name) LIKE LOWER(CONCAT('%', :keyword, '%')))
+                     ORDER BY
+                        CASE WHEN :sortBy = 'price' THEN pe.min_price END ASC,
+                        CASE WHEN :sortBy = 'average_rating' THEN pe.average_rating END ASC,
+                        CASE WHEN :sortBy = 'total_sold' THEN pe.total_sold END ASC
+                     NULLS LAST
+                     LIMIT :limit
+                     """, nativeQuery = true)
+       List<Object[]> findProductsDynamicSortAsc(
+                     @Param("keyword") String keyword,
+                     @Param("sortBy") String sortBy,
+                     @Param("limit") int limit);
+
+       @Query(value = """
+                     SELECT pe.product_id, pe.product_name, pe.product_slug, pe.description,
+                            pe.category_name, pe.min_price, pe.price, pe.average_rating, pe.total_sold,
+                            pe.updated_at, pe.embedding, pe.image_url, 1.0 as similarity
+                     FROM product_embeddings pe
+                     WHERE (:keyword = '' OR LOWER(pe.product_name) LIKE LOWER(CONCAT('%', :keyword, '%'))
+                        OR LOWER(pe.category_name) LIKE LOWER(CONCAT('%', :keyword, '%')))
+                     ORDER BY
+                        CASE WHEN :sortBy = 'price' THEN pe.min_price END DESC,
+                        CASE WHEN :sortBy = 'average_rating' THEN pe.average_rating END DESC,
+                        CASE WHEN :sortBy = 'total_sold' THEN pe.total_sold END DESC
+                     NULLS LAST
+                     LIMIT :limit
+                     """, nativeQuery = true)
+       List<Object[]> findProductsDynamicSortDesc(
+                     @Param("keyword") String keyword,
+                     @Param("sortBy") String sortBy,
+                     @Param("limit") int limit);
 }

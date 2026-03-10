@@ -18,4 +18,6 @@ public interface EmbeddingService {
     boolean hasEmbedding(Long productId);
 
     String generateQueryVector(String query);
+
+    List<ProductSummaryDTO> findProductsWithSorting(String keyword, String sortBy, String sortDirection, int limit);
 }

@@ -110,6 +110,28 @@ public class ProductTools {
         return products;
     }
 
+    @Tool(description = "Search and sort products dynamically. Use this when the user asks for 'cheapest' (rẻ nhất), 'most expensive' (đắt nhất), 'best selling' (bán chạy nhất), or 'highest rated' (đánh giá cao nhất).")
+    public List<ProductSummaryDTO> searchAndSortProducts(
+            @ToolParam(description = "Search query or keyword (e.g. 'iphone', 'samsung', 'laptop'). Leave empty if no specific product is mentioned.") String query,
+            @ToolParam(description = "Field to sort by. MUST be one of: 'price' (for cheapest/expensive), 'total_sold' (for best sellers), 'average_rating' (for highest rated).") String sortBy,
+            @ToolParam(description = "Sort direction. MUST be 'ASC' (for cheapest) or 'DESC' (for most expensive, best selling, highest rated).") String sortDirection,
+            @ToolParam(description = "Max results, defaults to 5") Integer limit) {
+        log.info("Tool searchAndSortProducts called with query='{}', sortBy='{}', sortDirection='{}', limit={}", query,
+                sortBy, sortDirection, limit);
+        int maxResults = (limit != null && limit > 0) ? limit : 5;
+
+        // Default to price and ASC if missing
+        if (sortBy == null || sortBy.isBlank())
+            sortBy = "price";
+        if (sortDirection == null || sortDirection.isBlank())
+            sortDirection = "ASC";
+
+        List<ProductSummaryDTO> products = embeddingService.findProductsWithSorting(query, sortBy, sortDirection,
+                maxResults);
+        lastFoundProducts.set(products);
+        return products;
+    }
+
     private ProductSummaryDTO mapToProductSummary(Object[] row) {
         return ProductSummaryDTO.builder()
                 .id(row[0] != null ? ((Number) row[0]).longValue() : null)

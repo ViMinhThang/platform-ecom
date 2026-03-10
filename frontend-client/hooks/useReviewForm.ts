@@ -6,14 +6,11 @@ import { useSession } from "next-auth/react";
 import { toast } from "sonner";
 import { useAppDispatch } from "@/lib/store/hooks";
 import { fetchProductReviews } from "@/lib/store/slices/reviewSlice";
-import { createReview, createUnverifiedReview } from "@/lib/services/review-service";
+import { createReview } from "@/lib/services/review-service";
 
 const reviewSchema = z.object({
     rating: z.number().min(1, "Vui lòng chọn số sao đánh giá").max(5),
-    title: z
-        .string()
-        .min(1, "Tiêu đề là bắt buộc")
-        .max(100, "Tiêu đề quá dài"),
+
     comment: z
         .string()
         .min(10, "Nội dung đánh giá phải có ít nhất 10 ký tự")
@@ -25,14 +22,12 @@ export type ReviewFormValues = z.infer<typeof reviewSchema>;
 
 interface UseReviewFormProps {
     productId: number;
-    purchaseVerified?: boolean;
     orderId?: number;
     onSuccess?: () => void;
 }
 
 export function useReviewForm({
     productId,
-    purchaseVerified = false,
     orderId,
     onSuccess,
 }: UseReviewFormProps) {
@@ -44,7 +39,6 @@ export function useReviewForm({
         resolver: zodResolver(reviewSchema),
         defaultValues: {
             rating: 0,
-            title: "",
             comment: "",
             images: [],
         },
@@ -66,32 +60,23 @@ export function useReviewForm({
         setIsSubmitting(true);
         try {
             const images = data.images as File[];
-            if (purchaseVerified && orderId) {
-                await createReview(
-                    {
-                        productId,
-                        orderId,
-                        rating: data.rating,
-                        title: data.title,
-                        comment: data.comment,
-                        email: session.user.email,
-                    },
-                    session.accessToken,
-                    images
-                );
-            } else {
-                await createUnverifiedReview(
-                    {
-                        productId,
-                        rating: data.rating,
-                        title: data.title,
-                        comment: data.comment,
-                        email: session.user.email,
-                    },
-                    session.accessToken,
-                    images
-                );
+            if (!orderId) {
+                toast.error("Không tìm thấy đơn hàng.");
+                setIsSubmitting(false);
+                return;
             }
+
+            await createReview(
+                {
+                    productId,
+                    orderId,
+                    rating: data.rating,
+                    comment: data.comment,
+                    email: session.user.email,
+                },
+                session.accessToken,
+                images
+            );
 
             toast.success("Gửi đánh giá thành công!");
             form.reset();

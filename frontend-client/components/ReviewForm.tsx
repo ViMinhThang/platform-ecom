@@ -28,13 +28,11 @@ import { useReviewForm } from "@/hooks/useReviewForm";
 
 interface ReviewFormProps {
     productId: number;
-    purchaseVerified?: boolean;
     orderId?: number;
 }
 
 export function ReviewForm({
     productId,
-    purchaseVerified = false,
     orderId,
 }: ReviewFormProps) {
     const [open, setOpen] = useState(false);
@@ -42,7 +40,6 @@ export function ReviewForm({
 
     const { form, isSubmitting, onSubmit, session } = useReviewForm({
         productId,
-        purchaseVerified,
         orderId,
         onSuccess: () => {
             setOpen(false);
@@ -113,22 +110,6 @@ export function ReviewForm({
                             )}
                         />
 
-                        <FormField
-                            control={form.control}
-                            name="title"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Tiêu đề</FormLabel>
-                                    <FormControl>
-                                        <Input
-                                            placeholder="Tóm tắt trải nghiệm của bạn"
-                                            {...field}
-                                        />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
 
                         <FormField
                             control={form.control}

@@ -7,13 +7,10 @@ export interface Review {
   orderId?: number | null;
   email: string;
   rating: number; // 1-5
-  title?: string;
   comment?: string;
   images?: string[];
-  verifiedPurchase: boolean;
   helpfulCount: number;
   notHelpfulCount: number;
-  status: string;
   sentiment: string; // POSITIVE, NEUTRAL, NEGATIVE
   createdAt: string;
   updatedAt: string;

@@ -11,7 +11,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "reviews", uniqueConstraints = {
-        @UniqueConstraint(columnNames = {"user_id", "product_id"})
+        @UniqueConstraint(columnNames = { "user_id", "product_id" })
 })
 @Data
 @NoArgsConstructor
@@ -37,9 +37,6 @@ public class Review {
     @Column(nullable = false)
     private Integer rating; // 1-5
 
-    @Column(length = 200)
-    private String title;
-
     @Column(columnDefinition = "TEXT")
     private String comment;
 
@@ -47,17 +44,11 @@ public class Review {
     @Column(columnDefinition = "jsonb")
     private List<String> images = new ArrayList<>();
 
-    @Column(name = "verified_purchase")
-    private Boolean verifiedPurchase = false;
-
     @Column(name = "helpful_count")
     private Integer helpfulCount = 0;
 
     @Column(name = "not_helpful_count")
     private Integer notHelpfulCount = 0;
-
-    @Column(nullable = false, length = 20)
-    private String status = "APPROVED"; // PENDING, APPROVED, REJECTED
 
     @Column(nullable = false, length = 20)
     private String sentiment; // POSITIVE, NEUTRAL, NEGATIVE

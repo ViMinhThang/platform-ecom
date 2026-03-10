@@ -38,6 +38,7 @@ public class ChatbotServiceImpl implements ChatbotService {
                           + Thử tìm kiếm với từ khóa khác.
                           + Duyệt qua các danh mục sản phẩm trên trang web.
                           + Liên hệ bộ phận hỗ trợ nếu cần giúp đỡ thêm.
+                        - Khi người dùng muốn tìm sản phẩm "rẻ nhất", "đắt nhất", "bán chạy nhất", hoặc "đánh giá cao nhất", HÃY BẮT BUỘC sử dụng tool searchAndSortProducts với sortBy và sortDirection tương ứng. Không được tự ý trả lời là không thể tìm kiếm tuyệt đối.
                         - Trình bày thông tin sản phẩm một cách dễ nhìn (sử dụng danh sách hoặc bảng nếu cần).
                         """;
 
@@ -47,10 +48,7 @@ public class ChatbotServiceImpl implements ChatbotService {
                 log.info("Processing chat request with ChatClient: '{}'", request.getMessage());
 
                 try {
-                        String conversationId = (request.getConversationId() != null
-                                        && !request.getConversationId().isBlank())
-                                                        ? request.getConversationId()
-                                                        : UUID.randomUUID().toString();
+                        String conversationId = request.getConversationId();
 
                         ProductTools.clearLastFoundProducts();
 

@@ -13,6 +13,7 @@ import { imageUrl } from '@/lib/utils/imageUrl';
 import { useAppDispatch } from '@/lib/store/hooks';
 import { addToCart } from '@/lib/store/slices/cartSlice';
 import { toast } from 'sonner';
+import { formatCurrency } from '@/lib/utils/formatCurrency';
 
 interface SaleCampaignProductCardProps {
     item: SaleCampaignItem;
@@ -44,7 +45,7 @@ export function SaleCampaignProductCard({ item }: SaleCampaignProductCardProps) 
     };
 
     return (
-        <Card className="p-0 border-2 border-black rounded-none bg-white h-full flex flex-col transition-all hover:bg-black group overflow-hidden relative">
+        <Card className="p-0 border-2 border-black rounded-none bg-white h-full flex flex-col transition-all group overflow-hidden relative">
             <div className="relative">
                 {/* Link covering the image area */}
                 <Link href={`/products/${item.productSlug}`} className="absolute inset-0 z-10">
@@ -102,8 +103,8 @@ export function SaleCampaignProductCard({ item }: SaleCampaignProductCardProps) 
             </div>
 
             <Link href={`/products/${item.productSlug}`} className="grow flex flex-col">
-                <CardFooter className="flex flex-col items-start p-4 space-y-3 grow bg-white group-hover:bg-black transition-colors">
-                    <h3 className="font-black text-[10px] uppercase tracking-widest leading-tight line-clamp-2 text-black group-hover:text-white transition-colors h-8 w-full">
+                <CardFooter className="flex flex-col items-start p-4 space-y-3 grow bg-white transition-colors">
+                    <h3 className="font-black text-[10px] uppercase tracking-widest leading-tight line-clamp-2 text-black transition-colors h-8 w-full">
                         {item.productName}
                     </h3>
 
@@ -120,13 +121,13 @@ export function SaleCampaignProductCard({ item }: SaleCampaignProductCardProps) 
 
                         {/* Stock progress */}
                         <div className="space-y-1">
-                            <div className="h-1.5 bg-zinc-200 group-hover:bg-zinc-700 overflow-hidden">
+                            <div className="h-1.5 bg-zinc-200 overflow-hidden">
                                 <div
                                     className="h-full bg-primary transition-all"
                                     style={{ width: `${Math.min((item.soldCount / item.stockLimit) * 100, 100)}%` }}
                                 />
                             </div>
-                            <div className="flex justify-between text-[8px] font-bold uppercase tracking-wider text-zinc-500 group-hover:text-zinc-400">
+                            <div className="flex justify-between text-[8px] font-bold uppercase tracking-wider text-zinc-500">
                                 <span>Đã bán: {item.soldCount}</span>
                                 <span>Còn: {item.remainingStock}</span>
                             </div>

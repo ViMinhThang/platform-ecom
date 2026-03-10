@@ -18,13 +18,10 @@ public class ReviewDTO {
     private Long orderId;
     private String email;
     private Integer rating;
-    private String title;
     private String comment;
     private List<String> images = new ArrayList<>();
-    private Boolean verifiedPurchase;
     private Integer helpfulCount;
     private Integer notHelpfulCount;
-    private String status;
     private String sentiment;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
