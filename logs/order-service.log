@@ -1346,3 +1346,749 @@ com.ecom.common.exception.InsufficientStockException: Product Bột nhuộm qu�
 2026-03-10T12:54:33.704+07:00  INFO 14672 --- [order-service] [SpringApplicationShutdownHook] [                                                 ] com.netflix.discovery.DiscoveryClient    : Unregistering ...
 2026-03-10T12:54:33.720+07:00  INFO 14672 --- [order-service] [SpringApplicationShutdownHook] [                                                 ] com.netflix.discovery.DiscoveryClient    : DiscoveryClient_ORDER-SERVICE/fragile.mshome.net:order-service:8085 - deregister  status: 200
 2026-03-10T12:54:33.721+07:00  INFO 14672 --- [order-service] [SpringApplicationShutdownHook] [                                                 ] com.netflix.discovery.DiscoveryClient    : Completed shut down of DiscoveryClient
+2026-03-10T12:54:38.120+07:00  INFO 28140 --- [order-service] [main] [                                                 ] com.ecom.order.OrderApplication          : Starting OrderApplication using Java 25.0.2 with PID 28140 (C:\Users\huynh\Desktop\platform-ecom\platform-ecom-backend\order\target\classes started by huynh in C:\Users\huynh\Desktop\platform-ecom)
+2026-03-10T12:54:38.124+07:00  INFO 28140 --- [order-service] [main] [                                                 ] com.ecom.order.OrderApplication          : No active profile set, falling back to 1 default profile: "default"
+2026-03-10T12:54:38.181+07:00  INFO 28140 --- [order-service] [main] [                                                 ] o.s.c.c.c.ConfigServerConfigDataLoader   : Fetching config from server at : http://localhost:8888
+2026-03-10T12:54:38.182+07:00  INFO 28140 --- [order-service] [main] [                                                 ] o.s.c.c.c.ConfigServerConfigDataLoader   : Located environment: name=order-service, profiles=[default], label=null, version=null, state=null
+2026-03-10T12:54:40.204+07:00  INFO 28140 --- [order-service] [main] [                                                 ] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-03-10T12:54:40.473+07:00  INFO 28140 --- [order-service] [main] [                                                 ] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 252 ms. Found 5 JPA repository interfaces.
+2026-03-10T12:54:40.848+07:00  INFO 28140 --- [order-service] [main] [                                                 ] faultConfiguringBeanFactoryPostProcessor : No bean named 'errorChannel' has been explicitly defined. Therefore, a default PublishSubscribeChannel will be created.
+2026-03-10T12:54:40.857+07:00  INFO 28140 --- [order-service] [main] [                                                 ] faultConfiguringBeanFactoryPostProcessor : No bean named 'integrationHeaderChannelRegistry' has been explicitly defined. Therefore, a default DefaultHeaderChannelRegistry will be created.
+2026-03-10T12:54:41.150+07:00  INFO 28140 --- [order-service] [main] [                                                 ] o.s.cloud.context.scope.GenericScope     : BeanFactory id=38f52037-c2ba-3578-82b6-1d64f79472c2
+2026-03-10T12:54:42.915+07:00  INFO 28140 --- [order-service] [main] [                                                 ] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8085 (http)
+2026-03-10T12:54:42.931+07:00  INFO 28140 --- [order-service] [main] [                                                 ] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-03-10T12:54:42.932+07:00  INFO 28140 --- [order-service] [main] [                                                 ] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.46]
+2026-03-10T12:54:43.012+07:00  INFO 28140 --- [order-service] [main] [                                                 ] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2026-03-10T12:54:43.012+07:00  INFO 28140 --- [order-service] [main] [                                                 ] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 4828 ms
+2026-03-10T12:54:46.280+07:00  INFO 28140 --- [order-service] [main] [                                                 ] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-03-10T12:54:46.383+07:00  INFO 28140 --- [order-service] [main] [                                                 ] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.6.29.Final
+2026-03-10T12:54:46.531+07:00  INFO 28140 --- [order-service] [main] [                                                 ] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2026-03-10T12:54:47.026+07:00  INFO 28140 --- [order-service] [main] [                                                 ] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-03-10T12:54:47.105+07:00  INFO 28140 --- [order-service] [main] [                                                 ] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-03-10T12:54:47.338+07:00  INFO 28140 --- [order-service] [main] [                                                 ] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@39aaa7db
+2026-03-10T12:54:47.341+07:00  INFO 28140 --- [order-service] [main] [                                                 ] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-03-10T12:54:47.374+07:00  WARN 28140 --- [order-service] [main] [                                                 ] org.hibernate.orm.deprecation            : HHH90000025: PostgreSQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-03-10T12:54:47.395+07:00  INFO 28140 --- [order-service] [main] [                                                 ] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 17.7
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-03-10T12:54:49.871+07:00  INFO 28140 --- [order-service] [main] [                                                 ] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-03-10T12:54:50.078+07:00  INFO 28140 --- [order-service] [main] [                                                 ] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-03-10T12:54:51.689+07:00  INFO 28140 --- [order-service] [main] [                                                 ] o.s.d.j.r.query.QueryEnhancerFactory     : Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-03-10T12:54:56.207+07:00  INFO 28140 --- [order-service] [main] [                                                 ] c.e.o.p.providers.StripePaymentProvider  : Stripe payment provider initialized and registered
+2026-03-10T12:54:56.229+07:00  INFO 28140 --- [order-service] [main] [                                                 ] c.e.c.s.LocalFileStorageServiceImpl      : File storage location created/verified at: C:\Users\huynh\Desktop\platform-ecom\uploads
+2026-03-10T12:54:56.432+07:00  WARN 28140 --- [order-service] [main] [                                                 ] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-03-10T12:54:59.011+07:00  WARN 28140 --- [order-service] [main] [                                                 ] c.f.c.c.BeanFactoryAwareFunctionRegistry : Failed to locate function 'outOfStock' for function definition 'outOfStock'. Returning null.
+2026-03-10T12:54:59.134+07:00  INFO 28140 --- [order-service] [main] [                                                 ] o.s.c.s.m.DirectWithAttributesChannel    : Channel 'order-service.outOfStock-in-0' has 1 subscriber(s).
+2026-03-10T12:54:59.997+07:00  INFO 28140 --- [order-service] [main] [                                                 ] DiscoveryClientOptionalArgsConfiguration : Eureka HTTP Client uses RestTemplate.
+2026-03-10T12:55:00.187+07:00  WARN 28140 --- [order-service] [main] [                                                 ] iguration$LoadBalancerCaffeineWarnLogger : Spring Cloud LoadBalancer is currently working with the default cache. While this cache implementation is useful for development and tests, it's recommended to use Caffeine cache in production.You can switch to using Caffeine cache, by adding it and org.springframework.cache.caffeine.CaffeineCacheManager to the classpath.
+2026-03-10T12:55:00.228+07:00  INFO 28140 --- [order-service] [main] [                                                 ] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 34 endpoints beneath base path '/actuator'
+2026-03-10T12:55:00.443+07:00  INFO 28140 --- [order-service] [main] [                                                 ] o.s.i.endpoint.EventDrivenConsumer       : Adding {logging-channel-adapter:_org.springframework.integration.errorLogger} as a subscriber to the 'errorChannel' channel
+2026-03-10T12:55:00.444+07:00  INFO 28140 --- [order-service] [main] [                                                 ] o.s.i.channel.PublishSubscribeChannel    : Channel 'order-service.errorChannel' has 1 subscriber(s).
+2026-03-10T12:55:00.445+07:00  INFO 28140 --- [order-service] [main] [                                                 ] o.s.i.endpoint.EventDrivenConsumer       : started bean '_org.springframework.integration.errorLogger'
+2026-03-10T12:55:00.458+07:00  INFO 28140 --- [order-service] [main] [                                                 ] o.s.c.n.eureka.InstanceInfoFactory       : Setting initial instance status as: STARTING
+2026-03-10T12:55:00.485+07:00  INFO 28140 --- [order-service] [main] [                                                 ] com.netflix.discovery.DiscoveryClient    : Initializing Eureka in region us-east-1
+2026-03-10T12:55:00.490+07:00  INFO 28140 --- [order-service] [main] [                                                 ] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2026-03-10T12:55:00.500+07:00  INFO 28140 --- [order-service] [main] [                                                 ] com.netflix.discovery.DiscoveryClient    : Disable delta property : false
+2026-03-10T12:55:00.500+07:00  INFO 28140 --- [order-service] [main] [                                                 ] com.netflix.discovery.DiscoveryClient    : Single vip registry refresh property : null
+2026-03-10T12:55:00.500+07:00  INFO 28140 --- [order-service] [main] [                                                 ] com.netflix.discovery.DiscoveryClient    : Force full registry fetch : false
+2026-03-10T12:55:00.500+07:00  INFO 28140 --- [order-service] [main] [                                                 ] com.netflix.discovery.DiscoveryClient    : Application is null : false
+2026-03-10T12:55:00.500+07:00  INFO 28140 --- [order-service] [main] [                                                 ] com.netflix.discovery.DiscoveryClient    : Registered Applications size is zero : true
+2026-03-10T12:55:00.502+07:00  INFO 28140 --- [order-service] [main] [                                                 ] com.netflix.discovery.DiscoveryClient    : Application version is -1: true
+2026-03-10T12:55:00.502+07:00  INFO 28140 --- [order-service] [main] [                                                 ] com.netflix.discovery.DiscoveryClient    : Getting all instance registry info from the eureka server
+2026-03-10T12:55:00.740+07:00  INFO 28140 --- [order-service] [main] [                                                 ] com.netflix.discovery.DiscoveryClient    : The response status is 200
+2026-03-10T12:55:00.742+07:00  INFO 28140 --- [order-service] [main] [                                                 ] com.netflix.discovery.DiscoveryClient    : Starting heartbeat executor: renew interval is: 30
+2026-03-10T12:55:00.744+07:00  INFO 28140 --- [order-service] [main] [                                                 ] c.n.discovery.InstanceInfoReplicator     : InstanceInfoReplicator onDemand update allowed rate per min is 4
+2026-03-10T12:55:00.746+07:00  INFO 28140 --- [order-service] [main] [                                                 ] com.netflix.discovery.DiscoveryClient    : Discovery Client initialized at timestamp 1773122100745 with initial instances count: 9
+2026-03-10T12:55:00.754+07:00  INFO 28140 --- [order-service] [main] [                                                 ] o.s.c.n.e.s.EurekaServiceRegistry        : Registering application ORDER-SERVICE with eureka with status UP
+2026-03-10T12:55:00.756+07:00  INFO 28140 --- [order-service] [main] [                                                 ] com.netflix.discovery.DiscoveryClient    : Saw local status change event StatusChangeEvent [timestamp=1773122100756, current=UP, previous=STARTING]
+2026-03-10T12:55:00.757+07:00  INFO 28140 --- [order-service] [DiscoveryClient-InstanceInfoReplicator-%d] [                                                 ] com.netflix.discovery.DiscoveryClient    : DiscoveryClient_ORDER-SERVICE/fragile.mshome.net:order-service:8085: registering service...
+2026-03-10T12:55:00.759+07:00  INFO 28140 --- [order-service] [main] [                                                 ] o.s.c.s.binder.DefaultBinderFactory      : Creating binder: kafka
+2026-03-10T12:55:00.759+07:00  INFO 28140 --- [order-service] [main] [                                                 ] o.s.c.s.binder.DefaultBinderFactory      : Constructing binder child context for kafka
+2026-03-10T12:55:00.800+07:00  INFO 28140 --- [order-service] [DiscoveryClient-InstanceInfoReplicator-%d] [                                                 ] com.netflix.discovery.DiscoveryClient    : DiscoveryClient_ORDER-SERVICE/fragile.mshome.net:order-service:8085 - registration status: 204
+2026-03-10T12:55:00.893+07:00  INFO 28140 --- [order-service] [main] [                                                 ] o.s.c.s.binder.DefaultBinderFactory      : Caching the binder: kafka
+2026-03-10T12:55:00.907+07:00  INFO 28140 --- [order-service] [main] [                                                 ] o.a.k.clients.admin.AdminClientConfig    : AdminClientConfig values: 
+	auto.include.jmx.reporter = true
+	bootstrap.controllers = []
+	bootstrap.servers = [localhost:9093]
+	client.dns.lookup = use_all_dns_ips
+	client.id = 
+	connections.max.idle.ms = 300000
+	default.api.timeout.ms = 60000
+	enable.metrics.push = true
+	metadata.max.age.ms = 300000
+	metadata.recovery.strategy = none
+	metric.reporters = []
+	metrics.num.samples = 2
+	metrics.recording.level = INFO
+	metrics.sample.window.ms = 30000
+	receive.buffer.bytes = 65536
+	reconnect.backoff.max.ms = 1000
+	reconnect.backoff.ms = 50
+	request.timeout.ms = 30000
+	retries = 2147483647
+	retry.backoff.max.ms = 1000
+	retry.backoff.ms = 100
+	sasl.client.callback.handler.class = null
+	sasl.jaas.config = null
+	sasl.kerberos.kinit.cmd = /usr/bin/kinit
+	sasl.kerberos.min.time.before.relogin = 60000
+	sasl.kerberos.service.name = null
+	sasl.kerberos.ticket.renew.jitter = 0.05
+	sasl.kerberos.ticket.renew.window.factor = 0.8
+	sasl.login.callback.handler.class = null
+	sasl.login.class = null
+	sasl.login.connect.timeout.ms = null
+	sasl.login.read.timeout.ms = null
+	sasl.login.refresh.buffer.seconds = 300
+	sasl.login.refresh.min.period.seconds = 60
+	sasl.login.refresh.window.factor = 0.8
+	sasl.login.refresh.window.jitter = 0.05
+	sasl.login.retry.backoff.max.ms = 10000
+	sasl.login.retry.backoff.ms = 100
+	sasl.mechanism = GSSAPI
+	sasl.oauthbearer.clock.skew.seconds = 30
+	sasl.oauthbearer.expected.audience = null
+	sasl.oauthbearer.expected.issuer = null
+	sasl.oauthbearer.header.urlencode = false
+	sasl.oauthbearer.jwks.endpoint.refresh.ms = 3600000
+	sasl.oauthbearer.jwks.endpoint.retry.backoff.max.ms = 10000
+	sasl.oauthbearer.jwks.endpoint.retry.backoff.ms = 100
+	sasl.oauthbearer.jwks.endpoint.url = null
+	sasl.oauthbearer.scope.claim.name = scope
+	sasl.oauthbearer.sub.claim.name = sub
+	sasl.oauthbearer.token.endpoint.url = null
+	security.protocol = PLAINTEXT
+	security.providers = null
+	send.buffer.bytes = 131072
+	socket.connection.setup.timeout.max.ms = 30000
+	socket.connection.setup.timeout.ms = 10000
+	ssl.cipher.suites = null
+	ssl.enabled.protocols = [TLSv1.2, TLSv1.3]
+	ssl.endpoint.identification.algorithm = https
+	ssl.engine.factory.class = null
+	ssl.key.password = null
+	ssl.keymanager.algorithm = SunX509
+	ssl.keystore.certificate.chain = null
+	ssl.keystore.key = null
+	ssl.keystore.location = null
+	ssl.keystore.password = null
+	ssl.keystore.type = JKS
+	ssl.protocol = TLSv1.3
+	ssl.provider = null
+	ssl.secure.random.implementation = null
+	ssl.trustmanager.algorithm = PKIX
+	ssl.truststore.certificates = null
+	ssl.truststore.location = null
+	ssl.truststore.password = null
+	ssl.truststore.type = JKS
+
+2026-03-10T12:55:01.106+07:00  INFO 28140 --- [order-service] [main] [                                                 ] o.a.kafka.common.utils.AppInfoParser     : Kafka version: 3.9.1
+2026-03-10T12:55:01.106+07:00  INFO 28140 --- [order-service] [main] [                                                 ] o.a.kafka.common.utils.AppInfoParser     : Kafka commitId: f745dfdcee2b9851
+2026-03-10T12:55:01.106+07:00  INFO 28140 --- [order-service] [main] [                                                 ] o.a.kafka.common.utils.AppInfoParser     : Kafka startTimeMs: 1773122101105
+2026-03-10T12:55:01.784+07:00  INFO 28140 --- [order-service] [kafka-admin-client-thread | adminclient-1] [                                                 ] o.a.kafka.common.utils.AppInfoParser     : App info kafka.admin.client for adminclient-1 unregistered
+2026-03-10T12:55:01.791+07:00  INFO 28140 --- [order-service] [kafka-admin-client-thread | adminclient-1] [                                                 ] o.apache.kafka.common.metrics.Metrics    : Metrics scheduler closed
+2026-03-10T12:55:01.792+07:00  INFO 28140 --- [order-service] [kafka-admin-client-thread | adminclient-1] [                                                 ] o.apache.kafka.common.metrics.Metrics    : Closing reporter org.apache.kafka.common.metrics.JmxReporter
+2026-03-10T12:55:01.792+07:00  INFO 28140 --- [order-service] [kafka-admin-client-thread | adminclient-1] [                                                 ] o.apache.kafka.common.metrics.Metrics    : Metrics reporters closed
+2026-03-10T12:55:01.796+07:00  WARN 28140 --- [order-service] [AsyncReporter{ZipkinHttpClientSender{http://localhost:9411/api/v2/spans}}] [                                                 ] z.r.i.AsyncReporter$BoundedAsyncReporter : Spans were dropped due to exceptions. All subsequent errors will be logged at FINE level.
+2026-03-10T12:55:01.797+07:00  WARN 28140 --- [order-service] [AsyncReporter{ZipkinHttpClientSender{http://localhost:9411/api/v2/spans}}] [                                                 ] z.r.i.AsyncReporter$BoundedAsyncReporter : Dropped 2 spans due to ConnectException()
+
+java.net.ConnectException: null
+	at java.net.http/jdk.internal.net.http.HttpClientImpl.send(HttpClientImpl.java:923) ~[java.net.http:na]
+	at java.net.http/jdk.internal.net.http.HttpClientFacade.send(HttpClientFacade.java:133) ~[java.net.http:na]
+	at org.springframework.boot.actuate.autoconfigure.tracing.zipkin.ZipkinHttpClientSender.postSpans(ZipkinHttpClientSender.java:60) ~[spring-boot-actuator-autoconfigure-3.5.6.jar:3.5.6]
+	at org.springframework.boot.actuate.autoconfigure.tracing.zipkin.HttpSender.postSpans(HttpSender.java:69) ~[spring-boot-actuator-autoconfigure-3.5.6.jar:3.5.6]
+	at org.springframework.boot.actuate.autoconfigure.tracing.zipkin.HttpSender.postSpans(HttpSender.java:41) ~[spring-boot-actuator-autoconfigure-3.5.6.jar:3.5.6]
+	at zipkin2.reporter.BaseHttpSender.send(BaseHttpSender.java:123) ~[zipkin-reporter-3.5.1.jar:na]
+	at zipkin2.reporter.internal.AsyncReporter$BoundedAsyncReporter.flush(AsyncReporter.java:266) ~[zipkin-reporter-3.5.1.jar:na]
+	at zipkin2.reporter.internal.AsyncReporter$Flusher.run(AsyncReporter.java:352) ~[zipkin-reporter-3.5.1.jar:na]
+	at java.base/java.lang.Thread.run(Thread.java:1474) ~[na:na]
+Caused by: java.net.ConnectException: null
+	at java.net.http/jdk.internal.net.http.common.Utils.toConnectException(Utils.java:1070) ~[java.net.http:na]
+	at java.net.http/jdk.internal.net.http.PlainHttpConnection.connectAsync(PlainHttpConnection.java:223) ~[java.net.http:na]
+	at java.net.http/jdk.internal.net.http.PlainHttpConnection.checkRetryConnect(PlainHttpConnection.java:277) ~[java.net.http:na]
+	at java.net.http/jdk.internal.net.http.PlainHttpConnection.lambda$connectAsync$0(PlainHttpConnection.java:235) ~[java.net.http:na]
+	at java.base/java.util.concurrent.CompletableFuture.uniHandle(CompletableFuture.java:955) ~[na:na]
+	at java.base/java.util.concurrent.CompletableFuture$UniHandle.tryFire(CompletableFuture.java:932) ~[na:na]
+	at java.base/java.util.concurrent.CompletableFuture.postComplete(CompletableFuture.java:531) ~[na:na]
+	at java.base/java.util.concurrent.CompletableFuture$AsyncSupply.run(CompletableFuture.java:1794) ~[na:na]
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1090) ~[na:na]
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:614) ~[na:na]
+	... 1 common frames omitted
+Caused by: java.nio.channels.ClosedChannelException: null
+	at java.base/sun.nio.ch.SocketChannelImpl.ensureOpen(SocketChannelImpl.java:204) ~[na:na]
+	at java.base/sun.nio.ch.SocketChannelImpl.connect(SocketChannelImpl.java:942) ~[na:na]
+	at java.net.http/jdk.internal.net.http.PlainHttpConnection.connectAsync(PlainHttpConnection.java:211) ~[java.net.http:na]
+	... 9 common frames omitted
+
+2026-03-10T12:55:01.805+07:00  INFO 28140 --- [order-service] [main] [                                                 ] o.a.k.clients.consumer.ConsumerConfig    : ConsumerConfig values: 
+	allow.auto.create.topics = true
+	auto.commit.interval.ms = 100
+	auto.include.jmx.reporter = true
+	auto.offset.reset = latest
+	bootstrap.servers = [localhost:9093]
+	check.crcs = true
+	client.dns.lookup = use_all_dns_ips
+	client.id = consumer-anonymous.2be97d31-53c3-402e-83ab-00517db6d8f0-1
+	client.rack = 
+	connections.max.idle.ms = 540000
+	default.api.timeout.ms = 60000
+	enable.auto.commit = false
+	enable.metrics.push = true
+	exclude.internal.topics = true
+	fetch.max.bytes = 52428800
+	fetch.max.wait.ms = 500
+	fetch.min.bytes = 1
+	group.id = anonymous.2be97d31-53c3-402e-83ab-00517db6d8f0
+	group.instance.id = null
+	group.protocol = classic
+	group.remote.assignor = null
+	heartbeat.interval.ms = 3000
+	interceptor.classes = []
+	internal.leave.group.on.close = true
+	internal.throw.on.fetch.stable.offset.unsupported = false
+	isolation.level = read_uncommitted
+	key.deserializer = class org.apache.kafka.common.serialization.ByteArrayDeserializer
+	max.partition.fetch.bytes = 1048576
+	max.poll.interval.ms = 300000
+	max.poll.records = 500
+	metadata.max.age.ms = 300000
+	metadata.recovery.strategy = none
+	metric.reporters = []
+	metrics.num.samples = 2
+	metrics.recording.level = INFO
+	metrics.sample.window.ms = 30000
+	partition.assignment.strategy = [class org.apache.kafka.clients.consumer.RangeAssignor, class org.apache.kafka.clients.consumer.CooperativeStickyAssignor]
+	receive.buffer.bytes = 65536
+	reconnect.backoff.max.ms = 1000
+	reconnect.backoff.ms = 50
+	request.timeout.ms = 30000
+	retry.backoff.max.ms = 1000
+	retry.backoff.ms = 100
+	sasl.client.callback.handler.class = null
+	sasl.jaas.config = null
+	sasl.kerberos.kinit.cmd = /usr/bin/kinit
+	sasl.kerberos.min.time.before.relogin = 60000
+	sasl.kerberos.service.name = null
+	sasl.kerberos.ticket.renew.jitter = 0.05
+	sasl.kerberos.ticket.renew.window.factor = 0.8
+	sasl.login.callback.handler.class = null
+	sasl.login.class = null
+	sasl.login.connect.timeout.ms = null
+	sasl.login.read.timeout.ms = null
+	sasl.login.refresh.buffer.seconds = 300
+	sasl.login.refresh.min.period.seconds = 60
+	sasl.login.refresh.window.factor = 0.8
+	sasl.login.refresh.window.jitter = 0.05
+	sasl.login.retry.backoff.max.ms = 10000
+	sasl.login.retry.backoff.ms = 100
+	sasl.mechanism = GSSAPI
+	sasl.oauthbearer.clock.skew.seconds = 30
+	sasl.oauthbearer.expected.audience = null
+	sasl.oauthbearer.expected.issuer = null
+	sasl.oauthbearer.header.urlencode = false
+	sasl.oauthbearer.jwks.endpoint.refresh.ms = 3600000
+	sasl.oauthbearer.jwks.endpoint.retry.backoff.max.ms = 10000
+	sasl.oauthbearer.jwks.endpoint.retry.backoff.ms = 100
+	sasl.oauthbearer.jwks.endpoint.url = null
+	sasl.oauthbearer.scope.claim.name = scope
+	sasl.oauthbearer.sub.claim.name = sub
+	sasl.oauthbearer.token.endpoint.url = null
+	security.protocol = PLAINTEXT
+	security.providers = null
+	send.buffer.bytes = 131072
+	session.timeout.ms = 45000
+	socket.connection.setup.timeout.max.ms = 30000
+	socket.connection.setup.timeout.ms = 10000
+	ssl.cipher.suites = null
+	ssl.enabled.protocols = [TLSv1.2, TLSv1.3]
+	ssl.endpoint.identification.algorithm = https
+	ssl.engine.factory.class = null
+	ssl.key.password = null
+	ssl.keymanager.algorithm = SunX509
+	ssl.keystore.certificate.chain = null
+	ssl.keystore.key = null
+	ssl.keystore.location = null
+	ssl.keystore.password = null
+	ssl.keystore.type = JKS
+	ssl.protocol = TLSv1.3
+	ssl.provider = null
+	ssl.secure.random.implementation = null
+	ssl.trustmanager.algorithm = PKIX
+	ssl.truststore.certificates = null
+	ssl.truststore.location = null
+	ssl.truststore.password = null
+	ssl.truststore.type = JKS
+	value.deserializer = class org.apache.kafka.common.serialization.ByteArrayDeserializer
+
+2026-03-10T12:55:01.848+07:00  INFO 28140 --- [order-service] [main] [                                                 ] o.a.k.c.t.i.KafkaMetricsCollector        : initializing Kafka metrics collector
+2026-03-10T12:55:01.906+07:00  INFO 28140 --- [order-service] [main] [                                                 ] o.a.kafka.common.utils.AppInfoParser     : Kafka version: 3.9.1
+2026-03-10T12:55:01.907+07:00  INFO 28140 --- [order-service] [main] [                                                 ] o.a.kafka.common.utils.AppInfoParser     : Kafka commitId: f745dfdcee2b9851
+2026-03-10T12:55:01.907+07:00  INFO 28140 --- [order-service] [main] [                                                 ] o.a.kafka.common.utils.AppInfoParser     : Kafka startTimeMs: 1773122101906
+2026-03-10T12:55:01.932+07:00  INFO 28140 --- [order-service] [main] [                                                 ] org.apache.kafka.clients.Metadata        : [Consumer clientId=consumer-anonymous.2be97d31-53c3-402e-83ab-00517db6d8f0-1, groupId=anonymous.2be97d31-53c3-402e-83ab-00517db6d8f0] Cluster ID: B5DZ_CmcR8Oo2bgI5gb8Kg
+2026-03-10T12:55:01.934+07:00  INFO 28140 --- [order-service] [main] [                                                 ] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-anonymous.2be97d31-53c3-402e-83ab-00517db6d8f0-1, groupId=anonymous.2be97d31-53c3-402e-83ab-00517db6d8f0] Resetting generation and member id due to: consumer pro-actively leaving the group
+2026-03-10T12:55:01.935+07:00  INFO 28140 --- [order-service] [main] [                                                 ] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-anonymous.2be97d31-53c3-402e-83ab-00517db6d8f0-1, groupId=anonymous.2be97d31-53c3-402e-83ab-00517db6d8f0] Request joining group due to: consumer pro-actively leaving the group
+2026-03-10T12:55:01.939+07:00  INFO 28140 --- [order-service] [main] [                                                 ] o.apache.kafka.common.metrics.Metrics    : Metrics scheduler closed
+2026-03-10T12:55:01.940+07:00  INFO 28140 --- [order-service] [main] [                                                 ] o.apache.kafka.common.metrics.Metrics    : Closing reporter org.apache.kafka.common.metrics.JmxReporter
+2026-03-10T12:55:01.940+07:00  INFO 28140 --- [order-service] [main] [                                                 ] o.apache.kafka.common.metrics.Metrics    : Closing reporter org.apache.kafka.common.telemetry.internals.ClientTelemetryReporter
+2026-03-10T12:55:01.940+07:00  INFO 28140 --- [order-service] [main] [                                                 ] o.apache.kafka.common.metrics.Metrics    : Metrics reporters closed
+2026-03-10T12:55:01.945+07:00  INFO 28140 --- [order-service] [main] [                                                 ] o.a.kafka.common.utils.AppInfoParser     : App info kafka.consumer for consumer-anonymous.2be97d31-53c3-402e-83ab-00517db6d8f0-1 unregistered
+2026-03-10T12:55:01.975+07:00  INFO 28140 --- [order-service] [main] [                                                 ] o.s.c.stream.binder.BinderErrorChannel   : Channel 'kafka-2005832332.outOfStock-in-0.errors' has 1 subscriber(s).
+2026-03-10T12:55:01.976+07:00  INFO 28140 --- [order-service] [main] [                                                 ] o.s.c.stream.binder.BinderErrorChannel   : Channel 'kafka-2005832332.outOfStock-in-0.errors' has 0 subscriber(s).
+2026-03-10T12:55:01.977+07:00  INFO 28140 --- [order-service] [main] [                                                 ] o.s.c.stream.binder.BinderErrorChannel   : Channel 'kafka-2005832332.outOfStock-in-0.errors' has 1 subscriber(s).
+2026-03-10T12:55:01.977+07:00  INFO 28140 --- [order-service] [main] [                                                 ] o.s.c.stream.binder.BinderErrorChannel   : Channel 'kafka-2005832332.outOfStock-in-0.errors' has 2 subscriber(s).
+2026-03-10T12:55:02.001+07:00  INFO 28140 --- [order-service] [main] [                                                 ] o.a.k.clients.consumer.ConsumerConfig    : ConsumerConfig values: 
+	allow.auto.create.topics = true
+	auto.commit.interval.ms = 100
+	auto.include.jmx.reporter = true
+	auto.offset.reset = latest
+	bootstrap.servers = [localhost:9093]
+	check.crcs = true
+	client.dns.lookup = use_all_dns_ips
+	client.id = consumer-anonymous.2be97d31-53c3-402e-83ab-00517db6d8f0-2
+	client.rack = 
+	connections.max.idle.ms = 540000
+	default.api.timeout.ms = 60000
+	enable.auto.commit = false
+	enable.metrics.push = true
+	exclude.internal.topics = true
+	fetch.max.bytes = 52428800
+	fetch.max.wait.ms = 500
+	fetch.min.bytes = 1
+	group.id = anonymous.2be97d31-53c3-402e-83ab-00517db6d8f0
+	group.instance.id = null
+	group.protocol = classic
+	group.remote.assignor = null
+	heartbeat.interval.ms = 3000
+	interceptor.classes = []
+	internal.leave.group.on.close = true
+	internal.throw.on.fetch.stable.offset.unsupported = false
+	isolation.level = read_uncommitted
+	key.deserializer = class org.apache.kafka.common.serialization.ByteArrayDeserializer
+	max.partition.fetch.bytes = 1048576
+	max.poll.interval.ms = 300000
+	max.poll.records = 500
+	metadata.max.age.ms = 300000
+	metadata.recovery.strategy = none
+	metric.reporters = []
+	metrics.num.samples = 2
+	metrics.recording.level = INFO
+	metrics.sample.window.ms = 30000
+	partition.assignment.strategy = [class org.apache.kafka.clients.consumer.RangeAssignor, class org.apache.kafka.clients.consumer.CooperativeStickyAssignor]
+	receive.buffer.bytes = 65536
+	reconnect.backoff.max.ms = 1000
+	reconnect.backoff.ms = 50
+	request.timeout.ms = 30000
+	retry.backoff.max.ms = 1000
+	retry.backoff.ms = 100
+	sasl.client.callback.handler.class = null
+	sasl.jaas.config = null
+	sasl.kerberos.kinit.cmd = /usr/bin/kinit
+	sasl.kerberos.min.time.before.relogin = 60000
+	sasl.kerberos.service.name = null
+	sasl.kerberos.ticket.renew.jitter = 0.05
+	sasl.kerberos.ticket.renew.window.factor = 0.8
+	sasl.login.callback.handler.class = null
+	sasl.login.class = null
+	sasl.login.connect.timeout.ms = null
+	sasl.login.read.timeout.ms = null
+	sasl.login.refresh.buffer.seconds = 300
+	sasl.login.refresh.min.period.seconds = 60
+	sasl.login.refresh.window.factor = 0.8
+	sasl.login.refresh.window.jitter = 0.05
+	sasl.login.retry.backoff.max.ms = 10000
+	sasl.login.retry.backoff.ms = 100
+	sasl.mechanism = GSSAPI
+	sasl.oauthbearer.clock.skew.seconds = 30
+	sasl.oauthbearer.expected.audience = null
+	sasl.oauthbearer.expected.issuer = null
+	sasl.oauthbearer.header.urlencode = false
+	sasl.oauthbearer.jwks.endpoint.refresh.ms = 3600000
+	sasl.oauthbearer.jwks.endpoint.retry.backoff.max.ms = 10000
+	sasl.oauthbearer.jwks.endpoint.retry.backoff.ms = 100
+	sasl.oauthbearer.jwks.endpoint.url = null
+	sasl.oauthbearer.scope.claim.name = scope
+	sasl.oauthbearer.sub.claim.name = sub
+	sasl.oauthbearer.token.endpoint.url = null
+	security.protocol = PLAINTEXT
+	security.providers = null
+	send.buffer.bytes = 131072
+	session.timeout.ms = 45000
+	socket.connection.setup.timeout.max.ms = 30000
+	socket.connection.setup.timeout.ms = 10000
+	ssl.cipher.suites = null
+	ssl.enabled.protocols = [TLSv1.2, TLSv1.3]
+	ssl.endpoint.identification.algorithm = https
+	ssl.engine.factory.class = null
+	ssl.key.password = null
+	ssl.keymanager.algorithm = SunX509
+	ssl.keystore.certificate.chain = null
+	ssl.keystore.key = null
+	ssl.keystore.location = null
+	ssl.keystore.password = null
+	ssl.keystore.type = JKS
+	ssl.protocol = TLSv1.3
+	ssl.provider = null
+	ssl.secure.random.implementation = null
+	ssl.trustmanager.algorithm = PKIX
+	ssl.truststore.certificates = null
+	ssl.truststore.location = null
+	ssl.truststore.password = null
+	ssl.truststore.type = JKS
+	value.deserializer = class org.apache.kafka.common.serialization.ByteArrayDeserializer
+
+2026-03-10T12:55:02.002+07:00  INFO 28140 --- [order-service] [main] [                                                 ] o.a.k.c.t.i.KafkaMetricsCollector        : initializing Kafka metrics collector
+2026-03-10T12:55:02.021+07:00  INFO 28140 --- [order-service] [main] [                                                 ] o.a.kafka.common.utils.AppInfoParser     : Kafka version: 3.9.1
+2026-03-10T12:55:02.022+07:00  INFO 28140 --- [order-service] [main] [                                                 ] o.a.kafka.common.utils.AppInfoParser     : Kafka commitId: f745dfdcee2b9851
+2026-03-10T12:55:02.022+07:00  INFO 28140 --- [order-service] [main] [                                                 ] o.a.kafka.common.utils.AppInfoParser     : Kafka startTimeMs: 1773122102021
+2026-03-10T12:55:02.036+07:00  INFO 28140 --- [order-service] [main] [                                                 ] o.a.k.c.c.i.ClassicKafkaConsumer         : [Consumer clientId=consumer-anonymous.2be97d31-53c3-402e-83ab-00517db6d8f0-2, groupId=anonymous.2be97d31-53c3-402e-83ab-00517db6d8f0] Subscribed to topic(s): outOfStock-in-0
+2026-03-10T12:55:02.050+07:00  INFO 28140 --- [order-service] [main] [                                                 ] s.i.k.i.KafkaMessageDrivenChannelAdapter : started org.springframework.integration.kafka.inbound.KafkaMessageDrivenChannelAdapter@386ffd5d
+2026-03-10T12:55:02.074+07:00  INFO 28140 --- [order-service] [main] [                                                 ] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8085 (http) with context path '/'
+2026-03-10T12:55:02.076+07:00  INFO 28140 --- [order-service] [main] [                                                 ] .s.c.n.e.s.EurekaAutoServiceRegistration : Updating port to 8085
+2026-03-10T12:55:02.122+07:00  INFO 28140 --- [order-service] [KafkaConsumerDestination{consumerDestinationName='outOfStock-in-0', partitions=1, dlqName='null'}.container-0-C-1] [                                                 ] org.apache.kafka.clients.Metadata        : [Consumer clientId=consumer-anonymous.2be97d31-53c3-402e-83ab-00517db6d8f0-2, groupId=anonymous.2be97d31-53c3-402e-83ab-00517db6d8f0] Cluster ID: B5DZ_CmcR8Oo2bgI5gb8Kg
+2026-03-10T12:55:02.128+07:00  INFO 28140 --- [order-service] [KafkaConsumerDestination{consumerDestinationName='outOfStock-in-0', partitions=1, dlqName='null'}.container-0-C-1] [                                                 ] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-anonymous.2be97d31-53c3-402e-83ab-00517db6d8f0-2, groupId=anonymous.2be97d31-53c3-402e-83ab-00517db6d8f0] Discovered group coordinator localhost:9093 (id: 2147483646 rack: null)
+2026-03-10T12:55:02.131+07:00  INFO 28140 --- [order-service] [KafkaConsumerDestination{consumerDestinationName='outOfStock-in-0', partitions=1, dlqName='null'}.container-0-C-1] [                                                 ] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-anonymous.2be97d31-53c3-402e-83ab-00517db6d8f0-2, groupId=anonymous.2be97d31-53c3-402e-83ab-00517db6d8f0] (Re-)joining group
+2026-03-10T12:55:02.176+07:00  INFO 28140 --- [order-service] [KafkaConsumerDestination{consumerDestinationName='outOfStock-in-0', partitions=1, dlqName='null'}.container-0-C-1] [                                                 ] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-anonymous.2be97d31-53c3-402e-83ab-00517db6d8f0-2, groupId=anonymous.2be97d31-53c3-402e-83ab-00517db6d8f0] Request joining group due to: need to re-join with the given member-id: consumer-anonymous.2be97d31-53c3-402e-83ab-00517db6d8f0-2-d6ce1692-2886-4a82-9d38-64ca2ee7394a
+2026-03-10T12:55:02.177+07:00  INFO 28140 --- [order-service] [KafkaConsumerDestination{consumerDestinationName='outOfStock-in-0', partitions=1, dlqName='null'}.container-0-C-1] [                                                 ] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-anonymous.2be97d31-53c3-402e-83ab-00517db6d8f0-2, groupId=anonymous.2be97d31-53c3-402e-83ab-00517db6d8f0] (Re-)joining group
+2026-03-10T12:55:02.308+07:00  INFO 28140 --- [order-service] [main] [                                                 ] com.ecom.order.OrderApplication          : Started OrderApplication in 25.954 seconds (process running for 26.999)
+2026-03-10T12:55:03.066+07:00  INFO 28140 --- [order-service] [pool-6-thread-1] [                                                 ] o.a.k.clients.consumer.ConsumerConfig    : ConsumerConfig values: 
+	allow.auto.create.topics = true
+	auto.commit.interval.ms = 5000
+	auto.include.jmx.reporter = true
+	auto.offset.reset = latest
+	bootstrap.servers = [localhost:9093]
+	check.crcs = true
+	client.dns.lookup = use_all_dns_ips
+	client.id = consumer-anonymous.2be97d31-53c3-402e-83ab-00517db6d8f0-3
+	client.rack = 
+	connections.max.idle.ms = 540000
+	default.api.timeout.ms = 60000
+	enable.auto.commit = true
+	enable.metrics.push = true
+	exclude.internal.topics = true
+	fetch.max.bytes = 52428800
+	fetch.max.wait.ms = 500
+	fetch.min.bytes = 1
+	group.id = anonymous.2be97d31-53c3-402e-83ab-00517db6d8f0
+	group.instance.id = null
+	group.protocol = classic
+	group.remote.assignor = null
+	heartbeat.interval.ms = 3000
+	interceptor.classes = []
+	internal.leave.group.on.close = true
+	internal.throw.on.fetch.stable.offset.unsupported = false
+	isolation.level = read_uncommitted
+	key.deserializer = class org.apache.kafka.common.serialization.ByteArrayDeserializer
+	max.partition.fetch.bytes = 1048576
+	max.poll.interval.ms = 300000
+	max.poll.records = 500
+	metadata.max.age.ms = 300000
+	metadata.recovery.strategy = none
+	metric.reporters = []
+	metrics.num.samples = 2
+	metrics.recording.level = INFO
+	metrics.sample.window.ms = 30000
+	partition.assignment.strategy = [class org.apache.kafka.clients.consumer.RangeAssignor, class org.apache.kafka.clients.consumer.CooperativeStickyAssignor]
+	receive.buffer.bytes = 65536
+	reconnect.backoff.max.ms = 1000
+	reconnect.backoff.ms = 50
+	request.timeout.ms = 30000
+	retry.backoff.max.ms = 1000
+	retry.backoff.ms = 100
+	sasl.client.callback.handler.class = null
+	sasl.jaas.config = null
+	sasl.kerberos.kinit.cmd = /usr/bin/kinit
+	sasl.kerberos.min.time.before.relogin = 60000
+	sasl.kerberos.service.name = null
+	sasl.kerberos.ticket.renew.jitter = 0.05
+	sasl.kerberos.ticket.renew.window.factor = 0.8
+	sasl.login.callback.handler.class = null
+	sasl.login.class = null
+	sasl.login.connect.timeout.ms = null
+	sasl.login.read.timeout.ms = null
+	sasl.login.refresh.buffer.seconds = 300
+	sasl.login.refresh.min.period.seconds = 60
+	sasl.login.refresh.window.factor = 0.8
+	sasl.login.refresh.window.jitter = 0.05
+	sasl.login.retry.backoff.max.ms = 10000
+	sasl.login.retry.backoff.ms = 100
+	sasl.mechanism = GSSAPI
+	sasl.oauthbearer.clock.skew.seconds = 30
+	sasl.oauthbearer.expected.audience = null
+	sasl.oauthbearer.expected.issuer = null
+	sasl.oauthbearer.header.urlencode = false
+	sasl.oauthbearer.jwks.endpoint.refresh.ms = 3600000
+	sasl.oauthbearer.jwks.endpoint.retry.backoff.max.ms = 10000
+	sasl.oauthbearer.jwks.endpoint.retry.backoff.ms = 100
+	sasl.oauthbearer.jwks.endpoint.url = null
+	sasl.oauthbearer.scope.claim.name = scope
+	sasl.oauthbearer.sub.claim.name = sub
+	sasl.oauthbearer.token.endpoint.url = null
+	security.protocol = PLAINTEXT
+	security.providers = null
+	send.buffer.bytes = 131072
+	session.timeout.ms = 45000
+	socket.connection.setup.timeout.max.ms = 30000
+	socket.connection.setup.timeout.ms = 10000
+	ssl.cipher.suites = null
+	ssl.enabled.protocols = [TLSv1.2, TLSv1.3]
+	ssl.endpoint.identification.algorithm = https
+	ssl.engine.factory.class = null
+	ssl.key.password = null
+	ssl.keymanager.algorithm = SunX509
+	ssl.keystore.certificate.chain = null
+	ssl.keystore.key = null
+	ssl.keystore.location = null
+	ssl.keystore.password = null
+	ssl.keystore.type = JKS
+	ssl.protocol = TLSv1.3
+	ssl.provider = null
+	ssl.secure.random.implementation = null
+	ssl.trustmanager.algorithm = PKIX
+	ssl.truststore.certificates = null
+	ssl.truststore.location = null
+	ssl.truststore.password = null
+	ssl.truststore.type = JKS
+	value.deserializer = class org.apache.kafka.common.serialization.ByteArrayDeserializer
+
+2026-03-10T12:55:03.067+07:00  INFO 28140 --- [order-service] [pool-6-thread-1] [                                                 ] o.a.k.c.t.i.KafkaMetricsCollector        : initializing Kafka metrics collector
+2026-03-10T12:55:03.092+07:00  INFO 28140 --- [order-service] [pool-6-thread-1] [                                                 ] o.a.kafka.common.utils.AppInfoParser     : Kafka version: 3.9.1
+2026-03-10T12:55:03.092+07:00  INFO 28140 --- [order-service] [pool-6-thread-1] [                                                 ] o.a.kafka.common.utils.AppInfoParser     : Kafka commitId: f745dfdcee2b9851
+2026-03-10T12:55:03.093+07:00  INFO 28140 --- [order-service] [pool-6-thread-1] [                                                 ] o.a.kafka.common.utils.AppInfoParser     : Kafka startTimeMs: 1773122103092
+2026-03-10T12:55:03.131+07:00  INFO 28140 --- [order-service] [pool-6-thread-1] [                                                 ] org.apache.kafka.clients.Metadata        : [Consumer clientId=consumer-anonymous.2be97d31-53c3-402e-83ab-00517db6d8f0-3, groupId=anonymous.2be97d31-53c3-402e-83ab-00517db6d8f0] Cluster ID: B5DZ_CmcR8Oo2bgI5gb8Kg
+2026-03-10T12:55:03.196+07:00  INFO 28140 --- [order-service] [pool-6-thread-1] [                                                 ] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-anonymous.2be97d31-53c3-402e-83ab-00517db6d8f0-3, groupId=anonymous.2be97d31-53c3-402e-83ab-00517db6d8f0] Discovered group coordinator localhost:9093 (id: 2147483646 rack: null)
+2026-03-10T12:55:03.224+07:00  INFO 28140 --- [order-service] [pool-6-thread-1] [                                                 ] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-anonymous.2be97d31-53c3-402e-83ab-00517db6d8f0-3, groupId=anonymous.2be97d31-53c3-402e-83ab-00517db6d8f0] Found no committed offset for partition outOfStock-in-0-0
+2026-03-10T12:55:05.187+07:00  INFO 28140 --- [order-service] [KafkaConsumerDestination{consumerDestinationName='outOfStock-in-0', partitions=1, dlqName='null'}.container-0-C-1] [                                                 ] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-anonymous.2be97d31-53c3-402e-83ab-00517db6d8f0-2, groupId=anonymous.2be97d31-53c3-402e-83ab-00517db6d8f0] Successfully joined group with generation Generation{generationId=1, memberId='consumer-anonymous.2be97d31-53c3-402e-83ab-00517db6d8f0-2-d6ce1692-2886-4a82-9d38-64ca2ee7394a', protocol='range'}
+2026-03-10T12:55:05.195+07:00  INFO 28140 --- [order-service] [KafkaConsumerDestination{consumerDestinationName='outOfStock-in-0', partitions=1, dlqName='null'}.container-0-C-1] [                                                 ] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-anonymous.2be97d31-53c3-402e-83ab-00517db6d8f0-2, groupId=anonymous.2be97d31-53c3-402e-83ab-00517db6d8f0] Finished assignment for group at generation 1: {consumer-anonymous.2be97d31-53c3-402e-83ab-00517db6d8f0-2-d6ce1692-2886-4a82-9d38-64ca2ee7394a=Assignment(partitions=[outOfStock-in-0-0])}
+2026-03-10T12:55:05.205+07:00  INFO 28140 --- [order-service] [KafkaConsumerDestination{consumerDestinationName='outOfStock-in-0', partitions=1, dlqName='null'}.container-0-C-1] [                                                 ] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-anonymous.2be97d31-53c3-402e-83ab-00517db6d8f0-2, groupId=anonymous.2be97d31-53c3-402e-83ab-00517db6d8f0] Successfully synced group in generation Generation{generationId=1, memberId='consumer-anonymous.2be97d31-53c3-402e-83ab-00517db6d8f0-2-d6ce1692-2886-4a82-9d38-64ca2ee7394a', protocol='range'}
+2026-03-10T12:55:05.205+07:00  INFO 28140 --- [order-service] [KafkaConsumerDestination{consumerDestinationName='outOfStock-in-0', partitions=1, dlqName='null'}.container-0-C-1] [                                                 ] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-anonymous.2be97d31-53c3-402e-83ab-00517db6d8f0-2, groupId=anonymous.2be97d31-53c3-402e-83ab-00517db6d8f0] Notifying assignor about the new Assignment(partitions=[outOfStock-in-0-0])
+2026-03-10T12:55:05.207+07:00  INFO 28140 --- [order-service] [KafkaConsumerDestination{consumerDestinationName='outOfStock-in-0', partitions=1, dlqName='null'}.container-0-C-1] [                                                 ] k.c.c.i.ConsumerRebalanceListenerInvoker : [Consumer clientId=consumer-anonymous.2be97d31-53c3-402e-83ab-00517db6d8f0-2, groupId=anonymous.2be97d31-53c3-402e-83ab-00517db6d8f0] Adding newly assigned partitions: outOfStock-in-0-0
+2026-03-10T12:55:05.210+07:00  INFO 28140 --- [order-service] [KafkaConsumerDestination{consumerDestinationName='outOfStock-in-0', partitions=1, dlqName='null'}.container-0-C-1] [                                                 ] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-anonymous.2be97d31-53c3-402e-83ab-00517db6d8f0-2, groupId=anonymous.2be97d31-53c3-402e-83ab-00517db6d8f0] Found no committed offset for partition outOfStock-in-0-0
+2026-03-10T12:55:05.214+07:00  INFO 28140 --- [order-service] [KafkaConsumerDestination{consumerDestinationName='outOfStock-in-0', partitions=1, dlqName='null'}.container-0-C-1] [                                                 ] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-anonymous.2be97d31-53c3-402e-83ab-00517db6d8f0-2, groupId=anonymous.2be97d31-53c3-402e-83ab-00517db6d8f0] Found no committed offset for partition outOfStock-in-0-0
+2026-03-10T12:55:05.225+07:00  INFO 28140 --- [order-service] [KafkaConsumerDestination{consumerDestinationName='outOfStock-in-0', partitions=1, dlqName='null'}.container-0-C-1] [                                                 ] o.a.k.c.c.internals.SubscriptionState    : [Consumer clientId=consumer-anonymous.2be97d31-53c3-402e-83ab-00517db6d8f0-2, groupId=anonymous.2be97d31-53c3-402e-83ab-00517db6d8f0] Resetting offset for partition outOfStock-in-0-0 to position FetchPosition{offset=0, offsetEpoch=Optional.empty, currentLeader=LeaderAndEpoch{leader=Optional[localhost:9093 (id: 1 rack: null)], epoch=0}}.
+2026-03-10T12:55:05.234+07:00  INFO 28140 --- [order-service] [KafkaConsumerDestination{consumerDestinationName='outOfStock-in-0', partitions=1, dlqName='null'}.container-0-C-1] [                                                 ] o.s.c.s.b.k.KafkaMessageChannelBinder$2  : anonymous.2be97d31-53c3-402e-83ab-00517db6d8f0: partitions assigned: [outOfStock-in-0-0]
+2026-03-10T12:55:49.450+07:00  INFO 28140 --- [order-service] [http-nio-8085-exec-2] [                                                 ] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-03-10T12:55:49.451+07:00  INFO 28140 --- [order-service] [http-nio-8085-exec-2] [                                                 ] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2026-03-10T12:55:49.452+07:00  INFO 28140 --- [order-service] [http-nio-8085-exec-2] [                                                 ] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+2026-03-10T12:55:49.866+07:00  INFO 28140 --- [order-service] [http-nio-8085-exec-2] [69afb265b8b6062b300a5653c4a884e0-bca6140c71ce7ace] c.e.order.service.impl.CartServiceImpl   : Added item to cart: user=1, product=4, quantity=1
+2026-03-10T12:55:49.902+07:00  INFO 28140 --- [order-service] [http-nio-8085-exec-2] [69afb265b8b6062b300a5653c4a884e0-bca6140c71ce7ace] c.ecom.order.controller.CartController   : User 1 added product 4 to cart
+2026-03-10T12:56:02.669+07:00  INFO 28140 --- [order-service] [http-nio-8085-exec-2] [69afb27244227e8f4ccda989502aa450-2e556d8c5796daa1] c.e.o.controller.OrderGroupController    : Initiating checkout for user 1 with payment provider stripe
+2026-03-10T12:56:02.742+07:00  INFO 28140 --- [order-service] [http-nio-8085-exec-2] [69afb27244227e8f4ccda989502aa450-2e556d8c5796daa1] c.e.o.s.impl.OrderGroupServiceImpl       : Initiating checkout for user 1 with total: 302500.000
+2026-03-10T12:56:03.754+07:00  INFO 28140 --- [order-service] [http-nio-8085-exec-2] [69afb27244227e8f4ccda989502aa450-2e556d8c5796daa1] c.e.o.p.providers.StripePaymentProvider  : Created Stripe payment intent: pi_3T9JGyBINykhgxy50PtJRQGY for order: null
+2026-03-10T12:56:03.755+07:00  INFO 28140 --- [order-service] [http-nio-8085-exec-2] [69afb27244227e8f4ccda989502aa450-2e556d8c5796daa1] c.e.o.service.impl.PaymentServiceImpl    : Created payment intent: pi_3T9JGyBINykhgxy50PtJRQGY for amount: 302500.000 USD
+2026-03-10T12:56:15.191+07:00  INFO 28140 --- [order-service] [http-nio-8085-exec-3] [69afb27fd6b4343bb1e139b90be9e477-78d83fe87dcfa608] c.e.o.controller.OrderGroupController    : Confirming payment pi_3T9JGyBINykhgxy50PtJRQGY for user 1
+2026-03-10T12:56:15.194+07:00  INFO 28140 --- [order-service] [http-nio-8085-exec-3] [69afb27fd6b4343bb1e139b90be9e477-78d83fe87dcfa608] c.e.o.s.impl.OrderGroupServiceImpl       : Confirming payment pi_3T9JGyBINykhgxy50PtJRQGY for user 1
+2026-03-10T12:56:15.655+07:00  INFO 28140 --- [order-service] [http-nio-8085-exec-3] [69afb27fd6b4343bb1e139b90be9e477-78d83fe87dcfa608] c.e.o.p.providers.StripePaymentProvider  : Retrieved Stripe payment intent: pi_3T9JGyBINykhgxy50PtJRQGY
+2026-03-10T12:56:15.656+07:00  INFO 28140 --- [order-service] [http-nio-8085-exec-3] [69afb27fd6b4343bb1e139b90be9e477-78d83fe87dcfa608] c.e.o.service.impl.PaymentServiceImpl    : Payment verified as succeeded: pi_3T9JGyBINykhgxy50PtJRQGY
+2026-03-10T12:56:15.755+07:00 ERROR 28140 --- [order-service] [http-nio-8085-exec-3] [69afb27fd6b4343bb1e139b90be9e477-78d83fe87dcfa608] c.e.order.client.PromotionServiceClient  : Error applying vouchers: 500 : "{"timestamp":"2026-03-10T12:56:15.7501574","status":500,"error":"Internal Server Error","message":"An unexpected error occurred. Please try again later.","path":"/api/v1/vouchers/vouchers/apply","errorCode":null}"
+2026-03-10T12:56:15.755+07:00  WARN 28140 --- [order-service] [http-nio-8085-exec-3] [69afb27fd6b4343bb1e139b90be9e477-78d83fe87dcfa608] c.e.o.service.impl.DiscountServiceImpl   : Failed to apply vouchers for order 1, returning zero discount
+2026-03-10T12:56:15.773+07:00  INFO 28140 --- [order-service] [http-nio-8085-exec-3] [69afb27fd6b4343bb1e139b90be9e477-78d83fe87dcfa608] o.s.c.s.b.k.p.KafkaTopicProvisioner      : Using kafka topic for outbound: order-created-topic
+2026-03-10T12:56:15.773+07:00  INFO 28140 --- [order-service] [http-nio-8085-exec-3] [69afb27fd6b4343bb1e139b90be9e477-78d83fe87dcfa608] o.a.k.clients.admin.AdminClientConfig    : AdminClientConfig values: 
+	auto.include.jmx.reporter = true
+	bootstrap.controllers = []
+	bootstrap.servers = [localhost:9093]
+	client.dns.lookup = use_all_dns_ips
+	client.id = 
+	connections.max.idle.ms = 300000
+	default.api.timeout.ms = 60000
+	enable.metrics.push = true
+	metadata.max.age.ms = 300000
+	metadata.recovery.strategy = none
+	metric.reporters = []
+	metrics.num.samples = 2
+	metrics.recording.level = INFO
+	metrics.sample.window.ms = 30000
+	receive.buffer.bytes = 65536
+	reconnect.backoff.max.ms = 1000
+	reconnect.backoff.ms = 50
+	request.timeout.ms = 30000
+	retries = 2147483647
+	retry.backoff.max.ms = 1000
+	retry.backoff.ms = 100
+	sasl.client.callback.handler.class = null
+	sasl.jaas.config = null
+	sasl.kerberos.kinit.cmd = /usr/bin/kinit
+	sasl.kerberos.min.time.before.relogin = 60000
+	sasl.kerberos.service.name = null
+	sasl.kerberos.ticket.renew.jitter = 0.05
+	sasl.kerberos.ticket.renew.window.factor = 0.8
+	sasl.login.callback.handler.class = null
+	sasl.login.class = null
+	sasl.login.connect.timeout.ms = null
+	sasl.login.read.timeout.ms = null
+	sasl.login.refresh.buffer.seconds = 300
+	sasl.login.refresh.min.period.seconds = 60
+	sasl.login.refresh.window.factor = 0.8
+	sasl.login.refresh.window.jitter = 0.05
+	sasl.login.retry.backoff.max.ms = 10000
+	sasl.login.retry.backoff.ms = 100
+	sasl.mechanism = GSSAPI
+	sasl.oauthbearer.clock.skew.seconds = 30
+	sasl.oauthbearer.expected.audience = null
+	sasl.oauthbearer.expected.issuer = null
+	sasl.oauthbearer.header.urlencode = false
+	sasl.oauthbearer.jwks.endpoint.refresh.ms = 3600000
+	sasl.oauthbearer.jwks.endpoint.retry.backoff.max.ms = 10000
+	sasl.oauthbearer.jwks.endpoint.retry.backoff.ms = 100
+	sasl.oauthbearer.jwks.endpoint.url = null
+	sasl.oauthbearer.scope.claim.name = scope
+	sasl.oauthbearer.sub.claim.name = sub
+	sasl.oauthbearer.token.endpoint.url = null
+	security.protocol = PLAINTEXT
+	security.providers = null
+	send.buffer.bytes = 131072
+	socket.connection.setup.timeout.max.ms = 30000
+	socket.connection.setup.timeout.ms = 10000
+	ssl.cipher.suites = null
+	ssl.enabled.protocols = [TLSv1.2, TLSv1.3]
+	ssl.endpoint.identification.algorithm = https
+	ssl.engine.factory.class = null
+	ssl.key.password = null
+	ssl.keymanager.algorithm = SunX509
+	ssl.keystore.certificate.chain = null
+	ssl.keystore.key = null
+	ssl.keystore.location = null
+	ssl.keystore.password = null
+	ssl.keystore.type = JKS
+	ssl.protocol = TLSv1.3
+	ssl.provider = null
+	ssl.secure.random.implementation = null
+	ssl.trustmanager.algorithm = PKIX
+	ssl.truststore.certificates = null
+	ssl.truststore.location = null
+	ssl.truststore.password = null
+	ssl.truststore.type = JKS
+
+2026-03-10T12:56:15.777+07:00  INFO 28140 --- [order-service] [http-nio-8085-exec-3] [69afb27fd6b4343bb1e139b90be9e477-78d83fe87dcfa608] o.a.kafka.common.utils.AppInfoParser     : Kafka version: 3.9.1
+2026-03-10T12:56:15.777+07:00  INFO 28140 --- [order-service] [http-nio-8085-exec-3] [69afb27fd6b4343bb1e139b90be9e477-78d83fe87dcfa608] o.a.kafka.common.utils.AppInfoParser     : Kafka commitId: f745dfdcee2b9851
+2026-03-10T12:56:15.777+07:00  INFO 28140 --- [order-service] [http-nio-8085-exec-3] [69afb27fd6b4343bb1e139b90be9e477-78d83fe87dcfa608] o.a.kafka.common.utils.AppInfoParser     : Kafka startTimeMs: 1773122175777
+2026-03-10T12:56:15.800+07:00  INFO 28140 --- [order-service] [kafka-admin-client-thread | adminclient-2] [                                                 ] o.a.kafka.common.utils.AppInfoParser     : App info kafka.admin.client for adminclient-2 unregistered
+2026-03-10T12:56:15.802+07:00  INFO 28140 --- [order-service] [kafka-admin-client-thread | adminclient-2] [                                                 ] o.apache.kafka.common.metrics.Metrics    : Metrics scheduler closed
+2026-03-10T12:56:15.802+07:00  INFO 28140 --- [order-service] [kafka-admin-client-thread | adminclient-2] [                                                 ] o.apache.kafka.common.metrics.Metrics    : Closing reporter org.apache.kafka.common.metrics.JmxReporter
+2026-03-10T12:56:15.802+07:00  INFO 28140 --- [order-service] [kafka-admin-client-thread | adminclient-2] [                                                 ] o.apache.kafka.common.metrics.Metrics    : Metrics reporters closed
+2026-03-10T12:56:15.811+07:00  INFO 28140 --- [order-service] [http-nio-8085-exec-3] [69afb27fd6b4343bb1e139b90be9e477-78d83fe87dcfa608] o.a.k.clients.producer.ProducerConfig    : Idempotence will be disabled because acks is set to 1, not set to 'all'.
+2026-03-10T12:56:15.811+07:00  INFO 28140 --- [order-service] [http-nio-8085-exec-3] [69afb27fd6b4343bb1e139b90be9e477-78d83fe87dcfa608] o.a.k.clients.producer.ProducerConfig    : ProducerConfig values: 
+	acks = 1
+	auto.include.jmx.reporter = true
+	batch.size = 16384
+	bootstrap.servers = [localhost:9093]
+	buffer.memory = 33554432
+	client.dns.lookup = use_all_dns_ips
+	client.id = producer-1
+	compression.gzip.level = -1
+	compression.lz4.level = 9
+	compression.type = none
+	compression.zstd.level = 3
+	connections.max.idle.ms = 540000
+	delivery.timeout.ms = 120000
+	enable.idempotence = false
+	enable.metrics.push = true
+	interceptor.classes = []
+	key.serializer = class org.apache.kafka.common.serialization.ByteArraySerializer
+	linger.ms = 0
+	max.block.ms = 60000
+	max.in.flight.requests.per.connection = 5
+	max.request.size = 1048576
+	metadata.max.age.ms = 300000
+	metadata.max.idle.ms = 300000
+	metadata.recovery.strategy = none
+	metric.reporters = []
+	metrics.num.samples = 2
+	metrics.recording.level = INFO
+	metrics.sample.window.ms = 30000
+	partitioner.adaptive.partitioning.enable = true
+	partitioner.availability.timeout.ms = 0
+	partitioner.class = null
+	partitioner.ignore.keys = false
+	receive.buffer.bytes = 32768
+	reconnect.backoff.max.ms = 1000
+	reconnect.backoff.ms = 50
+	request.timeout.ms = 30000
+	retries = 2147483647
+	retry.backoff.max.ms = 1000
+	retry.backoff.ms = 100
+	sasl.client.callback.handler.class = null
+	sasl.jaas.config = null
+	sasl.kerberos.kinit.cmd = /usr/bin/kinit
+	sasl.kerberos.min.time.before.relogin = 60000
+	sasl.kerberos.service.name = null
+	sasl.kerberos.ticket.renew.jitter = 0.05
+	sasl.kerberos.ticket.renew.window.factor = 0.8
+	sasl.login.callback.handler.class = null
+	sasl.login.class = null
+	sasl.login.connect.timeout.ms = null
+	sasl.login.read.timeout.ms = null
+	sasl.login.refresh.buffer.seconds = 300
+	sasl.login.refresh.min.period.seconds = 60
+	sasl.login.refresh.window.factor = 0.8
+	sasl.login.refresh.window.jitter = 0.05
+	sasl.login.retry.backoff.max.ms = 10000
+	sasl.login.retry.backoff.ms = 100
+	sasl.mechanism = GSSAPI
+	sasl.oauthbearer.clock.skew.seconds = 30
+	sasl.oauthbearer.expected.audience = null
+	sasl.oauthbearer.expected.issuer = null
+	sasl.oauthbearer.header.urlencode = false
+	sasl.oauthbearer.jwks.endpoint.refresh.ms = 3600000
+	sasl.oauthbearer.jwks.endpoint.retry.backoff.max.ms = 10000
+	sasl.oauthbearer.jwks.endpoint.retry.backoff.ms = 100
+	sasl.oauthbearer.jwks.endpoint.url = null
+	sasl.oauthbearer.scope.claim.name = scope
+	sasl.oauthbearer.sub.claim.name = sub
+	sasl.oauthbearer.token.endpoint.url = null
+	security.protocol = PLAINTEXT
+	security.providers = null
+	send.buffer.bytes = 131072
+	socket.connection.setup.timeout.max.ms = 30000
+	socket.connection.setup.timeout.ms = 10000
+	ssl.cipher.suites = null
+	ssl.enabled.protocols = [TLSv1.2, TLSv1.3]
+	ssl.endpoint.identification.algorithm = https
+	ssl.engine.factory.class = null
+	ssl.key.password = null
+	ssl.keymanager.algorithm = SunX509
+	ssl.keystore.certificate.chain = null
+	ssl.keystore.key = null
+	ssl.keystore.location = null
+	ssl.keystore.password = null
+	ssl.keystore.type = JKS
+	ssl.protocol = TLSv1.3
+	ssl.provider = null
+	ssl.secure.random.implementation = null
+	ssl.trustmanager.algorithm = PKIX
+	ssl.truststore.certificates = null
+	ssl.truststore.location = null
+	ssl.truststore.password = null
+	ssl.truststore.type = JKS
+	transaction.timeout.ms = 60000
+	transactional.id = null
+	value.serializer = class org.apache.kafka.common.serialization.ByteArraySerializer
+
+2026-03-10T12:56:15.812+07:00  INFO 28140 --- [order-service] [http-nio-8085-exec-3] [69afb27fd6b4343bb1e139b90be9e477-78d83fe87dcfa608] o.a.k.c.t.i.KafkaMetricsCollector        : initializing Kafka metrics collector
+2026-03-10T12:56:15.831+07:00  INFO 28140 --- [order-service] [http-nio-8085-exec-3] [69afb27fd6b4343bb1e139b90be9e477-78d83fe87dcfa608] o.a.kafka.common.utils.AppInfoParser     : Kafka version: 3.9.1
+2026-03-10T12:56:15.831+07:00  INFO 28140 --- [order-service] [http-nio-8085-exec-3] [69afb27fd6b4343bb1e139b90be9e477-78d83fe87dcfa608] o.a.kafka.common.utils.AppInfoParser     : Kafka commitId: f745dfdcee2b9851
+2026-03-10T12:56:15.831+07:00  INFO 28140 --- [order-service] [http-nio-8085-exec-3] [69afb27fd6b4343bb1e139b90be9e477-78d83fe87dcfa608] o.a.kafka.common.utils.AppInfoParser     : Kafka startTimeMs: 1773122175831
+2026-03-10T12:56:15.840+07:00  INFO 28140 --- [order-service] [kafka-producer-network-thread | producer-1] [                                                 ] org.apache.kafka.clients.Metadata        : [Producer clientId=producer-1] Cluster ID: B5DZ_CmcR8Oo2bgI5gb8Kg
+2026-03-10T12:56:15.854+07:00  INFO 28140 --- [order-service] [http-nio-8085-exec-3] [69afb27fd6b4343bb1e139b90be9e477-78d83fe87dcfa608] o.s.c.s.m.DirectWithAttributesChannel    : Channel 'order-service.orderCreated-out-0' has 1 subscriber(s).
+2026-03-10T12:56:15.854+07:00  INFO 28140 --- [order-service] [http-nio-8085-exec-3] [69afb27fd6b4343bb1e139b90be9e477-78d83fe87dcfa608] o.s.c.s.binder.kafka.KafkaBinderMetrics  : Try to shutdown the old scheduler with 1 threads
+2026-03-10T12:56:15.855+07:00  WARN 28140 --- [order-service] [http-nio-8085-exec-3] [69afb27fd6b4343bb1e139b90be9e477-78d83fe87dcfa608] i.m.core.instrument.MeterRegistry        : This Gauge has been already registered (MeterId{name='spring.cloud.stream.binder.kafka.offset', tags=[tag(group=anonymous.2be97d31-53c3-402e-83ab-00517db6d8f0),tag(topic=outOfStock-in-0)]}), the registration will be ignored. Note that subsequent logs will be logged at debug level.
+2026-03-10T12:56:15.887+07:00  INFO 28140 --- [order-service] [http-nio-8085-exec-3] [69afb27fd6b4343bb1e139b90be9e477-78d83fe87dcfa608] c.ecom.order.event.OrderEventPublisher   : Published OrderCreatedEvent: orderId=1, items=1
+2026-03-10T12:56:15.888+07:00  INFO 28140 --- [order-service] [http-nio-8085-exec-3] [69afb27fd6b4343bb1e139b90be9e477-78d83fe87dcfa608] c.e.o.s.impl.OrderGroupServiceImpl       : Created order OG-1773122175704-04C14436 with 1 sub-orders, total: 312400.000, discount: 0
+2026-03-10T12:59:03.477+07:00  INFO 28140 --- [order-service] [http-nio-8085-exec-1] [69afb32760fa0bdcfaa64c093a51a7ab-8b05be722ffddac7] c.e.order.service.impl.CartServiceImpl   : Added item to cart: user=1, product=4, quantity=1
+2026-03-10T12:59:03.486+07:00  INFO 28140 --- [order-service] [http-nio-8085-exec-1] [69afb32760fa0bdcfaa64c093a51a7ab-8b05be722ffddac7] c.ecom.order.controller.CartController   : User 1 added product 4 to cart
+2026-03-10T12:59:09.943+07:00  INFO 28140 --- [order-service] [http-nio-8085-exec-6] [69afb32d515513b99f6325fc3d2918b1-5519ddb9cd47d2fe] c.e.o.controller.OrderGroupController    : Initiating checkout for user 1 with payment provider stripe
+2026-03-10T12:59:09.977+07:00  INFO 28140 --- [order-service] [http-nio-8085-exec-6] [69afb32d515513b99f6325fc3d2918b1-5519ddb9cd47d2fe] c.e.o.s.impl.OrderGroupServiceImpl       : Initiating checkout for user 1 with total: 302500.000
+2026-03-10T12:59:10.592+07:00  INFO 28140 --- [order-service] [http-nio-8085-exec-6] [69afb32d515513b99f6325fc3d2918b1-5519ddb9cd47d2fe] c.e.o.p.providers.StripePaymentProvider  : Created Stripe payment intent: pi_3T9JJzBINykhgxy50jsdOvTN for order: null
+2026-03-10T12:59:10.593+07:00  INFO 28140 --- [order-service] [http-nio-8085-exec-6] [69afb32d515513b99f6325fc3d2918b1-5519ddb9cd47d2fe] c.e.o.service.impl.PaymentServiceImpl    : Created payment intent: pi_3T9JJzBINykhgxy50jsdOvTN for amount: 302500.000 USD
+2026-03-10T12:59:21.092+07:00  INFO 28140 --- [order-service] [http-nio-8085-exec-7] [69afb3395c9ce45feeb4409df47e54c7-93364d8f2e97377c] c.e.o.controller.OrderGroupController    : Confirming payment pi_3T9JJzBINykhgxy50jsdOvTN for user 1
+2026-03-10T12:59:21.094+07:00  INFO 28140 --- [order-service] [http-nio-8085-exec-7] [69afb3395c9ce45feeb4409df47e54c7-93364d8f2e97377c] c.e.o.s.impl.OrderGroupServiceImpl       : Confirming payment pi_3T9JJzBINykhgxy50jsdOvTN for user 1
+2026-03-10T12:59:21.508+07:00  INFO 28140 --- [order-service] [http-nio-8085-exec-7] [69afb3395c9ce45feeb4409df47e54c7-93364d8f2e97377c] c.e.o.p.providers.StripePaymentProvider  : Retrieved Stripe payment intent: pi_3T9JJzBINykhgxy50jsdOvTN
+2026-03-10T12:59:21.508+07:00  INFO 28140 --- [order-service] [http-nio-8085-exec-7] [69afb3395c9ce45feeb4409df47e54c7-93364d8f2e97377c] c.e.o.service.impl.PaymentServiceImpl    : Payment verified as succeeded: pi_3T9JJzBINykhgxy50jsdOvTN
+2026-03-10T12:59:21.573+07:00 ERROR 28140 --- [order-service] [http-nio-8085-exec-7] [69afb3395c9ce45feeb4409df47e54c7-93364d8f2e97377c] c.e.order.client.PromotionServiceClient  : Error applying vouchers: 500 : "{"timestamp":"2026-03-10T12:59:21.5717085","status":500,"error":"Internal Server Error","message":"An unexpected error occurred. Please try again later.","path":"/api/v1/vouchers/vouchers/apply","errorCode":null}"
+2026-03-10T12:59:21.573+07:00  WARN 28140 --- [order-service] [http-nio-8085-exec-7] [69afb3395c9ce45feeb4409df47e54c7-93364d8f2e97377c] c.e.o.service.impl.DiscountServiceImpl   : Failed to apply vouchers for order 2, returning zero discount
+2026-03-10T12:59:21.579+07:00  INFO 28140 --- [order-service] [http-nio-8085-exec-7] [69afb3395c9ce45feeb4409df47e54c7-93364d8f2e97377c] c.ecom.order.event.OrderEventPublisher   : Published OrderCreatedEvent: orderId=2, items=1
+2026-03-10T12:59:21.580+07:00  INFO 28140 --- [order-service] [http-nio-8085-exec-7] [69afb3395c9ce45feeb4409df47e54c7-93364d8f2e97377c] c.e.o.s.impl.OrderGroupServiceImpl       : Created order OG-1773122361554-395CB7E7 with 1 sub-orders, total: 312400.000, discount: 0

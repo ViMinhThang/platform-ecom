@@ -22,6 +22,17 @@ spring:
     jwtSecret: "qweqweqweqweqweqw123123131231231cfcsvcxvwdfqsd"
     jwtExpirationMs: 600000
     jwtCookieName: "ecom"
+  cloud:
+    function:
+      definition: stockUpdated
+    stream:
+      bindings:
+        stockUpdated-in-0:
+          destination: stock-updated-topic
+          group: product-service
+      kafka:
+        binder:
+          brokers: ${KAFKA_BROKERS:localhost:9093}
 server:
   port: 8084
 image:
