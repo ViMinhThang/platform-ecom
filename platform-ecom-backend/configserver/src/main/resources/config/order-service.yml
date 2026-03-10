@@ -24,6 +24,8 @@ spring:
     stream:
       default-binder: kafka
       bindings:
+        orderCreated-out-0:
+          destination: order-created-topic
         orderNotification-out-0:
           destination: order-notifications
           content-type: application/json
@@ -97,4 +99,3 @@ resilience4j:
         failure-rate-threshold: 50
         wait-duration-in-open-state: 10s
         permitted-number-of-calls-in-half-open-state: 3
-

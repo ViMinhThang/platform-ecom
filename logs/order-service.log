@@ -791,3 +791,558 @@ Caused by: java.util.concurrent.TimeoutException: null
 2026-03-10T11:59:21.698+07:00  INFO 14672 --- [order-service] [AsyncResolver-bootstrap-executor-%d] [                                                 ] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
 2026-03-10T12:04:21.713+07:00  INFO 14672 --- [order-service] [AsyncResolver-bootstrap-executor-%d] [                                                 ] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
 2026-03-10T12:09:21.729+07:00  INFO 14672 --- [order-service] [AsyncResolver-bootstrap-executor-%d] [                                                 ] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2026-03-10T12:14:21.736+07:00  INFO 14672 --- [order-service] [AsyncResolver-bootstrap-executor-%d] [                                                 ] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2026-03-10T12:19:21.752+07:00  INFO 14672 --- [order-service] [AsyncResolver-bootstrap-executor-%d] [                                                 ] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2026-03-10T12:24:21.757+07:00  INFO 14672 --- [order-service] [AsyncResolver-bootstrap-executor-%d] [                                                 ] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2026-03-10T12:29:21.771+07:00  INFO 14672 --- [order-service] [AsyncResolver-bootstrap-executor-%d] [                                                 ] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2026-03-10T12:34:21.779+07:00  INFO 14672 --- [order-service] [AsyncResolver-bootstrap-executor-%d] [                                                 ] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2026-03-10T12:39:21.786+07:00  INFO 14672 --- [order-service] [AsyncResolver-bootstrap-executor-%d] [                                                 ] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2026-03-10T12:40:48.890+07:00  INFO 14672 --- [order-service] [http-nio-8085-exec-1] [                                                 ] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-03-10T12:40:48.891+07:00  INFO 14672 --- [order-service] [http-nio-8085-exec-1] [                                                 ] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2026-03-10T12:40:48.897+07:00  INFO 14672 --- [order-service] [http-nio-8085-exec-1] [                                                 ] o.s.web.servlet.DispatcherServlet        : Completed initialization in 6 ms
+2026-03-10T12:40:49.668+07:00  INFO 14672 --- [order-service] [http-nio-8085-exec-1] [69afaee054b49c50f2d60dcbae1928df-b0463db3c2614d95] c.e.order.service.impl.CartServiceImpl   : Added item to cart: user=1, product=4, quantity=1
+2026-03-10T12:40:49.706+07:00  INFO 14672 --- [order-service] [http-nio-8085-exec-1] [69afaee054b49c50f2d60dcbae1928df-b0463db3c2614d95] c.ecom.order.controller.CartController   : User 1 added product 4 to cart
+2026-03-10T12:40:59.920+07:00  INFO 14672 --- [order-service] [http-nio-8085-exec-8] [69afaeebfa47de8212e77b359bdfdb8f-bcedc64c114255e4] c.e.o.controller.OrderGroupController    : Initiating checkout for user 1 with payment provider stripe
+2026-03-10T12:41:00.264+07:00 ERROR 14672 --- [order-service] [http-nio-8085-exec-8] [69afaeebfa47de8212e77b359bdfdb8f-bcedc64c114255e4] c.e.c.exception.GlobalExceptionHandler   : Unexpected error occurred
+
+com.ecom.common.exception.InsufficientStockException: Product Bột nhuộm quần áo Rit Dye All Purpose Powder 31.9g is out of stock or has insufficient quantity
+	at com.ecom.order.service.impl.CartValidationServiceImpl.validateStockAvailability(CartValidationServiceImpl.java:68) ~[classes/:na]
+	at com.ecom.order.service.impl.CartValidationServiceImpl.enrichAndValidateCartItems(CartValidationServiceImpl.java:41) ~[classes/:na]
+	at com.ecom.order.service.impl.OrderGroupServiceImpl.initiateCheckout(OrderGroupServiceImpl.java:55) ~[classes/:na]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565) ~[na:na]
+	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:360) ~[spring-aop-6.2.11.jar:6.2.11]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.invokeJoinpoint(ReflectiveMethodInvocation.java:196) ~[spring-aop-6.2.11.jar:6.2.11]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:163) ~[spring-aop-6.2.11.jar:6.2.11]
+	at org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:380) ~[spring-tx-6.2.11.jar:6.2.11]
+	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:119) ~[spring-tx-6.2.11.jar:6.2.11]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184) ~[spring-aop-6.2.11.jar:6.2.11]
+	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:728) ~[spring-aop-6.2.11.jar:6.2.11]
+	at com.ecom.order.service.impl.OrderGroupServiceImpl$$SpringCGLIB$$0.initiateCheckout(<generated>) ~[classes/:na]
+	at com.ecom.order.controller.OrderGroupController.initiateCheckout(OrderGroupController.java:57) ~[classes/:na]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565) ~[na:na]
+	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:360) ~[spring-aop-6.2.11.jar:6.2.11]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.invokeJoinpoint(ReflectiveMethodInvocation.java:196) ~[spring-aop-6.2.11.jar:6.2.11]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:163) ~[spring-aop-6.2.11.jar:6.2.11]
+	at org.springframework.aop.aspectj.MethodInvocationProceedingJoinPoint.proceed(MethodInvocationProceedingJoinPoint.java:89) ~[spring-aop-6.2.11.jar:6.2.11]
+	at com.ecom.common.aspect.RoleGuardAspect.checkRole(RoleGuardAspect.java:52) ~[classes/:na]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565) ~[na:na]
+	at org.springframework.aop.aspectj.AbstractAspectJAdvice.invokeAdviceMethodWithGivenArgs(AbstractAspectJAdvice.java:649) ~[spring-aop-6.2.11.jar:6.2.11]
+	at org.springframework.aop.aspectj.AbstractAspectJAdvice.invokeAdviceMethod(AbstractAspectJAdvice.java:631) ~[spring-aop-6.2.11.jar:6.2.11]
+	at org.springframework.aop.aspectj.AspectJAroundAdvice.invoke(AspectJAroundAdvice.java:71) ~[spring-aop-6.2.11.jar:6.2.11]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:173) ~[spring-aop-6.2.11.jar:6.2.11]
+	at org.springframework.aop.interceptor.ExposeInvocationInterceptor.invoke(ExposeInvocationInterceptor.java:97) ~[spring-aop-6.2.11.jar:6.2.11]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184) ~[spring-aop-6.2.11.jar:6.2.11]
+	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:728) ~[spring-aop-6.2.11.jar:6.2.11]
+	at com.ecom.order.controller.OrderGroupController$$SpringCGLIB$$0.initiateCheckout(<generated>) ~[classes/:na]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565) ~[na:na]
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:258) ~[spring-web-6.2.11.jar:6.2.11]
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:191) ~[spring-web-6.2.11.jar:6.2.11]
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:118) ~[spring-webmvc-6.2.11.jar:6.2.11]
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:991) ~[spring-webmvc-6.2.11.jar:6.2.11]
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:896) ~[spring-webmvc-6.2.11.jar:6.2.11]
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87) ~[spring-webmvc-6.2.11.jar:6.2.11]
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1089) ~[spring-webmvc-6.2.11.jar:6.2.11]
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:979) ~[spring-webmvc-6.2.11.jar:6.2.11]
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1014) ~[spring-webmvc-6.2.11.jar:6.2.11]
+	at org.springframework.web.servlet.FrameworkServlet.doPost(FrameworkServlet.java:914) ~[spring-webmvc-6.2.11.jar:6.2.11]
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:590) ~[tomcat-embed-core-10.1.46.jar:6.0]
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:885) ~[spring-webmvc-6.2.11.jar:6.2.11]
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:658) ~[tomcat-embed-core-10.1.46.jar:6.0]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:195) ~[tomcat-embed-core-10.1.46.jar:10.1.46]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.46.jar:10.1.46]
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:51) ~[tomcat-embed-websocket-10.1.46.jar:10.1.46]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164) ~[tomcat-embed-core-10.1.46.jar:10.1.46]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.46.jar:10.1.46]
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100) ~[spring-web-6.2.11.jar:6.2.11]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.2.11.jar:6.2.11]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164) ~[tomcat-embed-core-10.1.46.jar:10.1.46]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.46.jar:10.1.46]
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93) ~[spring-web-6.2.11.jar:6.2.11]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.2.11.jar:6.2.11]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164) ~[tomcat-embed-core-10.1.46.jar:10.1.46]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.46.jar:10.1.46]
+	at org.springframework.web.filter.ServerHttpObservationFilter.doFilterInternal(ServerHttpObservationFilter.java:110) ~[spring-web-6.2.11.jar:6.2.11]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.2.11.jar:6.2.11]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164) ~[tomcat-embed-core-10.1.46.jar:10.1.46]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.46.jar:10.1.46]
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201) ~[spring-web-6.2.11.jar:6.2.11]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.2.11.jar:6.2.11]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164) ~[tomcat-embed-core-10.1.46.jar:10.1.46]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.46.jar:10.1.46]
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:167) ~[tomcat-embed-core-10.1.46.jar:10.1.46]
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90) ~[tomcat-embed-core-10.1.46.jar:10.1.46]
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:483) ~[tomcat-embed-core-10.1.46.jar:10.1.46]
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:116) ~[tomcat-embed-core-10.1.46.jar:10.1.46]
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93) ~[tomcat-embed-core-10.1.46.jar:10.1.46]
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74) ~[tomcat-embed-core-10.1.46.jar:10.1.46]
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:344) ~[tomcat-embed-core-10.1.46.jar:10.1.46]
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:398) ~[tomcat-embed-core-10.1.46.jar:10.1.46]
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63) ~[tomcat-embed-core-10.1.46.jar:10.1.46]
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:903) ~[tomcat-embed-core-10.1.46.jar:10.1.46]
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1776) ~[tomcat-embed-core-10.1.46.jar:10.1.46]
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52) ~[tomcat-embed-core-10.1.46.jar:10.1.46]
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:975) ~[tomcat-embed-core-10.1.46.jar:10.1.46]
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:493) ~[tomcat-embed-core-10.1.46.jar:10.1.46]
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:63) ~[tomcat-embed-core-10.1.46.jar:10.1.46]
+	at java.base/java.lang.Thread.run(Thread.java:1474) ~[na:na]
+
+2026-03-10T12:41:00.268+07:00 ERROR 14672 --- [order-service] [http-nio-8085-exec-8] [69afaeebfa47de8212e77b359bdfdb8f-bcedc64c114255e4] c.e.c.exception.GlobalExceptionHandler   : Exception handled: An unexpected error occurred. Please try again later. - Status: 500 INTERNAL_SERVER_ERROR
+2026-03-10T12:41:02.484+07:00  INFO 14672 --- [order-service] [http-nio-8085-exec-5] [69afaeee4488967a9f9c91cc6ba59466-fb09b4d0db1e1394] c.e.o.controller.OrderGroupController    : Initiating checkout for user 1 with payment provider stripe
+2026-03-10T12:41:02.548+07:00 ERROR 14672 --- [order-service] [http-nio-8085-exec-5] [69afaeee4488967a9f9c91cc6ba59466-fb09b4d0db1e1394] c.e.c.exception.GlobalExceptionHandler   : Unexpected error occurred
+
+com.ecom.common.exception.InsufficientStockException: Product Bột nhuộm quần áo Rit Dye All Purpose Powder 31.9g is out of stock or has insufficient quantity
+	at com.ecom.order.service.impl.CartValidationServiceImpl.validateStockAvailability(CartValidationServiceImpl.java:68) ~[classes/:na]
+	at com.ecom.order.service.impl.CartValidationServiceImpl.enrichAndValidateCartItems(CartValidationServiceImpl.java:41) ~[classes/:na]
+	at com.ecom.order.service.impl.OrderGroupServiceImpl.initiateCheckout(OrderGroupServiceImpl.java:55) ~[classes/:na]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565) ~[na:na]
+	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:360) ~[spring-aop-6.2.11.jar:6.2.11]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.invokeJoinpoint(ReflectiveMethodInvocation.java:196) ~[spring-aop-6.2.11.jar:6.2.11]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:163) ~[spring-aop-6.2.11.jar:6.2.11]
+	at org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:380) ~[spring-tx-6.2.11.jar:6.2.11]
+	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:119) ~[spring-tx-6.2.11.jar:6.2.11]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184) ~[spring-aop-6.2.11.jar:6.2.11]
+	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:728) ~[spring-aop-6.2.11.jar:6.2.11]
+	at com.ecom.order.service.impl.OrderGroupServiceImpl$$SpringCGLIB$$0.initiateCheckout(<generated>) ~[classes/:na]
+	at com.ecom.order.controller.OrderGroupController.initiateCheckout(OrderGroupController.java:57) ~[classes/:na]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565) ~[na:na]
+	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:360) ~[spring-aop-6.2.11.jar:6.2.11]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.invokeJoinpoint(ReflectiveMethodInvocation.java:196) ~[spring-aop-6.2.11.jar:6.2.11]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:163) ~[spring-aop-6.2.11.jar:6.2.11]
+	at org.springframework.aop.aspectj.MethodInvocationProceedingJoinPoint.proceed(MethodInvocationProceedingJoinPoint.java:89) ~[spring-aop-6.2.11.jar:6.2.11]
+	at com.ecom.common.aspect.RoleGuardAspect.checkRole(RoleGuardAspect.java:52) ~[classes/:na]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565) ~[na:na]
+	at org.springframework.aop.aspectj.AbstractAspectJAdvice.invokeAdviceMethodWithGivenArgs(AbstractAspectJAdvice.java:649) ~[spring-aop-6.2.11.jar:6.2.11]
+	at org.springframework.aop.aspectj.AbstractAspectJAdvice.invokeAdviceMethod(AbstractAspectJAdvice.java:631) ~[spring-aop-6.2.11.jar:6.2.11]
+	at org.springframework.aop.aspectj.AspectJAroundAdvice.invoke(AspectJAroundAdvice.java:71) ~[spring-aop-6.2.11.jar:6.2.11]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:173) ~[spring-aop-6.2.11.jar:6.2.11]
+	at org.springframework.aop.interceptor.ExposeInvocationInterceptor.invoke(ExposeInvocationInterceptor.java:97) ~[spring-aop-6.2.11.jar:6.2.11]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184) ~[spring-aop-6.2.11.jar:6.2.11]
+	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:728) ~[spring-aop-6.2.11.jar:6.2.11]
+	at com.ecom.order.controller.OrderGroupController$$SpringCGLIB$$0.initiateCheckout(<generated>) ~[classes/:na]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565) ~[na:na]
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:258) ~[spring-web-6.2.11.jar:6.2.11]
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:191) ~[spring-web-6.2.11.jar:6.2.11]
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:118) ~[spring-webmvc-6.2.11.jar:6.2.11]
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:991) ~[spring-webmvc-6.2.11.jar:6.2.11]
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:896) ~[spring-webmvc-6.2.11.jar:6.2.11]
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87) ~[spring-webmvc-6.2.11.jar:6.2.11]
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1089) ~[spring-webmvc-6.2.11.jar:6.2.11]
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:979) ~[spring-webmvc-6.2.11.jar:6.2.11]
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1014) ~[spring-webmvc-6.2.11.jar:6.2.11]
+	at org.springframework.web.servlet.FrameworkServlet.doPost(FrameworkServlet.java:914) ~[spring-webmvc-6.2.11.jar:6.2.11]
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:590) ~[tomcat-embed-core-10.1.46.jar:6.0]
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:885) ~[spring-webmvc-6.2.11.jar:6.2.11]
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:658) ~[tomcat-embed-core-10.1.46.jar:6.0]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:195) ~[tomcat-embed-core-10.1.46.jar:10.1.46]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.46.jar:10.1.46]
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:51) ~[tomcat-embed-websocket-10.1.46.jar:10.1.46]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164) ~[tomcat-embed-core-10.1.46.jar:10.1.46]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.46.jar:10.1.46]
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100) ~[spring-web-6.2.11.jar:6.2.11]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.2.11.jar:6.2.11]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164) ~[tomcat-embed-core-10.1.46.jar:10.1.46]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.46.jar:10.1.46]
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93) ~[spring-web-6.2.11.jar:6.2.11]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.2.11.jar:6.2.11]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164) ~[tomcat-embed-core-10.1.46.jar:10.1.46]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.46.jar:10.1.46]
+	at org.springframework.web.filter.ServerHttpObservationFilter.doFilterInternal(ServerHttpObservationFilter.java:110) ~[spring-web-6.2.11.jar:6.2.11]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.2.11.jar:6.2.11]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164) ~[tomcat-embed-core-10.1.46.jar:10.1.46]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.46.jar:10.1.46]
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201) ~[spring-web-6.2.11.jar:6.2.11]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.2.11.jar:6.2.11]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164) ~[tomcat-embed-core-10.1.46.jar:10.1.46]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.46.jar:10.1.46]
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:167) ~[tomcat-embed-core-10.1.46.jar:10.1.46]
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90) ~[tomcat-embed-core-10.1.46.jar:10.1.46]
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:483) ~[tomcat-embed-core-10.1.46.jar:10.1.46]
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:116) ~[tomcat-embed-core-10.1.46.jar:10.1.46]
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93) ~[tomcat-embed-core-10.1.46.jar:10.1.46]
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74) ~[tomcat-embed-core-10.1.46.jar:10.1.46]
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:344) ~[tomcat-embed-core-10.1.46.jar:10.1.46]
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:398) ~[tomcat-embed-core-10.1.46.jar:10.1.46]
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63) ~[tomcat-embed-core-10.1.46.jar:10.1.46]
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:903) ~[tomcat-embed-core-10.1.46.jar:10.1.46]
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1776) ~[tomcat-embed-core-10.1.46.jar:10.1.46]
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52) ~[tomcat-embed-core-10.1.46.jar:10.1.46]
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:975) ~[tomcat-embed-core-10.1.46.jar:10.1.46]
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:493) ~[tomcat-embed-core-10.1.46.jar:10.1.46]
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:63) ~[tomcat-embed-core-10.1.46.jar:10.1.46]
+	at java.base/java.lang.Thread.run(Thread.java:1474) ~[na:na]
+
+2026-03-10T12:41:02.551+07:00 ERROR 14672 --- [order-service] [http-nio-8085-exec-5] [69afaeee4488967a9f9c91cc6ba59466-fb09b4d0db1e1394] c.e.c.exception.GlobalExceptionHandler   : Exception handled: An unexpected error occurred. Please try again later. - Status: 500 INTERNAL_SERVER_ERROR
+2026-03-10T12:41:19.587+07:00  INFO 14672 --- [order-service] [http-nio-8085-exec-10] [69afaeff9c92aa829886d6b7386be591-5e48dbb3bf355797] c.e.o.controller.OrderGroupController    : Initiating checkout for user 1 with payment provider stripe
+2026-03-10T12:41:19.661+07:00 ERROR 14672 --- [order-service] [http-nio-8085-exec-10] [69afaeff9c92aa829886d6b7386be591-5e48dbb3bf355797] c.e.c.exception.GlobalExceptionHandler   : Unexpected error occurred
+
+com.ecom.common.exception.InsufficientStockException: Product Bột nhuộm quần áo Rit Dye All Purpose Powder 31.9g is out of stock or has insufficient quantity
+	at com.ecom.order.service.impl.CartValidationServiceImpl.validateStockAvailability(CartValidationServiceImpl.java:68) ~[classes/:na]
+	at com.ecom.order.service.impl.CartValidationServiceImpl.enrichAndValidateCartItems(CartValidationServiceImpl.java:41) ~[classes/:na]
+	at com.ecom.order.service.impl.OrderGroupServiceImpl.initiateCheckout(OrderGroupServiceImpl.java:55) ~[classes/:na]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565) ~[na:na]
+	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:360) ~[spring-aop-6.2.11.jar:6.2.11]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.invokeJoinpoint(ReflectiveMethodInvocation.java:196) ~[spring-aop-6.2.11.jar:6.2.11]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:163) ~[spring-aop-6.2.11.jar:6.2.11]
+	at org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:380) ~[spring-tx-6.2.11.jar:6.2.11]
+	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:119) ~[spring-tx-6.2.11.jar:6.2.11]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184) ~[spring-aop-6.2.11.jar:6.2.11]
+	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:728) ~[spring-aop-6.2.11.jar:6.2.11]
+	at com.ecom.order.service.impl.OrderGroupServiceImpl$$SpringCGLIB$$0.initiateCheckout(<generated>) ~[classes/:na]
+	at com.ecom.order.controller.OrderGroupController.initiateCheckout(OrderGroupController.java:57) ~[classes/:na]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565) ~[na:na]
+	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:360) ~[spring-aop-6.2.11.jar:6.2.11]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.invokeJoinpoint(ReflectiveMethodInvocation.java:196) ~[spring-aop-6.2.11.jar:6.2.11]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:163) ~[spring-aop-6.2.11.jar:6.2.11]
+	at org.springframework.aop.aspectj.MethodInvocationProceedingJoinPoint.proceed(MethodInvocationProceedingJoinPoint.java:89) ~[spring-aop-6.2.11.jar:6.2.11]
+	at com.ecom.common.aspect.RoleGuardAspect.checkRole(RoleGuardAspect.java:52) ~[classes/:na]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565) ~[na:na]
+	at org.springframework.aop.aspectj.AbstractAspectJAdvice.invokeAdviceMethodWithGivenArgs(AbstractAspectJAdvice.java:649) ~[spring-aop-6.2.11.jar:6.2.11]
+	at org.springframework.aop.aspectj.AbstractAspectJAdvice.invokeAdviceMethod(AbstractAspectJAdvice.java:631) ~[spring-aop-6.2.11.jar:6.2.11]
+	at org.springframework.aop.aspectj.AspectJAroundAdvice.invoke(AspectJAroundAdvice.java:71) ~[spring-aop-6.2.11.jar:6.2.11]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:173) ~[spring-aop-6.2.11.jar:6.2.11]
+	at org.springframework.aop.interceptor.ExposeInvocationInterceptor.invoke(ExposeInvocationInterceptor.java:97) ~[spring-aop-6.2.11.jar:6.2.11]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184) ~[spring-aop-6.2.11.jar:6.2.11]
+	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:728) ~[spring-aop-6.2.11.jar:6.2.11]
+	at com.ecom.order.controller.OrderGroupController$$SpringCGLIB$$0.initiateCheckout(<generated>) ~[classes/:na]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565) ~[na:na]
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:258) ~[spring-web-6.2.11.jar:6.2.11]
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:191) ~[spring-web-6.2.11.jar:6.2.11]
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:118) ~[spring-webmvc-6.2.11.jar:6.2.11]
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:991) ~[spring-webmvc-6.2.11.jar:6.2.11]
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:896) ~[spring-webmvc-6.2.11.jar:6.2.11]
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87) ~[spring-webmvc-6.2.11.jar:6.2.11]
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1089) ~[spring-webmvc-6.2.11.jar:6.2.11]
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:979) ~[spring-webmvc-6.2.11.jar:6.2.11]
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1014) ~[spring-webmvc-6.2.11.jar:6.2.11]
+	at org.springframework.web.servlet.FrameworkServlet.doPost(FrameworkServlet.java:914) ~[spring-webmvc-6.2.11.jar:6.2.11]
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:590) ~[tomcat-embed-core-10.1.46.jar:6.0]
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:885) ~[spring-webmvc-6.2.11.jar:6.2.11]
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:658) ~[tomcat-embed-core-10.1.46.jar:6.0]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:195) ~[tomcat-embed-core-10.1.46.jar:10.1.46]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.46.jar:10.1.46]
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:51) ~[tomcat-embed-websocket-10.1.46.jar:10.1.46]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164) ~[tomcat-embed-core-10.1.46.jar:10.1.46]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.46.jar:10.1.46]
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100) ~[spring-web-6.2.11.jar:6.2.11]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.2.11.jar:6.2.11]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164) ~[tomcat-embed-core-10.1.46.jar:10.1.46]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.46.jar:10.1.46]
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93) ~[spring-web-6.2.11.jar:6.2.11]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.2.11.jar:6.2.11]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164) ~[tomcat-embed-core-10.1.46.jar:10.1.46]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.46.jar:10.1.46]
+	at org.springframework.web.filter.ServerHttpObservationFilter.doFilterInternal(ServerHttpObservationFilter.java:110) ~[spring-web-6.2.11.jar:6.2.11]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.2.11.jar:6.2.11]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164) ~[tomcat-embed-core-10.1.46.jar:10.1.46]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.46.jar:10.1.46]
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201) ~[spring-web-6.2.11.jar:6.2.11]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.2.11.jar:6.2.11]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164) ~[tomcat-embed-core-10.1.46.jar:10.1.46]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.46.jar:10.1.46]
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:167) ~[tomcat-embed-core-10.1.46.jar:10.1.46]
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90) ~[tomcat-embed-core-10.1.46.jar:10.1.46]
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:483) ~[tomcat-embed-core-10.1.46.jar:10.1.46]
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:116) ~[tomcat-embed-core-10.1.46.jar:10.1.46]
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93) ~[tomcat-embed-core-10.1.46.jar:10.1.46]
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74) ~[tomcat-embed-core-10.1.46.jar:10.1.46]
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:344) ~[tomcat-embed-core-10.1.46.jar:10.1.46]
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:398) ~[tomcat-embed-core-10.1.46.jar:10.1.46]
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63) ~[tomcat-embed-core-10.1.46.jar:10.1.46]
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:903) ~[tomcat-embed-core-10.1.46.jar:10.1.46]
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1776) ~[tomcat-embed-core-10.1.46.jar:10.1.46]
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52) ~[tomcat-embed-core-10.1.46.jar:10.1.46]
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:975) ~[tomcat-embed-core-10.1.46.jar:10.1.46]
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:493) ~[tomcat-embed-core-10.1.46.jar:10.1.46]
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:63) ~[tomcat-embed-core-10.1.46.jar:10.1.46]
+	at java.base/java.lang.Thread.run(Thread.java:1474) ~[na:na]
+
+2026-03-10T12:41:19.663+07:00 ERROR 14672 --- [order-service] [http-nio-8085-exec-10] [69afaeff9c92aa829886d6b7386be591-5e48dbb3bf355797] c.e.c.exception.GlobalExceptionHandler   : Exception handled: An unexpected error occurred. Please try again later. - Status: 500 INTERNAL_SERVER_ERROR
+2026-03-10T12:44:21.790+07:00  INFO 14672 --- [order-service] [AsyncResolver-bootstrap-executor-%d] [                                                 ] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2026-03-10T12:46:33.103+07:00  INFO 14672 --- [order-service] [http-nio-8085-exec-1] [69afb039e2e38fa4a16fb560e7a3bc94-ef7fc767ed0e577e] c.e.o.controller.OrderGroupController    : Initiating checkout for user 1 with payment provider stripe
+2026-03-10T12:46:33.152+07:00  INFO 14672 --- [order-service] [http-nio-8085-exec-1] [69afb039e2e38fa4a16fb560e7a3bc94-ef7fc767ed0e577e] c.e.o.s.impl.OrderGroupServiceImpl       : Initiating checkout for user 1 with total: 302500.000
+2026-03-10T12:46:34.267+07:00  INFO 14672 --- [order-service] [http-nio-8085-exec-1] [69afb039e2e38fa4a16fb560e7a3bc94-ef7fc767ed0e577e] c.e.o.p.providers.StripePaymentProvider  : Created Stripe payment intent: pi_3T9J7nBINykhgxy50K1umIp8 for order: null
+2026-03-10T12:46:34.269+07:00  INFO 14672 --- [order-service] [http-nio-8085-exec-1] [69afb039e2e38fa4a16fb560e7a3bc94-ef7fc767ed0e577e] c.e.o.service.impl.PaymentServiceImpl    : Created payment intent: pi_3T9J7nBINykhgxy50K1umIp8 for amount: 302500.000 USD
+2026-03-10T12:48:02.099+07:00  INFO 14672 --- [order-service] [http-nio-8085-exec-2] [69afb0925cf9a6df9b3aee95a7a63790-e73ebfbbdbddc5fe] c.e.order.service.impl.CartServiceImpl   : Added item to cart: user=1, product=4, quantity=1
+2026-03-10T12:48:02.121+07:00  INFO 14672 --- [order-service] [http-nio-8085-exec-2] [69afb0925cf9a6df9b3aee95a7a63790-e73ebfbbdbddc5fe] c.ecom.order.controller.CartController   : User 1 added product 4 to cart
+2026-03-10T12:48:08.016+07:00  INFO 14672 --- [order-service] [http-nio-8085-exec-1] [69afb097c448e36b51d15a8a78336f27-b0b7001e16643972] c.e.o.controller.OrderGroupController    : Initiating checkout for user 1 with payment provider stripe
+2026-03-10T12:48:08.091+07:00  INFO 14672 --- [order-service] [http-nio-8085-exec-1] [69afb097c448e36b51d15a8a78336f27-b0b7001e16643972] c.e.o.s.impl.OrderGroupServiceImpl       : Initiating checkout for user 1 with total: 302500.000
+2026-03-10T12:48:08.768+07:00  INFO 14672 --- [order-service] [http-nio-8085-exec-1] [69afb097c448e36b51d15a8a78336f27-b0b7001e16643972] c.e.o.p.providers.StripePaymentProvider  : Created Stripe payment intent: pi_3T9J9KBINykhgxy51tWmtJJc for order: null
+2026-03-10T12:48:08.768+07:00  INFO 14672 --- [order-service] [http-nio-8085-exec-1] [69afb097c448e36b51d15a8a78336f27-b0b7001e16643972] c.e.o.service.impl.PaymentServiceImpl    : Created payment intent: pi_3T9J9KBINykhgxy51tWmtJJc for amount: 302500.000 USD
+2026-03-10T12:48:21.847+07:00  INFO 14672 --- [order-service] [http-nio-8085-exec-3] [69afb0a55426aef9ece7ce28f6ebd3f7-0fe7faaf88b72736] c.e.o.controller.OrderGroupController    : Confirming payment pi_3T9J9KBINykhgxy51tWmtJJc for user 1
+2026-03-10T12:48:21.848+07:00  INFO 14672 --- [order-service] [http-nio-8085-exec-3] [69afb0a55426aef9ece7ce28f6ebd3f7-0fe7faaf88b72736] c.e.o.s.impl.OrderGroupServiceImpl       : Confirming payment pi_3T9J9KBINykhgxy51tWmtJJc for user 1
+2026-03-10T12:48:22.268+07:00  INFO 14672 --- [order-service] [http-nio-8085-exec-3] [69afb0a55426aef9ece7ce28f6ebd3f7-0fe7faaf88b72736] c.e.o.p.providers.StripePaymentProvider  : Retrieved Stripe payment intent: pi_3T9J9KBINykhgxy51tWmtJJc
+2026-03-10T12:48:22.268+07:00  INFO 14672 --- [order-service] [http-nio-8085-exec-3] [69afb0a55426aef9ece7ce28f6ebd3f7-0fe7faaf88b72736] c.e.o.service.impl.PaymentServiceImpl    : Payment verified as succeeded: pi_3T9J9KBINykhgxy51tWmtJJc
+2026-03-10T12:48:22.378+07:00 ERROR 14672 --- [order-service] [http-nio-8085-exec-3] [69afb0a55426aef9ece7ce28f6ebd3f7-0fe7faaf88b72736] c.e.order.client.PromotionServiceClient  : Error applying vouchers: 500 : "{"timestamp":"2026-03-10T12:48:22.3700333","status":500,"error":"Internal Server Error","message":"An unexpected error occurred. Please try again later.","path":"/api/v1/vouchers/vouchers/apply","errorCode":null}"
+2026-03-10T12:48:22.378+07:00  WARN 14672 --- [order-service] [http-nio-8085-exec-3] [69afb0a55426aef9ece7ce28f6ebd3f7-0fe7faaf88b72736] c.e.o.service.impl.DiscountServiceImpl   : Failed to apply vouchers for order 1, returning zero discount
+2026-03-10T12:48:22.399+07:00  INFO 14672 --- [order-service] [http-nio-8085-exec-3] [69afb0a55426aef9ece7ce28f6ebd3f7-0fe7faaf88b72736] o.s.c.s.b.k.p.KafkaTopicProvisioner      : Using kafka topic for outbound: orderCreated-out-0
+2026-03-10T12:48:22.401+07:00  INFO 14672 --- [order-service] [http-nio-8085-exec-3] [69afb0a55426aef9ece7ce28f6ebd3f7-0fe7faaf88b72736] o.a.k.clients.admin.AdminClientConfig    : AdminClientConfig values: 
+	auto.include.jmx.reporter = true
+	bootstrap.controllers = []
+	bootstrap.servers = [localhost:9093]
+	client.dns.lookup = use_all_dns_ips
+	client.id = 
+	connections.max.idle.ms = 300000
+	default.api.timeout.ms = 60000
+	enable.metrics.push = true
+	metadata.max.age.ms = 300000
+	metadata.recovery.strategy = none
+	metric.reporters = []
+	metrics.num.samples = 2
+	metrics.recording.level = INFO
+	metrics.sample.window.ms = 30000
+	receive.buffer.bytes = 65536
+	reconnect.backoff.max.ms = 1000
+	reconnect.backoff.ms = 50
+	request.timeout.ms = 30000
+	retries = 2147483647
+	retry.backoff.max.ms = 1000
+	retry.backoff.ms = 100
+	sasl.client.callback.handler.class = null
+	sasl.jaas.config = null
+	sasl.kerberos.kinit.cmd = /usr/bin/kinit
+	sasl.kerberos.min.time.before.relogin = 60000
+	sasl.kerberos.service.name = null
+	sasl.kerberos.ticket.renew.jitter = 0.05
+	sasl.kerberos.ticket.renew.window.factor = 0.8
+	sasl.login.callback.handler.class = null
+	sasl.login.class = null
+	sasl.login.connect.timeout.ms = null
+	sasl.login.read.timeout.ms = null
+	sasl.login.refresh.buffer.seconds = 300
+	sasl.login.refresh.min.period.seconds = 60
+	sasl.login.refresh.window.factor = 0.8
+	sasl.login.refresh.window.jitter = 0.05
+	sasl.login.retry.backoff.max.ms = 10000
+	sasl.login.retry.backoff.ms = 100
+	sasl.mechanism = GSSAPI
+	sasl.oauthbearer.clock.skew.seconds = 30
+	sasl.oauthbearer.expected.audience = null
+	sasl.oauthbearer.expected.issuer = null
+	sasl.oauthbearer.header.urlencode = false
+	sasl.oauthbearer.jwks.endpoint.refresh.ms = 3600000
+	sasl.oauthbearer.jwks.endpoint.retry.backoff.max.ms = 10000
+	sasl.oauthbearer.jwks.endpoint.retry.backoff.ms = 100
+	sasl.oauthbearer.jwks.endpoint.url = null
+	sasl.oauthbearer.scope.claim.name = scope
+	sasl.oauthbearer.sub.claim.name = sub
+	sasl.oauthbearer.token.endpoint.url = null
+	security.protocol = PLAINTEXT
+	security.providers = null
+	send.buffer.bytes = 131072
+	socket.connection.setup.timeout.max.ms = 30000
+	socket.connection.setup.timeout.ms = 10000
+	ssl.cipher.suites = null
+	ssl.enabled.protocols = [TLSv1.2, TLSv1.3]
+	ssl.endpoint.identification.algorithm = https
+	ssl.engine.factory.class = null
+	ssl.key.password = null
+	ssl.keymanager.algorithm = SunX509
+	ssl.keystore.certificate.chain = null
+	ssl.keystore.key = null
+	ssl.keystore.location = null
+	ssl.keystore.password = null
+	ssl.keystore.type = JKS
+	ssl.protocol = TLSv1.3
+	ssl.provider = null
+	ssl.secure.random.implementation = null
+	ssl.trustmanager.algorithm = PKIX
+	ssl.truststore.certificates = null
+	ssl.truststore.location = null
+	ssl.truststore.password = null
+	ssl.truststore.type = JKS
+
+2026-03-10T12:48:22.406+07:00  INFO 14672 --- [order-service] [http-nio-8085-exec-3] [69afb0a55426aef9ece7ce28f6ebd3f7-0fe7faaf88b72736] o.a.kafka.common.utils.AppInfoParser     : Kafka version: 3.9.1
+2026-03-10T12:48:22.406+07:00  INFO 14672 --- [order-service] [http-nio-8085-exec-3] [69afb0a55426aef9ece7ce28f6ebd3f7-0fe7faaf88b72736] o.a.kafka.common.utils.AppInfoParser     : Kafka commitId: f745dfdcee2b9851
+2026-03-10T12:48:22.406+07:00  INFO 14672 --- [order-service] [http-nio-8085-exec-3] [69afb0a55426aef9ece7ce28f6ebd3f7-0fe7faaf88b72736] o.a.kafka.common.utils.AppInfoParser     : Kafka startTimeMs: 1773121702406
+2026-03-10T12:48:22.758+07:00  INFO 14672 --- [order-service] [kafka-admin-client-thread | adminclient-3] [                                                 ] o.a.kafka.common.utils.AppInfoParser     : App info kafka.admin.client for adminclient-3 unregistered
+2026-03-10T12:48:22.760+07:00  INFO 14672 --- [order-service] [kafka-admin-client-thread | adminclient-3] [                                                 ] o.apache.kafka.common.metrics.Metrics    : Metrics scheduler closed
+2026-03-10T12:48:22.760+07:00  INFO 14672 --- [order-service] [kafka-admin-client-thread | adminclient-3] [                                                 ] o.apache.kafka.common.metrics.Metrics    : Closing reporter org.apache.kafka.common.metrics.JmxReporter
+2026-03-10T12:48:22.760+07:00  INFO 14672 --- [order-service] [kafka-admin-client-thread | adminclient-3] [                                                 ] o.apache.kafka.common.metrics.Metrics    : Metrics reporters closed
+2026-03-10T12:48:22.769+07:00  INFO 14672 --- [order-service] [http-nio-8085-exec-3] [69afb0a55426aef9ece7ce28f6ebd3f7-0fe7faaf88b72736] o.a.k.clients.producer.ProducerConfig    : Idempotence will be disabled because acks is set to 1, not set to 'all'.
+2026-03-10T12:48:22.769+07:00  INFO 14672 --- [order-service] [http-nio-8085-exec-3] [69afb0a55426aef9ece7ce28f6ebd3f7-0fe7faaf88b72736] o.a.k.clients.producer.ProducerConfig    : ProducerConfig values: 
+	acks = 1
+	auto.include.jmx.reporter = true
+	batch.size = 16384
+	bootstrap.servers = [localhost:9093]
+	buffer.memory = 33554432
+	client.dns.lookup = use_all_dns_ips
+	client.id = producer-1
+	compression.gzip.level = -1
+	compression.lz4.level = 9
+	compression.type = none
+	compression.zstd.level = 3
+	connections.max.idle.ms = 540000
+	delivery.timeout.ms = 120000
+	enable.idempotence = false
+	enable.metrics.push = true
+	interceptor.classes = []
+	key.serializer = class org.apache.kafka.common.serialization.ByteArraySerializer
+	linger.ms = 0
+	max.block.ms = 60000
+	max.in.flight.requests.per.connection = 5
+	max.request.size = 1048576
+	metadata.max.age.ms = 300000
+	metadata.max.idle.ms = 300000
+	metadata.recovery.strategy = none
+	metric.reporters = []
+	metrics.num.samples = 2
+	metrics.recording.level = INFO
+	metrics.sample.window.ms = 30000
+	partitioner.adaptive.partitioning.enable = true
+	partitioner.availability.timeout.ms = 0
+	partitioner.class = null
+	partitioner.ignore.keys = false
+	receive.buffer.bytes = 32768
+	reconnect.backoff.max.ms = 1000
+	reconnect.backoff.ms = 50
+	request.timeout.ms = 30000
+	retries = 2147483647
+	retry.backoff.max.ms = 1000
+	retry.backoff.ms = 100
+	sasl.client.callback.handler.class = null
+	sasl.jaas.config = null
+	sasl.kerberos.kinit.cmd = /usr/bin/kinit
+	sasl.kerberos.min.time.before.relogin = 60000
+	sasl.kerberos.service.name = null
+	sasl.kerberos.ticket.renew.jitter = 0.05
+	sasl.kerberos.ticket.renew.window.factor = 0.8
+	sasl.login.callback.handler.class = null
+	sasl.login.class = null
+	sasl.login.connect.timeout.ms = null
+	sasl.login.read.timeout.ms = null
+	sasl.login.refresh.buffer.seconds = 300
+	sasl.login.refresh.min.period.seconds = 60
+	sasl.login.refresh.window.factor = 0.8
+	sasl.login.refresh.window.jitter = 0.05
+	sasl.login.retry.backoff.max.ms = 10000
+	sasl.login.retry.backoff.ms = 100
+	sasl.mechanism = GSSAPI
+	sasl.oauthbearer.clock.skew.seconds = 30
+	sasl.oauthbearer.expected.audience = null
+	sasl.oauthbearer.expected.issuer = null
+	sasl.oauthbearer.header.urlencode = false
+	sasl.oauthbearer.jwks.endpoint.refresh.ms = 3600000
+	sasl.oauthbearer.jwks.endpoint.retry.backoff.max.ms = 10000
+	sasl.oauthbearer.jwks.endpoint.retry.backoff.ms = 100
+	sasl.oauthbearer.jwks.endpoint.url = null
+	sasl.oauthbearer.scope.claim.name = scope
+	sasl.oauthbearer.sub.claim.name = sub
+	sasl.oauthbearer.token.endpoint.url = null
+	security.protocol = PLAINTEXT
+	security.providers = null
+	send.buffer.bytes = 131072
+	socket.connection.setup.timeout.max.ms = 30000
+	socket.connection.setup.timeout.ms = 10000
+	ssl.cipher.suites = null
+	ssl.enabled.protocols = [TLSv1.2, TLSv1.3]
+	ssl.endpoint.identification.algorithm = https
+	ssl.engine.factory.class = null
+	ssl.key.password = null
+	ssl.keymanager.algorithm = SunX509
+	ssl.keystore.certificate.chain = null
+	ssl.keystore.key = null
+	ssl.keystore.location = null
+	ssl.keystore.password = null
+	ssl.keystore.type = JKS
+	ssl.protocol = TLSv1.3
+	ssl.provider = null
+	ssl.secure.random.implementation = null
+	ssl.trustmanager.algorithm = PKIX
+	ssl.truststore.certificates = null
+	ssl.truststore.location = null
+	ssl.truststore.password = null
+	ssl.truststore.type = JKS
+	transaction.timeout.ms = 60000
+	transactional.id = null
+	value.serializer = class org.apache.kafka.common.serialization.ByteArraySerializer
+
+2026-03-10T12:48:22.770+07:00  INFO 14672 --- [order-service] [http-nio-8085-exec-3] [69afb0a55426aef9ece7ce28f6ebd3f7-0fe7faaf88b72736] o.a.k.c.t.i.KafkaMetricsCollector        : initializing Kafka metrics collector
+2026-03-10T12:48:22.788+07:00  INFO 14672 --- [order-service] [http-nio-8085-exec-3] [69afb0a55426aef9ece7ce28f6ebd3f7-0fe7faaf88b72736] o.a.kafka.common.utils.AppInfoParser     : Kafka version: 3.9.1
+2026-03-10T12:48:22.788+07:00  INFO 14672 --- [order-service] [http-nio-8085-exec-3] [69afb0a55426aef9ece7ce28f6ebd3f7-0fe7faaf88b72736] o.a.kafka.common.utils.AppInfoParser     : Kafka commitId: f745dfdcee2b9851
+2026-03-10T12:48:22.788+07:00  INFO 14672 --- [order-service] [http-nio-8085-exec-3] [69afb0a55426aef9ece7ce28f6ebd3f7-0fe7faaf88b72736] o.a.kafka.common.utils.AppInfoParser     : Kafka startTimeMs: 1773121702788
+2026-03-10T12:48:22.797+07:00  INFO 14672 --- [order-service] [kafka-producer-network-thread | producer-1] [                                                 ] org.apache.kafka.clients.Metadata        : [Producer clientId=producer-1] Cluster ID: B5DZ_CmcR8Oo2bgI5gb8Kg
+2026-03-10T12:48:22.814+07:00  INFO 14672 --- [order-service] [http-nio-8085-exec-3] [69afb0a55426aef9ece7ce28f6ebd3f7-0fe7faaf88b72736] o.s.c.s.m.DirectWithAttributesChannel    : Channel 'order-service.orderCreated-out-0' has 1 subscriber(s).
+2026-03-10T12:48:22.814+07:00  INFO 14672 --- [order-service] [http-nio-8085-exec-3] [69afb0a55426aef9ece7ce28f6ebd3f7-0fe7faaf88b72736] o.s.c.s.binder.kafka.KafkaBinderMetrics  : Try to shutdown the old scheduler with 1 threads
+2026-03-10T12:48:22.816+07:00  WARN 14672 --- [order-service] [http-nio-8085-exec-3] [69afb0a55426aef9ece7ce28f6ebd3f7-0fe7faaf88b72736] i.m.core.instrument.MeterRegistry        : This Gauge has been already registered (MeterId{name='spring.cloud.stream.binder.kafka.offset', tags=[tag(group=anonymous.0755f1cb-6e77-4240-8113-34389f6b9e1d),tag(topic=outOfStock-in-0)]}), the registration will be ignored. Note that subsequent logs will be logged at debug level.
+2026-03-10T12:48:22.867+07:00  INFO 14672 --- [order-service] [http-nio-8085-exec-3] [69afb0a55426aef9ece7ce28f6ebd3f7-0fe7faaf88b72736] c.ecom.order.event.OrderEventPublisher   : Published OrderCreatedEvent: orderId=1, items=1
+2026-03-10T12:48:22.868+07:00  INFO 14672 --- [order-service] [http-nio-8085-exec-3] [69afb0a55426aef9ece7ce28f6ebd3f7-0fe7faaf88b72736] c.e.o.s.impl.OrderGroupServiceImpl       : Created order OG-1773121702301-EE6F7205 with 1 sub-orders, total: 312400.000, discount: 0
+2026-03-10T12:48:26.941+07:00  WARN 14672 --- [order-service] [http-nio-8085-exec-9] [69afb0aa055683093702d78dcb0e7261-76603fbdb7e96423] ration$PageModule$WarningLoggingModifier : Serializing PageImpl instances as-is is not supported, meaning that there is no guarantee about the stability of the resulting JSON structure!
+	For a stable JSON structure, please use Spring Data's PagedModel (globally via @EnableSpringDataWebSupport(pageSerializationMode = VIA_DTO))
+	or Spring HATEOAS and Spring Data's PagedResourcesAssembler as documented in https://docs.spring.io/spring-data/commons/reference/repositories/core-extensions.html#core.web.pageables.
+
+2026-03-10T12:49:21.791+07:00  INFO 14672 --- [order-service] [AsyncResolver-bootstrap-executor-%d] [                                                 ] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2026-03-10T12:49:42.686+07:00  INFO 14672 --- [order-service] [http-nio-8085-exec-4] [69afb0f66f95dda96f98a78229c0e5ba-ee44a5c160d623f3] c.e.order.service.impl.CartServiceImpl   : Added item to cart: user=1, product=4, quantity=1
+2026-03-10T12:49:42.706+07:00  INFO 14672 --- [order-service] [http-nio-8085-exec-4] [69afb0f66f95dda96f98a78229c0e5ba-ee44a5c160d623f3] c.ecom.order.controller.CartController   : User 1 added product 4 to cart
+2026-03-10T12:49:47.700+07:00  INFO 14672 --- [order-service] [http-nio-8085-exec-1] [69afb0fb2d3f5f9df636df6ebb42dd74-9fde23e2790e2303] c.e.o.controller.OrderGroupController    : Initiating checkout for user 1 with payment provider stripe
+2026-03-10T12:49:47.745+07:00  INFO 14672 --- [order-service] [http-nio-8085-exec-1] [69afb0fb2d3f5f9df636df6ebb42dd74-9fde23e2790e2303] c.e.o.s.impl.OrderGroupServiceImpl       : Initiating checkout for user 1 with total: 302501.100
+2026-03-10T12:49:48.327+07:00  INFO 14672 --- [order-service] [http-nio-8085-exec-1] [69afb0fb2d3f5f9df636df6ebb42dd74-9fde23e2790e2303] c.e.o.p.providers.StripePaymentProvider  : Created Stripe payment intent: pi_3T9JAvBINykhgxy50Dxniabc for order: null
+2026-03-10T12:49:48.328+07:00  INFO 14672 --- [order-service] [http-nio-8085-exec-1] [69afb0fb2d3f5f9df636df6ebb42dd74-9fde23e2790e2303] c.e.o.service.impl.PaymentServiceImpl    : Created payment intent: pi_3T9JAvBINykhgxy50Dxniabc for amount: 302501.100 USD
+2026-03-10T12:50:00.926+07:00  INFO 14672 --- [order-service] [http-nio-8085-exec-3] [69afb108a9ee2ffbee430208a1156506-b1e860e6f620fde0] c.e.o.controller.OrderGroupController    : Confirming payment pi_3T9JAvBINykhgxy50Dxniabc for user 1
+2026-03-10T12:50:00.927+07:00  INFO 14672 --- [order-service] [http-nio-8085-exec-3] [69afb108a9ee2ffbee430208a1156506-b1e860e6f620fde0] c.e.o.s.impl.OrderGroupServiceImpl       : Confirming payment pi_3T9JAvBINykhgxy50Dxniabc for user 1
+2026-03-10T12:50:01.354+07:00  INFO 14672 --- [order-service] [http-nio-8085-exec-3] [69afb108a9ee2ffbee430208a1156506-b1e860e6f620fde0] c.e.o.p.providers.StripePaymentProvider  : Retrieved Stripe payment intent: pi_3T9JAvBINykhgxy50Dxniabc
+2026-03-10T12:50:01.355+07:00  INFO 14672 --- [order-service] [http-nio-8085-exec-3] [69afb108a9ee2ffbee430208a1156506-b1e860e6f620fde0] c.e.o.service.impl.PaymentServiceImpl    : Payment verified as succeeded: pi_3T9JAvBINykhgxy50Dxniabc
+2026-03-10T12:50:01.413+07:00 ERROR 14672 --- [order-service] [http-nio-8085-exec-3] [69afb108a9ee2ffbee430208a1156506-b1e860e6f620fde0] c.e.order.client.PromotionServiceClient  : Error applying vouchers: 500 : "{"timestamp":"2026-03-10T12:50:01.4113945","status":500,"error":"Internal Server Error","message":"An unexpected error occurred. Please try again later.","path":"/api/v1/vouchers/vouchers/apply","errorCode":null}"
+2026-03-10T12:50:01.414+07:00  WARN 14672 --- [order-service] [http-nio-8085-exec-3] [69afb108a9ee2ffbee430208a1156506-b1e860e6f620fde0] c.e.o.service.impl.DiscountServiceImpl   : Failed to apply vouchers for order 2, returning zero discount
+2026-03-10T12:50:01.420+07:00  INFO 14672 --- [order-service] [http-nio-8085-exec-3] [69afb108a9ee2ffbee430208a1156506-b1e860e6f620fde0] c.ecom.order.event.OrderEventPublisher   : Published OrderCreatedEvent: orderId=2, items=1
+2026-03-10T12:50:01.421+07:00  INFO 14672 --- [order-service] [http-nio-8085-exec-3] [69afb108a9ee2ffbee430208a1156506-b1e860e6f620fde0] c.e.o.s.impl.OrderGroupServiceImpl       : Created order OG-1773121801392-E3F4E9C9 with 1 sub-orders, total: 312401.100, discount: 0
+2026-03-10T12:52:50.911+07:00  INFO 14672 --- [order-service] [http-nio-8085-exec-4] [69afb1b2925ea0eaa316dc7cf23b49a7-0b7188d58d741fbe] c.e.order.service.impl.CartServiceImpl   : Added item to cart: user=1, product=4, quantity=1
+2026-03-10T12:52:50.918+07:00  INFO 14672 --- [order-service] [http-nio-8085-exec-4] [69afb1b2925ea0eaa316dc7cf23b49a7-0b7188d58d741fbe] c.ecom.order.controller.CartController   : User 1 added product 4 to cart
+2026-03-10T12:54:21.793+07:00  INFO 14672 --- [order-service] [AsyncResolver-bootstrap-executor-%d] [                                                 ] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2026-03-10T12:54:29.795+07:00  INFO 14672 --- [order-service] [SpringApplicationShutdownHook] [                                                 ] o.s.c.n.e.s.EurekaServiceRegistry        : Unregistering application ORDER-SERVICE with eureka with status DOWN
+2026-03-10T12:54:29.795+07:00  INFO 14672 --- [order-service] [SpringApplicationShutdownHook] [                                                 ] com.netflix.discovery.DiscoveryClient    : Saw local status change event StatusChangeEvent [timestamp=1773122069795, current=DOWN, previous=UP]
+2026-03-10T12:54:29.795+07:00  INFO 14672 --- [order-service] [DiscoveryClient-InstanceInfoReplicator-%d] [                                                 ] com.netflix.discovery.DiscoveryClient    : DiscoveryClient_ORDER-SERVICE/fragile.mshome.net:order-service:8085: registering service...
+2026-03-10T12:54:29.803+07:00  INFO 14672 --- [order-service] [SpringApplicationShutdownHook] [                                                 ] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-anonymous.0755f1cb-6e77-4240-8113-34389f6b9e1d-3, groupId=anonymous.0755f1cb-6e77-4240-8113-34389f6b9e1d] Resetting generation and member id due to: consumer pro-actively leaving the group
+2026-03-10T12:54:29.803+07:00  INFO 14672 --- [order-service] [SpringApplicationShutdownHook] [                                                 ] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-anonymous.0755f1cb-6e77-4240-8113-34389f6b9e1d-3, groupId=anonymous.0755f1cb-6e77-4240-8113-34389f6b9e1d] Request joining group due to: consumer pro-actively leaving the group
+2026-03-10T12:54:29.804+07:00  INFO 14672 --- [order-service] [SpringApplicationShutdownHook] [                                                 ] o.apache.kafka.common.metrics.Metrics    : Metrics scheduler closed
+2026-03-10T12:54:29.804+07:00  INFO 14672 --- [order-service] [SpringApplicationShutdownHook] [                                                 ] o.apache.kafka.common.metrics.Metrics    : Closing reporter org.apache.kafka.common.metrics.JmxReporter
+2026-03-10T12:54:29.804+07:00  INFO 14672 --- [order-service] [SpringApplicationShutdownHook] [                                                 ] o.apache.kafka.common.metrics.Metrics    : Closing reporter org.apache.kafka.common.telemetry.internals.ClientTelemetryReporter
+2026-03-10T12:54:29.804+07:00  INFO 14672 --- [order-service] [SpringApplicationShutdownHook] [                                                 ] o.apache.kafka.common.metrics.Metrics    : Metrics reporters closed
+2026-03-10T12:54:29.809+07:00  INFO 14672 --- [order-service] [SpringApplicationShutdownHook] [                                                 ] o.a.kafka.common.utils.AppInfoParser     : App info kafka.consumer for consumer-anonymous.0755f1cb-6e77-4240-8113-34389f6b9e1d-3 unregistered
+2026-03-10T12:54:29.811+07:00  INFO 14672 --- [order-service] [DiscoveryClient-InstanceInfoReplicator-%d] [                                                 ] com.netflix.discovery.DiscoveryClient    : DiscoveryClient_ORDER-SERVICE/fragile.mshome.net:order-service:8085 - registration status: 204
+2026-03-10T12:54:29.812+07:00  INFO 14672 --- [order-service] [SpringApplicationShutdownHook] [                                                 ] o.s.b.w.e.tomcat.GracefulShutdown        : Commencing graceful shutdown. Waiting for active requests to complete
+2026-03-10T12:54:29.822+07:00  INFO 14672 --- [order-service] [tomcat-shutdown] [                                                 ] o.s.b.w.e.tomcat.GracefulShutdown        : Graceful shutdown complete
+2026-03-10T12:54:29.829+07:00  INFO 14672 --- [order-service] [KafkaConsumerDestination{consumerDestinationName='outOfStock-in-0', partitions=1, dlqName='null'}.container-0-C-1] [                                                 ] k.c.c.i.ConsumerRebalanceListenerInvoker : [Consumer clientId=consumer-anonymous.0755f1cb-6e77-4240-8113-34389f6b9e1d-2, groupId=anonymous.0755f1cb-6e77-4240-8113-34389f6b9e1d] Revoke previously assigned partitions outOfStock-in-0-0
+2026-03-10T12:54:29.830+07:00  INFO 14672 --- [order-service] [KafkaConsumerDestination{consumerDestinationName='outOfStock-in-0', partitions=1, dlqName='null'}.container-0-C-1] [                                                 ] o.s.c.s.b.k.KafkaMessageChannelBinder$2  : anonymous.0755f1cb-6e77-4240-8113-34389f6b9e1d: partitions revoked: [outOfStock-in-0-0]
+2026-03-10T12:54:29.830+07:00  INFO 14672 --- [order-service] [KafkaConsumerDestination{consumerDestinationName='outOfStock-in-0', partitions=1, dlqName='null'}.container-0-C-1] [                                                 ] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-anonymous.0755f1cb-6e77-4240-8113-34389f6b9e1d-2, groupId=anonymous.0755f1cb-6e77-4240-8113-34389f6b9e1d] Member consumer-anonymous.0755f1cb-6e77-4240-8113-34389f6b9e1d-2-e5535ed5-8345-490b-9f40-bc6bd6e1ede9 sending LeaveGroup request to coordinator localhost:9093 (id: 2147483646 rack: null) due to the consumer unsubscribed from all topics
+2026-03-10T12:54:29.830+07:00  INFO 14672 --- [order-service] [KafkaConsumerDestination{consumerDestinationName='outOfStock-in-0', partitions=1, dlqName='null'}.container-0-C-1] [                                                 ] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-anonymous.0755f1cb-6e77-4240-8113-34389f6b9e1d-2, groupId=anonymous.0755f1cb-6e77-4240-8113-34389f6b9e1d] Resetting generation and member id due to: consumer pro-actively leaving the group
+2026-03-10T12:54:29.830+07:00  INFO 14672 --- [order-service] [KafkaConsumerDestination{consumerDestinationName='outOfStock-in-0', partitions=1, dlqName='null'}.container-0-C-1] [                                                 ] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-anonymous.0755f1cb-6e77-4240-8113-34389f6b9e1d-2, groupId=anonymous.0755f1cb-6e77-4240-8113-34389f6b9e1d] Request joining group due to: consumer pro-actively leaving the group
+2026-03-10T12:54:29.831+07:00  INFO 14672 --- [order-service] [KafkaConsumerDestination{consumerDestinationName='outOfStock-in-0', partitions=1, dlqName='null'}.container-0-C-1] [                                                 ] o.a.k.c.c.i.ClassicKafkaConsumer         : [Consumer clientId=consumer-anonymous.0755f1cb-6e77-4240-8113-34389f6b9e1d-2, groupId=anonymous.0755f1cb-6e77-4240-8113-34389f6b9e1d] Unsubscribed all topics or patterns and assigned partitions
+2026-03-10T12:54:29.831+07:00  INFO 14672 --- [order-service] [KafkaConsumerDestination{consumerDestinationName='outOfStock-in-0', partitions=1, dlqName='null'}.container-0-C-1] [                                                 ] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-anonymous.0755f1cb-6e77-4240-8113-34389f6b9e1d-2, groupId=anonymous.0755f1cb-6e77-4240-8113-34389f6b9e1d] Resetting generation and member id due to: consumer pro-actively leaving the group
+2026-03-10T12:54:29.831+07:00  INFO 14672 --- [order-service] [KafkaConsumerDestination{consumerDestinationName='outOfStock-in-0', partitions=1, dlqName='null'}.container-0-C-1] [                                                 ] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-anonymous.0755f1cb-6e77-4240-8113-34389f6b9e1d-2, groupId=anonymous.0755f1cb-6e77-4240-8113-34389f6b9e1d] Request joining group due to: consumer pro-actively leaving the group
+2026-03-10T12:54:30.108+07:00  INFO 14672 --- [order-service] [KafkaConsumerDestination{consumerDestinationName='outOfStock-in-0', partitions=1, dlqName='null'}.container-0-C-1] [                                                 ] o.apache.kafka.common.metrics.Metrics    : Metrics scheduler closed
+2026-03-10T12:54:30.108+07:00  INFO 14672 --- [order-service] [KafkaConsumerDestination{consumerDestinationName='outOfStock-in-0', partitions=1, dlqName='null'}.container-0-C-1] [                                                 ] o.apache.kafka.common.metrics.Metrics    : Closing reporter org.apache.kafka.common.metrics.JmxReporter
+2026-03-10T12:54:30.108+07:00  INFO 14672 --- [order-service] [KafkaConsumerDestination{consumerDestinationName='outOfStock-in-0', partitions=1, dlqName='null'}.container-0-C-1] [                                                 ] o.apache.kafka.common.metrics.Metrics    : Closing reporter org.apache.kafka.common.telemetry.internals.ClientTelemetryReporter
+2026-03-10T12:54:30.108+07:00  INFO 14672 --- [order-service] [KafkaConsumerDestination{consumerDestinationName='outOfStock-in-0', partitions=1, dlqName='null'}.container-0-C-1] [                                                 ] o.apache.kafka.common.metrics.Metrics    : Metrics reporters closed
+2026-03-10T12:54:30.112+07:00  INFO 14672 --- [order-service] [KafkaConsumerDestination{consumerDestinationName='outOfStock-in-0', partitions=1, dlqName='null'}.container-0-C-1] [                                                 ] o.a.kafka.common.utils.AppInfoParser     : App info kafka.consumer for consumer-anonymous.0755f1cb-6e77-4240-8113-34389f6b9e1d-2 unregistered
+2026-03-10T12:54:30.114+07:00  INFO 14672 --- [order-service] [KafkaConsumerDestination{consumerDestinationName='outOfStock-in-0', partitions=1, dlqName='null'}.container-0-C-1] [                                                 ] o.s.k.l.KafkaMessageListenerContainer    : anonymous.0755f1cb-6e77-4240-8113-34389f6b9e1d: Consumer stopped
+2026-03-10T12:54:30.115+07:00  INFO 14672 --- [order-service] [SpringApplicationShutdownHook] [                                                 ] s.i.k.i.KafkaMessageDrivenChannelAdapter : stopped org.springframework.integration.kafka.inbound.KafkaMessageDrivenChannelAdapter@1d695da5
+2026-03-10T12:54:30.156+07:00  INFO 14672 --- [order-service] [SpringApplicationShutdownHook] [                                                 ] o.s.c.stream.binder.BinderErrorChannel   : Channel 'order-service.kafka-2139242599.outOfStock-in-0.errors' has 1 subscriber(s).
+2026-03-10T12:54:30.157+07:00  INFO 14672 --- [order-service] [SpringApplicationShutdownHook] [                                                 ] o.s.c.stream.binder.BinderErrorChannel   : Channel 'order-service.kafka-2139242599.outOfStock-in-0.errors' has 0 subscriber(s).
+2026-03-10T12:54:30.159+07:00  INFO 14672 --- [order-service] [SpringApplicationShutdownHook] [                                                 ] o.s.i.endpoint.EventDrivenConsumer       : Removing {logging-channel-adapter:_org.springframework.integration.errorLogger} as a subscriber to the 'errorChannel' channel
+2026-03-10T12:54:30.159+07:00  INFO 14672 --- [order-service] [SpringApplicationShutdownHook] [                                                 ] o.s.i.channel.PublishSubscribeChannel    : Channel 'order-service.errorChannel' has 0 subscriber(s).
+2026-03-10T12:54:30.159+07:00  INFO 14672 --- [order-service] [SpringApplicationShutdownHook] [                                                 ] o.s.i.endpoint.EventDrivenConsumer       : stopped bean '_org.springframework.integration.errorLogger'
+2026-03-10T12:54:30.172+07:00  INFO 14672 --- [order-service] [SpringApplicationShutdownHook] [                                                 ] o.a.k.clients.producer.KafkaProducer     : [Producer clientId=producer-1] Closing the Kafka producer with timeoutMillis = 30000 ms.
+2026-03-10T12:54:30.176+07:00  INFO 14672 --- [order-service] [SpringApplicationShutdownHook] [                                                 ] o.apache.kafka.common.metrics.Metrics    : Metrics scheduler closed
+2026-03-10T12:54:30.176+07:00  INFO 14672 --- [order-service] [SpringApplicationShutdownHook] [                                                 ] o.apache.kafka.common.metrics.Metrics    : Closing reporter org.apache.kafka.common.metrics.JmxReporter
+2026-03-10T12:54:30.176+07:00  INFO 14672 --- [order-service] [SpringApplicationShutdownHook] [                                                 ] o.apache.kafka.common.metrics.Metrics    : Closing reporter org.apache.kafka.common.telemetry.internals.ClientTelemetryReporter
+2026-03-10T12:54:30.176+07:00  INFO 14672 --- [order-service] [SpringApplicationShutdownHook] [                                                 ] o.apache.kafka.common.metrics.Metrics    : Metrics reporters closed
+2026-03-10T12:54:30.176+07:00  INFO 14672 --- [order-service] [SpringApplicationShutdownHook] [                                                 ] o.a.kafka.common.utils.AppInfoParser     : App info kafka.producer for producer-1 unregistered
+2026-03-10T12:54:30.178+07:00  INFO 14672 --- [order-service] [SpringApplicationShutdownHook] [                                                 ] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-03-10T12:54:30.243+07:00  INFO 14672 --- [order-service] [SpringApplicationShutdownHook] [                                                 ] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2026-03-10T12:54:30.251+07:00  INFO 14672 --- [order-service] [SpringApplicationShutdownHook] [                                                 ] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2026-03-10T12:54:30.697+07:00  INFO 14672 --- [order-service] [SpringApplicationShutdownHook] [                                                 ] com.netflix.discovery.DiscoveryClient    : Shutting down DiscoveryClient ...
+2026-03-10T12:54:33.704+07:00  INFO 14672 --- [order-service] [SpringApplicationShutdownHook] [                                                 ] com.netflix.discovery.DiscoveryClient    : Unregistering ...
+2026-03-10T12:54:33.720+07:00  INFO 14672 --- [order-service] [SpringApplicationShutdownHook] [                                                 ] com.netflix.discovery.DiscoveryClient    : DiscoveryClient_ORDER-SERVICE/fragile.mshome.net:order-service:8085 - deregister  status: 200
+2026-03-10T12:54:33.721+07:00  INFO 14672 --- [order-service] [SpringApplicationShutdownHook] [                                                 ] com.netflix.discovery.DiscoveryClient    : Completed shut down of DiscoveryClient
