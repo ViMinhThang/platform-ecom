@@ -5,10 +5,97 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c48beeac-7758-42e4-81dd-f068fbcd38be" name="Changes" comment="update spring cloud stream dependency">
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.opencode/skills/claude.ai/vercel-deploy-claimable.zip" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.opencode/skills/claude.ai/vercel-deploy-claimable/SKILL.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.opencode/skills/claude.ai/vercel-deploy-claimable/scripts/deploy.sh" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.opencode/skills/cleancode/SKILL.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.opencode/skills/react-best-practices/AGENTS.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.opencode/skills/react-best-practices/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.opencode/skills/react-best-practices/SKILL.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.opencode/skills/react-best-practices/metadata.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.opencode/skills/react-best-practices/rules/_sections.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.opencode/skills/react-best-practices/rules/_template.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.opencode/skills/react-best-practices/rules/advanced-event-handler-refs.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.opencode/skills/react-best-practices/rules/advanced-init-once.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.opencode/skills/react-best-practices/rules/advanced-use-latest.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.opencode/skills/react-best-practices/rules/async-api-routes.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.opencode/skills/react-best-practices/rules/async-defer-await.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.opencode/skills/react-best-practices/rules/async-dependencies.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.opencode/skills/react-best-practices/rules/async-parallel.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.opencode/skills/react-best-practices/rules/async-suspense-boundaries.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.opencode/skills/react-best-practices/rules/bundle-barrel-imports.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.opencode/skills/react-best-practices/rules/bundle-conditional.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.opencode/skills/react-best-practices/rules/bundle-defer-third-party.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.opencode/skills/react-best-practices/rules/bundle-dynamic-imports.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.opencode/skills/react-best-practices/rules/bundle-preload.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.opencode/skills/react-best-practices/rules/client-event-listeners.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.opencode/skills/react-best-practices/rules/client-localstorage-schema.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.opencode/skills/react-best-practices/rules/client-passive-event-listeners.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.opencode/skills/react-best-practices/rules/client-swr-dedup.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.opencode/skills/react-best-practices/rules/js-batch-dom-css.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.opencode/skills/react-best-practices/rules/js-cache-function-results.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.opencode/skills/react-best-practices/rules/js-cache-property-access.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.opencode/skills/react-best-practices/rules/js-cache-storage.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.opencode/skills/react-best-practices/rules/js-combine-iterations.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.opencode/skills/react-best-practices/rules/js-early-exit.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.opencode/skills/react-best-practices/rules/js-hoist-regexp.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.opencode/skills/react-best-practices/rules/js-index-maps.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.opencode/skills/react-best-practices/rules/js-length-check-first.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.opencode/skills/react-best-practices/rules/js-min-max-loop.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.opencode/skills/react-best-practices/rules/js-set-map-lookups.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.opencode/skills/react-best-practices/rules/js-tosorted-immutable.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.opencode/skills/react-best-practices/rules/rendering-activity.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.opencode/skills/react-best-practices/rules/rendering-animate-svg-wrapper.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.opencode/skills/react-best-practices/rules/rendering-conditional-render.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.opencode/skills/react-best-practices/rules/rendering-content-visibility.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.opencode/skills/react-best-practices/rules/rendering-hoist-jsx.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.opencode/skills/react-best-practices/rules/rendering-hydration-no-flicker.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.opencode/skills/react-best-practices/rules/rendering-hydration-suppress-warning.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.opencode/skills/react-best-practices/rules/rendering-svg-precision.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.opencode/skills/react-best-practices/rules/rendering-usetransition-loading.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.opencode/skills/react-best-practices/rules/rerender-defer-reads.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.opencode/skills/react-best-practices/rules/rerender-dependencies.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.opencode/skills/react-best-practices/rules/rerender-derived-state-no-effect.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.opencode/skills/react-best-practices/rules/rerender-derived-state.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.opencode/skills/react-best-practices/rules/rerender-functional-setstate.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.opencode/skills/react-best-practices/rules/rerender-lazy-state-init.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.opencode/skills/react-best-practices/rules/rerender-memo-with-default-value.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.opencode/skills/react-best-practices/rules/rerender-memo.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.opencode/skills/react-best-practices/rules/rerender-move-effect-to-event.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.opencode/skills/react-best-practices/rules/rerender-simple-expression-in-memo.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.opencode/skills/react-best-practices/rules/rerender-transitions.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.opencode/skills/react-best-practices/rules/rerender-use-ref-transient-values.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.opencode/skills/react-best-practices/rules/server-after-nonblocking.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.opencode/skills/react-best-practices/rules/server-auth-actions.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.opencode/skills/react-best-practices/rules/server-cache-lru.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.opencode/skills/react-best-practices/rules/server-cache-react.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.opencode/skills/react-best-practices/rules/server-dedup-props.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.opencode/skills/react-best-practices/rules/server-parallel-fetching.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.opencode/skills/react-best-practices/rules/server-serialization.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.opencode/skills/web-design-guidelines.zip" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.opencode/skills/web-design-guidelines/SKILL.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-client/app/(main)/orders/[id]/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/app/(main)/orders/[id]/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-client/app/(main)/orders/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/app/(main)/orders/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-client/components/ReviewList.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/ReviewList.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-client/components/orders/SubOrderCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/orders/SubOrderCard.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-client/lib/services/review-service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/lib/services/review-service.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/logs/order-service.log" beforeDir="false" afterPath="$PROJECT_DIR$/logs/order-service.log" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/logs/user-service.log" beforeDir="false" afterPath="$PROJECT_DIR$/logs/user-service.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/configserver/src/main/resources/config/order-service.yml" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/configserver/src/main/resources/config/order-service.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/configserver/src/main/resources/config/review-service.yml" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/configserver/src/main/resources/config/review-service.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/review/src/main/java/com/ecom/review/client/HttpClientConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/review/src/main/java/com/ecom/review/client/HttpClientConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/review/src/main/java/com/ecom/review/client/OrderServiceClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/review/src/main/java/com/ecom/review/client/OrderServiceClient.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/review/src/main/java/com/ecom/review/controller/ReviewController.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/review/src/main/java/com/ecom/review/controller/ReviewController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/review/src/main/java/com/ecom/review/dto/OrderDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/review/src/main/java/com/ecom/review/dto/OrderDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/review/src/main/java/com/ecom/review/dto/ProductReviewSummaryDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/review/src/main/java/com/ecom/review/dto/ProductReviewSummaryDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/review/src/main/java/com/ecom/review/dto/ReviewDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/review/src/main/java/com/ecom/review/dto/ReviewDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/review/src/main/java/com/ecom/review/dto/ReviewEvent.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/review/src/main/java/com/ecom/review/entity/Review.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/review/src/main/java/com/ecom/review/entity/Review.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/review/src/main/java/com/ecom/review/repository/ReviewRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/review/src/main/java/com/ecom/review/repository/ReviewRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/review/src/main/java/com/ecom/review/service/ReviewService.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/review/src/main/java/com/ecom/review/service/ReviewService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/review/src/main/java/com/ecom/review/service/ReviewServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/review/src/main/java/com/ecom/review/service/ReviewServiceImpl.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -66,47 +153,47 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Application.Unnamed.executor&quot;: &quot;Run&quot;,
-    &quot;Application.analytics-server.executor&quot;: &quot;Run&quot;,
-    &quot;Application.auth-service.executor&quot;: &quot;Run&quot;,
-    &quot;Application.bff-service.executor&quot;: &quot;Run&quot;,
-    &quot;Application.chatbot-service.executor&quot;: &quot;Run&quot;,
-    &quot;Application.config-server.executor&quot;: &quot;Run&quot;,
-    &quot;Application.eureka.executor&quot;: &quot;Run&quot;,
-    &quot;Application.gateway.executor&quot;: &quot;Run&quot;,
-    &quot;Application.inventory-service.executor&quot;: &quot;Run&quot;,
-    &quot;Application.notificaiton-service.executor&quot;: &quot;Run&quot;,
-    &quot;Application.notification-service.executor&quot;: &quot;Run&quot;,
-    &quot;Application.order-service.executor&quot;: &quot;Run&quot;,
-    &quot;Application.product-service.executor&quot;: &quot;Run&quot;,
-    &quot;Application.promotion-service.executor&quot;: &quot;Run&quot;,
-    &quot;Application.review-service.executor&quot;: &quot;Run&quot;,
-    &quot;Application.user-service.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.com.ecom.product.service in product.executor&quot;: &quot;Debug&quot;,
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;Python.main (1).executor&quot;: &quot;Run&quot;,
-    &quot;Python.main.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;Spring Boot.AnalyticsApplication.executor&quot;: &quot;Run&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;feature/nextjs&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/huynh/Desktop/platform-ecom&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.15845825&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;,
-    &quot;run.configurations.included.in.services&quot;: &quot;true&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.Unnamed.executor": "Run",
+    "Application.analytics-server.executor": "Run",
+    "Application.auth-service.executor": "Run",
+    "Application.bff-service.executor": "Run",
+    "Application.chatbot-service.executor": "Run",
+    "Application.config-server.executor": "Run",
+    "Application.eureka.executor": "Run",
+    "Application.gateway.executor": "Run",
+    "Application.inventory-service.executor": "Run",
+    "Application.notificaiton-service.executor": "Run",
+    "Application.notification-service.executor": "Run",
+    "Application.order-service.executor": "Run",
+    "Application.product-service.executor": "Run",
+    "Application.promotion-service.executor": "Run",
+    "Application.review-service.executor": "Run",
+    "Application.user-service.executor": "Run",
+    "JUnit.com.ecom.product.service in product.executor": "Debug",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "Python.main (1).executor": "Run",
+    "Python.main.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "Spring Boot.AnalyticsApplication.executor": "Run",
+    "git-widget-placeholder": "feature/nextjs",
+    "ignore.virus.scanning.warn.message": "true",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/huynh/Desktop/platform-ecom",
+    "project.structure.last.edited": "SDKs",
+    "project.structure.proportion": "0.15845825",
+    "project.structure.side.proportion": "0.2",
+    "run.code.analysis.last.selected.profile": "pProject Default",
+    "run.configurations.included.in.services": "true",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\huynh\Desktop\platform-ecom\platform-ecom-backend\chatbot" />
@@ -167,7 +254,7 @@
       </map>
     </option>
   </component>
-  <component name="RunManager" selected="Python.main">
+  <component name="RunManager" selected="Python.main (1)">
     <configuration name="analytics-server" type="Application" factoryName="Application" focusToolWindowBeforeRun="true">
       <option name="ALTERNATIVE_JRE_PATH" value="25" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
@@ -285,6 +372,29 @@
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
+    </configuration>
+    <configuration name="main (1)" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="sentiment-service" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/sentiment-service/app" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="RUN_TOOL" value="" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/sentiment-service/app/main.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
     </configuration>
     <configuration name="main" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="platform-ecom" />
@@ -409,6 +519,7 @@
       <item itemvalue="Application.review-service" />
       <item itemvalue="Application.user-service" />
       <item itemvalue="JUnit.com.ecom.product.service in product" />
+      <item itemvalue="Python.main (1)" />
       <item itemvalue="Python.main" />
       <item itemvalue="Spring Boot.AnalyticsApplication" />
       <item itemvalue="Spring Boot.ChatbotApplication" />
@@ -424,6 +535,7 @@
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.main (1)" />
         <item itemvalue="Python.main" />
         <item itemvalue="JUnit.com.ecom.product.service in product" />
       </list>

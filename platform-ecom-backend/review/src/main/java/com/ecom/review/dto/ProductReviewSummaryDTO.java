@@ -15,4 +15,5 @@ public class ProductReviewSummaryDTO {
     private Double averageRating;
     private Long totalReviews;
     private Map<Integer, Long> ratingDistribution = new HashMap<>(); // rating -> count
+    private Map<String, Long> sentimentDistribution = new HashMap<>(); // sentiment -> count
 }

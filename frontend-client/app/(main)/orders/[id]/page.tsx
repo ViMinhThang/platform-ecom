@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import { ReviewDialog } from "@/components/profile/ReviewDialog";
 import { useOrders } from "@/hooks/useOrders";
 import { SubOrderCard } from "@/components/orders/SubOrderCard";
 import { TrackingTimeline } from "@/components/orders/TrackingTimeline";
@@ -18,6 +19,19 @@ interface OrderDetailPageProps {
 export default function OrderDetailPage({ params }: OrderDetailPageProps) {
     const { currentOrder, loading, loadOrderDetails } = useOrders();
     const { id } = React.use(params);
+    const [reviewDialogOpen, setReviewDialogOpen] = useState(false);
+    const [reviewProductId, setReviewProductId] = useState<number | null>(null);
+    const [refreshCounter, setRefreshCounter] = useState(0);
+
+    const handleReviewOrderItem = (productId: number) => {
+        setReviewProductId(productId);
+        setReviewDialogOpen(true);
+    };
+
+    const handleReviewSuccess = () => {
+        setRefreshCounter(prev => prev + 1);
+    };
+
     useEffect(() => {
         if (id) {
             loadOrderDetails(Number(id));
@@ -33,7 +47,6 @@ export default function OrderDetailPage({ params }: OrderDetailPageProps) {
     }
 
     if (!currentOrder && !loading) {
-        // Ideally handle 404
         return <div className="container py-12 text-center">Order not found</div>;
     }
 
@@ -89,7 +102,12 @@ export default function OrderDetailPage({ params }: OrderDetailPageProps) {
                     <div>
                         <h2 className="text-lg font-semibold mb-4">Shipments</h2>
                         {currentOrder.subOrders.map((subOrder) => (
-                            <SubOrderCard key={subOrder.id} subOrder={subOrder} />
+                            <SubOrderCard 
+                                key={`${subOrder.id}-${refreshCounter}`} 
+                                subOrder={subOrder} 
+                                orderId={currentOrder.id} 
+                                onReview={handleReviewOrderItem} 
+                            />
                         ))}
                     </div>
                 </div>
@@ -146,6 +164,17 @@ export default function OrderDetailPage({ params }: OrderDetailPageProps) {
                     </div>
                 </div>
             </div>
+
+            {/* Review Dialog */}
+            {reviewProductId && currentOrder && (
+                <ReviewDialog
+                    open={reviewDialogOpen}
+                    onOpenChange={setReviewDialogOpen}
+                    productId={reviewProductId}
+                    orderId={currentOrder.id}
+                    onSuccess={handleReviewSuccess}
+                />
+            )}
         </div>
     );
 }

@@ -11,7 +11,7 @@ import org.springframework.web.service.annotation.HttpExchange;
 public interface OrderServiceClient {
 
     @GetExchange("/{orderId}")
-    ResponseEntity<OrderDTO> getOrderById(@PathVariable("orderId") Long orderId);
+    ResponseEntity<OrderDTO.Wrapper> getOrderById(@PathVariable("orderId") Long orderId);
 
     @GetExchange("/user/{email}/verify-purchase")
     ResponseEntity<Boolean> verifyPurchase(

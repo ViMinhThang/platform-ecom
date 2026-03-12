@@ -63,6 +63,15 @@ public class ReviewController {
         return ResponseEntity.ok(reviewDTO);
     }
 
+    @GetMapping("/check")
+    public ResponseEntity<ReviewDTO> checkUserReview(
+            @RequestParam Long productId,
+            HttpServletRequest request) {
+        Long userId = authContext.getUserId(request);
+        ReviewDTO reviewDTO = reviewService.getReviewByUserAndProduct(userId, productId);
+        return ResponseEntity.ok(reviewDTO); // Returns 200 with review, or 200 with null body
+    }
+
     @GetMapping("/public/product/{productId}")
     public ResponseEntity<ReviewResponse> getReviewsByProduct(
             @PathVariable Long productId,

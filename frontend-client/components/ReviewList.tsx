@@ -8,7 +8,6 @@ import { fetchProductReviews, resetReviews } from "@/lib/store/slices/reviewSlic
 import { GetReviewsParams } from "@/lib/services/review-service";
 import type { Review } from "@/types/review";
 import { StarRating } from "./ui/StarRating";
-import { ReviewForm } from "./ReviewForm";
 import { Button } from "./ui/button";
 import { useSession } from "next-auth/react";
 import { imageUrl } from "@/lib/utils/imageUrl";
@@ -87,7 +86,6 @@ export function ReviewList({ productId }: ReviewListProps) {
           <h3 className="font-semibold">
             {pagination.totalElements} đánh giá
           </h3>
-          <ReviewForm productId={productId} />
         </div>
         <Select value={`${sortBy}-${sortDir}`} onValueChange={handleSortChange}>
           <SelectTrigger className="w-[200px]">

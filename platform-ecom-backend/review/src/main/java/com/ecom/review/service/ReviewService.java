@@ -24,6 +24,8 @@ public interface ReviewService {
 
         ReviewDTO getReviewById(Long reviewId);
 
+        ReviewDTO getReviewByUserAndProduct(Long userId, Long productId);
+
         ProductReviewSummaryDTO getProductReviewSummary(Long productId);
 
 }

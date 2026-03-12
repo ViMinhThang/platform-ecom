@@ -25,16 +25,6 @@ spring:
       kafka:
         binder:
           brokers: localhost:9092
-      bindings:
-        reviewCreated-out-0:
-          destination: review-events
-          content-type: application/json
-        reviewUpdated-out-0:
-          destination: review-events
-          content-type: application/json
-        reviewDeleted-out-0:
-          destination: review-events
-          content-type: application/json
 server:
   port: 8087
 management:

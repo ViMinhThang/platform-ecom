@@ -10,11 +10,14 @@ import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Loader2, Package, ChevronRight, Truck, MapPin } from 'lucide-react';
+import { Loader2, Package, ChevronRight, Truck } from 'lucide-react';
 import { format } from 'date-fns';
 import Link from 'next/link';
 import Image from 'next/image';
 import { imageUrl } from '@/lib/utils/imageUrl';
+import { ReviewDialog } from '@/components/profile/ReviewDialog';
+import { ReviewAction } from '@/components/orders/ReviewAction';
+import { Suspense } from 'react';
 
 type OrderTab = 'all' | 'to_ship' | 'shipping' | 'to_receive' | 'completed' | 'cancelled';
 
@@ -36,16 +39,30 @@ const TAB_STATUS_MAP: Record<OrderTab, SubOrderStatus[]> = {
     cancelled: [SubOrderStatus.CANCELLED, SubOrderStatus.RETURNING, SubOrderStatus.RETURNED, SubOrderStatus.REFUNDED],
 };
 
-import { Suspense } from 'react';
-
 function OrdersPageContent() {
     const dispatch = useAppDispatch();
     const { data: session, status: authStatus } = useSession();
     const router = useRouter();
     const searchParams = useSearchParams();
 
-    const { orders, loading, page, totalPages } = useAppSelector((state) => state.orders);
+    const { orders, loading } = useAppSelector((state) => state.orders);
     const [activeTab, setActiveTab] = useState<OrderTab>((searchParams.get('tab') as OrderTab) || 'all');
+
+    // Review states
+    const [reviewDialogOpen, setReviewDialogOpen] = useState(false);
+    const [reviewProductId, setReviewProductId] = useState<number | null>(null);
+    const [reviewOrderId, setReviewOrderId] = useState<number | null>(null);
+    const [refreshCounter, setRefreshCounter] = useState(0);
+
+    const handleReviewOrderItem = (productId: number, orderId: number) => {
+        setReviewProductId(productId);
+        setReviewOrderId(orderId);
+        setReviewDialogOpen(true);
+    };
+
+    const handleReviewSuccess = () => {
+        setRefreshCounter(prev => prev + 1);
+    };
 
     useEffect(() => {
         if (authStatus === 'unauthenticated') {
@@ -123,9 +140,19 @@ function OrdersPageContent() {
                 ) : (
                     <div className="space-y-4">
                         {filteredOrders.map((order) => (
-                            <OrderCard key={order.id} order={order} />
+                            <OrderCard key={`${order.id}-${refreshCounter}`} order={order} onReview={handleReviewOrderItem} refreshTrigger={refreshCounter} />
                         ))}
                     </div>
+                )}
+                
+                {reviewProductId && reviewOrderId && (
+                    <ReviewDialog
+                        open={reviewDialogOpen}
+                        onOpenChange={setReviewDialogOpen}
+                        productId={reviewProductId}
+                        orderId={reviewOrderId}
+                        onSuccess={handleReviewSuccess}
+                    />
                 )}
             </div>
         </div>
@@ -140,20 +167,16 @@ export default function OrdersPage() {
     );
 }
 
-function OrderCard({ order }: { order: OrderGroupDTO }) {
+function OrderCard({ order, onReview, refreshTrigger }: { order: OrderGroupDTO, onReview: (productId: number, orderId: number) => void, refreshTrigger?: number }) {
     const getStatusColor = (status: SubOrderStatus) => {
         switch (status) {
-            case SubOrderStatus.DELIVERED:
-                return 'bg-green-100 text-green-800 border-green-200';
+            case SubOrderStatus.DELIVERED: return 'bg-green-100 text-green-800 border-green-200';
             case SubOrderStatus.DELIVERING:
             case SubOrderStatus.TRANSPORTING:
-            case SubOrderStatus.SHIPPED:
-                return 'bg-blue-100 text-blue-800 border-blue-200';
+            case SubOrderStatus.SHIPPED: return 'bg-blue-100 text-blue-800 border-blue-200';
             case SubOrderStatus.CANCELLED:
-            case SubOrderStatus.RETURNED:
-                return 'bg-red-100 text-red-800 border-red-200';
-            default:
-                return 'bg-yellow-100 text-yellow-800 border-yellow-200';
+            case SubOrderStatus.RETURNED: return 'bg-red-100 text-red-800 border-red-200';
+            default: return 'bg-yellow-100 text-yellow-800 border-yellow-200';
         }
     };
 
@@ -161,7 +184,6 @@ function OrderCard({ order }: { order: OrderGroupDTO }) {
         <Card className="overflow-hidden">
             {order.subOrders.map((subOrder) => (
                 <div key={subOrder.id} className="border-b last:border-b-0">
-                    {/* Seller Header */}
                     <div className="bg-zinc-50 dark:bg-zinc-800/50 px-4 py-3 flex items-center justify-between border-b">
                         <div className="flex items-center gap-3">
                             <span className="text-xs font-black uppercase tracking-wider">{subOrder.sellerName}</span>
@@ -177,7 +199,6 @@ function OrderCard({ order }: { order: OrderGroupDTO }) {
                         )}
                     </div>
 
-                    {/* Items */}
                     <div className="p-4 space-y-3">
                         {subOrder.items.map((item) => (
                             <div key={item.id} className="flex gap-4">
@@ -203,14 +224,20 @@ function OrderCard({ order }: { order: OrderGroupDTO }) {
                                     )}
                                     <p className="text-sm text-muted-foreground">x{item.quantity}</p>
                                 </div>
-                                <div className="text-right">
+                                <div className="text-right flex flex-col items-end gap-2 justify-center">
                                     <p className="font-medium">${item.totalPrice.toFixed(2)}</p>
+                                    <ReviewAction 
+                                        productId={item.productId}
+                                        orderId={order.id}
+                                        status={subOrder.status}
+                                        onReview={onReview}
+                                        refreshTrigger={refreshTrigger}
+                                    />
                                 </div>
                             </div>
                         ))}
                     </div>
 
-                    {/* Footer */}
                     <div className="px-4 py-4 border-t bg-zinc-50/50 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                         <div className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
                             {format(new Date(order.createdAt), 'dd/MM/yyyy')}

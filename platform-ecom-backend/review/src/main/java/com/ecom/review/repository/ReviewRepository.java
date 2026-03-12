@@ -31,4 +31,7 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
     java.util.List<Object[]> getRatingDistributionByProductId(@Param("productId") Long productId);
 
     boolean existsByUserIdAndProductId(Long userId, Long productId);
+
+    @Query("SELECT r.sentiment, COUNT(r) FROM Review r WHERE r.productId = :productId GROUP BY r.sentiment")
+    java.util.List<Object[]> getSentimentDistributionByProductId(@Param("productId") Long productId);
 }

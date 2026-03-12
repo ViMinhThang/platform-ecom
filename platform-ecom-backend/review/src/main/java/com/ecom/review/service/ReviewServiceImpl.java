@@ -1,5 +1,6 @@
 package com.ecom.review.service;
 
+import com.ecom.review.client.SentimentServiceClient;
 import com.ecom.review.client.OrderServiceClient;
 import com.ecom.review.client.ProductServiceClient;
 import com.ecom.review.dto.*;
@@ -11,7 +12,6 @@ import com.ecom.common.service.FileStorageService;
 import com.ecom.review.repository.ReviewRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.cloud.stream.function.StreamBridge;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -21,7 +21,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -39,8 +38,8 @@ public class ReviewServiceImpl implements ReviewService {
     private final ReviewRepository reviewRepository;
     private final OrderServiceClient orderServiceClient;
     private final ProductServiceClient productServiceClient;
+    private final SentimentServiceClient sentimentServiceClient;
     private final ModelMapper modelMapper;
-    private final StreamBridge streamBridge;
     private final FileStorageService fileStorageService;
 
     @Override
@@ -48,8 +47,12 @@ public class ReviewServiceImpl implements ReviewService {
     public ReviewDTO createReview(CreateReviewDTO createReviewDTO, MultipartFile[] images, Long userId, String email) {
         validateNoDuplicateReview(userId, createReviewDTO.getProductId());
         validateProductExists(createReviewDTO.getProductId());
-        validateOrderAndOwnership(createReviewDTO.getOrderId(), email);
-        validatePurchaseVerification(email, createReviewDTO.getProductId());
+        OrderDTO order = validateOrderAndOwnership(createReviewDTO.getOrderId(), userId);
+        
+        String finalEmail = (email != null && !email.trim().isEmpty() && !"null".equalsIgnoreCase(email)) 
+                                ? email : order.getUserEmail();
+                                
+        validatePurchaseVerification(finalEmail, createReviewDTO.getProductId());
 
         if (images != null && images.length > 0) {
             for (MultipartFile file : images) {
@@ -58,10 +61,8 @@ public class ReviewServiceImpl implements ReviewService {
             }
         }
 
-        Review review = buildReviewFromDTO(createReviewDTO, userId, email);
+        Review review = buildReviewFromDTO(createReviewDTO, userId, finalEmail);
         Review savedReview = reviewRepository.save(review);
-
-        publishReviewEvent("CREATED", savedReview);
 
         return mapToReviewDTO(savedReview);
     }
@@ -74,8 +75,6 @@ public class ReviewServiceImpl implements ReviewService {
 
         updateReviewFields(review, updateReviewDTO);
         Review updatedReview = reviewRepository.save(review);
-
-        publishReviewEvent("UPDATED", updatedReview);
 
         return mapToReviewDTO(updatedReview);
     }
@@ -94,7 +93,6 @@ public class ReviewServiceImpl implements ReviewService {
         }
 
         reviewRepository.delete(review);
-        publishReviewEvent("DELETED", review);
     }
 
     @Override
@@ -131,14 +129,24 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
+    public ReviewDTO getReviewByUserAndProduct(Long userId, Long productId) {
+        return reviewRepository.findByUserIdAndProductId(userId, productId)
+                .map(this::mapToReviewDTO)
+                .orElse(null);
+    }
+
+    @Override
     public ProductReviewSummaryDTO getProductReviewSummary(Long productId) {
         Double averageRating = reviewRepository.findAverageRatingByProductId(productId);
         Long totalReviews = reviewRepository.countByProductId(productId);
         List<Object[]> distributionData = reviewRepository.getRatingDistributionByProductId(productId);
+        List<Object[]> sentimentData = reviewRepository.getSentimentDistributionByProductId(productId);
 
         Map<Integer, Long> ratingDistribution = buildRatingDistribution(distributionData);
+        Map<String, Long> sentimentDistribution = buildSentimentDistribution(sentimentData);
 
-        return buildProductReviewSummary(productId, averageRating, totalReviews, ratingDistribution);
+        return buildProductReviewSummary(productId, averageRating, totalReviews, ratingDistribution,
+                sentimentDistribution);
     }
 
     // ==================== Private Validation Methods ====================
@@ -162,22 +170,33 @@ public class ReviewServiceImpl implements ReviewService {
         }
     }
 
-    private void validateOrderAndOwnership(Long orderId, String email) {
+    private OrderDTO validateOrderAndOwnership(Long orderId, Long userId) {
         try {
-            ResponseEntity<OrderDTO> orderResponse = orderServiceClient.getOrderById(orderId);
-            OrderDTO order = orderResponse.getBody();
+            ResponseEntity<OrderDTO.Wrapper> response = orderServiceClient.getOrderById(orderId);
+            OrderDTO.Wrapper wrapper = response.getBody();
 
-            if (order == null) {
+            if (wrapper == null || wrapper.getData() == null) {
                 throw new ResourceNotFoundException("Order", "id", orderId);
             }
 
-            if (!order.getEmail().equals(email)) {
+            OrderDTO order = wrapper.getData();
+
+            if (!order.getUserId().equals(userId)) {
                 throw new APIException("This order does not belong to you");
             }
 
-            if (!DELIVERED_STATUS.equalsIgnoreCase(order.getOrderStatus())) {
+            boolean isDelivered = DELIVERED_STATUS.equalsIgnoreCase(order.getOverallStatus())
+                    || "COMPLETED".equalsIgnoreCase(order.getOverallStatus());
+            if (order.getSubOrders() != null) {
+                isDelivered = isDelivered || order.getSubOrders().stream()
+                        .anyMatch(so -> DELIVERED_STATUS.equalsIgnoreCase(so.getStatus()));
+            }
+
+            if (!isDelivered) {
                 throw new APIException("You can only review products from delivered orders");
             }
+            
+            return order;
         } catch (APIException e) {
             throw e;
         } catch (Exception e) {
@@ -222,7 +241,20 @@ public class ReviewServiceImpl implements ReviewService {
         review.setRating(createReviewDTO.getRating());
         review.setComment(createReviewDTO.getComment());
         review.setImages(createReviewDTO.getImages());
-        review.setSentiment(calculateSentiment(createReviewDTO.getRating()));
+
+        SentimentResponse sentimentResult = analyzeSentiment(createReviewDTO.getComment(), createReviewDTO.getRating());
+
+        if (sentimentResult.getNlpScore() != null) {
+            if (createReviewDTO.getRating() >= 4 && sentimentResult.getNlpScore() <= 0.3) {
+                throw new APIException("Danh giá không hợp lệ");
+            }
+            if (createReviewDTO.getRating() <= 2 && sentimentResult.getNlpScore() >= 0.7) {
+                throw new APIException("Danh giá không hợp lệ");
+            }
+        }
+
+        review.setSentiment(sentimentResult.getSentiment());
+        review.setSentimentScore(sentimentResult.getScore());
 
         return review;
     }
@@ -230,13 +262,32 @@ public class ReviewServiceImpl implements ReviewService {
     private void updateReviewFields(Review review, UpdateReviewDTO updateReviewDTO) {
         if (updateReviewDTO.getRating() != null) {
             review.setRating(updateReviewDTO.getRating());
-            review.setSentiment(calculateSentiment(updateReviewDTO.getRating()));
         }
         if (updateReviewDTO.getComment() != null) {
             review.setComment(updateReviewDTO.getComment());
         }
         if (updateReviewDTO.getImages() != null) {
             review.setImages(updateReviewDTO.getImages());
+        }
+
+        // Re-analyze sentiment if rating or comment changed
+        if (updateReviewDTO.getRating() != null || updateReviewDTO.getComment() != null) {
+            String commentText = updateReviewDTO.getComment() != null ? updateReviewDTO.getComment()
+                    : review.getComment();
+            Integer rating = updateReviewDTO.getRating() != null ? updateReviewDTO.getRating() : review.getRating();
+            SentimentResponse sentimentResult = analyzeSentiment(commentText, rating);
+
+            if (sentimentResult.getNlpScore() != null) {
+                if (rating >= 4 && sentimentResult.getNlpScore() <= 0.3) {
+                    throw new APIException("Review is invalid");
+                }
+                if (rating <= 2 && sentimentResult.getNlpScore() >= 0.7) {
+                    throw new APIException("Review is invalid");
+                }
+            }
+
+            review.setSentiment(sentimentResult.getSentiment());
+            review.setSentimentScore(sentimentResult.getScore());
         }
     }
 
@@ -280,45 +331,64 @@ public class ReviewServiceImpl implements ReviewService {
 
     private ProductReviewSummaryDTO buildProductReviewSummary(Long productId, Double averageRating,
             Long totalReviews,
-            Map<Integer, Long> ratingDistribution) {
+            Map<Integer, Long> ratingDistribution,
+            Map<String, Long> sentimentDistribution) {
         ProductReviewSummaryDTO summary = new ProductReviewSummaryDTO();
         summary.setProductId(productId);
         summary.setAverageRating(averageRating != null ? averageRating : 0.0);
         summary.setTotalReviews(totalReviews);
         summary.setRatingDistribution(ratingDistribution);
+        summary.setSentimentDistribution(sentimentDistribution);
 
         return summary;
+    }
+
+    private Map<String, Long> buildSentimentDistribution(List<Object[]> sentimentData) {
+        Map<String, Long> sentimentDistribution = new HashMap<>();
+        sentimentDistribution.put(POSITIVE_SENTIMENT, 0L);
+        sentimentDistribution.put(NEUTRAL_SENTIMENT, 0L);
+        sentimentDistribution.put(NEGATIVE_SENTIMENT, 0L);
+
+        for (Object[] data : sentimentData) {
+            String sentiment = (String) data[0];
+            Long count = (Long) data[1];
+            sentimentDistribution.put(sentiment, count);
+        }
+
+        return sentimentDistribution;
     }
 
     private ReviewDTO mapToReviewDTO(Review review) {
         return modelMapper.map(review, ReviewDTO.class);
     }
 
-    private void publishReviewEvent(String eventType, Review review) {
+    private SentimentResponse analyzeSentiment(String comment, Integer rating) {
         try {
-            ReviewEvent event = new ReviewEvent();
-            event.setEventType(eventType);
-            event.setReviewId(review.getId());
-            event.setProductId(review.getProductId());
-            event.setUserId(review.getUserId());
-            event.setRating(review.getRating());
-            event.setTimestamp(LocalDateTime.now().toString());
-
-            streamBridge.send("reviewCreated-out-0", event);
-            System.out.println("Published review event: " + eventType + " for review " + review.getId());
+            SentimentRequest request = new SentimentRequest(comment, rating);
+            SentimentResponse response = sentimentServiceClient.analyze(request).getBody();
+            if (response != null) {
+                return response;
+            }
         } catch (Exception e) {
-            System.err.println("Failed to publish review event: " + e.getMessage());
+            System.out.println("Sentiment service unavailable, falling back to rating-based: " + e.getMessage());
         }
+        return calculateSentimentFromRating(rating);
     }
 
-    private String calculateSentiment(Integer rating) {
+    private SentimentResponse calculateSentimentFromRating(Integer rating) {
+        String sentiment;
+        double score;
         if (rating >= 4) {
-            return POSITIVE_SENTIMENT;
+            sentiment = POSITIVE_SENTIMENT;
+            score = (rating - 1) / 4.0;
         } else if (rating == 3) {
-            return NEUTRAL_SENTIMENT;
+            sentiment = NEUTRAL_SENTIMENT;
+            score = 0.5;
         } else {
-            return NEGATIVE_SENTIMENT;
+            sentiment = NEGATIVE_SENTIMENT;
+            score = (rating - 1) / 4.0;
         }
+        return new SentimentResponse(sentiment, score, null);
     }
 
 }

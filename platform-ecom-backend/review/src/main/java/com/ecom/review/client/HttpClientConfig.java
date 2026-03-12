@@ -17,7 +17,7 @@ public class HttpClientConfig {
 
     @Bean
     public OrderServiceClient orderServiceClient(RestClient.Builder restClientBuilder) {
-        return RestClientFactory.createClient(restClientBuilder, "http://order-service/api/orders",
+        return RestClientFactory.createClient(restClientBuilder, "http://order-service/api/v1/admin/orders",
                 OrderServiceClient.class);
     }
 
@@ -25,5 +25,11 @@ public class HttpClientConfig {
     public ProductServiceClient productServiceClient(RestClient.Builder restClientBuilder) {
         return RestClientFactory.createClient(restClientBuilder, "http://product-service/api/v1/products",
                 ProductServiceClient.class);
+    }
+
+    @Bean
+    public SentimentServiceClient sentimentServiceClient(RestClient.Builder restClientBuilder) {
+        return RestClientFactory.createClient(restClientBuilder, "http://sentiment-service/api/v1/sentiment",
+                SentimentServiceClient.class);
     }
 }

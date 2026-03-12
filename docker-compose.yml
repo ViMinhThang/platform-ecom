@@ -153,6 +153,22 @@ services:
     networks:
       - backend
 
+  sentiment-service:
+    build: ./sentiment-service
+    container_name: sentiment-service
+    ports:
+      - "8300:8300"
+    environment:
+      - MODEL_PATH=./models/my-sentiment-model
+      - EUREKA_SERVER=http://eureka:8761/eureka
+      - SERVICE_NAME=sentiment-service
+      - SERVICE_PORT=8300
+      - INSTANCE_HOST=sentiment-service
+    depends_on:
+      - eureka
+    networks:
+      - backend
+
 
   eureka:
     #    build: ../../eureka

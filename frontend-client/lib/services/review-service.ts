@@ -71,3 +71,30 @@ export async function createReview(
     });
 }
 
+
+export async function getUserReviews(
+    userId: number | string,
+    params: GetReviewsParams = {}
+): Promise<ReviewResponse> {
+    const searchParams = new URLSearchParams();
+    if (params.pageNumber !== undefined) searchParams.set('pageNumber', params.pageNumber.toString());
+    if (params.pageSize !== undefined) searchParams.set('pageSize', params.pageSize.toString());
+    if (params.sortBy) searchParams.set('sortBy', params.sortBy);
+    if (params.sortDir) searchParams.set('sortDir', params.sortDir);
+
+    const query = searchParams.toString();
+    const endpoint = `/v1/reviews/user/${userId}${query ? `?${query}` : ''}`;
+
+    const response = await apiClient.get<ReviewResponse>(endpoint);
+    return response.data;
+}
+
+
+export async function checkUserReview(
+    productId: number | string
+): Promise<any> {
+    const response = await apiClient.get(`/v1/reviews/check?productId=${productId}`);
+    return response.data;
+}
+
+

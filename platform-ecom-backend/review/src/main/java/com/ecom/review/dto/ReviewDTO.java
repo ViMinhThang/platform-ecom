@@ -23,6 +23,7 @@ public class ReviewDTO {
     private Integer helpfulCount;
     private Integer notHelpfulCount;
     private String sentiment;
+    private Double sentimentScore;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 }

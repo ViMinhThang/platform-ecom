@@ -4,12 +4,31 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class OrderDTO {
-    private Long orderId;
-    private String email;
-    private String orderStatus;
-    private Long addressId;
+    private Long id;
+    private Long userId;
+    private String userEmail;
+    private String overallStatus;
+    private List<SubOrderDTO> subOrders;
+
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class SubOrderDTO {
+        private String status;
+    }
+
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class Wrapper {
+        private String message;
+        private boolean success;
+        private OrderDTO data;
+    }
 }

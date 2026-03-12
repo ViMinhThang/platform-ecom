@@ -53,6 +53,9 @@ public class Review {
     @Column(nullable = false, length = 20)
     private String sentiment; // POSITIVE, NEUTRAL, NEGATIVE
 
+    @Column(name = "sentiment_score")
+    private Double sentimentScore; // 0.0 - 1.0 confidence score
+
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
