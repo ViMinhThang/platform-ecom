@@ -69,24 +69,24 @@ export function CountdownTimer({ endTime, onEnd, variant = 'banner' }: Countdown
 
     if (variant === 'card') {
         return (
-            <div className="flex gap-1 font-mono">
+            <div className="flex gap-1.5">
                 {timeLeft.days > 0 && (
-                    <div className="bg-black text-white px-2 py-1 text-center min-w-[40px]">
-                        <div className="text-lg font-black">{formatNumber(timeLeft.days)}</div>
-                        <div className="text-[8px] uppercase tracking-wider">Days</div>
+                    <div className="bg-background border border-border text-foreground px-2 py-1.5 text-center min-w-[44px] rounded-sm shadow-sm">
+                        <div className="text-lg font-bold tracking-tighter">{formatNumber(timeLeft.days)}</div>
+                        <div className="text-[8px] font-bold uppercase tracking-widest opacity-50">Ngày</div>
                     </div>
                 )}
-                <div className="bg-black text-white px-2 py-1 text-center min-w-[40px]">
-                    <div className="text-lg font-black">{formatNumber(timeLeft.hours)}</div>
-                    <div className="text-[8px] uppercase tracking-wider">Hrs</div>
+                <div className="bg-background border border-border text-foreground px-2 py-1.5 text-center min-w-[44px] rounded-sm shadow-sm">
+                    <div className="text-lg font-bold tracking-tighter">{formatNumber(timeLeft.hours)}</div>
+                    <div className="text-[8px] font-bold uppercase tracking-widest opacity-50">Giờ</div>
                 </div>
-                <div className="bg-black text-white px-2 py-1 text-center min-w-[40px]">
-                    <div className="text-lg font-black">{formatNumber(timeLeft.minutes)}</div>
-                    <div className="text-[8px] uppercase tracking-wider">Min</div>
+                <div className="bg-background border border-border text-foreground px-2 py-1.5 text-center min-w-[44px] rounded-sm shadow-sm">
+                    <div className="text-lg font-bold tracking-tighter">{formatNumber(timeLeft.minutes)}</div>
+                    <div className="text-[8px] font-bold uppercase tracking-widest opacity-50">Phút</div>
                 </div>
-                <div className="bg-primary text-white px-2 py-1 text-center min-w-[40px]">
-                    <div className="text-lg font-black">{formatNumber(timeLeft.seconds)}</div>
-                    <div className="text-[8px] uppercase tracking-wider">Sec</div>
+                <div className="bg-primary/10 border border-primary/20 text-primary px-2 py-1.5 text-center min-w-[44px] rounded-sm shadow-sm">
+                    <div className="text-lg font-bold tracking-tighter">{formatNumber(timeLeft.seconds)}</div>
+                    <div className="text-[8px] font-bold uppercase tracking-widest opacity-80">Giây</div>
                 </div>
             </div>
         );

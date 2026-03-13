@@ -58,15 +58,15 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
 
     if (loading) {
         return (
-            <div className="min-h-screen bg-zinc-50 py-12 px-4 md:px-6 font-mono">
-                <div className="max-w-[1400px] mx-auto bg-white border-2 border-black p-12 flex flex-col items-center justify-center min-h-[600px] gap-8">
-                    <div className="relative w-24 h-24">
-                        <div className="absolute inset-0 border-4 border-black/10"></div>
-                        <div className="absolute inset-0 border-4 border-black border-t-transparent animate-spin"></div>
+            <div className="min-h-screen bg-background/50 py-12 px-4 md:px-6">
+                <div className="max-w-[1400px] mx-auto bg-background border border-border rounded-sm shadow-md p-12 flex flex-col items-center justify-center min-h-[600px] gap-8">
+                    <div className="relative w-16 h-16">
+                        <div className="absolute inset-0 border-2 border-primary/10 rounded-full"></div>
+                        <div className="absolute inset-0 border-2 border-primary border-t-transparent rounded-full animate-spin"></div>
                     </div>
                     <div className="space-y-2 text-center">
-                        <p className="text-xl font-black uppercase tracking-widest">TRUY XUẤT DỮ LIỆU SẢN PHẨM...</p>
-                        <p className="text-xs text-zinc-500 uppercase tracking-tighter">PHẢN HỒI HỆ THỐNG: ĐANG XỬ LÝ [OK]</p>
+                        <p className="text-xl font-bold uppercase tracking-widest text-foreground">ĐANG TẢI SẢN PHẨM...</p>
+                        <p className="text-[10px] text-muted-foreground uppercase tracking-widest opacity-50 font-header">OCEANIC_EMERALD_STREAM</p>
                     </div>
                 </div>
             </div>
@@ -83,20 +83,20 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
         "https://placeholder.com/600";
 
     return (
-        <div className="min-h-screen bg-slate-50/50 pb-12 font-sans text-slate-900">
+        <div className="min-h-screen bg-background/50 pb-12 font-header text-foreground">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6">
                 {/* BREADCRUMBS */}
-                <div className="mb-6 flex items-center gap-2 text-sm text-slate-500">
-                    <Link href="/" className="hover:text-[#FF4F00] transition-colors">Trang Chủ</Link>
-                    <ChevronRight className="w-4 h-4" />
-                    <span className="hover:text-[#FF4F00] transition-colors cursor-pointer">{product.cate.name}</span>
-                    <ChevronRight className="w-4 h-4" />
-                    <span className="text-slate-900 font-medium truncate max-w-[500px]">{product.name}</span>
+                <div className="mb-6 flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
+                    <Link href="/" className="hover:text-primary transition-colors">Trang Chủ</Link>
+                    <ChevronRight className="w-3 h-3" />
+                    <span className="hover:text-primary transition-colors cursor-pointer">{product.cate.name}</span>
+                    <ChevronRight className="w-3 h-3" />
+                    <span className="text-foreground truncate max-w-[500px]">{product.name}</span>
                 </div>
 
                 {/* MAIN PRODUCT CARD */}
-                <div className="bg-white rounded-xl shadow-sm border border-slate-200/60 overflow-hidden mb-6">
-                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-0 lg:divide-x divide-slate-100">
+                <div className="bg-background rounded-sm shadow-md border border-border overflow-hidden mb-6">
+                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-0 lg:divide-x divide-border">
                         {/* LEFT: GALLERY */}
                         <div className="lg:col-span-5 p-6 xl:p-8">
                             <ProductGallery
@@ -124,22 +124,22 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
 
 
                     {/* PRODUCT DETAILS */}
-                    <div className="bg-white rounded-xl shadow-sm border border-slate-200/60 overflow-hidden">
-                        <div className="bg-slate-50/50 border-b border-slate-100 px-6 py-4">
-                            <h3 className="text-lg font-semibold text-slate-800">Chi Tiết Sản Phẩm</h3>
+                    <div className="bg-background rounded-sm shadow-md border border-border overflow-hidden">
+                        <div className="bg-muted/30 border-b border-border px-6 py-4">
+                            <h3 className="text-[11px] font-bold uppercase tracking-[0.2em] text-foreground">Chi Tiết Sản Phẩm</h3>
                         </div>
                         <div className="p-6 space-y-8">
                             <ProductSpecifications product={product} />
-                            <div className="prose prose-slate max-w-none">
+                            <div className="prose prose-zinc max-w-none prose-sm">
                                 <ProductDetailedDescription product={product} />
                             </div>
                         </div>
                     </div>
 
                     {/* REVIEWS */}
-                    <div className="bg-white rounded-xl shadow-sm border border-slate-200/60 overflow-hidden">
-                        <div className="bg-slate-50/50 border-b border-slate-100 px-6 py-4">
-                            <h3 className="text-lg font-semibold text-slate-800">Đánh Giá ({product.totalReviews})</h3>
+                    <div className="bg-background rounded-sm shadow-md border border-border overflow-hidden">
+                        <div className="bg-muted/30 border-b border-border px-6 py-4">
+                            <h3 className="text-[11px] font-bold uppercase tracking-[0.2em] text-foreground">Đánh Giá ({product.totalReviews})</h3>
                         </div>
                         <div className="p-6">
                             <ProductFeedback product={product} />
@@ -147,9 +147,9 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
                     </div>
 
                     {/* RELATED PRODUCTS */}
-                    <div className="bg-white rounded-xl shadow-sm border border-slate-200/60 overflow-hidden">
-                        <div className="bg-slate-50/50 border-b border-slate-100 px-6 py-4">
-                            <h3 className="text-lg font-semibold text-slate-800">Có Thể Bạn Thích</h3>
+                    <div className="bg-background rounded-sm shadow-md border border-border overflow-hidden">
+                        <div className="bg-muted/30 border-b border-border px-6 py-4">
+                            <h3 className="text-[11px] font-bold uppercase tracking-[0.2em] text-foreground">Có Thể Bạn Thích</h3>
                         </div>
                         <div className="p-6">
                             <RelatedProducts productId={product.id} />

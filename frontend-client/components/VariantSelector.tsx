@@ -26,7 +26,7 @@ export function VariantSelector({
     <div className="space-y-6">
       {sortedOptions.map((option, index) => (
         <div key={`option-${option.id}-${index}`}>
-          <h4 className="font-medium mb-3 text-sm text-muted-foreground">
+          <h4 className="text-[10px] font-bold mb-3 uppercase tracking-widest text-muted-foreground">
             {option.displayName}
           </h4>
           <div className="flex flex-wrap gap-2">
@@ -42,12 +42,12 @@ export function VariantSelector({
                     onClick={() => handleOptionSelect(option.id, value.id)}
                     disabled={!available}
                     className={cn(
-                      "px-4 py-2 rounded-md border text-sm font-medium transition-all",
+                      "px-5 py-2 rounded-sm border text-[11px] font-bold uppercase tracking-widest transition-all",
                       isSelected
-                        ? "border-black bg-black text-white ring-1 ring-[#FF4F00]"
-                        : "border-input hover:border-[#FF4F00] hover:text-[#FF4F00] hover:bg-zinc-50",
+                        ? "border-primary bg-primary/5 text-primary ring-1 ring-primary/30 shadow-sm"
+                        : "border-border bg-background hover:border-primary/50 hover:text-primary transition-colors",
                       !available &&
-                      "opacity-50 cursor-not-allowed bg-muted text-muted-foreground"
+                      "opacity-30 cursor-not-allowed grayscale"
                     )}
                   >
                     {value.displayValue}

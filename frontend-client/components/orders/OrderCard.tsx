@@ -29,8 +29,8 @@ export function OrderCard({ order }: OrderCardProps) {
     };
 
     return (
-        <Card className="overflow-hidden">
-            <div className="bg-zinc-50 dark:bg-zinc-800/50 px-6 py-4 border-b flex flex-wrap gap-4 justify-between items-center">
+        <Card className="overflow-hidden shadow-md border-none bg-white">
+            <div className="bg-emerald-50/30 px-6 py-4 border-b flex flex-wrap gap-4 justify-between items-center">
                 <div className="flex gap-6 text-sm">
                     <div>
                         <p className="text-muted-foreground mb-1">Order Placed</p>
@@ -61,7 +61,7 @@ export function OrderCard({ order }: OrderCardProps) {
             <div className="p-6 flex gap-6 items-center">
                 <div className="flex -space-x-3 overflow-hidden">
                     {previewItems.map((item) => (
-                        <div key={item.id} className="relative h-16 w-16 rounded-md border bg-white ring-2 ring-white dark:ring-zinc-950">
+                        <div key={item.id} className="relative h-16 w-16 rounded-md border bg-white ring-2 ring-white">
                             {/* Note: In a real app, we'd need item images. Assuming item has imageUrl or we fetch it */}
                             <div className="w-full h-full bg-zinc-100 flex items-center justify-center text-xs text-muted-foreground">
                                 Img
@@ -69,7 +69,7 @@ export function OrderCard({ order }: OrderCardProps) {
                         </div>
                     ))}
                     {order.subOrders.flatMap(so => so.items).length > 3 && (
-                        <div className="relative h-16 w-16 rounded-md border bg-zinc-100 ring-2 ring-white dark:ring-zinc-950 flex items-center justify-center text-xs font-medium text-muted-foreground">
+                        <div className="relative h-16 w-16 rounded-md border bg-zinc-100 ring-2 ring-white flex items-center justify-center text-xs font-medium text-muted-foreground">
                             +{order.subOrders.flatMap(so => so.items).length - 3}
                         </div>
                     )}

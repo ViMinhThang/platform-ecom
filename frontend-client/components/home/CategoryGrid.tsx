@@ -18,17 +18,17 @@ export function CategoryGrid() {
 
     return (
         <div className="container mx-auto px-4 mt-8 mb-8">
-            <div className="bg-white border-2 border-black overflow-hidden">
-                <div className="px-6 py-4 border-b-2 border-black flex items-center justify-between bg-zinc-50 font-mono">
-                    <h3 className="text-[11px] font-black uppercase tracking-[0.2em] text-black">Index_Categories</h3>
-                    <span className="text-[9px] font-bold opacity-30">SYSTEM_NODE_04</span>
+            <div className="bg-background border border-border rounded-sm overflow-hidden shadow-md">
+                <div className="px-6 py-4 border-b border-border flex items-center justify-between bg-muted/30 font-header">
+                    <h3 className="text-[11px] font-bold uppercase tracking-[0.2em] text-foreground">DANH MỤC</h3>
+                    <span className="text-[9px] font-bold opacity-30 text-primary">COLLECTION_V4</span>
                 </div>
                 <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-10">
                     {categories.slice(0, 20).map((category) => (
                         <Link
                             key={category.id}
                             href={`/category/${category.slug}`}
-                            className="group flex flex-col items-center p-6 border-r border-b border-black/5 hover:bg-black transition-all duration-300"
+                            className="group flex flex-col items-center p-6 border-r border-b border-border hover:bg-muted/50 transition-all duration-300"
                         >
                             <div className="relative w-16 h-16 mb-4 grayscale group-hover:grayscale-0 transition-all duration-500">
                                 {category.imageUrl ? (
@@ -44,7 +44,7 @@ export function CategoryGrid() {
                                     </div>
                                 )}
                             </div>
-                            <span className="text-[9px] text-center font-black uppercase tracking-widest text-zinc-400 group-hover:text-white transition-colors font-mono line-clamp-2 px-1">
+                            <span className="text-[9px] text-center font-bold uppercase tracking-widest text-muted-foreground group-hover:text-primary transition-colors font-header line-clamp-2 px-1">
                                 {category.name}
                             </span>
                         </Link>

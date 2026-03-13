@@ -120,12 +120,12 @@ export function AddressForm({ initialData, onSubmit, onCancel }: AddressFormProp
                                 }}
                                 value={field.value?.toString()}
                             >
-                                <SelectTrigger className="rounded-none border-2 border-black h-12 font-mono text-xs uppercase focus:ring-0">
+                                <SelectTrigger className="rounded-sm border-border h-12 text-[10px] font-bold uppercase tracking-widest focus:ring-primary/20 bg-background shadow-sm">
                                     <SelectValue placeholder="CHỌN TỈNH / THÀNH PHỐ" />
                                 </SelectTrigger>
-                                <SelectContent className="rounded-none border-2 border-black max-h-[300px]">
+                                <SelectContent className="rounded-sm border-border max-h-[300px] shadow-xl">
                                     {provinces.map((province) => (
-                                        <SelectItem key={province.ProvinceID} value={province.ProvinceID.toString()} className="font-mono text-xs uppercase text-zinc-600 focus:bg-zinc-100 focus:text-black">
+                                        <SelectItem key={province.ProvinceID} value={province.ProvinceID.toString()} className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground focus:bg-primary/5 focus:text-primary">
                                             {province.ProvinceName}
                                         </SelectItem>
                                     ))}
@@ -156,12 +156,12 @@ export function AddressForm({ initialData, onSubmit, onCancel }: AddressFormProp
                                 }}
                                 value={field.value ? field.value.toString() : ''}
                             >
-                                <SelectTrigger className="rounded-none border-2 border-black h-12 font-mono text-xs uppercase focus:ring-0">
+                                <SelectTrigger className="rounded-sm border-border h-12 text-[10px] font-bold uppercase tracking-widest focus:ring-primary/20 bg-background shadow-sm">
                                     <SelectValue placeholder="CHỌN QUẬN / HUYỆN" />
                                 </SelectTrigger>
-                                <SelectContent className="rounded-none border-2 border-black max-h-[300px]">
+                                <SelectContent className="rounded-sm border-border max-h-[300px] shadow-xl">
                                     {districts.map((district) => (
-                                        <SelectItem key={district.DistrictID} value={district.DistrictID.toString()} className="font-mono text-xs uppercase text-zinc-600 focus:bg-zinc-100 focus:text-black">
+                                        <SelectItem key={district.DistrictID} value={district.DistrictID.toString()} className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground focus:bg-primary/5 focus:text-primary">
                                             {district.DistrictName}
                                         </SelectItem>
                                     ))}
@@ -190,12 +190,12 @@ export function AddressForm({ initialData, onSubmit, onCancel }: AddressFormProp
                                 }}
                                 value={field.value}
                             >
-                                <SelectTrigger className="rounded-none border-2 border-black h-12 font-mono text-xs uppercase focus:ring-0">
+                                <SelectTrigger className="rounded-sm border-border h-12 text-[10px] font-bold uppercase tracking-widest focus:ring-primary/20 bg-background shadow-sm">
                                     <SelectValue placeholder="CHỌN PHƯỜNG / XÃ" />
                                 </SelectTrigger>
-                                <SelectContent className="rounded-none border-2 border-black max-h-[300px]">
+                                <SelectContent className="rounded-sm border-border max-h-[300px] shadow-xl">
                                     {wards.map((ward) => (
-                                        <SelectItem key={ward.WardCode} value={ward.WardCode} className="font-mono text-xs uppercase text-zinc-600 focus:bg-zinc-100 focus:text-black">
+                                        <SelectItem key={ward.WardCode} value={ward.WardCode} className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground focus:bg-primary/5 focus:text-primary">
                                             {ward.WardName}
                                         </SelectItem>
                                     ))}
@@ -214,8 +214,8 @@ export function AddressForm({ initialData, onSubmit, onCancel }: AddressFormProp
                 id="street"
                 registration={form.register('street')}
                 error={form.formState.errors.street}
-                placeholder="VÍ DỤ: 123 NGUYỄN HUỆ"
-                className="font-mono text-xs uppercase"
+                placeholder="Ví dụ: 123 Nguyễn Huệ"
+                className="text-[10px] font-bold uppercase tracking-widest"
             />
 
             <FormField
@@ -223,8 +223,8 @@ export function AddressForm({ initialData, onSubmit, onCancel }: AddressFormProp
                 id="buildingName"
                 registration={form.register('buildingName')}
                 error={form.formState.errors.buildingName}
-                placeholder="VÍ DỤ: LANDMARK 81, CĂN HỘ 1204"
-                className="font-mono text-xs uppercase"
+                placeholder="Ví dụ: Landmark 81, căn hộ 1204"
+                className="text-[10px] font-bold uppercase tracking-widest"
             />
 
             <FormCheckbox
@@ -234,12 +234,12 @@ export function AddressForm({ initialData, onSubmit, onCancel }: AddressFormProp
                 control={form.control}
             />
 
-            <div className="flex justify-end space-x-0 border-t-2 border-dashed border-zinc-200 pt-6 gap-4">
-                <Button type="button" variant="ghost" onClick={onCancel} disabled={isSubmitting} className="rounded-none font-bold uppercase tracking-wider hover:bg-zinc-100">
+            <div className="flex justify-end pt-8 border-t border-dashed border-border mt-8 gap-4">
+                <Button type="button" variant="ghost" onClick={onCancel} disabled={isSubmitting} className="rounded-sm text-[10px] font-bold uppercase tracking-widest transition-all">
                     HỦY BỎ
                 </Button>
-                <Button type="submit" disabled={isSubmitting} className="rounded-none bg-black text-white hover:bg-[#FF4400] font-black uppercase tracking-wider px-8">
-                    {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                <Button type="submit" disabled={isSubmitting} className="rounded-sm shadow-lg shadow-primary/10 text-[11px] font-bold uppercase tracking-widest px-10 h-12 transition-all">
+                    {isSubmitting && <Loader2 className="mr-3 h-4 w-4 animate-spin" />}
                     LƯU ĐỊA CHỈ
                 </Button>
             </div>

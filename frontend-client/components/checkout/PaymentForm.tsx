@@ -73,30 +73,32 @@ export function PaymentForm() {
 
     return (
         <form id="payment-form" onSubmit={handleSubmit} className="space-y-10">
-            <div className="space-y-6">
-                <div className="flex items-center gap-3 border-b pb-4">
-                    <CheckCircle2 className="h-5 w-5 text-green-500" />
-                    <p className="text-sm font-bold text-zinc-700 uppercase tracking-widest">Thông tin thẻ tín dụng / Ghi nợ</p>
+            <div className="space-y-8">
+                <div className="flex items-center gap-3 border-b border-border pb-6">
+                    <div className="bg-primary/10 p-2 rounded-sm text-primary">
+                        <CheckCircle2 className="h-5 w-5" />
+                    </div>
+                    <p className="text-[11px] font-bold text-foreground uppercase tracking-[0.2em]">Thông tin thẻ tín dụng / Ghi nợ</p>
                 </div>
 
-                <div className="bg-zinc-50/50 p-6 rounded-xl border border-zinc-100">
+                <div className="bg-muted/10 p-8 rounded-sm border border-border shadow-inner">
                     <PaymentElement id="payment-element" options={{ layout: "tabs" }} />
                 </div>
             </div>
 
             {message && (
-                <Alert variant={message.includes("succeeded") ? "default" : "destructive"} className="rounded-xl">
+                <Alert variant={message.includes("succeeded") ? "default" : "destructive"} className="rounded-sm border border-border">
                     {message.includes("succeeded") ? <CheckCircle2 className="h-4 w-4" /> : <AlertCircle className="h-4 w-4" />}
-                    <AlertTitle className="font-bold">{message.includes("succeeded") ? "Thành công" : "Thông báo lỗi"}</AlertTitle>
-                    <AlertDescription className="text-zinc-600 font-medium">{message}</AlertDescription>
+                    <AlertTitle className="text-[10px] font-bold uppercase tracking-widest">{message.includes("succeeded") ? "Thành công" : "Thông báo lỗi"}</AlertTitle>
+                    <AlertDescription className="text-muted-foreground text-xs font-medium">{message}</AlertDescription>
                 </Alert>
             )}
 
-            <div className="space-y-4">
+            <div className="space-y-6">
                 <Button
                     disabled={isLoading || !stripe || !elements}
                     id="submit"
-                    className="w-full rounded-none h-14 font-black text-base uppercase tracking-[0.2em] shadow-xl shadow-primary/25 hover:shadow-primary/40 transition-all active:scale-[0.98]"
+                    className="w-full rounded-sm h-14 font-bold text-[11px] uppercase tracking-[0.25em] shadow-lg shadow-primary/10 hover:shadow-primary/20 transition-all active:scale-[0.98]"
                     size="lg"
                 >
                     {isLoading ? (
@@ -109,7 +111,7 @@ export function PaymentForm() {
                     )}
                 </Button>
 
-                <p className="text-[10px] text-center text-zinc-400 font-medium px-8 leading-relaxed">
+                <p className="text-[9px] text-center text-muted-foreground font-bold uppercase tracking-widest px-8 leading-relaxed opacity-50">
                     Thông tin thanh toán của bạn được mã hóa và xử lý an toàn bởi Stripe. Chúng tôi không bao giờ lưu trữ thông tin thẻ của bạn.
                 </p>
             </div>

@@ -19,7 +19,7 @@ export const HomeBanner = () => {
         <div className="container mx-auto px-4 mt-6">
             <div className="flex gap-2 h-[200px] md:h-[400px]">
                 {/* Center: Main Carousel */}
-                <div className="flex-[2] min-w-0 h-full relative group border-2 border-black">
+                <div className="flex-[2] min-w-0 h-full relative group border border-border rounded-sm overflow-hidden shadow-md">
                     <Carousel
                         plugins={[plugin.current]}
                         className="w-full h-full"
@@ -43,18 +43,18 @@ export const HomeBanner = () => {
                                 </CarouselItem>
                             ))}
                         </CarouselContent>
-                        <CarouselPrevious className="left-4 bg-black text-white border-white/20 opacity-0 group-hover:opacity-100 transition-all" />
-                        <CarouselNext className="right-4 bg-black text-white border-white/20 opacity-0 group-hover:opacity-100 transition-all" />
+                        <CarouselPrevious className="left-4 bg-background/80 backdrop-blur-sm text-primary border-primary/20 opacity-0 group-hover:opacity-100 transition-all shadow-md hover:bg-primary hover:text-white" />
+                        <CarouselNext className="right-4 bg-background/80 backdrop-blur-sm text-primary border-primary/20 opacity-0 group-hover:opacity-100 transition-all shadow-md hover:bg-primary hover:text-white" />
                     </Carousel>
                 </div>
 
                 {/* Right: Stacked Banners (Hidden on tablet/mobile) */}
                 <div className="hidden xl:flex flex-1 flex-col gap-2 h-full">
-                    <div className="relative flex-1 w-full bg-black border-2 border-black group overflow-hidden">
-                        <Image src="/banner-2.jpg" alt="Promo 1" fill className="object-cover opacity-90 group-hover:scale-105 transition-transform duration-700" />
+                    <div className="relative flex-1 w-full bg-muted border border-border rounded-sm group overflow-hidden shadow-sm">
+                        <Image src="/banner-2.jpg" alt="Promo 1" fill className="object-cover group-hover:scale-105 transition-transform duration-700" />
                     </div>
-                    <div className="relative flex-1 w-full bg-black border-2 border-black group overflow-hidden">
-                        <Image src="/banner-3.jpg" alt="Promo 2" fill className="object-cover opacity-90 group-hover:scale-105 transition-transform duration-700" />
+                    <div className="relative flex-1 w-full bg-muted border border-border rounded-sm group overflow-hidden shadow-sm">
+                        <Image src="/banner-3.jpg" alt="Promo 2" fill className="object-cover group-hover:scale-105 transition-transform duration-700" />
                     </div>
                 </div>
             </div>

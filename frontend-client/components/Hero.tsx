@@ -73,7 +73,7 @@ export function Hero() {
                 {/* Content */}
                 <div className="relative z-20 container mx-auto h-full px-6 flex flex-col justify-center items-start">
                   <div className="max-w-3xl animate-in fade-in slide-in-from-left-4 duration-700">
-                    <div className="inline-flex items-center px-3 py-1 mb-6 rounded-none bg-primary/20 border border-primary/30">
+                    <div className="inline-flex items-center px-4 py-1.5 mb-6 rounded-sm bg-primary/20 border border-primary/30 shadow-sm">
                       <span className="text-[10px] font-bold tracking-widest text-primary uppercase">
                         {slide.badge}
                       </span>
@@ -94,14 +94,14 @@ export function Hero() {
                     <div className="flex flex-wrap gap-4">
                       <Button
                         size="lg"
-                        className="h-14 px-10 text-xs font-black uppercase tracking-widest rounded-none transition-all"
+                        className="h-14 px-10 text-[11px] font-bold uppercase tracking-[0.2em] rounded-sm transition-all shadow-xl shadow-primary/20"
                       >
                         {slide.buttonText}
                       </Button>
                       <Button
                         size="lg"
                         variant="outline"
-                        className="h-14 px-10 text-xs font-black uppercase tracking-widest border-white/20 text-white rounded-none bg-white/5 hover:bg-white/10"
+                        className="h-14 px-10 text-[11px] font-bold uppercase tracking-[0.2em] border-white/30 text-white rounded-sm bg-white/10 backdrop-blur-sm hover:bg-white/20 transition-all"
                       >
                         Xem ưu đãi
                       </Button>
@@ -115,8 +115,8 @@ export function Hero() {
 
         {/* Navigation - hidden on small screens */}
         <div className="hidden md:block">
-          <CarouselPrevious className="left-8 bg-black/40 border-none text-white hover:bg-black/60 hover:text-white h-12 w-12 rounded-none" />
-          <CarouselNext className="right-8 bg-black/40 border-none text-white hover:bg-black/60 hover:text-white h-12 w-12 rounded-none" />
+          <CarouselPrevious className="left-8 bg-white/10 backdrop-blur-md border border-white/20 text-white hover:bg-primary hover:border-primary h-12 w-12 rounded-sm transition-all" />
+          <CarouselNext className="right-8 bg-white/10 backdrop-blur-md border border-white/20 text-white hover:bg-primary hover:border-primary h-12 w-12 rounded-sm transition-all" />
         </div>
 
         {/* Custom Progress/Indicators could go here */}

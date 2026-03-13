@@ -17,7 +17,7 @@ export const useCheckout = () => {
     const dispatch = useAppDispatch();
     const checkout = useAppSelector((state) => state.checkout);
     const { currentOrder, checkoutSession, loading, error } = useAppSelector((state) => state.orders);
-    const { appliedVoucherCode } = useAppSelector((state) => state.promotion);
+    const { appliedVoucherCodes } = useAppSelector((state) => state.promotion);
 
     const startCheckout = useCallback(async () => {
         if (!checkout.selectedAddressId) {
@@ -30,7 +30,7 @@ export const useCheckout = () => {
         const request: CreateOrderRequest = {
             addressId: checkout.selectedAddressId,
             paymentProvider: checkout.paymentProvider,
-            promoCode: appliedVoucherCode || undefined,
+            promoCode: appliedVoucherCodes[0] || undefined,
             idempotencyKey: `checkout-${Date.now()}-${uuidv4()}`,
             shippingFee: checkout.shippingFee
         };

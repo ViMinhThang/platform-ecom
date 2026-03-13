@@ -73,19 +73,19 @@ export function RegisterForm({ className, ...props }: RegisterFormProps) {
                             control={form.control}
                             name="username"
                             render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel className="text-xs font-black uppercase tracking-widest">Tên Định Danh</FormLabel>
+                                <FormItem className="space-y-3">
+                                    <FormLabel className="text-[10px] font-bold uppercase tracking-[0.2em] text-foreground">Tên Định Danh</FormLabel>
                                     <FormControl>
                                         <Input
-                                            placeholder="username"
+                                            placeholder="Tên đăng nhập mới"
                                             autoCapitalize="none"
                                             autoCorrect="off"
                                             disabled={loading}
-                                            className="rounded-none border-2 border-black focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-black font-mono text-sm h-12"
+                                            className="rounded-sm border-border focus-visible:ring-primary/20 focus-visible:border-primary text-[11px] font-bold uppercase tracking-widest h-12 shadow-sm"
                                             {...field}
                                         />
                                     </FormControl>
-                                    <FormMessage className="font-mono text-xs text-red-600" />
+                                    <FormMessage className="text-[10px] font-bold text-red-500 uppercase tracking-widest" />
                                 </FormItem>
                             )}
                         />
@@ -93,8 +93,8 @@ export function RegisterForm({ className, ...props }: RegisterFormProps) {
                             control={form.control}
                             name="email"
                             render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel className="text-xs font-black uppercase tracking-widest">Email Liên Hệ</FormLabel>
+                                <FormItem className="space-y-3">
+                                    <FormLabel className="text-[10px] font-bold uppercase tracking-[0.2em] text-foreground">Email Liên Hệ</FormLabel>
                                     <FormControl>
                                         <Input
                                             placeholder="name@example.com"
@@ -103,11 +103,11 @@ export function RegisterForm({ className, ...props }: RegisterFormProps) {
                                             autoComplete="email"
                                             autoCorrect="off"
                                             disabled={loading}
-                                            className="rounded-none border-2 border-black focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-black font-mono text-sm h-12"
+                                            className="rounded-sm border-border focus-visible:ring-primary/20 focus-visible:border-primary text-[11px] font-bold uppercase tracking-widest h-12 shadow-sm"
                                             {...field}
                                         />
                                     </FormControl>
-                                    <FormMessage className="font-mono text-xs text-red-600" />
+                                    <FormMessage className="text-[10px] font-bold text-red-500 uppercase tracking-widest" />
                                 </FormItem>
                             )}
                         />
@@ -115,8 +115,8 @@ export function RegisterForm({ className, ...props }: RegisterFormProps) {
                             control={form.control}
                             name="password"
                             render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel className="text-xs font-black uppercase tracking-widest">Mật Khẩu Bảo Mật</FormLabel>
+                                <FormItem className="space-y-3">
+                                    <FormLabel className="text-[10px] font-bold uppercase tracking-[0.15em] text-foreground">Mật Khẩu Bảo Mật</FormLabel>
                                     <FormControl>
                                         <Input
                                             placeholder="••••••••"
@@ -124,17 +124,17 @@ export function RegisterForm({ className, ...props }: RegisterFormProps) {
                                             autoCapitalize="none"
                                             autoComplete="new-password"
                                             disabled={loading}
-                                            className="rounded-none border-2 border-black focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-black font-mono text-sm h-12"
+                                            className="rounded-sm border-border focus-visible:ring-primary/20 focus-visible:border-primary h-12 shadow-sm"
                                             {...field}
                                         />
                                     </FormControl>
-                                    <FormMessage className="font-mono text-xs text-red-600" />
+                                    <FormMessage className="text-[10px] font-bold text-red-500 uppercase tracking-widest" />
                                 </FormItem>
                             )}
                         />
-                        <Button disabled={loading} className="rounded-none h-12 bg-black text-white hover:bg-black/80 font-black uppercase tracking-widest transition-all">
+                        <Button disabled={loading} className="rounded-sm h-12 px-10 shadow-lg shadow-primary/10 text-[11px] font-bold uppercase tracking-[0.2em] transition-all">
                             {loading && (
-                                <span className="mr-2 h-4 w-4 animate-spin border-2 border-white border-t-transparent rounded-full" />
+                                <span className="mr-3 h-4 w-4 animate-spin border-2 border-primary-foreground border-t-transparent rounded-full" />
                             )}
                             {loading ? "ĐANG KHỞI TẠO..." : "XÁC NHẬN ĐĂNG KÝ"}
                         </Button>

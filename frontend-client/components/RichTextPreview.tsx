@@ -11,7 +11,7 @@ export const RichTextPreview = ({ content, className }: RichTextPreviewProps) =>
     return (
         <div
             className={cn(
-                'rich-text-content prose prose-sm dark:prose-invert max-w-none',
+                'rich-text-content prose prose-sm max-w-none',
                 'p-2 sm:p-4 rounded-none',
                 '[&_img]:rounded-none [&_img]:mx-auto [&_img]:my-8 [&_img]:border-none',
                 '[&_h1]:text-2xl [&_h1]:font-bold [&_h1]:mt-8 [&_h1]:mb-4',

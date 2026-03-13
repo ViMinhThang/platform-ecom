@@ -88,22 +88,22 @@ export const SearchHeader = () => {
     };
 
     return (
-        <div className="w-full bg-black text-white py-6 sticky top-0 z-50 border-b-2 border-primary/20">
+        <div className="w-full bg-background/80 backdrop-blur-md text-foreground py-4 sticky top-0 z-50 shadow-md">
             <div className="container mx-auto px-4 flex items-center gap-8 md:gap-16">
                 {/* Logo */}
                 <Link href="/" className="shrink-0 flex items-center gap-3 group">
-                    <div className="bg-primary text-white p-2 shrink-0">
+                    <div className="bg-primary text-white p-2 shrink-0 rounded-sm shadow-sm">
                         <ShoppingCartsIcon className="h-8 w-8" />
                     </div>
                     <div className="hidden lg:flex flex-col -space-y-1">
                         <span className="font-black text-3xl tracking-tighter uppercase leading-none group-hover:tracking-normal transition-all duration-300">ACME</span>
-                        <span className="text-[10px] font-bold tracking-[0.1em] opacity-40">MUA SẮM TRỰC TUYẾN</span>
+                        <span className="text-[10px] font-bold tracking-[0.1em] text-muted-foreground uppercase">MUA SẮM TRỰC TUYẾN</span>
                     </div>
                 </Link>
 
                 {/* Search Bar */}
                 <div className="flex-1 max-w-4xl relative" ref={searchContainerRef}>
-                    <div className="relative flex bg-white ring-2 ring-white/10 focus-within:ring-primary transition-all">
+                    <div className="relative flex bg-muted/30 border border-border focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/20 transition-all rounded-sm overflow-hidden shadow-sm">
                         <input
                             type="text"
                             placeholder="Tìm tên sản phẩm hoặc mã hàng..."
@@ -119,9 +119,9 @@ export const SearchHeader = () => {
                         />
                         <button
                             onClick={handleSearch}
-                            className="px-8 bg-primary hover:bg-primary/90 text-white transition-colors flex items-center justify-center font-black uppercase tracking-widest text-xs"
+                            className="px-8 bg-primary hover:bg-primary/90 text-white transition-colors flex items-center justify-center font-bold uppercase tracking-widest text-xs"
                         >
-                            <Search className="h-5 w-5 mr-2" />
+                            <Search className="h-4 w-4 mr-2" />
                             <span className="hidden sm:inline">Tìm kiếm</span>
                         </button>
                     </div>
@@ -161,13 +161,13 @@ export const SearchHeader = () => {
                     )}
 
                     {/* Quick Search Tags */}
-                    <div className="hidden md:flex items-center gap-4 mt-2 text-[10px] text-white/40 font-bold uppercase tracking-widest overflow-hidden whitespace-nowrap">
-                        <span className="text-primary font-black">Xu hướng:</span>
+                    <div className="hidden md:flex items-center gap-4 mt-2 text-[10px] text-muted-foreground font-bold uppercase tracking-widest overflow-hidden whitespace-nowrap">
+                        <span className="text-primary/70 font-black">Xu hướng:</span>
                         {['Điện tử', 'Phụ kiện', 'Thời trang', 'Đồ gia dụng', 'Dụng cụ'].map((tag) => (
                             <button
                                 key={tag}
                                 onClick={() => router.push(`/products?search=${encodeURIComponent(tag)}`)}
-                                className="hover:text-white transition-colors"
+                                className="hover:text-primary transition-colors"
                             >
                                 {tag}
                             </button>
@@ -178,8 +178,8 @@ export const SearchHeader = () => {
                 {/* Cart & Actions */}
                 <div className="flex items-center gap-8 shrink-0">
                     <Link href="/cart" className="relative group">
-                        <div className="p-2 border border-white/10 group-hover:border-primary transition-colors">
-                            <ShoppingCart className="h-6 w-6" />
+                        <div className="p-2 border border-border group-hover:border-primary group-hover:bg-primary/5 transition-all rounded-sm">
+                            <ShoppingCart className="h-5 w-5" />
                         </div>
                         {cartItemCount > 0 && (
                             <Badge className="absolute -right-2 -top-2 h-5 min-w-[20px] px-1 flex items-center justify-center text-[10px] font-black bg-primary text-white border-none">

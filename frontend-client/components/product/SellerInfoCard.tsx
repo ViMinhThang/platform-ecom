@@ -76,8 +76,8 @@ export function SellerInfoCard({
     }
 
     return (
-        <div className="flex items-start gap-4 p-4 border border-zinc-100 rounded-lg">
-            <div className="w-12 h-12 rounded-full bg-zinc-100 overflow-hidden relative shrink-0">
+        <div className="flex items-start gap-4 p-4 border border-border rounded-sm bg-background shadow-sm">
+            <div className="w-12 h-12 rounded-full bg-muted overflow-hidden relative shrink-0 border border-border shadow-inner">
                 {sellerImage ? (
                     <Image
                         src={imageUrl.avatar(sellerImage)}
@@ -95,24 +95,24 @@ export function SellerInfoCard({
             <div className="flex-1 min-w-0">
                 <div className="flex justify-between items-start">
                     <div>
-                        <p className="font-medium text-sm text-black">{sellerName}</p>
-                        <p className="text-xs text-zinc-500 mt-0.5">Online vừa xong</p>
+                        <p className="font-bold text-[11px] uppercase tracking-widest text-foreground">{sellerName}</p>
+                        <p className="text-[9px] font-bold uppercase tracking-widest text-muted-foreground mt-0.5 opacity-50">Online vừa xong</p>
                     </div>
                     <Link href={`/seller/${sellerId}`}>
-                        <Button variant="ghost" size="sm" className="h-8 px-3 text-xs font-normal hover:bg-zinc-50">
+                        <Button variant="ghost" size="sm" className="h-8 px-3 text-[10px] font-bold uppercase tracking-widest text-primary hover:bg-primary/5 hover:text-primary rounded-sm transition-colors">
                             Xem Shop
                         </Button>
                     </Link>
                 </div>
 
-                <div className="flex items-center gap-4 mt-3 pt-3 border-t border-zinc-50">
-                    <div className="flex gap-1 text-xs">
-                        <span className="text-zinc-500">Đánh giá:</span>
-                        <span className="font-medium">4.9/5</span>
+                <div className="flex items-center gap-4 mt-3 pt-3 border-t border-border/50">
+                    <div className="flex gap-1 text-[9px] font-bold uppercase tracking-widest">
+                        <span className="text-muted-foreground opacity-60">Đánh giá:</span>
+                        <span className="text-primary">4.9/5</span>
                     </div>
-                    <div className="flex gap-1 text-xs">
-                        <span className="text-zinc-500">Sản phẩm:</span>
-                        <span className="font-medium">{totalSold || 150}</span>
+                    <div className="flex gap-1 text-[9px] font-bold uppercase tracking-widest">
+                        <span className="text-muted-foreground opacity-60">Sản phẩm:</span>
+                        <span className="text-foreground">{totalSold || 150}</span>
                     </div>
                 </div>
             </div>

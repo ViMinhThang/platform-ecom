@@ -32,6 +32,8 @@ export interface TrackingEvent {
     price?: number;
     metadata?: Record<string, any>;
     timestamp?: number;
+    userId?: number;
+    sessionId?: string;
 }
 
 class AnalyticsService {

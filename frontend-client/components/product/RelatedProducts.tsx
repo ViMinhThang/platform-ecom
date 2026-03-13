@@ -42,7 +42,7 @@ export const RelatedProducts = ({ productId }: RelatedProductsProps) => {
         return (
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
                 {[...Array(6)].map((_, i) => (
-                    <div key={i} className="aspect-[3/4] bg-slate-100 animate-pulse rounded-lg" />
+                    <div key={i} className="aspect-[3/4] bg-muted animate-pulse rounded-sm" />
                 ))}
             </div>
         );

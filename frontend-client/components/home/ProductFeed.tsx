@@ -44,22 +44,22 @@ export function ProductFeed() {
     return (
         <div className="container mx-auto px-4 mb-20">
             {/* Industrial Tab Header */}
-            <div className="sticky top-[100px] z-40 bg-white border-2 border-black mb-8">
-                <div className="flex border-b border-black">
+            <div className="sticky top-[100px] z-40 bg-background/80 backdrop-blur-md mb-8">
+                <div className="flex border border-border rounded-sm overflow-hidden shadow-sm">
                     <button
                         onClick={() => setActiveTab('daily')}
-                        className={`flex-1 px-6 py-4 text-[11px] font-black uppercase tracking-[0.2em] transition-all ${activeTab === 'daily'
-                            ? 'bg-black text-white'
-                            : 'bg-white text-zinc-400 hover:text-black'
+                        className={`flex-1 px-6 py-4 text-[10px] font-bold uppercase tracking-[0.2em] transition-all ${activeTab === 'daily'
+                            ? 'bg-primary text-primary-foreground'
+                            : 'bg-transparent text-muted-foreground hover:bg-primary/5 hover:text-primary'
                             }`}
                     >
                         Gợi ý hàng ngày
                     </button>
                     <button
                         onClick={() => setActiveTab('personalized')}
-                        className={`flex-1 px-6 py-4 text-[11px] font-black uppercase tracking-[0.2em] transition-all border-l border-black ${activeTab === 'personalized'
-                            ? 'bg-black text-white'
-                            : 'bg-white text-zinc-400 hover:text-black'
+                        className={`flex-1 px-6 py-4 text-[10px] font-bold uppercase tracking-[0.2em] transition-all border-l border-border ${activeTab === 'personalized'
+                            ? 'bg-primary text-primary-foreground'
+                            : 'bg-transparent text-muted-foreground hover:bg-primary/5 hover:text-primary'
                             }`}
                     >
                         Dành riêng cho bạn
@@ -116,7 +116,7 @@ export function ProductFeed() {
             </div>
 
             <div className="flex justify-center mt-12">
-                <Button className="px-12 py-6 rounded-none border-2 border-black bg-white text-black hover:bg-black hover:text-white font-black uppercase tracking-[0.2em] text-[11px] transition-all">
+                <Button className="px-12 py-6 rounded-sm border border-primary/20 bg-background text-primary hover:bg-primary hover:text-primary-foreground font-bold uppercase tracking-[0.2em] text-[10px] transition-all shadow-sm">
                     Xem thêm sản phẩm
                 </Button>
             </div>

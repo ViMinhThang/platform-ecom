@@ -1,0 +1,43 @@
+spring:
+  application:
+    name: notification-service
+  mail:
+    host: ${SMTP_HOST:localhost}
+    port: ${SMTP_PORT:587}
+    username: ${SMTP_USERNAME}
+    password: ${SMTP_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+  cloud:
+    stream:
+      default-binder: kafka
+      bindings:
+        orderCreatedConsumer-in-0:
+          destination: order-created-topic
+          group: notification-group
+          content-type: application/json
+      kafka:
+        binder:
+          brokers: localhost:9093
+
+server:
+  port: 8090
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+    register-with-eureka: true
+    fetch-registry: true
+  instance:
+    preferIpAddress: true
+
+logging:
+  file:
+    name: logs/${spring.application.name}.log
+  level:
+    com.ecom.notification: DEBUG

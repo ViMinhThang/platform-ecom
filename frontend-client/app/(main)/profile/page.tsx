@@ -68,14 +68,14 @@ function ProfilePageContent() {
             case 'addresses':
                 return (
                     <div>
-                        <div className="mb-8 border-b-2 border-black pb-4 flex justify-between items-end">
+                        <div className="mb-12 border-b border-border pb-8 flex justify-between items-end">
                             <div>
-                                <h2 className="text-2xl font-black uppercase tracking-tight">Sổ địa chỉ</h2>
-                                <p className="text-sm font-mono text-zinc-500 mt-1">
+                                <h2 className="text-3xl font-bold uppercase tracking-tighter text-foreground">Sổ <span className="text-primary italic">địa chỉ</span></h2>
+                                <p className="text-[10px] font-bold text-muted-foreground mt-3 uppercase tracking-[0.2em] opacity-60">
                                     QUẢN LÝ ĐỊA CHỈ GIAO HÀNG (TỐI ĐA 5)
                                 </p>
                             </div>
-                            <div className="hidden sm:block font-mono text-xs bg-zinc-100 px-2 py-1">ADDR_MGR_v1.0</div>
+                            <div className="hidden sm:block text-[9px] font-bold bg-primary/5 text-primary px-3 py-1 rounded-sm border border-primary/10 tracking-widest shadow-sm">ADDR_MGR_v2.0</div>
                         </div>
                         <AddressManager
                             addresses={addresses}
@@ -87,14 +87,14 @@ function ProfilePageContent() {
             default:
                 return (
                     <div>
-                        <div className="mb-8 border-b-2 border-black pb-4 flex justify-between items-end">
+                        <div className="mb-12 border-b border-border pb-8 flex justify-between items-end">
                             <div>
-                                <h2 className="text-2xl font-black uppercase tracking-tight">Hồ sơ cá nhân</h2>
-                                <p className="text-sm font-mono text-zinc-500 mt-1">
+                                <h2 className="text-3xl font-bold uppercase tracking-tighter text-foreground">Hồ sơ <span className="text-primary italic">cá nhân</span></h2>
+                                <p className="text-[10px] font-bold text-muted-foreground mt-3 uppercase tracking-[0.2em] opacity-60">
                                     CẬP NHẬT THÔNG TIN ĐỊNH DANH
                                 </p>
                             </div>
-                            <div className="hidden sm:block font-mono text-xs bg-zinc-100 px-2 py-1">ID_PROFILE_v2.0</div>
+                            <div className="hidden sm:block text-[9px] font-bold bg-primary/5 text-primary px-3 py-1 rounded-sm border border-primary/10 tracking-widest shadow-sm">ID_PROFILE_v3.0</div>
                         </div>
                         <ProfileInfoForm user={user} onUpdate={handleProfileUpdate} />
                     </div>
@@ -104,8 +104,8 @@ function ProfilePageContent() {
 
     return (
         <ProfileLayout>
-            <div className="mb-6 lg:hidden">
-                <h1 className="text-xl font-black uppercase tracking-tight">
+            <div className="mb-8 lg:hidden">
+                <h1 className="text-2xl font-bold uppercase tracking-tighter text-foreground">
                     {currentTab === 'profile' && 'THÔNG TIN CÁ NHÂN'}
                     {currentTab === 'addresses' && 'SỔ ĐỊA CHỈ'}
                 </h1>

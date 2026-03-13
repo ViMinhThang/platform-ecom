@@ -8,6 +8,7 @@ import { resetCheckout } from "@/lib/store/slices/checkoutSlice";
 import { Button } from "@/components/ui/button";
 import { CheckCircle2, Package, Loader2, ArrowRight } from "lucide-react";
 import Link from "next/link";
+import { formatCurrency } from "@/lib/utils/formatCurrency";
 
 import { Suspense } from "react";
 
@@ -41,56 +42,60 @@ function CheckoutSuccessContent() {
             <div className="text-center space-y-6">
                 {/* Success Icon */}
                 <div className="flex justify-center">
-                    <div className="p-4 rounded-full bg-green-100 dark:bg-green-900/30">
-                        <CheckCircle2 className="h-16 w-16 text-green-600" />
+                    <div className="p-6 rounded-sm bg-primary/10 shadow-inner border border-primary/20">
+                        <CheckCircle2 className="h-12 w-12 text-primary" />
                     </div>
                 </div>
 
                 {/* Title */}
-                <div className="space-y-2">
-                    <h1 className="text-3xl font-bold">Payment Successful!</h1>
-                    <p className="text-muted-foreground">
-                        Thank you for your purchase. Your order has been confirmed.
+                <div className="space-y-3">
+                    <h1 className="text-3xl font-bold uppercase tracking-widest text-foreground">Thanh toán <span className="text-primary italic">thành công</span></h1>
+                    <p className="text-[10px] text-muted-foreground uppercase font-bold tracking-[0.2em] opacity-60">
+                        Cảm ơn bạn đã mua hàng. Đơn hàng của bạn đã được xác nhận.
                     </p>
                 </div>
 
                 {/* Order Details */}
                 {currentOrder && (
-                    <div className="bg-zinc-50 dark:bg-zinc-900 rounded-lg p-6 text-left space-y-4">
-                        <div className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
-                            <Package className="h-4 w-4" />
-                            Order Details
+                    <div className="bg-background border border-border rounded-sm p-8 text-left space-y-6 shadow-lg relative overflow-hidden">
+                        <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-bl-full -mr-16 -mt-16" />
+                        
+                        <div className="flex items-center gap-2 text-[9px] font-bold text-muted-foreground uppercase tracking-[0.2em]">
+                            <Package className="h-3 w-3" />
+                            Chi tiết đơn hàng
                         </div>
 
-                        <div className="space-y-3">
-                            <div className="flex justify-between">
-                                <span className="text-muted-foreground">Order Number</span>
-                                <span className="font-medium">{currentOrder.groupNumber}</span>
+                        <div className="space-y-4">
+                            <div className="flex justify-between items-center text-[10px] uppercase font-bold tracking-widest">
+                                <span className="text-muted-foreground">Mã đơn hàng</span>
+                                <span className="text-foreground">{currentOrder.groupNumber}</span>
                             </div>
-                            <div className="flex justify-between">
-                                <span className="text-muted-foreground">Total Amount</span>
-                                <span className="font-bold text-lg">
-                                    ${currentOrder.totalAmount.toLocaleString()}
+                            <div className="flex justify-between items-end">
+                                <span className="text-[10px] uppercase font-bold tracking-widest text-muted-foreground">Tổng thanh toán</span>
+                                <span className="text-2xl font-bold tracking-tighter text-primary">
+                                    {formatCurrency(currentOrder.totalAmount)}
                                 </span>
                             </div>
-                            <div className="flex justify-between">
-                                <span className="text-muted-foreground">Payment Status</span>
-                                <span className="font-medium text-green-600">Paid</span>
+                            <div className="flex justify-between items-center">
+                                <span className="text-[10px] uppercase font-bold tracking-widest text-muted-foreground">Trạng thái</span>
+                                <span className="text-[9px] font-bold uppercase tracking-widest text-primary bg-primary/10 px-2 py-0.5 rounded-sm border border-primary/20">Đã thanh toán</span>
                             </div>
-                            <div className="flex justify-between">
-                                <span className="text-muted-foreground">Items</span>
-                                <span>
-                                    {currentOrder.subOrders.reduce((acc, so) => acc + so.items.length, 0)} item(s)
+                            <div className="flex justify-between items-center text-[10px] uppercase font-bold tracking-widest">
+                                <span className="text-muted-foreground">Sản phẩm</span>
+                                <span className="text-foreground">
+                                    {currentOrder.subOrders.reduce((acc, so) => acc + so.items.length, 0)} món
                                 </span>
                             </div>
                         </div>
 
                         {/* Items Preview */}
-                        <div className="border-t pt-4 space-y-2">
+                        <div className="border-t border-border border-dashed pt-6 space-y-3">
                             {currentOrder.subOrders.flatMap(so => so.items).slice(0, 3).map((item) => (
-                                <div key={item.id} className="flex justify-between text-sm">
-                                    <span className="text-muted-foreground">{item.quantity}x {item.productName}</span>
-                                    <span>${item.totalPrice.toLocaleString()}</span>
+                                <div key={item.id} className="flex justify-between text-[11px] font-bold uppercase tracking-widest">
+                                    <span className="text-muted-foreground opacity-70">
+                                        <span className="text-foreground">{item.quantity}x</span> {item.productName}
+                                    </span>
+                                    <span className="text-foreground">{formatCurrency(item.totalPrice)}</span>
                                 </div>
                             ))}
                         </div>
@@ -98,16 +103,16 @@ function CheckoutSuccessContent() {
                 )}
 
                 {/* Action Buttons */}
-                <div className="flex flex-col sm:flex-row gap-3 justify-center pt-4">
-                    <Button asChild size="lg">
+                <div className="flex flex-col sm:flex-row gap-4 justify-center pt-8">
+                    <Button asChild className="rounded-sm h-12 px-8 font-bold text-[11px] uppercase tracking-widest shadow-lg shadow-primary/10">
                         <Link href="/orders">
-                            View My Orders
+                            Xem đơn hàng
                             <ArrowRight className="ml-2 h-4 w-4" />
                         </Link>
                     </Button>
-                    <Button variant="outline" size="lg" asChild>
+                    <Button variant="outline" className="rounded-sm h-12 px-8 font-bold text-[11px] uppercase tracking-widest border-border hover:bg-muted/30" asChild>
                         <Link href="/products">
-                            Continue Shopping
+                            Tiếp tục mua sắm
                         </Link>
                     </Button>
                 </div>

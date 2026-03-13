@@ -33,8 +33,8 @@ export function VoucherSection() {
     return (
         <div className="mb-6 space-y-4">
             <div className="flex items-center justify-between">
-                <h3 className="text-sm font-bold uppercase tracking-wide flex items-center gap-2">
-                    <TicketPercent className="h-4 w-4 text-[#FF4400]" />
+                <h3 className="text-[11px] font-bold uppercase tracking-[0.2em] flex items-center gap-2 text-foreground">
+                    <TicketPercent className="h-4 w-4 text-primary" />
                     Vouchers
                 </h3>
                 <VoucherManagerSheet />
@@ -42,28 +42,28 @@ export function VoucherSection() {
 
             {/* Selected Vouchers Summary */}
             {appliedCount > 0 ? (
-                <div className="bg-zinc-50 border border-zinc-200 p-3 rounded-sm space-y-2">
+                <div className="bg-muted/30 border border-border p-4 rounded-sm space-y-3 shadow-inner">
                     {appliedVoucherCodes.map(code => {
                         const voucher = availableVouchers.find(v => (v.code === code || `ID:${v.id}` === code));
                         const displayCode = voucher ? (voucher.code || 'AUTO APPLY') : code;
                         return (
-                            <div key={code} className="flex items-center justify-between text-xs">
-                                <span className="font-mono font-bold text-zinc-700">{displayCode}</span>
-                                <Badge variant="secondary" className="bg-green-100 text-green-700 border-none rounded-none text-[10px]">
+                            <div key={code} className="flex items-center justify-between text-[10px] font-bold uppercase tracking-widest">
+                                <span className="text-foreground">{displayCode}</span>
+                                <Badge variant="secondary" className="bg-primary/10 text-primary border-none rounded-sm text-[8px] tracking-[0.1em]">
                                     APPLIED
                                 </Badge>
                             </div>
                         );
                     })}
                     {totalSavings > 0 && (
-                        <div className="pt-2 border-t border-dashed border-zinc-200 flex justify-between text-xs font-bold text-green-600">
-                            <span>Total Savings</span>
+                        <div className="pt-3 border-t border-dashed border-border flex justify-between text-[11px] font-bold text-primary tracking-widest uppercase">
+                            <span>Tiết kiệm</span>
                             <span>-{formatCurrency(totalSavings)}</span>
                         </div>
                     )}
                 </div>
             ) : (
-                <div className="text-xs text-zinc-500 italic">No vouchers applied</div>
+                <div className="text-[10px] text-muted-foreground font-bold uppercase tracking-widest opacity-50 italic">Chưa áp dụng voucher</div>
             )}
         </div>
     );
@@ -140,23 +140,23 @@ function VoucherManagerSheet() {
                 </Button>
             </SheetTrigger>
             <SheetContent className="w-full sm:max-w-md flex flex-col h-full p-0 gap-0">
-                <SheetHeader className="p-6 border-b">
-                    <SheetTitle className="text-lg font-black uppercase tracking-wide">Vouchers</SheetTitle>
+                <SheetHeader className="p-6 border-b border-border">
+                    <SheetTitle className="text-base font-bold uppercase tracking-[0.2em] text-foreground">Vouchers</SheetTitle>
                 </SheetHeader>
                 
                 <div className="flex-1 overflow-y-auto p-6 space-y-8">
                     {/* Add Voucher Input */}
-                    <div className="space-y-2">
-                        <Label className="text-xs font-bold uppercase tracking-wider text-zinc-500">Add Voucher Code</Label>
+                    <div className="space-y-3">
+                        <Label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Nhập mã voucher</Label>
                         <div className="flex gap-2">
                             <Input 
                                 value={inputCode}
                                 onChange={(e) => setInputCode(e.target.value.toUpperCase())}
-                                placeholder="ENTER CODE" 
-                                className="font-mono uppercase"
+                                placeholder="MÃ GIẢM GIÁ" 
+                                className="font-bold uppercase tracking-widest h-12"
                             />
-                            <Button onClick={handleAddVoucher} disabled={checkingCode || !inputCode} className="bg-black text-white hover:bg-[#FF4400]">
-                                {checkingCode ? <Loader2 className="h-4 w-4 animate-spin" /> : 'ADD'}
+                            <Button onClick={handleAddVoucher} disabled={checkingCode || !inputCode} className="h-12 px-6 shadow-lg shadow-primary/10">
+                                {checkingCode ? <Loader2 className="h-4 w-4 animate-spin" /> : 'THÊM'}
                             </Button>
                         </div>
                     </div>
@@ -190,33 +190,33 @@ function VoucherManagerSheet() {
                     {/* Shipping Vouchers */}
                     <div className="space-y-4">
                         <div className="flex items-center gap-2">
-                            <Label className="text-sm font-black uppercase tracking-wider">Shipping Discounts</Label>
-                            <Badge variant="outline" className="text-[10px]">Select 1</Badge>
+                            <Label className="text-[11px] font-bold uppercase tracking-widest">Voucher Vận Chuyển</Label>
+                            <Badge variant="outline" className="text-[8px] font-bold uppercase tracking-widest border-primary/20 text-primary">Chọn 1</Badge>
                         </div>
                         
                         {shippingVouchers.length > 0 ? (
                             <RadioGroup 
                                 value={getSelectedCode('SHIPPING')} 
                                 onValueChange={(val) => handleSelection('SHIPPING', val)}
-                                className="gap-3"
+                                className="gap-4"
                             >
-                                <div className="flex items-center space-x-2 border p-3 rounded-sm">
+                                <div className="flex items-center space-x-3 border border-border p-4 rounded-sm hover:bg-muted/30 transition-colors">
                                     <RadioGroupItem value="NONE" id="ship-none" />
-                                    <Label htmlFor="ship-none" className="text-sm cursor-pointer flex-1 text-zinc-500">None</Label>
+                                    <Label htmlFor="ship-none" className="text-[10px] font-bold uppercase tracking-widest cursor-pointer flex-1 text-muted-foreground">Không sử dụng</Label>
                                 </div>
                                 {shippingVouchers.map(v => (
                                     <VoucherItem key={v.id} voucher={v} />
                                 ))}
                             </RadioGroup>
                         ) : (
-                            <p className="text-xs text-zinc-400 italic">No shipping vouchers available</p>
+                            <p className="text-[10px] text-muted-foreground font-bold uppercase tracking-widest opacity-50 italic">Không có voucher vận chuyển</p>
                         )}
                     </div>
                 </div>
 
-                <div className="p-6 border-t bg-zinc-50">
-                    <Button className="w-full font-bold uppercase tracking-widest bg-[#FF4400] hover:bg-[#FF4400]/90" onClick={() => setIsOpen(false)}>
-                        Done
+                <div className="p-6 border-t border-border bg-muted/30">
+                    <Button className="w-full h-12 font-bold uppercase tracking-widest shadow-lg shadow-primary/10" onClick={() => setIsOpen(false)}>
+                        Hoàn tất
                     </Button>
                 </div>
             </SheetContent>
@@ -241,30 +241,32 @@ function VoucherItem({ voucher }: { voucher: VoucherDTO }) {
     return (
         <Label 
             htmlFor={voucherIdentifier} 
-            className={`flex items-start space-x-3 border p-3 rounded-sm cursor-pointer hover:bg-zinc-50 transition-all duration-200 ${isApplied ? 'border-[#FF4400] bg-[#FF4400]/5 ring-1 ring-[#FF4400]' : 'border-zinc-200'}`}
+            className={`flex items-start space-x-4 border p-4 rounded-sm cursor-pointer transition-all duration-300 relative overflow-hidden group shadow-sm ${isApplied ? 'border-primary bg-primary/[0.03] shadow-md shadow-primary/5' : 'border-border hover:bg-muted/30 hover:shadow-md'}`}
         >
             <RadioGroupItem value={voucherIdentifier} id={voucherIdentifier} className="mt-1" />
-            <div className="flex-1 space-y-1">
+            <div className="flex-1 space-y-2">
                 <div className="flex justify-between items-center">
-                    <span className="font-mono font-bold text-base flex items-center gap-2">
-                        {voucher.code || 'AUTO APPLY'}
-                        {isActuallyApplied && <Check className="h-3 w-3 text-[#FF4400]" />}
+                    <span className="font-bold text-[13px] tracking-widest uppercase flex items-center gap-2 text-foreground">
+                        {voucher.code || 'MÃ TỰ ĐỘNG'}
+                        {isActuallyApplied && <Check className="h-4 w-4 text-primary" />}
                     </span>
-                    <div className="flex flex-col items-end gap-1">
-                        <Badge className={`${isActuallyApplied ? 'bg-[#FF4400]' : 'bg-zinc-900'} text-[10px]`}>
-                            {voucher.type === 'PERCENTAGE' ? `${voucher.discountValue}% OFF` : `-${formatCurrency(voucher.discountValue)}`}
+                    <div className="flex flex-col items-end gap-1.5">
+                        <Badge className={`${isActuallyApplied ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground'} text-[9px] font-bold tracking-widest uppercase rounded-sm border-none`}>
+                            {voucher.type === 'PERCENTAGE' ? `${voucher.discountValue}% GIẢM` : `-${formatCurrency(voucher.discountValue)}`}
                         </Badge>
                         {voucher.applyMode === 'AUTO' && (
-                            <Badge variant="outline" className="text-[8px] border-[#FF4400] text-[#FF4400] px-1 py-0 uppercase">Auto</Badge>
+                            <Badge variant="outline" className="text-[7px] border-primary/30 text-primary px-1.5 py-0 uppercase font-bold tracking-[0.1em]">Tự động</Badge>
                         )}
                     </div>
                 </div>
-                <p className="text-xs text-zinc-600 font-medium">{voucher.name}</p>
-                {voucher.description && <p className="text-[10px] text-zinc-400 line-clamp-1">{voucher.description}</p>}
+                <p className="text-[10px] text-foreground font-bold uppercase tracking-widest opacity-80">{voucher.name}</p>
+                {voucher.description && <p className="text-[9px] text-muted-foreground font-medium line-clamp-1 italic">{voucher.description}</p>}
                 {voucher.minOrderAmount > 0 && (
-                    <div className="text-[10px] text-zinc-500 flex items-center gap-1">
-                        <AlertCircle className="h-3 w-3" />
-                        Min. spend {formatCurrency(voucher.minOrderAmount)}
+                    <div className="text-[9px] font-bold uppercase tracking-widest text-primary flex items-center gap-1.5 pt-1">
+                        <div className="bg-primary/10 p-1 rounded-sm">
+                            <AlertCircle className="h-3 w-3" />
+                        </div>
+                        Đơn tối thiểu {formatCurrency(voucher.minOrderAmount)}
                     </div>
                 )}
             </div>

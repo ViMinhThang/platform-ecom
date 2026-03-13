@@ -22,7 +22,7 @@ export function OrderList() {
 
     if (orders.length === 0) {
         return (
-            <div className="text-center py-12 border rounded-lg bg-zinc-50 dark:bg-zinc-900/50">
+            <div className="text-center py-12 border rounded-lg bg-zinc-50">
                 <h3 className="text-lg font-medium">No orders yet</h3>
                 <p className="text-muted-foreground mt-1">When you place an order, it will appear here.</p>
             </div>

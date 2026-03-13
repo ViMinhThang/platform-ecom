@@ -34,14 +34,16 @@ export function SellerGroup({ group }: SellerGroupProps) {
     const sellerName = sellerInfo?.username || group.sellerName || "NGƯỜI BÁN";
 
     return (
-        <div className="bg-white border-2 border-black rounded-none mb-8">
-            <div className="px-6 py-3 border-b-2 border-black flex items-center justify-between bg-zinc-100">
-                <div className="flex items-center gap-2">
-                    <Store className="h-4 w-4" />
-                    <span className="font-bold text-sm tracking-widest uppercase hover:underline cursor-pointer">
+        <div className="bg-background border border-border rounded-sm mb-8 shadow-md overflow-hidden font-header">
+            <div className="px-6 py-4 border-b border-border flex items-center justify-between bg-muted/30">
+                <div className="flex items-center gap-3">
+                    <div className="bg-primary/10 p-2 rounded-sm text-primary">
+                        <Store className="h-4 w-4" />
+                    </div>
+                    <span className="font-bold text-[11px] tracking-[0.2em] uppercase hover:text-primary transition-colors cursor-pointer text-foreground">
                         {sellerName}
                     </span>
-                    <span className="text-[10px] font-mono text-zinc-500 bg-white border border-black px-1 ml-2">VERIFIED_SELLER</span>
+                    <span className="text-[8px] font-bold text-primary bg-primary/5 border border-primary/20 px-2 py-0.5 rounded-sm tracking-widest uppercase">VERIFIED</span>
                 </div>
             </div>
 

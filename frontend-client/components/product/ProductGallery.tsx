@@ -31,7 +31,7 @@ export const ProductGallery = ({
     return (
         <div className="space-y-4">
             {/* MAIN DISPLAY */}
-            <div className="aspect-square relative bg-white border border-slate-100 overflow-hidden rounded-lg cursor-zoom-in group">
+            <div className="aspect-square relative bg-background border border-border overflow-hidden rounded-sm cursor-zoom-in group shadow-sm">
                 <Image
                     width={800}
                     height={800}
@@ -53,9 +53,9 @@ export const ProductGallery = ({
                     {product.images.map((image, index) => (
                         <div
                             key={index}
-                            className={`cursor-pointer aspect-square rounded-md overflow-hidden bg-white border transition-all ${currentImageIndex === index
-                                    ? "border-[#FF4F00] ring-1 ring-[#FF4F00] shadow-sm"
-                                    : "border-slate-200 hover:border-[#FF4F00]/50"
+                            className={`cursor-pointer aspect-square rounded-sm overflow-hidden bg-background border transition-all ${currentImageIndex === index
+                                    ? "border-primary ring-1 ring-primary/30 shadow-md"
+                                    : "border-border hover:border-primary/50"
                                 }`}
                             onMouseEnter={() => setCurrentImageIndex(index)}
                         >

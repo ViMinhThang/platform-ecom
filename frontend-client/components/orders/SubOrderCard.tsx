@@ -5,6 +5,8 @@ import { SubOrderDTO, SubOrderStatus } from "@/types/order.types";
 import { Card } from "@/components/ui/card";
 import { Package, Truck, CheckCircle, AlertCircle } from "lucide-react";
 import { ReviewAction } from "./ReviewAction";
+import { formatCurrency } from "@/lib/utils/formatCurrency";
+import { imageUrl } from "@/lib/utils/imageUrl";
 
 interface SubOrderCardProps {
     subOrder: SubOrderDTO;
@@ -15,48 +17,50 @@ interface SubOrderCardProps {
 export function SubOrderCard({ subOrder, orderId, onReview }: SubOrderCardProps) {
     const getStatusIcon = (status: SubOrderStatus) => {
         switch (status) {
-            case SubOrderStatus.DELIVERED: return <CheckCircle className="h-5 w-5 text-green-600" />;
-            case SubOrderStatus.SHIPPED: return <Truck className="h-5 w-5 text-blue-600" />;
-            case SubOrderStatus.CANCELLED: return <AlertCircle className="h-5 w-5 text-red-600" />;
-            default: return <Package className="h-5 w-5 text-zinc-600" />;
+            case SubOrderStatus.DELIVERED: return <CheckCircle className="h-5 w-5 text-primary" />;
+            case SubOrderStatus.SHIPPED: return <Truck className="h-5 w-5 text-blue-500" />;
+            case SubOrderStatus.CANCELLED: return <AlertCircle className="h-5 w-5 text-red-500" />;
+            default: return <Package className="h-5 w-5 text-muted-foreground opacity-50" />;
         }
     };
 
     return (
-        <Card className="overflow-hidden mb-6">
-            <div className="bg-zinc-50 dark:bg-zinc-800/50 px-6 py-4 border-b flex justify-between items-center">
-                <div className="flex items-center gap-3">
-                    {getStatusIcon(subOrder.status)}
+        <Card className="overflow-hidden mb-8 border border-border shadow-md rounded-sm bg-background transition-all hover:shadow-lg">
+            <div className="bg-muted/10 px-6 py-4 border-b border-border flex justify-between items-center">
+                <div className="flex items-center gap-4">
+                    <div className="bg-background p-2 rounded-sm shadow-sm border border-border">
+                        {getStatusIcon(subOrder.status)}
+                    </div>
                     <div>
-                        <p className="font-semibold text-sm">Package from {subOrder.sellerName}</p>
-                        <p className="text-xs text-muted-foreground">
-                            Status: <span className="font-medium text-foreground">{subOrder.status.replace(/_/g, " ")}</span>
+                        <p className="font-bold text-[11px] uppercase tracking-widest text-foreground">Gói hàng từ {subOrder.sellerName}</p>
+                        <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest opacity-60">
+                            Trạng thái: <span className="text-primary">{subOrder.status.replace(/_/g, " ")}</span>
                         </p>
                     </div>
                 </div>
 
-                {subOrder.trackingNumber && (
-                    <div className="text-right text-sm">
-                        <p className="text-muted-foreground">Tracking Number</p>
-                        <p className="font-medium font-mono">{subOrder.trackingNumber}</p>
+                {subOrder.ghnOrderCode && (
+                    <div className="text-right">
+                        <p className="text-[8px] font-bold text-muted-foreground uppercase tracking-[0.2em] opacity-50 mb-1.5">MÃ VẬN ĐƠN (GHN)</p>
+                        <p className="font-bold text-[11px] tracking-widest text-foreground uppercase">{subOrder.ghnOrderCode}</p>
                     </div>
                 )}
             </div>
 
-            <div className="p-6">
-                <div className="space-y-4">
+            <div className="p-8">
+                <div className="space-y-8">
                     {subOrder.items.map((item) => (
-                        <div key={item.id} className="flex gap-4">
-                            <div className="relative h-20 w-20 flex-shrink-0 overflow-hidden rounded-md border bg-zinc-100">
-                                <div className="w-full h-full flex items-center justify-center text-xs text-muted-foreground">Img</div>
+                        <div key={item.id} className="flex gap-6 group">
+                            <div className="relative h-20 w-20 flex-shrink-0 overflow-hidden rounded-sm border border-border bg-muted/30 shadow-inner group-hover:shadow-md transition-shadow p-2">
+                                <img src={imageUrl.product(item.imageUrl)} alt={item.productName} className="object-contain w-full h-full" />
                             </div>
-                            <div className="flex-1">
-                                <h4 className="font-medium text-sm">{item.productName}</h4>
-                                {item.variantName && <p className="text-xs text-muted-foreground">{item.variantName}</p>}
-                                <div className="flex justify-between mt-2 text-sm">
-                                    <span className="text-muted-foreground">Qty: {item.quantity}</span>
-                                    <div className="text-right flex flex-col items-end justify-center">
-                                        <span className="font-medium">${item.totalPrice.toFixed(2)}</span>
+                            <div className="flex-1 space-y-1">
+                                <h4 className="font-bold text-sm uppercase tracking-widest text-foreground">{item.productName}</h4>
+                                {item.variantName && <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest opacity-60 italic">{item.variantName}</p>}
+                                <div className="flex justify-between items-center mt-3">
+                                    <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest opacity-50">Số lượng: <span className="text-foreground">{item.quantity}</span></span>
+                                    <div className="text-right flex flex-col items-end gap-3">
+                                        <span className="font-bold text-base tracking-tighter text-foreground">{formatCurrency(item.totalPrice)}</span>
                                         
                                         {onReview && (
                                             <ReviewAction 

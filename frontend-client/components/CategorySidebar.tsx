@@ -22,7 +22,7 @@ export async function CategorySidebar() {
             <Link
               key={category.id}
               href={`/category/${category.slug}`}
-              className="flex items-center justify-between px-2 py-2 text-sm text-muted-foreground hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-foreground rounded-md transition-colors"
+              className="flex items-center justify-between px-2 py-2 text-sm text-muted-foreground hover:bg-zinc-100 hover:text-foreground rounded-md transition-colors"
             >
               {category.name}
               <ChevronRight className="h-4 w-4 opacity-50" />

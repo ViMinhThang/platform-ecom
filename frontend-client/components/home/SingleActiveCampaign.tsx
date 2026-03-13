@@ -70,13 +70,13 @@ export const SingleActiveCampaign = () => {
 
     return (
         <section className="container mx-auto px-4 my-16">
-            <div className="border-2 border-black bg-white">
+            <div className="border border-border bg-background rounded-sm overflow-hidden shadow-lg">
                 {/* Marquee Header */}
-                <div className="bg-black text-white overflow-hidden py-3 border-b-2 border-black flex relative">
+                <div className="bg-primary text-primary-foreground overflow-hidden py-3 border-b border-primary/20 flex relative">
                     <div className="animate-marquee whitespace-nowrap flex gap-8 items-center font-mono font-bold uppercase tracking-widest text-xs">
                         {[...Array(10)].map((_, i) => (
                             <span key={i} className="flex items-center gap-4">
-                                CHIẾN DỊCH ACTIVE // {formatCampaignName(campaign.name)} <span className="text-[#FF4400]">///</span>
+                                CHIẾN DỊCH ACTIVE // {formatCampaignName(campaign.name)} <span className="text-white/40">///</span>
                             </span>
                         ))}
                     </div>
@@ -84,54 +84,54 @@ export const SingleActiveCampaign = () => {
 
                 <div className="flex flex-col lg:flex-row">
                     {/* Left: Info & Timer */}
-                    <div className="p-8 lg:w-1/3 border-b-2 lg:border-b-0 lg:border-r-2 border-black flex flex-col justify-between bg-zinc-50 relative overflow-hidden">
+                    <div className="p-8 lg:w-1/3 border-b lg:border-b-0 lg:border-r border-border flex flex-col justify-between bg-muted/30 relative overflow-hidden">
                         <div className="absolute inset-0 opacity-5 pointer-events-none"
-                            style={{ backgroundImage: "radial-gradient(circle, #000 1px, transparent 1px)", backgroundSize: "10px 10px" }}
+                            style={{ backgroundImage: "radial-gradient(circle, var(--primary) 1px, transparent 1px)", backgroundSize: "10px 10px" }}
                         />
 
                         <div className="relative z-10 space-y-6">
-                            <div className="inline-flex items-center gap-2 border border-black px-3 py-1 bg-white">
-                                <span className="w-2 h-2 bg-[#FF4400] rounded-full animate-pulse" />
-                                <span className="text-[10px] font-black uppercase tracking-widest">ĐANG DIỄN RA</span>
+                            <div className="inline-flex items-center gap-2 border border-primary/20 px-3 py-1 bg-background rounded-full shadow-sm">
+                                <span className="w-2 h-2 bg-primary rounded-full animate-pulse" />
+                                <span className="text-[10px] font-bold uppercase tracking-widest text-primary">ĐANG DIỄN RA</span>
                             </div>
 
-                            <h2 className="text-4xl md:text-5xl font-black uppercase leading-[0.9] tracking-tighter">
+                            <h2 className="text-4xl md:text-5xl font-bold uppercase leading-[0.9] tracking-tighter text-foreground">
                                 {formatCampaignName(campaign.name)}
                             </h2>
 
                             {campaign.description && (
-                                <p className="font-mono text-xs text-zinc-500 uppercase leading-relaxed max-w-xs">
+                                <p className="font-header text-xs text-muted-foreground uppercase leading-relaxed max-w-xs">
                                     {campaign.description}
                                 </p>
                             )}
                         </div>
 
                         <div className="mt-12 relative z-10">
-                            <div className="text-[10px] font-bold uppercase tracking-[0.2em] mb-4 text-zinc-400">
+                            <div className="text-[10px] font-bold uppercase tracking-[0.2em] mb-4 text-muted-foreground">
                                 THỜI GIAN CÒN LẠI
                             </div>
-                            <div className="flex items-baseline gap-2 font-mono font-black text-6xl tracking-tighter">
+                            <div className="flex items-baseline gap-2 font-mono font-bold text-6xl tracking-tighter text-foreground">
                                 <span>{timeLeft.hours}</span>
-                                <span className="text-zinc-200 animate-pulse">:</span>
+                                <span className="text-primary/20 animate-pulse">:</span>
                                 <span>{timeLeft.minutes}</span>
-                                <span className="text-zinc-200 animate-pulse">:</span>
-                                <span className="text-[#FF4400]">{timeLeft.seconds}</span>
+                                <span className="text-primary/20 animate-pulse">:</span>
+                                <span className="text-primary">{timeLeft.seconds}</span>
                             </div>
                         </div>
 
-                        <div className="mt-8 pt-8 border-t-2 border-black/10 flex justify-between items-end relative z-10">
+                        <div className="mt-8 pt-8 border-t border-border flex justify-between items-end relative z-10">
                             <div className="text-right">
-                                <div className="text-[10px] font-bold uppercase tracking-[0.2em] text-zinc-400">
+                                <div className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground">
                                     TỔNG SẢN PHẨM
                                 </div>
-                                <div className="font-mono text-2xl font-black">
+                                <div className="font-header text-2xl font-bold text-foreground">
                                     {campaign.totalItems.toString().padStart(2, '0')}
                                 </div>
                             </div>
 
                             <Link
                                 href="/sale-campaigns"
-                                className="group flex items-center gap-2 text-[10px] font-black uppercase tracking-widest hover:text-[#FF4400] transition-colors"
+                                className="group flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-primary hover:text-primary/80 transition-colors"
                             >
                                 XEM TẤT CẢ <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
                             </Link>
@@ -145,12 +145,12 @@ export const SingleActiveCampaign = () => {
                                 <Link
                                     key={item.id}
                                     href={`/products/${item.productSlug}`}
-                                    className={`group relative border-black/10 p-6 flex flex-col justify-between h-full bg-white hover:bg-zinc-50 transition-colors
-                                        ${index !== 2 ? 'border-r-2' : ''}
+                                    className={`group relative border-border p-6 flex flex-col justify-between h-full bg-background hover:bg-muted/30 transition-colors
+                                        ${index !== 2 ? 'border-r' : ''}
                                     `}
                                 >
                                     <div className="absolute top-4 right-4 z-10">
-                                        <span className="bg-black text-white text-[10px] font-black px-2 py-1 uppercase tracking-widest">
+                                        <span className="bg-primary text-primary-foreground text-[10px] font-bold px-2 py-1 uppercase tracking-widest rounded-sm">
                                             -{item.discountPercent}%
                                         </span>
                                     </div>
@@ -167,28 +167,28 @@ export const SingleActiveCampaign = () => {
                                     </div>
 
                                     <div className="space-y-3">
-                                        <div className="h-px w-8 bg-black/20 group-hover:w-full transition-all duration-500" />
-                                        <h3 className="font-bold text-xs uppercase tracking-wide line-clamp-2 min-h-[2.5em]">
+                                        <div className="h-px w-8 bg-primary/20 group-hover:w-full transition-all duration-500" />
+                                        <h3 className="font-bold text-xs uppercase tracking-wide line-clamp-2 min-h-[2.5em] text-foreground">
                                             {item.productName}
                                         </h3>
-                                        <div className="flex flex-col font-mono">
-                                            <span className="text-[#FF4400] font-black text-lg not-italic">
+                                        <div className="flex flex-col font-header">
+                                            <span className="text-primary font-bold text-lg not-italic">
                                                 {formatCurrency(item.salePrice)}
                                             </span>
-                                            <span className="text-[10px] text-zinc-400 line-through decoration-zinc-400/50">
+                                            <span className="text-[10px] text-muted-foreground line-through decoration-muted-foreground/50">
                                                 {formatCurrency(item.originalPrice)}
                                             </span>
                                         </div>
 
                                         {/* Progress Bar */}
                                         <div className="space-y-1 pt-2">
-                                            <div className="flex justify-between text-[9px] font-black uppercase tracking-wider text-zinc-400">
+                                            <div className="flex justify-between text-[9px] font-bold uppercase tracking-wider text-muted-foreground">
                                                 <span>Đã bán: {item.soldCount}</span>
                                                 <span>Còn lại: {item.remainingStock}</span>
                                             </div>
-                                            <div className="h-1.5 w-full bg-zinc-100 border border-black/10">
+                                            <div className="h-1.5 w-full bg-muted border border-border rounded-full overflow-hidden">
                                                 <div
-                                                    className="h-full bg-black/80 transition-all duration-1000 block"
+                                                    className="h-full bg-primary/80 transition-all duration-1000 block"
                                                     style={{ width: `${Math.min(100, (item.soldCount / item.stockLimit) * 100)}%` }}
                                                 />
                                             </div>
@@ -199,8 +199,8 @@ export const SingleActiveCampaign = () => {
 
                             {/* "More" placeholder if fewer items or just to fill grid */}
                             {campaign.items.length < 3 && Array.from({ length: 3 - campaign.items.length }).map((_, i) => (
-                                <div key={`empty-${i}`} className="border-r-2 border-black/5 bg-zinc-50/50 flex items-center justify-center">
-                                    <span className="font-mono text-zinc-200 text-6xl font-black opacity-20">///</span>
+                                <div key={`empty-${i}`} className="border-r border-border bg-muted/30 flex items-center justify-center">
+                                    <span className="font-mono text-primary/10 text-6xl font-black opacity-20">///</span>
                                 </div>
                             ))}
                         </div>

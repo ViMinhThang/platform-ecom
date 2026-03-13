@@ -111,35 +111,35 @@ export function ProductVariantSection({
       {/* Price Display */}
       <div className="space-y-8">
         {/* Price Display - Modern Clean */}
-        <div className="py-4 px-5 bg-slate-50 rounded-lg border border-slate-100/50">
+        <div className="py-5 px-6 bg-muted/30 rounded-sm border border-border shadow-inner">
           <div className="flex flex-col gap-1">
             <div className="flex items-baseline gap-3">
               {selectedVariant ? (
                 <>
-                  <span className="text-3xl font-bold text-[#FF4F00]">
+                  <span className="text-3xl font-bold tracking-tighter text-primary">
                     {formatCurrency(saleInfo ? saleInfo.salePrice : selectedVariant.price)}
                   </span>
                   {saleInfo && (
                     <>
-                      <span className="text-sm text-slate-400 line-through">
+                      <span className="text-xs font-medium text-muted-foreground line-through decoration-muted-foreground/50">
                         {formatCurrency(selectedVariant.price)}
                       </span>
-                      <Badge className="bg-[#FF4F00] hover:bg-[#FF4F00] text-white border-none text-[10px] font-bold px-1.5 py-0">
+                      <Badge className="bg-primary/20 text-primary border border-primary/30 text-[10px] font-bold px-2 py-0.5 rounded-sm tracking-widest uppercase">
                         -{saleInfo.discountPercent}%
                       </Badge>
                     </>
                   )}
                 </>
               ) : (
-                <span className="text-3xl font-bold text-slate-900">
+                <span className="text-3xl font-bold tracking-tighter text-foreground">
                   {hasVariants ? `${formatCurrency(product.minPrice || 0)} - ...` : formatCurrency(product.minPrice || 0)}
                 </span>
               )}
             </div>
             {saleInfo && (
-              <div className="flex items-center gap-1.5 text-[#FF4F00] text-[10px] font-bold uppercase tracking-wider">
-                <Zap className="w-3 h-3 fill-current" />
-                <span>Đang giảm</span>
+              <div className="flex items-center gap-1.5 text-primary text-[10px] font-bold uppercase tracking-[0.2em]">
+                <Zap className="w-3 h-3 fill-primary" />
+                <span>GIÁ ƯU ĐÃI</span>
               </div>
             )}
           </div>
@@ -158,30 +158,30 @@ export function ProductVariantSection({
 
         {/* Quantity Selector - Standard */}
         <div className="flex items-center gap-6">
-          <span className="text-sm font-medium text-slate-600">Số Lượng</span>
+          <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Số Lượng</span>
           <div className="flex items-center gap-4">
-            <div className="flex items-center border border-slate-200 rounded-md bg-white">
+            <div className="flex items-center border border-border rounded-sm bg-background shadow-sm overflow-hidden">
               <Button
                 variant="ghost"
                 size="icon"
-                className="h-9 w-9 rounded-l-md rounded-r-none hover:bg-slate-50 border-r border-slate-200"
+                className="h-9 w-9 rounded-sm hover:bg-muted/50 border-r border-border transition-colors flex items-center justify-center"
                 onClick={() => setQuantity(Math.max(1, quantity - 1))}
                 disabled={quantity <= 1}
               >
-                <Minus className="h-3.5 w-3.5 text-slate-600" />
+                <Minus className="h-3.5 w-3.5 text-foreground opacity-60" />
               </Button>
-              <div className="w-12 text-center text-sm font-semibold text-slate-900">{quantity}</div>
+              <div className="w-12 text-center text-xs font-bold text-foreground">{quantity}</div>
               <Button
                 variant="ghost"
                 size="icon"
-                className="h-9 w-9 rounded-r-md rounded-l-none hover:bg-slate-50 border-l border-slate-200"
+                className="h-9 w-9 rounded-sm hover:bg-muted/50 border-l border-border transition-colors flex items-center justify-center"
                 onClick={() => setQuantity(Math.min(displayStock || 99, quantity + 1))}
                 disabled={selectedVariant ? quantity >= displayStock : false}
               >
-                <Plus className="h-3.5 w-3.5 text-slate-600" />
+                <Plus className="h-3.5 w-3.5 text-foreground opacity-60" />
               </Button>
             </div>
-            <span className="text-xs text-slate-500">
+            <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground opacity-60">
               {displayStock} sản phẩm có sẵn
             </span>
           </div>
@@ -193,16 +193,16 @@ export function ProductVariantSection({
         <Button
           size="lg"
           variant="outline"
-          className="flex-1 h-12 rounded-lg border-black text-black bg-white hover:bg-zinc-50 hover:border-[#FF4F00] hover:text-[#FF4F00] font-semibold text-sm shadow-sm transition-all"
+          className="flex-1 h-12 rounded-sm border-primary text-primary bg-background hover:bg-primary/5 font-bold uppercase tracking-widest text-[10px] shadow-sm transition-all"
           disabled={!canAddToCart}
           onClick={handleAddToCart}
         >
-          <ShoppingCart className="w-4 h-4 mr-2" />
+          <ShoppingCart className="w-3.5 h-3.5 mr-2" />
           Thêm Vào Giỏ
         </Button>
         <Button
           size="lg"
-          className="flex-1 h-12 rounded-lg bg-black text-white hover:bg-[#FF4F00] font-semibold text-sm shadow-sm border-none transition-all"
+          className="flex-1 h-12 rounded-sm bg-primary text-primary-foreground hover:bg-primary/90 font-bold uppercase tracking-widest text-[10px] shadow-md border-none transition-all"
           disabled={!canAddToCart}
         // onClick={handleBuyNow}
         >
@@ -212,9 +212,9 @@ export function ProductVariantSection({
 
       {/* SKU Info */}
       {selectedVariant && (
-        <div className="flex items-center justify-between text-xs text-zinc-400 pt-4">
-          {displayStock > 0 && <span className="text-green-600 font-medium">Còn hàng</span>}
-          <span className="font-mono">{selectedVariant.sku}</span>
+        <div className="flex items-center justify-between text-[10px] font-bold uppercase tracking-widest text-muted-foreground opacity-50 pt-2 font-header">
+          {displayStock > 0 && <span className="text-primary font-bold">HÀNG CÓ SẴN</span>}
+          <span className="">SKU: {selectedVariant.sku}</span>
         </div>
       )}
     </div>

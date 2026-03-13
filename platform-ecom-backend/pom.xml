@@ -22,5 +22,6 @@
         <module>promotion</module>
         <module>review</module>
         <module>user</module>
+        <module>notification</module>
     </modules>
 </project>

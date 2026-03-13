@@ -35,7 +35,7 @@ export function SaleCampaignBanner() {
     }
 
     return (
-        <div className="relative overflow-hidden bg-gradient-to-r from-black via-zinc-900 to-black border-y-4 border-primary">
+        <div className="relative overflow-hidden bg-slate-950 border-y border-border shadow-inner">
             {/* Background pattern */}
             <div className="absolute inset-0 opacity-10">
                 <div className="absolute inset-0" style={{
@@ -65,15 +65,15 @@ export function SaleCampaignBanner() {
                 <div className="flex flex-col lg:flex-row items-center justify-between gap-6">
                     {/* Left side - Title and description */}
                     <div className="flex items-center gap-4">
-                        <div className="p-3 bg-primary animate-pulse">
-                            <Zap className="h-8 w-8 text-white" />
+                        <div className="p-3 bg-primary/20 border border-primary/30 rounded-sm animate-pulse shadow-lg shadow-primary/20">
+                            <Zap className="h-8 w-8 text-primary" />
                         </div>
                         <div>
                             <div className="flex items-center gap-2">
-                                <h2 className="text-2xl md:text-3xl font-black text-white uppercase tracking-wider">
+                                <h2 className="text-2xl md:text-3xl font-bold text-white uppercase tracking-widest leading-none">
                                     {saleCampaign.name}
                                 </h2>
-                                <span className="px-2 py-1 bg-primary text-white text-[10px] font-black uppercase tracking-widest animate-pulse">
+                                <span className="px-3 py-1 bg-primary/20 border border-primary/30 text-primary text-[10px] font-bold uppercase tracking-widest rounded-sm animate-pulse">
                                     Live Now
                                 </span>
                             </div>
@@ -100,11 +100,11 @@ export function SaleCampaignBanner() {
                     <Button
                         asChild
                         size="lg"
-                        className="bg-primary hover:bg-primary/90 text-white rounded-none font-black uppercase tracking-wider px-8 group"
+                        className="rounded-sm shadow-xl shadow-primary/10 text-[11px] font-bold uppercase tracking-[0.2em] px-10 h-14 transition-all"
                     >
                         <Link href="/sale-campaigns">
                             Xem ngay
-                            <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                            <ArrowRight className="ml-3 h-4 w-4 group-hover:translate-x-1 transition-transform" />
                         </Link>
                     </Button>
                 </div>

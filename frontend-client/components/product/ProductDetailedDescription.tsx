@@ -32,8 +32,8 @@ export const ProductDetailedDescription = ({ product }: ProductDetailedDescripti
 
     return (
         <section className="space-y-8">
-            <h2 className="text-xl font-black flex items-center gap-3 uppercase tracking-[0.2em] text-black">
-                <span className="bg-black text-white px-2 py-0.5 text-xs">02</span>
+            <h2 className="text-[11px] font-bold flex items-center gap-3 uppercase tracking-[0.2em] text-foreground">
+                <span className="bg-primary/10 text-primary px-2 py-0.5 text-[9px]">02</span>
                 MÔ TẢ CHI TIẾT
             </h2>
 
@@ -46,12 +46,12 @@ export const ProductDetailedDescription = ({ product }: ProductDetailedDescripti
                     )}
                 >
                     <RichTextPreview
-                        content={product.description || "<p className='text-zinc-400 italic'>DỮ LIỆU MÔ TẢ TRỐNG</p>"}
+                        content={product.description || "<p className='text-muted-foreground italic font-header uppercase tracking-widest text-[9px] opacity-50'>DỮ LIỆU MÔ TẢ TRỐNG</p>"}
                     />
                 </div>
 
                 {!isExpanded && shouldShowButton && (
-                    <div className="absolute bottom-0 left-0 right-0 h-32 bg-linear-to-t from-white to-transparent pointer-events-none z-10" />
+                    <div className="absolute bottom-0 left-0 right-0 h-32 bg-linear-to-t from-background to-transparent pointer-events-none z-10" />
                 )}
             </div>
 
@@ -60,7 +60,7 @@ export const ProductDetailedDescription = ({ product }: ProductDetailedDescripti
                     <Button
                         variant="outline"
                         onClick={() => setIsExpanded(!isExpanded)}
-                        className="rounded-none border-2 border-black font-black uppercase tracking-[0.2em] px-10 hover:bg-black hover:text-white transition-all h-12 text-[10px]"
+                        className="rounded-sm border border-border bg-background font-bold uppercase tracking-widest px-10 hover:border-primary hover:text-primary transition-all h-11 text-[9px] shadow-sm"
                     >
                         {isExpanded ? (
                             <> THU GỌN <ChevronUp className="ml-2 w-3 h-3" /> </>

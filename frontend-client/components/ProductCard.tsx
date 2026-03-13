@@ -58,30 +58,30 @@ export function ProductCard({
   };
 
   return (
-    <Link href={`/products/${slug}`} onClick={handleTrackClick}>
-      <Card className="p-0 border-2 border-black rounded-none bg-white h-full flex flex-col transition-all group overflow-hidden">
-        <CardContent className="p-0 relative aspect-square bg-zinc-100 overflow-hidden border-b-2 border-black transition-all duration-500">
+    <Link href={`/products/${slug}`} onClick={handleTrackClick} className="block h-full">
+      <Card className="p-0 border border-border rounded-sm bg-background h-full flex flex-col transition-all group overflow-hidden shadow-sm hover:shadow-md">
+        <CardContent className="p-0 relative aspect-square bg-muted/30 overflow-hidden border-b border-border transition-all duration-500">
           {isNew && !hasSale && (
-            <Badge className="absolute top-0 left-0 z-10 bg-primary text-white rounded-none px-2 py-1 text-[8px] font-black tracking-widest uppercase">
+            <Badge className="absolute top-0 left-0 z-10 bg-primary text-primary-foreground rounded-sm px-2 py-1 text-[8px] font-bold tracking-widest uppercase">
               HÀNG MỚI
             </Badge>
           )}
 
           {hasSale && (
             <>
-              <Badge className="absolute top-0 left-0 z-10 bg-primary text-white rounded-none px-2 py-1 text-[10px] font-black tracking-widest">
+              <Badge className="absolute top-0 left-0 z-10 bg-primary text-primary-foreground rounded-sm px-2 py-1 text-[10px] font-bold tracking-widest">
                 -{discountPercent}%
               </Badge>
-              <Badge className="absolute top-0 right-0 z-10 bg-black text-white rounded-none px-2 py-1 text-[8px] font-black tracking-widest flex items-center gap-1">
-                <Zap className="h-3 w-3" />
+              <Badge className="absolute top-0 right-0 z-10 bg-foreground/10 backdrop-blur-sm text-foreground rounded-sm px-2 py-1 text-[8px] font-bold tracking-widest flex items-center gap-1">
+                <Zap className="h-3 w-3 fill-primary text-primary" />
                 SALE
               </Badge>
             </>
           )}
 
           {!inStock && (
-            <div className="absolute inset-0 bg-white/90 z-20 flex items-center justify-center">
-              <span className="text-[10px] font-black px-4 py-2 border-2 border-black text-black uppercase tracking-widest">
+            <div className="absolute inset-0 bg-background/80 z-20 flex items-center justify-center">
+              <span className="text-[10px] font-bold px-4 py-2 border border-border bg-background text-foreground uppercase tracking-widest shadow-sm">
                 HẾT HÀNG
               </span>
             </div>
@@ -93,35 +93,35 @@ export function ProductCard({
             className="object-cover group-hover:scale-105 transition-transform duration-700"
           />
         </CardContent>
-        <CardFooter className="flex flex-col items-start p-4 space-y-4 grow bg-white transition-colors">
+        <CardFooter className="flex flex-col items-start p-4 space-y-4 grow bg-background transition-colors">
           <div className="grow w-full">
-            <h3 className="font-black text-[10px] uppercase tracking-widest leading-tight line-clamp-2 text-black transition-colors h-8">
+            <h3 className="font-bold text-[10px] uppercase tracking-widest leading-tight line-clamp-2 text-foreground transition-colors h-8">
               {name}
             </h3>
           </div>
 
-          <div className="w-full pt-4 border-t border-black/10 transition-colors">
+          <div className="w-full pt-4 border-t border-border transition-colors">
             {/* Price */}
-            <div className="flex items-baseline gap-2 w-full mb-3 font-mono">
-              <span className="text-xl font-black tracking-tighter text-primary">
+            <div className="flex items-baseline gap-2 w-full mb-3 font-header">
+              <span className="text-xl font-bold tracking-tighter text-primary">
                 {formatCurrency(displayPrice)}
               </span>
               {hasSale && (
-                <span className="text-[10px] font-bold text-zinc-400 line-through">
+                <span className="text-[10px] font-medium text-muted-foreground line-through">
                   {formatCurrency(originalPrice)}
                 </span>
               )}
             </div>
 
             {/* Rating & Sold - Technical Style */}
-            <div className="flex items-center justify-between w-full font-mono">
-              <div className="flex items-center gap-1 bg-zinc-100 px-1.5 py-0.5 transition-colors">
+            <div className="flex items-center justify-between w-full font-header">
+              <div className="flex items-center gap-1 bg-muted/50 px-1.5 py-0.5 transition-colors rounded-sm">
                 <Star className="w-2.5 h-2.5 fill-current text-primary" />
-                <span className="text-[8px] font-black text-black uppercase leading-none">
+                <span className="text-[8px] font-bold text-foreground uppercase leading-none">
                   {rating > 0 ? rating.toFixed(1) : "N/A"}
                 </span>
               </div>
-              <div className="text-[8px] font-black text-zinc-400 uppercase tracking-tighter">
+              <div className="text-[8px] font-bold text-muted-foreground uppercase tracking-tighter">
                 ĐÃ BÁN {formatSoldCount(totalSold)}
               </div>
             </div>

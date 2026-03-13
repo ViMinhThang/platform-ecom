@@ -94,20 +94,20 @@ export function ProfileInfoForm({ user, onUpdate }: ProfileInfoFormProps) {
         <div className="space-y-8">
             <div className="flex flex-col sm:flex-row gap-12 items-start">
                 {/* Avatar Section */}
-                <div className="flex flex-col items-center gap-4">
-                    <div className="relative group">
-                        <Avatar className="h-32 w-32 border-2 border-black rounded-none">
+                <div className="flex flex-col items-center gap-6">
+                    <div className="relative group p-1 bg-background border border-border shadow-md rounded-sm">
+                        <Avatar className="h-32 w-32 rounded-sm">
                             <AvatarImage src={user.imageUrl} alt={user.username} className="object-cover" />
-                            <AvatarFallback className="text-4xl bg-zinc-100 rounded-none font-black text-zinc-300">
+                            <AvatarFallback className="text-4xl bg-primary/5 rounded-sm font-bold text-primary opacity-30">
                                 {user.username.substring(0, 2).toUpperCase()}
                             </AvatarFallback>
                         </Avatar>
-                        <div className="absolute inset-0 flex items-center justify-center bg-black/80 opacity-0 group-hover:opacity-100 transition-all duration-200 cursor-pointer">
-                            <label htmlFor="image-upload" className="cursor-pointer p-2 text-white hover:scale-110 transition-transform">
+                        <div className="absolute inset-1 flex items-center justify-center bg-primary/60 opacity-0 group-hover:opacity-100 transition-all duration-300 cursor-pointer rounded-sm backdrop-blur-sm">
+                            <label htmlFor="image-upload" className="cursor-pointer p-3 bg-background/20 rounded-sm text-white hover:scale-110 transition-transform border border-white/20">
                                 {isUploading ? (
-                                    <Loader2 className="h-8 w-8 animate-spin" />
+                                    <Loader2 className="h-6 w-6 animate-spin" />
                                 ) : (
-                                    <Upload className="h-8 w-8" />
+                                    <Upload className="h-6 w-6" />
                                 )}
                             </label>
                             <input
@@ -121,9 +121,9 @@ export function ProfileInfoForm({ user, onUpdate }: ProfileInfoFormProps) {
                         </div>
                     </div>
                     <div className="text-center">
-                        <p className="text-xs font-black uppercase tracking-widest">Avatar</p>
-                        <p className="text-[10px] text-zinc-500 font-mono mt-1">
-                            JPG, PNG. MAX 5MB.
+                        <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-foreground">Ảnh đại diện</p>
+                        <p className="text-[9px] text-muted-foreground font-bold uppercase tracking-widest mt-2 opacity-50">
+                            JPG, PNG. Tối đa 5MB.
                         </p>
                     </div>
                 </div>
@@ -132,16 +132,16 @@ export function ProfileInfoForm({ user, onUpdate }: ProfileInfoFormProps) {
                 <div className="flex-1 w-full max-w-lg">
                     <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
                         <div className="grid gap-6">
-                            <FormField
+                             <FormField
                                 label="TÊN ĐỊNH DANH"
                                 id="username"
                                 registration={form.register('username')}
                                 error={form.formState.errors.username}
                                 disabled={isSaving}
-                                placeholder="NHẬP TÊN ĐĂNG NHẬP (USERNAME)"
-                                className="font-mono text-xs uppercase"
+                                placeholder="Nhập tên đăng nhập"
+                                className="text-[10px] font-bold uppercase tracking-widest"
                             />
-
+ 
                             <FormField
                                 label="EMAIL LIÊN HỆ"
                                 id="email"
@@ -149,22 +149,22 @@ export function ProfileInfoForm({ user, onUpdate }: ProfileInfoFormProps) {
                                 registration={form.register('email')}
                                 error={form.formState.errors.email}
                                 disabled={isSaving}
-                                placeholder="NHẬP EMAIL"
-                                className="font-mono text-xs uppercase"
+                                placeholder="Nhập địa chỉ email"
+                                className="text-[10px] font-bold uppercase tracking-widest"
                             />
 
-                            <div className="pt-6 border-t-2 border-dashed border-zinc-200 mt-6">
-                                <h4 className="text-sm font-black uppercase tracking-widest mb-6">Bảo mật & Mật khẩu</h4>
+                            <div className="pt-8 border-t border-dashed border-border mt-8">
+                                <h4 className="text-[11px] font-bold uppercase tracking-[0.2em] text-foreground mb-8">Bảo mật & Mật khẩu</h4>
                                 <div className="space-y-6">
-                                    <FormField
+                                     <FormField
                                         label="MẬT KHẨU HIỆN TẠI"
                                         id="currentPassword"
                                         type="password"
                                         registration={form.register('currentPassword')}
                                         error={form.formState.errors.currentPassword}
                                         disabled={isSaving}
-                                        placeholder="XÁC THỰC MẬT KHẨU CŨ"
-                                        className="font-mono text-xs uppercase"
+                                        placeholder="Xác thực mật khẩu cũ"
+                                        className="text-[10px] font-bold uppercase tracking-widest"
                                     />
 
                                     <FormField
@@ -174,20 +174,20 @@ export function ProfileInfoForm({ user, onUpdate }: ProfileInfoFormProps) {
                                         registration={form.register('password')}
                                         error={form.formState.errors.password}
                                         disabled={isSaving}
-                                        placeholder="THIẾT LẬP MẬT KHẨU MỚI"
-                                        className="font-mono text-xs uppercase"
+                                        placeholder="Thiết lập mật khẩu mới"
+                                        className="text-[10px] font-bold uppercase tracking-widest"
                                     />
-                                    <p className="text-[10px] text-zinc-500 font-mono uppercase">
+                                    <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest opacity-50 italic">
                                         * ĐỂ TRỐNG NẾU KHÔNG THAY ĐỔI
                                     </p>
                                 </div>
                             </div>
                         </div>
 
-                        <div className="flex justify-start pt-4">
-                            <Button type="submit" disabled={isSaving} className="w-full sm:w-auto rounded-none h-12 px-8 bg-black hover:bg-[#FF4400] text-white font-black uppercase tracking-[0.2em] transition-all">
-                                {isSaving && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                                LƯU THAY ĐỔI
+                        <div className="flex justify-start pt-6">
+                            <Button type="submit" disabled={isSaving} className="w-full sm:w-auto rounded-sm h-12 px-10 shadow-lg shadow-primary/10 text-[11px] font-bold uppercase tracking-widest transition-all">
+                                {isSaving && <Loader2 className="mr-3 h-4 w-4 animate-spin" />}
+                                Lưu thay đổi
                             </Button>
                         </div>
                     </form>

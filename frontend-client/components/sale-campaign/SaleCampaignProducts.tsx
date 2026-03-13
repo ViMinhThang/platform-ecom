@@ -45,23 +45,23 @@ export function SaleCampaignProducts() {
     }
 
     return (
-        <section className="py-12 bg-zinc-100">
+        <section className="py-12 bg-muted/30 border-y border-border shadow-inner">
             <div className="container mx-auto px-4">
                 {/* Header */}
                 <div className="flex items-center justify-between mb-8">
                     <div className="flex items-center gap-3">
-                        <div className="p-2 bg-primary text-white">
-                            <Zap className="h-6 w-6" />
+                        <div className="p-3 bg-primary/20 border border-primary/30 rounded-sm shadow-md shadow-primary/10">
+                            <Zap className="h-6 w-6 text-primary" />
                         </div>
                         <div>
-                            <h2 className="text-2xl font-black uppercase tracking-wider">Sale Campaign</h2>
+                            <h2 className="text-2xl font-bold uppercase tracking-widest text-foreground">Sale Campaign</h2>
                             <div className="flex items-center gap-2 mt-1">
                                 <span className="text-sm text-muted-foreground">Kết thúc trong:</span>
                                 <CountdownTimer endTime={saleCampaign.endTime} variant="inline" />
                             </div>
                         </div>
                     </div>
-                    <Button asChild variant="outline" className="rounded-none border-2 border-black font-bold">
+                    <Button asChild variant="outline" className="rounded-sm border-border shadow-sm font-bold uppercase tracking-widest text-[10px] h-10 hover:bg-primary/5 hover:border-primary/30 transition-all">
                         <Link href="/sale-campaigns">
                             Xem tất cả
                             <ArrowRight className="ml-2 h-4 w-4" />

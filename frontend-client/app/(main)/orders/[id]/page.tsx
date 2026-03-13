@@ -11,6 +11,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ChevronLeft, Loader2, Truck } from "lucide-react";
 import Link from "next/link";
 import { format } from "date-fns";
+import { formatCurrency } from "@/lib/utils/formatCurrency";
 
 interface OrderDetailPageProps {
     params: Promise<{ id: string }>;
@@ -53,45 +54,45 @@ export default function OrderDetailPage({ params }: OrderDetailPageProps) {
     if (!currentOrder) return null;
 
     return (
-        <div className="container mx-auto py-8 px-4 md:px-6">
-            <div className="mb-6">
-                <Button variant="ghost" size="sm" asChild className="pl-0 hover:bg-transparent">
-                    <Link href="/profile/orders" className="flex items-center gap-1 text-muted-foreground hover:text-foreground">
-                        <ChevronLeft className="h-4 w-4" />
-                        Back to Orders
+        <div className="container mx-auto py-12 px-4 md:px-8 font-header bg-background">
+            <div className="mb-8">
+                <Button variant="ghost" size="sm" asChild className="pl-0 hover:bg-transparent group">
+                    <Link href="/orders" className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground hover:text-primary transition-colors">
+                        <ChevronLeft className="h-4 w-4 transition-transform group-hover:-translate-x-1" />
+                        Quay lại danh sách
                     </Link>
                 </Button>
             </div>
 
-            <div className="flex flex-col md:flex-row justify-between items-start gap-4 mb-8">
+            <div className="flex flex-col md:flex-row justify-between items-start gap-8 mb-12 border-b border-border pb-12">
                 <div>
-                    <h1 className="text-2xl font-bold flex items-center gap-3">
-                        Order #{currentOrder.groupNumber}
-                        <Badge variant="outline" className="text-base font-normal">
+                    <h1 className="text-3xl md:text-4xl font-bold flex items-center gap-6 text-foreground uppercase tracking-tighter">
+                        Đơn hàng <span className="text-primary italic">#{currentOrder.groupNumber}</span>
+                        <Badge variant="outline" className="text-[10px] font-bold uppercase tracking-widest px-4 py-1 rounded-sm border-primary/20 bg-primary/5 text-primary">
                             {currentOrder.overallStatus.replace(/_/g, " ")}
                         </Badge>
                     </h1>
-                    <p className="text-muted-foreground mt-1">
-                        Placed on {format(new Date(currentOrder.createdAt), "MMMM d, yyyy 'at' h:mm a")}
+                    <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-[0.2em] mt-3 opacity-60">
+                        Đặt ngày {format(new Date(currentOrder.createdAt), "MMMM d, yyyy 'lúc' h:mm a")}
                     </p>
                 </div>
-                <div className="text-right">
-                    <p className="text-sm text-muted-foreground">Total Amount</p>
-                    <p className="text-2xl font-bold">${currentOrder.totalAmount.toFixed(2)}</p>
+                <div className="text-left md:text-right">
+                    <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest mb-1 shadow-sm px-4 py-1 bg-muted/5 rounded-sm border border-border inline-block">Tổng thanh toán</p>
+                    <p className="text-4xl font-bold tracking-tighter text-primary mt-2">{formatCurrency(currentOrder.totalAmount)}</p>
                 </div>
             </div>
 
             <div className="grid lg:grid-cols-3 gap-8">
                 <div className="lg:col-span-2 space-y-6">
                     {currentOrder.subOrders.some(so => so.ghnOrderCode) && (
-                        <Card>
-                            <CardHeader>
-                                <CardTitle className="flex items-center gap-2">
-                                    <Truck className="h-5 w-5" />
-                                    Shipment Tracking
+                        <Card className="border border-border shadow-md rounded-sm overflow-hidden bg-background mb-8">
+                            <CardHeader className="bg-muted/10 border-b border-border py-4">
+                                <CardTitle className="flex items-center gap-3 text-[11px] font-bold uppercase tracking-widest text-foreground font-header">
+                                    <Truck className="h-4 w-4 text-primary" />
+                                    Theo dõi vận chuyển
                                 </CardTitle>
                             </CardHeader>
-                            <CardContent>
+                            <CardContent className="pt-8">
                                 <TrackingTimeline
                                     ghnOrderCode={currentOrder.subOrders.find(so => so.ghnOrderCode)?.ghnOrderCode || ''}
                                 />
@@ -100,7 +101,11 @@ export default function OrderDetailPage({ params }: OrderDetailPageProps) {
                     )}
 
                     <div>
-                        <h2 className="text-lg font-semibold mb-4">Shipments</h2>
+                        <h2 className="text-xs font-bold uppercase tracking-widest mb-6 flex items-center gap-3 text-muted-foreground">
+                            <div className="h-px bg-border flex-1" />
+                            Danh sách kiện hàng
+                            <div className="h-px bg-border flex-1" />
+                        </h2>
                         {currentOrder.subOrders.map((subOrder) => (
                             <SubOrderCard 
                                 key={`${subOrder.id}-${refreshCounter}`} 
@@ -113,52 +118,51 @@ export default function OrderDetailPage({ params }: OrderDetailPageProps) {
                 </div>
 
                 {/* Sidebar - Order Info */}
-                <div className="space-y-6">
-                    <div className="bg-zinc-50 dark:bg-zinc-900 p-6 rounded-lg border">
-                        <h3 className="font-semibold mb-4">Payment Information</h3>
-                        <div className="space-y-2 text-sm">
-                            <div className="flex justify-between">
-                                <span className="text-muted-foreground">Payment Method</span>
-                                <span className="font-medium">Credit Card</span>
+                <div className="space-y-8">
+                    <div className="bg-background p-8 rounded-sm border border-border shadow-md space-y-6">
+                        <h3 className="text-[11px] font-bold uppercase tracking-[0.2em] text-foreground border-b border-border pb-4">Thông tin thanh toán</h3>
+                        <div className="space-y-4 text-[10px] font-bold uppercase tracking-widest">
+                            <div className="flex justify-between items-center text-muted-foreground">
+                                <span>Phương thức</span>
+                                <span className="text-foreground">Thẻ tín dụng</span>
                             </div>
-                            <div className="flex justify-between">
-                                <span className="text-muted-foreground">Payment Status</span>
-                                <Badge variant={currentOrder.paymentStatus === 'SUCCEEDED' ? 'default' : 'secondary'} className="text-xs">
+                            <div className="flex justify-between items-center text-muted-foreground">
+                                <span>Trạng thái</span>
+                                <Badge variant={currentOrder.paymentStatus === 'SUCCEEDED' ? 'default' : 'secondary'} className="text-[8px] font-bold uppercase tracking-widest rounded-sm border-none bg-primary/10 text-primary">
                                     {currentOrder.paymentStatus}
                                 </Badge>
                             </div>
                         </div>
                     </div>
 
-                    <div className="bg-zinc-50 dark:bg-zinc-900 p-6 rounded-lg border">
-                        <h3 className="font-semibold mb-4">Shipping Address</h3>
-                        <div className="text-sm text-muted-foreground">
-                            {/* Note: Address details would come from the address object, assuming we fetch it or it's embedded */}
-                            <p className="font-medium text-foreground">Shipping Address ID: {currentOrder.shippingAddressId}</p>
-                            <p>123 Main St</p>
-                            <p>New York, NY 10001</p>
-                            <p>USA</p>
+                    <div className="bg-background p-8 rounded-sm border border-border shadow-md space-y-6">
+                        <h3 className="text-[11px] font-bold uppercase tracking-[0.2em] text-foreground border-b border-border pb-4">Địa chỉ giao hàng</h3>
+                        <div className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground leading-loose">
+                            <p className="text-foreground mb-4">Mã địa chỉ: {currentOrder.shippingAddressId}</p>
+                            <p>123 Đường Chính</p>
+                            <p>Quận 1, TP. Hồ Chí Minh</p>
+                            <p>Việt Nam</p>
                         </div>
                     </div>
 
-                    <div className="bg-zinc-50 dark:bg-zinc-900 p-6 rounded-lg border">
-                        <h3 className="font-semibold mb-4">Order Summary</h3>
-                        <div className="space-y-2 text-sm">
-                            <div className="flex justify-between">
-                                <span className="text-muted-foreground">Subtotal</span>
-                                <span>${(currentOrder.totalAmount - currentOrder.taxAmount - currentOrder.shippingCost).toFixed(2)}</span>
+                    <div className="bg-background p-8 rounded-sm border border-border shadow-lg space-y-6">
+                        <h3 className="text-[11px] font-bold uppercase tracking-[0.2em] text-foreground border-b border-border pb-4">Tóm tắt đơn hàng</h3>
+                        <div className="space-y-4 text-[10px] font-bold uppercase tracking-widest">
+                            <div className="flex justify-between items-center text-muted-foreground">
+                                <span>Tạm tính</span>
+                                <span className="text-foreground">{formatCurrency(currentOrder.totalAmount - (currentOrder.taxAmount || 0) - currentOrder.shippingCost)}</span>
                             </div>
-                            <div className="flex justify-between">
-                                <span className="text-muted-foreground">Shipping</span>
-                                <span>${currentOrder.shippingCost.toFixed(2)}</span>
+                            <div className="flex justify-between items-center text-muted-foreground">
+                                <span>Phí vận chuyển</span>
+                                <span className="text-foreground">{formatCurrency(currentOrder.shippingCost)}</span>
                             </div>
-                            <div className="flex justify-between">
-                                <span className="text-muted-foreground">Tax</span>
-                                <span>${currentOrder.taxAmount.toFixed(2)}</span>
+                            <div className="flex justify-between items-center text-muted-foreground">
+                                <span>Thuế</span>
+                                <span className="text-foreground">{formatCurrency(currentOrder.taxAmount || 0)}</span>
                             </div>
-                            <div className="border-t pt-2 mt-2 flex justify-between font-bold">
-                                <span>Total</span>
-                                <span>${currentOrder.totalAmount.toFixed(2)}</span>
+                            <div className="border-t border-border border-dashed pt-4 mt-6 flex justify-between items-center">
+                                <span className="text-xs text-foreground">Tổng cộng</span>
+                                <span className="text-xl text-primary font-bold tracking-tighter">{formatCurrency(currentOrder.totalAmount)}</span>
                             </div>
                         </div>
                     </div>

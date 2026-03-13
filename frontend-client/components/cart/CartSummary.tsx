@@ -19,29 +19,29 @@ export function CartSummary({ cart }: CartSummaryProps) {
     const finalTotal = discountResult ? discountResult.finalTotal : cart.totalAmount;
 
     return (
-        <div className="bg-white border-2 border-black sticky top-24 p-0">
-            <div className="bg-black text-white px-6 py-4 flex justify-between items-center">
-                <h2 className="text-sm font-black uppercase tracking-widest">Tóm tắt đơn hàng</h2>
-                <span className="font-mono text-xs text-white/50">INV-{Date.now().toString().slice(-4)}</span>
+        <div className="bg-background border border-border sticky top-24 p-0 shadow-lg rounded-sm overflow-hidden font-header">
+            <div className="bg-muted/30 border-b border-border px-6 py-4 flex justify-between items-center">
+                <h2 className="text-[11px] font-bold uppercase tracking-[0.2em] text-foreground">Tóm tắt đơn hàng</h2>
+                <span className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest opacity-50">INV-{Date.now().toString().slice(-4)}</span>
             </div>
 
             <div className="p-6 space-y-6">
 
                 <div className="space-y-4 text-sm">
                     <div className="flex justify-between items-center">
-                        <span className="font-mono text-xs uppercase text-zinc-500">Tạm tính ({cart.totalItems} SP)</span>
-                        <span className="font-mono font-bold">{formatCurrency(cart.totalAmount)}</span>
+                        <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Tạm tính ({cart.totalItems})</span>
+                        <span className="font-bold tracking-tighter">{formatCurrency(cart.totalAmount)}</span>
                     </div>
 
                     <div className="flex justify-between items-center">
-                        <span className="font-mono text-xs uppercase text-zinc-500">Phí vận chuyển</span>
-                        <span className="font-mono text-[10px] bg-zinc-100 px-2 py-1">TÍNH LÚC THANH TOÁN</span>
+                        <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Phí vận chuyển</span>
+                        <span className="text-[9px] font-bold bg-muted px-2 py-1 rounded-sm uppercase tracking-widest text-muted-foreground">TÍNH LÚC THANH TOÁN</span>
                     </div>
 
                     {discountResult && discountResult.totalDiscount > 0 && (
-                        <div className="flex justify-between items-center text-[#FF4400]">
-                            <span className="font-mono text-xs uppercase font-bold">Giảm giá voucher</span>
-                            <span className="font-mono font-bold">-{formatCurrency(discountResult.totalDiscount)}</span>
+                        <div className="flex justify-between items-center text-primary">
+                            <span className="text-[10px] font-bold uppercase tracking-widest">Giảm giá voucher</span>
+                            <span className="font-bold tracking-tighter">-{formatCurrency(discountResult.totalDiscount)}</span>
                         </div>
                     )}
 
@@ -50,29 +50,29 @@ export function CartSummary({ cart }: CartSummaryProps) {
                         <VoucherSection />
                     </div>
 
-                    <div className="border-t-2 border-black mt-4 pt-4 flex justify-between items-end">
-                        <span className="font-black uppercase tracking-tight text-lg">Tổng cộng</span>
-                        <span className="text-2xl font-black tracking-tighter tabular-nums text-[#FF4400]">
+                    <div className="border-t border-border mt-4 pt-4 flex justify-between items-end">
+                        <span className="font-bold uppercase tracking-widest text-xs">Tổng cộng</span>
+                        <span className="text-2xl font-bold tracking-tighter tabular-nums text-primary">
                             {formatCurrency(finalTotal)}
                         </span>
                     </div>
                 </div>
 
                 <Button
-                    className="w-full h-14 bg-black text-white hover:bg-[#FF4400] hover:text-white rounded-none font-black text-sm uppercase tracking-[0.2em] transition-all border-2 border-transparent hover:border-black"
+                    className="w-full h-14 bg-primary text-primary-foreground hover:bg-primary/90 rounded-sm font-bold text-[11px] uppercase tracking-[0.2em] transition-all shadow-md border-none"
                     onClick={() => router.push("/checkout")}
                 >
                     Thanh toán ngay
                 </Button>
 
-                <div className="border-t border-zinc-200 pt-6">
+                <div className="border-t border-border pt-6">
                     <div className="flex items-start gap-4">
-                        <div className="h-8 w-8 flex-shrink-0 bg-zinc-100 border border-zinc-200 flex items-center justify-center">
-                            <ShieldCheck className="h-4 w-4 text-zinc-900" />
+                        <div className="h-8 w-8 flex-shrink-0 bg-muted/50 border border-border flex items-center justify-center rounded-sm">
+                            <ShieldCheck className="h-4 w-4 text-primary" />
                         </div>
                         <div className="space-y-1">
-                            <p className="font-bold text-xs uppercase tracking-wide">Bảo vệ người mua</p>
-                            <p className="text-[10px] text-zinc-500 font-mono leading-relaxed">
+                            <p className="font-bold text-[10px] uppercase tracking-widest text-foreground">Bảo vệ người mua</p>
+                            <p className="text-[9px] text-muted-foreground font-bold tracking-widest leading-relaxed uppercase opacity-50">
                                 GIAO DỊCH CỦA BẠN ĐƯỢC BẢO MẬT TUYỆT ĐỐI. HOÀN TIỀN 100% NẾU CÓ SỰ CỐ.
                             </p>
                         </div>

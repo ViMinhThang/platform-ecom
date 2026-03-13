@@ -136,7 +136,7 @@ export const ReviewRichTextEditor = ({ value, onChange, placeholder, className }
         },
         editorProps: {
             attributes: {
-                class: 'focus:outline-none min-h-[150px] p-4 prose prose-sm dark:prose-invert max-w-none',
+                class: 'focus:outline-none min-h-[150px] p-4 prose prose-sm max-w-none',
             },
         },
     });

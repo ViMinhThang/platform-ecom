@@ -11,10 +11,10 @@ interface ProductFeedbackProps {
 
 export const ProductFeedback = ({ product }: ProductFeedbackProps) => {
     return (
-        <div className="grid grid-cols-1 lg:grid-cols-12 border-t-2 border-black divide-x-0 lg:divide-x-2 divide-black">
-            <div className="lg:col-span-4 p-8 md:p-12">
-                <h2 className="text-xl font-black flex items-center gap-3 uppercase tracking-[0.2em] text-black mb-10">
-                    <span className="bg-black text-white px-2 py-0.5 text-xs">03</span>
+        <div className="grid grid-cols-1 lg:grid-cols-12 border-t border-border divide-x-0 lg:divide-x divide-border">
+            <div className="lg:col-span-4 p-8">
+                <h2 className="text-[11px] font-bold flex items-center gap-3 uppercase tracking-[0.2em] text-foreground mb-10">
+                    <span className="bg-primary/10 text-primary px-2 py-0.5 text-[9px]">03</span>
                     NGƯỜI BÁN
                 </h2>
                 <SellerInfoCard
@@ -24,14 +24,14 @@ export const ProductFeedback = ({ product }: ProductFeedbackProps) => {
                 />
             </div>
 
-            <div className="lg:col-span-8 p-8 md:p-12 border-t-2 lg:border-t-0 border-black">
-                <h2 className="text-xl font-black flex items-center gap-3 uppercase tracking-[0.2em] text-black mb-10">
-                    <span className="bg-black text-white px-2 py-0.5 text-xs">04</span>
+            <div className="lg:col-span-8 p-8 border-t lg:border-t-0 border-border">
+                <h2 className="text-[11px] font-bold flex items-center gap-3 uppercase tracking-[0.2em] text-foreground mb-10">
+                    <span className="bg-primary/10 text-primary px-2 py-0.5 text-[9px]">04</span>
                     ĐÁNH GIÁ SẢN PHẨM
                 </h2>
-                <div className="bg-zinc-50 border-2 border-black p-6 md:p-10">
+                <div className="bg-muted/10 border border-border p-6 md:p-8 rounded-sm shadow-inner">
                     <ReviewStats productId={product.id} />
-                    <div className="mt-10 pt-10 border-t-2 border-dashed border-black/10">
+                    <div className="mt-10 pt-10 border-t border-dashed border-border/50">
                         <ReviewList productId={product.id} />
                     </div>
                 </div>

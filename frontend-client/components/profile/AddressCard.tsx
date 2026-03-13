@@ -27,47 +27,47 @@ interface AddressCardProps {
  */
 export function AddressCard({ address, onEdit, onDelete, isDeleting }: AddressCardProps) {
     return (
-        <div className="relative bg-white border-2 border-black p-6 group transition-all hover:bg-zinc-50 h-full">
-            <div className="pb-4 border-b-2 border-dashed border-zinc-200 mb-4 flex justify-between items-start">
-                <div className="flex items-center gap-2">
-                    <MapPin className="h-4 w-4 text-black" />
-                    <h4 className="font-black text-sm uppercase tracking-wider">
+        <div className="relative bg-background border border-border p-8 py-10 group transition-all hover:shadow-lg h-full rounded-sm shadow-md">
+            <div className="pb-6 border-b border-border mb-6 flex justify-between items-start">
+                <div className="flex items-center gap-3">
+                    <MapPin className="h-4 w-4 text-primary" />
+                    <h4 className="font-bold text-[11px] uppercase tracking-[0.2em] text-foreground">
                         {address.buildingName}
                     </h4>
                 </div>
                 {address.isDefault && (
-                    <span className="text-[10px] font-mono font-bold bg-black text-white px-2 py-0.5 border border-black uppercase">
-                        DEFAULT_ADDR
+                    <span className="text-[8px] font-bold bg-primary/10 text-primary px-3 py-1 border border-primary/20 uppercase tracking-widest rounded-sm">
+                        ĐỊA CHỈ MẶC ĐỊNH
                     </span>
                 )}
             </div>
 
-            <div className="text-xs font-mono text-zinc-600 space-y-1 mb-6">
-                <p className="uppercase">{address.street}</p>
-                <p className="uppercase">
+            <div className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest space-y-2 mb-12 opacity-60 leading-relaxed">
+                <p>{address.street}</p>
+                <p>
                     {address.wardName}, {address.districtName}
                 </p>
-                <p className="uppercase">{address.provinceName}</p>
-                <p className="uppercase">{address.country}</p>
+                <p>{address.provinceName}</p>
+                <p>{address.country}</p>
             </div>
 
-            <div className="flex justify-start space-x-0 border-t-2 border-black absolute bottom-0 left-0 right-0">
+            <div className="flex justify-start border-t border-border absolute bottom-0 left-0 right-0">
                 <button
-                    className="flex-1 py-2 text-xs font-bold uppercase hover:bg-black hover:text-white border-r-2 border-black transition-colors flex items-center justify-center gap-2"
+                    className="flex-1 py-3 text-[10px] font-bold uppercase tracking-widest hover:bg-primary/5 text-foreground border-r border-border transition-all flex items-center justify-center gap-3"
                     onClick={() => onEdit(address)}
                 >
-                    <Pencil className="h-3 w-3" /> CHỈNH SỬA
+                    <Pencil className="h-3.5 w-3.5 text-primary opacity-50" /> CHỈNH SỬA
                 </button>
                 <button
-                    className="flex-1 py-2 text-xs font-bold uppercase hover:bg-red-600 hover:text-white text-red-600 transition-colors flex items-center justify-center gap-2"
+                    className="flex-1 py-3 text-[10px] font-bold uppercase tracking-widest hover:bg-red-50 text-red-500 transition-all flex items-center justify-center gap-3"
                     onClick={() => address.addressId && onDelete(address.addressId)}
                     disabled={isDeleting}
                 >
                     {isDeleting ? (
-                        <span className="h-3 w-3 animate-spin rounded-full border-2 border-current border-t-transparent" />
+                        <span className="h-3.5 w-3.5 animate-spin rounded-full border-2 border-current border-t-transparent" />
                     ) : (
                         <>
-                            <Trash2 className="h-3 w-3" /> XÓA
+                            <Trash2 className="h-3.5 w-3.5 opacity-50" /> XÓA
                         </>
                     )}
                 </button>
