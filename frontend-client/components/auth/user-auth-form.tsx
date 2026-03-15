@@ -147,7 +147,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
                 <Button variant="link" className="text-[10px] uppercase tracking-widest font-bold text-muted-foreground hover:text-primary p-0 h-auto rounded-sm transition-colors opacity-70 hover:opacity-100" onClick={() => router.push('/auth/register')}>
                     ĐĂNG KÝ TÀI KHOẢN MỚI
                 </Button>
-                <Button variant="link" className="text-[10px] uppercase tracking-widest font-bold text-muted-foreground hover:text-primary p-0 h-auto rounded-sm transition-colors opacity-70 hover:opacity-100">
+                <Button variant="link" className="text-[10px] uppercase tracking-widest font-bold text-muted-foreground hover:text-primary p-0 h-auto rounded-sm transition-colors opacity-70 hover:opacity-100" onClick={() => router.push('/auth/forgot-password')}>
                     QUÊN MẬT KHẨU?
                 </Button>
             </div>

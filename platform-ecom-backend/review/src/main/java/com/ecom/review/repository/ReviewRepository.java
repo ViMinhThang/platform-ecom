@@ -34,4 +34,21 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
 
     @Query("SELECT r.sentiment, COUNT(r) FROM Review r WHERE r.productId = :productId GROUP BY r.sentiment")
     java.util.List<Object[]> getSentimentDistributionByProductId(@Param("productId") Long productId);
+
+    @Query("SELECT r FROM Review r WHERE r.productId IN :productIds")
+    Page<Review> findByProductIdIn(@Param("productIds") java.util.List<Long> productIds, Pageable pageable);
+
+    @Query("SELECT r FROM Review r WHERE r.productId IN :productIds AND r.sentiment = :sentiment")
+    Page<Review> findByProductIdInAndSentiment(@Param("productIds") java.util.List<Long> productIds, 
+                                               @Param("sentiment") String sentiment, 
+                                               Pageable pageable);
+
+    @Query("SELECT r.sentiment, COUNT(r) FROM Review r WHERE r.productId IN :productIds GROUP BY r.sentiment")
+    java.util.List<Object[]> getSentimentDistributionByProductIds(@Param("productIds") java.util.List<Long> productIds);
+
+    @Query("SELECT COUNT(r) FROM Review r WHERE r.productId IN :productIds")
+    Long countByProductIds(@Param("productIds") java.util.List<Long> productIds);
+
+    @Query("SELECT AVG(r.rating) FROM Review r WHERE r.productId IN :productIds")
+    Double findAverageRatingByProductIds(@Param("productIds") java.util.List<Long> productIds);
 }

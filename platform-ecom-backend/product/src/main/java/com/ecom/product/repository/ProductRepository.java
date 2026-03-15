@@ -77,5 +77,11 @@ public interface ProductRepository extends JpaRepository<Product, Long>, JpaSpec
      */
     @EntityGraph(attributePaths = {"category", "variants", "images", "options"})
     Optional<Product> findBySlugAndDeletedFalse(String slug);
+
+    /**
+     * Find all product IDs by seller user ID
+     */
+    @Query("SELECT p.id FROM Product p WHERE p.userId = :userId AND p.deleted = false")
+    List<Long> findIdsByUserId(@Param("userId") Long userId);
 }
 

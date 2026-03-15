@@ -59,6 +59,26 @@ public class InventoryServiceImpl implements InventoryService {
 
     @Override
     @Transactional(readOnly = true)
+    public Page<InventoryDTO> getInventoryBySeller(List<Long> productIds, Pageable pageable) {
+        if (productIds == null || productIds.isEmpty()) {
+            return Page.empty(pageable);
+        }
+        return inventoryRepository.findByProductIdIn(productIds, pageable).map(mapper::toDTO);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<InventoryDTO> getLowStockItemsBySeller(List<Long> productIds) {
+        if (productIds == null || productIds.isEmpty()) {
+            return List.of();
+        }
+        return inventoryRepository.findLowStockItemsByProductIds(productIds).stream()
+                .map(mapper::toDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    @Transactional(readOnly = true)
     public Page<InventoryTransactionDTO> getTransactionHistory(Long variantId, Pageable pageable) {
         Inventory inventory = inventoryHelper.findByVariantIdOrThrow(variantId);
         return transactionRepository.findByInventoryId(inventory.getId(), pageable)

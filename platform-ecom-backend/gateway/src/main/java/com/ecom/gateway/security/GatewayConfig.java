@@ -78,7 +78,7 @@ public class GatewayConfig {
                                                 .uri("lb://user-service"))
 
                                 .route("auth-forgot-password", r -> r
-                                                .path("/api/v1/auth/forgot-password", "/api/v1/auth/reset-password")
+                                                .path("/api/v1/auth/forgot-password", "/api/v1/auth/verify-otp", "/api/v1/auth/reset-password")
                                                 .uri("lb://user-service"))
 
                                 .route("auth-protected", r -> r
@@ -115,6 +115,11 @@ public class GatewayConfig {
                                                 .filters(f -> f
                                                                 .filter(authFilter))
                                                 .uri("lb://user-service"))
+
+                                // Internal product service endpoints
+                                .route("internal-product", r -> r
+                                                .path("/api/v1/internal/product-service/**")
+                                                .uri("lb://product-service"))
 
                                 // ============================================================
                                 // PRODUCT CATALOG - /api/v1/products
@@ -291,6 +296,13 @@ public class GatewayConfig {
                                                                 .filter(authFilter))
                                                 .uri("lb://review-service"))
 
+                                // Seller review endpoints (protected)
+                                .route("reviews-seller", r -> r
+                                                .path("/api/v1/reviews/seller/**")
+                                                .filters(f -> f
+                                                                .filter(authFilter))
+                                                .uri("lb://review-service"))
+
                                 // Admin review moderation
                                 .route("admin-reviews", r -> r
                                                 .path("/api/v1/admin/reviews/**")
@@ -304,8 +316,6 @@ public class GatewayConfig {
 
                                 .route("notifications", r -> r
                                                 .path("/api/v1/notifications", "/api/v1/notifications/**")
-                                                .filters(f -> f
-                                                                .filter(authFilter))
                                                 .uri("lb://notification-service"))
 
                                 // ============================================================

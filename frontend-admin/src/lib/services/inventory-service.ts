@@ -36,7 +36,8 @@ export interface PaginatedResponse<T> {
 
 // ==================== Service ====================
 
-const INVENTORY_API = API_ENDPOINTS.INVENTORY_ADMIN;
+// Use seller endpoint - backend will filter by current seller's products
+const INVENTORY_API = API_ENDPOINTS.INVENTORY_SELLER;
 
 export const inventoryService = {
     /**

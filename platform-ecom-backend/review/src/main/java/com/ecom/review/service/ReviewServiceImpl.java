@@ -9,6 +9,7 @@ import com.ecom.review.entity.Review;
 import com.ecom.common.exception.APIException;
 import com.ecom.common.exception.ResourceNotFoundException;
 import com.ecom.common.service.FileStorageService;
+import com.ecom.common.util.APIResponse;
 import com.ecom.review.repository.ReviewRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -242,21 +243,35 @@ public class ReviewServiceImpl implements ReviewService {
         review.setComment(createReviewDTO.getComment());
         review.setImages(createReviewDTO.getImages());
 
-        SentimentResponse sentimentResult = analyzeSentiment(createReviewDTO.getComment(), createReviewDTO.getRating());
+        SentimentResponse sentimentResult = analyzeSentiment(createReviewDTO.getComment());
 
-        if (sentimentResult.getNlpScore() != null) {
-            if (createReviewDTO.getRating() >= 4 && sentimentResult.getNlpScore() <= 0.3) {
-                throw new APIException("Danh giá không hợp lệ");
-            }
-            if (createReviewDTO.getRating() <= 2 && sentimentResult.getNlpScore() >= 0.7) {
-                throw new APIException("Danh giá không hợp lệ");
-            }
-        }
+        validateReviewLegitimacy(createReviewDTO.getRating(), sentimentResult);
 
         review.setSentiment(sentimentResult.getSentiment());
         review.setSentimentScore(sentimentResult.getScore());
 
         return review;
+    }
+
+    private void validateReviewLegitimacy(Integer rating, SentimentResponse sentimentResult) {
+        if (sentimentResult.getNlpScore() == null) {
+            return;
+        }
+
+        double nlpScore = sentimentResult.getNlpScore();
+
+        if (rating >= 4 && nlpScore < 0.3) {
+            throw new APIException("Đánh giá không hợp lệ");
+        }
+        if (rating <= 2 && nlpScore > 0.7) {
+            throw new APIException("Đánh giá không hợp lệ");
+        }
+        if (rating == 3 && nlpScore < 0.3) {
+            throw new APIException("Đánh giá không hợp lệ");
+        }
+        if (rating == 3 && nlpScore > 0.7) {
+            throw new APIException("Đánh giá không hợp lệ");
+        }
     }
 
     private void updateReviewFields(Review review, UpdateReviewDTO updateReviewDTO) {
@@ -270,21 +285,12 @@ public class ReviewServiceImpl implements ReviewService {
             review.setImages(updateReviewDTO.getImages());
         }
 
-        // Re-analyze sentiment if rating or comment changed
-        if (updateReviewDTO.getRating() != null || updateReviewDTO.getComment() != null) {
-            String commentText = updateReviewDTO.getComment() != null ? updateReviewDTO.getComment()
-                    : review.getComment();
-            Integer rating = updateReviewDTO.getRating() != null ? updateReviewDTO.getRating() : review.getRating();
-            SentimentResponse sentimentResult = analyzeSentiment(commentText, rating);
+        // Re-analyze sentiment if comment changed
+        if (updateReviewDTO.getComment() != null) {
+            SentimentResponse sentimentResult = analyzeSentiment(updateReviewDTO.getComment());
 
-            if (sentimentResult.getNlpScore() != null) {
-                if (rating >= 4 && sentimentResult.getNlpScore() <= 0.3) {
-                    throw new APIException("Review is invalid");
-                }
-                if (rating <= 2 && sentimentResult.getNlpScore() >= 0.7) {
-                    throw new APIException("Review is invalid");
-                }
-            }
+            Integer rating = updateReviewDTO.getRating() != null ? updateReviewDTO.getRating() : review.getRating();
+            validateReviewLegitimacy(rating, sentimentResult);
 
             review.setSentiment(sentimentResult.getSentiment());
             review.setSentimentScore(sentimentResult.getScore());
@@ -318,6 +324,10 @@ public class ReviewServiceImpl implements ReviewService {
         Map<Integer, Long> ratingDistribution = new HashMap<>();
         for (int i = 1; i <= 5; i++) {
             ratingDistribution.put(i, 0L);
+        }
+
+        if (distributionData == null) {
+            return ratingDistribution;
         }
 
         for (Object[] data : distributionData) {
@@ -362,33 +372,103 @@ public class ReviewServiceImpl implements ReviewService {
         return modelMapper.map(review, ReviewDTO.class);
     }
 
-    private SentimentResponse analyzeSentiment(String comment, Integer rating) {
+    private SentimentResponse analyzeSentiment(String comment) {
         try {
-            SentimentRequest request = new SentimentRequest(comment, rating);
+            SentimentRequest request = new SentimentRequest(comment, null);
             SentimentResponse response = sentimentServiceClient.analyze(request).getBody();
             if (response != null) {
                 return response;
             }
         } catch (Exception e) {
-            System.out.println("Sentiment service unavailable, falling back to rating-based: " + e.getMessage());
+            System.out.println("Sentiment service unavailable, falling back to neutral: " + e.getMessage());
         }
-        return calculateSentimentFromRating(rating);
+        return new SentimentResponse(NEUTRAL_SENTIMENT, 0.5, 0.5);
     }
 
-    private SentimentResponse calculateSentimentFromRating(Integer rating) {
-        String sentiment;
-        double score;
-        if (rating >= 4) {
-            sentiment = POSITIVE_SENTIMENT;
-            score = (rating - 1) / 4.0;
-        } else if (rating == 3) {
-            sentiment = NEUTRAL_SENTIMENT;
-            score = 0.5;
-        } else {
-            sentiment = NEGATIVE_SENTIMENT;
-            score = (rating - 1) / 4.0;
+    @Override
+    public ReviewResponse getReviewsBySeller(Long sellerId, Integer pageNumber, Integer pageSize,
+            String sortBy, String sortDir, String sentiment, Long productId) {
+        
+        List<Long> productIds = getProductIdsBySeller(sellerId);
+        
+        if (productIds.isEmpty()) {
+            Page<Review> emptyPage = Page.empty();
+            return buildReviewResponse(emptyPage);
         }
-        return new SentimentResponse(sentiment, score, null);
+
+        Pageable pageable = createPageable(pageNumber, pageSize, sortBy, sortDir);
+        Page<Review> reviewPage;
+
+        if (productId != null) {
+            reviewPage = reviewRepository.findByProductId(productId, pageable);
+        } else if (sentiment != null && !sentiment.isEmpty()) {
+            reviewPage = reviewRepository.findByProductIdInAndSentiment(productIds, sentiment, pageable);
+        } else {
+            reviewPage = reviewRepository.findByProductIdIn(productIds, pageable);
+        }
+
+        return buildReviewResponse(reviewPage);
+    }
+
+    @Override
+    public SellerReviewStatsDTO getSellerReviewStats(Long sellerId) {
+        List<Long> productIds = getProductIdsBySeller(sellerId);
+        
+        if (productIds.isEmpty()) {
+            return SellerReviewStatsDTO.builder()
+                    .totalReviews(0L)
+                    .averageRating(0.0)
+                    .sentimentDistribution(buildSentimentDistribution(null))
+                    .ratingDistribution(buildRatingDistribution(null))
+                    .positiveCount(0L)
+                    .neutralCount(0L)
+                    .negativeCount(0L)
+                    .positivePercentage(0.0)
+                    .neutralPercentage(0.0)
+                    .negativePercentage(0.0)
+                    .build();
+        }
+
+        Double averageRating = reviewRepository.findAverageRatingByProductIds(productIds);
+        Long totalReviews = reviewRepository.countByProductIds(productIds);
+        List<Object[]> sentimentData = reviewRepository.getSentimentDistributionByProductIds(productIds);
+        List<Object[]> ratingData = reviewRepository.getRatingDistributionByProductId(productIds.get(0));
+
+        Map<String, Long> sentimentDistribution = buildSentimentDistribution(sentimentData);
+        Map<Integer, Long> ratingDistribution = buildRatingDistribution(ratingData);
+
+        Long positiveCount = sentimentDistribution.getOrDefault(POSITIVE_SENTIMENT, 0L);
+        Long neutralCount = sentimentDistribution.getOrDefault(NEUTRAL_SENTIMENT, 0L);
+        Long negativeCount = sentimentDistribution.getOrDefault(NEGATIVE_SENTIMENT, 0L);
+
+        double positivePercentage = totalReviews > 0 ? (positiveCount * 100.0 / totalReviews) : 0.0;
+        double neutralPercentage = totalReviews > 0 ? (neutralCount * 100.0 / totalReviews) : 0.0;
+        double negativePercentage = totalReviews > 0 ? (negativeCount * 100.0 / totalReviews) : 0.0;
+
+        return SellerReviewStatsDTO.builder()
+                .totalReviews(totalReviews)
+                .averageRating(averageRating != null ? averageRating : 0.0)
+                .sentimentDistribution(sentimentDistribution)
+                .ratingDistribution(ratingDistribution)
+                .positiveCount(positiveCount)
+                .neutralCount(neutralCount)
+                .negativeCount(negativeCount)
+                .positivePercentage(positivePercentage)
+                .neutralPercentage(neutralPercentage)
+                .negativePercentage(negativePercentage)
+                .build();
+    }
+
+    private List<Long> getProductIdsBySeller(Long sellerId) {
+        try {
+            ResponseEntity<APIResponse<List<Long>>> response = productServiceClient.getProductIdsBySellerId(sellerId);
+            if (response.getBody() != null && response.getBody().getData() != null) {
+                return response.getBody().getData();
+            }
+        } catch (Exception e) {
+            System.out.println("Error fetching product IDs by seller: " + e.getMessage());
+        }
+        return List.of();
     }
 
 }

@@ -39,4 +39,6 @@ public interface ProductService {
         ProductDetailDTO getProductBySlug(String slug);
 
         List<ProductRowDTO> getProductsByIds(List<Long> productIds);
+
+        List<Long> getProductIdsBySellerId(Long sellerId);
 }

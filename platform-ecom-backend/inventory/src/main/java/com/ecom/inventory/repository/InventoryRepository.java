@@ -43,4 +43,16 @@ public interface InventoryRepository extends JpaRepository<Inventory, Long> {
      */
     @Query("SELECT i FROM Inventory i WHERE i.productId IN :productIds")
     List<Inventory> findByProductIdIn(@Param("productIds") List<Long> productIds);
+
+    /**
+     * Find by seller (via product IDs) with pagination
+     */
+    @Query("SELECT i FROM Inventory i WHERE i.productId IN :productIds")
+    Page<Inventory> findByProductIdIn(@Param("productIds") List<Long> productIds, Pageable pageable);
+
+    /**
+     * Find low stock items by seller (via product IDs)
+     */
+    @Query("SELECT i FROM Inventory i WHERE i.productId IN :productIds AND i.availableStock <= i.lowStockThreshold")
+    List<Inventory> findLowStockItemsByProductIds(@Param("productIds") List<Long> productIds);
 }

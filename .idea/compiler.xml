@@ -30,7 +30,7 @@
         <module name="inventory" />
         <module name="chatbot" />
       </profile>
-      <profile name="Annotation profile for analytics" enabled="true">
+      <profile name="Annotation profile for user" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
@@ -42,8 +42,8 @@
         <module name="review" />
         <module name="user" />
         <module name="gateway" />
-        <module name="promotion" />
         <module name="order" />
+        <module name="promotion" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>

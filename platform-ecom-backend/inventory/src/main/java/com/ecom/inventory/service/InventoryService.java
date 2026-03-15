@@ -30,6 +30,16 @@ public interface InventoryService {
     List<InventoryDTO> getLowStockItems();
 
     /**
+     * Get inventory by seller (filtered by seller's product IDs)
+     */
+    Page<InventoryDTO> getInventoryBySeller(List<Long> productIds, Pageable pageable);
+
+    /**
+     * Get low stock items by seller (filtered by seller's product IDs)
+     */
+    List<InventoryDTO> getLowStockItemsBySeller(List<Long> productIds);
+
+    /**
      * Get transaction history for an inventory item
      */
     Page<InventoryTransactionDTO> getTransactionHistory(Long variantId, Pageable pageable);

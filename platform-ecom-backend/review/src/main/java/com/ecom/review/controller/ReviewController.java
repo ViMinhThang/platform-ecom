@@ -119,4 +119,28 @@ public class ReviewController {
         ProductReviewSummaryDTO summary = reviewService.getProductReviewSummary(productId);
         return ResponseEntity.ok(summary);
     }
+
+    @GetMapping("/seller/{sellerId}")
+    public ResponseEntity<ReviewResponse> getReviewsBySeller(
+            @PathVariable Long sellerId,
+            PaginationRequest paginationRequest,
+            @RequestParam(name = "sentiment", required = false) String sentiment,
+            @RequestParam(name = "productId", required = false) Long productId) {
+
+        ReviewResponse reviewResponse = reviewService.getReviewsBySeller(
+                sellerId,
+                paginationRequest.getPageNumber(),
+                paginationRequest.getPageSize(),
+                paginationRequest.getSortBy(),
+                paginationRequest.getSortDir(),
+                sentiment,
+                productId);
+        return ResponseEntity.ok(reviewResponse);
+    }
+
+    @GetMapping("/seller/{sellerId}/stats")
+    public ResponseEntity<SellerReviewStatsDTO> getSellerReviewStats(@PathVariable Long sellerId) {
+        SellerReviewStatsDTO stats = reviewService.getSellerReviewStats(sellerId);
+        return ResponseEntity.ok(stats);
+    }
 }

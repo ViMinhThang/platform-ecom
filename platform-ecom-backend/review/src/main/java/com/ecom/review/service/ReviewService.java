@@ -28,4 +28,9 @@ public interface ReviewService {
 
         ProductReviewSummaryDTO getProductReviewSummary(Long productId);
 
+        ReviewResponse getReviewsBySeller(Long sellerId, Integer pageNumber, Integer pageSize,
+                        String sortBy, String sortDir, String sentiment, Long productId);
+
+        SellerReviewStatsDTO getSellerReviewStats(Long sellerId);
+
 }

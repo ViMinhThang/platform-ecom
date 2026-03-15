@@ -161,6 +161,12 @@ public class ProductServiceImpl implements ProductService {
                 .collect(Collectors.toList());
     }
 
+    @Override
+    @Transactional(readOnly = true)
+    public List<Long> getProductIdsBySellerId(Long sellerId) {
+        return productRepository.findIdsByUserId(sellerId);
+    }
+
     // ==================== Private Helper Methods ====================
 
     private Product buildProductFromDTO(ProductDTO productDTO, Category category, Long userId) {

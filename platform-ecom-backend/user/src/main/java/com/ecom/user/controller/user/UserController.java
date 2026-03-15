@@ -4,12 +4,16 @@ import com.ecom.common.aspect.RequireRole;
 import com.ecom.common.security.AuthContext;
 import com.ecom.common.util.*;
 import com.ecom.user.dtos.*;
+import com.ecom.user.dtos.request.ForgotPasswordRequest;
 import com.ecom.user.dtos.request.LoginRequest;
 import com.ecom.user.dtos.request.SignupRequest;
 import com.ecom.user.dtos.request.UpdateUserRequest;
+import com.ecom.user.dtos.request.VerifyOtpRequest;
 import com.ecom.user.dtos.response.MessageResponse;
+import com.ecom.user.dtos.response.OtpResponse;
 import com.ecom.user.dtos.response.UserInfoResponse;
 import com.ecom.user.service.signature.AuthService;
+import com.ecom.user.service.signature.ForgotPasswordService;
 import com.ecom.user.service.signature.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
@@ -25,6 +29,7 @@ public class UserController {
 
     private final AuthService authService;
     private final UserService userService;
+    private final ForgotPasswordService forgotPasswordService;
     private final AuthContext authContext;
 
     /**
@@ -48,6 +53,26 @@ public class UserController {
     public ResponseEntity<MessageResponse> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
         authService.register(signUpRequest);
         return new ResponseEntity<>(new MessageResponse("Register successfully"), HttpStatus.OK);
+    }
+
+    /**
+     * POST /api/v1/auth/forgot-password
+     * Public endpoint to request password reset OTP
+     */
+    @PostMapping("/auth/forgot-password")
+    public ResponseEntity<APIResponse<OtpResponse>> forgotPassword(@Valid @RequestBody ForgotPasswordRequest request) {
+        OtpResponse result = forgotPasswordService.generateOtp(request);
+        return ResponseBuilder.success("OTP sent successfully", result);
+    }
+
+    /**
+     * POST /api/v1/auth/verify-otp
+     * Public endpoint to verify OTP and reset password
+     */
+    @PostMapping("/auth/verify-otp")
+    public ResponseEntity<APIResponse<OtpResponse>> verifyOtp(@Valid @RequestBody VerifyOtpRequest request) {
+        OtpResponse result = forgotPasswordService.verifyOtpAndResetPassword(request);
+        return ResponseBuilder.success("Password reset successfully", result);
     }
 
     /**
