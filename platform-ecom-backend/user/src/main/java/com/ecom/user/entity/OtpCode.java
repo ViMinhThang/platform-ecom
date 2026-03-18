@@ -5,8 +5,7 @@ import lombok.*;
 import java.time.Instant;
 
 @Entity
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "otp_codes")

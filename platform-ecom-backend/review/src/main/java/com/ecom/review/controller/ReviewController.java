@@ -132,7 +132,7 @@ public class ReviewController {
                 paginationRequest.getPageNumber(),
                 paginationRequest.getPageSize(),
                 paginationRequest.getSortBy(),
-                paginationRequest.getSortDir(),
+                paginationRequest.getSortOrder(),
                 sentiment,
                 productId);
         return ResponseEntity.ok(reviewResponse);

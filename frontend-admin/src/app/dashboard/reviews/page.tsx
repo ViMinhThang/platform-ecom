@@ -96,7 +96,7 @@ export default function ReviewsPage() {
       }
       
       const statsData = await statsResponse.json();
-      setStats(statsData.data);
+      setStats(statsData.data || statsData);
 
       // Fetch reviews
       const reviewsParams = selectedSentiment 
@@ -116,7 +116,7 @@ export default function ReviewsPage() {
       }
       
       const reviewsData = await reviewsResponse.json();
-      setReviews(reviewsData.data.content || []);
+      setReviews(reviewsData.content || []);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
     } finally {

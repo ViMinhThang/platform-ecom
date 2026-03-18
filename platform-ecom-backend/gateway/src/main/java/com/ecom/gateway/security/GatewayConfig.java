@@ -78,7 +78,8 @@ public class GatewayConfig {
                                                 .uri("lb://user-service"))
 
                                 .route("auth-forgot-password", r -> r
-                                                .path("/api/v1/auth/forgot-password", "/api/v1/auth/verify-otp", "/api/v1/auth/reset-password")
+                                                .path("/api/v1/auth/forgot-password", "/api/v1/auth/verify-otp", "/api/v1/auth/reset-password",
+                                                        "/v1/auth/forgot-password", "/v1/auth/verify-otp", "/v1/auth/reset-password")
                                                 .uri("lb://user-service"))
 
                                 .route("auth-protected", r -> r
@@ -315,7 +316,8 @@ public class GatewayConfig {
                                 // ============================================================
 
                                 .route("notifications", r -> r
-                                                .path("/api/v1/notifications", "/api/v1/notifications/**")
+                                                .path("/api/v1/notifications", "/api/v1/notifications/**",
+                                                        "/v1/notifications", "/v1/notifications/**")
                                                 .uri("lb://notification-service"))
 
                                 // ============================================================

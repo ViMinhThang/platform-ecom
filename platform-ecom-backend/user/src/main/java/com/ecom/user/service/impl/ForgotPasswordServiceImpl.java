@@ -115,7 +115,7 @@ public class ForgotPasswordServiceImpl implements ForgotPasswordService {
             throw new APIException(HttpStatus.BAD_REQUEST, "Invalid or expired OTP");
         }
 
-        otp.setUsed(true);
+        otp.setIsUsed(true);
         otpCodeRepository.save(otp);
 
         user.setPassword(passwordEncoder.encode(newPassword));

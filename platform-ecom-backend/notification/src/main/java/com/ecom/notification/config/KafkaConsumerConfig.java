@@ -1,4 +1,4 @@
-package com.ecom.notification.consumer;
+package com.ecom.notification.config;
 
 import com.ecom.common.event.OrderCreatedEvent;
 import com.ecom.common.util.APIResponse;
@@ -15,13 +15,13 @@ import java.util.function.Consumer;
 @Slf4j
 @Configuration
 @RequiredArgsConstructor
-public class OrderCreatedConsumer {
+public class KafkaConsumerConfig {
 
     private final EmailService emailService;
     private final UserServiceClient userServiceClient;
 
     @Bean
-    public Consumer<OrderCreatedEvent> orderCreatedConsumer() {
+    public Consumer<OrderCreatedEvent> handleOrderCreated() {
         return event -> {
             log.info("Received OrderCreatedEvent for order: {}", event.getOrderNumber());
 

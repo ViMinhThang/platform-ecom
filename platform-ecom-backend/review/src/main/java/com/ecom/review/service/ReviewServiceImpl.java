@@ -359,6 +359,10 @@ public class ReviewServiceImpl implements ReviewService {
         sentimentDistribution.put(NEUTRAL_SENTIMENT, 0L);
         sentimentDistribution.put(NEGATIVE_SENTIMENT, 0L);
 
+        if (sentimentData == null) {
+            return sentimentDistribution;
+        }
+
         for (Object[] data : sentimentData) {
             String sentiment = (String) data[0];
             Long count = (Long) data[1];

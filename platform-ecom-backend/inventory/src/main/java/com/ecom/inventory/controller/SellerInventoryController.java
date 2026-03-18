@@ -78,10 +78,10 @@ public class SellerInventoryController {
     @RequireRole("ROLE_SELLER")
     public ResponseEntity<APIResponse<InventoryDTO>> updateStock(
             @PathVariable Long variantId,
-            @Valid @RequestBody StockAdjustmentRequest request,
+            @Valid @RequestBody StockAdjustmentRequest requestAdjustment,
             HttpServletRequest request) {
         Long sellerId = authContext.getUserId(request);
-        InventoryDTO inventory = inventoryService.adjustStock(variantId, request, sellerId);
+        InventoryDTO inventory = inventoryService.adjustStock(variantId, requestAdjustment, sellerId);
         return ResponseBuilder.success("Stock updated successfully", inventory);
     }
 
