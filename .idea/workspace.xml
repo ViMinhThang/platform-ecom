@@ -5,31 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c48beeac-7758-42e4-81dd-f068fbcd38be" name="Changes" comment="update spring cloud stream dependency">
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-admin/.env.local" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-admin/.env.local" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-admin/src/app/dashboard/reviews/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-admin/src/app/dashboard/reviews/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-admin/src/lib/font.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-admin/src/lib/font.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/auth/forgot-password-form.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/auth/forgot-password-form.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/logs/order-service.log" beforeDir="false" afterPath="$PROJECT_DIR$/logs/order-service.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/logs/user-service.log" beforeDir="false" afterPath="$PROJECT_DIR$/logs/user-service.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/configserver/src/main/resources/config/notification-service.yml" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/configserver/src/main/resources/config/notification-service.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/gateway/src/main/java/com/ecom/gateway/security/GatewayConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/gateway/src/main/java/com/ecom/gateway/security/GatewayConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/inventory/src/main/java/com/ecom/inventory/controller/SellerInventoryController.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/inventory/src/main/java/com/ecom/inventory/controller/SellerInventoryController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/inventory/src/main/java/com/ecom/inventory/repository/InventoryRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/inventory/src/main/java/com/ecom/inventory/repository/InventoryRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/notification/src/main/java/com/ecom/notification/consumer/OrderCreatedConsumer.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/notification/src/main/java/com/ecom/notification/controller/NotificationController.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/notification/src/main/java/com/ecom/notification/controller/NotificationController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/notification/src/main/java/com/ecom/notification/service/EmailService.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/notification/src/main/java/com/ecom/notification/service/EmailService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/notification/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/notification/src/main/resources/application.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/review/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/review/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/review/src/main/java/com/ecom/review/ReviewApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/review/src/main/java/com/ecom/review/ReviewApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/review/src/main/java/com/ecom/review/client/HttpClientConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/review/src/main/java/com/ecom/review/client/HttpClientConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/review/src/main/java/com/ecom/review/client/ProductServiceClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/review/src/main/java/com/ecom/review/client/ProductServiceClient.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/review/src/main/java/com/ecom/review/controller/ReviewController.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/review/src/main/java/com/ecom/review/controller/ReviewController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/review/src/main/java/com/ecom/review/service/ReviewServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/review/src/main/java/com/ecom/review/service/ReviewServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/user/src/main/java/com/ecom/user/entity/OtpCode.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/user/src/main/java/com/ecom/user/entity/OtpCode.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/user/src/main/java/com/ecom/user/service/impl/ForgotPasswordServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/user/src/main/java/com/ecom/user/service/impl/ForgotPasswordServiceImpl.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -87,48 +63,48 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Application.Unnamed.executor&quot;: &quot;Run&quot;,
-    &quot;Application.analytics-server.executor&quot;: &quot;Run&quot;,
-    &quot;Application.auth-service.executor&quot;: &quot;Run&quot;,
-    &quot;Application.bff-service.executor&quot;: &quot;Run&quot;,
-    &quot;Application.chatbot-service.executor&quot;: &quot;Run&quot;,
-    &quot;Application.config-server.executor&quot;: &quot;Run&quot;,
-    &quot;Application.eureka.executor&quot;: &quot;Run&quot;,
-    &quot;Application.gateway.executor&quot;: &quot;Run&quot;,
-    &quot;Application.inventory-service.executor&quot;: &quot;Run&quot;,
-    &quot;Application.notificaiton-service.executor&quot;: &quot;Run&quot;,
-    &quot;Application.notification service.executor&quot;: &quot;Run&quot;,
-    &quot;Application.notification-service.executor&quot;: &quot;Run&quot;,
-    &quot;Application.order-service.executor&quot;: &quot;Run&quot;,
-    &quot;Application.product-service.executor&quot;: &quot;Run&quot;,
-    &quot;Application.promotion-service.executor&quot;: &quot;Run&quot;,
-    &quot;Application.review-service.executor&quot;: &quot;Run&quot;,
-    &quot;Application.user-service.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.com.ecom.product.service in product.executor&quot;: &quot;Debug&quot;,
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;Python.main (1).executor&quot;: &quot;Run&quot;,
-    &quot;Python.main.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;Spring Boot.AnalyticsApplication.executor&quot;: &quot;Run&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;feature/nextjs&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/huynh/Desktop/platform-ecom&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;SDKs&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.15845825&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;,
-    &quot;run.configurations.included.in.services&quot;: &quot;true&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.Unnamed.executor": "Run",
+    "Application.analytics-server.executor": "Run",
+    "Application.auth-service.executor": "Run",
+    "Application.bff-service.executor": "Run",
+    "Application.chatbot-service.executor": "Run",
+    "Application.config-server.executor": "Run",
+    "Application.eureka.executor": "Run",
+    "Application.gateway.executor": "Run",
+    "Application.inventory-service.executor": "Run",
+    "Application.notificaiton-service.executor": "Run",
+    "Application.notification service.executor": "Run",
+    "Application.notification-service.executor": "Run",
+    "Application.order-service.executor": "Run",
+    "Application.product-service.executor": "Run",
+    "Application.promotion-service.executor": "Run",
+    "Application.review-service.executor": "Run",
+    "Application.user-service.executor": "Run",
+    "JUnit.com.ecom.product.service in product.executor": "Debug",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "Python.main (1).executor": "Run",
+    "Python.main.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "Spring Boot.AnalyticsApplication.executor": "Run",
+    "git-widget-placeholder": "feature/nextjs",
+    "ignore.virus.scanning.warn.message": "true",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/huynh/Desktop/Projects/platform-ecom",
+    "project.structure.last.edited": "SDKs",
+    "project.structure.proportion": "0.15845825",
+    "project.structure.side.proportion": "0.2",
+    "run.code.analysis.last.selected.profile": "pProject Default",
+    "run.configurations.included.in.services": "true",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\huynh\Desktop\platform-ecom\platform-ecom-backend\chatbot" />
@@ -171,7 +147,6 @@
               <entry key="config-server" value="STOPPED" />
               <entry key="gateway" value="STOPPED" />
               <entry key="inventory-service" value="STOPPED" />
-              <entry key="notification service" value="STOPPED" />
               <entry key="notification-service" value="STOPPED" />
               <entry key="order-service" value="STOPPED" />
               <entry key="product-service" value="STOPPED" />
@@ -458,12 +433,12 @@
       </method>
     </configuration>
     <list>
-      <item itemvalue="Application.notification-service" />
       <item itemvalue="Application.analytics-server" />
       <item itemvalue="Application.chatbot-service" />
       <item itemvalue="Application.config-server" />
       <item itemvalue="Application.gateway" />
       <item itemvalue="Application.inventory-service" />
+      <item itemvalue="Application.notification-service" />
       <item itemvalue="Application.order-service" />
       <item itemvalue="Application.product-service" />
       <item itemvalue="Application.promotion-service" />

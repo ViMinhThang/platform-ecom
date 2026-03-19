@@ -6,22 +6,23 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { toast } from "sonner";
+import { Mail, Lock } from "lucide-react";
 
 import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { AuthInput } from "@/components/auth/ui/auth-input";
+import { AuthButton } from "@/components/auth/ui/auth-button";
+import { OtpInput } from "@/components/auth/ui/otp-input";
+import { PasswordStrength } from "@/components/auth/ui/password-strength";
 import {
     Form,
     FormControl,
     FormField,
     FormItem,
-    FormLabel,
     FormMessage,
 } from "@/components/ui/form";
 
 const formSchema = z.object({
-    email: z.string().email({ message: "Địa chỉ email không hợp lệ" }),
-    otpCode: z.string().length(6, { message: "Mã OTP phải có 6 chữ số" }),
+    email: z.string().email({ message: "Email không hợp lệ" }),
     newPassword: z.string().min(6, { message: "Mật khẩu phải có ít nhất 6 ký tự" }),
     confirmPassword: z.string(),
 }).refine((data) => data.newPassword === data.confirmPassword, {
@@ -31,39 +32,48 @@ const formSchema = z.object({
 
 type FormValue = z.infer<typeof formSchema>;
 
-interface ResetPasswordFormProps extends React.HTMLAttributes<HTMLDivElement> { }
-
-export function ResetPasswordForm({ className, ...props }: ResetPasswordFormProps) {
+export function ResetPasswordForm({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) {
     const router = useRouter();
     const searchParams = useSearchParams();
     const emailParam = searchParams.get("email") || "";
     const [loading, setLoading] = React.useState(false);
+    const [otp, setOtp] = React.useState("");
+    const [otpError, setOtpError] = React.useState("");
 
     const form = useForm<FormValue>({
         resolver: zodResolver(formSchema),
         defaultValues: {
             email: emailParam,
-            otpCode: "",
             newPassword: "",
             confirmPassword: "",
         },
     });
 
+    const newPassword = form.watch("newPassword");
+
     async function onSubmit(data: FormValue) {
+        if (otp.length !== 6) {
+            setOtpError("Vui lòng nhập đủ 6 số");
+            return;
+        }
+
         setLoading(true);
 
         try {
-            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || ''}/api/v1/auth/verify-otp`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    email: data.email,
-                    otpCode: data.otpCode,
-                    newPassword: data.newPassword,
-                }),
-            });
+            const response = await fetch(
+                `${process.env.NEXT_PUBLIC_API_URL || ""}/api/v1/auth/verify-otp`,
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        email: data.email,
+                        otpCode: otp,
+                        newPassword: data.newPassword,
+                    }),
+                }
+            );
 
             const result = await response.json();
 
@@ -74,7 +84,7 @@ export function ResetPasswordForm({ className, ...props }: ResetPasswordFormProp
 
             toast.success("Mật khẩu đã được đặt lại thành công!");
             router.push("/auth/sign-in");
-        } catch (error) {
+        } catch {
             toast.error("Đã xảy ra lỗi. Vui lòng thử lại.");
         } finally {
             setLoading(false);
@@ -82,111 +92,119 @@ export function ResetPasswordForm({ className, ...props }: ResetPasswordFormProp
     }
 
     return (
-        <div className={cn("grid gap-6", className)} {...props}>
+        <div className={cn("space-y-5", className)} {...props}>
+            <div className="text-center space-y-2">
+                <p className="text-sm text-muted-foreground">
+                    Nhập mã xác thực đã gửi đến email và tạo mật khẩu mới
+                </p>
+            </div>
             <Form {...form}>
-                <form onSubmit={form.handleSubmit(onSubmit)}>
-                    <div className="grid gap-4">
-                        <FormField
-                            control={form.control}
-                            name="email"
-                            render={({ field }) => (
-                                <FormItem className="space-y-3">
-                                    <FormLabel className="text-[10px] font-bold uppercase tracking-[0.2em] text-foreground">Email</FormLabel>
-                                    <FormControl>
-                                        <Input
-                                            placeholder="name@example.com"
-                                            type="email"
-                                            autoCapitalize="none"
-                                            autoComplete="email"
-                                            autoCorrect="off"
-                                            disabled={loading}
-                                            className="rounded-sm border-border focus-visible:ring-primary/20 focus-visible:border-primary text-[11px] font-bold uppercase tracking-widest h-12 shadow-sm"
-                                            {...field}
-                                        />
-                                    </FormControl>
-                                    <FormMessage className="text-[10px] font-bold text-red-500 uppercase tracking-widest" />
-                                </FormItem>
-                            )}
+                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+                    <FormField
+                        control={form.control}
+                        name="email"
+                        render={({ field, fieldState }) => (
+                            <FormItem>
+                                <FormControl>
+                                    <AuthInput
+                                        label="Email"
+                                        placeholder="name@example.com"
+                                        type="email"
+                                        autoCapitalize="none"
+                                        autoComplete="email"
+                                        disabled={loading}
+                                        icon={<Mail className="h-4 w-4" />}
+                                        error={fieldState.error?.message}
+                                        {...field}
+                                    />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+
+                    <div className="space-y-2">
+                        <label className="block text-sm font-medium text-foreground/80">
+                            Mã xác thực
+                        </label>
+                        <OtpInput
+                            value={otp}
+                            onChange={(value) => {
+                                setOtp(value);
+                                setOtpError("");
+                            }}
+                            error={otpError}
+                            disabled={loading}
                         />
-                        <FormField
-                            control={form.control}
-                            name="otpCode"
-                            render={({ field }) => (
-                                <FormItem className="space-y-3">
-                                    <FormLabel className="text-[10px] font-bold uppercase tracking-[0.2em] text-foreground">Mã OTP</FormLabel>
-                                    <FormControl>
-                                        <Input
-                                            placeholder="123456"
-                                            type="text"
-                                            maxLength={6}
-                                            autoCapitalize="none"
-                                            autoComplete="one-time-code"
-                                            disabled={loading}
-                                            className="rounded-sm border-border focus-visible:ring-primary/20 focus-visible:border-primary text-[11px] font-bold uppercase tracking-[0.5em] h-12 shadow-sm text-center"
-                                            {...field}
-                                        />
-                                    </FormControl>
-                                    <FormMessage className="text-[10px] font-bold text-red-500 uppercase tracking-widest" />
-                                </FormItem>
-                            )}
-                        />
-                        <FormField
-                            control={form.control}
-                            name="newPassword"
-                            render={({ field }) => (
-                                <FormItem className="space-y-3">
-                                    <FormLabel className="text-[10px] font-bold uppercase tracking-[0.15em] text-foreground">Mật Khẩu Mới</FormLabel>
-                                    <FormControl>
-                                        <Input
-                                            placeholder="••••••••"
-                                            type="password"
-                                            autoCapitalize="none"
-                                            autoComplete="new-password"
-                                            disabled={loading}
-                                            className="rounded-sm border-border focus-visible:ring-primary/20 focus-visible:border-primary h-12 shadow-sm"
-                                            {...field}
-                                        />
-                                    </FormControl>
-                                    <FormMessage className="text-[10px] font-bold text-red-500 uppercase tracking-widest" />
-                                </FormItem>
-                            )}
-                        />
-                        <FormField
-                            control={form.control}
-                            name="confirmPassword"
-                            render={({ field }) => (
-                                <FormItem className="space-y-3">
-                                    <FormLabel className="text-[10px] font-bold uppercase tracking-[0.15em] text-foreground">Xác Nhận Mật Khẩu</FormLabel>
-                                    <FormControl>
-                                        <Input
-                                            placeholder="••••••••"
-                                            type="password"
-                                            autoCapitalize="none"
-                                            autoComplete="new-password"
-                                            disabled={loading}
-                                            className="rounded-sm border-border focus-visible:ring-primary/20 focus-visible:border-primary h-12 shadow-sm"
-                                            {...field}
-                                        />
-                                    </FormControl>
-                                    <FormMessage className="text-[10px] font-bold text-red-500 uppercase tracking-widest" />
-                                </FormItem>
-                            )}
-                        />
-                        <Button disabled={loading} type="submit" className="rounded-sm h-12 px-10 shadow-lg shadow-primary/10 text-[11px] font-bold uppercase tracking-[0.2em] transition-all">
-                            {loading && (
-                                <span className="mr-3 h-4 w-4 animate-spin border-2 border-primary-foreground border-t-transparent rounded-full" />
-                            )}
-                            {loading ? "ĐANG XỬ LÝ..." : "ĐẶT LẠI MẬT KHẨU"}
-                        </Button>
                     </div>
+
+                    <FormField
+                        control={form.control}
+                        name="newPassword"
+                        render={({ field, fieldState }) => (
+                            <FormItem>
+                                <FormControl>
+                                    <div className="space-y-2">
+                                        <AuthInput
+                                            label="Mật khẩu mới"
+                                            placeholder="••••••••"
+                                            type="password"
+                                            autoCapitalize="none"
+                                            autoComplete="new-password"
+                                            disabled={loading}
+                                            icon={<Lock className="h-4 w-4" />}
+                                            {...field}
+                                        />
+                                        <PasswordStrength password={newPassword} />
+                                        {fieldState.error?.message && (
+                                            <p className="text-xs text-destructive font-medium">
+                                                {fieldState.error.message}
+                                            </p>
+                                        )}
+                                    </div>
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                    <FormField
+                        control={form.control}
+                        name="confirmPassword"
+                        render={({ field, fieldState }) => (
+                            <FormItem>
+                                <FormControl>
+                                    <AuthInput
+                                        label="Xác nhận mật khẩu"
+                                        placeholder="••••••••"
+                                        type="password"
+                                        autoCapitalize="none"
+                                        autoComplete="new-password"
+                                        disabled={loading}
+                                        icon={<Lock className="h-4 w-4" />}
+                                        error={fieldState.error?.message}
+                                        {...field}
+                                    />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                    <AuthButton loading={loading}>
+                        Đặt lại mật khẩu
+                    </AuthButton>
                 </form>
             </Form>
 
-            <div className="flex justify-center mt-6">
-                <Button variant="link" className="text-[10px] uppercase tracking-widest font-bold text-muted-foreground hover:text-primary p-0 h-auto rounded-sm transition-colors opacity-70 hover:opacity-100" onClick={() => router.push('/auth/forgot-password')}>
-                    GỬI LẠI MÃ OTP
-                </Button>
-            </div>
+            <p className="text-center text-sm text-muted-foreground">
+                Chưa nhận được mã?{" "}
+                <button
+                    type="button"
+                    onClick={() => router.push("/auth/forgot-password")}
+                    className="font-semibold text-primary hover:underline"
+                >
+                    Gửi lại mã xác thực
+                </button>
+            </p>
         </div>
     );
 }
