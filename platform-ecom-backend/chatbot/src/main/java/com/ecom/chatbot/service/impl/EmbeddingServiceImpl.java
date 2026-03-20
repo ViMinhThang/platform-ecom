@@ -1,199 +1,154 @@
 package com.ecom.chatbot.service.impl;
 
-import com.ecom.chatbot.client.ProductServiceClient;
-import com.ecom.chatbot.dto.ProductDTO;
-import com.ecom.chatbot.dto.ProductResponse;
+import com.ecom.chatbot.client.EmbeddingServiceClient;
+import com.ecom.chatbot.client.ApiResponseWrapper;
 import com.ecom.chatbot.dto.ProductSummaryDTO;
-import com.ecom.chatbot.repository.ProductEmbeddingRepository;
 import com.ecom.chatbot.service.signature.EmbeddingService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.ai.embedding.EmbeddingModel;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @Slf4j
 @RequiredArgsConstructor
 public class EmbeddingServiceImpl implements EmbeddingService {
 
-    private final ProductEmbeddingRepository repository;
-    private final EmbeddingModel embeddingModel;
-    private final ProductServiceClient productClient;
+    private final EmbeddingServiceClient embeddingClient;
 
     @Override
-    @Transactional
     public void syncProductEmbeddings() {
-        log.info("Starting product embeddings sync...");
-        int page = 0;
-        int perPage = 100;
-        int totalSynced = 0;
-        int totalFailed = 0;
-
+        log.info("Triggering product embeddings sync via product-service...");
         try {
-            while (true) {
-                var apiResponse = productClient.getAllPublicProducts(page, perPage);
-
-                if (apiResponse == null || !apiResponse.isSuccess() || apiResponse.getData() == null) {
-                    log.warn("Failed to fetch products from Product service");
-                    break;
-                }
-
-                ProductResponse response = apiResponse.getData();
-
-                if (response.getProducts() == null || response.getProducts().isEmpty()) {
-                    break;
-                }
-
-                for (ProductDTO product : response.getProducts()) {
-                    try {
-                        updateProductEmbedding(product);
-                        totalSynced++;
-                    } catch (Exception e) {
-                        log.error("Failed to sync embedding for product {}: {}",
-                                product.getId(), e.getMessage());
-                        totalFailed++;
-                    }
-                }
-
-                log.info("Synced page {} with {} products", page, response.getProducts().size());
-
-                if (response.getProducts().size() < perPage) {
-                    break;
-                }
-                page++;
+            ApiResponseWrapper<Void> response = embeddingClient.syncEmbeddings();
+            if (response != null && response.isSuccess()) {
+                log.info("Embedding sync triggered successfully");
+            } else {
+                log.warn("Embedding sync returned unsuccessful response");
             }
         } catch (Exception e) {
-            log.error("Error during embeddings sync: {}", e.getMessage(), e);
+            log.error("Failed to trigger embedding sync: {}", e.getMessage(), e);
         }
-
-        log.info("Completed embeddings sync. Success: {}, Failed: {}", totalSynced, totalFailed);
     }
 
     @Override
     public List<ProductSummaryDTO> findSimilarProducts(String query, int limit) {
         log.debug("Finding similar products for query: '{}'", query);
-
-        String vectorString = generateQueryVector(query);
-
-        List<Object[]> results = repository.findSimilarProducts(vectorString, limit);
-
-        return results.stream()
-                .map(this::mapToProductSummary)
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    public List<ProductSummaryDTO> findProductsWithSorting(String keyword, String sortBy, String sortDirection,
-            int limit) {
-        log.debug("Finding products with dynamic sorting. keyword='{}', sortBy='{}', sortDirection='{}', limit={}",
-                keyword, sortBy, sortDirection, limit);
-
-        List<Object[]> results;
-        if ("DESC".equalsIgnoreCase(sortDirection)) {
-            results = repository.findProductsDynamicSortDesc(keyword == null ? "" : keyword, sortBy, limit);
-        } else {
-            results = repository.findProductsDynamicSortAsc(keyword == null ? "" : keyword, sortBy, limit);
+        try {
+            ApiResponseWrapper<List<ProductSummaryDTO>> response = 
+                    embeddingClient.searchSimilarProducts(query, limit);
+            if (response != null && response.isSuccess() && response.getData() != null) {
+                return response.getData();
+            }
+        } catch (Exception e) {
+            log.error("Failed to find similar products: {}", e.getMessage(), e);
         }
-
-        return results.stream()
-                .map(this::mapToProductSummary)
-                .collect(Collectors.toList());
+        return Collections.emptyList();
     }
 
     @Override
-    @Transactional
-    public void updateProductEmbedding(ProductDTO product) {
-        String textToEmbed = buildEmbeddingText(product);
-        String vectorString = generateEmbeddingVector(textToEmbed);
+    public List<ProductSummaryDTO> findProductsWithSorting(String keyword, String sortBy, String sortDirection, int limit) {
+        log.debug("Finding products with sorting. keyword='{}', sortBy='{}', sortDirection='{}', limit={}",
+                keyword, sortBy, sortDirection, limit);
+        try {
+            ApiResponseWrapper<List<ProductSummaryDTO>> response = 
+                    embeddingClient.searchWithSorting(keyword, sortBy, sortDirection, limit);
+            if (response != null && response.isSuccess() && response.getData() != null) {
+                return response.getData();
+            }
+        } catch (Exception e) {
+            log.error("Failed to find products with sorting: {}", e.getMessage(), e);
+        }
+        return Collections.emptyList();
+    }
 
-        repository.upsertProductEmbedding(
-                product.getId(),
-                product.getName(),
-                product.getSlug(),
-                product.getPrice(),
-                product.getDescription(),
-                product.getCate() != null ? product.getCate().getName() : null,
-                vectorString,
-                product.getMinPrice(),
-                product.getMaxPrice(),
-                product.getAverageRating(),
-                product.getTotalSold(),
-                product.getImageUrl());
-
-        log.debug("Updated embedding for product: {} ({})", product.getName(), product.getId());
+    @Override
+    public void updateProductEmbedding(Object product) {
+        log.debug("updateProductEmbedding called - syncing all embeddings via product-service");
+        syncProductEmbeddings();
     }
 
     @Override
     public long getEmbeddingCount() {
-        return repository.countWithEmbeddings();
+        try {
+            ApiResponseWrapper<Object> response = embeddingClient.getEmbeddingStats();
+            if (response != null && response.isSuccess() && response.getData() != null) {
+                @SuppressWarnings("unchecked")
+                java.util.Map<String, Object> data = (java.util.Map<String, Object>) response.getData();
+                if (data.containsKey("totalEmbeddings")) {
+                    return ((Number) data.get("totalEmbeddings")).longValue();
+                }
+            }
+        } catch (Exception e) {
+            log.error("Failed to get embedding count: {}", e.getMessage(), e);
+        }
+        return 0;
     }
 
     @Override
     public boolean hasEmbedding(Long productId) {
-        return repository.existsByProductId(productId);
+        try {
+            ApiResponseWrapper<Object> response = embeddingClient.hasEmbedding(productId);
+            if (response != null && response.isSuccess() && response.getData() != null) {
+                @SuppressWarnings("unchecked")
+                java.util.Map<String, Object> data = (java.util.Map<String, Object>) response.getData();
+                if (data.containsKey("hasEmbedding")) {
+                    return (Boolean) data.get("hasEmbedding");
+                }
+            }
+        } catch (Exception e) {
+            log.error("Failed to check embedding: {}", e.getMessage(), e);
+        }
+        return false;
     }
 
     @Override
     public String generateQueryVector(String query) {
-        return generateEmbeddingVector(query);
+        log.error("Chatbot service should NOT generate query vectors - this should be done in product-service");
+        throw new UnsupportedOperationException(
+                "Query vector generation should be done in product-service, not chatbot");
     }
 
-    private String generateEmbeddingVector(String text) {
-        float[] embedding = embeddingModel.embed(text);
-        return arrayToVectorString(embedding);
+    public List<ProductSummaryDTO> findByPriceRange(BigDecimal minPrice, BigDecimal maxPrice, int limit) {
+        try {
+            ApiResponseWrapper<List<ProductSummaryDTO>> response = 
+                    embeddingClient.searchByPriceRange(minPrice, maxPrice, limit);
+            if (response != null && response.isSuccess() && response.getData() != null) {
+                return response.getData();
+            }
+        } catch (Exception e) {
+            log.error("Failed to find by price range: {}", e.getMessage(), e);
+        }
+        return Collections.emptyList();
     }
 
-    private String buildEmbeddingText(ProductDTO product) {
-        StringBuilder sb = new StringBuilder();
-
-        sb.append(product.getName());
-
-        if (product.getDescription() != null && !product.getDescription().isEmpty()) {
-            sb.append(". ").append(product.getDescription());
+    public List<ProductSummaryDTO> findByBrand(String brand, int limit) {
+        try {
+            ApiResponseWrapper<List<ProductSummaryDTO>> response = 
+                    embeddingClient.searchByBrand(brand, limit);
+            if (response != null && response.isSuccess() && response.getData() != null) {
+                return response.getData();
+            }
+        } catch (Exception e) {
+            log.error("Failed to find by brand: {}", e.getMessage(), e);
         }
-        if (product.getCate() != null && product.getCate().getName() != null) {
-            sb.append(". Category: ").append(product.getCate().getName());
-        }
-        if (product.getMinPrice() != null) {
-            sb.append(". Price: ").append(product.getMinPrice()).append(" VND");
-        }
-
-        String text = sb.toString();
-        if (text.length() > 2000) {
-            text = text.substring(0, 2000);
-        }
-
-        return text;
+        return Collections.emptyList();
     }
 
-    private String arrayToVectorString(float[] embedding) {
-        StringBuilder sb = new StringBuilder("[");
-        for (int i = 0; i < embedding.length; i++) {
-            if (i > 0)
-                sb.append(",");
-            sb.append(embedding[i]);
+    public List<ProductSummaryDTO> findSimilarProductsWithPriceRange(
+            String query, BigDecimal minPrice, BigDecimal maxPrice, int limit) {
+        try {
+            ApiResponseWrapper<List<ProductSummaryDTO>> response = 
+                    embeddingClient.searchSimilarProductsWithPriceRange(query, minPrice, maxPrice, limit);
+            if (response != null && response.isSuccess() && response.getData() != null) {
+                return response.getData();
+            }
+        } catch (Exception e) {
+            log.error("Failed to find similar products with price range: {}", e.getMessage(), e);
         }
-        sb.append("]");
-        return sb.toString();
-    }
-
-    private ProductSummaryDTO mapToProductSummary(Object[] row) {
-        return ProductSummaryDTO.builder()
-                .id(row[0] != null ? ((Number) row[0]).longValue() : null)
-                .name((String) row[1])
-                .slug((String) row[2])
-                .description((String) row[3])
-                .categoryName((String) row[4])
-                .price(row[5] != null ? new BigDecimal(row[5].toString()) : null)
-                .averageRating(row[6] != null ? ((Number) row[6]).doubleValue() : null)
-                .totalSold(row[7] != null ? ((Number) row[7]).longValue() : null)
-                .imageUrl(row.length > 11 && row[11] != null ? (String) row[11] : null)
-                .similarityScore(row.length > 12 && row[12] != null ? ((Number) row[12]).doubleValue() : null)
-                .build();
+        return Collections.emptyList();
     }
 }

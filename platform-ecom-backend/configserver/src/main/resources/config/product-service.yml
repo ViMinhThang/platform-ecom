@@ -18,10 +18,16 @@ spring:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
   flyway:
     baseline-on-migrate: true
+  ai:
+    vertexai:
+      project-id: gen-lang-client-0858695901
+      location: "asia-east1"
   app:
     jwtSecret: "qweqweqweqweqweqw123123131231231cfcsvcxvwdfqsd"
     jwtExpirationMs: 600000
     jwtCookieName: "ecom"
+    embedding:
+      sync-interval: 3600000
   cloud:
     function:
       definition: stockUpdated

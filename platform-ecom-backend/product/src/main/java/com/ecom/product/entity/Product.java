@@ -112,6 +112,9 @@ public class Product {
     @Builder.Default
     private Double averageRating = 0.0;
 
+    @Column(name = "embedding", columnDefinition = "vector(768)")
+    private String embedding;
+
     @PrePersist
     protected void onCreate() {
         createdAt = LocalDateTime.now();

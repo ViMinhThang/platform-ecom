@@ -1,8 +1,6 @@
 package com.ecom.chatbot.tools;
 
 import com.ecom.chatbot.dto.ProductSummaryDTO;
-import com.ecom.chatbot.entity.ProductEmbedding;
-import com.ecom.chatbot.repository.ProductEmbeddingRepository;
 import com.ecom.chatbot.service.signature.EmbeddingService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,7 +17,6 @@ import java.util.List;
 public class ProductTools {
 
     private final EmbeddingService embeddingService;
-    private final ProductEmbeddingRepository repository;
 
     private static final ThreadLocal<List<ProductSummaryDTO>> lastFoundProducts = new ThreadLocal<>();
 
@@ -51,10 +48,9 @@ public class ProductTools {
         log.info("Tool searchByPriceRange called with min={}, max={}, limit={}", minPrice, maxPrice, limit);
         int maxResults = (limit != null && limit > 0) ? limit : 5;
 
-        List<Object[]> results = repository.findByPriceRange(minPrice, maxPrice, maxResults);
-        List<ProductSummaryDTO> products = results.stream().map(this::mapToProductSummary).toList();
-        lastFoundProducts.set(products);
-        return products;
+        List<ProductSummaryDTO> results = embeddingService.findByPriceRange(minPrice, maxPrice, maxResults);
+        lastFoundProducts.set(results);
+        return results;
     }
 
     @Tool(description = "Search products by brand name. Use when user asks for specific brand like 'Samsung', 'Apple', 'iPhone', 'Xiaomi'")
@@ -64,23 +60,15 @@ public class ProductTools {
         log.info("Tool searchByBrand called with brand='{}', limit={}", brand, limit);
         int maxResults = (limit != null && limit > 0) ? limit : 5;
 
-        List<Object[]> results = repository.findByBrand(brand, maxResults);
-        List<ProductSummaryDTO> products = results.stream().map(this::mapToProductSummary).toList();
-        lastFoundProducts.set(products);
-        return products;
+        List<ProductSummaryDTO> results = embeddingService.findByBrand(brand, maxResults);
+        lastFoundProducts.set(results);
+        return results;
     }
 
     @Tool(description = "Get detailed information about a specific product by its URL slug")
-    public ProductSummaryDTO getProductBySlug(
-            @ToolParam(description = "Product URL slug") String slug) {
+    public ProductSummaryDTO getProductBySlug(@ToolParam(description = "Product URL slug") String slug) {
         log.info("Tool getProductBySlug called with slug='{}'", slug);
-        ProductSummaryDTO result = repository.findByProductSlug(slug)
-                .map(this::embeddingToSummary)
-                .orElse(null);
-        if (result != null) {
-            lastFoundProducts.set(List.of(result));
-        }
-        return result;
+        return null;
     }
 
     @Tool(description = "Combined search with both text query and optional price range filter")
@@ -95,14 +83,9 @@ public class ProductTools {
 
         List<ProductSummaryDTO> products;
 
-        // If price range is specified, use filtered search
         if (minPrice != null && maxPrice != null) {
-            String vectorString = embeddingService.generateQueryVector(query);
-            List<Object[]> results = repository.findSimilarProductsWithPriceRange(
-                    vectorString, minPrice, maxPrice, maxResults);
-            products = results.stream().map(this::mapToProductSummary).toList();
+            products = embeddingService.findSimilarProductsWithPriceRange(query, minPrice, maxPrice, maxResults);
         } else {
-            // Otherwise, use standard semantic search
             products = embeddingService.findSimilarProducts(query, maxResults);
         }
 
@@ -120,7 +103,6 @@ public class ProductTools {
                 sortBy, sortDirection, limit);
         int maxResults = (limit != null && limit > 0) ? limit : 5;
 
-        // Default to price and ASC if missing
         if (sortBy == null || sortBy.isBlank())
             sortBy = "price";
         if (sortDirection == null || sortDirection.isBlank())
@@ -130,36 +112,5 @@ public class ProductTools {
                 maxResults);
         lastFoundProducts.set(products);
         return products;
-    }
-
-    private ProductSummaryDTO mapToProductSummary(Object[] row) {
-        return ProductSummaryDTO.builder()
-                .id(row[0] != null ? ((Number) row[0]).longValue() : null)
-                .name((String) row[1])
-                .slug((String) row[2])
-                .description((String) row[3])
-                .categoryName((String) row[4])
-                .price(row[6] != null ? new BigDecimal(row[6].toString())
-                        : (row[5] != null ? new BigDecimal(row[5].toString()) : null))
-                .averageRating(row[7] != null ? ((Number) row[7]).doubleValue() : null)
-                .totalSold(row[8] != null ? ((Number) row[8]).longValue() : null)
-                .imageUrl(row.length > 11 && row[11] != null ? (String) row[11] : null)
-                .similarityScore(row.length > 12 && row[12] != null ? ((Number) row[12]).doubleValue() : 1.0)
-                .build();
-    }
-
-    private ProductSummaryDTO embeddingToSummary(ProductEmbedding embedding) {
-        return ProductSummaryDTO.builder()
-                .id(embedding.getProductId())
-                .name(embedding.getProductName())
-                .slug(embedding.getProductSlug())
-                .description(embedding.getDescription())
-                .categoryName(embedding.getCategoryName())
-                .price(embedding.getMinPrice())
-                .averageRating(embedding.getAverageRating())
-                .totalSold(embedding.getTotalSold())
-                .imageUrl(embedding.getImageUrl())
-                .similarityScore(1.0)
-                .build();
     }
 }

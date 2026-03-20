@@ -6,7 +6,7 @@ export const chatbotService = {
      * Send a message to the chatbot
      */
     async chat(request: ChatRequest): Promise<ChatResponse> {
-        const response = await apiClient.post<ChatResponse>('/v1/chatbot/chat', request);
+        const response = await apiClient.post<ChatResponse>('/api/v1/chatbot/chat', request);
         return response.data;
     },
 
@@ -14,7 +14,7 @@ export const chatbotService = {
      * Get an AI summary for a specific product
      */
     async getProductSummary(slug: string): Promise<ProductSummaryResponse> {
-        const response = await apiClient.get<ProductSummaryResponse>(`/v1/chatbot/product/${slug}/summary`);
+        const response = await apiClient.get<ProductSummaryResponse>(`/api/v1/chatbot/product/${slug}/summary`);
         return response.data;
     },
 
@@ -22,7 +22,7 @@ export const chatbotService = {
      * Sync embeddings (Admin only)
      */
     async syncEmbeddings(): Promise<unknown> {
-        const response = await apiClient.post('/v1/chatbot/embeddings/sync');
+        const response = await apiClient.post('/api/v1/chatbot/embeddings/sync');
         return response.data;
     }
 };

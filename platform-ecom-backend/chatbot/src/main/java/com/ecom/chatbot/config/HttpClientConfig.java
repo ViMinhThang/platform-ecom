@@ -1,5 +1,6 @@
 package com.ecom.chatbot.config;
 
+import com.ecom.chatbot.client.EmbeddingServiceClient;
 import com.ecom.chatbot.client.ProductServiceClient;
 import com.ecom.chatbot.client.PromotionServiceClient;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
@@ -9,9 +10,6 @@ import org.springframework.web.client.RestClient;
 import org.springframework.web.client.support.RestClientAdapter;
 import org.springframework.web.service.invoker.HttpServiceProxyFactory;
 
-/**
- * Configuration for HTTP clients with load balancing support.
- */
 @Configuration
 public class HttpClientConfig {
 
@@ -39,5 +37,15 @@ public class HttpClientConfig {
         RestClientAdapter adapter = RestClientAdapter.create(restClient);
         HttpServiceProxyFactory factory = HttpServiceProxyFactory.builderFor(adapter).build();
         return factory.createClient(PromotionServiceClient.class);
+    }
+
+    @Bean
+    public EmbeddingServiceClient embeddingServiceClient(RestClient.Builder restClientBuilder) {
+        RestClient restClient = restClientBuilder
+                .baseUrl("http://product-service")
+                .build();
+        RestClientAdapter adapter = RestClientAdapter.create(restClient);
+        HttpServiceProxyFactory factory = HttpServiceProxyFactory.builderFor(adapter).build();
+        return factory.createClient(EmbeddingServiceClient.class);
     }
 }

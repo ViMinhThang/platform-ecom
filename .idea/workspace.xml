@@ -6,33 +6,22 @@
   <component name="ChangeListManager">
     <list default="true" id="c48beeac-7758-42e4-81dd-f068fbcd38be" name="Changes" comment="update spring cloud stream dependency">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/app/(admin)/seller/analytics/page.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/app/(main)/category/[slug]/CategoryPageClient.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/app/(main)/category/[slug]/CategoryPageClient.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/app/(main)/profile/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/app/(main)/profile/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/app/(main)/seller/[sellerId]/SellerStorePageClient.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/app/(main)/seller/[sellerId]/SellerStorePageClient.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/ReviewForm.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/ReviewForm.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/auth/forgot-password-form.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/auth/forgot-password-form.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/auth/register-form.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/auth/register-form.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/auth/reset-password-form.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/auth/reset-password-form.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/auth/user-auth-form.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/auth/user-auth-form.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/providers.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/providers.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/ui/Pagination.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/ui/Pagination.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/ui/form.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/ui/form.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/lib/config/env.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/lib/config/env.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/lib/constants.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/lib/constants.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/lib/format.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/lib/format.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/lib/searchparams.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/lib/searchparams.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/lib/services/product-service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/lib/services/product-service.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/lib/services/sale-campaign-service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/lib/services/sale-campaign-service.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/lib/store/api/clientApi.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/lib/store/api/clientApi.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/lib/store/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/lib/store/index.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/lib/utils.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/lib/utils.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/lib/utils/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/lib/utils/index.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/middleware.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/middleware.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/types/product.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/types/product.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/types/sale-campaign.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/types/sale-campaign.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-client/lib/services/chatbot-service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/lib/services/chatbot-service.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/init-multi-db.sh" beforeDir="false" afterPath="$PROJECT_DIR$/init-multi-db.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/chatbot/src/main/java/com/ecom/chatbot/config/HttpClientConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/chatbot/src/main/java/com/ecom/chatbot/config/HttpClientConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/chatbot/src/main/java/com/ecom/chatbot/entity/ProductEmbedding.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/chatbot/src/main/java/com/ecom/chatbot/repository/ProductEmbeddingRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/chatbot/src/main/java/com/ecom/chatbot/scheduler/EmbeddingSyncScheduler.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/chatbot/src/main/java/com/ecom/chatbot/service/impl/EmbeddingServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/chatbot/src/main/java/com/ecom/chatbot/service/impl/EmbeddingServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/chatbot/src/main/java/com/ecom/chatbot/service/signature/EmbeddingService.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/chatbot/src/main/java/com/ecom/chatbot/service/signature/EmbeddingService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/chatbot/src/main/java/com/ecom/chatbot/tools/ProductTools.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/chatbot/src/main/java/com/ecom/chatbot/tools/ProductTools.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/chatbot/src/main/resources/db/03-chatbot-db.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/configserver/src/main/resources/config/chatbot-service.yml" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/configserver/src/main/resources/config/chatbot-service.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/configserver/src/main/resources/config/product-service.yml" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/configserver/src/main/resources/config/product-service.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/product/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/product/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/entity/Product.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/entity/Product.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/repository/ProductRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/repository/ProductRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/resources/application.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
