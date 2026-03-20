@@ -1,11 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { useSession } from "next-auth/react";
-import { useAppDispatch } from "@/lib/store/hooks";
-import { updateUserImage } from "@/lib/store/slices/userSlice";
+import { useUploadAvatarMutation } from "@/lib/store/api";
 import { toast } from "sonner";
-import { logger } from "@/lib/logger";
 import { Upload, Loader2 } from "lucide-react";
 
 interface UserImageUploadFieldProps {
@@ -15,23 +12,14 @@ interface UserImageUploadFieldProps {
     loading: boolean;
 }
 
-/**
- * User Image Upload Field
- * Clickable area for uploading and displaying user profile image
- */
 export const UserImageUploadField: React.FC<UserImageUploadFieldProps> = ({
     imageUrl,
     setImage,
     userId,
     loading,
 }) => {
-    const { data: session } = useSession();
-    const dispatch = useAppDispatch();
-    const [uploading, setUploading] = useState(false);
+    const [uploadAvatar, { isLoading: isUploading }] = useUploadAvatarMutation();
 
-    /**
-     * Handles image file selection and upload
-     */
     const handleImageSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
 
@@ -44,33 +32,13 @@ export const UserImageUploadField: React.FC<UserImageUploadFieldProps> = ({
             return;
         }
 
-        if (!session?.accessToken) {
-            toast.error("Authentication required");
-            return;
-        }
-
-        setUploading(true);
-
         try {
-            const result = await dispatch(
-                updateUserImage({
-                    id: userId,
-                    file,
-                    token: session.accessToken,
-                })
-            );
-
-            if (updateUserImage.fulfilled.match(result)) {
-                setImage(result.payload.imageUrl);
-                toast.success("Image uploaded successfully");
-            } else {
-                toast.error("Failed to upload image");
-            }
+            const result = await uploadAvatar({ id: userId, file }).unwrap();
+            setImage(result.imageUrl || "");
+            toast.success("Image uploaded successfully");
         } catch (error) {
-            logger.error("Image upload failed", error as Error, { userId });
+            console.error("Image upload failed", error);
             toast.error("Failed to upload image");
-        } finally {
-            setUploading(false);
         }
     };
 
@@ -85,7 +53,7 @@ export const UserImageUploadField: React.FC<UserImageUploadFieldProps> = ({
                 id="user-image-upload"
                 accept="image/*"
                 onChange={handleImageSelect}
-                disabled={uploading || loading || !userId}
+                disabled={isUploading || loading || !userId}
                 className="hidden"
             />
 
@@ -96,10 +64,10 @@ export const UserImageUploadField: React.FC<UserImageUploadFieldProps> = ({
                     flex items-center justify-center cursor-pointer
                     transition-all duration-200
                     ${!userId ? 'opacity-50 cursor-not-allowed' : 'hover:border-primary hover:bg-muted/50'}
-                    ${uploading ? 'cursor-wait' : ''}
+                    ${isUploading ? 'cursor-wait' : ''}
                 `}
             >
-                {uploading ? (
+                {isUploading ? (
                     <Loader2 className="w-8 h-8 animate-spin text-muted-foreground" />
                 ) : displayImageUrl ? (
                     <img
@@ -114,8 +82,7 @@ export const UserImageUploadField: React.FC<UserImageUploadFieldProps> = ({
                     </div>
                 )}
 
-                {/* Overlay on hover when image exists */}
-                {displayImageUrl && !uploading && userId && (
+                {displayImageUrl && !isUploading && userId && (
                     <div className="absolute inset-0 bg-black/50 rounded-full opacity-0 hover:opacity-100 transition-opacity flex items-center justify-center">
                         <Upload className="w-6 h-6 text-white" />
                     </div>
@@ -129,7 +96,7 @@ export const UserImageUploadField: React.FC<UserImageUploadFieldProps> = ({
                         Save user first to upload
                     </p>
                 )}
-                {userId && !uploading && (
+                {userId && !isUploading && (
                     <p className="text-xs text-muted-foreground mt-1">
                         Click to {displayImageUrl ? 'change' : 'upload'}
                     </p>

@@ -1,8 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
-import { createInventory } from "@/lib/store/slices/inventorySlice";
+import { useCreateInventoryMutation } from "@/lib/store/api";
 import { ProductCombobox } from "./product-combobox";
 import { VariantCombobox } from "./variant-combobox";
 import { Button } from "@/components/ui/button";
@@ -27,18 +26,13 @@ interface CreateInventoryDialogProps {
 }
 
 export function CreateInventoryDialog({ open, onOpenChange, onSuccess }: CreateInventoryDialogProps) {
-    const dispatch = useAppDispatch();
-    const { loading, items: existingInventory } = useAppSelector((state) => state.inventory);
-
-    // Get variant IDs that already have inventory
-    const existingVariantIds = existingInventory.map(inv => inv.variantId);
+    const [createInventory, { isLoading: isCreating }] = useCreateInventoryMutation();
 
     const [selectedProduct, setSelectedProduct] = useState<ProductRow | null>(null);
     const [selectedVariant, setSelectedVariant] = useState<VariantFormValues | null>(null);
     const [sku, setSku] = useState("");
     const [initialStock, setInitialStock] = useState("0");
 
-    // Auto-fill SKU when variant is selected
     useEffect(() => {
         if (selectedVariant?.sku) {
             setSku(selectedVariant.sku);
@@ -61,19 +55,19 @@ export function CreateInventoryDialog({ open, onOpenChange, onSuccess }: CreateI
         }
 
         try {
-            await dispatch(createInventory({
+            await createInventory({
                 productId: selectedProduct.id,
                 variantId: selectedVariant.id!,
                 sku: sku || undefined,
                 initialStock: parseInt(initialStock) || 0,
-            })).unwrap();
+            }).unwrap();
 
             toast.success("Inventory created successfully");
             resetForm();
             onOpenChange(false);
             onSuccess?.();
-        } catch (error: any) {
-            toast.error(error || "Failed to create inventory");
+        } catch (error) {
+            toast.error("Failed to create inventory");
         }
     };
 
@@ -95,7 +89,6 @@ export function CreateInventoryDialog({ open, onOpenChange, onSuccess }: CreateI
                 </DialogHeader>
                 <form onSubmit={handleSubmit}>
                     <div className="grid gap-4 py-4">
-                        {/* Product Selector */}
                         <div className="grid grid-cols-4 items-center gap-4">
                             <Label className="text-right">Product</Label>
                             <div className="col-span-3">
@@ -106,7 +99,6 @@ export function CreateInventoryDialog({ open, onOpenChange, onSuccess }: CreateI
                             </div>
                         </div>
 
-                        {/* Variant Selector */}
                         <div className="grid grid-cols-4 items-center gap-4">
                             <Label className="text-right">Variant</Label>
                             <div className="col-span-3">
@@ -114,12 +106,10 @@ export function CreateInventoryDialog({ open, onOpenChange, onSuccess }: CreateI
                                     productId={selectedProduct?.id ?? null}
                                     value={selectedVariant}
                                     onChange={setSelectedVariant}
-                                    excludeVariantIds={existingVariantIds}
                                 />
                             </div>
                         </div>
 
-                        {/* SKU (auto-filled but editable) */}
                         <div className="grid grid-cols-4 items-center gap-4">
                             <Label htmlFor="sku" className="text-right">SKU</Label>
                             <Input
@@ -131,7 +121,6 @@ export function CreateInventoryDialog({ open, onOpenChange, onSuccess }: CreateI
                             />
                         </div>
 
-                        {/* Initial Stock */}
                         <div className="grid grid-cols-4 items-center gap-4">
                             <Label htmlFor="initialStock" className="text-right">Initial Stock</Label>
                             <Input
@@ -149,8 +138,8 @@ export function CreateInventoryDialog({ open, onOpenChange, onSuccess }: CreateI
                         <Button type="button" variant="outline" onClick={() => handleOpenChange(false)}>
                             Cancel
                         </Button>
-                        <Button type="submit" disabled={loading || !selectedProduct || !selectedVariant}>
-                            {loading ? "Creating..." : "Create Inventory"}
+                        <Button type="submit" disabled={isCreating || !selectedProduct || !selectedVariant}>
+                            {isCreating ? "Creating..." : "Create Inventory"}
                         </Button>
                     </DialogFooter>
                 </form>

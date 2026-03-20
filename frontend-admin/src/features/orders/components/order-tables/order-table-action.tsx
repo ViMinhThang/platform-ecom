@@ -32,13 +32,13 @@ export const OrderTableAction: React.FC<OrderTableActionProps> = ({ data }) => {
             <DropdownMenuContent align="end">
                 <DropdownMenuLabel>Actions</DropdownMenuLabel>
                 <DropdownMenuItem
-                    onClick={() => router.push(`/dashboard/orders/${data.id}`)}
+                    onClick={() => router.push(`/admin/dashboard/orders/${data.id}`)}
                 >
                     <Eye className="mr-2 h-4 w-4" /> View Details
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem
-                    onClick={() => router.push(`/dashboard/orders/${data.id}`)}
+                    onClick={() => router.push(`/admin/dashboard/orders/${data.id}`)}
                 >
                     <Edit className="mr-2 h-4 w-4" /> Update Status
                 </DropdownMenuItem>

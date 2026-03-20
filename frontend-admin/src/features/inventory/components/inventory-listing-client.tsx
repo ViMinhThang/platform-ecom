@@ -1,10 +1,9 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
+import { useState, useMemo } from "react";
 import { InventoryTable } from "./inventory-tables";
 import { columns } from "./inventory-tables/columns";
-import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
-import { fetchInventory, fetchLowStockItems, deleteInventory } from "@/lib/store/slices/inventorySlice";
+import { useGetInventoryQuery, useGetLowStockItemsQuery, useDeleteInventoryMutation } from "@/lib/store/api";
 import { StockAdjustmentDialog } from "./stock-adjustment-dialog";
 import { LowStockAlert } from "./low-stock-alert";
 import { InventoryStats } from "./inventory-stats";
@@ -33,10 +32,6 @@ import { toast } from "sonner";
 import { CreateInventoryDialog } from "./create-inventory-dialog";
 
 export default function InventoryListingClient() {
-    const dispatch = useAppDispatch();
-    const { items, lowStockItems, loading, pagination } = useAppSelector(
-        (state) => state.inventory
-    );
     const [selectedInventory, setSelectedInventory] = useState<InventoryDTO | null>(null);
     const [adjustDialogOpen, setAdjustDialogOpen] = useState(false);
     const [createDialogOpen, setCreateDialogOpen] = useState(false);
@@ -48,41 +43,17 @@ export default function InventoryListingClient() {
     const [sortBy, setSortBy] = useState("variantId");
     const [sortOrder, setSortOrder] = useState("asc");
 
-    const totalItems = pagination.totalElements;
+    const { data, isLoading, refetch } = useGetInventoryQuery({ page, size: perPage, sortBy, sortOrder });
+    const { data: lowStockData } = useGetLowStockItemsQuery();
+    const [deleteInventory] = useDeleteInventoryMutation();
 
-    const loadInventory = useCallback(() => {
-        dispatch(fetchInventory({ page, size: perPage, sortBy, sortOrder }));
-        dispatch(fetchLowStockItems());
-    }, [dispatch, page, perPage, sortBy, sortOrder]);
+    const items = data?.content || [];
+    const totalItems = data?.totalElements || 0;
+    const lowStockItems = lowStockData || [];
 
-    useEffect(() => {
-        loadInventory();
-
-    }, [loadInventory]);
-
-    useEffect(() => {
-        const handleEdit = (event: CustomEvent<InventoryDTO>) => {
-            setSelectedInventory(event.detail);
-            setAdjustDialogOpen(true);
-        };
-
-        window.addEventListener("inventory-edit", handleEdit as EventListener);
-        return () => {
-            window.removeEventListener("inventory-edit", handleEdit as EventListener);
-        };
-    }, []);
-
-    useEffect(() => {
-        const handleDelete = (event: CustomEvent<InventoryDTO>) => {
-            setInventoryToDelete(event.detail);
-            setDeleteDialogOpen(true);
-        };
-
-        window.addEventListener("inventory-delete", handleDelete as EventListener);
-        return () => {
-            window.removeEventListener("inventory-delete", handleDelete as EventListener);
-        };
-    }, []);
+    const loadInventory = () => {
+        refetch();
+    };
 
     const handleAdjustFromAlert = (item: InventoryDTO) => {
         setSelectedInventory(item);
@@ -104,41 +75,39 @@ export default function InventoryListingClient() {
     const handleConfirmDelete = async () => {
         if (inventoryToDelete) {
             try {
-                await dispatch(deleteInventory(inventoryToDelete.variantId)).unwrap();
+                await deleteInventory(inventoryToDelete.variantId).unwrap();
                 toast.success(`Inventory for variant #${inventoryToDelete.variantId} deleted successfully`);
-            } catch (error: any) {
-                toast.error(error || "Failed to delete inventory");
+                loadInventory();
+            } catch (error) {
+                toast.error("Failed to delete inventory");
             }
         }
         setDeleteDialogOpen(false);
         setInventoryToDelete(null);
     };
 
-    const filteredItems = searchQuery
+    const filteredItems = useMemo(() => searchQuery
         ? items.filter(
             (item) =>
                 item.variantId.toString().includes(searchQuery) ||
                 item.sku?.toLowerCase().includes(searchQuery.toLowerCase())
         )
-        : items;
-    console.log(filteredItems);
-    if (loading && items.length === 0) {
+        : items, [items, searchQuery]);
+
+    if (isLoading && items.length === 0) {
         return <div>Loading inventory...</div>;
     }
 
     return (
         <>
-            {/* Stats */}
             <InventoryStats
                 items={items}
                 lowStockCount={lowStockItems.length}
-                loading={loading}
+                loading={isLoading}
             />
 
-            {/* Low Stock Alert */}
             <LowStockAlert items={lowStockItems} onAdjust={handleAdjustFromAlert} />
 
-            {/* Filters and Refresh */}
             <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
                 <div className="flex flex-col gap-4 md:flex-row md:items-center">
                     <div className="relative flex-1 md:max-w-sm">
@@ -179,13 +148,12 @@ export default function InventoryListingClient() {
                         Create Inventory
                     </Button>
                     <Button onClick={loadInventory} variant="outline" size="sm">
-                        <RefreshCw className={`mr-2 h-4 w-4 ${loading ? "animate-spin" : ""}`} />
+                        <RefreshCw className={`mr-2 h-4 w-4 ${isLoading ? "animate-spin" : ""}`} />
                         Refresh
                     </Button>
                 </div>
             </div>
 
-            {/* Inventory Table */}
             <InventoryTable
                 data={filteredItems}
                 totalItems={totalItems}
@@ -196,21 +164,18 @@ export default function InventoryListingClient() {
                 pageSize={perPage}
             />
 
-            {/* Stock Adjustment Dialog */}
             <StockAdjustmentDialog
                 inventory={selectedInventory}
                 open={adjustDialogOpen}
                 onOpenChange={handleDialogClose}
             />
 
-            {/* Create Inventory Dialog */}
             <CreateInventoryDialog
                 open={createDialogOpen}
                 onOpenChange={handleCreateDialogClose}
                 onSuccess={loadInventory}
             />
 
-            {/* Delete Confirmation Dialog */}
             <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
                 <AlertDialogContent>
                     <AlertDialogHeader>

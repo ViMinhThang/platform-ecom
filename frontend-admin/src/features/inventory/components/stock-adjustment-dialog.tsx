@@ -1,8 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { useAppDispatch } from '@/lib/store/hooks';
-import { adjustStock } from '@/lib/store/slices/inventorySlice';
+import { useAdjustStockMutation } from '@/lib/store/api';
 import {
     Dialog,
     DialogContent,
@@ -30,41 +29,35 @@ export function StockAdjustmentDialog({
     open,
     onOpenChange,
 }: StockAdjustmentDialogProps) {
-    const dispatch = useAppDispatch();
+    const [adjustStock, { isLoading: isAdjusting }] = useAdjustStockMutation();
 
     const [adjustmentType, setAdjustmentType] = useState<'add' | 'subtract'>('add');
     const [quantity, setQuantity] = useState<number>(0);
     const [reason, setReason] = useState('');
-    const [isSubmitting, setIsSubmitting] = useState(false);
 
     const handleSubmit = async () => {
         if (!inventory || quantity <= 0) return;
 
-        setIsSubmitting(true);
         try {
             const adjustment = adjustmentType === 'add' ? quantity : -quantity;
-            await dispatch(
-                adjustStock({
-                    variantId: inventory.variantId,
-                    request: {
-                        adjustment,
-                        reason: reason || `Manual ${adjustmentType}`,
-                        referenceType: 'MANUAL',
-                    },
-                })
-            ).unwrap();
+            await adjustStock({
+                variantId: inventory.variantId,
+                request: {
+                    adjustment,
+                    reason: reason || `Manual ${adjustmentType}`,
+                    referenceType: 'MANUAL',
+                },
+            }).unwrap();
 
             toast.success('Stock Adjusted', {
                 description: `Successfully ${adjustmentType === 'add' ? 'added' : 'removed'} ${quantity} units.`,
             });
             onOpenChange(false);
             resetForm();
-        } catch (error: any) {
+        } catch (error) {
             toast.error('Error', {
-                description: error || 'Failed to adjust stock',
+                description: 'Failed to adjust stock',
             });
-        } finally {
-            setIsSubmitting(false);
         }
     };
 
@@ -96,7 +89,6 @@ export function StockAdjustmentDialog({
                 </DialogHeader>
 
                 <div className="grid gap-4 py-4">
-                    {/* Current Stock Display */}
                     <div className="grid grid-cols-3 gap-4 rounded-lg bg-muted p-3">
                         <div className="text-center">
                             <p className="text-sm text-muted-foreground">Current</p>
@@ -116,7 +108,6 @@ export function StockAdjustmentDialog({
                         </div>
                     </div>
 
-                    {/* Adjustment Type */}
                     <div className="grid gap-2">
                         <Label>Adjustment Type</Label>
                         <div className="flex gap-2">
@@ -141,7 +132,6 @@ export function StockAdjustmentDialog({
                         </div>
                     </div>
 
-                    {/* Quantity */}
                     <div className="grid gap-2">
                         <Label htmlFor="quantity">Quantity</Label>
                         <Input
@@ -154,7 +144,6 @@ export function StockAdjustmentDialog({
                         />
                     </div>
 
-                    {/* Reason */}
                     <div className="grid gap-2">
                         <Label htmlFor="reason">Reason (optional)</Label>
                         <Textarea
@@ -166,7 +155,6 @@ export function StockAdjustmentDialog({
                         />
                     </div>
 
-                    {/* Warning for negative stock */}
                     {newStock < 0 && (
                         <p className="text-sm text-red-600">
                             Warning: Stock cannot go below 0. Maximum removable: {inventory?.totalStock ?? 0}
@@ -180,9 +168,9 @@ export function StockAdjustmentDialog({
                     </Button>
                     <Button
                         onClick={handleSubmit}
-                        disabled={isSubmitting || quantity <= 0 || newStock < 0}
+                        disabled={isAdjusting || quantity <= 0 || newStock < 0}
                     >
-                        {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                        {isAdjusting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                         Confirm Adjustment
                     </Button>
                 </DialogFooter>

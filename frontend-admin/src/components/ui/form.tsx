@@ -11,21 +11,22 @@ import {
   useFormState,
   type ControllerProps,
   type FieldPath,
-  type FieldValues
+  type FieldValues,
+  type SubmitHandler
 } from 'react-hook-form';
 
 import { cn } from '@/lib/utils';
 import { Label } from '@/components/ui/label';
 
-const Form = ({
+const Form = <T extends FieldValues = FieldValues>({
   children,
   onSubmit,
   form,
   className
 }: {
   children: React.ReactNode;
-  onSubmit: (data: any) => void;
-  form: UseFormReturn<any, any, any>;
+  onSubmit: React.FormEventHandler<HTMLFormElement>;
+  form: UseFormReturn<T>;
   className?: string;
 }) => {
   return (

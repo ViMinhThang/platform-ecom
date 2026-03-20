@@ -1,4 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit';
+import { baseApi } from './api/baseApi';
 import productReducer from './slices/productSlice';
 import productVariantReducer from './slices/productVariantSlice';
 import productOptionReducer from './slices/productOptionSlice';
@@ -13,6 +14,7 @@ import flashSaleReducer from './slices/flashSaleSlice';
 
 export const store = configureStore({
     reducer: {
+        [baseApi.reducerPath]: baseApi.reducer,
         products: productReducer,
         productVariants: productVariantReducer,
         productOptions: productOptionReducer,
@@ -25,6 +27,8 @@ export const store = configureStore({
         inventory: inventoryReducer,
         flashSales: flashSaleReducer,
     },
+    middleware: (getDefaultMiddleware) =>
+        getDefaultMiddleware().concat(baseApi.middleware),
 });
 
 export type RootState = ReturnType<typeof store.getState>;

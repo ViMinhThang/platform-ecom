@@ -3,7 +3,6 @@
 import { useEffect } from "react";
 import { useForm, FormProvider } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useSession } from "next-auth/react";
 import {
   Dialog,
   DialogContent,
@@ -12,12 +11,7 @@ import {
   DialogDescription,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
-import {
-  fetchUserById,
-  createUser,
-  updateUser,
-} from "@/lib/store/slices/userSlice";
+import { useGetUserByIdQuery, useGetRolesQuery, useCreateUserMutation, useUpdateUserMutation } from "@/lib/store/api";
 import { UserFormFields } from "./user-form-fields";
 import {
   UserDialogProps,
@@ -25,16 +19,12 @@ import {
   UserFormValues,
 } from "@/types/user/user.form";
 import { toast } from "sonner";
-import { logger } from "@/lib/logger";
 import { role, User } from "@/types/user/user";
 import { UserImageUploadField } from "./user-image-upload-field";
 import { Badge } from "@/components/ui/badge";
 import { CheckCircle2, XCircle } from "lucide-react";
 import { useController } from "react-hook-form";
 
-/**
- * Default form values for creating a user
- */
 const DEFAULT_FORM_VALUES: UserFormValues = {
   userId: undefined,
   username: "",
@@ -45,14 +35,7 @@ const DEFAULT_FORM_VALUES: UserFormValues = {
   addresses: [],
 };
 
-/**
- * Transforms user data to form values
- */
-function transformUserToFormValues(
-  user: User,
-  availableRoles: role[]
-): UserFormValues {
-  // Map user roles to role IDs, using user's roles if availableRoles not loaded yet
+function transformUserToFormValues(user: User): UserFormValues {
   const roleIds = user.roles
     ?.filter((r) => r.roleId != null)
     .map((r) => String(r.roleId)) || [];
@@ -63,32 +46,25 @@ function transformUserToFormValues(
     email: user.email,
     imageUrl: user.imageUrl ?? "",
     isActive: user.isActive === true ? "true" : "false",
-    roles: roleIds, // Use user's role IDs directly
+    roles: roleIds,
     addresses: user.addresses || [],
   };
 }
 
-/**
- * Transforms form values to user data payload
- */
-function transformFormValuesToUserData(
-  formValues: UserFormValues,
-  availableRoles: role[]
-) {
+function transformFormValuesToUserData(formValues: UserFormValues, availableRoles: role[]): Partial<User> {
   return {
     ...formValues,
-    isActive: formValues.isActive === "true", // Convert string to boolean
-    roles: (availableRoles || [])
-      .filter((role) => formValues.roles.includes(String(role.roleId)))
-      .map((role) => ({ roleId: role.roleId, roleName: role.roleName })),
+    isActive: formValues.isActive === "true",
+    roles: Array.isArray(availableRoles)
+      ? availableRoles
+          .filter((role) => formValues.roles.includes(String(role.roleId)))
+          .map((role) => ({ roleId: role.roleId, roleName: role.roleName }))
+      : [],
   };
 }
 
-/**
- * User Summary Sidebar Component
- */
 const UserSummarySidebar: React.FC<{
-  methods: any;
+  methods: ReturnType<typeof useForm<UserFormValues>>;
   userId: number | null | undefined;
   loading: boolean;
 }> = ({ methods, userId, loading }) => {
@@ -140,108 +116,58 @@ const UserSummarySidebar: React.FC<{
   );
 };
 
-/**
- * User Dialog Component
- * Handles creating and updating users with enhanced split-view layout
- */
 export const UserDialog: React.FC<UserDialogProps> = ({
   userId,
   open,
   onOpenChange,
 }) => {
-  const { data: session } = useSession();
-  const dispatch = useAppDispatch();
-
-  // Selectors
-  const {
-    selectedUser: user,
-    loading,
-    roles: allRoles,
-  } = useAppSelector((state) => state.users);
-
   const isEditing = Boolean(userId);
   const dialogTitle = isEditing ? "Update User" : "Create User";
   const dialogDescription = isEditing
     ? "Update user information and roles"
     : "Create a new user account";
 
+  const { data: user } = useGetUserByIdQuery(userId!, { skip: !open || !userId });
+  const { data: roles = [] } = useGetRolesQuery();
+  const [createUser, { isLoading: isCreating }] = useCreateUserMutation();
+  const [updateUser, { isLoading: isUpdating }] = useUpdateUserMutation();
+
   const methods = useForm<UserFormValues>({
     resolver: zodResolver(UserFormSchema),
     defaultValues: DEFAULT_FORM_VALUES,
   });
 
-  /**
-   * Loads user data when editing
-   */
-  useEffect(() => {
-    if (!open || !userId || !session?.accessToken) return;
-
-    dispatch(fetchUserById({ id: userId, token: session.accessToken }));
-  }, [open, userId, session, dispatch]);
-
-  /**
-   * Populates form with user data or resets to defaults
-   */
   useEffect(() => {
     if (user && open && isEditing) {
-      const formValues = transformUserToFormValues(user, allRoles);
+      const formValues = transformUserToFormValues(user);
       methods.reset(formValues);
     } else if (!isEditing && open) {
       methods.reset(DEFAULT_FORM_VALUES);
     }
-  }, [user, open, methods, isEditing, allRoles]);
+  }, [user, open, methods, isEditing]);
 
-  /**
-   * Handles form submission
-   */
+  const loading = isCreating || isUpdating;
+
   const handleSubmit = methods.handleSubmit(async (formData) => {
-    if (!session?.accessToken) {
-      toast.error("Authentication required");
-      return;
-    }
-
     try {
-      const userData = transformFormValuesToUserData(formData, allRoles);
+      const userData = transformFormValuesToUserData(formData, roles);
 
-      const resultAction = isEditing && userId
-        ? await dispatch(
-          updateUser({
-            id: userId,
-            data: userData,
-            token: session.accessToken,
-          })
-        )
-        : await dispatch(
-          createUser({
-            data: userData,
-            token: session.accessToken,
-          })
-        );
-
-      if (
-        createUser.fulfilled.match(resultAction) ||
-        updateUser.fulfilled.match(resultAction)
-      ) {
-        toast.success(`User ${isEditing ? "updated" : "created"} successfully`);
-        onOpenChange(false);
+      if (isEditing && userId) {
+        await updateUser({ id: userId, data: userData }).unwrap();
+        toast.success("User updated successfully");
       } else {
-        toast.error(`Failed to ${isEditing ? "update" : "create"} user`);
+        await createUser(userData).unwrap();
+        toast.success("User created successfully");
       }
+      onOpenChange(false);
     } catch (error) {
-      logger.error("User form submission failed", error as Error, {
-        isEditing,
-        userId,
-      });
       toast.error(`Failed to ${isEditing ? "update" : "create"} user`);
     }
   });
 
-  /**
-   * Handles form errors
-   */
-  function handleFormError(errors: unknown) {
-    logger.warn("User form validation errors", { errors });
-  }
+  const handleFormError = (errors: unknown) => {
+    console.warn("Form validation errors", errors);
+  };
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -254,7 +180,6 @@ export const UserDialog: React.FC<UserDialogProps> = ({
         <FormProvider {...methods}>
           <form onSubmit={handleSubmit} onError={handleFormError}>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 overflow-y-auto max-h-[calc(90vh-200px)] px-1">
-              {/* Left Sidebar - User Summary */}
               <div className="md:col-span-1">
                 <UserSummarySidebar
                   methods={methods}
@@ -263,7 +188,6 @@ export const UserDialog: React.FC<UserDialogProps> = ({
                 />
               </div>
 
-              {/* Right Content - Form Fields with Tabs */}
               <div className="md:col-span-2">
                 <UserFormFields
                   control={methods.control}

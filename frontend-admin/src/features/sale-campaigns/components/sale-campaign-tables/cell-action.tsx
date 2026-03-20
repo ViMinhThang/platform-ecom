@@ -101,14 +101,14 @@ export function CellAction({ data }: CellActionProps) {
                 <DropdownMenuContent align="end">
                     <DropdownMenuLabel>Hành động</DropdownMenuLabel>
                     <DropdownMenuItem
-                        onClick={() => router.push(`/dashboard/sale-campaigns/${data.id}`)}
+                        onClick={() => router.push(`/admin/dashboard/sale-campaigns/${data.id}`)}
                     >
                         <Eye className="mr-2 h-4 w-4" />
                         Xem chi tiết
                     </DropdownMenuItem>
                     {canEdit && (
                         <DropdownMenuItem
-                            onClick={() => router.push(`/dashboard/sale-campaigns/${data.id}/edit`)}
+                            onClick={() => router.push(`/admin/dashboard/sale-campaigns/${data.id}/edit`)}
                         >
                             <Pencil className="mr-2 h-4 w-4" />
                             Chỉnh sửa

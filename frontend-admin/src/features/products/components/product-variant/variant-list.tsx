@@ -5,8 +5,7 @@ import { VariantCard } from "./variant.card";
 
 export const VariantsList = () => {
   const { variants, loading, addVariant } = useProductVariants();
-  if (loading) return <div>Loading variants...</div>;
-  console.log("VariantsList render", variants);
+  if (loading) return <div>Đang tải biến thể...</div>;
   
   return (
     <div className="max-h-[60vh] overflow-y-auto space-y-3 pr-2">

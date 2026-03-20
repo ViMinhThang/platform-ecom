@@ -40,7 +40,7 @@ export function UserNav() {
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          <DropdownMenuItem onClick={() => router.push('/dashboard/profile')}>
+          <DropdownMenuItem onClick={() => router.push('/admin/dashboard/profile')}>
             Hồ sơ
           </DropdownMenuItem>
           <DropdownMenuItem>Thanh toán</DropdownMenuItem>

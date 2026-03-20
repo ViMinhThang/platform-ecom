@@ -60,7 +60,6 @@ const tenants = [
 
 export default function AppSidebar() {
   const pathname = usePathname();
-  console.log('AppSidebar navItems:', JSON.stringify(navItems.find(i => i.title === 'Orders'), null, 2));
   const { isOpen } = useMediaQuery();
   const router = useRouter();
   const handleSwitchTenant = (_tenantId: string) => {
@@ -181,7 +180,7 @@ export default function AppSidebar() {
 
                 <DropdownMenuGroup>
                   <DropdownMenuItem
-                    onClick={() => router.push("/dashboard/profile")}
+                    onClick={() => router.push("/admin/dashboard/profile")}
                   >
                     <IconUserCircle className="mr-2 h-4 w-4" />
                     Hồ sơ

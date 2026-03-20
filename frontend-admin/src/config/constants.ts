@@ -49,16 +49,41 @@ export type ProductStatus = typeof PRODUCT_STATUS[keyof typeof PRODUCT_STATUS];
 
 // Application Routes
 export const ROUTES = {
-    HOME: '/',
-    DASHBOARD: '/dashboard',
-    DASHBOARD_OVERVIEW: '/dashboard/overview',
-    PRODUCTS: '/dashboard/product',
-    CATEGORIES: '/dashboard/category',
-    USERS: '/dashboard/user',
-    KANBAN: '/dashboard/kanban',
-    PROFILE: '/dashboard/profile',
-    AUTH_SIGN_IN: '/auth/sign-in',
-    AUTH_SIGN_UP: '/auth/sign-up',
+  HOME: '/',
+  DASHBOARD: '/admin/dashboard',
+  DASHBOARD_OVERVIEW: '/admin/dashboard/overview',
+  PRODUCTS: '/admin/dashboard/product',
+  CATEGORIES: '/admin/dashboard/category',
+  USERS: '/admin/dashboard/user',
+  ORDERS: '/admin/dashboard/orders',
+  INVENTORY: '/admin/dashboard/inventory',
+  REVIEWS: '/admin/dashboard/reviews',
+  SALE_CAMPAIGNS: '/admin/dashboard/sale-campaigns',
+  VOUCHERS: '/admin/dashboard/vouchers',
+  PROFILE: '/admin/dashboard/profile',
+  AUTH_SIGN_IN: '/auth/sign-in',
+  AUTH_SIGN_UP: '/auth/sign-up',
+} as const;
+
+// Order Status
+export const ORDER_STATUS = {
+  PENDING: 'PENDING',
+  PROCESSING: 'PROCESSING',
+  SHIPPED: 'SHIPPED',
+  DELIVERING: 'DELIVERING',
+  DELIVERED: 'DELIVERED',
+  CANCELLED: 'CANCELLED',
+  RETURNED: 'RETURNED',
+  REFUNDED: 'REFUNDED',
+} as const;
+
+// Campaign Status
+export const CAMPAIGN_STATUS = {
+  DRAFT: 'DRAFT',
+  SCHEDULED: 'SCHEDULED',
+  ACTIVE: 'ACTIVE',
+  COMPLETED: 'COMPLETED',
+  CANCELLED: 'CANCELLED',
 } as const;
 
 // UI Constants

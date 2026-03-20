@@ -1,78 +1,52 @@
-import { useEffect, useCallback } from 'react';
-import { useAppDispatch, useAppSelector } from '@/lib/store/hooks';
+import { useCallback } from 'react';
 import {
-  fetchProductImages,
-  uploadProductImage,
-  deleteProductImage,
-  ProductImage,
-} from '@/lib/store/slices/productImageSlice';
-import { toast } from 'sonner';
+  useGetProductImagesQuery,
+  useUploadProductImageMutation,
+  useDeleteProductImageMutation,
+} from '@/lib/store/api';
 
 /**
- * Hook for managing product images using Redux
+ * Hook for managing product images using RTK Query
  * Provides images, loading states, and CRUD operations
  */
 export function useProductImages(productId: number) {
-  const dispatch = useAppDispatch();
-  const { imagesByProductId, loading, error, uploadProgress } = useAppSelector(
-    (state) => state.productImages
-  );
+  const { data: images = [], isLoading, refetch } = useGetProductImagesQuery(productId);
+  const [uploadProductImage, { isLoading: isUploading }] = useUploadProductImageMutation();
+  const [deleteProductImage, { isLoading: isDeleting }] = useDeleteProductImageMutation();
 
-  const images = imagesByProductId[productId] || [];
-
-  // Fetch images on mount or when productId changes
-  useEffect(() => {
-    dispatch(fetchProductImages(productId));
-  }, [dispatch, productId]);
-
-  // Show error toast if error occurs
-  useEffect(() => {
-    if (error) {
-      toast.error(error);
-    }
-  }, [error]);
-
-  // Upload image
   const uploadImage = useCallback(
     async (file: File) => {
       try {
-        await dispatch(uploadProductImage({ productId, file })).unwrap();
-        toast.success('Image uploaded successfully!');
-      } catch (err) {
-        toast.error('Failed to upload image');
-        console.error('Failed to upload image', err);
+        await uploadProductImage({ productId, file }).unwrap();
+        return true;
+      } catch (error) {
+        console.error('Failed to upload image', error);
+        return false;
       }
     },
-    [dispatch, productId]
+    [productId, uploadProductImage]
   );
 
-  // Delete image
   const deleteImage = useCallback(
     async (imageId: number) => {
       try {
-        await dispatch(deleteProductImage({ productId, imageId })).unwrap();
-        toast.success('Image deleted successfully!');
-      } catch (err) {
-        toast.error('Failed to delete image');
-        console.error('Failed to delete image', err);
+        await deleteProductImage({ productId, imageId }).unwrap();
+        return true;
+      } catch (error) {
+        console.error('Failed to delete image', error);
+        return false;
       }
     },
-    [dispatch, productId]
+    [productId, deleteProductImage]
   );
-
-  // Refresh images
-  const refreshImages = useCallback(() => {
-    dispatch(fetchProductImages(productId));
-  }, [dispatch, productId]);
 
   return {
     images,
-    loading,
-    uploading: loading && uploadProgress > 0,
-    uploadProgress,
+    loading: isLoading,
+    uploading: isUploading,
+    deleting: isDeleting,
     uploadImage,
     deleteImage,
-    refreshImages,
+    refreshImages: refetch,
   };
 }
-

@@ -28,7 +28,7 @@ export function CellAction({ data }: CellActionProps) {
     const [deleteOpen, setDeleteOpen] = useState(false);
 
     const onEdit = () => {
-        router.push(`/dashboard/vouchers/${data.id}`);
+        router.push(`/admin/dashboard/vouchers/${data.id}`);
     };
 
     const onDelete = async () => {

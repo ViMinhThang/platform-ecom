@@ -33,6 +33,8 @@ import { VariantFormValues } from "@/types/product/product-variant";
 import { ProductOptionProvider } from "@/providers/product-option-provider";
 import { ProductVariantProvider } from "@/providers/product-variant-provider";
 import { useRouter } from "next/navigation";
+import { useDeleteProductMutation } from "@/lib/store/api";
+import { toast } from "sonner";
 
 interface CellActionProps {
   data: ProductRow;
@@ -40,6 +42,7 @@ interface CellActionProps {
 
 export const CellAction: React.FC<CellActionProps> = ({ data }) => {
   const router = useRouter();
+  const [deleteProduct] = useDeleteProductMutation();
   const [loading, setLoading] = useState(false);
   const [deleteOpen, setDeleteOpen] = useState(false);
   // ... existing states ...
@@ -51,10 +54,10 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
   const onConfirm = async () => {
     try {
       setLoading(true);
-      console.log(`Product ${data.id} deleted`);
+      await deleteProduct(data.id).unwrap();
       setDeleteOpen(false);
     } catch (error) {
-      console.error("Failed to delete product", error);
+      toast.error("Không thể xóa sản phẩm");
     } finally {
       setLoading(false);
     }
@@ -109,7 +112,7 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
               <IconEdit className="mr-2 h-4 w-4" /> Update Product
             </DropdownMenuItem>
 
-            <DropdownMenuItem onClick={() => router.push(`/dashboard/product/${data.id}/description`)}>
+            <DropdownMenuItem onClick={() => router.push(`/admin/dashboard/product/${data.id}/description`)}>
               <IconFileDescription className="mr-2 h-4 w-4" /> Edit Description
             </DropdownMenuItem>
 

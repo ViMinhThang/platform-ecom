@@ -1,13 +1,11 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { UserTable } from "./user-tables";
 import { columns } from "./user-tables/columns";
-import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
-import { fetchUsers } from "@/lib/store/slices/userSlice";
+import { useGetUsersQuery } from "@/lib/store/api";
 
 interface UserListingClientProps {
-  token: string;
   searchParams?: {
     page: number;
     perPage: number;
@@ -17,38 +15,27 @@ interface UserListingClientProps {
 }
 
 export default function UserListingClient({
-  token,
   searchParams,
 }: UserListingClientProps) {
-  const dispatch = useAppDispatch();
-  const { items: users, pagination, loading } = useAppSelector((state) => state.users);
-  const totalItems = pagination.totalElements;
-
   const [page, setPage] = useState<number>(Number(searchParams?.page ?? 0));
   const [perPage, setPerPage] = useState<number>(
     Number(searchParams?.perPage ?? 10)
   );
 
-  useEffect(() => {
-    if (!token) return;
+  const { data, isLoading } = useGetUsersQuery({
+    page,
+    size: perPage,
+  });
 
-    dispatch(fetchUsers({
-      token,
-      params: {
-        page,
-        size: perPage
-      }
-    }));
-  }, [dispatch, token, page, perPage, searchParams]);
+  const users = data?.content || [];
+  const totalItems = data?.totalElements || 0;
 
-  if (loading && users.length === 0)
+  if (isLoading && users.length === 0)
     return <div>Loading users...</div>;
-
-  const mappedUsers = users;
 
   return (
     <UserTable
-      data={mappedUsers}
+      data={users}
       totalItems={totalItems}
       columns={columns}
       onPageChange={setPage}

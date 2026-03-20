@@ -3,33 +3,23 @@
 import {
   createContext,
   useContext,
-  useEffect,
   ReactNode,
 } from "react";
-import { useSession } from "next-auth/react";
 import { toast } from "sonner";
 import { ProductOption } from "@/types/product/product-option";
-import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
-import {
-  fetchOptions,
-  createOption as createOptionAction,
-  updateOption as updateOptionAction,
-  deleteOption as deleteOptionAction,
-  setCurrentProductId,
-  clearOptions,
-} from "@/lib/store/slices/productOptionSlice";
+import { useGetOptionsQuery, useCreateOptionMutation, useUpdateOptionMutation, useDeleteOptionMutation } from "@/lib/store/api";
 
 interface ProductOptionContextValue {
   options: ProductOption[];
   loading: boolean;
   productId: number;
-  fetchOptions: () => Promise<void>;
   createOption: (option: ProductOption) => Promise<ProductOption | null>;
   updateOption: (
     optionId: number,
     option: ProductOption
   ) => Promise<ProductOption | null>;
   deleteOption: (optionId: number) => Promise<void>;
+  refetch: () => void;
 }
 
 const ProductOptionContext = createContext<
@@ -45,42 +35,25 @@ export const ProductOptionProvider: React.FC<ProductOptionProviderProps> = ({
   productId,
   children,
 }) => {
-  const { data: session } = useSession();
-  const dispatch = useAppDispatch();
-
-  // Get state from Redux
-  const { items: options, loading } = useAppSelector((state) => state.productOptions);
-
-  const fetchOptionsData = async () => {
-    if (!productId || !session?.accessToken) return;
-
-    try {
-      await dispatch(fetchOptions({ productId })).unwrap();
-    } catch (error) {
-      console.error(error);
-      toast.error("Failed to fetch product options");
-    }
-  };
+  const { data: options = [], isLoading, refetch } = useGetOptionsQuery(productId);
+  const [createOptionMutation] = useCreateOptionMutation();
+  const [updateOptionMutation] = useUpdateOptionMutation();
+  const [deleteOptionMutation] = useDeleteOptionMutation();
 
   const createOption = async (
     option: ProductOption
   ): Promise<ProductOption | null> => {
-    if (!session?.accessToken) {
-      toast.error("Not authenticated");
-      return null;
-    }
-
     try {
-      const result = await dispatch(createOptionAction({
+      const result = await createOptionMutation({
         productId,
-        data: option,
-      })).unwrap();
+        option,
+      }).unwrap();
 
       toast.success("Option created successfully");
       return result;
-    } catch (error: any) {
+    } catch (error) {
       console.error("Error creating option:", error);
-      toast.error(error?.message || "Failed to create option");
+      toast.error("Failed to create option");
       return null;
     }
   };
@@ -89,38 +62,28 @@ export const ProductOptionProvider: React.FC<ProductOptionProviderProps> = ({
     optionId: number,
     option: ProductOption
   ): Promise<ProductOption | null> => {
-    if (!session?.accessToken) {
-      toast.error("Not authenticated");
-      return null;
-    }
-
     try {
-      const result = await dispatch(updateOptionAction({
+      const result = await updateOptionMutation({
         productId,
         optionId,
-        data: option,
-      })).unwrap();
+        option,
+      }).unwrap();
 
       toast.success("Option updated successfully");
       return result;
-    } catch (error: any) {
+    } catch (error) {
       console.error("Error updating option:", error);
-      toast.error(error?.message || "Failed to update option");
+      toast.error("Failed to update option");
       return null;
     }
   };
 
   const deleteOption = async (optionId: number): Promise<void> => {
-    if (!session?.accessToken) {
-      toast.error("Not authenticated");
-      return;
-    }
-
     try {
-      await dispatch(deleteOptionAction({
+      await deleteOptionMutation({
         productId,
         optionId,
-      })).unwrap();
+      }).unwrap();
 
       toast.success("Option deleted successfully");
     } catch (error) {
@@ -129,26 +92,16 @@ export const ProductOptionProvider: React.FC<ProductOptionProviderProps> = ({
     }
   };
 
-  useEffect(() => {
-    dispatch(setCurrentProductId(productId));
-    fetchOptionsData();
-
-    // Cleanup on unmount
-    return () => {
-      dispatch(clearOptions());
-    };
-  }, [productId, session?.accessToken, dispatch]);
-
   return (
     <ProductOptionContext.Provider
       value={{
         options,
-        loading,
+        loading: isLoading,
         productId,
-        fetchOptions: fetchOptionsData,
         createOption,
         updateOption,
         deleteOption,
+        refetch,
       }}
     >
       {children}

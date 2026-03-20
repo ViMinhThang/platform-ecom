@@ -3,23 +3,17 @@
 import {
   createContext,
   useContext,
-  useEffect,
   ReactNode,
 } from "react";
-import { useSession } from "next-auth/react";
 import { toast } from "sonner";
 import { VariantFormValues } from "@/types/product/product-variant";
-import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
+import { useAppSelector, useAppDispatch } from "@/lib/store/hooks";
+import { useGetVariantsQuery, useCreateVariantMutation, useUpdateVariantMutation, useDeleteVariantMutation } from "@/lib/store/api";
 import {
-  fetchVariants,
-  createVariant as createVariantAction,
-  updateVariant as updateVariantAction,
-  deleteVariant as deleteVariantAction,
   addNewVariant,
   removeVariantLocally,
   updateVariantField as updateVariantFieldAction,
-  setCurrentProductId,
-  clearVariants,
+  setItems,
 } from "@/lib/store/slices/productVariantSlice";
 
 interface ProductVariantContextValue {
@@ -31,12 +25,12 @@ interface ProductVariantContextValue {
   handleChange: (
     variantKey: number | string,
     field: keyof VariantFormValues,
-    value: any
+    value: unknown
   ) => void;
   saveVariant: (
     variant: VariantFormValues
   ) => Promise<VariantFormValues | null>;
-  fetchVariants: () => Promise<void>;
+  refetch: () => void;
 }
 
 const ProductVariantContext = createContext<
@@ -52,42 +46,26 @@ export const ProductVariantProvider: React.FC<ProductVariantProviderProps> = ({
   productId,
   children,
 }) => {
-  const { data: session } = useSession();
   const dispatch = useAppDispatch();
+  const { items: localVariants } = useAppSelector((state) => state.productVariants);
+  
+  const { data: fetchedVariants, isLoading, refetch } = useGetVariantsQuery({ productId });
+  const [createVariant] = useCreateVariantMutation();
+  const [updateVariant] = useUpdateVariantMutation();
+  const [deleteVariant] = useDeleteVariantMutation();
 
-  // Get state from Redux
-  const { items: variants, loading } = useAppSelector((state) => state.productVariants);
-
-  const fetchVariantsData = async () => {
-    if (!productId || !session?.accessToken) return;
-
-    try {
-      await dispatch(fetchVariants({ productId })).unwrap();
-    } catch (error) {
-      console.error(error);
-      toast.error("Failed to fetch product variants");
-    }
-  };
+  const variants = fetchedVariants || localVariants || [];
 
   const addVariant = () => {
     dispatch(addNewVariant());
   };
 
   const removeVariant = async (variantId: number | string | undefined) => {
-    if (!session?.accessToken) {
-      toast.error("Not authenticated");
-      return null;
-    }
-
     try {
       if (typeof variantId === "number") {
-        await dispatch(deleteVariantAction({
-          productId,
-          variantId,
-        })).unwrap();
+        await deleteVariant({ productId, variantId }).unwrap();
         toast.success("Variant deleted successfully");
       } else {
-        // For temp variants, just remove locally
         dispatch(removeVariantLocally(variantId));
       }
     } catch (error) {
@@ -99,7 +77,7 @@ export const ProductVariantProvider: React.FC<ProductVariantProviderProps> = ({
   const handleChange = (
     variantKey: number | string,
     field: keyof VariantFormValues,
-    value: any
+    value: unknown
   ) => {
     dispatch(updateVariantFieldAction({ variantKey, field, value }));
   };
@@ -107,59 +85,45 @@ export const ProductVariantProvider: React.FC<ProductVariantProviderProps> = ({
   const saveVariant = async (
     variant: VariantFormValues
   ): Promise<VariantFormValues | null> => {
-    if (!session?.accessToken) {
-      toast.error("Not authenticated");
-      return null;
-    }
-
     try {
       let result: VariantFormValues;
 
       if (variant.id) {
-        const variantId = variant.id;
-        result = await dispatch(updateVariantAction({
+        result = await updateVariant({
           productId,
-          variantId,
-          data: variant,
-        })).unwrap();
+          variantId: variant.id,
+          variantData: variant,
+        }).unwrap();
         toast.success("Variant updated successfully");
-      } else {
-        result = await dispatch(createVariantAction({
+      } else if (variant.tempId) {
+        result = await createVariant({
           productId,
-          data: variant,
-        })).unwrap();
+          variantData: variant,
+        }).unwrap();
         toast.success("Variant created successfully");
+      } else {
+        return null;
       }
 
       return result;
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error("Error saving variant:", error);
-      toast.error(error?.message || "Failed to save variant");
+      toast.error("Failed to save variant");
       return null;
     }
   };
-
-  useEffect(() => {
-    dispatch(setCurrentProductId(productId));
-    fetchVariantsData();
-
-    // Cleanup on unmount
-    return () => {
-      dispatch(clearVariants());
-    };
-  }, [productId, session?.accessToken]);
 
   return (
     <ProductVariantContext.Provider
       value={{
         variants,
-        loading,
+        loading: isLoading,
         productId,
         addVariant,
         removeVariant,
         handleChange,
         saveVariant,
-        fetchVariants: fetchVariantsData,
+        refetch,
       }}
     >
       {children}

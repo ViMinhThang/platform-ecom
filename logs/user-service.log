@@ -1,0 +1,226 @@
+2026-03-20T13:43:29.882+07:00  INFO 15700 --- [user-service] [main] [                                                 ] com.ecom.user.UserApplication            : Starting UserApplication using Java 25.0.2 with PID 15700 (C:\Users\huynh\Desktop\Projects\platform-ecom\platform-ecom-backend\user\target\classes started by huynh in C:\Users\huynh\Desktop\Projects\platform-ecom)
+2026-03-20T13:43:29.953+07:00  INFO 15700 --- [user-service] [main] [                                                 ] com.ecom.user.UserApplication            : No active profile set, falling back to 1 default profile: "default"
+2026-03-20T13:43:30.177+07:00  INFO 15700 --- [user-service] [main] [                                                 ] o.s.c.c.c.ConfigServerConfigDataLoader   : Fetching config from server at : http://localhost:8888
+2026-03-20T13:43:30.178+07:00  INFO 15700 --- [user-service] [main] [                                                 ] o.s.c.c.c.ConfigServerConfigDataLoader   : Located environment: name=user-service, profiles=[default], label=null, version=null, state=null
+2026-03-20T13:43:36.663+07:00  INFO 15700 --- [user-service] [main] [                                                 ] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-03-20T13:43:37.279+07:00  INFO 15700 --- [user-service] [main] [                                                 ] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 588 ms. Found 4 JPA repository interfaces.
+2026-03-20T13:43:38.443+07:00  INFO 15700 --- [user-service] [main] [                                                 ] o.s.cloud.context.scope.GenericScope     : BeanFactory id=1ea69e83-cc5d-3988-a013-c7ebf32fa645
+2026-03-20T13:43:40.960+07:00  INFO 15700 --- [user-service] [main] [                                                 ] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8082 (http)
+2026-03-20T13:43:40.998+07:00  INFO 15700 --- [user-service] [main] [                                                 ] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-03-20T13:43:41.000+07:00  INFO 15700 --- [user-service] [main] [                                                 ] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.46]
+2026-03-20T13:43:41.423+07:00  INFO 15700 --- [user-service] [main] [                                                 ] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2026-03-20T13:43:41.425+07:00  INFO 15700 --- [user-service] [main] [                                                 ] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 11240 ms
+2026-03-20T13:43:44.320+07:00  INFO 15700 --- [user-service] [main] [                                                 ] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-03-20T13:43:44.477+07:00  INFO 15700 --- [user-service] [main] [                                                 ] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.6.29.Final
+2026-03-20T13:43:44.598+07:00  INFO 15700 --- [user-service] [main] [                                                 ] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2026-03-20T13:43:45.576+07:00  INFO 15700 --- [user-service] [main] [                                                 ] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-03-20T13:43:45.653+07:00  INFO 15700 --- [user-service] [main] [                                                 ] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-03-20T13:43:46.007+07:00  INFO 15700 --- [user-service] [main] [                                                 ] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@2cdb53d6
+2026-03-20T13:43:46.010+07:00  INFO 15700 --- [user-service] [main] [                                                 ] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-03-20T13:43:46.093+07:00  WARN 15700 --- [user-service] [main] [                                                 ] org.hibernate.orm.deprecation            : HHH90000025: PostgreSQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-03-20T13:43:46.198+07:00  INFO 15700 --- [user-service] [main] [                                                 ] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 17.7
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-03-20T13:43:48.267+07:00  INFO 15700 --- [user-service] [main] [                                                 ] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-03-20T13:43:49.167+07:00  INFO 15700 --- [user-service] [main] [                                                 ] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-03-20T13:43:50.282+07:00  INFO 15700 --- [user-service] [main] [                                                 ] o.s.d.j.r.query.QueryEnhancerFactory     : Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-03-20T13:43:51.574+07:00  INFO 15700 --- [user-service] [main] [                                                 ] c.e.c.s.LocalFileStorageServiceImpl      : File storage location created/verified at: C:\Users\huynh\Desktop\Projects\platform-ecom\uploads
+2026-03-20T13:43:52.747+07:00  WARN 15700 --- [user-service] [main] [                                                 ] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-03-20T13:43:54.378+07:00  INFO 15700 --- [user-service] [main] [                                                 ] DiscoveryClientOptionalArgsConfiguration : Eureka HTTP Client uses RestTemplate.
+2026-03-20T13:43:54.530+07:00  WARN 15700 --- [user-service] [main] [                                                 ] iguration$LoadBalancerCaffeineWarnLogger : Spring Cloud LoadBalancer is currently working with the default cache. While this cache implementation is useful for development and tests, it's recommended to use Caffeine cache in production.You can switch to using Caffeine cache, by adding it and org.springframework.cache.caffeine.CaffeineCacheManager to the classpath.
+2026-03-20T13:43:54.576+07:00  INFO 15700 --- [user-service] [main] [                                                 ] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 18 endpoints beneath base path '/actuator'
+2026-03-20T13:43:54.947+07:00  INFO 15700 --- [user-service] [main] [                                                 ] o.s.c.n.eureka.InstanceInfoFactory       : Setting initial instance status as: STARTING
+2026-03-20T13:43:55.073+07:00  INFO 15700 --- [user-service] [main] [                                                 ] com.netflix.discovery.DiscoveryClient    : Initializing Eureka in region us-east-1
+2026-03-20T13:43:55.087+07:00  INFO 15700 --- [user-service] [main] [                                                 ] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2026-03-20T13:43:55.123+07:00  INFO 15700 --- [user-service] [main] [                                                 ] com.netflix.discovery.DiscoveryClient    : Disable delta property : false
+2026-03-20T13:43:55.123+07:00  INFO 15700 --- [user-service] [main] [                                                 ] com.netflix.discovery.DiscoveryClient    : Single vip registry refresh property : null
+2026-03-20T13:43:55.126+07:00  INFO 15700 --- [user-service] [main] [                                                 ] com.netflix.discovery.DiscoveryClient    : Force full registry fetch : false
+2026-03-20T13:43:55.138+07:00  INFO 15700 --- [user-service] [main] [                                                 ] com.netflix.discovery.DiscoveryClient    : Application is null : false
+2026-03-20T13:43:55.138+07:00  INFO 15700 --- [user-service] [main] [                                                 ] com.netflix.discovery.DiscoveryClient    : Registered Applications size is zero : true
+2026-03-20T13:43:55.138+07:00  INFO 15700 --- [user-service] [main] [                                                 ] com.netflix.discovery.DiscoveryClient    : Application version is -1: true
+2026-03-20T13:43:55.138+07:00  INFO 15700 --- [user-service] [main] [                                                 ] com.netflix.discovery.DiscoveryClient    : Getting all instance registry info from the eureka server
+2026-03-20T13:43:55.548+07:00  INFO 15700 --- [user-service] [main] [                                                 ] com.netflix.discovery.DiscoveryClient    : The response status is 200
+2026-03-20T13:43:55.552+07:00  INFO 15700 --- [user-service] [main] [                                                 ] com.netflix.discovery.DiscoveryClient    : Starting heartbeat executor: renew interval is: 30
+2026-03-20T13:43:55.555+07:00  INFO 15700 --- [user-service] [main] [                                                 ] c.n.discovery.InstanceInfoReplicator     : InstanceInfoReplicator onDemand update allowed rate per min is 4
+2026-03-20T13:43:55.560+07:00  INFO 15700 --- [user-service] [main] [                                                 ] com.netflix.discovery.DiscoveryClient    : Discovery Client initialized at timestamp 1773989035559 with initial instances count: 5
+2026-03-20T13:43:55.568+07:00  INFO 15700 --- [user-service] [main] [                                                 ] o.s.c.n.e.s.EurekaServiceRegistry        : Registering application USER-SERVICE with eureka with status UP
+2026-03-20T13:43:55.571+07:00  INFO 15700 --- [user-service] [main] [                                                 ] com.netflix.discovery.DiscoveryClient    : Saw local status change event StatusChangeEvent [timestamp=1773989035570, current=UP, previous=STARTING]
+2026-03-20T13:43:55.574+07:00  INFO 15700 --- [user-service] [DiscoveryClient-InstanceInfoReplicator-%d] [                                                 ] com.netflix.discovery.DiscoveryClient    : DiscoveryClient_USER-SERVICE/fragile.mshome.net:user-service:8082: registering service...
+2026-03-20T13:43:55.592+07:00  INFO 15700 --- [user-service] [main] [                                                 ] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8082 (http) with context path '/'
+2026-03-20T13:43:55.596+07:00  INFO 15700 --- [user-service] [main] [                                                 ] .s.c.n.e.s.EurekaAutoServiceRegistration : Updating port to 8082
+2026-03-20T13:43:55.661+07:00  INFO 15700 --- [user-service] [main] [                                                 ] com.ecom.user.UserApplication            : Started UserApplication in 29.465 seconds (process running for 31.342)
+2026-03-20T13:43:55.664+07:00  INFO 15700 --- [user-service] [DiscoveryClient-InstanceInfoReplicator-%d] [                                                 ] com.netflix.discovery.DiscoveryClient    : DiscoveryClient_USER-SERVICE/fragile.mshome.net:user-service:8082 - registration status: 204
+2026-03-20T13:43:55.975+07:00  INFO 15700 --- [user-service] [main] [                                                 ] com.ecom.user.seeder.FakeDataSeeder      : Database already seeded with users. Skipping user seeding.
+2026-03-20T13:43:56.855+07:00  WARN 15700 --- [user-service] [AsyncReporter{ZipkinHttpClientSender{http://localhost:9411/api/v2/spans}}] [                                                 ] z.r.i.AsyncReporter$BoundedAsyncReporter : Spans were dropped due to exceptions. All subsequent errors will be logged at FINE level.
+2026-03-20T13:43:56.856+07:00  WARN 15700 --- [user-service] [AsyncReporter{ZipkinHttpClientSender{http://localhost:9411/api/v2/spans}}] [                                                 ] z.r.i.AsyncReporter$BoundedAsyncReporter : Dropped 2 spans due to ConnectException()
+
+java.net.ConnectException: null
+	at java.net.http/jdk.internal.net.http.HttpClientImpl.send(HttpClientImpl.java:923) ~[java.net.http:na]
+	at java.net.http/jdk.internal.net.http.HttpClientFacade.send(HttpClientFacade.java:133) ~[java.net.http:na]
+	at org.springframework.boot.actuate.autoconfigure.tracing.zipkin.ZipkinHttpClientSender.postSpans(ZipkinHttpClientSender.java:60) ~[spring-boot-actuator-autoconfigure-3.5.6.jar:3.5.6]
+	at org.springframework.boot.actuate.autoconfigure.tracing.zipkin.HttpSender.postSpans(HttpSender.java:69) ~[spring-boot-actuator-autoconfigure-3.5.6.jar:3.5.6]
+	at org.springframework.boot.actuate.autoconfigure.tracing.zipkin.HttpSender.postSpans(HttpSender.java:41) ~[spring-boot-actuator-autoconfigure-3.5.6.jar:3.5.6]
+	at zipkin2.reporter.BaseHttpSender.send(BaseHttpSender.java:123) ~[zipkin-reporter-3.5.1.jar:na]
+	at zipkin2.reporter.internal.AsyncReporter$BoundedAsyncReporter.flush(AsyncReporter.java:266) ~[zipkin-reporter-3.5.1.jar:na]
+	at zipkin2.reporter.internal.AsyncReporter$Flusher.run(AsyncReporter.java:352) ~[zipkin-reporter-3.5.1.jar:na]
+	at java.base/java.lang.Thread.run(Thread.java:1474) ~[na:na]
+Caused by: java.net.ConnectException: null
+	at java.net.http/jdk.internal.net.http.common.Utils.toConnectException(Utils.java:1070) ~[java.net.http:na]
+	at java.net.http/jdk.internal.net.http.PlainHttpConnection.connectAsync(PlainHttpConnection.java:223) ~[java.net.http:na]
+	at java.net.http/jdk.internal.net.http.PlainHttpConnection.checkRetryConnect(PlainHttpConnection.java:277) ~[java.net.http:na]
+	at java.net.http/jdk.internal.net.http.PlainHttpConnection.lambda$connectAsync$0(PlainHttpConnection.java:235) ~[java.net.http:na]
+	at java.base/java.util.concurrent.CompletableFuture.uniHandle(CompletableFuture.java:955) ~[na:na]
+	at java.base/java.util.concurrent.CompletableFuture$UniHandle.tryFire(CompletableFuture.java:932) ~[na:na]
+	at java.base/java.util.concurrent.CompletableFuture.postComplete(CompletableFuture.java:531) ~[na:na]
+	at java.base/java.util.concurrent.CompletableFuture$AsyncSupply.run(CompletableFuture.java:1794) ~[na:na]
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1090) ~[na:na]
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:614) ~[na:na]
+	... 1 common frames omitted
+Caused by: java.nio.channels.ClosedChannelException: null
+	at java.base/sun.nio.ch.SocketChannelImpl.ensureOpen(SocketChannelImpl.java:204) ~[na:na]
+	at java.base/sun.nio.ch.SocketChannelImpl.connect(SocketChannelImpl.java:942) ~[na:na]
+	at java.net.http/jdk.internal.net.http.PlainHttpConnection.connectAsync(PlainHttpConnection.java:211) ~[java.net.http:na]
+	... 9 common frames omitted
+
+2026-03-20T13:46:25.887+07:00  INFO 15700 --- [user-service] [http-nio-8082-exec-2] [                                                 ] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-03-20T13:46:25.888+07:00  INFO 15700 --- [user-service] [http-nio-8082-exec-2] [                                                 ] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2026-03-20T13:46:25.892+07:00  INFO 15700 --- [user-service] [http-nio-8082-exec-2] [                                                 ] o.s.web.servlet.DispatcherServlet        : Completed initialization in 4 ms
+2026-03-20T13:48:55.143+07:00  INFO 15700 --- [user-service] [AsyncResolver-bootstrap-executor-%d] [                                                 ] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2026-03-20T13:50:27.874+07:00  WARN 15700 --- [user-service] [http-nio-8082-exec-3] [69bcee333ad345ecff38cdda6b5813f2-7a2525741b375ae5] com.ecom.common.aspect.RoleGuardAspect   : Access denied - Missing role: ROLE_ADMIN. User roles: [ROLE_USER, ROLE_SELLER]
+2026-03-20T13:50:27.885+07:00 ERROR 15700 --- [user-service] [http-nio-8082-exec-3] [69bcee333ad345ecff38cdda6b5813f2-7a2525741b375ae5] c.e.c.exception.GlobalExceptionHandler   : Exception handled: Access denied: Missing required role 'ROLE_ADMIN' - Status: 403 FORBIDDEN
+2026-03-20T13:50:27.951+07:00  WARN 15700 --- [user-service] [http-nio-8082-exec-8] [69bcee33e9531364013244d581724e2a-6f2808f3bc12d5c6] com.ecom.common.aspect.RoleGuardAspect   : Access denied - Missing role: ROLE_ADMIN. User roles: [ROLE_USER, ROLE_SELLER]
+2026-03-20T13:50:27.953+07:00 ERROR 15700 --- [user-service] [http-nio-8082-exec-8] [69bcee33e9531364013244d581724e2a-6f2808f3bc12d5c6] c.e.c.exception.GlobalExceptionHandler   : Exception handled: Access denied: Missing required role 'ROLE_ADMIN' - Status: 403 FORBIDDEN
+2026-03-20T14:39:53.608+07:00  INFO 21388 --- [user-service] [main] [                                                 ] com.ecom.user.UserApplication            : Starting UserApplication using Java 25.0.2 with PID 21388 (C:\Users\huynh\Desktop\Projects\platform-ecom\platform-ecom-backend\user\target\classes started by huynh in C:\Users\huynh\Desktop\Projects\platform-ecom)
+2026-03-20T14:39:53.613+07:00  INFO 21388 --- [user-service] [main] [                                                 ] com.ecom.user.UserApplication            : No active profile set, falling back to 1 default profile: "default"
+2026-03-20T14:39:53.693+07:00  INFO 21388 --- [user-service] [main] [                                                 ] o.s.c.c.c.ConfigServerConfigDataLoader   : Fetching config from server at : http://localhost:8888
+2026-03-20T14:39:53.694+07:00  INFO 21388 --- [user-service] [main] [                                                 ] o.s.c.c.c.ConfigServerConfigDataLoader   : Located environment: name=user-service, profiles=[default], label=null, version=null, state=null
+2026-03-20T14:39:56.228+07:00  INFO 21388 --- [user-service] [main] [                                                 ] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-03-20T14:39:56.614+07:00  INFO 21388 --- [user-service] [main] [                                                 ] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 364 ms. Found 4 JPA repository interfaces.
+2026-03-20T14:39:57.262+07:00  INFO 21388 --- [user-service] [main] [                                                 ] o.s.cloud.context.scope.GenericScope     : BeanFactory id=1ea69e83-cc5d-3988-a013-c7ebf32fa645
+2026-03-20T14:39:58.536+07:00  INFO 21388 --- [user-service] [main] [                                                 ] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8082 (http)
+2026-03-20T14:39:58.557+07:00  INFO 21388 --- [user-service] [main] [                                                 ] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-03-20T14:39:58.558+07:00  INFO 21388 --- [user-service] [main] [                                                 ] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.46]
+2026-03-20T14:39:58.668+07:00  INFO 21388 --- [user-service] [main] [                                                 ] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2026-03-20T14:39:58.669+07:00  INFO 21388 --- [user-service] [main] [                                                 ] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 4963 ms
+2026-03-20T14:39:59.928+07:00  INFO 21388 --- [user-service] [main] [                                                 ] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-03-20T14:40:00.037+07:00  INFO 21388 --- [user-service] [main] [                                                 ] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.6.29.Final
+2026-03-20T14:40:00.112+07:00  INFO 21388 --- [user-service] [main] [                                                 ] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2026-03-20T14:40:00.508+07:00  INFO 21388 --- [user-service] [main] [                                                 ] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-03-20T14:40:00.559+07:00  INFO 21388 --- [user-service] [main] [                                                 ] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-03-20T14:40:00.860+07:00  INFO 21388 --- [user-service] [main] [                                                 ] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@397bd46b
+2026-03-20T14:40:00.864+07:00  INFO 21388 --- [user-service] [main] [                                                 ] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-03-20T14:40:00.955+07:00  WARN 21388 --- [user-service] [main] [                                                 ] org.hibernate.orm.deprecation            : HHH90000025: PostgreSQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-03-20T14:40:00.999+07:00  INFO 21388 --- [user-service] [main] [                                                 ] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 17.7
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-03-20T14:40:02.935+07:00  INFO 21388 --- [user-service] [main] [                                                 ] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-03-20T14:40:04.345+07:00  INFO 21388 --- [user-service] [main] [                                                 ] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-03-20T14:40:06.237+07:00  INFO 21388 --- [user-service] [main] [                                                 ] o.s.d.j.r.query.QueryEnhancerFactory     : Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-03-20T14:40:07.935+07:00  INFO 21388 --- [user-service] [main] [                                                 ] c.e.c.s.LocalFileStorageServiceImpl      : File storage location created/verified at: C:\Users\huynh\Desktop\Projects\platform-ecom\uploads
+2026-03-20T14:40:09.887+07:00  WARN 21388 --- [user-service] [main] [                                                 ] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-03-20T14:40:12.000+07:00  INFO 21388 --- [user-service] [main] [                                                 ] DiscoveryClientOptionalArgsConfiguration : Eureka HTTP Client uses RestTemplate.
+2026-03-20T14:40:12.135+07:00  WARN 21388 --- [user-service] [main] [                                                 ] iguration$LoadBalancerCaffeineWarnLogger : Spring Cloud LoadBalancer is currently working with the default cache. While this cache implementation is useful for development and tests, it's recommended to use Caffeine cache in production.You can switch to using Caffeine cache, by adding it and org.springframework.cache.caffeine.CaffeineCacheManager to the classpath.
+2026-03-20T14:40:12.153+07:00  INFO 21388 --- [user-service] [main] [                                                 ] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 18 endpoints beneath base path '/actuator'
+2026-03-20T14:40:12.302+07:00  INFO 21388 --- [user-service] [main] [                                                 ] o.s.c.n.eureka.InstanceInfoFactory       : Setting initial instance status as: STARTING
+2026-03-20T14:40:12.352+07:00  INFO 21388 --- [user-service] [main] [                                                 ] com.netflix.discovery.DiscoveryClient    : Initializing Eureka in region us-east-1
+2026-03-20T14:40:12.360+07:00  INFO 21388 --- [user-service] [main] [                                                 ] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2026-03-20T14:40:12.376+07:00  INFO 21388 --- [user-service] [main] [                                                 ] com.netflix.discovery.DiscoveryClient    : Disable delta property : false
+2026-03-20T14:40:12.376+07:00  INFO 21388 --- [user-service] [main] [                                                 ] com.netflix.discovery.DiscoveryClient    : Single vip registry refresh property : null
+2026-03-20T14:40:12.376+07:00  INFO 21388 --- [user-service] [main] [                                                 ] com.netflix.discovery.DiscoveryClient    : Force full registry fetch : false
+2026-03-20T14:40:12.376+07:00  INFO 21388 --- [user-service] [main] [                                                 ] com.netflix.discovery.DiscoveryClient    : Application is null : false
+2026-03-20T14:40:12.377+07:00  INFO 21388 --- [user-service] [main] [                                                 ] com.netflix.discovery.DiscoveryClient    : Registered Applications size is zero : true
+2026-03-20T14:40:12.377+07:00  INFO 21388 --- [user-service] [main] [                                                 ] com.netflix.discovery.DiscoveryClient    : Application version is -1: true
+2026-03-20T14:40:12.377+07:00  INFO 21388 --- [user-service] [main] [                                                 ] com.netflix.discovery.DiscoveryClient    : Getting all instance registry info from the eureka server
+2026-03-20T14:40:13.176+07:00  INFO 21388 --- [user-service] [main] [                                                 ] com.netflix.discovery.DiscoveryClient    : The response status is 200
+2026-03-20T14:40:13.179+07:00  INFO 21388 --- [user-service] [main] [                                                 ] com.netflix.discovery.DiscoveryClient    : Starting heartbeat executor: renew interval is: 30
+2026-03-20T14:40:13.182+07:00  INFO 21388 --- [user-service] [main] [                                                 ] c.n.discovery.InstanceInfoReplicator     : InstanceInfoReplicator onDemand update allowed rate per min is 4
+2026-03-20T14:40:13.184+07:00  INFO 21388 --- [user-service] [main] [                                                 ] com.netflix.discovery.DiscoveryClient    : Discovery Client initialized at timestamp 1773992413183 with initial instances count: 4
+2026-03-20T14:40:13.194+07:00  INFO 21388 --- [user-service] [main] [                                                 ] o.s.c.n.e.s.EurekaServiceRegistry        : Registering application USER-SERVICE with eureka with status UP
+2026-03-20T14:40:13.195+07:00  INFO 21388 --- [user-service] [main] [                                                 ] com.netflix.discovery.DiscoveryClient    : Saw local status change event StatusChangeEvent [timestamp=1773992413195, current=UP, previous=STARTING]
+2026-03-20T14:40:13.198+07:00  INFO 21388 --- [user-service] [DiscoveryClient-InstanceInfoReplicator-%d] [                                                 ] com.netflix.discovery.DiscoveryClient    : DiscoveryClient_USER-SERVICE/fragile.mshome.net:user-service:8082: registering service...
+2026-03-20T14:40:13.230+07:00  INFO 21388 --- [user-service] [main] [                                                 ] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8082 (http) with context path '/'
+2026-03-20T14:40:13.233+07:00  INFO 21388 --- [user-service] [main] [                                                 ] .s.c.n.e.s.EurekaAutoServiceRegistration : Updating port to 8082
+2026-03-20T14:40:13.549+07:00  INFO 21388 --- [user-service] [DiscoveryClient-InstanceInfoReplicator-%d] [                                                 ] com.netflix.discovery.DiscoveryClient    : DiscoveryClient_USER-SERVICE/fragile.mshome.net:user-service:8082 - registration status: 204
+2026-03-20T14:40:13.702+07:00  INFO 21388 --- [user-service] [main] [                                                 ] com.ecom.user.UserApplication            : Started UserApplication in 21.528 seconds (process running for 22.548)
+2026-03-20T14:40:14.003+07:00  INFO 21388 --- [user-service] [main] [                                                 ] com.ecom.user.seeder.FakeDataSeeder      : Database already seeded with users. Skipping user seeding.
+2026-03-20T14:40:15.746+07:00  WARN 21388 --- [user-service] [AsyncReporter{ZipkinHttpClientSender{http://localhost:9411/api/v2/spans}}] [                                                 ] z.r.i.AsyncReporter$BoundedAsyncReporter : Spans were dropped due to exceptions. All subsequent errors will be logged at FINE level.
+2026-03-20T14:40:15.747+07:00  WARN 21388 --- [user-service] [AsyncReporter{ZipkinHttpClientSender{http://localhost:9411/api/v2/spans}}] [                                                 ] z.r.i.AsyncReporter$BoundedAsyncReporter : Dropped 2 spans due to ConnectException()
+
+java.net.ConnectException: null
+	at java.net.http/jdk.internal.net.http.HttpClientImpl.send(HttpClientImpl.java:923) ~[java.net.http:na]
+	at java.net.http/jdk.internal.net.http.HttpClientFacade.send(HttpClientFacade.java:133) ~[java.net.http:na]
+	at org.springframework.boot.actuate.autoconfigure.tracing.zipkin.ZipkinHttpClientSender.postSpans(ZipkinHttpClientSender.java:60) ~[spring-boot-actuator-autoconfigure-3.5.6.jar:3.5.6]
+	at org.springframework.boot.actuate.autoconfigure.tracing.zipkin.HttpSender.postSpans(HttpSender.java:69) ~[spring-boot-actuator-autoconfigure-3.5.6.jar:3.5.6]
+	at org.springframework.boot.actuate.autoconfigure.tracing.zipkin.HttpSender.postSpans(HttpSender.java:41) ~[spring-boot-actuator-autoconfigure-3.5.6.jar:3.5.6]
+	at zipkin2.reporter.BaseHttpSender.send(BaseHttpSender.java:123) ~[zipkin-reporter-3.5.1.jar:na]
+	at zipkin2.reporter.internal.AsyncReporter$BoundedAsyncReporter.flush(AsyncReporter.java:266) ~[zipkin-reporter-3.5.1.jar:na]
+	at zipkin2.reporter.internal.AsyncReporter$Flusher.run(AsyncReporter.java:352) ~[zipkin-reporter-3.5.1.jar:na]
+	at java.base/java.lang.Thread.run(Thread.java:1474) ~[na:na]
+Caused by: java.net.ConnectException: null
+	at java.net.http/jdk.internal.net.http.common.Utils.toConnectException(Utils.java:1070) ~[java.net.http:na]
+	at java.net.http/jdk.internal.net.http.PlainHttpConnection.connectAsync(PlainHttpConnection.java:223) ~[java.net.http:na]
+	at java.net.http/jdk.internal.net.http.PlainHttpConnection.checkRetryConnect(PlainHttpConnection.java:277) ~[java.net.http:na]
+	at java.net.http/jdk.internal.net.http.PlainHttpConnection.lambda$connectAsync$0(PlainHttpConnection.java:235) ~[java.net.http:na]
+	at java.base/java.util.concurrent.CompletableFuture.uniHandle(CompletableFuture.java:955) ~[na:na]
+	at java.base/java.util.concurrent.CompletableFuture$UniHandle.tryFire(CompletableFuture.java:932) ~[na:na]
+	at java.base/java.util.concurrent.CompletableFuture.postComplete(CompletableFuture.java:531) ~[na:na]
+	at java.base/java.util.concurrent.CompletableFuture$AsyncSupply.run(CompletableFuture.java:1794) ~[na:na]
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1090) ~[na:na]
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:614) ~[na:na]
+	... 1 common frames omitted
+Caused by: java.nio.channels.ClosedChannelException: null
+	at java.base/sun.nio.ch.SocketChannelImpl.ensureOpen(SocketChannelImpl.java:204) ~[na:na]
+	at java.base/sun.nio.ch.SocketChannelImpl.connect(SocketChannelImpl.java:942) ~[na:na]
+	at java.net.http/jdk.internal.net.http.PlainHttpConnection.connectAsync(PlainHttpConnection.java:211) ~[java.net.http:na]
+	... 9 common frames omitted
+
+2026-03-20T14:45:12.381+07:00  INFO 21388 --- [user-service] [AsyncResolver-bootstrap-executor-%d] [                                                 ] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2026-03-20T14:50:12.384+07:00  INFO 21388 --- [user-service] [AsyncResolver-bootstrap-executor-%d] [                                                 ] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2026-03-20T14:53:21.531+07:00  INFO 21388 --- [user-service] [http-nio-8082-exec-2] [                                                 ] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-03-20T14:53:21.531+07:00  INFO 21388 --- [user-service] [http-nio-8082-exec-2] [                                                 ] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2026-03-20T14:53:21.533+07:00  INFO 21388 --- [user-service] [http-nio-8082-exec-2] [                                                 ] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+2026-03-20T14:53:21.923+07:00  WARN 21388 --- [user-service] [http-nio-8082-exec-6] [69bcfcf1d8808db31b08cabf0e9cc4ca-74871f2a6aad066d] com.ecom.common.aspect.RoleGuardAspect   : Access denied - Missing role: ROLE_ADMIN. User roles: [ROLE_SELLER, ROLE_USER]
+2026-03-20T14:53:21.923+07:00  WARN 21388 --- [user-service] [http-nio-8082-exec-10] [69bcfcf11b29288b84601ec097cd9247-4a182a185e6f66e2] com.ecom.common.aspect.RoleGuardAspect   : Access denied - Missing role: ROLE_ADMIN. User roles: [ROLE_SELLER, ROLE_USER]
+2026-03-20T14:53:21.927+07:00 ERROR 21388 --- [user-service] [http-nio-8082-exec-6] [69bcfcf1d8808db31b08cabf0e9cc4ca-74871f2a6aad066d] c.e.c.exception.GlobalExceptionHandler   : Exception handled: Access denied: Missing required role 'ROLE_ADMIN' - Status: 403 FORBIDDEN
+2026-03-20T14:53:21.927+07:00 ERROR 21388 --- [user-service] [http-nio-8082-exec-10] [69bcfcf11b29288b84601ec097cd9247-4a182a185e6f66e2] c.e.c.exception.GlobalExceptionHandler   : Exception handled: Access denied: Missing required role 'ROLE_ADMIN' - Status: 403 FORBIDDEN
+2026-03-20T14:55:12.397+07:00  INFO 21388 --- [user-service] [AsyncResolver-bootstrap-executor-%d] [                                                 ] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2026-03-20T14:55:41.558+07:00  WARN 21388 --- [user-service] [http-nio-8082-exec-2] [69bcfd7dc38a2fe2f95a9422c5d0b3b0-ab6f71d4782964bd] com.ecom.common.aspect.RoleGuardAspect   : Access denied - Missing role: ROLE_ADMIN. User roles: [ROLE_SELLER, ROLE_USER]
+2026-03-20T14:55:41.559+07:00 ERROR 21388 --- [user-service] [http-nio-8082-exec-2] [69bcfd7dc38a2fe2f95a9422c5d0b3b0-ab6f71d4782964bd] c.e.c.exception.GlobalExceptionHandler   : Exception handled: Access denied: Missing required role 'ROLE_ADMIN' - Status: 403 FORBIDDEN
+2026-03-20T14:55:41.691+07:00  WARN 21388 --- [user-service] [http-nio-8082-exec-6] [69bcfd7dc34ea9a98a5a997c7bb76d7b-dbd3683dc3622856] com.ecom.common.aspect.RoleGuardAspect   : Access denied - Missing role: ROLE_ADMIN. User roles: [ROLE_SELLER, ROLE_USER]
+2026-03-20T14:55:41.691+07:00 ERROR 21388 --- [user-service] [http-nio-8082-exec-6] [69bcfd7dc34ea9a98a5a997c7bb76d7b-dbd3683dc3622856] c.e.c.exception.GlobalExceptionHandler   : Exception handled: Access denied: Missing required role 'ROLE_ADMIN' - Status: 403 FORBIDDEN
+2026-03-20T14:55:45.939+07:00  WARN 21388 --- [user-service] [http-nio-8082-exec-5] [69bcfd8188f4ae4edc17f2c0988cb161-278a273dad9a0b11] com.ecom.common.aspect.RoleGuardAspect   : Access denied - Missing role: ROLE_ADMIN. User roles: [ROLE_SELLER, ROLE_USER]
+2026-03-20T14:55:45.940+07:00 ERROR 21388 --- [user-service] [http-nio-8082-exec-5] [69bcfd8188f4ae4edc17f2c0988cb161-278a273dad9a0b11] c.e.c.exception.GlobalExceptionHandler   : Exception handled: Access denied: Missing required role 'ROLE_ADMIN' - Status: 403 FORBIDDEN
+2026-03-20T14:55:46.116+07:00  WARN 21388 --- [user-service] [http-nio-8082-exec-7] [69bcfd8292a32602f842b55c5e6a0640-2784a01a8bfa8a20] com.ecom.common.aspect.RoleGuardAspect   : Access denied - Missing role: ROLE_ADMIN. User roles: [ROLE_SELLER, ROLE_USER]
+2026-03-20T14:55:46.117+07:00 ERROR 21388 --- [user-service] [http-nio-8082-exec-7] [69bcfd8292a32602f842b55c5e6a0640-2784a01a8bfa8a20] c.e.c.exception.GlobalExceptionHandler   : Exception handled: Access denied: Missing required role 'ROLE_ADMIN' - Status: 403 FORBIDDEN
+2026-03-20T14:57:11.002+07:00  WARN 21388 --- [user-service] [http-nio-8082-exec-4] [69bcfdd6df2883e15e4773842cdbbf71-75f98a7f1adbafd5] com.ecom.common.aspect.RoleGuardAspect   : Access denied - Missing role: ROLE_ADMIN. User roles: [ROLE_SELLER, ROLE_USER]
+2026-03-20T14:57:11.003+07:00 ERROR 21388 --- [user-service] [http-nio-8082-exec-4] [69bcfdd6df2883e15e4773842cdbbf71-75f98a7f1adbafd5] c.e.c.exception.GlobalExceptionHandler   : Exception handled: Access denied: Missing required role 'ROLE_ADMIN' - Status: 403 FORBIDDEN
+2026-03-20T14:57:11.194+07:00  WARN 21388 --- [user-service] [http-nio-8082-exec-2] [69bcfdd7ecd514169ed2660d95aae9f8-b1ba09618dcf76b7] com.ecom.common.aspect.RoleGuardAspect   : Access denied - Missing role: ROLE_ADMIN. User roles: [ROLE_SELLER, ROLE_USER]
+2026-03-20T14:57:11.195+07:00 ERROR 21388 --- [user-service] [http-nio-8082-exec-2] [69bcfdd7ecd514169ed2660d95aae9f8-b1ba09618dcf76b7] c.e.c.exception.GlobalExceptionHandler   : Exception handled: Access denied: Missing required role 'ROLE_ADMIN' - Status: 403 FORBIDDEN
+2026-03-20T14:57:22.620+07:00  WARN 21388 --- [user-service] [http-nio-8082-exec-6] [69bcfde27868cfcd4a474a61024aaede-c5d9ec640973b978] com.ecom.common.aspect.RoleGuardAspect   : Access denied - Missing role: ROLE_ADMIN. User roles: [ROLE_SELLER, ROLE_USER]
+2026-03-20T14:57:22.624+07:00 ERROR 21388 --- [user-service] [http-nio-8082-exec-6] [69bcfde27868cfcd4a474a61024aaede-c5d9ec640973b978] c.e.c.exception.GlobalExceptionHandler   : Exception handled: Access denied: Missing required role 'ROLE_ADMIN' - Status: 403 FORBIDDEN
+2026-03-20T15:00:12.401+07:00  INFO 21388 --- [user-service] [AsyncResolver-bootstrap-executor-%d] [                                                 ] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2026-03-20T15:05:12.407+07:00  INFO 21388 --- [user-service] [AsyncResolver-bootstrap-executor-%d] [                                                 ] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2026-03-20T15:10:12.421+07:00  INFO 21388 --- [user-service] [AsyncResolver-bootstrap-executor-%d] [                                                 ] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2026-03-20T15:15:12.424+07:00  INFO 21388 --- [user-service] [AsyncResolver-bootstrap-executor-%d] [                                                 ] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2026-03-20T15:20:12.440+07:00  INFO 21388 --- [user-service] [AsyncResolver-bootstrap-executor-%d] [                                                 ] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2026-03-20T15:25:12.449+07:00  INFO 21388 --- [user-service] [AsyncResolver-bootstrap-executor-%d] [                                                 ] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2026-03-20T15:30:12.453+07:00  INFO 21388 --- [user-service] [AsyncResolver-bootstrap-executor-%d] [                                                 ] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2026-03-20T15:35:12.456+07:00  INFO 21388 --- [user-service] [AsyncResolver-bootstrap-executor-%d] [                                                 ] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2026-03-20T15:40:12.457+07:00  INFO 21388 --- [user-service] [AsyncResolver-bootstrap-executor-%d] [                                                 ] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2026-03-20T15:45:12.469+07:00  INFO 21388 --- [user-service] [AsyncResolver-bootstrap-executor-%d] [                                                 ] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2026-03-20T15:50:12.484+07:00  INFO 21388 --- [user-service] [AsyncResolver-bootstrap-executor-%d] [                                                 ] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2026-03-20T15:55:12.500+07:00  INFO 21388 --- [user-service] [AsyncResolver-bootstrap-executor-%d] [                                                 ] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2026-03-20T16:00:12.505+07:00  INFO 21388 --- [user-service] [AsyncResolver-bootstrap-executor-%d] [                                                 ] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2026-03-20T16:05:12.512+07:00  INFO 21388 --- [user-service] [AsyncResolver-bootstrap-executor-%d] [                                                 ] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2026-03-20T16:10:12.514+07:00  INFO 21388 --- [user-service] [AsyncResolver-bootstrap-executor-%d] [                                                 ] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2026-03-20T16:15:12.520+07:00  INFO 21388 --- [user-service] [AsyncResolver-bootstrap-executor-%d] [                                                 ] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration

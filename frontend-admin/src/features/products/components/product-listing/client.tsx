@@ -4,9 +4,7 @@ import { useEffect, useState, useRef } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { columns } from "../product-tables/columns";
 import { ProductTable } from "../product-tables";
-import { useSession } from "next-auth/react";
-import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
-import { fetchProducts } from "@/lib/store/slices/productSlice";
+import { useGetProductsQuery } from "@/lib/store/api";
 
 interface ProductListingClientProps {
   searchParams?: {
@@ -22,11 +20,6 @@ export const ProductListingClient: React.FC<ProductListingClientProps> = ({
 }) => {
   const router = useRouter();
   const urlSearchParams = useSearchParams();
-  const { data: session } = useSession();
-  const dispatch = useAppDispatch();
-
-  const { items: products, pagination, loading } = useAppSelector((state) => state.products);
-  const totalItems = pagination.totalElements;
 
   const initialPage = Number(
     searchParams?.page ?? urlSearchParams.get("page") ?? 0
@@ -35,20 +28,17 @@ export const ProductListingClient: React.FC<ProductListingClientProps> = ({
     searchParams?.perPage ?? urlSearchParams.get("perPage") ?? 10
   );
 
-  const [page, setPage] = useState(0); // Always start from page 0
+  const [page, setPage] = useState(initialPage);
   const [perPage, setPerPage] = useState(initialPerPage);
 
-  useEffect(() => {
-    if (!session?.accessToken) return;
+  const { data, isLoading } = useGetProductsQuery({
+    page,
+    size: perPage,
+    search: searchParams?.name,
+  });
 
-    dispatch(fetchProducts({
-      params: {
-        ...searchParams,
-        page: page,
-        size: perPage,
-      }
-    }));
-  }, [dispatch, session, page, perPage, searchParams]);
+  const products = data?.content || [];
+  const totalItems = data?.totalElements || 0;
 
   const firstRender = useRef(true);
   useEffect(() => {
@@ -63,12 +53,10 @@ export const ProductListingClient: React.FC<ProductListingClientProps> = ({
     if (searchParams?.name) params.set("name", searchParams.name);
     if (searchParams?.category) params.set("category", searchParams.category);
 
-    router.replace(`/dashboard/product?${params.toString()}`);
+    router.replace(`/admin/dashboard/product?${params.toString()}`);
   }, [page, perPage, searchParams, router]);
 
-  if (loading && products.length === 0) return <div>Đang tải sản phẩm...</div>;
-  // if (!products || products.length === 0) return <div>No products found.</div>; 
-  // Better to show empty table than just text if loading is done
+  if (isLoading && products.length === 0) return <div>Đang tải sản phẩm...</div>;
 
   return (
     <ProductTable

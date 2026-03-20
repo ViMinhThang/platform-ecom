@@ -12,8 +12,7 @@ import { FormInput } from "@/components/forms/form-input";
 import { ProductVariantOptions } from "./product-variant-option";
 import { useState } from "react";
 import { AlertModal } from "@/components/modal/alert-modal";
-import { useAppDispatch } from "@/lib/store/hooks";
-import { toggleVariantVisibility } from "@/lib/store/slices/productVariantSlice";
+import { useToggleVariantVisibilityMutation } from "@/lib/store/api";
 import { Eye, EyeOff } from "lucide-react";
 import { toast } from "sonner";
 
@@ -23,10 +22,10 @@ interface VariantCardProps {
 
 export const VariantCard: React.FC<VariantCardProps> = ({ variant }) => {
   const { saveVariant, removeVariant, productId } = useProductVariants();
-  const dispatch = useAppDispatch();
+  const [toggleVariantVisibility, { isLoading: isToggling }] = useToggleVariantVisibilityMutation();
   const [isOpen, setIsOpen] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [isToggling, setIsToggling] = useState(false);
+
   const form = useForm<VariantFormValues>({
     defaultValues: variant,
     mode: "onBlur",
@@ -42,17 +41,11 @@ export const VariantCard: React.FC<VariantCardProps> = ({ variant }) => {
   const handleToggleVisibility = async () => {
     if (!variant.id || !productId) return;
 
-    setIsToggling(true);
     try {
-      await dispatch(toggleVariantVisibility({
-        productId,
-        variantId: variant.id
-      })).unwrap();
+      await toggleVariantVisibility({ productId, variantId: variant.id }).unwrap();
       toast.success(variant.hidden ? "Variant is now visible" : "Variant is now hidden");
     } catch (error) {
       toast.error("Failed to toggle visibility");
-    } finally {
-      setIsToggling(false);
     }
   };
 
@@ -70,7 +63,6 @@ export const VariantCard: React.FC<VariantCardProps> = ({ variant }) => {
         loading={loading}
       />
       <Card className={`p-4 space-y-3 transition-all duration-300 ${isToggling ? 'opacity-40 scale-[0.99]' : ''} ${isHidden && !isToggling ? 'opacity-60 border-dashed' : ''}`}>
-        {/* Visibility Toggle Header */}
         {!isNewVariant && (
           <div className="flex items-center justify-between pb-2 border-b">
             <div className="flex items-center gap-2">
@@ -137,14 +129,12 @@ export const VariantCard: React.FC<VariantCardProps> = ({ variant }) => {
               namePrefix="optionValues"
             />
 
-            {/* Actions */}
             <div className="flex gap-2">
               <Button variant="destructive" onClick={() => setIsOpen(true)}>
                 Delete Variant
               </Button>
               <Button
                 onClick={handleSubmit(async (data) => {
-                  console.log("Saving variant", data);
                   await saveVariant(data);
                 })}
               >

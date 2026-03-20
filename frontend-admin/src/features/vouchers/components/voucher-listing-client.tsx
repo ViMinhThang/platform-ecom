@@ -77,7 +77,7 @@ export function VoucherListingClient({ searchParams }: VoucherListingClientProps
     };
 
     const resetFilters = () => {
-        router.push('/dashboard/vouchers');
+        router.push('/admin/dashboard/vouchers');
     };
 
     const hasFilters = currentStatus || currentCategory;

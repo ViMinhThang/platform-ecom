@@ -1,10 +1,8 @@
 "use client";
 import { CategoryTable } from "./category-tables";
 import { columns } from "./category-tables/columns";
-import { useEffect, useState } from "react";
-import { useSession } from "next-auth/react";
-import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
-import { fetchCategories } from "@/lib/store/slices/categorySlice";
+import { useState } from "react";
+import { useGetCategoriesQuery } from "@/lib/store/api";
 
 interface CategoryListingClient {
   searchParams?: {
@@ -18,29 +16,21 @@ interface CategoryListingClient {
 export default function CategoryListingClient({
   searchParams,
 }: CategoryListingClient) {
-  const { data: session } = useSession();
-  const dispatch = useAppDispatch();
-  const { items: categories, pagination, loading } = useAppSelector((state) => state.categories);
-  const totalItems = pagination.totalElements;
-
   const [page, setPage] = useState<number>(Number(searchParams?.page ?? 0));
   const [perPage, setPerPage] = useState<number>(
     Number(searchParams?.perPage ?? 10)
   );
 
-  useEffect(() => {
-    if (!session?.accessToken) return;
+  const { data, isLoading } = useGetCategoriesQuery({
+    page,
+    size: perPage,
+    search: searchParams?.name || undefined,
+  });
 
-    dispatch(fetchCategories({
-      token: session.accessToken,
-      params: {
-        page,
-        size: perPage
-      }
-    }));
-  }, [dispatch, session, page, perPage]);
+  const categories = data?.content || [];
+  const totalItems = data?.totalElements || 0;
 
-  if (loading && categories.length === 0)
+  if (isLoading && categories.length === 0)
     return <div>Loading categories...</div>;
 
   return (

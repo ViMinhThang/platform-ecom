@@ -40,10 +40,7 @@ export const ProductVariantOptions: React.FC<ProductVariantOptionsProps> = ({
       render={({ field }) => {
         // The raw array from the form state (might have null optionId and duplicates)
         const rawOptionValues: VariantOptionValue[] = field.value || [];
-        console.log("Raw option values from form state:", rawOptionValues);
-        // --- NORMALIZATION & DE-DUPLICATION STEP ---
-        // Use a Map to automatically handle de-duplication.
-        // The key is the optionId. If the key already exists, the value is replaced.
+        // Use a Map to de-duplicate by optionId
         const optionMap = new Map<number, VariantOptionValue>();
 
         rawOptionValues.forEach((vov) => {

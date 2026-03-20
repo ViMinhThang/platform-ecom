@@ -28,8 +28,7 @@ import {
 } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
-import { useAppDispatch } from '@/lib/store/hooks';
-import { updateSubOrderStatus } from '@/lib/store/slices/orderSlice';
+import { useUpdateSubOrderStatusMutation } from '@/lib/store/api';
 import { toast } from 'sonner';
 
 const formSchema = z.object({
@@ -51,7 +50,7 @@ export const UpdateStatusDialog: React.FC<UpdateStatusDialogProps> = ({
     trigger,
 }) => {
     const [open, setOpen] = useState(false);
-    const dispatch = useAppDispatch();
+    const [updateSubOrderStatus, { isLoading: isUpdating }] = useUpdateSubOrderStatusMutation();
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -63,43 +62,36 @@ export const UpdateStatusDialog: React.FC<UpdateStatusDialogProps> = ({
 
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
         try {
-            await dispatch(
-                updateSubOrderStatus({
-                    groupId,
-                    subOrderId,
-                    status: values.status,
-                    notes: values.notes,
-                })
-            ).unwrap();
+            await updateSubOrderStatus({
+                groupId,
+                subOrderId,
+                status: values.status,
+                notes: values.notes,
+            }).unwrap();
 
-            toast.success('Status updated successfully');
+            toast.success('Cập nhật trạng thái thành công');
             setOpen(false);
-        } catch (error: any) {
-            toast.error(error || 'Failed to update status');
+        } catch (error) {
+            toast.error('Không thể cập nhật trạng thái');
         }
     };
 
     const statuses = [
-        // Pre-shipping
         'PENDING',
         'PROCESSING',
         'READY_TO_PICK',
         'PICKING',
         'PICKED',
-        // In transit
         'SHIPPED',
         'STORING',
         'TRANSPORTING',
         'SORTING',
         'DELIVERING',
-        // Completed
         'DELIVERED',
-        // Failed/Return
         'DELIVERY_FAIL',
         'WAITING_TO_RETURN',
         'RETURNING',
         'RETURNED',
-        // Cancelled/Exceptions
         'CANCELLED',
         'REFUND_PENDING',
         'REFUNDED',
@@ -111,11 +103,11 @@ export const UpdateStatusDialog: React.FC<UpdateStatusDialogProps> = ({
     return (
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
-                {trigger || <Button variant="outline" size="sm">Update Status</Button>}
+                {trigger || <Button variant="outline" size="sm">Cập nhật trạng thái</Button>}
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>
-                    <DialogTitle>Update Order Status</DialogTitle>
+                    <DialogTitle>Cập nhật trạng thái đơn hàng</DialogTitle>
                 </DialogHeader>
                 <Form form={form} onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
                     <FormField
@@ -123,14 +115,14 @@ export const UpdateStatusDialog: React.FC<UpdateStatusDialogProps> = ({
                         name="status"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel>Status</FormLabel>
+                                <FormLabel>Trạng thái</FormLabel>
                                 <Select
                                     onValueChange={field.onChange}
                                     defaultValue={field.value}
                                 >
                                     <FormControl>
                                         <SelectTrigger>
-                                            <SelectValue placeholder="Select status" />
+                                            <SelectValue placeholder="Chọn trạng thái" />
                                         </SelectTrigger>
                                     </FormControl>
                                     <SelectContent>
@@ -150,10 +142,10 @@ export const UpdateStatusDialog: React.FC<UpdateStatusDialogProps> = ({
                         name="notes"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel>Notes (Optional)</FormLabel>
+                                <FormLabel>Ghi chú (tùy chọn)</FormLabel>
                                 <FormControl>
                                     <Textarea
-                                        placeholder="Add notes about this status change..."
+                                        placeholder="Thêm ghi chú về thay đổi trạng thái..."
                                         className="resize-none"
                                         {...field}
                                     />
@@ -163,7 +155,7 @@ export const UpdateStatusDialog: React.FC<UpdateStatusDialogProps> = ({
                         )}
                     />
                     <div className="flex justify-end">
-                        <Button type="submit">Update Status</Button>
+                        <Button type="submit" disabled={isUpdating}>Cập nhật</Button>
                     </div>
                 </Form>
             </DialogContent>

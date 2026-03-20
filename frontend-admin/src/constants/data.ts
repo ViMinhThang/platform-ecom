@@ -11,7 +11,7 @@ export type User = {
 export const navItems: NavItem[] = [
   {
     title: 'Tổng quan',
-    url: '/dashboard/overview',
+    url: '/admin/dashboard/overview',
     icon: 'dashboard',
     isActive: true,
     shortcut: ['d', 'd'],
@@ -19,7 +19,7 @@ export const navItems: NavItem[] = [
   },
   {
     title: 'Người dùng',
-    url: '/dashboard/user',
+    url: '/admin/dashboard/user',
     icon: 'user',
     isActive: false,
     shortcut: ['u', 'u'],
@@ -27,7 +27,7 @@ export const navItems: NavItem[] = [
   },
   {
     title: 'Sản phẩm',
-    url: '/dashboard/product',
+    url: '/admin/dashboard/product',
     icon: 'product',
     shortcut: ['p', 'p'],
     isActive: false,
@@ -35,7 +35,7 @@ export const navItems: NavItem[] = [
   },
   {
     title: 'Danh mục',
-    url: '/dashboard/category',
+    url: '/admin/dashboard/category',
     icon: 'category',
     shortcut: ['p', 'p'],
     isActive: false,
@@ -43,7 +43,7 @@ export const navItems: NavItem[] = [
   },
   {
     title: 'Chiến dịch KM',
-    url: '/dashboard/sale-campaigns',
+    url: '/admin/dashboard/sale-campaigns',
     icon: 'flashSale',
     shortcut: ['s', 's'],
     isActive: false,
@@ -51,7 +51,7 @@ export const navItems: NavItem[] = [
   },
   {
     title: 'Mã giảm giá',
-    url: '/dashboard/vouchers',
+    url: '/admin/dashboard/vouchers',
     icon: 'voucher',
     shortcut: ['v', 'v'],
     isActive: false,
@@ -59,7 +59,7 @@ export const navItems: NavItem[] = [
   },
   {
     title: 'Đơn hàng',
-    url: '/dashboard/orders',
+    url: '/admin/dashboard/orders',
     icon: 'media',
     shortcut: ['p', 'p'],
     isActive: false,
@@ -67,7 +67,7 @@ export const navItems: NavItem[] = [
   },
   {
     title: 'Kho hàng',
-    url: '/dashboard/inventory',
+    url: '/admin/dashboard/inventory',
     icon: 'package',
     shortcut: ['i', 'i'],
     isActive: false,
@@ -75,7 +75,7 @@ export const navItems: NavItem[] = [
   },
   {
     title: 'Đánh giá',
-    url: '/dashboard/reviews',
+    url: '/admin/dashboard/reviews',
     icon: 'star',
     shortcut: ['r', 'r'],
     isActive: false,
@@ -90,7 +90,7 @@ export const navItems: NavItem[] = [
     items: [
       {
         title: 'Hồ sơ',
-        url: '/dashboard/profile',
+        url: '/admin/dashboard/profile',
         icon: 'userPen',
         shortcut: ['m', 'm']
       },
@@ -101,14 +101,6 @@ export const navItems: NavItem[] = [
         icon: 'login'
       }
     ]
-  },
-  {
-    title: 'Kanban',
-    url: '/dashboard/kanban',
-    icon: 'kanban',
-    shortcut: ['k', 'k'],
-    isActive: false,
-    items: [] // No child items
   }
 ];
 

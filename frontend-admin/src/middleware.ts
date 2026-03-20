@@ -5,14 +5,14 @@ export default withAuth(
     const token = req.nextauth.token;
 
     if (
-      req.nextUrl.pathname.startsWith("/dashboard/admin") &&
+      req.nextUrl.pathname.startsWith("/admin/dashboard/admin") &&
       token?.user?.roles.includes("ROLE_SELLER")
     ) {
       return new Response("Forbidden", { status: 403 });
     }
 
     if (
-      req.nextUrl.pathname.startsWith("/dashboard/admin") &&
+      req.nextUrl.pathname.startsWith("/admin/dashboard/admin") &&
       token?.user?.roles.includes("ROLE_ADMIN")
     ) {
       return new Response("Forbidden", { status: 403 });
@@ -26,5 +26,5 @@ export default withAuth(
 );
 
 export const config = {
-  matcher: ["/dashboard/:path*"],
+  matcher: ["/admin/dashboard/:path*"],
 };

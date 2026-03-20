@@ -1,5 +1,3 @@
-import { getServerSession } from "next-auth/next";
-import { authOptions } from "@/lib/auth-options";
 import UserListingClient from "./user-listing-client";
 
 interface UserListingPageProps {
@@ -11,16 +9,9 @@ interface UserListingPageProps {
   };
 }
 
-export default async function UserListingPage({ searchParams }: UserListingPageProps) {
-  const session = await getServerSession(authOptions);
-
-  if (!session?.accessToken) {
-    return <div>You must be signed in to view users.</div>;
-  }
-
+export default function UserListingPage({ searchParams }: UserListingPageProps) {
   return (
     <UserListingClient
-      token={session.accessToken}
       searchParams={searchParams}
     />
   );

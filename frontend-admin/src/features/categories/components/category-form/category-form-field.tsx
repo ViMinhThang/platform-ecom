@@ -5,9 +5,7 @@ import { FormInput } from "@/components/forms/form-input";
 import { CategoryFormValues } from "@/types/category/category-form";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { useSession } from "next-auth/react";
-import { useAppDispatch } from "@/lib/store/hooks";
-import { updateCategoryImage } from "@/lib/store/slices/categorySlice";
+import { useUpdateCategoryImageMutation } from "@/lib/store/api";
 
 interface CategoryFormFieldsProps {
   control: Control<CategoryFormValues>;
@@ -20,9 +18,8 @@ export const CategoryFormFields: React.FC<CategoryFormFieldsProps> = ({
   loading,
   categoryId,
 }) => {
-  const { data: session } = useSession();
-  const accessToken = session?.accessToken || "";
-  const dispatch = useAppDispatch();
+  const [updateCategoryImage, { isLoading: isUploading }] = useUpdateCategoryImageMutation();
+
   const {
     field: { value: imageUrl, onChange },
   } = useController({
@@ -30,28 +27,15 @@ export const CategoryFormFields: React.FC<CategoryFormFieldsProps> = ({
     name: "imageUrl",
   });
 
-  const [uploading, setUploading] = useState(false);
-
   const handleImageSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (!file || !categoryId) return; // Can't upload image without category ID
-
-    setUploading(true);
+    if (!file || !categoryId) return;
 
     try {
-      const resultAction = await dispatch(updateCategoryImage({
-        id: categoryId,
-        file,
-        token: accessToken
-      }));
-
-      if (updateCategoryImage.fulfilled.match(resultAction)) {
-        onChange(resultAction.payload.imageUrl);
-      }
+      const result = await updateCategoryImage({ id: categoryId, file }).unwrap();
+      onChange(result.imageUrl);
     } catch (err) {
       console.error("Failed to upload category image:", err);
-    } finally {
-      setUploading(false);
     }
   };
 
@@ -83,13 +67,13 @@ export const CategoryFormFields: React.FC<CategoryFormFieldsProps> = ({
 
           <Button
             type="button"
-            disabled={uploading || loading}
+            disabled={isUploading || loading}
             className="w-full"
             onClick={() =>
               document.getElementById("category-image-input")?.click()
             }
           >
-            {uploading ? "Uploading..." : "Select Image"}
+            {isUploading ? "Uploading..." : "Select Image"}
           </Button>
 
           <input

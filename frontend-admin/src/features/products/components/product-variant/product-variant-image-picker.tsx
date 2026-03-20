@@ -1,8 +1,7 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
-import { fetchProductImages, ProductImage } from "@/lib/store/slices/productImageSlice";
+import { useState } from "react";
+import { useGetProductImagesQuery } from "@/lib/store/api";
 import Image from "next/image";
 import {
   Dialog,
@@ -24,21 +23,7 @@ export const VariantImagePicker: React.FC<VariantImagePickerProps> = ({
   onSelect,
 }) => {
   const [open, setOpen] = useState(false);
-  const dispatch = useAppDispatch();
-  const { imagesByProductId, loading } = useAppSelector(
-    (state) => state.productImages
-  );
-
-  const images = imagesByProductId[productId] || [];
-
-  useEffect(() => {
-    if (open && !images.length) {
-      dispatch(fetchProductImages(productId));
-    }
-  }, [open, productId, dispatch, images.length]);
-
-
-
+  const { data: images = [], isLoading } = useGetProductImagesQuery(productId);
 
   return (
     <>
@@ -66,7 +51,7 @@ export const VariantImagePicker: React.FC<VariantImagePickerProps> = ({
             <DialogTitle>Select Variant Image</DialogTitle>
           </DialogHeader>
 
-          {loading ? (
+          {isLoading ? (
             <div>Loading images...</div>
           ) : (
             <div className="grid grid-cols-2 gap-2">

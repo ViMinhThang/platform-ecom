@@ -101,14 +101,12 @@ export function OrderTable<TData, TValue>({
                             ))
                         ) : (
                             <TableRow>
-                                <TableRow>
-                                    <TableCell
-                                        colSpan={columns.length}
-                                        className="h-24 text-center"
-                                    >
-                                        No results.
-                                    </TableCell>
-                                </TableRow>
+                                <TableCell
+                                    colSpan={columns.length}
+                                    className="h-24 text-center"
+                                >
+                                    Không có kết quả.
+                                </TableCell>
                             </TableRow>
                         )}
                     </TableBody>

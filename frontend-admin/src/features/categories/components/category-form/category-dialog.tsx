@@ -3,7 +3,6 @@
 import { useEffect } from "react";
 import { useForm, FormProvider } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useSession } from "next-auth/react";
 import {
   Dialog,
   DialogContent,
@@ -18,62 +17,35 @@ import {
   CategoryFormValues,
 } from "@/types/category/category-form";
 import { CategoryFormFields } from "./category-form-field";
-import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
-import {
-  createCategory,
-  fetchCategoryById,
-  updateCategory,
-} from "@/lib/store/slices/categorySlice";
+import { useGetCategoryByIdQuery, useCreateCategoryMutation, useUpdateCategoryMutation } from "@/lib/store/api";
 import { toast } from "sonner";
-import { logger } from "@/lib/logger";
 
-/**
- * Default form values for category
- */
 const DEFAULT_FORM_VALUES: CategoryFormValues = {
   id: undefined,
   name: "",
   imageUrl: "",
 };
 
-/**
- * Category Dialog Component
- * Handles creating and updating categories
- */
 export const CategoryDialog: React.FC<CategoryDialogProps> = ({
   categoryId,
   open,
   onOpenChange,
 }) => {
-  const { data: session } = useSession();
-  const dispatch = useAppDispatch();
-  const { selectedCategory: category, loading } = useAppSelector(
-    (state) => state.categories
-  );
-
   const isEditing = Boolean(categoryId);
   const dialogTitle = isEditing ? "Cập nhật danh mục" : "Tạo danh mục mới";
   const dialogDescription = isEditing
     ? "Cập nhật thông tin chi tiết danh mục"
     : "Tạo một danh mục sản phẩm mới";
 
+  const { data: category } = useGetCategoryByIdQuery(categoryId!, { skip: !open || !categoryId });
+  const [createCategory, { isLoading: isCreating }] = useCreateCategoryMutation();
+  const [updateCategory, { isLoading: isUpdating }] = useUpdateCategoryMutation();
+
   const methods = useForm<CategoryFormValues>({
     resolver: zodResolver(CategoryFormSchema),
     defaultValues: DEFAULT_FORM_VALUES,
   });
 
-  /**
-   * Loads category data when editing
-   */
-  useEffect(() => {
-    if (!open || !categoryId || !session?.accessToken) return;
-
-    dispatch(fetchCategoryById({ id: categoryId, token: session.accessToken }));
-  }, [open, categoryId, session, dispatch]);
-
-  /**
-   * Populates form with category data or resets to defaults
-   */
   useEffect(() => {
     if (category && open && categoryId) {
       methods.reset({
@@ -85,47 +57,25 @@ export const CategoryDialog: React.FC<CategoryDialogProps> = ({
     }
   }, [category, open, methods, categoryId]);
 
-  /**
-   * Handles form submission
-   */
+  const loading = isCreating || isUpdating;
+
   const handleSubmit = methods.handleSubmit(async (formData) => {
-    if (!session?.accessToken) {
-      toast.error("Cần phải đăng nhập");
-      return;
-    }
-
     try {
-      const resultAction = isEditing && categoryId
-        ? await dispatch(
-          updateCategory({
-            id: categoryId,
-            data: formData as any,
-            token: session.accessToken,
-          })
-        )
-        : await dispatch(
-          createCategory({
-            data: formData as any,
-            token: session.accessToken,
-          })
-        );
-
-      if (
-        createCategory.fulfilled.match(resultAction) ||
-        updateCategory.fulfilled.match(resultAction)
-      ) {
-        toast.success(
-          `${isEditing ? "Cập nhật" : "Tạo mới"} danh mục thành công`
-        );
-        onOpenChange(false);
+      const data = {
+        name: formData.name,
+        imageUrl: formData.imageUrl || undefined,
+        slug: formData.name.toLowerCase().replace(/\s+/g, '-'),
+      };
+      
+      if (isEditing && categoryId) {
+        await updateCategory({ id: categoryId, data }).unwrap();
+        toast.success("Cập nhật danh mục thành công");
       } else {
-        toast.error(`${isEditing ? "Cập nhật" : "Tạo mới"} danh mục thất bại`);
+        await createCategory(data).unwrap();
+        toast.success("Tạo danh mục thành công");
       }
+      onOpenChange(false);
     } catch (error) {
-      logger.error("Category form submission failed", error as Error, {
-        isEditing,
-        categoryId,
-      });
       toast.error(`${isEditing ? "Cập nhật" : "Tạo mới"} danh mục thất bại`);
     }
   });
