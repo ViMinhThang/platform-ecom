@@ -184,6 +184,13 @@ public class GatewayConfig {
                                                                 .filter(authFilter))
                                                 .uri("lb://product-service"))
 
+                                // Admin flash sales management
+                                .route("admin-flash-sales", r -> r
+                                                .path("/api/v1/admin/flash-sales", "/api/v1/admin/flash-sales/**")
+                                                .filters(f -> f
+                                                                .filter(authFilter))
+                                                .uri("lb://product-service"))
+
                                 // ============================================================
                                 // INVENTORY - /api/v1/inventory
                                 // ============================================================
