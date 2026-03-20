@@ -5,13 +5,14 @@ import {
   CardDescription,
   CardFooter,
   CardHeader,
-  CardTitle,
-  CardAction
+  CardTitle
 } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { AreaGraph } from './area-graph';
 import { BarGraph } from './bar-graph';
 import { PieGraph } from './pie-graph';
+import { CategoryChart } from './category-chart';
+import { TrendChart } from './trend-chart';
 import { RecentSales } from './recent-sales';
 import { IconTrendingUp, IconTrendingDown } from '@tabler/icons-react';
 import { Badge } from '@/components/ui/badge';
@@ -19,127 +20,132 @@ import { Badge } from '@/components/ui/badge';
 export default function OverViewPage() {
   return (
     <PageContainer>
-      <div className='flex flex-1 flex-col space-y-2'>
-        <div className='flex items-center justify-between space-y-2'>
-          <h2 className='text-2xl font-bold tracking-tight'>
-            Hi, Welcome back 👋
-          </h2>
-          <div className='hidden items-center space-x-2 md:flex'>
-            <Button>Download</Button>
+      <div className='flex flex-1 flex-col gap-6'>
+        <div className='flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between'>
+          <div>
+            <h2 className='text-2xl font-bold tracking-tight text-foreground'>
+              Chào mừng trở lại 👋
+            </h2>
+            <p className='text-sm text-muted-foreground mt-1'>
+              Đây là tổng quan về hoạt động kinh doanh của bạn
+            </p>
+          </div>
+          <div className='hidden items-center gap-2 sm:flex'>
+            <Button variant='outline' size='sm'>Xuất báo cáo</Button>
+            <Button size='sm'>Tải về</Button>
           </div>
         </div>
         <Tabs defaultValue='overview' className='space-y-4'>
           <TabsList>
-            <TabsTrigger value='overview'>Overview</TabsTrigger>
+            <TabsTrigger value='overview'>Tổng quan</TabsTrigger>
             <TabsTrigger value='analytics' disabled>
-              Analytics
+              Phân tích
             </TabsTrigger>
           </TabsList>
           <TabsContent value='overview' className='space-y-4'>
-            <div className='*:data-[slot=card]:from-primary/5 *:data-[slot=card]:to-card dark:*:data-[slot=card]:bg-card grid grid-cols-1 gap-4 px-4 *:data-[slot=card]:bg-gradient-to-t *:data-[slot=card]:shadow-xs lg:px-6 @xl/main:grid-cols-2 @5xl/main:grid-cols-4'>
-              <Card className='@container/card'>
-                <CardHeader>
-                  <CardDescription>Total Revenue</CardDescription>
-                  <CardTitle className='text-2xl font-semibold tabular-nums @[250px]/card:text-3xl'>
-                    $1,250.00
+            <div className='grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4'>
+              <Card className='group relative overflow-hidden transition-all duration-200 hover:shadow-md hover:border-primary/30'>
+                <CardHeader className='pb-2'>
+                  <CardDescription className='text-xs font-medium uppercase tracking-wide text-muted-foreground'>
+                    Tổng doanh thu
+                  </CardDescription>
+                  <CardTitle className='text-3xl font-bold tabular-nums text-foreground'>
+                    ₫12.5M
                   </CardTitle>
-                  <CardAction>
-                    <Badge variant='outline'>
-                      <IconTrendingUp />
-                      +12.5%
-                    </Badge>
-                  </CardAction>
                 </CardHeader>
-                <CardFooter className='flex-col items-start gap-1.5 text-sm'>
-                  <div className='line-clamp-1 flex gap-2 font-medium'>
-                    Trending up this month <IconTrendingUp className='size-4' />
-                  </div>
-                  <div className='text-muted-foreground'>
-                    Visitors for the last 6 months
-                  </div>
+                <CardFooter className='flex-col items-start gap-1 pt-0'>
+                  <Badge variant='default' className='bg-emerald-500/10 text-emerald-600 hover:bg-emerald-500/20 gap-1'>
+                    <IconTrendingUp className='size-3' />
+                    +12.5%
+                  </Badge>
+                  <p className='text-xs text-muted-foreground mt-1'>
+                    Tăng trưởng so với tháng trước
+                  </p>
                 </CardFooter>
+                <div className='absolute inset-x-0 bottom-0 h-1 bg-gradient-to-r from-primary/20 to-primary/5 opacity-0 transition-opacity group-hover:opacity-100' />
               </Card>
-              <Card className='@container/card'>
-                <CardHeader>
-                  <CardDescription>New Customers</CardDescription>
-                  <CardTitle className='text-2xl font-semibold tabular-nums @[250px]/card:text-3xl'>
+              <Card className='group relative overflow-hidden transition-all duration-200 hover:shadow-md hover:border-primary/30'>
+                <CardHeader className='pb-2'>
+                  <CardDescription className='text-xs font-medium uppercase tracking-wide text-muted-foreground'>
+                    Khách hàng mới
+                  </CardDescription>
+                  <CardTitle className='text-3xl font-bold tabular-nums text-foreground'>
                     1,234
                   </CardTitle>
-                  <CardAction>
-                    <Badge variant='outline'>
-                      <IconTrendingDown />
-                      -20%
-                    </Badge>
-                  </CardAction>
                 </CardHeader>
-                <CardFooter className='flex-col items-start gap-1.5 text-sm'>
-                  <div className='line-clamp-1 flex gap-2 font-medium'>
-                    Down 20% this period <IconTrendingDown className='size-4' />
-                  </div>
-                  <div className='text-muted-foreground'>
-                    Acquisition needs attention
-                  </div>
+                <CardFooter className='flex-col items-start gap-1 pt-0'>
+                  <Badge variant='destructive' className='gap-1'>
+                    <IconTrendingDown className='size-3' />
+                    -20%
+                  </Badge>
+                  <p className='text-xs text-muted-foreground mt-1'>
+                    Cần cải thiện chiến dịch tiếp cận
+                  </p>
                 </CardFooter>
+                <div className='absolute inset-x-0 bottom-0 h-1 bg-gradient-to-r from-destructive/20 to-destructive/5 opacity-0 transition-opacity group-hover:opacity-100' />
               </Card>
-              <Card className='@container/card'>
-                <CardHeader>
-                  <CardDescription>Active Accounts</CardDescription>
-                  <CardTitle className='text-2xl font-semibold tabular-nums @[250px]/card:text-3xl'>
+              <Card className='group relative overflow-hidden transition-all duration-200 hover:shadow-md hover:border-primary/30'>
+                <CardHeader className='pb-2'>
+                  <CardDescription className='text-xs font-medium uppercase tracking-wide text-muted-foreground'>
+                    Tài khoản hoạt động
+                  </CardDescription>
+                  <CardTitle className='text-3xl font-bold tabular-nums text-foreground'>
                     45,678
                   </CardTitle>
-                  <CardAction>
-                    <Badge variant='outline'>
-                      <IconTrendingUp />
-                      +12.5%
-                    </Badge>
-                  </CardAction>
                 </CardHeader>
-                <CardFooter className='flex-col items-start gap-1.5 text-sm'>
-                  <div className='line-clamp-1 flex gap-2 font-medium'>
-                    Strong user retention <IconTrendingUp className='size-4' />
-                  </div>
-                  <div className='text-muted-foreground'>
-                    Engagement exceed targets
-                  </div>
+                <CardFooter className='flex-col items-start gap-1 pt-0'>
+                  <Badge variant='default' className='bg-emerald-500/10 text-emerald-600 hover:bg-emerald-500/20 gap-1'>
+                    <IconTrendingUp className='size-3' />
+                    +12.5%
+                  </Badge>
+                  <p className='text-xs text-muted-foreground mt-1'>
+                    Giữ chân người dùng tốt
+                  </p>
                 </CardFooter>
+                <div className='absolute inset-x-0 bottom-0 h-1 bg-gradient-to-r from-primary/20 to-primary/5 opacity-0 transition-opacity group-hover:opacity-100' />
               </Card>
-              <Card className='@container/card'>
-                <CardHeader>
-                  <CardDescription>Growth Rate</CardDescription>
-                  <CardTitle className='text-2xl font-semibold tabular-nums @[250px]/card:text-3xl'>
+              <Card className='group relative overflow-hidden transition-all duration-200 hover:shadow-md hover:border-primary/30'>
+                <CardHeader className='pb-2'>
+                  <CardDescription className='text-xs font-medium uppercase tracking-wide text-muted-foreground'>
+                    Tỷ lệ tăng trưởng
+                  </CardDescription>
+                  <CardTitle className='text-3xl font-bold tabular-nums text-foreground'>
                     4.5%
                   </CardTitle>
-                  <CardAction>
-                    <Badge variant='outline'>
-                      <IconTrendingUp />
-                      +4.5%
-                    </Badge>
-                  </CardAction>
                 </CardHeader>
-                <CardFooter className='flex-col items-start gap-1.5 text-sm'>
-                  <div className='line-clamp-1 flex gap-2 font-medium'>
-                    Steady performance increase{' '}
-                    <IconTrendingUp className='size-4' />
-                  </div>
-                  <div className='text-muted-foreground'>
-                    Meets growth projections
-                  </div>
+                <CardFooter className='flex-col items-start gap-1 pt-0'>
+                  <Badge variant='default' className='bg-emerald-500/10 text-emerald-600 hover:bg-emerald-500/20 gap-1'>
+                    <IconTrendingUp className='size-3' />
+                    +4.5%
+                  </Badge>
+                  <p className='text-xs text-muted-foreground mt-1'>
+                    Đạt theo kế hoạch đề ra
+                  </p>
                 </CardFooter>
+                <div className='absolute inset-x-0 bottom-0 h-1 bg-gradient-to-r from-primary/20 to-primary/5 opacity-0 transition-opacity group-hover:opacity-100' />
               </Card>
             </div>
-            <div className='grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-7'>
-              <div className='col-span-4'>
+            <div className='grid grid-cols-1 gap-4 lg:grid-cols-7'>
+              <Card className='col-span-full lg:col-span-3 border-t-2 border-t-primary/20'>
                 <BarGraph />
-              </div>
-              <Card className='col-span-4 md:col-span-3'>
+              </Card>
+              <Card className='col-span-full lg:col-span-4 border-t-2 border-t-primary/20'>
+                <TrendChart />
+              </Card>
+              <Card className='col-span-full lg:col-span-3 border-t-2 border-t-primary/20'>
                 <RecentSales />
               </Card>
-              <div className='col-span-4'>
+              <Card className='col-span-full lg:col-span-4 border-t-2 border-t-primary/20'>
                 <AreaGraph />
-              </div>
-              <div className='col-span-4 md:col-span-3'>
+              </Card>
+            </div>
+            <div className='grid grid-cols-1 gap-4 lg:grid-cols-7'>
+              <Card className='col-span-full lg:col-span-3 border-t-2 border-t-primary/20'>
                 <PieGraph />
-              </div>
+              </Card>
+              <Card className='col-span-full lg:col-span-4 border-t-2 border-t-primary/20'>
+                <CategoryChart />
+              </Card>
             </div>
           </TabsContent>
         </Tabs>

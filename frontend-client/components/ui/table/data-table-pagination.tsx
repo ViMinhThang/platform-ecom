@@ -43,19 +43,31 @@ export function DataTablePagination<TData>({
   };
 
   return (
-    <div className="flex items-center justify-between px-2">
-      <div className="flex-1 text-sm text-muted-foreground">
-        Đã chọn {table.getFilteredSelectedRowModel().rows.length} trên{" "}
-        {table.getFilteredRowModel().rows.length} hàng.
+    <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between px-2 py-3 border-t bg-muted/20 rounded-b-lg">
+      <div className="text-sm text-muted-foreground">
+        {table.getFilteredSelectedRowModel().rows.length > 0 ? (
+          <>
+            <span className="font-medium">{table.getFilteredSelectedRowModel().rows.length}</span>
+            <span> selected of </span>
+            <span className="font-medium">{table.getFilteredRowModel().rows.length}</span>
+            <span> rows</span>
+          </>
+        ) : (
+          <>
+            <span>Total </span>
+            <span className="font-medium">{table.getFilteredRowModel().rows.length}</span>
+            <span> rows</span>
+          </>
+        )}
       </div>
-      <div className="flex items-center space-x-6 lg:space-x-8">
-        <div className="flex items-center space-x-2">
-          <p className="text-sm font-medium">Số hàng mỗi trang</p>
+      <div className="flex items-center gap-4">
+        <div className="flex items-center gap-2">
+          <p className="text-sm font-medium whitespace-nowrap">Hàng mỗi trang</p>
           <Select
             value={`${table.getState().pagination.pageSize}`}
             onValueChange={handlePageSizeChange}
           >
-            <SelectTrigger className="h-8 w-[70px]">
+            <SelectTrigger className="h-8 w-[80px]">
               <SelectValue placeholder={table.getState().pagination.pageSize} />
             </SelectTrigger>
             <SelectContent side="top">
@@ -67,47 +79,52 @@ export function DataTablePagination<TData>({
             </SelectContent>
           </Select>
         </div>
-        <div className="flex w-[100px] items-center justify-center text-sm font-medium">
-          Trang {table.getState().pagination.pageIndex + 1} trên{" "}
-          {table.getPageCount()}
-        </div>
-        <div className="flex items-center space-x-2">
-          <Button
-            variant="outline"
-            className="hidden h-8 w-8 p-0 lg:flex"
-            onClick={() => handlePageChange(0)}
-            disabled={!table.getCanPreviousPage()}
-          >
-            <span className="sr-only">Đến trang đầu</span>
-            <DoubleArrowLeftIcon className="h-4 w-4" />
-          </Button>
-          <Button
-            variant="outline"
-            className="h-8 w-8 p-0"
-            onClick={() => handlePageChange((old: number) => old - 1)}
-            disabled={!table.getCanPreviousPage()}
-          >
-            <span className="sr-only">Trang trước</span>
-            <ChevronLeftIcon className="h-4 w-4" />
-          </Button>
-          <Button
-            variant="outline"
-            className="h-8 w-8 p-0"
-            onClick={() => handlePageChange((old: number) => old + 1)}
-            disabled={!table.getCanNextPage()}
-          >
-            <span className="sr-only">Trang sau</span>
-            <ChevronRightIcon className="h-4 w-4" />
-          </Button>
-          <Button
-            variant="outline"
-            className="hidden h-8 w-8 p-0 lg:flex"
-            onClick={() => handlePageChange(table.getPageCount() - 1)}
-            disabled={!table.getCanNextPage()}
-          >
-            <span className="sr-only">Đến trang cuối</span>
-            <DoubleArrowRightIcon className="h-4 w-4" />
-          </Button>
+        <div className="flex items-center gap-1">
+          <span className="text-sm font-medium whitespace-nowrap px-2">
+            Trang {table.getState().pagination.pageIndex + 1}/{table.getPageCount()}
+          </span>
+          <div className="flex items-center ml-2">
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-8 w-8"
+              onClick={() => handlePageChange(0)}
+              disabled={!table.getCanPreviousPage()}
+            >
+              <span className="sr-only">Đến trang đầu</span>
+              <DoubleArrowLeftIcon className="h-4 w-4" />
+            </Button>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-8 w-8"
+              onClick={() => handlePageChange((old: number) => old - 1)}
+              disabled={!table.getCanPreviousPage()}
+            >
+              <span className="sr-only">Trang trước</span>
+              <ChevronLeftIcon className="h-4 w-4" />
+            </Button>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-8 w-8"
+              onClick={() => handlePageChange((old: number) => old + 1)}
+              disabled={!table.getCanNextPage()}
+            >
+              <span className="sr-only">Trang sau</span>
+              <ChevronRightIcon className="h-4 w-4" />
+            </Button>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-8 w-8"
+              onClick={() => handlePageChange(table.getPageCount() - 1)}
+              disabled={!table.getCanNextPage()}
+            >
+              <span className="sr-only">Đến trang cuối</span>
+              <DoubleArrowRightIcon className="h-4 w-4" />
+            </Button>
+          </div>
         </div>
       </div>
     </div>

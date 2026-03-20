@@ -48,23 +48,28 @@ const salesData = [
 export function RecentSales() {
   return (
     <Card className='h-full'>
-      <CardHeader>
-        <CardTitle>Doanh số gần đây</CardTitle>
-        <CardDescription>Bạn đã thực hiện được 265 giao dịch trong tháng này.</CardDescription>
+      <CardHeader className='pb-3'>
+        <CardTitle className='text-base font-semibold'>Doanh số gần đây</CardTitle>
+        <CardDescription>265 giao dịch trong tháng này</CardDescription>
       </CardHeader>
-      <CardContent>
-        <div className='space-y-8'>
+      <CardContent className='px-5'>
+        <div className='space-y-1'>
           {salesData.map((sale, index) => (
-            <div key={index} className='flex items-center'>
-              <Avatar className='h-9 w-9'>
-                <AvatarImage src={sale.avatar} alt='Avatar' />
-                <AvatarFallback>{sale.fallback}</AvatarFallback>
+            <div 
+              key={index} 
+              className='flex items-center gap-3 rounded-lg p-2 -mx-2 transition-colors hover:bg-muted/50'
+            >
+              <Avatar className='h-9 w-9 ring-2 ring-primary/10'>
+                <AvatarImage src={sale.avatar} alt={sale.name} />
+                <AvatarFallback className='bg-primary/10 text-primary text-xs font-medium'>
+                  {sale.fallback}
+                </AvatarFallback>
               </Avatar>
-              <div className='ml-4 space-y-1'>
-                <p className='text-sm leading-none font-medium'>{sale.name}</p>
-                <p className='text-muted-foreground text-sm'>{sale.email}</p>
+              <div className='flex-1 min-w-0'>
+                <p className='text-sm font-medium truncate'>{sale.name}</p>
+                <p className='text-xs text-muted-foreground truncate'>{sale.email}</p>
               </div>
-              <div className='ml-auto font-medium'>{sale.amount}</div>
+              <div className='font-semibold text-sm text-emerald-600'>{sale.amount}</div>
             </div>
           ))}
         </div>
