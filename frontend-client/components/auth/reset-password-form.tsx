@@ -98,8 +98,8 @@ export function ResetPasswordForm({ className, ...props }: React.HTMLAttributes<
                     Nhập mã xác thực đã gửi đến email và tạo mật khẩu mới
                 </p>
             </div>
-            <Form {...form}>
-                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+            <Form form={form} onSubmit={onSubmit}>
+                <div className="space-y-4">
                     <FormField
                         control={form.control}
                         name="email"
@@ -192,7 +192,7 @@ export function ResetPasswordForm({ className, ...props }: React.HTMLAttributes<
                     <AuthButton loading={loading}>
                         Đặt lại mật khẩu
                     </AuthButton>
-                </form>
+                </div>
             </Form>
 
             <p className="text-center text-sm text-muted-foreground">

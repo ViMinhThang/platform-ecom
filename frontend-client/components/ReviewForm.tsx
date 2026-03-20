@@ -75,8 +75,8 @@ export function ReviewForm({
                     </DialogDescription>
                 </DialogHeader>
 
-                <Form {...form}>
-                    <form onSubmit={onSubmit} className="space-y-6">
+                <Form form={form}>
+                    <div className="space-y-6">
                         {/* Rating Field */}
                         <FormField
                             control={form.control}
@@ -161,7 +161,7 @@ export function ReviewForm({
                                 Gửi đánh giá
                             </Button>
                         </DialogFooter>
-                    </form>
+                    </div>
                 </Form>
             </DialogContent>
         </Dialog>

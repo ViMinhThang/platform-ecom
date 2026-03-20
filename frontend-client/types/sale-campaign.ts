@@ -17,6 +17,15 @@ export interface SaleCampaignItem {
     isAvailable: boolean;
 }
 
+export interface DiscountTier {
+    id?: number;
+    minQuantity?: number;
+    discountPercent: number;
+    minPrice?: number;
+    maxPrice?: number;
+    sortOrder?: number;
+}
+
 export interface SaleCampaign {
     id: number;
     name: string;
@@ -29,4 +38,34 @@ export interface SaleCampaign {
     items: SaleCampaignItem[];
     totalItems: number;
     remainingSeconds: number;
+    // Admin specific fields
+    categories?: Array<{ id: number; name: string; slug: string; categoryId?: number; categoryName?: string }>;
+    discountTiers?: DiscountTier[];
+    minOrderAmount?: number;
+    maxDiscountAmount?: number;
+}
+
+export type SaleCampaignDiscountTier = DiscountTier;
+
+export interface CreateSaleCampaignRequest {
+    name: string;
+    description?: string;
+    bannerUrl?: string;
+    startTime: string;
+    endTime: string;
+    categoryIds?: number[];
+    discountTiers?: DiscountTier[];
+    minOrderAmount?: number;
+    maxDiscountAmount?: number;
+}
+
+export interface UpdateSaleCampaignRequest extends Partial<CreateSaleCampaignRequest> {}
+
+export interface SaleCampaignResponse {
+    content: SaleCampaign[];
+    pageNumber: number;
+    pageSize: number;
+    totalElements: number;
+    totalPages: number;
+    lastPage: boolean;
 }

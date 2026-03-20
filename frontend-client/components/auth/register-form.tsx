@@ -72,8 +72,8 @@ export function RegisterForm({ className, ...props }: React.HTMLAttributes<HTMLD
 
     return (
         <div className={cn("space-y-5", className)} {...props}>
-            <Form {...form}>
-                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+            <Form form={form} onSubmit={onSubmit}>
+                <div className="space-y-4">
                     <FormField
                         control={form.control}
                         name="username"
@@ -172,7 +172,7 @@ export function RegisterForm({ className, ...props }: React.HTMLAttributes<HTMLD
                     <AuthButton loading={loading}>
                         Tạo tài khoản
                     </AuthButton>
-                </form>
+                </div>
             </Form>
 
             <p className="text-center text-sm text-muted-foreground">

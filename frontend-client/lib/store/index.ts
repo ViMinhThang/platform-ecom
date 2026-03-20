@@ -1,11 +1,36 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { api as baseApi } from './api/clientApi';
+import { baseApi as adminBaseApi } from './admin/baseApi';
 import checkoutReducer from './slices/checkoutSlice';
+
+import productReducer from './admin/slices/productSlice';
+import productVariantReducer from './admin/slices/productVariantSlice';
+import productOptionReducer from './admin/slices/productOptionSlice';
+import productImageReducer from './admin/slices/productImageSlice';
+import categoryReducer from './admin/slices/categorySlice';
+import userReducer from './admin/slices/userSlice';
+import kanbanReducer from './admin/slices/kanbanSlice';
+import uiReducer from './admin/slices/uiSlice';
+import orderReducer from './admin/slices/orderSlice';
+import inventoryReducer from './admin/slices/inventorySlice';
+import flashSaleReducer from './admin/slices/flashSaleSlice';
 
 export const store = configureStore({
     reducer: {
         [baseApi.reducerPath]: baseApi.reducer,
+        [adminBaseApi.reducerPath]: adminBaseApi.reducer,
         checkout: checkoutReducer,
+        products: productReducer,
+        productVariants: productVariantReducer,
+        productOptions: productOptionReducer,
+        productImages: productImageReducer,
+        categories: categoryReducer,
+        users: userReducer,
+        kanban: kanbanReducer,
+        ui: uiReducer,
+        orders: orderReducer,
+        inventory: inventoryReducer,
+        flashSales: flashSaleReducer,
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({
@@ -15,7 +40,7 @@ export const store = configureStore({
             immutableCheck: {
                 warnAfter: 128,
             },
-        }).concat(baseApi.middleware),
+        }).concat(baseApi.middleware, adminBaseApi.middleware),
     devTools: process.env.NODE_ENV !== 'production',
 });
 

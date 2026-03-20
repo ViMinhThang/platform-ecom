@@ -7,8 +7,6 @@
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 
-
-
 // Order status utilities
 export { getOrderStatusColor, canReviewOrder } from './orderStatus';
 
@@ -19,6 +17,10 @@ export {
     formatShortDate,
     formatRelativeTime
 } from './dateUtils';
+
+export function cn(...inputs: ClassValue[]) {
+    return twMerge(clsx(inputs));
+}
 
 export function formatBytes(
     bytes: number,

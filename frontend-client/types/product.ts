@@ -30,6 +30,7 @@ export interface ProductRow {
   description?: string;
   averageRating?: number;
   totalSold?: number;
+  totalReviews?: number;
   firstVariant?: ProductVariant;
 }
 
@@ -105,7 +106,18 @@ export interface ProductDetail extends Product {
 }
 export interface ProductImage {
   id: number;
-  product: Product;
   imageUrl: string;
-  createdAt: Date;
+  productId?: number;
+  product?: Product;
+  isMain?: boolean;
+  createdAt: string | Date;
+}
+
+export interface PaginatedProducts {
+  content: ProductRow[];
+  pageNumber: number;
+  pageSize: number;
+  totalElements: number;
+  totalPages: number;
+  lastPage: boolean;
 }

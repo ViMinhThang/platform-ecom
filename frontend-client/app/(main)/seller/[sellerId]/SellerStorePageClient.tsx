@@ -5,7 +5,7 @@ import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import { ProductCard } from "@/components/ProductCard";
 import { FilterPanel } from "@/components/category/FilterPanel";
 import { SortPanel } from "@/components/category/SortPanel";
-import { Pagination } from "@/components/ui/Pagination";
+import { Pagination } from "@/components/common/Pagination";
 import { SellerHero } from "@/components/product/SellerHero";
 import { getProductsBySeller } from "@/lib/services/product-service";
 import { getSellerInfo, SellerInfo } from "@/lib/services/user-service";
@@ -115,6 +115,12 @@ export function SellerStorePageClient({ sellerId }: SellerStorePageClientProps) 
         router.push(pathname);
     };
 
+    const handlePageChange = (newPage: number) => {
+        const params = new URLSearchParams(searchParams.toString());
+        params.set("page", newPage.toString());
+        router.push(`${pathname}?${params.toString()}`);
+    };
+
     if (error) {
         return (
             <div className="container mx-auto py-24 text-center">
@@ -206,6 +212,7 @@ export function SellerStorePageClient({ sellerId }: SellerStorePageClientProps) 
                                     <Pagination
                                         currentPage={pagination.pageNumber}
                                         totalPages={pagination.totalPages}
+                                        onPageChange={handlePageChange}
                                     />
                                 </div>
                             </>

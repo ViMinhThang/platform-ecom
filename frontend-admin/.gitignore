@@ -1,5 +1,0 @@
-node_modules
-.next
-.clerk
-# clerk configuration (can include secrets)
-/.clerk/

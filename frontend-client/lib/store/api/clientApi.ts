@@ -80,7 +80,7 @@ export const api = createApi({
         // ============== CATEGORIES ==============
         getCategories: builder.query<Category[], void>({
             query: () => ({
-                url: '/v1/categories',
+                url: '/api/v1/categories',
                 method: 'GET',
             }),
             transformResponse: (response: { content: Category[] }) => response.content,
@@ -93,7 +93,7 @@ export const api = createApi({
                 const searchParams = transformProductsParams(params || {});
                 const query = searchParams.toString();
                 return {
-                    url: `/v1/products${query ? `?${query}` : ''}`,
+                    url: `/api/v1/products${query ? `?${query}` : ''}`,
                     method: 'GET',
                 };
             },
@@ -107,14 +107,14 @@ export const api = createApi({
         }),
         getProductById: builder.query<ProductDetail, number | string>({
             query: (id) => ({
-                url: `/v1/products/${id}/with-variants`,
+                url: `/api/v1/products/${id}/with-variants`,
                 method: 'GET',
             }),
             providesTags: (_result, _error, id) => [{ type: 'ProductDetail' as const, id }],
         }),
         getProductBySlug: builder.query<ProductDetail, string>({
             query: (slug) => ({
-                url: `/v1/products/slug/${encodeURIComponent(slug)}`,
+                url: `/api/v1/products/slug/${encodeURIComponent(slug)}`,
                 method: 'GET',
             }),
             providesTags: (_result, _error, slug) => [{ type: 'ProductDetail' as const, id: `slug-${slug}` }],
@@ -123,14 +123,14 @@ export const api = createApi({
         // ============== CART ==============
         getCart: builder.query<CartDTO, void>({
             query: () => ({
-                url: '/v1/cart',
+                url: '/api/v1/cart',
                 method: 'GET',
             }),
             providesTags: ['Cart'],
         }),
         addToCart: builder.mutation<CartDTO, AddToCartRequest>({
             query: (request) => ({
-                url: '/v1/cart/add',
+                url: '/api/v1/cart/add',
                 method: 'POST',
                 body: request,
             }),
@@ -142,7 +142,7 @@ export const api = createApi({
                 params.append('quantityChange', change.toString());
                 if (variantId) params.append('variantId', variantId.toString());
                 return {
-                    url: `/v1/cart/items/${productId}?${params.toString()}`,
+                    url: `/api/v1/cart/items/${productId}?${params.toString()}`,
                     method: 'PUT',
                 };
             },
@@ -152,7 +152,7 @@ export const api = createApi({
             query: ({ productId, variantId }) => {
                 const params = variantId ? `?variantId=${variantId}` : '';
                 return {
-                    url: `/v1/cart/items/${productId}${params}`,
+                    url: `/api/v1/cart/items/${productId}${params}`,
                     method: 'DELETE',
                 };
             },
@@ -160,7 +160,7 @@ export const api = createApi({
         }),
         clearCart: builder.mutation<void, void>({
             query: () => ({
-                url: '/v1/cart/clear',
+                url: '/api/v1/cart/clear',
                 method: 'DELETE',
             }),
             invalidatesTags: ['Cart'],
@@ -169,7 +169,7 @@ export const api = createApi({
         // ============== ORDERS ==============
         getOrders: builder.query<PaginatedResponse<OrderGroupDTO>, { page?: number; size?: number }>({
             query: ({ page = 0, size = 10 } = {}) => ({
-                url: `/v1/order-groups?page=${page}&size=${size}`,
+                url: `/api/v1/order-groups?page=${page}&size=${size}`,
                 method: 'GET',
             }),
             providesTags: (result) =>
@@ -182,21 +182,21 @@ export const api = createApi({
         }),
         getOrderById: builder.query<OrderGroupDTO, number>({
             query: (orderId) => ({
-                url: `/v1/order-groups/${orderId}`,
+                url: `/api/v1/order-groups/${orderId}`,
                 method: 'GET',
             }),
             providesTags: (_result, _error, id) => [{ type: 'Order' as const, id }],
         }),
         initiateCheckout: builder.mutation<CheckoutSession, CreateOrderRequest>({
             query: (request) => ({
-                url: '/v1/order-groups/initiate-checkout',
+                url: '/api/v1/order-groups/initiate-checkout',
                 method: 'POST',
                 body: request,
             }),
         }),
         confirmPayment: builder.mutation<OrderGroupDTO, ConfirmPaymentRequest>({
             query: (request) => ({
-                url: '/v1/order-groups/confirm-payment',
+                url: '/api/v1/order-groups/confirm-payment',
                 method: 'POST',
                 body: request,
             }),
@@ -204,7 +204,7 @@ export const api = createApi({
         }),
         cancelOrder: builder.mutation<void, number>({
             query: (orderId) => ({
-                url: `/v1/order-groups/${orderId}/cancel`,
+                url: `/api/v1/order-groups/${orderId}/cancel`,
                 method: 'POST',
             }),
             invalidatesTags: ['Order'],
@@ -213,7 +213,7 @@ export const api = createApi({
         // ============== REVIEWS ==============
         getProductReviews: builder.query<ReviewResponse, { productId: number | string; pageNumber?: number; pageSize?: number }>({
             query: ({ productId, pageNumber = 0, pageSize = 10 }) => ({
-                url: `/v1/reviews/public/product/${productId}?pageNumber=${pageNumber}&pageSize=${pageSize}`,
+                url: `/api/v1/reviews/public/product/${productId}?pageNumber=${pageNumber}&pageSize=${pageSize}`,
                 method: 'GET',
             }),
             providesTags: (result) =>
@@ -226,14 +226,14 @@ export const api = createApi({
         }),
         getProductReviewSummary: builder.query<ProductReviewSummary, number | string>({
             query: (productId) => ({
-                url: `/v1/reviews/public/summary/product/${productId}`,
+                url: `/api/v1/reviews/public/summary/product/${productId}`,
                 method: 'GET',
             }),
             providesTags: (_result, _error, productId) => [{ type: 'Review' as const, id: `summary-${productId}` }],
         }),
         createReview: builder.mutation<void, { productId: number; orderId: number; rating: number; comment?: string; email: string }>({
             query: (payload) => ({
-                url: '/v1/reviews',
+                url: '/api/v1/reviews',
                 method: 'POST',
                 body: payload,
             }),
@@ -243,14 +243,14 @@ export const api = createApi({
         // ============== ADDRESSES ==============
         getAddresses: builder.query<Address[], void>({
             query: () => ({
-                url: '/v1/users/addresses',
+                url: '/api/v1/users/addresses',
                 method: 'GET',
             }),
             providesTags: ['Address'],
         }),
         addAddress: builder.mutation<Address, Address>({
             query: (address) => ({
-                url: '/v1/users/addresses',
+                url: '/api/v1/users/addresses',
                 method: 'POST',
                 body: address,
             }),
@@ -258,7 +258,7 @@ export const api = createApi({
         }),
         updateAddress: builder.mutation<Address, { addressId: number; address: Address }>({
             query: ({ addressId, address }) => ({
-                url: `/v1/users/addresses/${addressId}`,
+                url: `/api/v1/users/addresses/${addressId}`,
                 method: 'PUT',
                 body: address,
             }),
@@ -266,7 +266,7 @@ export const api = createApi({
         }),
         deleteAddress: builder.mutation<void, number>({
             query: (addressId) => ({
-                url: `/v1/users/addresses/${addressId}`,
+                url: `/api/v1/users/addresses/${addressId}`,
                 method: 'DELETE',
             }),
             invalidatesTags: ['Address'],
@@ -275,27 +275,27 @@ export const api = createApi({
         // ============== PROMOTIONS ==============
         getAutoApplyVouchers: builder.query<VoucherDTO[], void>({
             query: () => ({
-                url: '/v1/vouchers/available',
+                url: '/api/v1/vouchers/available',
                 method: 'GET',
             }),
             providesTags: ['Voucher'],
         }),
         getVoucherByCode: builder.query<VoucherDTO, string>({
             query: (code) => ({
-                url: `/v1/vouchers/code/${code}`,
+                url: `/api/v1/vouchers/code/${code}`,
                 method: 'GET',
             }),
             providesTags: ['Voucher'],
         }),
         validateVoucher: builder.mutation<boolean, { code: string; userId: number }>({
             query: ({ code, userId }) => ({
-                url: `/v1/vouchers/validate/${code}?userId=${userId}`,
+                url: `/api/v1/vouchers/validate/${code}?userId=${userId}`,
                 method: 'GET',
             }),
         }),
         calculateDiscount: builder.mutation<DiscountResult, CalculateDiscountRequest>({
             query: (request) => ({
-                url: '/v1/vouchers/calculate',
+                url: '/api/v1/vouchers/calculate',
                 method: 'POST',
                 body: request,
             }),
@@ -304,14 +304,14 @@ export const api = createApi({
         // ============== USER ==============
         getUserProfile: builder.query<UserProfile, void>({
             query: () => ({
-                url: '/v1/users/me',
+                url: '/api/v1/users/me',
                 method: 'GET',
             }),
             providesTags: ['User'],
         }),
         updateUserProfile: builder.mutation<UserProfile, { username: string; email: string }>({
             query: (data) => ({
-                url: '/v1/users/me',
+                url: '/api/v1/users/me',
                 method: 'PUT',
                 body: data,
             }),

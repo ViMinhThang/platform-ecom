@@ -7,16 +7,39 @@ import {
   Controller,
   FormProvider,
   useFormContext,
-  useFormState,
   type ControllerProps,
   type FieldPath,
   type FieldValues,
+  type UseFormReturn,
+  type SubmitHandler,
 } from "react-hook-form"
 
 import { cn } from "@/lib/utils"
 import { Label } from "@/components/ui/label"
 
-const Form = FormProvider
+type FormProps<TFieldValues extends FieldValues> = {
+  form: UseFormReturn<TFieldValues>;
+  onSubmit?: SubmitHandler<TFieldValues>;
+  children: React.ReactNode;
+  className?: string;
+};
+
+function Form<TFieldValues extends FieldValues = FieldValues>({
+  form,
+  onSubmit,
+  children,
+  className,
+}: FormProps<TFieldValues>) {
+  const handleSubmit = onSubmit ? form.handleSubmit(onSubmit) : form.handleSubmit;
+  
+  return (
+    <FormProvider {...form}>
+      <form onSubmit={handleSubmit as React.FormEventHandler<HTMLFormElement>} className={className}>
+        {children}
+      </form>
+    </FormProvider>
+  );
+}
 
 type FormFieldContextValue<
   TFieldValues extends FieldValues = FieldValues,
@@ -46,8 +69,7 @@ const useFormField = () => {
   const fieldContext = React.useContext(FormFieldContext)
   const itemContext = React.useContext(FormItemContext)
   const { getFieldState } = useFormContext()
-  const formState = useFormState({ name: fieldContext.name })
-  const fieldState = getFieldState(fieldContext.name, formState)
+  const fieldState = getFieldState(fieldContext.name)
 
   if (!fieldContext) {
     throw new Error("useFormField should be used within <FormField>")

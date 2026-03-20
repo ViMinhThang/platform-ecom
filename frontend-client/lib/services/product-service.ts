@@ -29,25 +29,25 @@ export const getPublicProducts = async (params: GetProductsParams = {}): Promise
     if (params.minRating !== undefined) searchParams.set('minRating', params.minRating.toString());
 
     const query = searchParams.toString();
-    const endpoint = `/v1/products${query ? `?${query}` : ''}`;
+    const endpoint = `/api/v1/products${query ? `?${query}` : ''}`;
 
     const response = await apiClient.get<APIResponse<ProductResponse>>(endpoint);
     return response.data.data;
 };
 
 export const getPublicProductById = async (id: number | string): Promise<Product> => {
-    const response = await apiClient.get<APIResponse<Product>>(`/v1/products/${id}`);
+    const response = await apiClient.get<APIResponse<Product>>(`/api/v1/products/${id}`);
     return response.data.data;
 };
 
 
 export const getPublicProductWithVariants = async (id: number | string): Promise<ProductDetail> => {
-    const response = await apiClient.get<APIResponse<ProductDetail>>(`/v1/products/${id}/with-variants`);
+    const response = await apiClient.get<APIResponse<ProductDetail>>(`/api/v1/products/${id}/with-variants`);
     return response.data.data;
 };
 
 export const getCategories = async (): Promise<Category[]> => {
-    const response = await apiClient.get<APIResponse<CategoryResponse>>('/v1/categories');
+    const response = await apiClient.get<APIResponse<CategoryResponse>>('/api/v1/categories');
     return response.data.data.content;
 };
 
@@ -60,14 +60,14 @@ export interface TopSeller {
 
 export const getTopSellers = async (categorySlug: string, limit = 10): Promise<TopSeller[]> => {
     const response = await apiClient.get<APIResponse<TopSeller[]>>(
-        `/v1/products/categories/${encodeURIComponent(categorySlug)}/top-sellers?limit=${limit}`
+        `/api/v1/products/categories/${encodeURIComponent(categorySlug)}/top-sellers?limit=${limit}`
     );
     return response.data.data;
 };
 
 
 export const getProductBySlug = async (slug: string): Promise<ProductDetail> => {
-    const response = await apiClient.get<APIResponse<ProductDetail>>(`/v1/products/slug/${encodeURIComponent(slug)}`);
+    const response = await apiClient.get<APIResponse<ProductDetail>>(`/api/v1/products/slug/${encodeURIComponent(slug)}`);
     return response.data.data;
 };
 
@@ -90,9 +90,44 @@ export const getProductsBySeller = async (params: GetSellerProductsParams): Prom
     if (rest.minRating !== undefined) searchParams.set('minRating', rest.minRating.toString());
 
     const query = searchParams.toString();
-    const endpoint = `/v1/products/seller/${sellerId}${query ? `?${query}` : ''}`;
+    const endpoint = `/api/v1/products/seller/${sellerId}${query ? `?${query}` : ''}`;
 
     const response = await apiClient.get<APIResponse<ProductResponse>>(endpoint);
     return response.data.data;
+};
+
+// Admin Product Service
+export const productService = {
+    getProducts: async (params: { size?: number } = {}): Promise<ProductResponse> => {
+        const searchParams = new URLSearchParams();
+        if (params.size !== undefined) searchParams.set('size', params.size.toString());
+        const query = searchParams.toString();
+        const response = await apiClient.get<APIResponse<ProductResponse>>(
+            `/api/api/v1/sellers/products${query ? `?${query}` : ''}`
+        );
+        return response.data.data;
+    },
+    getById: async (id: number): Promise<Product> => {
+        const response = await apiClient.get<APIResponse<Product>>(`/api/api/v1/sellers/products/${id}`);
+        return response.data.data;
+    },
+    getProductById: async (id: number): Promise<Product> => {
+        const response = await apiClient.get<APIResponse<Product>>(`/api/api/v1/sellers/products/${id}`);
+        return response.data.data;
+    },
+    updateDescription: async (id: number, description: string): Promise<Product> => {
+        const response = await apiClient.put<APIResponse<Product>>(
+            `/api/api/v1/sellers/products/${id}/description`,
+            { description }
+        );
+        return response.data.data;
+    },
+    updateProduct: async (id: number, data: Partial<Product>): Promise<Product> => {
+        const response = await apiClient.put<APIResponse<Product>>(
+            `/api/api/v1/sellers/products/${id}`,
+            data
+        );
+        return response.data.data;
+    },
 };
 

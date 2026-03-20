@@ -6,9 +6,11 @@ import { ProfileInfoForm } from '@/components/profile/ProfileInfoForm';
 import { AddressManager } from '@/components/profile/AddressManager';
 import { OrderHistory } from '@/components/profile/OrderHistory';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Loader2 } from 'lucide-react';
+import { Loader2, LayoutDashboard } from 'lucide-react';
 import { useGetUserProfileQuery, useGetAddressesQuery } from '@/lib/store/api/clientApi';
 import { ProfileLayout } from '@/components/profile/ProfileLayout';
+import { Button } from '@/components/ui/button';
+import Link from 'next/link';
 
 import { Suspense } from 'react';
 
@@ -47,6 +49,9 @@ function ProfilePageContent() {
         return null;
     }
 
+    // Check if user has SELLER role for admin dashboard access
+    const hasSellerRole = session?.user?.roles?.includes('ROLE_SELLER') || false;
+
     const renderContent = () => {
         switch (currentTab) {
             case 'addresses':
@@ -78,7 +83,17 @@ function ProfilePageContent() {
                                     CẬP NHẬT THÔNG TIN ĐỊNH DANH
                                 </p>
                             </div>
-                            <div className="hidden sm:block text-[9px] font-bold bg-primary/5 text-primary px-3 py-1 rounded-sm border border-primary/10 tracking-widest shadow-sm">ID_PROFILE_v3.0</div>
+                            <div className="flex items-center gap-3">
+                                {hasSellerRole && (
+                                    <Link href="/admin/dashboard">
+                                        <Button variant="outline" size="sm" className="gap-2">
+                                            <LayoutDashboard className="h-4 w-4" />
+                                            Quản lý cửa hàng
+                                        </Button>
+                                    </Link>
+                                )}
+                                <div className="hidden sm:block text-[9px] font-bold bg-primary/5 text-primary px-3 py-1 rounded-sm border border-primary/10 tracking-widest shadow-sm">ID_PROFILE_v3.0</div>
+                            </div>
                         </div>
                         <ProfileInfoForm user={user} onUpdate={handleProfileUpdate} />
                     </div>

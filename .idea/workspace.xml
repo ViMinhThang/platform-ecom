@@ -6,48 +6,33 @@
   <component name="ChangeListManager">
     <list default="true" id="c48beeac-7758-42e4-81dd-f068fbcd38be" name="Changes" comment="update spring cloud stream dependency">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-client/app/(admin)/seller/analytics/page.tsx" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend-client/app/(main)/category/[slug]/CategoryPageClient.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/app/(main)/category/[slug]/CategoryPageClient.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/app/(main)/checkout/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/app/(main)/checkout/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/app/(main)/checkout/success/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/app/(main)/checkout/success/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/app/(main)/orders/[id]/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/app/(main)/orders/[id]/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/app/(main)/orders/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/app/(main)/orders/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/app/(main)/products/[slug]/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/app/(main)/products/[slug]/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/app/(main)/products/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/app/(main)/products/page.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend-client/app/(main)/profile/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/app/(main)/profile/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/FeaturedProducts.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/FeaturedProducts.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/ProductVariantSection.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/ProductVariantSection.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/ReviewList.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/ReviewList.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/ReviewStats.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/ReviewStats.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-client/app/(main)/seller/[sellerId]/SellerStorePageClient.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/app/(main)/seller/[sellerId]/SellerStorePageClient.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-client/components/ReviewForm.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/ReviewForm.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-client/components/auth/forgot-password-form.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/auth/forgot-password-form.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend-client/components/auth/register-form.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/auth/register-form.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/auth/ui/otp-input.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/auth/ui/otp-input.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/cart/CartSummary.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/cart/CartSummary.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/checkout/AddressForm.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/checkout/AddressForm.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/checkout/PaymentForm.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/checkout/PaymentForm.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/checkout/VoucherSection.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/checkout/VoucherSection.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/header/SearchHeader.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/header/SearchHeader.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/home/ProductFeed.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/home/ProductFeed.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/home/QuickLinks.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/home/QuickLinks.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/profile/OrderHistory.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/profile/OrderHistory.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/providers/StoreInitializer.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/providers/StoreInitializer.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/recommendations/CartRecommendations.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/recommendations/CartRecommendations.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/sale-campaign/SaleCampaignProductCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/sale-campaign/SaleCampaignProductCard.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/hooks/useAddressOperations.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/hooks/useAddressOperations.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/hooks/useCart.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/hooks/useCart.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/hooks/useCheckout.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/hooks/useCheckout.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/hooks/useOrders.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/hooks/useOrders.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/hooks/usePromotion.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/hooks/usePromotion.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/hooks/useReview.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/hooks/useReview.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/hooks/useReviewForm.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/hooks/useReviewForm.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-client/components/auth/reset-password-form.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/auth/reset-password-form.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-client/components/auth/user-auth-form.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/auth/user-auth-form.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-client/components/providers.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/providers.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-client/components/ui/Pagination.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/ui/Pagination.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-client/components/ui/form.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/ui/form.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-client/lib/config/env.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/lib/config/env.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-client/lib/constants.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/lib/constants.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-client/lib/format.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/lib/format.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-client/lib/searchparams.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/lib/searchparams.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-client/lib/services/product-service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/lib/services/product-service.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-client/lib/services/sale-campaign-service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/lib/services/sale-campaign-service.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-client/lib/store/api/clientApi.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/lib/store/api/clientApi.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend-client/lib/store/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/lib/store/index.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/lib/store/slices/addressSlice.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/lib/store/slices/authSlice.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/lib/store/slices/cartSlice.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/lib/store/slices/categorySlice.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/lib/store/slices/orderSlice.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/lib/store/slices/productSlice.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/lib/store/slices/promotionSlice.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/lib/store/slices/reviewSlice.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/types/cart.types.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/types/cart.types.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-client/lib/utils.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/lib/utils.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-client/lib/utils/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/lib/utils/index.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-client/middleware.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/middleware.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-client/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-client/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-client/types/product.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/types/product.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-client/types/sale-campaign.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/types/sale-campaign.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

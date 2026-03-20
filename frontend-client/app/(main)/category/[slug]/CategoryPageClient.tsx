@@ -1,11 +1,11 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { ProductCard } from "@/components/ProductCard";
 import { SellerGrid } from "@/components/category/SellerGrid";
 import { FilterPanel } from "@/components/category/FilterPanel";
 import { SortPanel } from "@/components/category/SortPanel";
-import { Pagination } from "@/components/ui/Pagination";
+import { Pagination } from "@/components/common/Pagination";
 import { useGetProductsQuery } from "@/lib/store/api/clientApi";
 import { ProductGridSkeleton } from "@/components/ui/ProductGridSkeleton";
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
@@ -26,12 +26,12 @@ interface CategoryPageClientProps {
 
 export function CategoryPageClient({ slug }: CategoryPageClientProps) {
     const router = useRouter();
+    const searchParams = useSearchParams();
     
     const categorySlug = decodeURIComponent(slug);
     const displayTitle = categorySlug.replace(/-/g, ' ');
 
     // Extract all filter params from URL
-    const searchParams = new URLSearchParams(typeof window !== 'undefined' ? window.location.search : '');
     const pageParam = searchParams.get("page");
     const page = pageParam ? Number(pageParam) : 0;
     const sortBy = searchParams.get("sortBy") || "createdAt";
@@ -60,6 +60,12 @@ export function CategoryPageClient({ slug }: CategoryPageClientProps) {
 
     const handleClearFilters = () => {
         router.push(window.location.pathname);
+    };
+
+    const handlePageChange = (newPage: number) => {
+        const params = new URLSearchParams(searchParams.toString());
+        params.set("page", newPage.toString());
+        router.push(`${window.location.pathname}?${params.toString()}`);
     };
 
     return (
@@ -149,6 +155,7 @@ export function CategoryPageClient({ slug }: CategoryPageClientProps) {
                                 <Pagination
                                     currentPage={pagination.pageNumber}
                                     totalPages={pagination.totalPages}
+                                    onPageChange={handlePageChange}
                                 />
                             </div>
                         </>

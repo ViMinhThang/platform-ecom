@@ -65,8 +65,8 @@ export function UserAuthForm({ className, ...props }: React.HTMLAttributes<HTMLD
 
     return (
         <div className={cn("space-y-5", className)} {...props}>
-            <Form {...form}>
-                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+            <Form form={form} onSubmit={onSubmit}>
+                <div className="space-y-4">
                     <FormField
                         control={form.control}
                         name="email"
@@ -124,7 +124,7 @@ export function UserAuthForm({ className, ...props }: React.HTMLAttributes<HTMLD
                     <AuthButton loading={loading}>
                         Đăng nhập
                     </AuthButton>
-                </form>
+                </div>
             </Form>
 
             <AuthDivider text="hoặc" />
