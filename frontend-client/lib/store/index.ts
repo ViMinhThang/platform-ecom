@@ -1,26 +1,22 @@
 import { configureStore } from '@reduxjs/toolkit';
-import authReducer from './slices/authSlice';
-import productReducer from './slices/productSlice';
-import categoryReducer from './slices/categorySlice';
-import cartReducer from './slices/cartSlice';
-import addressReducer from './slices/addressSlice';
-import orderReducer from './slices/orderSlice';
-import reviewReducer from './slices/reviewSlice';
+import { api as baseApi } from './api/clientApi';
 import checkoutReducer from './slices/checkoutSlice';
-import promotionReducer from './slices/promotionSlice';
 
 export const store = configureStore({
     reducer: {
-        auth: authReducer,
-        products: productReducer,
-        categories: categoryReducer,
-        cart: cartReducer,
-        address: addressReducer,
-        orders: orderReducer,
-        reviews: reviewReducer,
+        [baseApi.reducerPath]: baseApi.reducer,
         checkout: checkoutReducer,
-        promotion: promotionReducer,
     },
+    middleware: (getDefaultMiddleware) =>
+        getDefaultMiddleware({
+            serializableCheck: {
+                ignoredActions: ['order/initiateCheckout/fulfilled'],
+            },
+            immutableCheck: {
+                warnAfter: 128,
+            },
+        }).concat(baseApi.middleware),
+    devTools: process.env.NODE_ENV !== 'production',
 });
 
 export type RootState = ReturnType<typeof store.getState>;

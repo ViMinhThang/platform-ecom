@@ -4,9 +4,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useSession } from "next-auth/react";
 import { toast } from "sonner";
-import { useAppDispatch } from "@/lib/store/hooks";
-import { fetchProductReviews } from "@/lib/store/slices/reviewSlice";
-import { createReview } from "@/lib/services/review-service";
+import { useCreateReviewMutation } from "@/lib/store/api/clientApi";
 
 const reviewSchema = z.object({
     rating: z.number().min(1, "Vui lòng chọn số sao đánh giá").max(5),
@@ -32,8 +30,7 @@ export function useReviewForm({
     onSuccess,
 }: UseReviewFormProps) {
     const { data: session } = useSession();
-    const dispatch = useAppDispatch();
-    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [createReviewMutation, { isLoading: isSubmitting }] = useCreateReviewMutation();
 
     const form = useForm<ReviewFormValues>({
         resolver: zodResolver(reviewSchema),
@@ -45,64 +42,37 @@ export function useReviewForm({
     });
 
     const onSubmit = async (data: ReviewFormValues) => {
-        if (!session?.accessToken) {
-            toast.error("Bạn phải đăng nhập để viết đánh giá.");
-            return;
-        }
-
-        if (!session.user?.email) {
+        if (!session?.user?.email) {
             toast.error(
                 "Tài khoản của bạn thiếu thông tin email. Vui lòng cập nhật hồ sơ."
             );
             return;
         }
 
-        setIsSubmitting(true);
+        if (!orderId) {
+            toast.error("Không tìm thấy đơn hàng.");
+            return;
+        }
+
         try {
             const images = data.images as File[];
-            if (!orderId) {
-                toast.error("Không tìm thấy đơn hàng.");
-                setIsSubmitting(false);
-                return;
-            }
-
-            await createReview(
-                {
-                    productId,
-                    orderId,
-                    rating: data.rating,
-                    comment: data.comment,
-                    email: session.user.email,
-                },
-                session.accessToken,
-                images
-            );
+            await createReviewMutation({
+                productId,
+                orderId,
+                rating: data.rating,
+                comment: data.comment,
+                email: session.user.email,
+            }).unwrap();
 
             toast.success("Gửi đánh giá thành công!");
             form.reset();
 
-            // Refresh reviews
-            dispatch(
-                fetchProductReviews({
-                    productId,
-                    params: {
-                        pageNumber: 0,
-                        pageSize: 10,
-                        sortBy: "createdAt",
-                        sortDir: "desc",
-                    },
-                })
-            );
-
             if (onSuccess) {
                 onSuccess();
             }
-        } catch (error: any) {
-            // Safe access to error response
-            const message = error?.response?.data?.message || "Gửi đánh giá thất bại";
+        } catch (error: unknown) {
+            const message = (error as Error).message || "Gửi đánh giá thất bại";
             toast.error(message);
-        } finally {
-            setIsSubmitting(false);
         }
     };
 

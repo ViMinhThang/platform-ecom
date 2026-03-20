@@ -4,7 +4,7 @@ import { Search, ShoppingCart, Clock, X } from "lucide-react";
 import Link from "next/link";
 import { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { useAppSelector } from "@/lib/store/hooks";
+import { useGetCartQuery } from "@/lib/store/api/clientApi";
 import { Badge } from "@/components/ui/badge";
 import { UserNav } from "@/components/UserNav";
 import { useSearchHistory } from "@/hooks/useSearchHistory";
@@ -13,7 +13,7 @@ export const SearchHeader = () => {
     const [searchQuery, setSearchQuery] = useState("");
     const [showHistory, setShowHistory] = useState(false);
     const router = useRouter();
-    const { cart } = useAppSelector((state) => state.cart);
+    const { data: cart } = useGetCartQuery();
     const cartItemCount = cart?.items?.reduce((total, item) => total + item.quantity, 0) || 0;
     const { history, addSearch, removeSearch, clearHistory } = useSearchHistory();
     const searchContainerRef = useRef<HTMLDivElement>(null);

@@ -4,10 +4,10 @@ import { useEffect, useState } from 'react';
 import { getSimilarProducts } from '@/lib/services/recommendation-service';
 import { ProductRecommendation } from '@/types/recommendation';
 import { ProductCard } from '@/components/ProductCard';
-import { useAppSelector } from '@/lib/store/hooks';
+import { useGetCartQuery } from '@/lib/store/api/clientApi';
 
 export const CartRecommendations = () => {
-    const { cart } = useAppSelector((state) => state.cart);
+    const { data: cart } = useGetCartQuery();
     const items = cart?.items || [];
     const [products, setProducts] = useState<ProductRecommendation[]>([]);
     const [loading, setLoading] = useState(false);

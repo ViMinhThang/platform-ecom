@@ -1,23 +1,21 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ProductDetail, ProductVariant } from "@/types/product";
 import { VariantSelector } from "./VariantSelector";
 import { Button } from "./ui/button";
 import { Badge } from "./ui/badge";
 import { ShoppingCart, Minus, Plus, Zap } from "lucide-react";
-import { useAppDispatch } from "@/lib/store/hooks";
 import { useSession } from "next-auth/react";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
-import { addToCart } from "@/lib/store/slices/cartSlice";
+import { useAddToCartMutation } from "@/lib/store/api/clientApi";
 import { logger } from "@/lib/logger";
 import { useAnalytics } from "@/hooks/useAnalytics";
 
 import { formatCurrency } from "@/lib/utils/formatCurrency";
 import { getSaleCampaignPriceForVariant } from "@/lib/services/sale-campaign-service";
 import { SaleCampaignItem } from "@/types/sale-campaign";
-import { useEffect } from "react";
 
 export function ProductVariantSection({
   product,
@@ -27,12 +25,10 @@ export function ProductVariantSection({
   onVariantChange?: (variant: ProductVariant | null) => void;
 }) {
   const { trackAddToCart } = useAnalytics();
-  const [selectedVariant, setSelectedVariant] = useState<ProductVariant | null>(
-    null
-  );
+  const [selectedVariant, setSelectedVariant] = useState<ProductVariant | null>(null);
   const [saleInfo, setSaleInfo] = useState<SaleCampaignItem | null>(null);
   const [quantity, setQuantity] = useState(1);
-  const dispatch = useAppDispatch();
+  const [addToCartMutation] = useAddToCartMutation();
   const { data: session } = useSession();
   const router = useRouter();
 
@@ -62,7 +58,6 @@ export function ProductVariantSection({
   const handleAddToCart = async () => {
     if (!session) {
       toast.error("Vui lòng đăng nhập để thêm vào giỏ hàng");
-      // router.push("/login"); 
       return;
     }
 
@@ -72,13 +67,12 @@ export function ProductVariantSection({
     }
 
     try {
-      await dispatch(addToCart({
+      await addToCartMutation({
         productId: product.id,
         quantity,
         variantId: selectedVariant ? selectedVariant.id : undefined,
-      })).unwrap();
+      }).unwrap();
       
-      // Track add to cart
       trackAddToCart(
         product.id, 
         selectedVariant ? selectedVariant.id : 0, 

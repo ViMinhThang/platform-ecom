@@ -6,23 +6,16 @@ import { Button } from "@/components/ui/button";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { MapPin, Loader2 } from "lucide-react";
-import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
-import { fetchAddresses } from "@/lib/store/slices/addressSlice";
-import { useSession } from "next-auth/react";
+import { useGetAddressesQuery } from "@/lib/store/api/clientApi";
 
 export function AddressForm() {
     const { selectAddress, checkout, setStep } = useCheckout();
-    const dispatch = useAppDispatch();
-    const { data: session } = useSession();
-    const { addresses, loading } = useAppSelector((state) => state.address);
+    const { data: addresses = [], isLoading: loading } = useGetAddressesQuery();
     const [mounted, setMounted] = useState(false);
 
     useEffect(() => {
         setMounted(true);
-        if (session?.accessToken) {
-            dispatch(fetchAddresses(session.accessToken));
-        }
-    }, [dispatch, session]);
+    }, []);
 
     // Auto-select default address or first available
     useEffect(() => {

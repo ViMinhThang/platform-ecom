@@ -1,23 +1,30 @@
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAppDispatch, useAppSelector } from '@/lib/store/hooks';
-import { initiateCheckout, confirmPayment } from '@/lib/store/slices/orderSlice';
+import { useInitiateCheckoutMutation, useConfirmPaymentMutation, useGetCartQuery } from '@/lib/store/api/clientApi';
 import {
     setCheckoutStep,
     setSelectedAddress,
     setPaymentProvider,
     setShippingFee,
+    setCheckoutSession,
+    setCurrentOrder,
     resetCheckout
 } from '@/lib/store/slices/checkoutSlice';
 import type { CreateOrderRequest, ConfirmPaymentRequest } from '@/types/order.types';
-import { v4 as uuidv4 } from 'uuid';
 
 export const useCheckout = () => {
     const router = useRouter();
     const dispatch = useAppDispatch();
     const checkout = useAppSelector((state) => state.checkout);
-    const { currentOrder, checkoutSession, loading, error } = useAppSelector((state) => state.orders);
-    const { appliedVoucherCodes } = useAppSelector((state) => state.promotion);
+    const { data: cart } = useGetCartQuery();
+    const appliedVoucherCodes = cart?.appliedVoucherCodes || [];
+
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState<string | null>(null);
+
+    const [initiateCheckoutMutation] = useInitiateCheckoutMutation();
+    const [confirmPaymentMutation] = useConfirmPaymentMutation();
 
     const startCheckout = useCallback(async () => {
         if (!checkout.selectedAddressId) {
@@ -27,19 +34,30 @@ export const useCheckout = () => {
             throw new Error('Shipping fee not calculated');
         }
 
-        const request: CreateOrderRequest = {
-            addressId: checkout.selectedAddressId,
-            paymentProvider: checkout.paymentProvider,
-            promoCode: appliedVoucherCodes[0] || undefined,
-            idempotencyKey: `checkout-${Date.now()}-${uuidv4()}`,
-            shippingFee: checkout.shippingFee
-        };
+        setLoading(true);
+        setError(null);
 
-        const session = await dispatch(initiateCheckout(request)).unwrap();
-        dispatch(setCheckoutStep('payment'));
-        return session;
-    }, [checkout.selectedAddressId, checkout.paymentProvider, checkout.promoCode, checkout.shippingFee, dispatch]);
+        try {
+            const request: CreateOrderRequest = {
+                addressId: checkout.selectedAddressId,
+                paymentProvider: checkout.paymentProvider,
+                promoCode: appliedVoucherCodes[0] || undefined,
+                idempotencyKey: `checkout-${Date.now()}`,
+                shippingFee: checkout.shippingFee
+            };
 
+            const session = await initiateCheckoutMutation(request).unwrap();
+            dispatch(setCheckoutSession(session));
+            dispatch(setCheckoutStep('payment'));
+            return session;
+        } catch (err) {
+            const message = err instanceof Error ? err.message : 'Failed to initiate checkout';
+            setError(message);
+            throw err;
+        } finally {
+            setLoading(false);
+        }
+    }, [checkout.selectedAddressId, checkout.paymentProvider, checkout.promoCode, checkout.shippingFee, dispatch, initiateCheckoutMutation, appliedVoucherCodes]);
 
     const confirmPaymentAndCreateOrder = useCallback(async (paymentIntentId: string) => {
         if (!checkout.selectedAddressId) {
@@ -49,15 +67,27 @@ export const useCheckout = () => {
             throw new Error('Shipping fee not available');
         }
 
-        const request: ConfirmPaymentRequest = {
-            paymentIntentId,
-            addressId: checkout.selectedAddressId,
-            shippingFee: checkout.shippingFee
-        };
+        setLoading(true);
+        setError(null);
 
-        const order = await dispatch(confirmPayment(request)).unwrap();
-        return order;
-    }, [checkout.selectedAddressId, checkout.shippingFee, dispatch]);
+        try {
+            const request: ConfirmPaymentRequest = {
+                paymentIntentId,
+                addressId: checkout.selectedAddressId,
+                shippingFee: checkout.shippingFee
+            };
+
+            const order = await confirmPaymentMutation(request).unwrap();
+            setCurrentOrder(order);
+            return order;
+        } catch (err) {
+            const message = err instanceof Error ? err.message : 'Failed to confirm payment';
+            setError(message);
+            throw err;
+        } finally {
+            setLoading(false);
+        }
+    }, [checkout.selectedAddressId, checkout.shippingFee, confirmPaymentMutation]);
 
     const completeCheckout = useCallback(() => {
         dispatch(setCheckoutStep('confirmation'));
@@ -71,8 +101,6 @@ export const useCheckout = () => {
 
     return {
         checkout,
-        currentOrder,
-        checkoutSession,
         loading,
         error,
         setStep,

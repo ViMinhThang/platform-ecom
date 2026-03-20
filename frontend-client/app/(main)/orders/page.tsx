@@ -3,8 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useAppDispatch, useAppSelector } from '@/lib/store/hooks';
-import { fetchOrders } from '@/lib/store/slices/orderSlice';
+import { useGetOrdersQuery } from '@/lib/store/api/clientApi';
 import { OrderGroupDTO, SubOrderStatus } from '@/types/order.types';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent } from '@/components/ui/card';
@@ -41,15 +40,14 @@ const TAB_STATUS_MAP: Record<OrderTab, SubOrderStatus[]> = {
 };
 
 function OrdersPageContent() {
-    const dispatch = useAppDispatch();
     const { data: session, status: authStatus } = useSession();
     const router = useRouter();
     const searchParams = useSearchParams();
 
-    const { orders, loading } = useAppSelector((state) => state.orders);
+    const { data: ordersData, isLoading: loading } = useGetOrdersQuery({ page: 0, size: 20 });
+    const orders = ordersData?.content || [];
     const [activeTab, setActiveTab] = useState<OrderTab>((searchParams.get('tab') as OrderTab) || 'all');
 
-    // Review states
     const [reviewDialogOpen, setReviewDialogOpen] = useState(false);
     const [reviewProductId, setReviewProductId] = useState<number | null>(null);
     const [reviewOrderId, setReviewOrderId] = useState<number | null>(null);
@@ -70,12 +68,6 @@ function OrdersPageContent() {
             router.push('/auth/sign-in');
         }
     }, [authStatus, router]);
-
-    useEffect(() => {
-        if (session?.accessToken) {
-            dispatch(fetchOrders({ page: 0, size: 20 }));
-        }
-    }, [dispatch, session]);
 
     const filteredOrders = orders.filter((order) => {
         if (activeTab === 'all') return true;

@@ -23,6 +23,7 @@ export interface CartDTO {
     totalItems: number;
     createdAt: string;
     updatedAt: string;
+    appliedVoucherCodes?: string[];
 }
 
 export interface AddToCartRequest {

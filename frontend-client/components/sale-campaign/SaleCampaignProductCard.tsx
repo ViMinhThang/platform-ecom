@@ -10,8 +10,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { imageUrl } from '@/lib/utils/imageUrl';
 
-import { useAppDispatch } from '@/lib/store/hooks';
-import { addToCart } from '@/lib/store/slices/cartSlice';
+import { useAddToCartMutation } from '@/lib/store/api/clientApi';
 import { toast } from 'sonner';
 import { formatCurrency } from '@/lib/utils/formatCurrency';
 
@@ -20,22 +19,21 @@ interface SaleCampaignProductCardProps {
 }
 
 export function SaleCampaignProductCard({ item }: SaleCampaignProductCardProps) {
-    const dispatch = useAppDispatch();
+    const [addToCartMutation] = useAddToCartMutation();
     const [isAdding, setIsAdding] = useState(false);
 
     const handleAddToCart = async (e: React.MouseEvent) => {
-        // No need for preventDefault as button is not inside Link anymore
         e.stopPropagation();
 
         if (!item.isAvailable) return;
 
         setIsAdding(true);
         try {
-            await dispatch(addToCart({
+            await addToCartMutation({
                 productId: item.productId,
                 variantId: item.variantId,
                 quantity: 1
-            })).unwrap();
+            }).unwrap();
             toast.success('Đã thêm vào giỏ hàng');
         } catch (error) {
             toast.error('Không thể thêm vào giỏ hàng');

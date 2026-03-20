@@ -1,10 +1,10 @@
 "use client";
 
 import { useEffect } from "react";
-import { useSearchParams, useRouter } from "next/navigation";
-import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
-import { fetchOrderById } from "@/lib/store/slices/orderSlice";
+import { useSearchParams } from "next/navigation";
+import { useGetOrderByIdQuery } from "@/lib/store/api/clientApi";
 import { resetCheckout } from "@/lib/store/slices/checkoutSlice";
+import { useAppDispatch } from "@/lib/store/hooks";
 import { Button } from "@/components/ui/button";
 import { CheckCircle2, Package, Loader2, ArrowRight } from "lucide-react";
 import Link from "next/link";
@@ -14,22 +14,17 @@ import { Suspense } from "react";
 
 function CheckoutSuccessContent() {
     const searchParams = useSearchParams();
-    const router = useRouter();
     const dispatch = useAppDispatch();
-    const { currentOrder, loading } = useAppSelector((state) => state.orders);
+    const orderIdParam = searchParams.get("orderId");
+    const orderId = orderIdParam ? Number(orderIdParam) : undefined;
 
-    const orderId = searchParams.get("orderId");
+    const { data: currentOrder, isLoading: loading } = useGetOrderByIdQuery(orderId!, { skip: !orderId });
 
     useEffect(() => {
-        if (orderId) {
-            dispatch(fetchOrderById(Number(orderId)));
-        }
-
-        // Clear checkout state
         dispatch(resetCheckout());
-    }, [orderId, dispatch]);
+    }, [dispatch]);
 
-    if (loading) {
+    if (loading || !orderId) {
         return (
             <div className="container py-20 flex justify-center">
                 <Loader2 className="h-8 w-8 animate-spin text-primary" />

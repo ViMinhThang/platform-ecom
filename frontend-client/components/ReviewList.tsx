@@ -1,15 +1,10 @@
 "use client";
 
-// Client Component - Paginated Review List
-
-import { useEffect, useState } from "react";
-import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
-import { fetchProductReviews, resetReviews } from "@/lib/store/slices/reviewSlice";
-import { GetReviewsParams } from "@/lib/services/review-service";
+import { useState } from "react";
+import { useGetProductReviewsQuery } from "@/lib/store/api/clientApi";
 import type { Review } from "@/types/review";
 import { StarRating } from "./ui/StarRating";
 import { Button } from "./ui/button";
-import { useSession } from "next-auth/react";
 import { imageUrl } from "@/lib/utils/imageUrl";
 import { Badge } from "./ui/badge";
 import {
@@ -26,35 +21,27 @@ interface ReviewListProps {
 }
 
 export function ReviewList({ productId }: ReviewListProps) {
-  const dispatch = useAppDispatch();
-  const { reviews, loading, error, pagination } = useAppSelector((state) => state.reviews);
-
   const [page, setPage] = useState(0);
   const [sortBy, setSortBy] = useState("createdAt");
   const [sortDir, setSortDir] = useState<"asc" | "desc">("desc");
 
-  useEffect(() => {
-    return () => {
-      dispatch(resetReviews());
-    };
-  }, [dispatch, productId]);
+  const { data: reviewsData, isLoading: loading, error } = useGetProductReviewsQuery({
+    productId,
+    pageNumber: page,
+    pageSize: 10
+  });
 
-  useEffect(() => {
-    const params: GetReviewsParams = {
-      pageNumber: page,
-      pageSize: 10,
-      sortBy,
-      sortDir,
-    };
-
-    dispatch(fetchProductReviews({ productId, params }));
-  }, [dispatch, productId, page, sortBy, sortDir]);
+  const reviews = reviewsData?.content || [];
+  const pagination = {
+    totalElements: reviewsData?.totalElements || 0,
+    totalPages: reviewsData?.totalPages || 0,
+  };
 
   const handleSortChange = (value: string) => {
     const [newSortBy, newSortDir] = value.split("-");
     setSortBy(newSortBy);
     setSortDir(newSortDir as "asc" | "desc");
-    setPage(0); // Reset to first page
+    setPage(0);
   };
 
   if (loading && reviews.length === 0) {
@@ -74,7 +61,7 @@ export function ReviewList({ productId }: ReviewListProps) {
   if (error) {
     return (
       <div className="text-center py-8 text-destructive">
-        <p>{error}</p>
+        <p>{String(error)}</p>
       </div>
     );
   }

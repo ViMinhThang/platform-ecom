@@ -1,14 +1,12 @@
 "use client";
 
-import { useEffect, useState, use } from "react";
-import { useSearchParams, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { ProductCard } from "@/components/ProductCard";
 import { SellerGrid } from "@/components/category/SellerGrid";
 import { FilterPanel } from "@/components/category/FilterPanel";
 import { SortPanel } from "@/components/category/SortPanel";
 import { Pagination } from "@/components/ui/Pagination";
-import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
-import { fetchProducts } from "@/lib/store/slices/productSlice";
+import { useGetProductsQuery } from "@/lib/store/api/clientApi";
 import { ProductGridSkeleton } from "@/components/ui/ProductGridSkeleton";
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 import { 
@@ -27,38 +25,38 @@ interface CategoryPageClientProps {
 }
 
 export function CategoryPageClient({ slug }: CategoryPageClientProps) {
-    const dispatch = useAppDispatch();
     const router = useRouter();
-    const searchParams = useSearchParams();
-    const { products, loading, error, pagination } = useAppSelector(
-        (state) => state.products
-    );
     
     const categorySlug = decodeURIComponent(slug);
     const displayTitle = categorySlug.replace(/-/g, ' ');
 
     // Extract all filter params from URL
-    const page = Number(searchParams.get("page")) || 0;
+    const searchParams = new URLSearchParams(typeof window !== 'undefined' ? window.location.search : '');
+    const pageParam = searchParams.get("page");
+    const page = pageParam ? Number(pageParam) : 0;
     const sortBy = searchParams.get("sortBy") || "createdAt";
     const sortOrder = (searchParams.get("sortOrder") || "desc") as "asc" | "desc";
     const minPrice = searchParams.get("minPrice") ? Number(searchParams.get("minPrice")) : undefined;
     const maxPrice = searchParams.get("maxPrice") ? Number(searchParams.get("maxPrice")) : undefined;
     const minRating = searchParams.get("minRating") ? Number(searchParams.get("minRating")) : undefined;
 
-    useEffect(() => {
-        dispatch(
-            fetchProducts({
-                page,
-                perPage: 15,
-                category: categorySlug,
-                sortBy,
-                sortOrder,
-                minPrice,
-                maxPrice,
-                minRating,
-            })
-        );
-    }, [dispatch, categorySlug, page, sortBy, sortOrder, minPrice, maxPrice, minRating]);
+    const { data, isLoading, isError, error } = useGetProductsQuery({
+        page,
+        perPage: 15,
+        category: categorySlug,
+        sortBy,
+        sortOrder,
+        minPrice,
+        maxPrice,
+        minRating,
+    });
+
+    const products = data?.content || [];
+    const pagination = data ? {
+        pageNumber: data.pageNumber,
+        totalPages: data.totalPages,
+        totalElements: data.totalElements,
+    } : { pageNumber: 0, totalPages: 0, totalElements: 0 };
 
     const handleClearFilters = () => {
         router.push(window.location.pathname);
@@ -121,11 +119,11 @@ export function CategoryPageClient({ slug }: CategoryPageClientProps) {
                         </div>
                     </div>
 
-                    {loading ? (
+                    {isLoading ? (
                         <ProductGridSkeleton count={10} />
-                    ) : error ? (
+                    ) : isError ? (
                         <div className="text-center py-24 bg-red-50 border-2 border-black">
-                            <p className="text-red-600 font-black uppercase italic tracking-widest">{error}</p>
+                            <p className="text-red-600 font-black uppercase italic tracking-widest">{error ? String(error) : 'An error occurred'}</p>
                         </div>
                     ) : products.length > 0 ? (
                         <>

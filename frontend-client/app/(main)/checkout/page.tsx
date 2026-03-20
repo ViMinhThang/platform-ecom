@@ -11,7 +11,7 @@ import { getStripe } from "@/lib/services/stripe.service";
 import { Loader2, AlertCircle, ShieldCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useShipping } from "@/hooks/useShipping";
-import { useAppSelector } from "@/lib/store/hooks";
+import { useGetAddressesQuery } from "@/lib/store/api/clientApi";
 import { logger } from "@/lib/logger";
 import { formatCurrency } from "@/lib/utils/formatCurrency";
 import { imageUrl } from "@/lib/utils/imageUrl";
@@ -22,20 +22,20 @@ import { VoucherSection } from "@/components/checkout/VoucherSection";
 export default function CheckoutPage() {
     const {
         checkout,
-        checkoutSession,
-        currentOrder,
         startCheckout,
         loading: orderLoading,
         error: orderError,
         setShipping
     } = useCheckout();
+    const checkoutSession = checkout.checkoutSession;
+    const currentOrder = checkout.currentOrder;
     const { cart } = useCart();
     const [stripePromise, setStripePromise] = useState<Promise<any>>(Promise.resolve(null));
     const [stripeError, setStripeError] = useState<string | null>(null);
 
     useEffect(() => {
         const initStripe = async () => {
-            const stripe = getStripe();
+            const stripe = await getStripe();
             if (!stripe) {
                 setStripeError('Payment system is not configured. Please contact support.');
             }
@@ -46,7 +46,7 @@ export default function CheckoutPage() {
     const [elementsOptions, setElementsOptions] = useState<any>(null);
 
     const { shippingFee, loading: shippingLoading, calculateTotalShipping } = useShipping();
-    const { addresses } = useAppSelector((state) => state.address);
+    const { data: addresses = [] } = useGetAddressesQuery();
     const { discountResult } = usePromotion(cart, shippingFee);
 
     useEffect(() => {

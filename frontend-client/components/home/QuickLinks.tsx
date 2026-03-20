@@ -2,20 +2,11 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect } from "react";
-import { useAppSelector, useAppDispatch } from "@/lib/store/hooks";
-import { fetchCategories } from "@/lib/store/slices/categorySlice";
+import { useCategories } from "@/hooks/useCategories";
 import { imageUrl } from "@/lib/utils/imageUrl";
 
 export const QuickLinks = () => {
-    const dispatch = useAppDispatch();
-    const { categories, loading } = useAppSelector((state) => state.categories);
-
-    useEffect(() => {
-        if (categories.length === 0) {
-            dispatch(fetchCategories());
-        }
-    }, [dispatch, categories.length]);
+    const { categories, loading } = useCategories();
 
     if (loading && categories.length === 0) return null;
     if (categories.length === 0) return null;

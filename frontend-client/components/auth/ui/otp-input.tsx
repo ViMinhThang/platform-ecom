@@ -45,15 +45,16 @@ export function OtpInput({
             inputRefs.current[index + 1]?.focus();
         }
 
-        if (e.key === "Paste" && e.clipboardData) {
+        if (e.key === "Paste") {
             e.preventDefault();
-            const pastedData = e.clipboardData.getData("text").replace(/\D/g, "").slice(0, length);
+            const clipboardData = (e as unknown as { clipboardData: DataTransfer }).clipboardData;
+            const pastedData = clipboardData?.getData("text").replace(/\D/g, "").slice(0, length);
             onChange(pastedData.padEnd(length, ""));
             inputRefs.current[Math.min(pastedData.length, length - 1)]?.focus();
         }
     };
 
-    const handleFocus = (e: React.FEventHandler<HTMLInputElement>) => {
+    const handleFocus: React.FocusEventHandler<HTMLInputElement> = (e) => {
         e.currentTarget.select();
     };
 

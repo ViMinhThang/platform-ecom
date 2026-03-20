@@ -1,8 +1,8 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { ReviewDialog } from "@/components/profile/ReviewDialog";
-import { useOrders } from "@/hooks/useOrders";
+import { useOrderDetail } from "@/hooks/useOrders";
 import { SubOrderCard } from "@/components/orders/SubOrderCard";
 import { TrackingTimeline } from "@/components/orders/TrackingTimeline";
 import { Badge } from "@/components/ui/badge";
@@ -18,8 +18,9 @@ interface OrderDetailPageProps {
 }
 
 export default function OrderDetailPage({ params }: OrderDetailPageProps) {
-    const { currentOrder, loading, loadOrderDetails } = useOrders();
     const { id } = React.use(params);
+    const orderId = Number(id);
+    const { order: currentOrder, loading } = useOrderDetail(orderId);
     const [reviewDialogOpen, setReviewDialogOpen] = useState(false);
     const [reviewProductId, setReviewProductId] = useState<number | null>(null);
     const [refreshCounter, setRefreshCounter] = useState(0);
@@ -33,12 +34,6 @@ export default function OrderDetailPage({ params }: OrderDetailPageProps) {
         setRefreshCounter(prev => prev + 1);
     };
 
-    useEffect(() => {
-        if (id) {
-            loadOrderDetails(Number(id));
-        }
-    }, [id]);
-
     if (loading) {
         return (
             <div className="container py-12 flex justify-center">
@@ -47,11 +42,9 @@ export default function OrderDetailPage({ params }: OrderDetailPageProps) {
         );
     }
 
-    if (!currentOrder && !loading) {
+    if (!currentOrder) {
         return <div className="container py-12 text-center">Order not found</div>;
     }
-
-    if (!currentOrder) return null;
 
     return (
         <div className="container mx-auto py-12 px-4 md:px-8 font-header bg-background">

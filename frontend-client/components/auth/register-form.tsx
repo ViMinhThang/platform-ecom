@@ -64,7 +64,7 @@ export function RegisterForm({ className, ...props }: React.HTMLAttributes<HTMLD
             router.push("/auth/sign-in");
         } catch (error: unknown) {
             logger.error("Registration failed:", error);
-            toast.error(error.message || "Có lỗi xảy ra trong quá trình đăng ký");
+            toast.error((error as Error).message || "Có lỗi xảy ra trong quá trình đăng ký");
         } finally {
             setLoading(false);
         }

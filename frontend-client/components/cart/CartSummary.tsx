@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import { ShieldCheck } from "lucide-react";
 import { formatCurrency } from "@/lib/utils/formatCurrency";
-import { useAppSelector } from "@/lib/store/hooks";
+import { usePromotion } from "@/hooks/usePromotion";
 import { VoucherSection } from "@/components/checkout/VoucherSection";
 
 interface CartSummaryProps {
@@ -14,7 +14,7 @@ interface CartSummaryProps {
 
 export function CartSummary({ cart }: CartSummaryProps) {
     const router = useRouter();
-    const { discountResult } = useAppSelector((state) => state.promotion);
+    const { discountResult, appliedVoucherCodes } = usePromotion(cart);
 
     const finalTotal = discountResult ? discountResult.finalTotal : cart.totalAmount;
 
@@ -47,7 +47,7 @@ export function CartSummary({ cart }: CartSummaryProps) {
 
                     {/* Voucher Section Integration */}
                     <div className="pt-2">
-                        <VoucherSection />
+                        <VoucherSection discountResult={discountResult} appliedVoucherCodes={appliedVoucherCodes} />
                     </div>
 
                     <div className="border-t border-border mt-4 pt-4 flex justify-between items-end">

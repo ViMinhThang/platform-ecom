@@ -1,8 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
-import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
-import { fetchReviewSummary } from "@/lib/store/slices/reviewSlice";
+import { useGetProductReviewSummaryQuery } from "@/lib/store/api/clientApi";
 import { StarRating } from "./ui/StarRating";
 import { Progress } from "./ui/progress";
 
@@ -11,12 +9,7 @@ interface ReviewStatsProps {
 }
 
 export function ReviewStats({ productId }: ReviewStatsProps) {
-  const dispatch = useAppDispatch();
-  const { summary, loading } = useAppSelector((state) => state.reviews);
-
-  useEffect(() => {
-    dispatch(fetchReviewSummary(productId));
-  }, [dispatch, productId]);
+  const { data: summary, isLoading: loading } = useGetProductReviewSummaryQuery(productId);
 
   if (loading && !summary) {
     return (
@@ -27,9 +20,6 @@ export function ReviewStats({ productId }: ReviewStatsProps) {
   }
 
   if (!summary) {
-    // If not loading and no summary, it might mean no reviews or error.
-    // But usually summary endpoint returns 0s if no reviews.
-    // So if summary is null, it's likely still initializing or error.
     return null;
   }
 

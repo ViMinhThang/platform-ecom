@@ -1,8 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { useSession } from 'next-auth/react';
-import { Order } from '@/types/user';
+import { useState } from 'react';
 import { useBuyAgain } from '@/hooks/useBuyAgain';
 import { OrderCard } from './OrderCard';
 import { ReviewDialog } from './ReviewDialog';
@@ -11,40 +9,24 @@ import { EmptyState } from '@/components/common/EmptyState';
 import { Pagination } from '@/components/common/Pagination';
 import { Package } from 'lucide-react';
 import { toast } from 'sonner';
-import { useAppDispatch, useAppSelector } from '@/lib/store/hooks';
-import { fetchOrders } from '@/lib/store/slices/orderSlice';
+import { useGetOrdersQuery } from '@/lib/store/api/clientApi';
+import type { OrderGroupDTO } from '@/types/order.types';
 
-/**
- * Component for displaying user order history in card layout.
- * Refactored to use Redux with NextAuth session token.
- */
 export function OrderHistory() {
-    const dispatch = useAppDispatch();
-    const { data: session } = useSession();
-    // Destructure correctly from OrderState
-    const { orders, page, totalPages, loading } = useAppSelector((state) => state.orders);
+    const [currentPage, setCurrentPage] = useState(0);
+    const { data: ordersData, isLoading } = useGetOrdersQuery({ page: currentPage, size: 10 });
 
-    // Review dialog state
+    const orders = ordersData?.content || [];
+    const totalPages = ordersData?.totalPages || 0;
+
     const [reviewDialogOpen, setReviewDialogOpen] = useState(false);
     const [reviewProductId, setReviewProductId] = useState<number | null>(null);
     const [reviewOrderId, setReviewOrderId] = useState<number | null>(null);
 
     const { buyAgain } = useBuyAgain();
 
-    // Initial fetch
-    useEffect(() => {
-        if (session?.accessToken && orders.length === 0 && !loading) {
-            dispatch(fetchOrders({ page: 0, size: 10 }));
-        }
-    }, [dispatch, session, orders.length, loading]);
-
     const handlePageChange = (newPage: number) => {
-        if (newPage >= 0 && newPage < totalPages && session?.accessToken) {
-            dispatch(fetchOrders({
-                page: newPage,
-                size: 10
-            }));
-        }
+        setCurrentPage(newPage);
     };
 
     const handleReviewOrderItem = (productId: number, orderId: number) => {
@@ -54,7 +36,6 @@ export function OrderHistory() {
     };
 
     const handleBuyAgain = async (order: any) => {
-        // TODO: Fix type compatibility between OrderGroupDTO and Order
         // await buyAgain(order.orderItems);
     };
 
@@ -62,7 +43,7 @@ export function OrderHistory() {
         toast.success('Thank you for your review!');
     };
 
-    if (loading && orders.length === 0) {
+    if (isLoading && orders.length === 0) {
         return <LoadingSpinner size="lg" />;
     }
 
@@ -82,13 +63,11 @@ export function OrderHistory() {
         <div className="space-y-6">
             {/* Orders Grid */}
             <div className="grid grid-cols-1 gap-6">
-                {orders.map((order) => (
+                {orders.map((order: OrderGroupDTO) => (
                     <OrderCard
                         key={order.id}
-                        // @ts-ignore - Temporary bypass for type mismatch
                         order={order}
                         onReviewOrderItem={handleReviewOrderItem}
-                        // @ts-ignore
                         onBuyAgain={handleBuyAgain}
                     />
                 ))}
@@ -96,7 +75,7 @@ export function OrderHistory() {
 
             {/* Pagination */}
             <Pagination
-                currentPage={page}
+                currentPage={currentPage}
                 totalPages={totalPages}
                 onPageChange={handlePageChange}
             />

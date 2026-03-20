@@ -1,20 +1,14 @@
 "use client";
 
-import { useEffect } from "react";
 import { ProductCard } from "@/components/ProductCard";
-import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
-import { fetchProducts } from "@/lib/store/slices/productSlice";
+import { useGetProductsQuery } from "@/lib/store/api/clientApi";
 import { Loader2 } from "lucide-react";
 
 export function FeaturedProducts() {
-  const dispatch = useAppDispatch();
-  const { products, loading } = useAppSelector((state) => state.products);
+  const { data, isLoading } = useGetProductsQuery({ page: 0, perPage: 20 });
+  const products = data?.content || [];
 
-  useEffect(() => {
-    dispatch(fetchProducts({ page: 0, perPage: 20 })); // Fetching less for homepage performance
-  }, [dispatch]);
-
-  if (loading && products.length === 0) {
+  if (isLoading && products.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center py-24">
         <Loader2 className="w-8 h-8 animate-spin text-primary mb-4" />

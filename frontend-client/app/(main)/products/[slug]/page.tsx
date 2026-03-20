@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { getProductBySlug } from "@/lib/services/product-service";
+import { use } from "react";
+import { useGetProductBySlugQuery } from "@/lib/store/api/clientApi";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { Star, ChevronRight } from "lucide-react";
@@ -16,20 +17,21 @@ import { ProductFeedback } from "@/components/product/ProductFeedback";
 import { RelatedProducts } from "@/components/product/RelatedProducts";
 import { SellerInfoCard } from "@/components/product/SellerInfoCard";
 import { ProductDetail, ProductVariant } from "@/types/product";
-import { logger } from "@/lib/logger";
 import { useAnalytics } from "@/hooks/useAnalytics";
 
 interface ProductDetailPageProps {
-    params: any;
+    params: Promise<{ slug: string }>;
 }
 
 export default function ProductDetailPage({ params }: ProductDetailPageProps) {
+    const { slug } = use(params);
     const { trackProductView } = useAnalytics();
-    const [product, setProduct] = useState<ProductDetail | null>(null);
     const [selectedVariant, setSelectedVariant] = useState<ProductVariant | null>(null);
-    const [loading, setLoading] = useState(true);
     const [api, setApi] = useState<any>();
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
+    
+    const { data: product, isLoading, isError } = useGetProductBySlugQuery(slug);
+
     useEffect(() => {
         if (!api) return;
         api.on("select", () => {
@@ -38,25 +40,12 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
     }, [api]);
 
     useEffect(() => {
-        const fetchProduct = async () => {
-            try {
-                const { slug } = await params;
-                const data = await getProductBySlug(slug);
-                logger.debug('Fetched product data:', { data });
-                setProduct(data);
-                
-                trackProductView(data.id, undefined, data.cate.id, data.userId);
-            } catch (error) {
-                logger.error("Failed to fetch product:", error);
-                notFound();
-            } finally {
-                setLoading(false);
-            }
-        };
-        fetchProduct();
-    }, [params]);
+        if (product) {
+            trackProductView(product.id, undefined, product.cate.id, product.userId);
+        }
+    }, [product, trackProductView]);
 
-    if (loading) {
+    if (isLoading) {
         return (
             <div className="min-h-screen bg-background/50 py-12 px-4 md:px-6">
                 <div className="max-w-[1400px] mx-auto bg-background border border-border rounded-sm shadow-md p-12 flex flex-col items-center justify-center min-h-[600px] gap-8">
@@ -73,7 +62,7 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
         );
     }
 
-    if (!product) {
+    if (isError || !product) {
         notFound();
     }
 

@@ -1,8 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { useAppSelector, useAppDispatch } from "@/lib/store/hooks";
-import { fetchProducts } from "@/lib/store/slices/productSlice";
+import { useState } from "react";
+import { useGetProductsQuery } from "@/lib/store/api/clientApi";
 import { ProductCard } from "@/components/ProductCard";
 import { Button } from "@/components/ui/button";
 import { getPersonalizedFeed } from "@/lib/services/recommendation-service";
@@ -10,29 +9,23 @@ import { useSession } from "next-auth/react";
 import { ProductRecommendation } from "@/types/recommendation";
 
 export function ProductFeed() {
-    const dispatch = useAppDispatch();
     const { data: session } = useSession();
-    const { products, loading } = useAppSelector((state) => state.products);
     const [activeTab, setActiveTab] = useState("daily");
     const [personalizedProducts, setPersonalizedProducts] = useState<ProductRecommendation[]>([]);
     const [recLoading, setRecLoading] = useState(false);
 
-    useEffect(() => {
-        if (activeTab === 'personalized') {
-            fetchPersonalized();
-        } else if (activeTab !== 'personalized') {
-            dispatch(fetchProducts({
-                sortBy: activeTab === 'top' ? 'price' : 'createdAt',
-                sortOrder: activeTab === 'top' ? 'asc' : 'desc',
-                perPage: 24
-            }));
-        }
-    }, [activeTab, dispatch, session]);
+    const { data: productsData, isLoading: productsLoading } = useGetProductsQuery({
+        sortBy: 'createdAt',
+        sortOrder: 'desc',
+        perPage: 24
+    });
+
+    const products = productsData?.content || [];
 
     const fetchPersonalized = async () => {
         setRecLoading(true);
         try {
-            const data = await getPersonalizedFeed(session?.user?.id ? Number(session.user.id) : 1, 24); // Fallback to 1 or any logic if no session, or just undefined
+            const data = await getPersonalizedFeed(session?.user?.id ? Number(session.user.id) : 1, 24);
             setPersonalizedProducts(data || []);
         } catch (error) {
             console.error(error);
@@ -56,7 +49,12 @@ export function ProductFeed() {
                         Gợi ý hàng ngày
                     </button>
                     <button
-                        onClick={() => setActiveTab('personalized')}
+                        onClick={() => {
+                            setActiveTab('personalized');
+                            if (personalizedProducts.length === 0) {
+                                fetchPersonalized();
+                            }
+                        }}
                         className={`flex-1 px-6 py-4 text-[10px] font-bold uppercase tracking-[0.2em] transition-all border-l border-border ${activeTab === 'personalized'
                             ? 'bg-primary text-primary-foreground'
                             : 'bg-transparent text-muted-foreground hover:bg-primary/5 hover:text-primary'
@@ -69,7 +67,7 @@ export function ProductFeed() {
 
             {/* Grid */}
             <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 min-h-[400px]">
-                {(loading || recLoading) && (activeTab === 'personalized' ? personalizedProducts.length === 0 : products.length === 0) ? (
+                {(productsLoading || recLoading) && (activeTab === 'personalized' ? personalizedProducts.length === 0 : products.length === 0) ? (
                     Array.from({ length: 12 }).map((_, i) => (
                         <div key={i} className="aspect-[3/4] bg-zinc-100 animate-pulse border border-black/5" />
                     ))

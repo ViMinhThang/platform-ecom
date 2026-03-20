@@ -1,34 +1,30 @@
 "use client";
 
-import { useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import { ProductCard } from "@/components/ProductCard";
-import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
-import { fetchProducts } from "@/lib/store/slices/productSlice";
+import { useGetProductsQuery } from "@/lib/store/api/clientApi";
 
 import { Suspense } from "react";
 
 function ProductsPageContent() {
-  const dispatch = useAppDispatch();
   const searchParams = useSearchParams();
-  const { products, loading, error, pagination } = useAppSelector(
-    (state) => state.products
-  );
-
+  
   const page = Number(searchParams.get("page")) || 0;
   const category = searchParams.get("category") || undefined;
   const search = searchParams.get("search") || undefined;
 
-  useEffect(() => {
-    dispatch(
-      fetchProducts({
-        page,
-        perPage: 12,
-        category,
-        search,
-      })
-    );
-  }, [dispatch, page, category, search]);
+  const { data, isLoading, isError, error } = useGetProductsQuery({
+    page,
+    perPage: 12,
+    category,
+    search,
+  });
+
+  const products = data?.content || [];
+  const pagination = data ? {
+    pageNumber: data.pageNumber,
+    totalPages: data.totalPages,
+  } : { pageNumber: 0, totalPages: 0 };
 
   return (
     <div className="container mx-auto py-8 px-4 md:px-6">
@@ -39,13 +35,13 @@ function ProductsPageContent() {
         <p className="text-muted-foreground mt-2">Discover our collection</p>
       </div>
 
-      {loading ? (
+      {isLoading ? (
         <div className="text-center py-12">
           <p className="text-muted-foreground">Loading products...</p>
         </div>
-      ) : error ? (
+      ) : isError ? (
         <div className="text-center py-12">
-          <p className="text-destructive">{error}</p>
+          <p className="text-destructive">{error ? String(error) : 'An error occurred'}</p>
         </div>
       ) : products.length > 0 ? (
         <>

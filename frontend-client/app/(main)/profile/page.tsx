@@ -7,9 +7,7 @@ import { AddressManager } from '@/components/profile/AddressManager';
 import { OrderHistory } from '@/components/profile/OrderHistory';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Loader2 } from 'lucide-react';
-import { useAppDispatch, useAppSelector } from '@/lib/store/hooks';
-import { fetchAddresses } from '@/lib/store/slices/addressSlice';
-import { fetchUserProfile } from '@/lib/store/slices/authSlice';
+import { useGetUserProfileQuery, useGetAddressesQuery } from '@/lib/store/api/clientApi';
 import { ProfileLayout } from '@/components/profile/ProfileLayout';
 
 import { Suspense } from 'react';
@@ -17,12 +15,11 @@ import { Suspense } from 'react';
 function ProfilePageContent() {
     const { data: session, status } = useSession();
     const router = useRouter();
-    const dispatch = useAppDispatch();
     const searchParams = useSearchParams();
     const currentTab = searchParams.get('tab') || 'profile';
 
-    const { user, loading: authLoading } = useAppSelector((state) => state.auth);
-    const { addresses } = useAppSelector((state) => state.address);
+    const { data: user, isLoading: authLoading, refetch: refetchUser } = useGetUserProfileQuery();
+    const { data: addresses = [], refetch: refetchAddresses } = useGetAddressesQuery();
 
     useEffect(() => {
         if (status === 'unauthenticated') {
@@ -30,25 +27,12 @@ function ProfilePageContent() {
         }
     }, [status, router]);
 
-    useEffect(() => {
-        if (session?.accessToken) {
-            const token = session.accessToken as string;
-            dispatch(fetchAddresses(token));
-            dispatch(fetchUserProfile({ token }));
-        }
-    }, [session, dispatch]);
-
     const handleProfileUpdate = () => {
-        if (session?.accessToken) {
-            const token = session.accessToken as string;
-            dispatch(fetchUserProfile({ token }));
-        }
+        refetchUser();
     };
 
     const handleAddressUpdate = () => {
-        if (session?.accessToken) {
-            dispatch(fetchAddresses(session.accessToken as string));
-        }
+        refetchAddresses();
     };
 
     if (status === 'loading' || authLoading) {

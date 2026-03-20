@@ -14,7 +14,8 @@ export function PaymentForm() {
     // ... hooks ...
     const stripe = useStripe();
     const elements = useElements();
-    const { checkoutSession, confirmPaymentAndCreateOrder } = useCheckout();
+    const { checkout, confirmPaymentAndCreateOrder } = useCheckout();
+    const checkoutSession = checkout.checkoutSession;
     const [message, setMessage] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState(false);
     const router = useRouter();
@@ -51,7 +52,6 @@ export function PaymentForm() {
             if (paymentIntent && paymentIntent.status === "succeeded") {
                 try {
                     const order = await confirmPaymentAndCreateOrder(paymentIntent.id);
-
                     router.push(`/checkout/success?orderId=${order.id}`);
                 } catch (orderError: any) {
                     setMessage(orderError.message || "Thanh toán thành công nhưng tạo đơn hàng thất bại. Vui lòng liên hệ hỗ trợ.");

@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import type { CheckoutSession, OrderGroupDTO } from '@/types/order.types';
 
 interface CheckoutState {
     step: 'address' | 'payment' | 'confirmation';
@@ -6,6 +7,8 @@ interface CheckoutState {
     paymentProvider: 'stripe' | 'paypal';
     promoCode: string | null;
     shippingFee: number;
+    checkoutSession: CheckoutSession | null;
+    currentOrder: OrderGroupDTO | null;
 }
 
 const initialState: CheckoutState = {
@@ -13,7 +16,9 @@ const initialState: CheckoutState = {
     selectedAddressId: null,
     paymentProvider: 'stripe',
     promoCode: null,
-    shippingFee: 0
+    shippingFee: 0,
+    checkoutSession: null,
+    currentOrder: null
 };
 
 const checkoutSlice = createSlice({
@@ -35,6 +40,12 @@ const checkoutSlice = createSlice({
         setShippingFee: (state, action: PayloadAction<number>) => {
             state.shippingFee = action.payload;
         },
+        setCheckoutSession: (state, action: PayloadAction<CheckoutSession | null>) => {
+            state.checkoutSession = action.payload;
+        },
+        setCurrentOrder: (state, action: PayloadAction<OrderGroupDTO | null>) => {
+            state.currentOrder = action.payload;
+        },
         resetCheckout: () => initialState
     }
 });
@@ -45,6 +56,8 @@ export const {
     setPaymentProvider,
     setPromoCode,
     setShippingFee,
+    setCheckoutSession,
+    setCurrentOrder,
     resetCheckout
 } = checkoutSlice.actions;
 
