@@ -53,54 +53,54 @@ export const saleCampaignService = {
         if (params?.size !== undefined) searchParams.set('size', params.size.toString());
         const query = searchParams.toString();
         const response = await apiClient.get<APIResponse<{ content: SaleCampaign[]; totalElements: number }>>(
-            `/api/v1/admin/flash-sales${query ? `?${query}` : ''}`
+            `/api/v1/admin/sale-campaigns${query ? `?${query}` : ''}`
         );
         return response.data.data;
     },
     getById: async (id: number): Promise<SaleCampaign> => {
-        const response = await apiClient.get<APIResponse<SaleCampaign>>(`/api/v1/admin/flash-sales/${id}`);
+        const response = await apiClient.get<APIResponse<SaleCampaign>>(`/api/v1/admin/sale-campaigns/${id}`);
         return response.data.data;
     },
     create: async (data: Partial<SaleCampaign>): Promise<SaleCampaign> => {
-        const response = await apiClient.post<APIResponse<SaleCampaign>>('/api/v1/admin/flash-sales', data);
+        const response = await apiClient.post<APIResponse<SaleCampaign>>('/api/v1/admin/sale-campaigns', data);
         return response.data.data;
     },
     update: async (id: number, data: Partial<SaleCampaign>): Promise<SaleCampaign> => {
-        const response = await apiClient.put<APIResponse<SaleCampaign>>(`/api/v1/admin/flash-sales/${id}`, data);
+        const response = await apiClient.put<APIResponse<SaleCampaign>>(`/api/v1/admin/sale-campaigns/${id}`, data);
         return response.data.data;
     },
     delete: async (id: number): Promise<void> => {
-        await apiClient.delete(`/api/v1/admin/flash-sales/${id}`);
+        await apiClient.delete(`/api/v1/admin/sale-campaigns/${id}`);
     },
     addItems: async (id: number, items: unknown[]): Promise<SaleCampaign> => {
         const response = await apiClient.post<APIResponse<SaleCampaign>>(
-            `/api/v1/admin/flash-sales/${id}/items`,
+            `/api/v1/admin/sale-campaigns/${id}/items`,
             items
         );
         return response.data.data;
     },
     activate: async (id: number): Promise<SaleCampaign> => {
         const response = await apiClient.post<APIResponse<SaleCampaign>>(
-            `/api/v1/admin/flash-sales/${id}/activate`
+            `/api/v1/admin/sale-campaigns/${id}/activate`
         );
         return response.data.data;
     },
     cancel: async (id: number): Promise<SaleCampaign> => {
         const response = await apiClient.post<APIResponse<SaleCampaign>>(
-            `/api/v1/admin/flash-sales/${id}/cancel`
+            `/api/v1/admin/sale-campaigns/${id}/cancel`
         );
         return response.data.data;
     },
     updateCategories: async (id: number, categoryIds: number[]): Promise<SaleCampaign> => {
         const response = await apiClient.put<APIResponse<SaleCampaign>>(
-            `/api/v1/admin/flash-sales/${id}/categories`,
+            `/api/v1/admin/sale-campaigns/${id}/categories`,
             { categoryIds }
         );
         return response.data.data;
     },
     updateDiscountTiers: async (id: number, discountTiers: unknown[]): Promise<SaleCampaign> => {
         const response = await apiClient.put<APIResponse<SaleCampaign>>(
-            `/api/v1/admin/flash-sales/${id}/discount-tiers`,
+            `/api/v1/admin/sale-campaigns/${id}/discount-tiers`,
             { discountTiers }
         );
         return response.data.data;
@@ -109,7 +109,7 @@ export const saleCampaignService = {
         const formData = new FormData();
         formData.append('banner', file);
         const response = await apiClient.post<APIResponse<SaleCampaign>>(
-            `/api/v1/admin/flash-sales/${id}/banner`,
+            `/api/v1/admin/sale-campaigns/${id}/banner`,
             formData
         );
         return response.data.data;

@@ -5,35 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c48beeac-7758-42e4-81dd-f068fbcd38be" name="Changes" comment="update spring cloud stream dependency">
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/app/admin/dashboard/overview/@area_stats/error.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/app/admin/dashboard/overview/@area_stats/loading.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/app/admin/dashboard/overview/@area_stats/page.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/app/admin/dashboard/overview/@bar_stats/loading.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/app/admin/dashboard/overview/@bar_stats/page.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/app/admin/dashboard/overview/@pie_stats/error.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/app/admin/dashboard/overview/@pie_stats/loading.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/app/admin/dashboard/overview/@pie_stats/page.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/app/admin/dashboard/overview/layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/app/admin/dashboard/overview/layout.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/admin/overview/area-graph.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/admin/overview/area-graph.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/admin/overview/bar-graph.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/admin/overview/bar-graph.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/admin/overview/overview.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/admin/overview/overview.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/admin/overview/recent-sales.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/admin/overview/recent-sales.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/admin/overview/trend-chart.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/admin/overview/trend-chart.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/home/ProductFeed.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/home/ProductFeed.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/lib/store/admin/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/lib/store/admin/index.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-client/lib/services/sale-campaign-service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/lib/services/sale-campaign-service.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/logs/order-service.log" beforeDir="false" afterPath="$PROJECT_DIR$/logs/order-service.log" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/logs/user-service.log" beforeDir="false" afterPath="$PROJECT_DIR$/logs/user-service.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/chatbot/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/chatbot/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/chatbot/src/main/java/com/ecom/chatbot/client/EmbeddingServiceClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/chatbot/src/main/java/com/ecom/chatbot/client/EmbeddingServiceClient.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/chatbot/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/chatbot/src/main/resources/application.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/configserver/src/main/resources/config/chatbot-service.yml" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/configserver/src/main/resources/config/chatbot-service.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/configserver/src/main/resources/config/order-service.yml" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/configserver/src/main/resources/config/order-service.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/configserver/src/main/resources/config/review-service.yml" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/configserver/src/main/resources/config/review-service.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/gateway/src/main/java/com/ecom/gateway/security/GatewayConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/gateway/src/main/java/com/ecom/gateway/security/GatewayConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/order/src/main/java/com/ecom/order/repository/OrderGroupRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/order/src/main/java/com/ecom/order/repository/OrderGroupRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/order/src/main/java/com/ecom/order/repository/SubOrderRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/order/src/main/java/com/ecom/order/repository/SubOrderRepository.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
