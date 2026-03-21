@@ -1,4 +1,16 @@
 spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/chatbot
+    username: ${DB_USER:fragile}
+    password: ${DB_PASSWORD:204863}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: false
   ai:
     vertex:
       ai:
@@ -6,6 +18,9 @@ spring:
           project-id: gen-lang-client-0858695901
           location: "europe-west1"
           model: "gemini-2.0-flash-lite"
+        embedding:
+          project-id: gen-lang-client-0858695901
+          location: "asia-east1"
     mcp:
       server:
         type: SYNC

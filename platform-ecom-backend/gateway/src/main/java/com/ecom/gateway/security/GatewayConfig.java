@@ -278,6 +278,13 @@ public class GatewayConfig {
                                                                 .filter(authFilter))
                                                 .uri("lb://order-service"))
 
+                                // Admin analytics management
+                                .route("admin-analytics", r -> r
+                                                .path("/api/v1/admin/analytics", "/api/v1/admin/analytics/**")
+                                                .filters(f -> f
+                                                                .filter(authFilter))
+                                                .uri("lb://order-service"))
+
                                 // ============================================================
                                 // REVIEWS - /api/v1/reviews
                                 // ============================================================

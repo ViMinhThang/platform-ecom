@@ -7,3 +7,4 @@ export * from './flashSaleApi';
 export * from './productVariantApi';
 export * from './productOptionApi';
 export * from './productImageApi';
+export * from './analyticsApi';

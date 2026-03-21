@@ -18,15 +18,12 @@ import {
   ChartTooltipContent
 } from '@/components/ui/chart';
 
-const chartData = [
-  { week: 'T1', revenue: 186, orders: 80 },
-  { week: 'T2', revenue: 305, orders: 200 },
-  { week: 'T3', revenue: 237, orders: 120 },
-  { week: 'T4', revenue: 290, orders: 190 },
-  { week: 'T5', revenue: 320, orders: 150 },
-  { week: 'T6', revenue: 280, orders: 140 },
-  { week: 'T7', revenue: 350, orders: 210 }
-];
+export interface TrendChartData {
+  month: number;
+  monthName: string;
+  revenue: number;
+  orderCount: number;
+}
 
 const chartConfig = {
   revenue: {
@@ -39,18 +36,34 @@ const chartConfig = {
   }
 } satisfies ChartConfig;
 
-export function TrendChart() {
+interface TrendChartProps {
+  data: TrendChartData[];
+}
+
+export function TrendChart({ data }: TrendChartProps) {
+  const chartData = data.map((item) => ({
+    month: item.monthName,
+    revenue: Number(item.revenue),
+    orders: item.orderCount
+  }));
+
+  const currentMonth = data[data.length - 1];
+  const previousMonth = data[data.length - 2];
+  const revenueGrowth = previousMonth && previousMonth.revenue > 0
+    ? ((currentMonth?.revenue - previousMonth.revenue) / previousMonth.revenue * 100).toFixed(1)
+    : '0';
+
   return (
     <Card className='@container/card'>
       <CardHeader className='pb-2'>
         <div className='flex items-center justify-between'>
           <div>
-            <CardTitle className='text-base font-semibold'>Xu hướng tuần</CardTitle>
-            <CardDescription>Doanh thu và đơn hàng theo tuần</CardDescription>
+            <CardTitle className='text-base font-semibold'>Xu hướng doanh thu</CardTitle>
+            <CardDescription>Doanh thu và đơn hàng theo tháng</CardDescription>
           </div>
           <div className='flex items-center gap-1 text-xs text-emerald-600 font-medium'>
             <TrendingUp className='h-3 w-3' />
-            +8.2%
+            {revenueGrowth}%
           </div>
         </div>
       </CardHeader>
@@ -69,7 +82,7 @@ export function TrendChart() {
             }}
           >
             <XAxis
-              dataKey='week'
+              dataKey='month'
               tickLine={false}
               axisLine={false}
               tick={{ fontSize: 11 }}
@@ -80,7 +93,14 @@ export function TrendChart() {
               axisLine={false}
               tick={{ fontSize: 11 }}
               tickMargin={8}
-              width={32}
+              width={60}
+              tickFormatter={(value) => 
+                value >= 1000000 
+                  ? `${(value / 1000000).toFixed(1)}M` 
+                  : value >= 1000 
+                    ? `${(value / 1000).toFixed(0)}K` 
+                    : value.toString()
+              }
             />
             <ChartTooltip
               cursor={{ stroke: 'var(--muted)', strokeWidth: 1 }}

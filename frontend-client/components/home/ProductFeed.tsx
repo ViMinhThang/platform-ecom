@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useGetProductsQuery } from "@/lib/store/api/clientApi";
 import { ProductCard } from "@/components/ProductCard";
 import { Button } from "@/components/ui/button";
@@ -13,6 +13,11 @@ export function ProductFeed() {
     const [activeTab, setActiveTab] = useState("daily");
     const [personalizedProducts, setPersonalizedProducts] = useState<ProductRecommendation[]>([]);
     const [recLoading, setRecLoading] = useState(false);
+    const [isMounted, setIsMounted] = useState(false);
+
+    useEffect(() => {
+        setIsMounted(true);
+    }, []);
 
     const { data: productsData, isLoading: productsLoading } = useGetProductsQuery({
         sortBy: 'createdAt',
@@ -35,7 +40,7 @@ export function ProductFeed() {
     };
 
     return (
-        <div className="container mx-auto px-4 mb-20">
+        <div className="container mx-auto px-4 mb-20" suppressHydrationWarning>
             {/* Industrial Tab Header */}
             <div className="sticky top-[100px] z-40 bg-background/80 backdrop-blur-md mb-8">
                 <div className="flex border border-border rounded-sm overflow-hidden shadow-sm">
@@ -67,7 +72,7 @@ export function ProductFeed() {
 
             {/* Grid */}
             <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 min-h-[400px]">
-                {(productsLoading || recLoading) && (activeTab === 'personalized' ? personalizedProducts.length === 0 : products.length === 0) ? (
+                {!isMounted || (productsLoading || recLoading) && (activeTab === 'personalized' ? personalizedProducts.length === 0 : products.length === 0) ? (
                     Array.from({ length: 12 }).map((_, i) => (
                         <div key={i} className="aspect-[3/4] bg-zinc-100 animate-pulse border border-black/5" />
                     ))

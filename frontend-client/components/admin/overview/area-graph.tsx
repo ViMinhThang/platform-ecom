@@ -1,7 +1,8 @@
 'use client';
 
-import { IconTrendingUp } from '@tabler/icons-react';
-import { Area, AreaChart, CartesianGrid, XAxis } from 'recharts';
+import * as React from 'react';
+import { TrendingUp } from 'lucide-react';
+import { Area, AreaChart, CartesianGrid, XAxis, YAxis } from 'recharts';
 
 import {
   Card,
@@ -18,36 +19,53 @@ import {
   ChartTooltipContent
 } from '@/components/ui/chart';
 
-const chartData = [
-  { month: 'Tháng 1', desktop: 186, mobile: 80 },
-  { month: 'Tháng 2', desktop: 305, mobile: 200 },
-  { month: 'Tháng 3', desktop: 237, mobile: 120 },
-  { month: 'Tháng 4', desktop: 73, mobile: 190 },
-  { month: 'Tháng 5', desktop: 209, mobile: 130 },
-  { month: 'Tháng 6', desktop: 214, mobile: 140 }
-];
+export interface AreaChartData {
+  month: number;
+  monthName: string;
+  totalOrders: number;
+  completed: number;
+  processing: number;
+  cancelled: number;
+  refunded: number;
+}
 
 const chartConfig = {
-  visitors: {
-    label: 'Khách truy cập'
+  completed: {
+    label: 'Hoàn thành',
+    color: 'hsl(var(--primary))'
   },
-  desktop: {
-    label: 'Máy tính',
-    color: 'var(--primary)'
+  processing: {
+    label: 'Đang xử lý',
+    color: 'hsl(var(--muted-foreground))'
   },
-  mobile: {
-    label: 'Di động',
-    color: 'var(--primary)'
+  cancelled: {
+    label: 'Đã hủy',
+    color: 'hsl(0 84.2% 60.2%)'
   }
 } satisfies ChartConfig;
 
-export function AreaGraph() {
+interface AreaGraphProps {
+  data: AreaChartData[];
+}
+
+export function AreaGraph({ data }: AreaGraphProps) {
+  const chartData = data.map((item) => ({
+    month: item.monthName,
+    completed: item.completed,
+    processing: item.processing,
+    cancelled: item.cancelled
+  }));
+
+  const totalCompleted = data.reduce((acc, curr) => acc + curr.completed, 0);
+  const totalOrders = data.reduce((acc, curr) => acc + curr.totalOrders, 0);
+  const completionRate = totalOrders > 0 ? ((totalCompleted / totalOrders) * 100).toFixed(1) : '0';
+
   return (
     <Card className='@container/card'>
       <CardHeader>
-        <CardTitle>Biểu đồ vùng - Xếp chồng</CardTitle>
+        <CardTitle className='text-base'>Đơn hàng theo trạng thái</CardTitle>
         <CardDescription>
-          Hiển thị tổng số khách truy cập trong 6 tháng qua
+          Phân bổ đơn hàng theo tháng trong năm
         </CardDescription>
       </CardHeader>
       <CardContent className='px-2 pt-4 sm:px-6 sm:pt-6'>
@@ -63,27 +81,39 @@ export function AreaGraph() {
             }}
           >
             <defs>
-              <linearGradient id='fillDesktop' x1='0' y1='0' x2='0' y2='1'>
+              <linearGradient id='fillCompleted' x1='0' y1='0' x2='0' y2='1'>
                 <stop
                   offset='5%'
-                  stopColor='var(--color-desktop)'
+                  stopColor='var(--color-completed)'
                   stopOpacity={1.0}
                 />
                 <stop
                   offset='95%'
-                  stopColor='var(--color-desktop)'
+                  stopColor='var(--color-completed)'
                   stopOpacity={0.1}
                 />
               </linearGradient>
-              <linearGradient id='fillMobile' x1='0' y1='0' x2='0' y2='1'>
+              <linearGradient id='fillProcessing' x1='0' y1='0' x2='0' y2='1'>
                 <stop
                   offset='5%'
-                  stopColor='var(--color-mobile)'
+                  stopColor='var(--color-processing)'
                   stopOpacity={0.8}
                 />
                 <stop
                   offset='95%'
-                  stopColor='var(--color-mobile)'
+                  stopColor='var(--color-processing)'
+                  stopOpacity={0.1}
+                />
+              </linearGradient>
+              <linearGradient id='fillCancelled' x1='0' y1='0' x2='0' y2='1'>
+                <stop
+                  offset='5%'
+                  stopColor='var(--color-cancelled)'
+                  stopOpacity={0.8}
+                />
+                <stop
+                  offset='95%'
+                  stopColor='var(--color-cancelled)'
                   stopOpacity={0.1}
                 />
               </linearGradient>
@@ -95,24 +125,37 @@ export function AreaGraph() {
               axisLine={false}
               tickMargin={8}
               minTickGap={32}
-              tickFormatter={(value) => value.slice(0, 7)}
+              tick={{ fontSize: 11 }}
+            />
+            <YAxis
+              tickLine={false}
+              axisLine={false}
+              tickMargin={8}
+              tick={{ fontSize: 11 }}
             />
             <ChartTooltip
-              cursor={false}
+              cursor={{ fill: 'var(--muted)', opacity: 0.5 }}
               content={<ChartTooltipContent indicator='dot' />}
             />
             <Area
-              dataKey='mobile'
+              dataKey='completed'
               type='natural'
-              fill='url(#fillMobile)'
-              stroke='var(--color-mobile)'
+              fill='url(#fillCompleted)'
+              stroke='var(--color-completed)'
               stackId='a'
             />
             <Area
-              dataKey='desktop'
+              dataKey='processing'
               type='natural'
-              fill='url(#fillDesktop)'
-              stroke='var(--color-desktop)'
+              fill='url(#fillProcessing)'
+              stroke='var(--color-processing)'
+              stackId='a'
+            />
+            <Area
+              dataKey='cancelled'
+              type='natural'
+              fill='url(#fillCancelled)'
+              stroke='var(--color-cancelled)'
               stackId='a'
             />
           </AreaChart>
@@ -122,11 +165,11 @@ export function AreaGraph() {
         <div className='flex w-full items-start gap-2 text-sm'>
           <div className='grid gap-2'>
             <div className='flex items-center gap-2 leading-none font-medium'>
-              Tăng 5.2% trong tháng này{' '}
-              <IconTrendingUp className='h-4 w-4' />
+              Tỷ lệ hoàn thành {completionRate}%{' '}
+              <TrendingUp className='h-4 w-4 text-emerald-600' />
             </div>
             <div className='text-muted-foreground flex items-center gap-2 leading-none'>
-              Tháng 1 - Tháng 6 2024
+              {totalOrders.toLocaleString()} đơn hàng trong năm
             </div>
           </div>
         </div>

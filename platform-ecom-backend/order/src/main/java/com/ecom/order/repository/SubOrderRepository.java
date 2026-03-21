@@ -39,4 +39,75 @@ public interface SubOrderRepository extends JpaRepository<SubOrder, Long> {
             "WHERE so.sellerId = :sellerId " +
             "AND so.status IN ('PROCESSING', 'SHIPPED')")
     long countActiveOrdersBySeller(@Param("sellerId") Long sellerId);
+
+    // Analytics queries for Seller Dashboard
+    @Query("SELECT COALESCE(SUM(so.total), 0) FROM SubOrder so " +
+            "WHERE so.sellerId = :sellerId " +
+            "AND so.status = 'DELIVERED' " +
+            "AND so.createdAt BETWEEN :startDate AND :endDate")
+    java.math.BigDecimal getTotalRevenueByDateRange(
+            @Param("sellerId") Long sellerId,
+            @Param("startDate") java.time.LocalDateTime startDate,
+            @Param("endDate") java.time.LocalDateTime endDate);
+
+    @Query("SELECT COUNT(so) FROM SubOrder so " +
+            "WHERE so.sellerId = :sellerId " +
+            "AND so.createdAt BETWEEN :startDate AND :endDate")
+    Long countOrdersByDateRange(
+            @Param("sellerId") Long sellerId,
+            @Param("startDate") java.time.LocalDateTime startDate,
+            @Param("endDate") java.time.LocalDateTime endDate);
+
+    @Query("SELECT COUNT(DISTINCT so.orderGroup.userId) FROM SubOrder so " +
+            "WHERE so.sellerId = :sellerId " +
+            "AND so.createdAt BETWEEN :startDate AND :endDate")
+    Long countNewCustomersByDateRange(
+            @Param("sellerId") Long sellerId,
+            @Param("startDate") java.time.LocalDateTime startDate,
+            @Param("endDate") java.time.LocalDateTime endDate);
+
+    @Query("SELECT COUNT(DISTINCT so.orderGroup.userId) FROM SubOrder so " +
+            "WHERE so.sellerId = :sellerId " +
+            "AND so.status IN ('PROCESSING', 'SHIPPED', 'TRANSPORTING', 'DELIVERING', 'DELIVERED') " +
+            "AND so.updatedAt >= :since")
+    Long countActiveAccounts(
+            @Param("sellerId") Long sellerId,
+            @Param("since") java.time.LocalDateTime since);
+
+    @Query("SELECT COUNT(so) FROM SubOrder so " +
+            "WHERE so.sellerId = :sellerId " +
+            "AND so.status = :status " +
+            "AND so.createdAt BETWEEN :startDate AND :endDate")
+    Long countOrdersByStatusAndDateRange(
+            @Param("sellerId") Long sellerId,
+            @Param("status") SubOrderStatus status,
+            @Param("startDate") java.time.LocalDateTime startDate,
+            @Param("endDate") java.time.LocalDateTime endDate);
+
+    // Monthly aggregation for revenue
+    @Query("SELECT MONTH(so.createdAt) as month, " +
+            "       SUM(so.total) as revenue, " +
+            "       COUNT(so) as orderCount " +
+            "FROM SubOrder so " +
+            "WHERE so.sellerId = :sellerId " +
+            "  AND YEAR(so.createdAt) = :year " +
+            "  AND so.status = 'DELIVERED' " +
+            "GROUP BY MONTH(so.createdAt) " +
+            "ORDER BY MONTH(so.createdAt)")
+    List<Object[]> getMonthlyRevenue(
+            @Param("sellerId") Long sellerId,
+            @Param("year") int year);
+
+    // Monthly aggregation for orders by status
+    @Query("SELECT MONTH(so.createdAt) as month, " +
+            "       so.status as status, " +
+            "       COUNT(so) as count " +
+            "FROM SubOrder so " +
+            "WHERE so.sellerId = :sellerId " +
+            "  AND YEAR(so.createdAt) = :year " +
+            "GROUP BY MONTH(so.createdAt), so.status " +
+            "ORDER BY MONTH(so.createdAt)")
+    List<Object[]> getMonthlyOrdersByStatus(
+            @Param("sellerId") Long sellerId,
+            @Param("year") int year);
 }

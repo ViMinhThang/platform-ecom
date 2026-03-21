@@ -1,3 +1,6 @@
+'use client';
+
+import * as React from 'react';
 import PageContainer from '@/components/admin/layout/page-container';
 import { Button } from '@/components/ui/button';
 import {
@@ -11,13 +14,59 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { AreaGraph } from './area-graph';
 import { BarGraph } from './bar-graph';
 import { PieGraph } from './pie-graph';
-import { CategoryChart } from './category-chart';
 import { TrendChart } from './trend-chart';
 import { RecentSales } from './recent-sales';
 import { IconTrendingUp, IconTrendingDown } from '@tabler/icons-react';
 import { Badge } from '@/components/ui/badge';
+import {
+  useGetDashboardOverviewQuery,
+  useGetRevenueByMonthQuery,
+  useGetOrdersByMonthQuery,
+  useGetRecentOrdersQuery
+} from '@/lib/store/admin';
+import { Skeleton } from '@/components/ui/skeleton';
 
 export default function OverViewPage() {
+  const currentYear = new Date().getFullYear();
+  
+  const { data: overview, isLoading: overviewLoading } = useGetDashboardOverviewQuery(currentYear);
+  const { data: revenueData, isLoading: revenueLoading } = useGetRevenueByMonthQuery(currentYear);
+  const { data: ordersData, isLoading: ordersLoading } = useGetOrdersByMonthQuery(currentYear);
+  const { data: recentOrders, isLoading: recentOrdersLoading } = useGetRecentOrdersQuery(10);
+
+  const formatCurrency = (value: string | number) => {
+    const num = typeof value === 'string' ? parseFloat(value) : value;
+    return new Intl.NumberFormat('vi-VN', {
+      style: 'currency',
+      currency: 'VND',
+      maximumFractionDigits: 0
+    }).format(num);
+  };
+
+  const barChartData = revenueData?.map(item => ({
+    month: item.month,
+    monthName: item.monthName,
+    revenue: parseFloat(item.revenue),
+    orderCount: item.orderCount
+  })) || [];
+
+  const trendChartData = revenueData?.map(item => ({
+    month: item.month,
+    monthName: item.monthName,
+    revenue: parseFloat(item.revenue),
+    orderCount: item.orderCount
+  })) || [];
+
+  const areaChartData = ordersData?.map(item => ({
+    month: item.month,
+    monthName: item.monthName,
+    totalOrders: item.totalOrders,
+    completed: item.completed,
+    processing: item.processing,
+    cancelled: item.cancelled,
+    refunded: item.refunded
+  })) || [];
+
   return (
     <PageContainer>
       <div className='flex flex-1 flex-col gap-6'>
@@ -44,112 +93,116 @@ export default function OverViewPage() {
           </TabsList>
           <TabsContent value='overview' className='space-y-4'>
             <div className='grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4'>
-              <Card className='group relative overflow-hidden transition-all duration-200 hover:shadow-md hover:border-primary/30'>
-                <CardHeader className='pb-2'>
-                  <CardDescription className='text-xs font-medium uppercase tracking-wide text-muted-foreground'>
-                    Tổng doanh thu
-                  </CardDescription>
-                  <CardTitle className='text-3xl font-bold tabular-nums text-foreground'>
-                    ₫12.5M
-                  </CardTitle>
-                </CardHeader>
-                <CardFooter className='flex-col items-start gap-1 pt-0'>
-                  <Badge variant='default' className='bg-emerald-500/10 text-emerald-600 hover:bg-emerald-500/20 gap-1'>
-                    <IconTrendingUp className='size-3' />
-                    +12.5%
-                  </Badge>
-                  <p className='text-xs text-muted-foreground mt-1'>
-                    Tăng trưởng so với tháng trước
-                  </p>
-                </CardFooter>
-                <div className='absolute inset-x-0 bottom-0 h-1 bg-gradient-to-r from-primary/20 to-primary/5 opacity-0 transition-opacity group-hover:opacity-100' />
-              </Card>
-              <Card className='group relative overflow-hidden transition-all duration-200 hover:shadow-md hover:border-primary/30'>
-                <CardHeader className='pb-2'>
-                  <CardDescription className='text-xs font-medium uppercase tracking-wide text-muted-foreground'>
-                    Khách hàng mới
-                  </CardDescription>
-                  <CardTitle className='text-3xl font-bold tabular-nums text-foreground'>
-                    1,234
-                  </CardTitle>
-                </CardHeader>
-                <CardFooter className='flex-col items-start gap-1 pt-0'>
-                  <Badge variant='destructive' className='gap-1'>
-                    <IconTrendingDown className='size-3' />
-                    -20%
-                  </Badge>
-                  <p className='text-xs text-muted-foreground mt-1'>
-                    Cần cải thiện chiến dịch tiếp cận
-                  </p>
-                </CardFooter>
-                <div className='absolute inset-x-0 bottom-0 h-1 bg-gradient-to-r from-destructive/20 to-destructive/5 opacity-0 transition-opacity group-hover:opacity-100' />
-              </Card>
-              <Card className='group relative overflow-hidden transition-all duration-200 hover:shadow-md hover:border-primary/30'>
-                <CardHeader className='pb-2'>
-                  <CardDescription className='text-xs font-medium uppercase tracking-wide text-muted-foreground'>
-                    Tài khoản hoạt động
-                  </CardDescription>
-                  <CardTitle className='text-3xl font-bold tabular-nums text-foreground'>
-                    45,678
-                  </CardTitle>
-                </CardHeader>
-                <CardFooter className='flex-col items-start gap-1 pt-0'>
-                  <Badge variant='default' className='bg-emerald-500/10 text-emerald-600 hover:bg-emerald-500/20 gap-1'>
-                    <IconTrendingUp className='size-3' />
-                    +12.5%
-                  </Badge>
-                  <p className='text-xs text-muted-foreground mt-1'>
-                    Giữ chân người dùng tốt
-                  </p>
-                </CardFooter>
-                <div className='absolute inset-x-0 bottom-0 h-1 bg-gradient-to-r from-primary/20 to-primary/5 opacity-0 transition-opacity group-hover:opacity-100' />
-              </Card>
-              <Card className='group relative overflow-hidden transition-all duration-200 hover:shadow-md hover:border-primary/30'>
-                <CardHeader className='pb-2'>
-                  <CardDescription className='text-xs font-medium uppercase tracking-wide text-muted-foreground'>
-                    Tỷ lệ tăng trưởng
-                  </CardDescription>
-                  <CardTitle className='text-3xl font-bold tabular-nums text-foreground'>
-                    4.5%
-                  </CardTitle>
-                </CardHeader>
-                <CardFooter className='flex-col items-start gap-1 pt-0'>
-                  <Badge variant='default' className='bg-emerald-500/10 text-emerald-600 hover:bg-emerald-500/20 gap-1'>
-                    <IconTrendingUp className='size-3' />
-                    +4.5%
-                  </Badge>
-                  <p className='text-xs text-muted-foreground mt-1'>
-                    Đạt theo kế hoạch đề ra
-                  </p>
-                </CardFooter>
-                <div className='absolute inset-x-0 bottom-0 h-1 bg-gradient-to-r from-primary/20 to-primary/5 opacity-0 transition-opacity group-hover:opacity-100' />
-              </Card>
+              <StatCard
+                title='Tổng doanh thu'
+                value={overview ? formatCurrency(overview.totalRevenue) : '-'}
+                growth={overview?.revenueGrowth}
+                growthLabel='so với năm trước'
+                isLoading={overviewLoading}
+              />
+              <StatCard
+                title='Khách hàng mới'
+                value={overview ? overview.newCustomers.toLocaleString() : '-'}
+                growth={overview?.customerGrowth}
+                growthLabel='so với năm trước'
+                isLoading={overviewLoading}
+                variant={overview?.customerGrowth && overview.customerGrowth < 0 ? 'destructive' : 'default'}
+              />
+              <StatCard
+                title='Tổng đơn hàng'
+                value={overview ? overview.totalOrders.toLocaleString() : '-'}
+                growth={overview?.orderGrowth}
+                growthLabel='so với năm trước'
+                isLoading={overviewLoading}
+              />
+              <StatCard
+                title='Đơn hàng hoàn thành'
+                value={overview ? overview.completedOrders.toLocaleString() : '-'}
+                subtitle={`Đang xử lý: ${overview?.processingOrders?.toLocaleString() || 0}`}
+                isLoading={overviewLoading}
+              />
             </div>
             <div className='grid grid-cols-1 gap-4 lg:grid-cols-7'>
-              <Card className='col-span-full lg:col-span-3 border-t-2 border-t-primary/20'>
-                <BarGraph />
-              </Card>
-              <Card className='col-span-full lg:col-span-4 border-t-2 border-t-primary/20'>
-                <TrendChart />
-              </Card>
-              <Card className='col-span-full lg:col-span-3 border-t-2 border-t-primary/20'>
-                <RecentSales />
-              </Card>
-              <Card className='col-span-full lg:col-span-4 border-t-2 border-t-primary/20'>
-                <AreaGraph />
-              </Card>
+              <div className='col-span-full lg:col-span-3'>
+                <BarGraph data={barChartData} />
+              </div>
+              <div className='col-span-full lg:col-span-4'>
+                <TrendChart data={trendChartData} />
+              </div>
+              <div className='col-span-full lg:col-span-3'>
+                <RecentSales data={recentOrders || []} />
+              </div>
+              <div className='col-span-full lg:col-span-4'>
+                <AreaGraph data={areaChartData} />
+              </div>
             </div>
-            <div className='grid grid-cols-1 gap-4 lg:grid-cols-7'>
-              <Card className='col-span-full lg:col-span-3 border-t-2 border-t-primary/20'>
+            <div className='grid grid-cols-1 gap-4 lg:grid-cols-2'>
+              <div className='col-span-1'>
                 <PieGraph />
-              </Card>
-              <Card className='col-span-full lg:col-span-4 border-t-2 border-t-primary/20'>
-                <CategoryChart />
-              </Card>
+              </div>
             </div>
           </TabsContent>
         </Tabs>
       </div>
     </PageContainer>
+  );
+}
+
+interface StatCardProps {
+  title: string;
+  value: string;
+  growth?: number;
+  growthLabel?: string;
+  subtitle?: string;
+  isLoading?: boolean;
+  variant?: 'default' | 'destructive';
+}
+
+function StatCard({ title, value, growth, growthLabel, subtitle, isLoading, variant = 'default' }: StatCardProps) {
+  if (isLoading) {
+    return (
+      <Card className='group relative overflow-hidden transition-all duration-200 hover:shadow-md hover:border-primary/30'>
+        <CardHeader className='pb-2'>
+          <Skeleton className='h-3 w-24' />
+          <Skeleton className='h-8 w-32 mt-2' />
+        </CardHeader>
+        <CardFooter className='flex-col items-start gap-1 pt-0'>
+          <Skeleton className='h-5 w-16' />
+        </CardFooter>
+        <div className='absolute inset-x-0 bottom-0 h-1 bg-gradient-to-r from-primary/20 to-primary/5 opacity-0 transition-opacity group-hover:opacity-100' />
+      </Card>
+    );
+  }
+
+  return (
+    <Card className='group relative overflow-hidden transition-all duration-200 hover:shadow-md hover:border-primary/30'>
+      <CardHeader className='pb-2'>
+        <CardDescription className='text-xs font-medium uppercase tracking-wide text-muted-foreground'>
+          {title}
+        </CardDescription>
+        <CardTitle className='text-3xl font-bold tabular-nums text-foreground'>
+          {value}
+        </CardTitle>
+      </CardHeader>
+      <CardFooter className='flex-col items-start gap-1 pt-0'>
+        {growth !== undefined ? (
+          <Badge 
+            variant={variant} 
+            className={`gap-1 ${variant === 'default' ? 'bg-emerald-500/10 text-emerald-600 hover:bg-emerald-500/20' : ''}`}
+          >
+            {variant === 'default' ? <IconTrendingUp className='size-3' /> : <IconTrendingDown className='size-3' />}
+            {growth > 0 ? '+' : ''}{growth}%
+          </Badge>
+        ) : subtitle ? (
+          <span className='text-xs text-muted-foreground'>{subtitle}</span>
+        ) : null}
+        {growthLabel && (
+          <p className='text-xs text-muted-foreground mt-1'>
+            {growthLabel}
+          </p>
+        )}
+      </CardFooter>
+      <div className='absolute inset-x-0 bottom-0 h-1 bg-gradient-to-r from-primary/20 to-primary/5 opacity-0 transition-opacity group-hover:opacity-100' />
+    </Card>
   );
 }

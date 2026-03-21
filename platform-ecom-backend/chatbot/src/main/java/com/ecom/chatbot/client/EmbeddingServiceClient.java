@@ -1,7 +1,7 @@
 package com.ecom.chatbot.client;
 
 import com.ecom.chatbot.client.ApiResponseWrapper;
-import com.ecom.common.dto.ProductSummaryDTO;
+import com.ecom.chatbot.dto.ProductSummaryDTO;
 import org.springframework.web.service.annotation.GetExchange;
 import org.springframework.web.service.annotation.HttpExchange;
 import org.springframework.web.service.annotation.PostExchange;
