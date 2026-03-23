@@ -31,7 +31,7 @@ export default function CategoryListingClient({
   const totalItems = data?.totalElements || 0;
 
   if (isLoading && categories.length === 0)
-    return <div>Loading categories...</div>;
+    return <div>Đang tải danh mục...</div>;
 
   return (
     <CategoryTable

@@ -1,7 +1,7 @@
 import ProfileViewPage from '@/components/admin/profile/profile-view-page';
 
 export const metadata = {
-  title: 'Dashboard : Profile'
+  title: 'Bảng điều khiển: Hồ sơ'
 };
 
 export default async function Page() {

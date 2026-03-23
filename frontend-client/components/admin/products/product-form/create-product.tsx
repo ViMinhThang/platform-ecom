@@ -15,7 +15,7 @@ export const ProductDialogWrapper: React.FC<ProductDialogWrapperProps> = ({ prod
   return (
     <>
       <Button onClick={() => setOpen(true)} className="text-xs md:text-sm bg-black flex items-center gap-2">
-        <IconPlus className="h-4 w-4" /> {productId ? "Edit Product" : "Add New"}
+        <IconPlus className="h-4 w-4" /> {productId ? "Chỉnh sửa" : "Thêm mới"}
       </Button>
 
       <ProductDialog

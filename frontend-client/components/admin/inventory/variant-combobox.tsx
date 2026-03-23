@@ -62,9 +62,9 @@ export function VariantCombobox({ productId, value, onChange, disabled, excludeV
             return variant.optionValues
                 .map(ov => ov.productOptionValue?.displayValue || ov.productOptionValue?.value)
                 .filter(Boolean)
-                .join(", ") || "Default";
+                .join(", ") || "Mặc định";
         }
-        return "Default";
+        return "Mặc định";
     };
 
     return (
@@ -78,25 +78,25 @@ export function VariantCombobox({ productId, value, onChange, disabled, excludeV
                     disabled={disabled || !productId}
                 >
                     {loading ? (
-                        <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Loading...</>
+                        <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Đang tải...</>
                     ) : value ? (
                         <span className="truncate">
                             #{value.id} - {value.sku || getVariantDisplayName(value)}
                         </span>
                     ) : (
-                        productId ? "Select variant..." : "Select product first"
+                        productId ? "Chọn biến thể..." : "Chọn sản phẩm trước"
                     )}
                     <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                 </Button>
             </PopoverTrigger>
             <PopoverContent className="w-[350px] p-0">
                 <Command>
-                    <CommandInput placeholder="Search variants..." />
+                    <CommandInput placeholder="Tìm biến thể..." />
                     <CommandList>
                         <CommandEmpty>
                             {availableVariants.length === 0 && variants.length > 0
-                                ? "All variants already have inventory"
-                                : "No variant found."}
+                                ? "Tất cả biến thể đã có kho hàng"
+                                : "Không tìm thấy biến thể."}
                         </CommandEmpty>
                         <CommandGroup>
                             {availableVariants.map((variant) => (

@@ -46,10 +46,10 @@ public class SellerInventoryController {
             @RequestParam(defaultValue = "variantId") String sortBy,
             @RequestParam(defaultValue = "asc") String sortOrder,
             HttpServletRequest request) {
-        
+
         Long sellerId = authContext.getUserId(request);
         List<Long> productIds = getProductIdsBySeller(sellerId);
-        
+
         Sort sort = sortOrder.equalsIgnoreCase("desc")
                 ? Sort.by(sortBy).descending()
                 : Sort.by(sortBy).ascending();
@@ -110,5 +110,44 @@ public class SellerInventoryController {
             log.error("Error fetching product IDs for seller: {}", sellerId, e);
         }
         return Collections.emptyList();
+    }
+
+    @GetMapping("/{variantId}/transactions")
+    @RequireRole("ROLE_SELLER")
+    public ResponseEntity<APIResponse<Page<com.ecom.inventory.dto.InventoryTransactionDTO>>> getTransactionHistory(
+            @PathVariable Long variantId,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "20") int size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
+        Page<com.ecom.inventory.dto.InventoryTransactionDTO> transactions = inventoryService
+                .getTransactionHistory(variantId, pageable);
+        return ResponseBuilder.success("Transaction history retrieved successfully", transactions);
+    }
+
+    @PutMapping("/{variantId}/settings")
+    @RequireRole("ROLE_SELLER")
+    public ResponseEntity<APIResponse<InventoryDTO>> updateSettings(
+            @PathVariable Long variantId,
+            @Valid @RequestBody com.ecom.inventory.dto.InventorySettingsRequest request) {
+        InventoryDTO inventory = inventoryService.updateSettings(variantId, request);
+        return ResponseBuilder.success("Inventory settings updated successfully", inventory);
+    }
+
+    @PostMapping
+    @RequireRole("ROLE_SELLER")
+    public ResponseEntity<APIResponse<InventoryDTO>> createInventory(
+            @RequestParam Long productId,
+            @RequestParam Long variantId,
+            @RequestParam(required = false) String sku,
+            @RequestParam(defaultValue = "0") int initialStock) {
+        InventoryDTO inventory = inventoryService.createInventory(productId, variantId, sku, initialStock);
+        return ResponseBuilder.createdWithMessage("Inventory created successfully", inventory);
+    }
+
+    @DeleteMapping("/{variantId}")
+    @RequireRole("ROLE_SELLER")
+    public ResponseEntity<APIResponse<Void>> deleteInventory(@PathVariable Long variantId) {
+        inventoryService.deleteInventory(variantId);
+        return ResponseBuilder.noContent();
     }
 }

@@ -100,36 +100,36 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
         <DropdownMenu modal={false}>
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
+              <span className="sr-only">Mở menu</span>
               <IconDotsVertical className="h-4 w-4" />
             </Button>
           </DropdownMenuTrigger>
 
           <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
+            <DropdownMenuLabel>Hành động</DropdownMenuLabel>
 
             <DropdownMenuItem onClick={() => setUpdateProductOpen(true)}>
-              <IconEdit className="mr-2 h-4 w-4" /> Update Product
+              <IconEdit className="mr-2 h-4 w-4" /> Cập nhật sản phẩm
             </DropdownMenuItem>
 
             <DropdownMenuItem onClick={() => router.push(`/admin/dashboard/product/${data.id}/description`)}>
-              <IconFileDescription className="mr-2 h-4 w-4" /> Edit Description
+              <IconFileDescription className="mr-2 h-4 w-4" /> Chỉnh sửa mô tả
             </DropdownMenuItem>
 
             <DropdownMenuItem onClick={() => setUpdateOptionsOpen(true)}>
-              <IconTools className="mr-2 h-4 w-4" /> Update Options
+              <IconTools className="mr-2 h-4 w-4" /> Cập nhật tùy chọn
             </DropdownMenuItem>
 
             <DropdownMenuItem onClick={() => setUpdateVariantsOpen(true)}>
-              <IconTools className="mr-2 h-4 w-4" /> Update Variants
+              <IconTools className="mr-2 h-4 w-4" /> Cập nhật biến thể
             </DropdownMenuItem>
 
             <DropdownMenuItem onClick={() => setUpdateImagesOpen(true)}>
-              <IconPhoto className="mr-2 h-4 w-4" /> Update Images
+              <IconPhoto className="mr-2 h-4 w-4" /> Cập nhật hình ảnh
             </DropdownMenuItem>
 
             <DropdownMenuItem onClick={() => setDeleteOpen(true)}>
-              <IconTrash className="mr-2 h-4 w-4" /> Delete
+              <IconTrash className="mr-2 h-4 w-4" /> Xóa
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

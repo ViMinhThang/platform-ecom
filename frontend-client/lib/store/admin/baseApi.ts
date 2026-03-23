@@ -43,6 +43,7 @@ export const baseApi = createApi({
         'AdminOrder',
         'Inventory',
         'FlashSale',
+        'SaleCampaign',
     ],
     endpoints: () => ({}),
 });

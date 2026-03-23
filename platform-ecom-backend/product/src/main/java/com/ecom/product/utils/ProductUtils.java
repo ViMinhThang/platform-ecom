@@ -15,7 +15,7 @@ public class ProductUtils {
         if (name == null || name.isEmpty())
             return null;
         return (root, query, cb) -> cb.greaterThan(
-                cb.function("similarity", Double.class, root.get("name"), cb.literal(name)),
+                cb.function("word_similarity", Double.class, cb.literal(name), root.get("name")),
                 0.3);
     }
 

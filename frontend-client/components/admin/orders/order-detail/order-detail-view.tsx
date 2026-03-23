@@ -24,8 +24,8 @@ export const OrderDetailView: React.FC<OrderDetailViewProps> = ({ order }) => {
                         <ArrowLeft className="h-4 w-4" />
                     </Button>
                     <Heading
-                        title={`Order ${order.groupNumber}`}
-                        description={`Placed on ${new Date(order.createdAt).toLocaleDateString()}`}
+                        title={`Đơn hàng ${order.groupNumber}`}
+                        description={`Đặt ngày ${new Date(order.createdAt).toLocaleDateString('vi-VN')}`}
                     />
                 </div>
                 <div className="flex gap-2">
@@ -37,7 +37,7 @@ export const OrderDetailView: React.FC<OrderDetailViewProps> = ({ order }) => {
 
             <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
                 <div className="md:col-span-2 space-y-6">
-                    <h3 className="text-lg font-medium">Sub-Orders (By Seller)</h3>
+                    <h3 className="text-lg font-medium">Đơn hàng con (Theo người bán)</h3>
                     {order.subOrders.map((subOrder) => (
                         <SubOrderCard
                             key={subOrder.id}

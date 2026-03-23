@@ -113,8 +113,6 @@ public class GatewayConfig {
                                                 .uri("lb://user-service"))
                                 .route("admin-internal", r -> r
                                                 .path("/api/v1/internal/user-service/**")
-                                                .filters(f -> f
-                                                                .filter(authFilter))
                                                 .uri("lb://user-service"))
 
                                 // Internal product service endpoints

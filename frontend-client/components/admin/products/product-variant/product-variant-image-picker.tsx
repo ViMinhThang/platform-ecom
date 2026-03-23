@@ -40,7 +40,7 @@ export const VariantImagePicker: React.FC<VariantImagePickerProps> = ({
           />
         ) : (
           <div className="flex items-center justify-center w-full h-full text-gray-400">
-            Select Image
+            Chọn hình ảnh
           </div>
         )}
       </div>
@@ -48,11 +48,11 @@ export const VariantImagePicker: React.FC<VariantImagePickerProps> = ({
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent className="min-w-[800px] h-[800px]">
           <DialogHeader>
-            <DialogTitle>Select Variant Image</DialogTitle>
+            <DialogTitle>Chọn hình ảnh biến thể</DialogTitle>
           </DialogHeader>
 
           {isLoading ? (
-            <div>Loading images...</div>
+            <div>Đang tải hình ảnh...</div>
           ) : (
             <div className="grid grid-cols-2 gap-2">
               {images.map((img) => (

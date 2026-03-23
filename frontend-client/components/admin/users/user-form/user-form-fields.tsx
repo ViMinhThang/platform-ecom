@@ -25,9 +25,9 @@ export const UserFormFields: React.FC<UserFormFieldsProps> = ({
   return (
     <Tabs defaultValue="profile" className="w-full">
       <TabsList className="grid w-full grid-cols-3">
-        <TabsTrigger value="profile">Profile</TabsTrigger>
-        <TabsTrigger value="addresses">Addresses</TabsTrigger>
-        <TabsTrigger value="security">Security</TabsTrigger>
+        <TabsTrigger value="profile">Hồ sơ</TabsTrigger>
+        <TabsTrigger value="addresses">Địa chỉ</TabsTrigger>
+        <TabsTrigger value="security">Bảo mật</TabsTrigger>
       </TabsList>
 
       <TabsContent value="profile" className="space-y-4 mt-4">
@@ -45,7 +45,7 @@ export const UserFormFields: React.FC<UserFormFieldsProps> = ({
 
       <TabsContent value="security" className="mt-4">
         <div className="text-center text-muted-foreground py-8">
-          <p>Password management coming soon...</p>
+          <p>Quản lý mật khẩu sẽ sớm có...</p>
         </div>
       </TabsContent>
     </Tabs>

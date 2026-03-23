@@ -13,11 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-/**
- * Controller for admin-level category management
- * All endpoints require ROLE_ADMIN
- * Base path: /api/v1/admin/categories
- */
+
 @RestController
 @RequestMapping("/api/v1/admin/categories")
 @RequiredArgsConstructor
@@ -25,10 +21,7 @@ public class AdminCategoryController {
 
     private final CategoryService categoryService;
 
-    /**
-     * GET /api/v1/admin/categories
-     * Admin endpoint to get all categories with pagination
-     */
+
     @GetMapping
     @RequireRole("ROLE_ADMIN")
     public ResponseEntity<APIResponse<CategoryResponse>> getAllCategories(PaginationRequest paginationRequest) {
@@ -40,10 +33,7 @@ public class AdminCategoryController {
         return ResponseBuilder.success("Categories retrieved successfully", categoryResponse);
     }
 
-    /**
-     * GET /api/v1/admin/categories/{id}
-     * Admin endpoint to get specific category by ID
-     */
+
     @GetMapping("/{id}")
     @RequireRole("ROLE_ADMIN")
     public ResponseEntity<APIResponse<CategoryDTO>> getCategoryById(@PathVariable("id") Long categoryId) {
@@ -51,10 +41,7 @@ public class AdminCategoryController {
         return ResponseBuilder.success("Category retrieved successfully", categoryDTO);
     }
 
-    /**
-     * POST /api/v1/admin/categories
-     * Admin endpoint to create new category
-     */
+
     @PostMapping
     @RequireRole("ROLE_ADMIN")
     public ResponseEntity<APIResponse<CategoryDTO>> createCategory(@Valid @RequestBody CategoryDTO categoryDTO) {

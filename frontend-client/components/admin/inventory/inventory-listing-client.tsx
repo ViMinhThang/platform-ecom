@@ -95,7 +95,7 @@ export default function InventoryListingClient() {
         : items, [items, searchQuery]);
 
     if (isLoading && items.length === 0) {
-        return <div>Loading inventory...</div>;
+        return <div>Đang tải kho hàng...</div>;
     }
 
     return (
@@ -113,7 +113,7 @@ export default function InventoryListingClient() {
                     <div className="relative flex-1 md:max-w-sm">
                         <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
                         <Input
-                            placeholder="Search by Variant ID or SKU..."
+                            placeholder="Tìm kiếm theo ID biến thể hoặc SKU..."
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
                             className="pl-9"
@@ -122,22 +122,22 @@ export default function InventoryListingClient() {
                     <div className="flex gap-2">
                         <Select value={sortBy} onValueChange={setSortBy}>
                             <SelectTrigger className="w-[150px]">
-                                <SelectValue placeholder="Sort by" />
+                                <SelectValue placeholder="Sắp xếp theo" />
                             </SelectTrigger>
                             <SelectContent>
-                                <SelectItem value="variantId">Variant ID</SelectItem>
-                                <SelectItem value="availableStock">Available Stock</SelectItem>
-                                <SelectItem value="totalStock">Total Stock</SelectItem>
+                                <SelectItem value="variantId">ID Biến thể</SelectItem>
+                                <SelectItem value="availableStock">Tồn kho khả dụng</SelectItem>
+                                <SelectItem value="totalStock">Tổng tồn kho</SelectItem>
                                 <SelectItem value="sku">SKU</SelectItem>
                             </SelectContent>
                         </Select>
                         <Select value={sortOrder} onValueChange={setSortOrder}>
                             <SelectTrigger className="w-[120px]">
-                                <SelectValue placeholder="Order" />
+                                <SelectValue placeholder="Thứ tự" />
                             </SelectTrigger>
                             <SelectContent>
-                                <SelectItem value="asc">Ascending</SelectItem>
-                                <SelectItem value="desc">Descending</SelectItem>
+                                <SelectItem value="asc">Tăng dần</SelectItem>
+                                <SelectItem value="desc">Giảm dần</SelectItem>
                             </SelectContent>
                         </Select>
                     </div>
@@ -145,11 +145,11 @@ export default function InventoryListingClient() {
                 <div className="flex gap-2">
                     <Button onClick={() => setCreateDialogOpen(true)} size="sm">
                         <Plus className="mr-2 h-4 w-4" />
-                        Create Inventory
+                        Tạo kho hàng
                     </Button>
                     <Button onClick={loadInventory} variant="outline" size="sm">
                         <RefreshCw className={`mr-2 h-4 w-4 ${isLoading ? "animate-spin" : ""}`} />
-                        Refresh
+                        Làm mới
                     </Button>
                 </div>
             </div>
@@ -179,16 +179,16 @@ export default function InventoryListingClient() {
             <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
                 <AlertDialogContent>
                     <AlertDialogHeader>
-                        <AlertDialogTitle>Delete Inventory</AlertDialogTitle>
+                        <AlertDialogTitle>Xóa kho hàng</AlertDialogTitle>
                         <AlertDialogDescription>
-                            Are you sure you want to delete the inventory for variant #{inventoryToDelete?.variantId}?
-                            This action cannot be undone and will also delete all related transactions and reservations.
+                            Bạn có chắc muốn xóa kho hàng cho biến thể #{inventoryToDelete?.variantId}?
+                            Hành động này không thể hoàn tác và sẽ xóa tất cả các giao dịch và đặt chỗ liên quan.
                         </AlertDialogDescription>
                     </AlertDialogHeader>
                     <AlertDialogFooter>
-                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                        <AlertDialogCancel>Hủy</AlertDialogCancel>
                         <AlertDialogAction onClick={handleConfirmDelete} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
-                            Delete
+                            Xóa
                         </AlertDialogAction>
                     </AlertDialogFooter>
                 </AlertDialogContent>

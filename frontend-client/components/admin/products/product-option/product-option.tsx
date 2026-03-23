@@ -67,9 +67,9 @@ export function ProductOptionCard({
     <FormProvider {...methods}>
       <div className="border rounded-lg p-4 space-y-2 shadow w-[35%]">
         <div className="flex justify-between items-center">
-          <h4 className="font-semibold">{option.name || "New Option"}</h4>
+          <h4 className="font-semibold">{option.name || "Tùy chọn mới"}</h4>
           <Button variant="destructive" onClick={() => setAlert(true)}>
-            Remove Option
+            Xóa tùy chọn
           </Button>
           <AlertModal
             isOpen={alert}
@@ -82,53 +82,53 @@ export function ProductOptionCard({
         <FormInput
           control={methods.control}
           name="name"
-          label="Name"
+          label="Tên"
           required
         />
         <FormInput
           control={methods.control}
           name="displayName"
-          label="Display Name"
+          label="Tên hiển thị"
           required
         />
         <FormSelect
           control={methods.control}
           name="isRequired"
-          label="Required"
+          label="Bắt buộc"
           options={[
-            { label: "Yes", value: "true" },
-            { label: "No", value: "false" },
+            { label: "Có", value: "true" },
+            { label: "Không", value: "false" },
           ]}
         />
         <FormInput
           control={methods.control}
           name="sortOrder"
-          label="Sort Order"
+          label="Thứ tự"
           type="number"
         />
 
         <div className="space-y-2 mt-2">
-          <h5 className="font-medium">Values</h5>
+          <h5 className="font-medium">Giá trị</h5>
           {valueFields.map((v, i) => (
             <div key={v.id} className="flex gap-2 items-center">
               <FormInput
                 control={methods.control}
                 name={`values.${i}.value`}
-                label="Value"
-                placeholder="e.g., S"
+                label="Giá trị"
+                placeholder="ví dụ: S"
                 required
               />
               <FormInput
                 control={methods.control}
                 name={`values.${i}.displayValue`}
-                label="Display Value"
-                placeholder="e.g., Small"
+                label="Giá trị hiển thị"
+                placeholder="ví dụ: Nhỏ"
                 required
               />
               <FormInput
                 control={methods.control}
                 name={`values.${i}.sortOrder`}
-                label="Sort Order"
+                label="Thứ tự"
                 type="number"
               />
               <Button
@@ -136,7 +136,7 @@ export function ProductOptionCard({
                 variant="destructive"
                 onClick={() => removeValue(i)}
               >
-                Remove
+                Xóa
               </Button>
             </div>
           ))}
@@ -146,12 +146,12 @@ export function ProductOptionCard({
               appendValue({ value: "", displayValue: "", sortOrder: 0 })
             }
           >
-            Add Value
+            Thêm giá trị
           </Button>
         </div>
 
         <div className="flex justify-end mt-2">
-          <Button onClick={handleSave}>Save Option</Button>
+          <Button onClick={handleSave}>Lưu tùy chọn</Button>
         </div>
       </div>
     </FormProvider>

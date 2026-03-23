@@ -20,6 +20,10 @@ apiClient.interceptors.request.use(
             config.headers.Authorization = `Bearer ${session.accessToken}`;
         }
 
+        if (config.url?.startsWith('/v1/')) {
+            config.url = '/api' + config.url;
+        }
+
         logger.apiRequest(
             config.method?.toUpperCase() || 'GET',
             config.url || '',

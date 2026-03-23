@@ -15,12 +15,12 @@ export const OrderInfoCard: React.FC<OrderInfoCardProps> = ({ order }) => {
     return (
         <Card>
             <CardHeader>
-                <CardTitle>Order Summary</CardTitle>
+                <CardTitle>Tổng quan đơn hàng</CardTitle>
             </CardHeader>
             <CardContent className="space-y-6">
                 {/* Payment Status */}
                 <div className="flex justify-between items-center">
-                    <span className="text-sm font-medium">Payment Status</span>
+                    <span className="text-sm font-medium">Trạng thái thanh toán</span>
                     <Badge variant={order.paymentStatus === 'COMPLETED' ? 'default' : 'secondary'}>
                         {order.paymentStatus}
                     </Badge>
@@ -31,7 +31,7 @@ export const OrderInfoCard: React.FC<OrderInfoCardProps> = ({ order }) => {
                 {/* Customer Info */}
                 <div className="space-y-2">
                     <div className="flex items-center gap-2 text-sm font-medium">
-                        <User className="h-4 w-4" /> Customer
+                        <User className="h-4 w-4" /> Khách hàng
                     </div>
                     <div className="text-sm text-muted-foreground pl-6">
                         <p>{order.userName}</p>
@@ -44,7 +44,7 @@ export const OrderInfoCard: React.FC<OrderInfoCardProps> = ({ order }) => {
                 {/* Shipping Address */}
                 <div className="space-y-2">
                     <div className="flex items-center gap-2 text-sm font-medium">
-                        <MapPin className="h-4 w-4" /> Shipping Address
+                        <MapPin className="h-4 w-4" /> Địa chỉ giao hàng
                     </div>
                     <div className="text-sm text-muted-foreground pl-6">
                         <p>{order.shippingAddress.street}</p>
@@ -60,24 +60,24 @@ export const OrderInfoCard: React.FC<OrderInfoCardProps> = ({ order }) => {
                 {/* Financials */}
                 <div className="space-y-2">
                     <div className="flex items-center gap-2 text-sm font-medium">
-                        <CreditCard className="h-4 w-4" /> Payment Details
+                        <CreditCard className="h-4 w-4" /> Chi tiết thanh toán
                     </div>
                     <div className="space-y-1 pt-2">
                         <div className="flex justify-between text-sm">
-                            <span className="text-muted-foreground">Subtotal</span>
+                            <span className="text-muted-foreground">Tạm tính</span>
                             <span>{formatCurrency(order.totalAmount - order.taxAmount - order.shippingCost)}</span>
                         </div>
                         <div className="flex justify-between text-sm">
-                            <span className="text-muted-foreground">Shipping</span>
+                            <span className="text-muted-foreground">Phí vận chuyển</span>
                             <span>{formatCurrency(order.shippingCost)}</span>
                         </div>
                         <div className="flex justify-between text-sm">
-                            <span className="text-muted-foreground">Tax</span>
+                            <span className="text-muted-foreground">Thuế</span>
                             <span>{formatCurrency(order.taxAmount)}</span>
                         </div>
                         <Separator className="my-2" />
                         <div className="flex justify-between font-medium">
-                            <span>Total</span>
+                            <span>Tổng cộng</span>
                             <span>{formatCurrency(order.totalAmount)}</span>
                         </div>
                     </div>

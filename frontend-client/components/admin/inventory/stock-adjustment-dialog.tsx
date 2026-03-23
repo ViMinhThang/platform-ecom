@@ -49,14 +49,14 @@ export function StockAdjustmentDialog({
                 },
             }).unwrap();
 
-            toast.success('Stock Adjusted', {
-                description: `Successfully ${adjustmentType === 'add' ? 'added' : 'removed'} ${quantity} units.`,
+            toast.success('Đã điều chỉnh tồn kho', {
+                description: `Đã ${adjustmentType === 'add' ? 'thêm' : 'trừ'} ${quantity} đơn vị.`,
             });
             onOpenChange(false);
             resetForm();
         } catch (error) {
-            toast.error('Error', {
-                description: 'Failed to adjust stock',
+            toast.error('Lỗi', {
+                description: 'Không thể điều chỉnh tồn kho',
             });
         }
     };
@@ -77,11 +77,11 @@ export function StockAdjustmentDialog({
         <Dialog open={open} onOpenChange={onOpenChange}>
             <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>
-                    <DialogTitle>Adjust Stock</DialogTitle>
+                    <DialogTitle>Điều chỉnh tồn kho</DialogTitle>
                     <DialogDescription>
                         {inventory && (
                             <>
-                                Variant #{inventory.variantId}
+                                Biến thể #{inventory.variantId}
                                 {inventory.sku && ` • SKU: ${inventory.sku}`}
                             </>
                         )}
@@ -91,17 +91,17 @@ export function StockAdjustmentDialog({
                 <div className="grid gap-4 py-4">
                     <div className="grid grid-cols-3 gap-4 rounded-lg bg-muted p-3">
                         <div className="text-center">
-                            <p className="text-sm text-muted-foreground">Current</p>
+                            <p className="text-sm text-muted-foreground">Hiện tại</p>
                             <p className="text-2xl font-bold">{inventory?.totalStock ?? 0}</p>
                         </div>
                         <div className="text-center">
-                            <p className="text-sm text-muted-foreground">Change</p>
+                            <p className="text-sm text-muted-foreground">Thay đổi</p>
                             <p className={`text-2xl font-bold ${adjustmentType === 'add' ? 'text-green-600' : 'text-red-600'}`}>
                                 {adjustmentType === 'add' ? '+' : '-'}{quantity}
                             </p>
                         </div>
                         <div className="text-center">
-                            <p className="text-sm text-muted-foreground">New</p>
+                            <p className="text-sm text-muted-foreground">Mới</p>
                             <p className={`text-2xl font-bold ${newStock < 0 ? 'text-red-600' : ''}`}>
                                 {newStock}
                             </p>
@@ -109,7 +109,7 @@ export function StockAdjustmentDialog({
                     </div>
 
                     <div className="grid gap-2">
-                        <Label>Adjustment Type</Label>
+                        <Label>Loại điều chỉnh</Label>
                         <div className="flex gap-2">
                             <Button
                                 type="button"
@@ -118,7 +118,7 @@ export function StockAdjustmentDialog({
                                 onClick={() => setAdjustmentType('add')}
                             >
                                 <Plus className="mr-2 h-4 w-4" />
-                                Add Stock
+                                Thêm tồn kho
                             </Button>
                             <Button
                                 type="button"
@@ -127,51 +127,51 @@ export function StockAdjustmentDialog({
                                 onClick={() => setAdjustmentType('subtract')}
                             >
                                 <Minus className="mr-2 h-4 w-4" />
-                                Remove Stock
+                                Giảm tồn kho
                             </Button>
                         </div>
                     </div>
 
                     <div className="grid gap-2">
-                        <Label htmlFor="quantity">Quantity</Label>
+                        <Label htmlFor="quantity">Số lượng</Label>
                         <Input
                             id="quantity"
                             type="number"
                             min={0}
                             value={quantity}
                             onChange={(e) => setQuantity(Math.max(0, parseInt(e.target.value) || 0))}
-                            placeholder="Enter quantity"
+                            placeholder="Nhập số lượng"
                         />
                     </div>
 
                     <div className="grid gap-2">
-                        <Label htmlFor="reason">Reason (optional)</Label>
+                        <Label htmlFor="reason">Lý do (tùy chọn)</Label>
                         <Textarea
                             id="reason"
                             value={reason}
                             onChange={(e) => setReason(e.target.value)}
-                            placeholder="e.g., Received shipment, Damaged goods, etc."
+                            placeholder="ví dụ: Nhận hàng, Hàng hỏng, v.v."
                             rows={2}
                         />
                     </div>
 
                     {newStock < 0 && (
                         <p className="text-sm text-red-600">
-                            Warning: Stock cannot go below 0. Maximum removable: {inventory?.totalStock ?? 0}
+                            Cảnh báo: Tồn kho không thể nhỏ hơn 0. Tối đa có thể giảm: {inventory?.totalStock ?? 0}
                         </p>
                     )}
                 </div>
 
                 <DialogFooter>
                     <Button variant="outline" onClick={() => onOpenChange(false)}>
-                        Cancel
+                        Hủy
                     </Button>
                     <Button
                         onClick={handleSubmit}
                         disabled={isAdjusting || quantity <= 0 || newStock < 0}
                     >
                         {isAdjusting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                        Confirm Adjustment
+                        Xác nhận điều chỉnh
                     </Button>
                 </DialogFooter>
             </DialogContent>

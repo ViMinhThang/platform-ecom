@@ -33,8 +33,8 @@ export const UserRolesField: React.FC<UserRolesFieldProps> = ({
     if (isLoading || !allRoles || allRoles.length === 0) {
         return (
             <div className="space-y-2">
-                <label className="text-sm font-medium">User Roles <span className="text-red-500">*</span></label>
-                <p className="text-sm text-muted-foreground">Loading roles...</p>
+                <label className="text-sm font-medium">Vai trò người dùng <span className="text-red-500">*</span></label>
+                <p className="text-sm text-muted-foreground">Đang tải vai trò...</p>
             </div>
         );
     }
@@ -43,7 +43,7 @@ export const UserRolesField: React.FC<UserRolesFieldProps> = ({
         <FormCheckboxGroup
             control={control}
             name="roles"
-            label="User Roles"
+            label="Vai trò người dùng"
             options={roleOptions}
             disabled={loading}
             required

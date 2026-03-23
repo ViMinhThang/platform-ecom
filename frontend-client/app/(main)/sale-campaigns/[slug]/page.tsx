@@ -2,6 +2,7 @@ import { Metadata } from 'next';
 import { getSaleCampaignBySlug, getSaleCampaignItems } from '@/lib/services/sale-campaign-service';
 import { notFound } from 'next/navigation';
 import { SaleCampaignDetailClient } from './sale-campaign-detail-client';
+import { Suspense } from 'react';
 
 interface SaleCampaignDetailPageProps {
     params: { slug: string };
@@ -21,13 +22,23 @@ export async function generateMetadata({ params }: SaleCampaignDetailPageProps):
     }
 }
 
+function LoadingState() {
+    return (
+        <div className="container mx-auto py-8">
+            <div className="animate-pulse space-y-4">
+                <div className="h-8 bg-gray-200 rounded w-1/3"></div>
+                <div className="h-64 bg-gray-200 rounded"></div>
+            </div>
+        </div>
+    );
+}
+
 export default async function SaleCampaignDetailPage({ params }: SaleCampaignDetailPageProps) {
     let saleCampaign = null;
     let initialData = null;
 
     try {
         saleCampaign = await getSaleCampaignBySlug(params.slug);
-        // Fetch first page of items (24 items)
         initialData = await getSaleCampaignItems(params.slug, {
             page: 0,
             size: 24,
@@ -42,5 +53,9 @@ export default async function SaleCampaignDetailPage({ params }: SaleCampaignDet
         notFound();
     }
 
-    return <SaleCampaignDetailClient saleCampaign={saleCampaign} initialData={initialData} />;
+    return (
+        <Suspense fallback={<LoadingState />}>
+            <SaleCampaignDetailClient saleCampaign={saleCampaign} initialData={initialData} />
+        </Suspense>
+    );
 }

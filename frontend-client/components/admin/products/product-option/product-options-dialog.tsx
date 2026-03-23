@@ -95,9 +95,9 @@ export function BulkProductOptionDialog({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="min-w-[80%] h-[80vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>Manage Product Options</DialogTitle>
+          <DialogTitle>Quản lý tùy chọn sản phẩm</DialogTitle>
           <DialogDescription>
-            Add multiple options and their values
+            Thêm nhiều tùy chọn và giá trị của chúng
           </DialogDescription>
         </DialogHeader>
         <OptionsContent />

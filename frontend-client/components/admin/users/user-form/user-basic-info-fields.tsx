@@ -23,8 +23,8 @@ export const UserBasicInfoFields: React.FC<UserBasicInfoFieldsProps> = ({
             <FormInput
                 control={control}
                 name="username"
-                label="Username"
-                placeholder="Enter username"
+                label="Tên đăng nhập"
+                placeholder="Nhập tên đăng nhập"
                 disabled={loading}
                 required
             />
@@ -42,10 +42,10 @@ export const UserBasicInfoFields: React.FC<UserBasicInfoFieldsProps> = ({
             <FormSelect
                 control={control}
                 name="isActive"
-                label="Status"
+                label="Trạng thái"
                 options={[
-                    { value: "true", label: "Active" },
-                    { value: "false", label: "Inactive" },
+                    { value: "true", label: "Hoạt động" },
+                    { value: "false", label: "Bị khóa" },
                 ]}
                 disabled={loading}
             />

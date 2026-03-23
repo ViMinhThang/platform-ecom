@@ -17,7 +17,7 @@ export interface UseProductsReturn {
 }
 
 export const useProducts = (params?: GetProductsParams): UseProductsReturn => {
-    const { data, isLoading, error } = useGetProductsQuery(params || {});
+    const { data, isLoading, error, refetch } = useGetProductsQuery(params || {});
 
     const products = data?.content || [];
     const pagination = data ? {
@@ -39,6 +39,6 @@ export const useProducts = (params?: GetProductsParams): UseProductsReturn => {
         pagination,
         loading: isLoading,
         error,
-        refetch: () => {},
+        refetch,
     };
 };

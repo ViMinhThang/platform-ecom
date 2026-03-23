@@ -243,7 +243,7 @@ export function SaleCampaignForm({ campaign, onSubmit, loading }: SaleCampaignFo
                                 <div className="relative group rounded-lg overflow-hidden border bg-muted">
                                     <Image
                                         src={"http://localhost:8080/uploads/" + bannerPreviewUrl}
-                                        alt="Banner preview"
+                                        alt="Xem trước banner"
                                         width={400}
                                         height={200}
                                         className="w-full h-32 object-cover"

@@ -1,4 +1,5 @@
-import { authOptions } from '@/lib/auth-options';
+'use client';
+
 import PageContainer from '@/components/admin/layout/page-container';
 import { Heading } from '@/components/ui/heading';
 import { Separator } from '@/components/ui/separator';
@@ -6,27 +7,20 @@ import { DataTableSkeleton } from '@/components/ui/table/data-table-skeleton';
 import { buttonVariants } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { IconPlus } from '@tabler/icons-react';
-import { getServerSession } from 'next-auth';
 import Link from 'next/link';
-import { SearchParams } from 'nuqs/server';
+import SaleCampaignListingClient from '@/components/admin/sale-campaigns/sale-campaign-listing-client';
+import { useSearchParams } from 'next/navigation';
 import { Suspense } from 'react';
-import SaleCampaignListingPage from '@/components/admin/sale-campaigns/sale-campaign-listing';
 
-export const metadata = {
-    title: 'Bảng điều khiển: Chiến dịch khuyến mãi',
-};
+function SaleCampaignsContent() {
+    const searchParams = useSearchParams();
+    const page = Number(searchParams.get('page')) || 0;
+    const perPage = Number(searchParams.get('perPage')) || 10;
 
-type PageProps = {
-    searchParams: Promise<SearchParams>;
-};
+    return <SaleCampaignListingClient searchParams={{ page, perPage }} />;
+}
 
-export default async function Page(props: PageProps) {
-    const session = await getServerSession(authOptions);
-
-    if (!session?.accessToken) {
-        return <div>Bạn phải đăng nhập để xem chiến dịch khuyến mãi.</div>;
-    }
-
+export default function Page() {
     return (
         <PageContainer scrollable={false}>
             <div className="flex flex-1 flex-col space-y-4">
@@ -49,7 +43,7 @@ export default async function Page(props: PageProps) {
                         <DataTableSkeleton columnCount={6} rowCount={8} filterCount={2} />
                     }
                 >
-                    <SaleCampaignListingPage />
+                    <SaleCampaignsContent />
                 </Suspense>
             </div>
         </PageContainer>

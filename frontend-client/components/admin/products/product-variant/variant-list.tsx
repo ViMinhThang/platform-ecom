@@ -16,7 +16,7 @@ export const VariantsList = () => {
       ))}
 
       <Button variant="outline" className="w-full" onClick={addVariant}>
-        + Add Variant
+        + Thêm biến thể
       </Button>
     </div>
   );

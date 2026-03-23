@@ -45,9 +45,9 @@ export const CategoryFormFields: React.FC<CategoryFormFieldsProps> = ({
         <FormInput
           control={control}
           name="name"
-          label="Name"
+          label="Tên danh mục"
           required
-          placeholder="Enter category name"
+          placeholder="Nhập tên danh mục"
         />
       </div>
 
@@ -58,10 +58,10 @@ export const CategoryFormFields: React.FC<CategoryFormFieldsProps> = ({
               <img
                 src={`http://localhost:8080/uploads/${imageUrl}`}
                 className="object-cover h-full w-full"
-                alt="Category image"
+                alt="Hình ảnh danh mục"
               />
             ) : (
-              <span className="text-gray-400">No image selected</span>
+              <span className="text-gray-400">Chưa chọn hình ảnh</span>
             )}
           </div>
 
@@ -73,7 +73,7 @@ export const CategoryFormFields: React.FC<CategoryFormFieldsProps> = ({
               document.getElementById("category-image-input")?.click()
             }
           >
-            {isUploading ? "Uploading..." : "Select Image"}
+            {isUploading ? "Đang tải lên..." : "Chọn hình ảnh"}
           </Button>
 
           <input

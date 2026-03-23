@@ -33,13 +33,13 @@ export const JsonKeyValueEditor: React.FC<JsonKeyValueEditorProps> = ({
             {items.map((item, index) => (
               <div key={index} className="flex gap-2 mb-2 items-center">
                 <Input
-                  placeholder="Key"
+                  placeholder="Khóa"
                   value={item.key}
                   onChange={(e) => handleChange(index, "key", e.target.value)}
                   className="flex-1"
                 />
                 <Input
-                  placeholder="Value"
+                  placeholder="Giá trị"
                   value={item.value}
                   onChange={(e) => handleChange(index, "value", e.target.value)}
                   className="flex-1"
@@ -49,12 +49,12 @@ export const JsonKeyValueEditor: React.FC<JsonKeyValueEditorProps> = ({
                   variant="destructive"
                   onClick={() => handleRemoveRow(index)}
                 >
-                  Remove
+                  Xóa
                 </Button>
               </div>
             ))}
             <Button type="button" onClick={handleAddRow}>
-              Add Field
+              Thêm trường
             </Button>
           </div>
         );

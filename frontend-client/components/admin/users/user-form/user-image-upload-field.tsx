@@ -28,17 +28,17 @@ export const UserImageUploadField: React.FC<UserImageUploadFieldProps> = ({
         }
 
         if (!userId) {
-            toast.error("Please save the user first before uploading an image");
+            toast.error("Vui lòng lưu người dùng trước khi tải lên hình ảnh");
             return;
         }
 
         try {
             const result = await uploadAvatar({ id: userId, file }).unwrap();
             setImage(result.imageUrl || "");
-            toast.success("Image uploaded successfully");
+            toast.success("Tải lên hình ảnh thành công");
         } catch (error) {
             console.error("Image upload failed", error);
-            toast.error("Failed to upload image");
+            toast.error("Không thể tải lên hình ảnh");
         }
     };
 
@@ -72,7 +72,7 @@ export const UserImageUploadField: React.FC<UserImageUploadFieldProps> = ({
                 ) : displayImageUrl ? (
                     <img
                         src={displayImageUrl}
-                        alt="User profile"
+                        alt="Hồ sơ người dùng"
                         className="w-full h-full rounded-full object-cover"
                     />
                 ) : (
@@ -90,15 +90,15 @@ export const UserImageUploadField: React.FC<UserImageUploadFieldProps> = ({
             </label>
 
             <div className="text-center">
-                <p className="text-sm font-medium">Profile Image</p>
+                <p className="text-sm font-medium">Hình đại diện</p>
                 {!userId && (
                     <p className="text-xs text-muted-foreground mt-1">
-                        Save user first to upload
+                        Lưu người dùng trước để tải lên
                     </p>
                 )}
                 {userId && !isUploading && (
                     <p className="text-xs text-muted-foreground mt-1">
-                        Click to {displayImageUrl ? 'change' : 'upload'}
+                        Nhấn để {displayImageUrl ? 'thay đổi' : 'tải lên'}
                     </p>
                 )}
             </div>

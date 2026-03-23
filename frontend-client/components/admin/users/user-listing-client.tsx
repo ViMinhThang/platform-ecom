@@ -31,7 +31,7 @@ export default function UserListingClient({
   const totalItems = data?.totalElements || 0;
 
   if (isLoading && users.length === 0)
-    return <div>Loading users...</div>;
+    return <div>Đang tải người dùng...</div>;
 
   return (
     <UserTable

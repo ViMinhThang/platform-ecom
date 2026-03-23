@@ -17,11 +17,11 @@ export function LowStockAlert({ items, onAdjust }: LowStockAlertProps) {
             <Card>
                 <CardHeader className="flex flex-row items-center gap-2 pb-2">
                     <Package className="h-5 w-5 text-green-600" />
-                    <CardTitle className="text-base">Stock Status</CardTitle>
+                    <CardTitle className="text-base">Tình trạng kho</CardTitle>
                 </CardHeader>
                 <CardContent>
                     <p className="text-sm text-muted-foreground">
-                        All items are well stocked! No alerts at this time.
+                        Tất cả sản phẩm đều có sẵn! Không có cảnh báo nào.
                     </p>
                 </CardContent>
             </Card>
@@ -33,7 +33,7 @@ export function LowStockAlert({ items, onAdjust }: LowStockAlertProps) {
             <CardHeader className="flex flex-row items-center gap-2 pb-2">
                 <AlertTriangle className="h-5 w-5 text-amber-600" />
                 <CardTitle className="text-base text-amber-800 dark:text-amber-200">
-                    Low Stock Alert ({items.length})
+                    Cảnh báo tồn kho thấp ({items.length})
                 </CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
@@ -48,7 +48,7 @@ export function LowStockAlert({ items, onAdjust }: LowStockAlertProps) {
                             </div>
                             <div>
                                 <p className="font-medium">
-                                    Variant #{item.variantId}
+                                    Biến thể #{item.variantId}
                                     {item.sku && (
                                         <span className="ml-2 text-sm text-muted-foreground">
                                             {item.sku}
@@ -56,7 +56,7 @@ export function LowStockAlert({ items, onAdjust }: LowStockAlertProps) {
                                     )}
                                 </p>
                                 <p className="text-sm text-muted-foreground">
-                                    {item.availableStock} available (threshold: {item.lowStockThreshold})
+                                    {item.availableStock} có sẵn (ngưỡng: {item.lowStockThreshold})
                                 </p>
                             </div>
                         </div>
@@ -76,7 +76,7 @@ export function LowStockAlert({ items, onAdjust }: LowStockAlertProps) {
                 ))}
                 {items.length > 5 && (
                     <p className="text-sm text-muted-foreground text-center">
-                        And {items.length - 5} more items...
+                        Và {items.length - 5} mục khác...
                     </p>
                 )}
             </CardContent>

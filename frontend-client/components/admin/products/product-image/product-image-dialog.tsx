@@ -29,9 +29,9 @@ export const ProductImageDialog: React.FC<ProductImageDialogProps> = ({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="min-w-3xl">
         <DialogHeader>
-          <DialogTitle>Product Images</DialogTitle>
+          <DialogTitle>Hình ảnh sản phẩm</DialogTitle>
           <DialogDescription>
-            Manage images for this product. You can upload, delete, or set a main image.
+            Quản lý hình ảnh cho sản phẩm này. Bạn có thể tải lên, xóa hoặc đặt hình ảnh chính.
           </DialogDescription>
         </DialogHeader>
 
@@ -41,7 +41,7 @@ export const ProductImageDialog: React.FC<ProductImageDialogProps> = ({
             <label htmlFor="file-upload">
               <Button asChild disabled={uploading}>
                 <div className="flex items-center gap-2 cursor-pointer">
-                  <IconUpload size={18} /> Upload Images
+                  <IconUpload size={18} /> Tải lên hình ảnh
                 </div>
               </Button>
             </label>

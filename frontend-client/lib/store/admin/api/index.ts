@@ -4,7 +4,7 @@ export { userApi, useGetUsersQuery, useGetUserByIdQuery, useGetRolesQuery, useCr
 export { categoryApi, useGetCategoriesQuery, useGetCategoryByIdQuery, useCreateCategoryMutation, useUpdateCategoryMutation, useDeleteCategoryMutation, useUpdateCategoryImageMutation } from './categoryApi';
 export { orderApi, useGetOrdersQuery, useGetOrderDetailsQuery, useUpdateOrderStatusMutation, useUpdateSubOrderStatusMutation, useUpdateSubOrderTrackingMutation } from './orderApi';
 export { inventoryApi, useGetInventoryQuery, useGetLowStockItemsQuery, useAdjustStockMutation, useCreateInventoryMutation, useDeleteInventoryMutation } from './inventoryApi';
-export { flashSaleApi, useGetFlashSalesQuery, useGetFlashSaleByIdQuery, useCreateFlashSaleMutation, useUpdateFlashSaleMutation, useDeleteFlashSaleMutation } from './flashSaleApi';
+export { saleCampaignApi, useGetSaleCampaignsQuery, useGetSaleCampaignByIdQuery, useCreateSaleCampaignMutation, useUpdateSaleCampaignMutation, useDeleteSaleCampaignMutation, useActivateSaleCampaignMutation, useCancelSaleCampaignMutation, useUpdateSaleCampaignCategoriesMutation, useUpdateSaleCampaignDiscountTiersMutation, usePreviewSaleCampaignItemsQuery, useUploadSaleCampaignBannerMutation } from './saleCampaignApi';
 export { productVariantApi, useGetVariantsQuery, useCreateVariantMutation, useUpdateVariantMutation, useDeleteVariantMutation, useToggleVariantVisibilityMutation } from './productVariantApi';
 export { productOptionApi, useGetOptionsQuery, useCreateOptionMutation, useUpdateOptionMutation, useDeleteOptionMutation } from './productOptionApi';
 export { productImageApi, useGetProductImagesQuery, useUploadProductImageMutation, useDeleteProductImageMutation } from './productImageApi';

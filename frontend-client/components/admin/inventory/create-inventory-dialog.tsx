@@ -50,7 +50,7 @@ export function CreateInventoryDialog({ open, onOpenChange, onSuccess }: CreateI
         e.preventDefault();
 
         if (!selectedProduct || !selectedVariant) {
-            toast.error("Please select a product and variant");
+            toast.error("Vui lòng chọn sản phẩm và biến thể");
             return;
         }
 
@@ -62,12 +62,12 @@ export function CreateInventoryDialog({ open, onOpenChange, onSuccess }: CreateI
                 initialStock: parseInt(initialStock) || 0,
             }).unwrap();
 
-            toast.success("Inventory created successfully");
+            toast.success("Tạo kho hàng thành công");
             resetForm();
             onOpenChange(false);
             onSuccess?.();
         } catch (error) {
-            toast.error("Failed to create inventory");
+            toast.error("Không thể tạo kho hàng");
         }
     };
 
@@ -82,15 +82,15 @@ export function CreateInventoryDialog({ open, onOpenChange, onSuccess }: CreateI
         <Dialog open={open} onOpenChange={handleOpenChange}>
             <DialogContent className="sm:max-w-[500px]">
                 <DialogHeader>
-                    <DialogTitle>Create Inventory</DialogTitle>
+                    <DialogTitle>Tạo kho hàng</DialogTitle>
                     <DialogDescription>
-                        Select a product and variant to create inventory.
+                        Chọn sản phẩm và biến thể để tạo kho hàng.
                     </DialogDescription>
                 </DialogHeader>
                 <form onSubmit={handleSubmit}>
                     <div className="grid gap-4 py-4">
                         <div className="grid grid-cols-4 items-center gap-4">
-                            <Label className="text-right">Product</Label>
+                            <Label className="text-right">Sản phẩm</Label>
                             <div className="col-span-3">
                                 <ProductCombobox
                                     value={selectedProduct}
@@ -100,7 +100,7 @@ export function CreateInventoryDialog({ open, onOpenChange, onSuccess }: CreateI
                         </div>
 
                         <div className="grid grid-cols-4 items-center gap-4">
-                            <Label className="text-right">Variant</Label>
+                            <Label className="text-right">Biến thể</Label>
                             <div className="col-span-3">
                                 <VariantCombobox
                                     productId={selectedProduct?.id ?? null}
@@ -117,12 +117,12 @@ export function CreateInventoryDialog({ open, onOpenChange, onSuccess }: CreateI
                                 value={sku}
                                 onChange={(e) => setSku(e.target.value)}
                                 className="col-span-3"
-                                placeholder="Auto-filled from variant"
+                                placeholder="Tự động từ biến thể"
                             />
                         </div>
 
                         <div className="grid grid-cols-4 items-center gap-4">
-                            <Label htmlFor="initialStock" className="text-right">Initial Stock</Label>
+                            <Label htmlFor="initialStock" className="text-right">Tồn kho ban đầu</Label>
                             <Input
                                 id="initialStock"
                                 type="number"
@@ -136,10 +136,10 @@ export function CreateInventoryDialog({ open, onOpenChange, onSuccess }: CreateI
                     </div>
                     <DialogFooter>
                         <Button type="button" variant="outline" onClick={() => handleOpenChange(false)}>
-                            Cancel
+                            Hủy
                         </Button>
                         <Button type="submit" disabled={isCreating || !selectedProduct || !selectedVariant}>
-                            {isCreating ? "Creating..." : "Create Inventory"}
+                            {isCreating ? "Đang tạo..." : "Tạo kho hàng"}
                         </Button>
                     </DialogFooter>
                 </form>

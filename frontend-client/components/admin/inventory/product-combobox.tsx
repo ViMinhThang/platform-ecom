@@ -64,11 +64,11 @@ export function ProductCombobox({ value, onChange, disabled }: ProductComboboxPr
                     disabled={disabled}
                 >
                     {loading ? (
-                        <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Loading...</>
+                        <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Đang tải...</>
                     ) : value ? (
                         <span className="truncate">{value.name}</span>
                     ) : (
-                        "Select product..."
+                        "Chọn sản phẩm..."
                     )}
                     <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                 </Button>
@@ -76,12 +76,12 @@ export function ProductCombobox({ value, onChange, disabled }: ProductComboboxPr
             <PopoverContent className="w-[350px] p-0">
                 <Command>
                     <CommandInput
-                        placeholder="Search products..."
+                        placeholder="Tìm sản phẩm..."
                         value={search}
                         onValueChange={setSearch}
                     />
                     <CommandList>
-                        <CommandEmpty>No product found.</CommandEmpty>
+                        <CommandEmpty>Không tìm thấy sản phẩm.</CommandEmpty>
                         <CommandGroup>
                             {filteredProducts.map((product) => (
                                 <CommandItem

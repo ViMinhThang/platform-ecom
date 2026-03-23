@@ -4,6 +4,7 @@ import {
   createContext,
   useContext,
   ReactNode,
+  useEffect,
 } from "react";
 import { toast } from "sonner";
 import { VariantFormValues } from "@/types/product/product-variant";
@@ -14,6 +15,7 @@ import {
   removeVariantLocally,
   updateVariantField as updateVariantFieldAction,
   setItems,
+  clearVariants,
 } from "@/lib/store/admin/slices/productVariantSlice";
 
 interface ProductVariantContextValue {
@@ -54,7 +56,21 @@ export const ProductVariantProvider: React.FC<ProductVariantProviderProps> = ({
   const [updateVariant] = useUpdateVariantMutation();
   const [deleteVariant] = useDeleteVariantMutation();
 
-  const variants = fetchedVariants || localVariants || [];
+  // Sync fetched variants to local Redux state
+  useEffect(() => {
+    if (fetchedVariants) {
+      dispatch(setItems(fetchedVariants as any));
+    }
+  }, [fetchedVariants, dispatch]);
+
+  // Clear variants when closing or switching products
+  useEffect(() => {
+    return () => {
+      dispatch(clearVariants());
+    };
+  }, [productId, dispatch]);
+
+  const variants = localVariants;
 
   const addVariant = () => {
     dispatch(addNewVariant());

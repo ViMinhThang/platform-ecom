@@ -8,7 +8,7 @@ import { SearchParams } from "nuqs/server";
 import { Suspense } from "react";
 
 export const metadata = {
-    title: "Dashboard: Inventory",
+    title: "Bảng điều khiển: Kho hàng",
 };
 
 type pageProps = {
@@ -24,8 +24,8 @@ export default async function Page(props: pageProps) {
             <div className="flex flex-1 flex-col space-y-4">
                 <div className="flex items-start justify-between">
                     <Heading
-                        title="Inventory"
-                        description="Manage stock levels, track inventory, and handle low stock alerts."
+                        title="Kho hàng"
+                        description="Quản lý mức tồn kho, theo dõi hàng tồn, và xử lý cảnh báo hết hàng."
                     />
                 </div>
 

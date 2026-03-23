@@ -22,7 +22,7 @@ import {
     AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
 import { SaleCampaign } from '@/types/sale-campaign';
-import { saleCampaignService } from '@/lib/services/sale-campaign-service';
+import { useActivateSaleCampaignMutation, useCancelSaleCampaignMutation, useDeleteSaleCampaignMutation } from '@/lib/store/admin';
 import { toast } from 'sonner';
 import {
     MoreHorizontal,
@@ -43,10 +43,14 @@ export function CellAction({ data }: CellActionProps) {
     const [activateDialogOpen, setActivateDialogOpen] = useState(false);
     const [loading, setLoading] = useState(false);
 
+    const [activateCampaign, { isLoading: isActivating }] = useActivateSaleCampaignMutation();
+    const [cancelCampaign, { isLoading: isCancelling }] = useCancelSaleCampaignMutation();
+    const [deleteCampaign, { isLoading: isDeleting }] = useDeleteSaleCampaignMutation();
+
     const handleDelete = async () => {
         try {
             setLoading(true);
-            await saleCampaignService.delete(data.id);
+            await deleteCampaign(data.id).unwrap();
             toast.success('Đã xóa chiến dịch');
             router.refresh();
         } catch (error) {
@@ -60,7 +64,7 @@ export function CellAction({ data }: CellActionProps) {
     const handleActivate = async () => {
         try {
             setLoading(true);
-            await saleCampaignService.activate(data.id);
+            await activateCampaign(data.id).unwrap();
             toast.success('Đã kích hoạt chiến dịch');
             router.refresh();
         } catch (error) {
@@ -74,7 +78,7 @@ export function CellAction({ data }: CellActionProps) {
     const handleCancel = async () => {
         try {
             setLoading(true);
-            await saleCampaignService.cancel(data.id);
+            await cancelCampaign(data.id).unwrap();
             toast.success('Đã hủy chiến dịch');
             router.refresh();
         } catch (error) {
@@ -122,7 +126,7 @@ export function CellAction({ data }: CellActionProps) {
                         </DropdownMenuItem>
                     )}
                     {canCancel && (
-                        <DropdownMenuItem onClick={handleCancel} className="text-orange-600">
+                        <DropdownMenuItem onClick={handleCancel} className="text-orange-600" disabled={isCancelling}>
                             <XCircle className="mr-2 h-4 w-4" />
                             Hủy chiến dịch
                         </DropdownMenuItem>
@@ -150,8 +154,8 @@ export function CellAction({ data }: CellActionProps) {
                     </AlertDialogHeader>
                     <AlertDialogFooter>
                         <AlertDialogCancel disabled={loading}>Hủy</AlertDialogCancel>
-                        <AlertDialogAction onClick={handleDelete} disabled={loading}>
-                            {loading ? 'Đang xóa...' : 'Xóa'}
+                        <AlertDialogAction onClick={handleDelete} disabled={loading || isDeleting}>
+                            {loading || isDeleting ? 'Đang xóa...' : 'Xóa'}
                         </AlertDialogAction>
                     </AlertDialogFooter>
                 </AlertDialogContent>
@@ -167,9 +171,9 @@ export function CellAction({ data }: CellActionProps) {
                         </AlertDialogDescription>
                     </AlertDialogHeader>
                     <AlertDialogFooter>
-                        <AlertDialogCancel disabled={loading}>Hủy</AlertDialogCancel>
-                        <AlertDialogAction onClick={handleActivate} disabled={loading}>
-                            {loading ? 'Đang kích hoạt...' : 'Kích hoạt'}
+                        <AlertDialogCancel disabled={loading || isActivating}>Hủy</AlertDialogCancel>
+                        <AlertDialogAction onClick={handleActivate} disabled={loading || isActivating}>
+                            {loading || isActivating ? 'Đang kích hoạt...' : 'Kích hoạt'}
                         </AlertDialogAction>
                     </AlertDialogFooter>
                 </AlertDialogContent>

@@ -113,6 +113,7 @@ public class Product {
     private Double averageRating = 0.0;
 
     @Column(name = "embedding", columnDefinition = "vector(768)")
+    @org.hibernate.annotations.ColumnTransformer(read = "embedding::text", write = "?::vector")
     private String embedding;
 
     @PrePersist

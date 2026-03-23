@@ -19,10 +19,10 @@ export const SubOrderCard: React.FC<SubOrderCardProps> = ({ subOrder, groupId })
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <div className="flex flex-col space-y-1">
                     <CardTitle className="text-base font-medium">
-                        Sold by: {subOrder.sellerName}
+                        Bán bởi: {subOrder.sellerName}
                     </CardTitle>
                     <span className="text-xs text-muted-foreground">
-                        Order #{subOrder.subOrderNumber}
+                        Đơn hàng #{subOrder.subOrderNumber}
                     </span>
                 </div>
                 <div className="flex items-center gap-2">
@@ -39,7 +39,7 @@ export const SubOrderCard: React.FC<SubOrderCardProps> = ({ subOrder, groupId })
                     {/* Items */}
                     <div className="space-y-2">
                         <div className="text-sm font-medium flex items-center gap-2">
-                            <Package className="h-4 w-4" /> Items
+                            <Package className="h-4 w-4" /> Sản phẩm
                         </div>
                         <div className="border rounded-md divide-y">
                             {subOrder.items.map((item) => (
@@ -64,15 +64,15 @@ export const SubOrderCard: React.FC<SubOrderCardProps> = ({ subOrder, groupId })
                     {subOrder.trackingNumber && (
                         <div className="space-y-2">
                             <div className="text-sm font-medium flex items-center gap-2">
-                                <Truck className="h-4 w-4" /> Tracking Information
+                                <Truck className="h-4 w-4" /> Thông tin theo dõi
                             </div>
                             <div className="bg-muted/50 p-3 rounded-md text-sm space-y-1">
                                 <div className="flex justify-between">
-                                    <span className="text-muted-foreground">Carrier:</span>
+                                    <span className="text-muted-foreground">Nhà vận chuyển:</span>
                                     <span>{subOrder.carrier || 'N/A'}</span>
                                 </div>
                                 <div className="flex justify-between">
-                                    <span className="text-muted-foreground">Tracking #:</span>
+                                    <span className="text-muted-foreground">Mã theo dõi:</span>
                                     <span>{subOrder.trackingNumber}</span>
                                 </div>
                                 {subOrder.trackingUrl && (
@@ -83,7 +83,7 @@ export const SubOrderCard: React.FC<SubOrderCardProps> = ({ subOrder, groupId })
                                             rel="noopener noreferrer"
                                             className="text-primary hover:underline"
                                         >
-                                            Track Package
+                                            Theo dõi đơn hàng
                                         </a>
                                     </div>
                                 )}
@@ -95,20 +95,20 @@ export const SubOrderCard: React.FC<SubOrderCardProps> = ({ subOrder, groupId })
                     <div className="flex justify-end pt-2">
                         <div className="w-full max-w-xs space-y-1">
                             <div className="flex justify-between text-sm">
-                                <span className="text-muted-foreground">Subtotal</span>
+                                <span className="text-muted-foreground">Tạm tính</span>
                                 <span>{formatCurrency(subOrder.subtotal)}</span>
                             </div>
                             <div className="flex justify-between text-sm">
-                                <span className="text-muted-foreground">Shipping</span>
+                                <span className="text-muted-foreground">Phí vận chuyển</span>
                                 <span>{formatCurrency(subOrder.shippingCost)}</span>
                             </div>
                             <div className="flex justify-between text-sm">
-                                <span className="text-muted-foreground">Tax</span>
+                                <span className="text-muted-foreground">Thuế</span>
                                 <span>{formatCurrency(subOrder.tax)}</span>
                             </div>
                             <Separator className="my-2" />
                             <div className="flex justify-between font-medium">
-                                <span>Total</span>
+                                <span>Tổng cộng</span>
                                 <span>{formatCurrency(subOrder.total)}</span>
                             </div>
                         </div>

@@ -70,7 +70,7 @@ export const categoryApi = baseApi.injectEndpoints({
         updateCategoryImage: builder.mutation<Category, { id: number; file: File }>({
             query: ({ id, file }) => {
                 const formData = new FormData();
-                formData.append('image', file);
+                formData.append('file', file);
                 return {
                     url: `${ADMIN_API}/${id}/image`,
                     method: 'PUT',

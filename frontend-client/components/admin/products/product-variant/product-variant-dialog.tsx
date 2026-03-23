@@ -27,9 +27,9 @@ export const ProductVariantDialog: React.FC<ProductVariantDialogProps> = ({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="min-w-4xl">
         <DialogHeader>
-          <DialogTitle>Manage Product Variants</DialogTitle>
+          <DialogTitle>Quản lý biến thể sản phẩm</DialogTitle>
           <DialogDescription>
-            Add, edit, or remove variants for this product.
+            Thêm, chỉnh sửa hoặc xóa biến thể cho sản phẩm này.
           </DialogDescription>
         </DialogHeader>
         <VariantsList />

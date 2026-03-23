@@ -1,11 +1,10 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { useSession } from 'next-auth/react';
-import { saleCampaignService } from '@/lib/services/sale-campaign-service';
 import { SaleCampaign } from '@/types/sale-campaign';
 import { SaleCampaignTable } from './sale-campaign-tables';
 import { columns } from './sale-campaign-tables/columns';
+import { useGetSaleCampaignsQuery } from '@/lib/store/admin';
+import { useState } from 'react';
 
 interface SaleCampaignListingClientProps {
     searchParams?: {
@@ -17,36 +16,15 @@ interface SaleCampaignListingClientProps {
 export default function SaleCampaignListingClient({
     searchParams,
 }: SaleCampaignListingClientProps) {
-    const { data: session } = useSession();
-    const [campaigns, setCampaigns] = useState<SaleCampaign[]>([]);
-    const [totalItems, setTotalItems] = useState(0);
-    const [loading, setLoading] = useState(true);
-
     const [page, setPage] = useState<number>(Number(searchParams?.page ?? 0));
-    const [perPage, setPerPage] = useState<number>(
-        Number(searchParams?.perPage ?? 10)
-    );
+    const [perPage, setPerPage] = useState<number>(Number(searchParams?.perPage ?? 10));
 
-    const fetchCampaigns = async () => {
-        if (!session?.accessToken) return;
+    const { data, isLoading, refetch } = useGetSaleCampaignsQuery({ page, size: perPage });
 
-        try {
-            setLoading(true);
-            const response = await saleCampaignService.getAll({ page, size: perPage });
-            setCampaigns(response.content);
-            setTotalItems(response.totalElements);
-        } catch (error) {
-            console.error('Failed to fetch campaigns:', error);
-        } finally {
-            setLoading(false);
-        }
-    };
+    const campaigns = data?.content || [];
+    const totalItems = data?.totalElements ?? 0;
 
-    useEffect(() => {
-        fetchCampaigns();
-    }, [session, page, perPage]);
-
-    if (loading && campaigns.length === 0) {
+    if (isLoading && campaigns.length === 0) {
         return <div>Đang tải chiến dịch...</div>;
     }
 
@@ -59,7 +37,7 @@ export default function SaleCampaignListingClient({
             onPerPageChange={setPerPage}
             currentPage={page}
             pageSize={perPage}
-            onRefresh={fetchCampaigns}
+            onRefresh={refetch}
         />
     );
 }

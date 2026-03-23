@@ -95,20 +95,20 @@ const UserSummarySidebar: React.FC<{
 
       <div className="text-center space-y-2">
         <h3 className="font-semibold text-lg">
-          {username || "New User"}
+          {username || "Người dùng mới"}
         </h3>
         <p className="text-sm text-muted-foreground">
-          {email || "No email set"}
+          {email || "Chưa có email"}
         </p>
         {isActive === "true" ? (
           <Badge variant="default" className="flex items-center gap-1 w-fit mx-auto">
             <CheckCircle2 size={14} />
-            Active
+            Hoạt động
           </Badge>
         ) : (
           <Badge variant="destructive" className="flex items-center gap-1 w-fit mx-auto">
             <XCircle size={14} />
-            Inactive
+            Bị khóa
           </Badge>
         )}
       </div>
@@ -122,10 +122,10 @@ export const UserDialog: React.FC<UserDialogProps> = ({
   onOpenChange,
 }) => {
   const isEditing = Boolean(userId);
-  const dialogTitle = isEditing ? "Update User" : "Create User";
+  const dialogTitle = isEditing ? "Cập nhật người dùng" : "Tạo người dùng mới";
   const dialogDescription = isEditing
-    ? "Update user information and roles"
-    : "Create a new user account";
+    ? "Cập nhật thông tin và vai trò người dùng"
+    : "Tạo tài khoản người dùng mới";
 
   const { data: user } = useGetUserByIdQuery(userId!, { skip: !open || !userId });
   const { data: roles = [] } = useGetRolesQuery();
@@ -154,14 +154,14 @@ export const UserDialog: React.FC<UserDialogProps> = ({
 
       if (isEditing && userId) {
         await updateUser({ id: userId, data: userData }).unwrap();
-        toast.success("User updated successfully");
+        toast.success("Cập nhật người dùng thành công");
       } else {
         await createUser(userData).unwrap();
-        toast.success("User created successfully");
+        toast.success("Tạo người dùng thành công");
       }
       onOpenChange(false);
     } catch (error) {
-      toast.error(`Failed to ${isEditing ? "update" : "create"} user`);
+      toast.error(`Không thể ${isEditing ? "cập nhật" : "tạo"} người dùng`);
     }
   });
 
@@ -204,17 +204,17 @@ export const UserDialog: React.FC<UserDialogProps> = ({
                 onClick={() => onOpenChange(false)}
                 disabled={loading || methods.formState.isSubmitting}
               >
-                Cancel
+                Hủy
               </Button>
               <Button
                 type="submit"
                 disabled={loading || methods.formState.isSubmitting}
               >
                 {loading || methods.formState.isSubmitting
-                  ? "Saving..."
+                  ? "Đang lưu..."
                   : isEditing
-                    ? "Update User"
-                    : "Create User"}
+                    ? "Cập nhật"
+                    : "Tạo mới"}
               </Button>
             </div>
           </form>

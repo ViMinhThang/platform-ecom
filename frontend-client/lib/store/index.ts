@@ -13,7 +13,6 @@ import kanbanReducer from './admin/slices/kanbanSlice';
 import uiReducer from './admin/slices/uiSlice';
 import orderReducer from './admin/slices/orderSlice';
 import inventoryReducer from './admin/slices/inventorySlice';
-import flashSaleReducer from './admin/slices/flashSaleSlice';
 
 export const store = configureStore({
     reducer: {
@@ -30,7 +29,6 @@ export const store = configureStore({
         ui: uiReducer,
         orders: orderReducer,
         inventory: inventoryReducer,
-        flashSales: flashSaleReducer,
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({

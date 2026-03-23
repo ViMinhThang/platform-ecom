@@ -22,7 +22,6 @@ public class Category {
     private Long id;
 
     @NotBlank
-    @Size(min = 5, message = "Category name must contain atleast 5 characters")
     private String name;
 
     @Column(unique = true, nullable = false)

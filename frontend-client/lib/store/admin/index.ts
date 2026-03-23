@@ -3,7 +3,7 @@ export * from './categoryApi';
 export * from './userApi';
 export * from './orderApi';
 export * from './inventoryApi';
-export * from './flashSaleApi';
+export * from './api/saleCampaignApi';
 export * from './productVariantApi';
 export * from './productOptionApi';
 export * from './productImageApi';

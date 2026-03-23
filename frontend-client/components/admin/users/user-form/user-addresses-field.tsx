@@ -36,8 +36,8 @@ export const UserAddressesField: React.FC<UserAddressesFieldProps> = ({
                 <CardContent className="pt-6">
                     <div className="text-center text-muted-foreground py-8">
                         <MapPin size={48} className="mx-auto mb-4 opacity-50" />
-                        <p className="text-lg font-medium">No addresses yet</p>
-                        <p className="text-sm">User hasn't added any addresses</p>
+                        <p className="text-lg font-medium">Chưa có địa chỉ</p>
+                        <p className="text-sm">Người dùng chưa thêm địa chỉ nào</p>
                     </div>
                 </CardContent>
             </Card>
@@ -47,7 +47,7 @@ export const UserAddressesField: React.FC<UserAddressesFieldProps> = ({
     return (
         <div className="space-y-4">
             <CardDescription>
-                Managing {addresses.length} {addresses.length === 1 ? 'address' : 'addresses'}
+                Quản lý {addresses.length} {addresses.length === 1 ? 'địa chỉ' : 'địa chỉ'}
             </CardDescription>
 
             {addresses.map((address: Address, index: number) => (

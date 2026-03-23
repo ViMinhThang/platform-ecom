@@ -103,28 +103,28 @@ export const productService = {
         if (params.size !== undefined) searchParams.set('size', params.size.toString());
         const query = searchParams.toString();
         const response = await apiClient.get<APIResponse<ProductResponse>>(
-            `/api/api/v1/sellers/products${query ? `?${query}` : ''}`
+            `/api/v1/sellers/products${query ? `?${query}` : ''}`
         );
         return response.data.data;
     },
     getById: async (id: number): Promise<Product> => {
-        const response = await apiClient.get<APIResponse<Product>>(`/api/api/v1/sellers/products/${id}`);
+        const response = await apiClient.get<APIResponse<Product>>(`/api/v1/sellers/products/${id}`);
         return response.data.data;
     },
     getProductById: async (id: number): Promise<Product> => {
-        const response = await apiClient.get<APIResponse<Product>>(`/api/api/v1/sellers/products/${id}`);
+        const response = await apiClient.get<APIResponse<Product>>(`/api/v1/sellers/products/${id}`);
         return response.data.data;
     },
     updateDescription: async (id: number, description: string): Promise<Product> => {
         const response = await apiClient.put<APIResponse<Product>>(
-            `/api/api/v1/sellers/products/${id}/description`,
+            `/api/v1/sellers/products/${id}/description`,
             { description }
         );
         return response.data.data;
     },
     updateProduct: async (id: number, data: Partial<Product>): Promise<Product> => {
         const response = await apiClient.put<APIResponse<Product>>(
-            `/api/api/v1/sellers/products/${id}`,
+            `/api/v1/sellers/products/${id}`,
             data
         );
         return response.data.data;

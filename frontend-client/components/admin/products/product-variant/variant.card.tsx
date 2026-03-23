@@ -43,9 +43,9 @@ export const VariantCard: React.FC<VariantCardProps> = ({ variant }) => {
 
     try {
       await toggleVariantVisibility({ productId, variantId: variant.id }).unwrap();
-      toast.success(variant.hidden ? "Variant is now visible" : "Variant is now hidden");
+      toast.success(variant.hidden ? "Biến thể đã được hiển thị" : "Biến thể đã được ẩn");
     } catch (error) {
-      toast.error("Failed to toggle visibility");
+      toast.error("Không thể thay đổi hiển thị");
     }
   };
 
@@ -72,7 +72,7 @@ export const VariantCard: React.FC<VariantCardProps> = ({ variant }) => {
                 <Eye className="h-4 w-4 text-green-500" />
               )}
               <Label className="text-sm font-medium">
-                {isHidden ? "Hidden from customers" : "Visible to customers"}
+                {isHidden ? "Ẩn khỏi khách hàng" : "Hiển thị với khách hàng"}
               </Label>
             </div>
             <Switch
@@ -83,66 +83,66 @@ export const VariantCard: React.FC<VariantCardProps> = ({ variant }) => {
           </div>
         )}
 
-        <div className="grid grid-cols-2 gap-3">
-          <VariantImagePicker
-            productId={productId}
-            value={watch("imageUrl")}
-            onSelect={(imageUrl) => setValue("imageUrl", imageUrl)}
-          />
+<div className="grid grid-cols-2 gap-3">
+              <VariantImagePicker
+                productId={productId}
+                value={watch("imageUrl")}
+                onSelect={(imageUrl) => setValue("imageUrl", imageUrl)}
+              />
 
-          <div className="flex flex-col gap-3">
-            <div className="grid grid-cols-2 gap-3">
-              <FormInput
-                control={control}
-                name="sku"
-                label="SKU"
-                placeholder="SKU"
-                required
-              />
-              <FormInput
-                control={control}
-                name="price"
-                label="Price"
-                type="number"
-                placeholder="Price"
-                required
-              />
-              <FormInput
-                control={control}
-                name="stock"
-                label="Stock"
-                type="number"
-                placeholder="Stock"
-                required
-              />
-              <FormInput
-                control={control}
-                name="isActive"
-                label="Status"
-                type="text"
-                placeholder="Active / Inactive"
-              />
+              <div className="flex flex-col gap-3">
+                <div className="grid grid-cols-2 gap-3">
+                  <FormInput
+                    control={control}
+                    name="sku"
+                    label="SKU"
+                    placeholder="SKU"
+                    required
+                  />
+                  <FormInput
+                    control={control}
+                    name="price"
+                    label="Giá"
+                    type="number"
+                    placeholder="Giá"
+                    required
+                  />
+                  <FormInput
+                    control={control}
+                    name="stock"
+                    label="Tồn kho"
+                    type="number"
+                    placeholder="Tồn kho"
+                    required
+                  />
+                  <FormInput
+                    control={control}
+                    name="isActive"
+                    label="Trạng thái"
+                    type="text"
+                    placeholder="Hoạt động / Bị khóa"
+                  />
+                </div>
+
+                <ProductVariantOptions
+                  control={control}
+                  namePrefix="optionValues"
+                />
+
+                <div className="flex gap-2">
+                  <Button variant="destructive" onClick={() => setIsOpen(true)}>
+                    Xóa biến thể
+                  </Button>
+                  <Button
+                    onClick={handleSubmit(async (data) => {
+                      await saveVariant(data);
+                    })}
+                  >
+                    Lưu thay đổi
+                  </Button>
+                </div>
+              </div>
             </div>
-
-            <ProductVariantOptions
-              control={control}
-              namePrefix="optionValues"
-            />
-
-            <div className="flex gap-2">
-              <Button variant="destructive" onClick={() => setIsOpen(true)}>
-                Delete Variant
-              </Button>
-              <Button
-                onClick={handleSubmit(async (data) => {
-                  await saveVariant(data);
-                })}
-              >
-                Save Changes
-              </Button>
-            </div>
-          </div>
-        </div>
       </Card>
     </FormProvider>
   );
