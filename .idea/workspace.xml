@@ -6,88 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="c48beeac-7758-42e4-81dd-f068fbcd38be" name="Changes" comment="update spring cloud stream dependency">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/app/(main)/sale-campaigns/[slug]/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/app/(main)/sale-campaigns/[slug]/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/app/(main)/sale-campaigns/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/app/(main)/sale-campaigns/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/app/admin/dashboard/inventory/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/app/admin/dashboard/inventory/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/app/admin/dashboard/profile/[[...profile]]/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/app/admin/dashboard/profile/[[...profile]]/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/app/admin/dashboard/sale-campaigns/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/app/admin/dashboard/sale-campaigns/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/admin/categories/category-form/category-form-field.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/admin/categories/category-form/category-form-field.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/admin/categories/category-listing-client.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/admin/categories/category-listing-client.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/admin/categories/category-tables/cell-action.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/admin/categories/category-tables/cell-action.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/admin/inventory/create-inventory-dialog.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/admin/inventory/create-inventory-dialog.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/admin/inventory/inventory-listing-client.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/admin/inventory/inventory-listing-client.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/admin/inventory/low-stock-alert.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/admin/inventory/low-stock-alert.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/admin/inventory/product-combobox.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/admin/inventory/product-combobox.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/admin/inventory/stock-adjustment-dialog.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/admin/inventory/stock-adjustment-dialog.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/admin/inventory/variant-combobox.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/admin/inventory/variant-combobox.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/admin/orders/order-detail/order-detail-view.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/admin/orders/order-detail/order-detail-view.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/admin/orders/order-detail/order-info-card.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/admin/orders/order-detail/order-info-card.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/admin/orders/order-detail/sub-order-card.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/admin/orders/order-detail/sub-order-card.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/admin/orders/order-tables/order-table-action.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/admin/orders/order-tables/order-table-action.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/admin/products/product-form/create-product.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/admin/products/product-form/create-product.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/admin/products/product-form/key-value-editor.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/admin/products/product-form/key-value-editor.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/admin/products/product-image/product-image-cart.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/admin/products/product-image/product-image-cart.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/admin/products/product-image/product-image-dialog.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/admin/products/product-image/product-image-dialog.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/admin/products/product-option/product-option.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/admin/products/product-option/product-option.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/admin/products/product-option/product-options-dialog.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/admin/products/product-option/product-options-dialog.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/admin/products/product-tables/cell-action.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/admin/products/product-tables/cell-action.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/admin/products/product-variant/product-variant-dialog.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/admin/products/product-variant/product-variant-dialog.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/admin/products/product-variant/product-variant-image-picker.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/admin/products/product-variant/product-variant-image-picker.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/admin/products/product-variant/variant-list.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/admin/products/product-variant/variant-list.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/admin/products/product-variant/variant.card.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/admin/products/product-variant/variant.card.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/admin/sale-campaigns/sale-campaign-form.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/admin/sale-campaigns/sale-campaign-form.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/admin/sale-campaigns/sale-campaign-listing-client.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/admin/sale-campaigns/sale-campaign-listing-client.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/admin/sale-campaigns/sale-campaign-tables/cell-action.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/admin/sale-campaigns/sale-campaign-tables/cell-action.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/admin/search-input.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/admin/search-input.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/admin/users/user-form/user-addresses-field.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/admin/users/user-form/user-addresses-field.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/admin/users/user-form/user-basic-info-fields.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/admin/users/user-form/user-basic-info-fields.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/admin/users/user-form/user-dialog.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/admin/users/user-form/user-dialog.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/admin/users/user-form/user-form-fields.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/admin/users/user-form/user-form-fields.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/admin/users/user-form/user-image-upload-field.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/admin/users/user-form/user-image-upload-field.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/admin/users/user-form/user-roles-field.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/admin/users/user-form/user-roles-field.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/admin/users/user-listing-client.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/admin/users/user-listing-client.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/admin/users/user-tables/cell-action.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/admin/users/user-tables/cell-action.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/hooks/admin/use-product-actions.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/hooks/admin/use-product-actions.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/hooks/useProducts.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/hooks/useProducts.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/lib/api-client.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/lib/api-client.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/lib/services/admin/flash-sale-service.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/lib/services/product-service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/lib/services/product-service.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/lib/store/admin/api/baseApi.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/lib/store/admin/api/baseApi.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/lib/store/admin/api/flashSaleApi.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/lib/store/admin/api/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/lib/store/admin/api/index.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/lib/store/admin/baseApi.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/lib/store/admin/baseApi.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/lib/store/admin/categoryApi.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/lib/store/admin/categoryApi.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/lib/store/admin/flashSaleApi.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/lib/store/admin/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/lib/store/admin/index.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/lib/store/admin/slices/flashSaleSlice.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/lib/store/api/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/lib/store/api/index.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/lib/store/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/lib/store/index.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/providers/product-variant-provider.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/providers/product-variant-provider.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/types/admin/flash-sale.ts" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/logs/order-service.log" beforeDir="false" afterPath="$PROJECT_DIR$/logs/order-service.log" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/logs/user-service.log" beforeDir="false" afterPath="$PROJECT_DIR$/logs/user-service.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/gateway/src/main/java/com/ecom/gateway/security/GatewayConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/gateway/src/main/java/com/ecom/gateway/security/GatewayConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/inventory/src/main/java/com/ecom/inventory/config/HttpClientConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/inventory/src/main/java/com/ecom/inventory/config/HttpClientConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/inventory/src/main/java/com/ecom/inventory/controller/SellerInventoryController.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/inventory/src/main/java/com/ecom/inventory/controller/SellerInventoryController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/controller/Admin/AdminCategoryController.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/controller/Admin/AdminCategoryController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/controller/Admin/AdminFlashSaleController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/dto/FlashSaleDTO.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/dto/FlashSaleItemDTO.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/dto/request/AddFlashSaleItemRequest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/dto/request/CreateFlashSaleRequest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/dto/request/UpdateFlashSaleItemRequest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/dto/request/UpdateFlashSaleRequest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/dto/response/FlashSaleResponse.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/entity/Category.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/entity/Category.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/entity/FlashSale.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/entity/FlashSaleItem.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/entity/Product.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/entity/Product.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/enums/FlashSaleStatus.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/mapper/FlashSaleMapper.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/repository/FlashSaleRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/service/impl/FlashSaleServiceImpl.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/service/signature/FlashSaleService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/utils/ProductUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/utils/ProductUtils.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -225,14 +145,14 @@
           <value>
             <map>
               <entry key="analytics-server" value="STOPPED" />
-              <entry key="chatbot-service" value="STOPPED" />
+              <entry key="chatbot-service" value="FAILED" />
               <entry key="config-server" value="STOPPED" />
               <entry key="gateway" value="STOPPED" />
-              <entry key="inventory-service" value="STOPPED" />
-              <entry key="notification-service" value="STOPPED" />
-              <entry key="order-service" value="STOPPED" />
+              <entry key="inventory-service" value="FAILED" />
+              <entry key="notification-service" value="FAILED" />
+              <entry key="order-service" value="FAILED" />
               <entry key="product-service" value="STOPPED" />
-              <entry key="promotion-service" value="STOPPED" />
+              <entry key="promotion-service" value="FAILED" />
               <entry key="review-service" value="STOPPED" />
               <entry key="user-service" value="STOPPED" />
             </map>
