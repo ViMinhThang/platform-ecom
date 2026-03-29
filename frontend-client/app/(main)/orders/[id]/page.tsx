@@ -12,6 +12,7 @@ import { ChevronLeft, Loader2, Truck } from "lucide-react";
 import Link from "next/link";
 import { format } from "date-fns";
 import { formatCurrency } from "@/lib/utils/formatCurrency";
+import { useGetAddressesQuery } from "@/lib/store/api/clientApi";
 
 interface OrderDetailPageProps {
     params: Promise<{ id: string }>;
@@ -21,9 +22,12 @@ export default function OrderDetailPage({ params }: OrderDetailPageProps) {
     const { id } = React.use(params);
     const orderId = Number(id);
     const { order: currentOrder, loading } = useOrderDetail(orderId);
+    const { data: addresses } = useGetAddressesQuery();
     const [reviewDialogOpen, setReviewDialogOpen] = useState(false);
     const [reviewProductId, setReviewProductId] = useState<number | null>(null);
     const [refreshCounter, setRefreshCounter] = useState(0);
+
+    const shippingAddress = addresses?.find(addr => addr.addressId === currentOrder?.shippingAddressId);
 
     const handleReviewOrderItem = (productId: number) => {
         setReviewProductId(productId);
@@ -131,10 +135,15 @@ export default function OrderDetailPage({ params }: OrderDetailPageProps) {
                     <div className="bg-background p-8 rounded-sm border border-border shadow-md space-y-6">
                         <h3 className="text-[11px] font-bold uppercase tracking-[0.2em] text-foreground border-b border-border pb-4">Địa chỉ giao hàng</h3>
                         <div className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground leading-loose">
-                            <p className="text-foreground mb-4">Mã địa chỉ: {currentOrder.shippingAddressId}</p>
-                            <p>123 Đường Chính</p>
-                            <p>Quận 1, TP. Hồ Chí Minh</p>
-                            <p>Việt Nam</p>
+                            {shippingAddress ? (
+                                <>
+                                    <p className="text-foreground mb-4">{shippingAddress.street}, {shippingAddress.wardName}</p>
+                                    <p>{shippingAddress.districtName}, {shippingAddress.provinceName}</p>
+                                    <p>{shippingAddress.country || 'Việt Nam'}</p>
+                                </>
+                            ) : (
+                                <p className="text-foreground mb-4">Mã địa chỉ: {currentOrder.shippingAddressId}</p>
+                            )}
                         </div>
                     </div>
 

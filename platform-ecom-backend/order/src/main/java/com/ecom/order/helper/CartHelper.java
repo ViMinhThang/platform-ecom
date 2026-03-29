@@ -24,7 +24,7 @@ public class CartHelper {
 
         public Cart findByUserIdOrThrow(Long userId) {
                 return cartRepository.findByUserIdWithItems(userId)
-                                .orElseThrow(() -> new CartNotFoundException("Cart not found for user: " + userId));
+                                .orElseThrow(() -> new CartNotFoundException("Không tìm thấy giỏ hàng của người dùng: " + userId));
         }
 
         public Cart createNewCart(Long userId) {
@@ -40,7 +40,7 @@ public class CartHelper {
                                 .filter(item -> item.getProductId().equals(productId) &&
                                                 (variantId == null || item.getVariantId().equals(variantId)))
                                 .findFirst()
-                                .orElseThrow(() -> new CartItemNotFoundException("Item not found in cart"));
+                                .orElseThrow(() -> new CartItemNotFoundException("Không tìm thấy sản phẩm trong giỏ hàng"));
         }
 
         public CartItem findExistingItem(Cart cart, Long productId, Long variantId) {

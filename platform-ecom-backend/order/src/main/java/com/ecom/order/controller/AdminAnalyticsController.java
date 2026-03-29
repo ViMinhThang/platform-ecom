@@ -63,7 +63,7 @@ public class AdminAnalyticsController {
     private Long extractUserId(jakarta.servlet.http.HttpServletRequest request) {
         Object userIdAttr = request.getAttribute("userId");
         if (userIdAttr == null) {
-            throw new IllegalStateException("User ID not found in request");
+            throw new IllegalStateException("Không tìm thấy ID người dùng trong yêu cầu");
         }
         return Long.valueOf(userIdAttr.toString());
     }

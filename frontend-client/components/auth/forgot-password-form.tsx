@@ -41,7 +41,7 @@ export function ForgotPasswordForm({ className, ...props }: React.HTMLAttributes
 
         try {
             const response = await fetch(
-                `${process.env.NEXT_PUBLIC_API_BASE_URL || ""}/v1/auth/forgot-password`,
+                `${process.env.NEXT_PUBLIC_API_BASE_URL || ""}/api/v1/auth/forgot-password`,
                 {
                     method: "POST",
                     headers: {

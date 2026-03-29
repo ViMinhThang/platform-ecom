@@ -76,6 +76,8 @@ export interface SubOrderDTO {
     items: SubOrderItemDTO[];
 }
 
+import type { Address } from './user';
+
 export interface OrderGroupDTO {
     id: number;
     groupNumber: string;
@@ -88,6 +90,7 @@ export interface OrderGroupDTO {
     paymentStatus: PaymentStatus;
     overallStatus: OrderGroupStatus;
     shippingAddressId: number;
+    shippingAddress?: Address;
     billingAddressId?: number;
     notes?: string;
     createdAt: string;

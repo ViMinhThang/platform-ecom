@@ -28,10 +28,10 @@ export const useCheckout = () => {
 
     const startCheckout = useCallback(async () => {
         if (!checkout.selectedAddressId) {
-            throw new Error('Please select a delivery address');
+            throw new Error('Vui lòng chọn địa chỉ giao hàng');
         }
         if (!checkout.shippingFee || checkout.shippingFee <= 0) {
-            throw new Error('Shipping fee not calculated');
+            throw new Error('Phí vận chuyển chưa được tính toán');
         }
 
         setLoading(true);
@@ -51,7 +51,7 @@ export const useCheckout = () => {
             dispatch(setCheckoutStep('payment'));
             return session;
         } catch (err) {
-            const message = err instanceof Error ? err.message : 'Failed to initiate checkout';
+            const message = err instanceof Error ? err.message : 'Khởi tạo thanh toán thất bại';
             setError(message);
             throw err;
         } finally {
@@ -61,10 +61,10 @@ export const useCheckout = () => {
 
     const confirmPaymentAndCreateOrder = useCallback(async (paymentIntentId: string) => {
         if (!checkout.selectedAddressId) {
-            throw new Error('Address not selected');
+            throw new Error('Chưa chọn địa chỉ giao hàng');
         }
         if (!checkout.shippingFee || checkout.shippingFee <= 0) {
-            throw new Error('Shipping fee not available');
+            throw new Error('Phí vận chuyển không khả dụng');
         }
 
         setLoading(true);
@@ -78,10 +78,10 @@ export const useCheckout = () => {
             };
 
             const order = await confirmPaymentMutation(request).unwrap();
-            setCurrentOrder(order);
+            dispatch(setCurrentOrder(order));
             return order;
         } catch (err) {
-            const message = err instanceof Error ? err.message : 'Failed to confirm payment';
+            const message = err instanceof Error ? err.message : 'Xác nhận thanh toán thất bại';
             setError(message);
             throw err;
         } finally {

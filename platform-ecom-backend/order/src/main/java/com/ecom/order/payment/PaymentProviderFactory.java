@@ -25,10 +25,10 @@ public class PaymentProviderFactory {
     public PaymentProvider getProvider(String providerName) {
         PaymentProvider provider = providers.get(providerName.toLowerCase());
         if (provider == null) {
-            throw new IllegalArgumentException("Payment provider not found: " + providerName);
+            throw new IllegalArgumentException("Không tìm thấy nhà cung cấp thanh toán: " + providerName);
         }
         if (!provider.isAvailable()) {
-            throw new IllegalStateException("Payment provider not available: " + providerName);
+            throw new IllegalStateException("Nhà cung cấp thanh toán không khả dụng: " + providerName);
         }
         return provider;
     }

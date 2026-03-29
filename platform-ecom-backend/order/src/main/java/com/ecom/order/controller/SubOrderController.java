@@ -144,7 +144,7 @@ public class SubOrderController {
     private Long extractUserId(HttpServletRequest request) {
         Object userIdAttr = request.getAttribute("userId");
         if (userIdAttr == null) {
-            throw new IllegalStateException("User ID not found in request");
+            throw new IllegalStateException("Không tìm thấy ID người dùng trong yêu cầu");
         }
         return Long.valueOf(userIdAttr.toString());
     }

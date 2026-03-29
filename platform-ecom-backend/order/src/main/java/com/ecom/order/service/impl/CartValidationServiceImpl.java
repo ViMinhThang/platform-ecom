@@ -28,7 +28,7 @@ public class CartValidationServiceImpl implements CartValidationService {
 
         if (cart.getItems().isEmpty()) {
             throw new APIException(
-                    "Cart is empty. Please add items to your cart before checkout.");
+                    "Giỏ hàng của bạn đang trống. Vui lòng thêm sản phẩm vào giỏ hàng trước khi thanh toán.");
         }
         return cart;
     }
@@ -46,7 +46,7 @@ public class CartValidationServiceImpl implements CartValidationService {
         var response = productServiceClient.getProductDetails(item.getProductId(), item.getVariantId());
 
         if (response == null || !response.isSuccess() || response.getData() == null) {
-            throw new IllegalStateException("Product not found: " + item.getProductId());
+            throw new IllegalStateException("Không tìm thấy sản phẩm: " + item.getProductId());
         }
         return response.getData();
     }
@@ -66,7 +66,7 @@ public class CartValidationServiceImpl implements CartValidationService {
 
             if (!inStock) {
                 throw new InsufficientStockException(
-                        "Product " + details.getName() + " is out of stock or has insufficient quantity");
+                        "Sản phẩm " + details.getName() + " đã hết hàng hoặc không đủ số lượng");
             }
         } catch (InsufficientStockException e) {
             throw e;
@@ -75,7 +75,7 @@ public class CartValidationServiceImpl implements CartValidationService {
             boolean inStock = productServiceClient.validateStock(
                     item.getProductId(), item.getVariantId(), item.getQuantity());
             if (!inStock) {
-                throw new InsufficientStockException("Product " + details.getName() + " is out of stock");
+                throw new InsufficientStockException("Sản phẩm " + details.getName() + " đã hết hàng");
             }
         }
     }

@@ -23,7 +23,7 @@ public class OrderPaymentHelper {
     public void verifyPaymentNotDuplicate(String paymentIntentId) {
         if (transactionRepository.existsByProviderTransactionId(paymentIntentId)) {
             log.warn("Order already created for payment: {}", paymentIntentId);
-            throw new PaymentException("Order already created for this payment");
+            throw new PaymentException("Đơn hàng đã được tạo cho thanh toán này");
         }
     }
 

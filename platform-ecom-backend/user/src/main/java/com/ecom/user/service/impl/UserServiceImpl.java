@@ -2,6 +2,7 @@ package com.ecom.user.service.impl;
 
 import com.ecom.common.exception.APIException;
 import com.ecom.common.exception.ResourceNotFoundException;
+import org.springframework.http.HttpStatus;
 import com.ecom.common.service.FileStorageService;
 import com.ecom.user.dtos.request.UpdateUserRequest;
 import com.ecom.user.dtos.response.UserInfoResponse;
@@ -37,7 +38,7 @@ public class UserServiceImpl implements UserService {
 
         // Verify current password
         if (!encoder.matches(request.getCurrentPassword(), user.getPassword())) {
-            throw new APIException("Incorrect Password");
+            throw new APIException(HttpStatus.BAD_REQUEST, "Mật khẩu hiện tại không chính xác");
         }
 
         // Validate unique data (Email/Username)

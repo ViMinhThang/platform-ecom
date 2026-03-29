@@ -55,7 +55,7 @@ public class PaymentServiceImpl implements PaymentService {
     private void checkIdempotency(String idempotencyKey) {
         if (idempotencyKeys.containsKey(idempotencyKey)) {
             log.warn("Duplicate payment request detected: {}", idempotencyKey);
-            throw new DuplicatePaymentException("Payment request already processed");
+            throw new DuplicatePaymentException("Yêu cầu thanh toán đã được xử lý");
         }
     }
 
@@ -78,7 +78,7 @@ public class PaymentServiceImpl implements PaymentService {
             return provider.createPaymentIntent(request);
         } catch (Exception e) {
             log.error("Failed to create payment intent", e);
-            throw new PaymentException("Failed to create payment: " + e.getMessage());
+            throw new PaymentException("Tạo thanh toán thất bại: " + e.getMessage());
         }
     }
 
@@ -99,7 +99,7 @@ public class PaymentServiceImpl implements PaymentService {
         PaymentIntent intent = provider.getPaymentIntent(paymentIntentId);
 
         if (intent == null) {
-            throw new PaymentException("Payment intent not found: " + paymentIntentId);
+            throw new PaymentException("Không tìm thấy yêu cầu thanh toán: " + paymentIntentId);
         }
         return intent;
     }
@@ -108,7 +108,7 @@ public class PaymentServiceImpl implements PaymentService {
         if (!PAYMENT_SUCCEEDED_STATUS.equals(intent.getStatus())) {
             log.error("Payment not succeeded. Status: {} for intent: {}",
                     intent.getStatus(), paymentIntentId);
-            throw new PaymentException("Payment not confirmed. Status: " + intent.getStatus());
+            throw new PaymentException("Thanh toán chưa được xác nhận. Trạng thái: " + intent.getStatus());
         }
     }
 }

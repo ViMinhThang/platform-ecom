@@ -15,52 +15,52 @@ export function useAddressOperations(onSuccess?: () => void) {
 
     const handleCreate = async (data: Address): Promise<void> => {
         if (!session?.accessToken) {
-            toast.error('You must be logged in to add addresses');
+            toast.error('Bạn phải đăng nhập để thêm địa chỉ');
             return;
         }
 
         try {
             await addAddressMutation(data).unwrap();
-            toast.success('Address added successfully');
+            toast.success('Thêm địa chỉ thành công');
             refetch();
             onSuccess?.();
         } catch (error: unknown) {
-            toast.error((error as Error).message || 'Failed to create address');
+            toast.error((error as Error).message || 'Thêm địa chỉ thất bại');
             throw error;
         }
     };
 
     const handleUpdate = async (addressId: number, data: Address): Promise<void> => {
         if (!session?.accessToken) {
-            toast.error('You must be logged in to update addresses');
+            toast.error('Bạn phải đăng nhập để cập nhật địa chỉ');
             return;
         }
 
         try {
             await updateAddressMutation({ addressId, address: data }).unwrap();
-            toast.success('Address updated successfully');
+            toast.success('Cập nhật địa chỉ thành công');
             refetch();
             onSuccess?.();
         } catch (error: unknown) {
-            toast.error((error as Error).message || 'Failed to update address');
+            toast.error((error as Error).message || 'Cập nhật địa chỉ thất bại');
             throw error;
         }
     };
 
     const handleDelete = async (addressId: number): Promise<void> => {
         if (!session?.accessToken) {
-            toast.error('You must be logged in to delete addresses');
+            toast.error('Bạn phải đăng nhập để xóa địa chỉ');
             return;
         }
 
         setIsDeleting(addressId);
         try {
             await deleteAddressMutation(addressId).unwrap();
-            toast.success('Address deleted successfully');
+            toast.success('Xóa địa chỉ thành công');
             refetch();
             onSuccess?.();
         } catch (error: unknown) {
-            toast.error((error as Error).message || 'Failed to delete address');
+            toast.error((error as Error).message || 'Xóa địa chỉ thất bại');
             throw error;
         } finally {
             setIsDeleting(null);

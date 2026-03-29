@@ -78,8 +78,8 @@ public class GatewayConfig {
                                                 .uri("lb://user-service"))
 
                                 .route("auth-forgot-password", r -> r
-                                                .path("/api/v1/auth/forgot-password", "/api/v1/auth/verify-otp", "/api/v1/auth/reset-password",
-                                                        "/v1/auth/forgot-password", "/v1/auth/verify-otp", "/v1/auth/reset-password")
+                                                .path("/api/v1/auth/forgot-password", "/api/v1/auth/verify-otp",
+                                                        "/v1/auth/forgot-password", "/v1/auth/verify-otp")
                                                 .uri("lb://user-service"))
 
                                 .route("auth-protected", r -> r

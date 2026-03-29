@@ -151,7 +151,7 @@ public class OrderGroupController {
     private Long extractUserId(HttpServletRequest request) {
         Object userIdAttr = authContext.getUserId(request);
         if (userIdAttr == null) {
-            throw new IllegalStateException("User ID not found in request");
+            throw new IllegalStateException("Không tìm thấy ID người dùng trong yêu cầu");
         }
         return Long.valueOf(userIdAttr.toString());
     }

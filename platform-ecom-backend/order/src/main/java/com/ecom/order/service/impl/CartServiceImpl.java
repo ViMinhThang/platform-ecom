@@ -93,7 +93,7 @@ public class CartServiceImpl implements CartService {
     @Transactional
     public void clearCart(Long cartId) {
         Cart cart = cartRepository.findById(cartId)
-                .orElseThrow(() -> new CartNotFoundException("Cart not found"));
+                .orElseThrow(() -> new CartNotFoundException("Không tìm thấy giỏ hàng"));
 
         cart.clearItems();
         cartRepository.save(cart);

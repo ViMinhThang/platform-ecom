@@ -17,16 +17,8 @@ import { Loader2, Upload } from 'lucide-react';
 const profileSchema = z.object({
     username: z.string().min(3, 'Tên đăng nhập phải có ít nhất 3 ký tự'),
     email: z.string().email('Địa chỉ email không hợp lệ'),
-    currentPassword: z.string().optional(),
+    currentPassword: z.string().min(1, 'Mật khẩu hiện tại là bắt buộc'),
     password: z.string().optional(),
-}).refine((data) => {
-    if (data.password && data.password.length > 0 && !data.currentPassword) {
-        return false;
-    }
-    return true;
-}, {
-    message: "Mật khẩu hiện tại là bắt buộc để đổi mật khẩu",
-    path: ["currentPassword"],
 });
 
 type ProfileFormValues = z.infer<typeof profileSchema>;
@@ -66,15 +58,14 @@ export function ProfileInfoForm({ user, onUpdate }: ProfileInfoFormProps) {
 
         setIsSaving(true);
         try {
-            // Only send password fields if they are provided
             const updateData: any = {
                 username: data.username,
                 email: data.email,
+                currentPassword: data.currentPassword,
             };
 
-            if (data.password && data.currentPassword) {
+            if (data.password) {
                 updateData.password = data.password;
-                updateData.currentPassword = data.currentPassword;
             }
 
             await updateUserInfo(updateData);

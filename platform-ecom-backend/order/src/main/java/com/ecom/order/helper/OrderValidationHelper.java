@@ -25,12 +25,12 @@ public class OrderValidationHelper {
         return group.getSubOrders().stream()
                 .filter(so -> so.getId().equals(subOrderId))
                 .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("Sub-order not found: " + subOrderId));
+                .orElseThrow(() -> new IllegalArgumentException("Không tìm thấy đơn hàng phụ: " + subOrderId));
     }
 
     public void verifyUserOwnership(OrderGroup group, Long userId) {
         if (!group.getUserId().equals(userId)) {
-            throw new UnauthorizedException("Not authorized to access this order");
+            throw new UnauthorizedException("Bạn không có quyền truy cập đơn hàng này");
         }
     }
 
@@ -40,7 +40,7 @@ public class OrderValidationHelper {
                         || so.getStatus() == SubOrderStatus.PROCESSING);
 
         if (!allCancellable) {
-            throw new IllegalStateException("Cannot cancel order - items already shipped");
+            throw new IllegalStateException("Không thể hủy đơn hàng - sản phẩm đã được vận chuyển");
         }
     }
 
@@ -48,7 +48,7 @@ public class OrderValidationHelper {
         try {
             return OrderGroupStatus.valueOf(status);
         } catch (IllegalArgumentException e) {
-            throw new IllegalArgumentException("Invalid order status: " + status);
+            throw new IllegalArgumentException("Trạng thái đơn hàng không hợp lệ: " + status);
         }
     }
 
@@ -56,7 +56,7 @@ public class OrderValidationHelper {
         try {
             return SubOrderStatus.valueOf(status);
         } catch (IllegalArgumentException e) {
-            throw new IllegalArgumentException("Invalid sub-order status: " + status);
+            throw new IllegalArgumentException("Trạng thái đơn hàng phụ không hợp lệ: " + status);
         }
     }
 }

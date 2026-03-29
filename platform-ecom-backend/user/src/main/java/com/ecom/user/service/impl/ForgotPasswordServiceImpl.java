@@ -112,7 +112,7 @@ public class ForgotPasswordServiceImpl implements ForgotPasswordService {
 
         OtpCode otp = validOtp.get();
         if (otp == null) {
-            throw new APIException(HttpStatus.BAD_REQUEST, "Invalid or expired OTP");
+            throw new APIException(HttpStatus.BAD_REQUEST, "Xác thực thất bại. Vui lòng thử lại");
         }
 
         otp.setIsUsed(true);

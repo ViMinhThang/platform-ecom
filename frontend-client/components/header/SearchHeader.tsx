@@ -106,7 +106,7 @@ export const SearchHeader = () => {
                     <div className="relative flex bg-muted/30 border border-border focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/20 transition-all rounded-sm overflow-hidden shadow-sm">
                         <input
                             type="text"
-                            placeholder="Tìm tên sản phẩm hoặc mã hàng..."
+                            placeholder="Tìm tên sản phẩm..."
                             className="flex-1 px-4 py-3 text-black placeholder:text-zinc-400 text-sm font-bold outline-none"
                             value={searchQuery}
                             onChange={(e) => {
