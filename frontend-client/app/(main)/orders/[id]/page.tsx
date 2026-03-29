@@ -5,20 +5,19 @@ import { ReviewDialog } from "@/components/profile/ReviewDialog";
 import { useOrderDetail } from "@/hooks/useOrders";
 import { SubOrderCard } from "@/components/orders/SubOrderCard";
 import { TrackingTimeline } from "@/components/orders/TrackingTimeline";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { ChevronLeft, Loader2, Truck } from "lucide-react";
+import { ChevronLeft, Loader2, Truck, FileText, MapPin, ReceiptText } from "lucide-react";
 import Link from "next/link";
 import { format } from "date-fns";
 import { formatCurrency } from "@/lib/utils/formatCurrency";
 import { useGetAddressesQuery } from "@/lib/store/api/clientApi";
+import { Suspense } from "react";
 
 interface OrderDetailPageProps {
     params: Promise<{ id: string }>;
 }
 
-export default function OrderDetailPage({ params }: OrderDetailPageProps) {
+function OrderDetailPageContent({ params }: OrderDetailPageProps) {
     const { id } = React.use(params);
     const orderId = Number(id);
     const { order: currentOrder, loading } = useOrderDetail(orderId);
@@ -40,134 +39,173 @@ export default function OrderDetailPage({ params }: OrderDetailPageProps) {
 
     if (loading) {
         return (
-            <div className="container py-12 flex justify-center">
-                <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+            <div className="min-h-screen bg-background flex flex-col items-center justify-center space-y-8">
+                <div className="w-12 h-12 border-2 border-primary/20 border-t-primary rounded-full animate-spin" />
+                <p className="font-labels italic text-foreground/40 animate-pulse">Đang truy xuất hồ sơ đơn hàng...</p>
             </div>
         );
     }
 
     if (!currentOrder) {
-        return <div className="container py-12 text-center">Order not found</div>;
+        return (
+            <div className="min-h-screen bg-background flex items-center justify-center">
+                <div className="text-center space-y-6">
+                    <p className="font-labels text-xl font-bold uppercase tracking-widest text-foreground/40">Không tìm thấy hồ sơ đơn hàng</p>
+                    <Button asChild variant="outline" className="font-labels">
+                        <Link href="/orders">QUAY LẠI DANH SÁCH</Link>
+                    </Button>
+                </div>
+            </div>
+        );
     }
 
     return (
-        <div className="container mx-auto py-12 px-4 md:px-8 font-header bg-background">
-            <div className="mb-8">
-                <Button variant="ghost" size="sm" asChild className="pl-0 hover:bg-transparent group">
-                    <Link href="/orders" className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground hover:text-primary transition-colors">
-                        <ChevronLeft className="h-4 w-4 transition-transform group-hover:-translate-x-1" />
-                        Quay lại danh sách
-                    </Link>
-                </Button>
-            </div>
-
-            <div className="flex flex-col md:flex-row justify-between items-start gap-8 mb-12 border-b border-border pb-12">
-                <div>
-                    <h1 className="text-3xl md:text-4xl font-bold flex items-center gap-6 text-foreground uppercase tracking-tighter">
-                        Đơn hàng <span className="text-primary italic">#{currentOrder.groupNumber}</span>
-                        <Badge variant="outline" className="text-[10px] font-bold uppercase tracking-widest px-4 py-1 rounded-sm border-primary/20 bg-primary/5 text-primary">
-                            {currentOrder.overallStatus.replace(/_/g, " ")}
-                        </Badge>
-                    </h1>
-                    <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-[0.2em] mt-3 opacity-60">
-                        Đặt ngày {format(new Date(currentOrder.createdAt), "MMMM d, yyyy 'lúc' h:mm a")}
-                    </p>
-                </div>
-                <div className="text-left md:text-right">
-                    <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest mb-1 shadow-sm px-4 py-1 bg-muted/5 rounded-sm border border-border inline-block">Tổng thanh toán</p>
-                    <p className="text-4xl font-bold tracking-tighter text-primary mt-2">{formatCurrency(currentOrder.totalAmount)}</p>
+        <div className="min-h-screen bg-background text-foreground font-labels antialiased pb-40">
+            {/* STICKY HEADER BRIDGE */}
+            <div className="border-b border-foreground/5 bg-white/80 backdrop-blur-md sticky top-[72px] z-30 transition-all">
+                <div className="container max-w-[1600px] mx-auto px-12 py-5 flex items-center justify-between">
+                    <div className="flex items-center gap-3 text-[10px] font-bold uppercase tracking-[0.3em] text-foreground/40 font-labels">
+                        <Link href="/" className="hover:text-primary transition-colors">TRANG CHỦ</Link>
+                        <span>/</span>
+                        <Link href="/orders" className="hover:text-primary transition-colors">ĐƠN HÀNG CỦA BẠN</Link>
+                        <span>/</span>
+                        <span className="text-foreground">CHI TIẾT HÓA ĐƠN #{currentOrder.groupNumber}</span>
+                    </div>
                 </div>
             </div>
 
-            <div className="grid lg:grid-cols-3 gap-8">
-                <div className="lg:col-span-2 space-y-6">
-                    {currentOrder.subOrders.some(so => so.ghnOrderCode) && (
-                        <Card className="border border-border shadow-md rounded-sm overflow-hidden bg-background mb-8">
-                            <CardHeader className="bg-muted/10 border-b border-border py-4">
-                                <CardTitle className="flex items-center gap-3 text-[11px] font-bold uppercase tracking-widest text-foreground font-header">
-                                    <Truck className="h-4 w-4 text-primary" />
-                                    Theo dõi vận chuyển
-                                </CardTitle>
-                            </CardHeader>
-                            <CardContent className="pt-8">
+            <div className="container max-w-[1600px] mx-auto px-12 py-20">
+                <div className="mb-20">
+                    <Button variant="ghost" size="sm" asChild className="pl-0 hover:bg-transparent group mb-12">
+                        <Link href="/orders" className="flex items-center gap-3 text-[11px] font-bold uppercase tracking-[0.3em] text-foreground/40 hover:text-primary transition-all font-labels">
+                            <ChevronLeft className="h-4 w-4 transition-transform group-hover:-translate-x-1" />
+                            QUAY LẠI DANH SÁCH
+                        </Link>
+                    </Button>
+
+                    <div className="flex flex-col lg:flex-row justify-between items-start gap-12 border-b border-foreground/10 pb-12">
+                        <div className="space-y-6">
+                            <div className="flex items-center gap-6">
+                                <h1 className="font-labels text-6xl font-bold uppercase tracking-tighter text-foreground">
+                                    Hóa đơn #{currentOrder.groupNumber}
+                                </h1>
+                                <div className="px-6 py-2 bg-primary text-white text-[10px] font-bold uppercase tracking-[0.2em] rounded-[2px] font-labels">
+                                    {currentOrder.overallStatus.replace(/_/g, " ")}
+                                </div>
+                            </div>
+                            <p className="text-[10px] font-bold text-foreground/30 uppercase tracking-[0.4em] font-labels">
+                                KHỞI TẠO NGÀY {format(new Date(currentOrder.createdAt), "dd.MM.yyyy 'LÚC' HH:mm")}
+                            </p>
+                        </div>
+                        <div className="text-left lg:text-right space-y-4">
+                            <p className="text-[10px] font-bold text-foreground/30 uppercase tracking-widest font-labels">TỔNG GIÁ TRỊ GIAO DỊCH</p>
+                            <p className="text-6xl font-bold tracking-tighter text-primary font-labels">{formatCurrency(currentOrder.totalAmount)}</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div className="grid lg:grid-cols-12 gap-16 items-start">
+                    <div className="lg:col-span-8 space-y-12">
+                        {/* SHIPMENT TRACKING: WHITE CARD */}
+                        {currentOrder.subOrders.some(so => so.ghnOrderCode) && (
+                            <section className="bg-white p-12 rounded-[4px] border border-foreground/10 shadow-sm space-y-12">
+                                <div className="flex items-center gap-4 pb-8 border-b border-foreground/5">
+                                    <Truck className="h-5 w-5 text-primary" />
+                                    <h2 className="text-[11px] font-bold uppercase tracking-[0.3em] text-foreground font-labels">HÀNH TRÌNH VẬN CHUYỂN</h2>
+                                </div>
                                 <TrackingTimeline
                                     ghnOrderCode={currentOrder.subOrders.find(so => so.ghnOrderCode)?.ghnOrderCode || ''}
                                 />
-                            </CardContent>
-                        </Card>
-                    )}
+                            </section>
+                        )}
 
-                    <div>
-                        <h2 className="text-xs font-bold uppercase tracking-widest mb-6 flex items-center gap-3 text-muted-foreground">
-                            <div className="h-px bg-border flex-1" />
-                            Danh sách kiện hàng
-                            <div className="h-px bg-border flex-1" />
-                        </h2>
-                        {currentOrder.subOrders.map((subOrder) => (
-                            <SubOrderCard 
-                                key={`${subOrder.id}-${refreshCounter}`} 
-                                subOrder={subOrder} 
-                                orderId={currentOrder.id} 
-                                onReview={handleReviewOrderItem} 
-                            />
-                        ))}
-                    </div>
-                </div>
-
-                {/* Sidebar - Order Info */}
-                <div className="space-y-8">
-                    <div className="bg-background p-8 rounded-sm border border-border shadow-md space-y-6">
-                        <h3 className="text-[11px] font-bold uppercase tracking-[0.2em] text-foreground border-b border-border pb-4">Thông tin thanh toán</h3>
-                        <div className="space-y-4 text-[10px] font-bold uppercase tracking-widest">
-                            <div className="flex justify-between items-center text-muted-foreground">
-                                <span>Phương thức</span>
-                                <span className="text-foreground">Thẻ tín dụng</span>
+                        {/* SUB-ORDERS LIST */}
+                        <div className="space-y-12">
+                            <div className="flex items-center gap-6">
+                                <h2 className="text-[11px] font-bold uppercase tracking-[0.4em] text-foreground/40 font-labels italic shrink-0">DANH SÁCH KIỆN HÀNG</h2>
+                                <div className="h-px bg-foreground/5 flex-1" />
                             </div>
-                            <div className="flex justify-between items-center text-muted-foreground">
-                                <span>Trạng thái</span>
-                                <Badge variant={currentOrder.paymentStatus === 'SUCCEEDED' ? 'default' : 'secondary'} className="text-[8px] font-bold uppercase tracking-widest rounded-sm border-none bg-primary/10 text-primary">
-                                    {currentOrder.paymentStatus}
-                                </Badge>
+                            
+                            <div className="space-y-8">
+                                {currentOrder.subOrders.map((subOrder) => (
+                                    <SubOrderCard 
+                                        key={`${subOrder.id}-${refreshCounter}`} 
+                                        subOrder={subOrder} 
+                                        orderId={currentOrder.id} 
+                                        onReview={handleReviewOrderItem} 
+                                    />
+                                ))}
                             </div>
                         </div>
                     </div>
 
-                    <div className="bg-background p-8 rounded-sm border border-border shadow-md space-y-6">
-                        <h3 className="text-[11px] font-bold uppercase tracking-[0.2em] text-foreground border-b border-border pb-4">Địa chỉ giao hàng</h3>
-                        <div className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground leading-loose">
-                            {shippingAddress ? (
-                                <>
-                                    <p className="text-foreground mb-4">{shippingAddress.street}, {shippingAddress.wardName}</p>
-                                    <p>{shippingAddress.districtName}, {shippingAddress.provinceName}</p>
-                                    <p>{shippingAddress.country || 'Việt Nam'}</p>
-                                </>
-                            ) : (
-                                <p className="text-foreground mb-4">Mã địa chỉ: {currentOrder.shippingAddressId}</p>
-                            )}
+                    {/* SIDEBAR METADATA: STICKY WHITE CARDS */}
+                    <aside className="lg:col-span-4 space-y-8 lg:sticky lg:top-40">
+                        {/* PAYMENT INFO */}
+                        <div className="bg-white p-10 rounded-[4px] border border-foreground/10 shadow-sm space-y-10">
+                            <div className="flex items-center gap-4 pb-6 border-b border-foreground/5">
+                                <FileText className="h-5 w-5 text-primary/40" />
+                                <h3 className="text-[10px] font-bold uppercase tracking-[0.3em] text-foreground font-labels">THANH TOÁN</h3>
+                            </div>
+                            <div className="space-y-6 text-[11px] font-bold uppercase tracking-widest font-labels">
+                                <div className="flex justify-between items-center text-foreground/40">
+                                    <span>PHƯƠNG THỨC</span>
+                                    <span className="text-foreground">CHUYỂN KHOẢN</span>
+                                </div>
+                                <div className="flex justify-between items-center text-foreground/40">
+                                    <span>TRẠNG THÁI</span>
+                                    <div className="px-3 py-1 bg-primary/5 text-primary border border-primary/10 rounded-[2px] text-[9px]">
+                                        {currentOrder.paymentStatus}
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                    </div>
 
-                    <div className="bg-background p-8 rounded-sm border border-border shadow-lg space-y-6">
-                        <h3 className="text-[11px] font-bold uppercase tracking-[0.2em] text-foreground border-b border-border pb-4">Tóm tắt đơn hàng</h3>
-                        <div className="space-y-4 text-[10px] font-bold uppercase tracking-widest">
-                            <div className="flex justify-between items-center text-muted-foreground">
-                                <span>Tạm tính</span>
-                                <span className="text-foreground">{formatCurrency(currentOrder.totalAmount - (currentOrder.taxAmount || 0) - currentOrder.shippingCost)}</span>
+                        {/* SHIPPING LOCATION */}
+                        <div className="bg-white p-10 rounded-[4px] border border-foreground/10 shadow-sm space-y-10">
+                            <div className="flex items-center gap-4 pb-6 border-b border-foreground/5">
+                                <MapPin className="h-5 w-5 text-primary/40" />
+                                <h3 className="text-[10px] font-bold uppercase tracking-[0.3em] text-foreground font-labels">ĐỊA CHỈ NHẬN HÀNG</h3>
                             </div>
-                            <div className="flex justify-between items-center text-muted-foreground">
-                                <span>Phí vận chuyển</span>
-                                <span className="text-foreground">{formatCurrency(currentOrder.shippingCost)}</span>
-                            </div>
-                            <div className="flex justify-between items-center text-muted-foreground">
-                                <span>Thuế</span>
-                                <span className="text-foreground">{formatCurrency(currentOrder.taxAmount || 0)}</span>
-                            </div>
-                            <div className="border-t border-border border-dashed pt-4 mt-6 flex justify-between items-center">
-                                <span className="text-xs text-foreground">Tổng cộng</span>
-                                <span className="text-xl text-primary font-bold tracking-tighter">{formatCurrency(currentOrder.totalAmount)}</span>
+                            <div className="text-[11px] font-bold uppercase tracking-widest text-foreground/50 leading-loose font-labels">
+                                {shippingAddress ? (
+                                    <div className="space-y-2">
+                                        <p className="text-foreground">{shippingAddress.street}, {shippingAddress.wardName}</p>
+                                        <p>{shippingAddress.districtName}, {shippingAddress.provinceName}</p>
+                                        <p>{shippingAddress.country || 'VIỆT NAM'}</p>
+                                    </div>
+                                ) : (
+                                    <p className="text-foreground italic">MÃ ĐỊA CHỈ: {currentOrder.shippingAddressId}</p>
+                                )}
                             </div>
                         </div>
-                    </div>
+
+                        {/* TRANSACTION SUMMARY */}
+                        <div className="bg-white p-10 rounded-[4px] border border-foreground/10 shadow-lg space-y-10 ring-1 ring-primary/5">
+                            <div className="flex items-center gap-4 pb-6 border-b border-foreground/5">
+                                <ReceiptText className="h-5 w-5 text-primary" />
+                                <h3 className="text-[10px] font-bold uppercase tracking-[0.3em] text-foreground font-labels">TÓM TẮT GIAO DỊCH</h3>
+                            </div>
+                            <div className="space-y-6 text-[10px] font-bold uppercase tracking-widest font-labels">
+                                <div className="flex justify-between items-center text-foreground/40">
+                                    <span>TẠM TÍNH</span>
+                                    <span className="text-foreground">{formatCurrency(currentOrder.totalAmount - (currentOrder.taxAmount || 0) - currentOrder.shippingCost)}</span>
+                                </div>
+                                <div className="flex justify-between items-center text-foreground/40">
+                                    <span>PHÍ VẬN CHUYỂN</span>
+                                    <span className="text-foreground">{formatCurrency(currentOrder.shippingCost)}</span>
+                                </div>
+                                <div className="flex justify-between items-center text-foreground/40">
+                                    <span>THUẾ GIÁ TRỊ GIA TĂNG</span>
+                                    <span className="text-foreground">{formatCurrency(currentOrder.taxAmount || 0)}</span>
+                                </div>
+                                <div className="border-t border-foreground/10 border-dashed pt-10 flex justify-between items-baseline">
+                                    <span className="text-[11px] text-foreground/50 tracking-[0.3em]">TỔNG THANH TOÁN</span>
+                                    <span className="text-4xl text-primary font-bold tracking-tighter">{formatCurrency(currentOrder.totalAmount)}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </aside>
                 </div>
             </div>
 
@@ -182,5 +220,13 @@ export default function OrderDetailPage({ params }: OrderDetailPageProps) {
                 />
             )}
         </div>
+    );
+}
+
+export default function OrderDetailPage({ params }: OrderDetailPageProps) {
+    return (
+        <Suspense fallback={<div className="min-h-screen bg-background animate-pulse" />}>
+            <OrderDetailPageContent params={params} />
+        </Suspense>
     );
 }

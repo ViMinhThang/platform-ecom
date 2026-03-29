@@ -4,9 +4,7 @@ import { useSession } from 'next-auth/react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { ProfileInfoForm } from '@/components/profile/ProfileInfoForm';
 import { AddressManager } from '@/components/profile/AddressManager';
-import { OrderHistory } from '@/components/profile/OrderHistory';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Loader2, LayoutDashboard } from 'lucide-react';
+import { LayoutDashboard } from 'lucide-react';
 import { useGetUserProfileQuery, useGetAddressesQuery } from '@/lib/store/api/clientApi';
 import { ProfileLayout } from '@/components/profile/ProfileLayout';
 import { Button } from '@/components/ui/button';
@@ -39,8 +37,9 @@ function ProfilePageContent() {
 
     if (status === 'loading' || authLoading) {
         return (
-            <div className="flex h-[calc(100vh-4rem)] items-center justify-center">
-                <Loader2 className="h-8 w-8 animate-spin text-primary" />
+            <div className="flex h-[400px] items-center justify-center space-y-8">
+                <div className="w-10 h-10 border-2 border-primary/20 border-t-primary rounded-full animate-spin" />
+                <p className="font-labels italic text-foreground/40 animate-pulse ml-4">Đang truy xuất hồ sơ hồ sơ...</p>
             </div>
         );
     }
@@ -56,15 +55,17 @@ function ProfilePageContent() {
         switch (currentTab) {
             case 'addresses':
                 return (
-                    <div>
-                        <div className="mb-12 border-b border-border pb-8 flex justify-between items-end">
-                            <div>
-                                <h2 className="text-3xl font-bold uppercase tracking-tighter text-foreground">Sổ <span className="text-primary italic">địa chỉ</span></h2>
-                                <p className="text-[10px] font-bold text-muted-foreground mt-3 uppercase tracking-[0.2em] opacity-60">
-                                    QUẢN LÝ ĐỊA CHỈ GIAO HÀNG (TỐI ĐA 5)
+                    <div className="space-y-16">
+                        <div className="pb-12 border-b border-foreground/5 flex flex-col sm:flex-row justify-between items-start sm:items-end gap-6">
+                            <div className="space-y-3">
+                                <h2 className="text-4xl font-bold uppercase tracking-tighter text-foreground font-labels">
+                                    Sổ địa chỉ
+                                </h2>
+                                <p className="text-[10px] font-bold text-foreground/40 uppercase tracking-[0.3em] font-labels">
+                                    QUẢN LÝ ĐỊA CHỈ GIAO HÀNG TẬN NƠI
                                 </p>
                             </div>
-                            <div className="hidden sm:block text-[9px] font-bold bg-primary/5 text-primary px-3 py-1 rounded-sm border border-primary/10 tracking-widest shadow-sm">ADDR_MGR_v2.0</div>
+                            <div className="hidden sm:block text-[9px] font-bold bg-primary/5 text-primary px-4 py-1.5 rounded-[2px] border border-primary/10 tracking-[0.3em] font-labels">REGISTRY_ADDRESS_v2</div>
                         </div>
                         <AddressManager
                             addresses={addresses}
@@ -75,24 +76,26 @@ function ProfilePageContent() {
             case 'profile':
             default:
                 return (
-                    <div>
-                        <div className="mb-12 border-b border-border pb-8 flex justify-between items-end">
-                            <div>
-                                <h2 className="text-3xl font-bold uppercase tracking-tighter text-foreground">Hồ sơ <span className="text-primary italic">cá nhân</span></h2>
-                                <p className="text-[10px] font-bold text-muted-foreground mt-3 uppercase tracking-[0.2em] opacity-60">
-                                    CẬP NHẬT THÔNG TIN ĐỊNH DANH
+                    <div className="space-y-16">
+                        <div className="pb-12 border-b border-foreground/5 flex flex-col sm:flex-row justify-between items-start sm:items-end gap-6">
+                            <div className="space-y-3">
+                                <h2 className="text-4xl font-bold uppercase tracking-tighter text-foreground font-labels">
+                                    Thông tin tài khoản
+                                </h2>
+                                <p className="text-[10px] font-bold text-foreground/40 uppercase tracking-[0.3em] font-labels">
+                                    CẬP NHẬT THÔNG TIN ĐỊNH DANH HỘI VIÊN
                                 </p>
                             </div>
-                            <div className="flex items-center gap-3">
+                            <div className="flex items-center gap-6">
                                 {hasSellerRole && (
                                     <Link href="/admin/dashboard">
-                                        <Button variant="outline" size="sm" className="gap-2">
+                                        <Button variant="outline" size="sm" className="gap-3 h-11 px-6 text-[10px] font-bold uppercase tracking-widest border-primary/20 text-primary hover:bg-primary/5 rounded-[2px] font-labels">
                                             <LayoutDashboard className="h-4 w-4" />
-                                            Quản lý cửa hàng
+                                            QUẢN LÝ CỬA HÀNG
                                         </Button>
                                     </Link>
                                 )}
-                                <div className="hidden sm:block text-[9px] font-bold bg-primary/5 text-primary px-3 py-1 rounded-sm border border-primary/10 tracking-widest shadow-sm">ID_PROFILE_v3.0</div>
+                                <div className="hidden sm:block text-[9px] font-bold bg-primary/5 text-primary px-4 py-1.5 rounded-[2px] border border-primary/10 tracking-[0.3em] font-labels">REGISTRY_PROFILE_v3</div>
                             </div>
                         </div>
                         <ProfileInfoForm user={user} onUpdate={handleProfileUpdate} />
@@ -103,10 +106,10 @@ function ProfilePageContent() {
 
     return (
         <ProfileLayout>
-            <div className="mb-8 lg:hidden">
-                <h1 className="text-2xl font-bold uppercase tracking-tighter text-foreground">
-                    {currentTab === 'profile' && 'THÔNG TIN CÁ NHÂN'}
-                    {currentTab === 'addresses' && 'SỔ ĐỊA CHỈ'}
+            <div className="mb-12 lg:hidden">
+                <h1 className="text-3xl font-bold uppercase tracking-tighter text-foreground font-labels">
+                    {currentTab === 'profile' && 'THÔNG TIN TÀI KHOẢN'}
+                    {currentTab === 'addresses' && 'SỔ ĐIẠ CHỈ'}
                 </h1>
             </div>
             {renderContent()}
@@ -116,7 +119,7 @@ function ProfilePageContent() {
 
 export default function ProfilePage() {
     return (
-        <Suspense fallback={<div>Loading...</div>}>
+        <Suspense fallback={<div className="min-h-screen bg-[#F5F3F4] animate-pulse" />}>
             <ProfilePageContent />
         </Suspense>
     );

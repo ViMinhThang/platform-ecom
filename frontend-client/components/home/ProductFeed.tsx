@@ -22,7 +22,7 @@ export function ProductFeed() {
     const { data: productsData, isLoading: productsLoading } = useGetProductsQuery({
         sortBy: 'createdAt',
         sortOrder: 'desc',
-        perPage: 24
+        perPage: 12
     });
 
     const products = productsData?.content || [];
@@ -30,7 +30,7 @@ export function ProductFeed() {
     const fetchPersonalized = async () => {
         setRecLoading(true);
         try {
-            const data = await getPersonalizedFeed(session?.user?.id ? Number(session.user.id) : 1, 24);
+            const data = await getPersonalizedFeed(session?.user?.id ? Number(session.user.id) : 1, 12);
             setPersonalizedProducts(data || []);
         } catch (error) {
             console.error(error);
@@ -40,47 +40,54 @@ export function ProductFeed() {
     };
 
     return (
-        <div className="container mx-auto px-4 mb-20" suppressHydrationWarning>
-            {/* Industrial Tab Header */}
-            <div className="sticky top-[100px] z-40 bg-background/80 backdrop-blur-md mb-8">
-                <div className="flex border border-border rounded-sm overflow-hidden shadow-sm">
-                    <button
-                        onClick={() => setActiveTab('daily')}
-                        className={`flex-1 px-6 py-4 text-[10px] font-bold uppercase tracking-[0.2em] transition-all ${activeTab === 'daily'
-                            ? 'bg-primary text-primary-foreground'
-                            : 'bg-transparent text-muted-foreground hover:bg-primary/5 hover:text-primary'
-                            }`}
-                    >
-                        Gợi ý hàng ngày
-                    </button>
-                    <button
-                        onClick={() => {
-                            setActiveTab('personalized');
-                            if (personalizedProducts.length === 0) {
-                                fetchPersonalized();
-                            }
-                        }}
-                        className={`flex-1 px-6 py-4 text-[10px] font-bold uppercase tracking-[0.2em] transition-all border-l border-border ${activeTab === 'personalized'
-                            ? 'bg-primary text-primary-foreground'
-                            : 'bg-transparent text-muted-foreground hover:bg-primary/5 hover:text-primary'
-                            }`}
-                    >
-                        Dành riêng cho bạn
-                    </button>
+        <div className="bg-[#F5F3F4] w-full py-32">
+            <section className="max-w-[1600px] mx-auto">
+                {/* Editorial Header */}
+                <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-16">
+                    <div className="space-y-4">
+                        <h2 className="font-labels font-bold text-4xl text-foreground/90 tracking-tight">Sản phẩm đề xuất cho bạn</h2>
+                        <div className="flex items-center gap-10 border-b border-border/5 pb-4">
+                            <button
+                                onClick={() => setActiveTab('daily')}
+                                className={`text-[11px] font-bold uppercase tracking-[0.25em] transition-all relative pb-4 ${activeTab === 'daily'
+                                    ? 'text-primary after:absolute after:bottom-0 after:left-0 after:right-0 after:h-px after:bg-primary'
+                                    : 'text-foreground/30 hover:text-foreground'
+                                    }`}
+                            >
+                                Gợi ý hàng ngày
+                            </button>
+                            <button
+                                onClick={() => {
+                                    setActiveTab('personalized');
+                                    if (personalizedProducts.length === 0) fetchPersonalized();
+                                }}
+                                className={`text-[11px] font-bold uppercase tracking-[0.25em] transition-all relative pb-4 ${activeTab === 'personalized'
+                                    ? 'text-primary after:absolute after:bottom-0 after:left-0 after:right-0 after:h-px after:bg-primary'
+                                    : 'text-foreground/30 hover:text-foreground'
+                                    }`}
+                            >
+                                Dành riêng cho bạn
+                            </button>
+                        </div>
+                    </div>
                 </div>
-            </div>
 
-            {/* Grid */}
-            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 min-h-[400px]">
-                {!isMounted || (productsLoading || recLoading) && (activeTab === 'personalized' ? personalizedProducts.length === 0 : products.length === 0) ? (
-                    Array.from({ length: 12 }).map((_, i) => (
-                        <div key={i} className="aspect-[3/4] bg-zinc-100 animate-pulse border border-black/5" />
-                    ))
-                ) : (
-                    activeTab === 'personalized' ? (
-                        personalizedProducts.map((p) => (
-                            <div key={p.product_id} className="h-full border border-black/10 hover:border-black transition-all bg-white">
+                {/* Grid */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-16">
+                    {!isMounted || (productsLoading || recLoading) && (activeTab === 'personalized' ? personalizedProducts.length === 0 : products.length === 0) ? (
+                        Array.from({ length: 8 }).map((_, i) => (
+                            <div key={i} className="space-y-4 animate-pulse">
+                                <div className="aspect-square bg-secondary/50 rounded-sm" />
+                                <div className="h-2 bg-secondary/50 w-1/4" />
+                                <div className="h-4 bg-secondary/50 w-3/4" />
+                                <div className="h-4 bg-secondary/50 w-1/2" />
+                            </div>
+                        ))
+                    ) : (
+                        activeTab === 'personalized' ? (
+                            personalizedProducts.map((p) => (
                                 <ProductCard
+                                    key={p.product_id}
                                     id={p.product_id.toString()}
                                     slug={p.slug}
                                     name={p.product_name}
@@ -96,33 +103,31 @@ export function ProductFeed() {
                                         imageUrl: p.image_url,
                                     } as any}
                                 />
-                            </div>
-                        ))
-                    ) : (
-                        products.map((product) => (
-                            <div key={product.id} className="h-full border border-black/10 hover:border-black transition-all bg-white">
+                            ))
+                        ) : (
+                            products.map((product) => (
                                 <ProductCard
+                                    key={product.id}
                                     id={product.id.toString()}
                                     slug={product.slug}
                                     name={product.name}
                                     price={product.minPrice}
                                     image={product.imageUrl || ''}
                                     category={product.category.name}
-                                    soldCount={124}
                                     firstVariant={product.firstVariant}
                                     sourceContext="daily_feed"
                                 />
-                            </div>
-                        ))
-                    )
-                )}
-            </div>
+                            ))
+                        )
+                    )}
+                </div>
 
-            <div className="flex justify-center mt-12">
-                <Button className="px-12 py-6 rounded-sm border border-primary/20 bg-background text-primary hover:bg-primary hover:text-primary-foreground font-bold uppercase tracking-[0.2em] text-[10px] transition-all shadow-sm">
-                    Xem thêm sản phẩm
-                </Button>
-            </div>
+                <div className="flex justify-center mt-24">
+                    <Button className="group bg-transparent text-primary hover:bg-primary hover:text-white border border-primary/20 px-12 py-6 rounded-sm text-[10px] font-bold uppercase tracking-[0.2em] transition-all">
+                        Xem tất cả sản phẩm
+                    </Button>
+                </div>
+            </section>
         </div>
     );
 }

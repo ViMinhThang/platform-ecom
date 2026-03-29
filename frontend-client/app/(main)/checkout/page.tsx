@@ -90,11 +90,18 @@ export default function CheckoutPage() {
     const totalAmount = discountResult ? discountResult.finalTotal : (cart.totalAmount + shippingFee);
 
     return (
-        <div className="bg-background min-h-screen font-header">
-            <div className="max-w-7xl mx-auto py-12 px-4 md:px-8">
-                <h1 className="text-3xl md:text-4xl font-bold mb-12 tracking-tight text-foreground uppercase tracking-widest border-b border-border pb-8">
-                    Thanh <span className="text-primary italic">toán</span>
-                </h1>
+        <div className="bg-background min-h-screen font-labels antialiased">
+            <div className="max-w-[1600px] mx-auto py-24 px-12 md:px-32">
+                <div className="mb-20 space-y-4">
+                    <h1 className="font-header text-5xl md:text-6xl font-bold tracking-tight text-foreground uppercase">
+                        Thanh <span className="text-primary italic">Toán</span>
+                    </h1>
+                    <div className="flex items-center gap-4">
+                        <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-foreground/40 font-labels">Phân hệ thanh toán bảo mật</span>
+                        <div className="h-px bg-foreground/10 flex-1" />
+                        <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-foreground/40 font-labels">MÃ ĐƠN HÀNG: #ACME-{Date.now().toString().slice(-6)}</span>
+                    </div>
+                </div>
 
                 <div className="grid lg:grid-cols-[1fr_400px] gap-12 items-start">
                     {/* Main Checkout Flow */}
@@ -102,30 +109,30 @@ export default function CheckoutPage() {
 
                         {/* Step 1: Address */}
                         <div className={`transition-all duration-500 ${checkout.step !== 'address' ? 'opacity-50 blur-[1px]' : ''}`}>
-                            <div className="flex items-center gap-4 mb-8">
-                                <div className={`w-10 h-10 rounded-sm flex items-center justify-center font-bold text-lg shadow-md border ${checkout.step === 'address' ? 'bg-primary text-primary-foreground border-primary' : 'bg-muted/50 text-muted-foreground border-border'
+                            <div className="flex items-center gap-4 mb-12">
+                                <div className={`w-12 h-12 rounded-sm flex items-center justify-center font-bold text-xl shadow-md border ${checkout.step === 'address' ? 'bg-primary text-white border-primary' : 'bg-white text-foreground/20 border-foreground/5'
                                     }`}>
-                                    1
+                                    01
                                 </div>
-                                <h2 className="text-xl font-bold tracking-widest uppercase">Địa chỉ giao hàng</h2>
+                                <h2 className="text-2xl font-bold tracking-[0.2em] uppercase font-labels">Địa chỉ giao hàng</h2>
                             </div>
 
-                            <div className="bg-background border border-border rounded-sm p-8 shadow-sm">
+                            <div className="bg-white border border-foreground/5 rounded-sm p-12 shadow-sm">
                                 <AddressForm />
                             </div>
                         </div>
 
                         {/* Step 2: Payment */}
                         <div className={`transition-all duration-500 ${checkout.step !== 'payment' ? 'opacity-40 grayscale pointer-events-none' : ''}`}>
-                            <div className="flex items-center gap-4 mb-8">
-                                <div className={`w-10 h-10 rounded-sm flex items-center justify-center font-bold text-lg shadow-md border ${checkout.step === 'payment' ? 'bg-primary text-primary-foreground border-primary' : 'bg-muted/50 text-muted-foreground border-border'
+                            <div className="flex items-center gap-4 mb-12">
+                                <div className={`w-12 h-12 rounded-sm flex items-center justify-center font-bold text-xl shadow-md border ${checkout.step === 'payment' ? 'bg-primary text-white border-primary' : 'bg-white text-foreground/20 border-foreground/5'
                                     }`}>
-                                    2
+                                    02
                                 </div>
-                                <h2 className="text-xl font-bold tracking-widest uppercase">Phương thức thanh toán</h2>
+                                <h2 className="text-2xl font-bold tracking-[0.2em] uppercase font-labels">Phương thức thanh toán</h2>
                             </div>
 
-                            <div className="bg-background border border-border rounded-sm p-8 shadow-sm">
+                            <div className="bg-white border border-foreground/5 rounded-sm p-12 shadow-sm">
                                 {checkout.step === 'payment' && (
                                     stripeError ? (
                                         <Alert variant="destructive" className="rounded-sm">
@@ -166,14 +173,14 @@ export default function CheckoutPage() {
 
                         {/* Step 3: Review Items */}
                         <div className={`transition-all duration-500`}>
-                            <div className="flex items-center gap-4 mb-8">
-                                <div className="w-10 h-10 rounded-sm flex items-center justify-center font-bold text-lg shadow-md border bg-muted/50 text-muted-foreground border-border">
-                                    3
+                            <div className="flex items-center gap-4 mb-12">
+                                <div className="w-12 h-12 rounded-sm flex items-center justify-center font-bold text-xl shadow-md border bg-white text-foreground/20 border-foreground/5">
+                                    03
                                 </div>
-                                <h2 className="text-xl font-bold tracking-widest uppercase">Kiểm tra lại sản phẩm</h2>
+                                <h2 className="text-2xl font-bold tracking-[0.2em] uppercase font-labels">Kiểm tra lại sản phẩm</h2>
                             </div>
 
-                            <div className="bg-background border border-border rounded-sm p-8 shadow-sm space-y-8">
+                            <div className="bg-white border border-foreground/5 rounded-sm p-12 shadow-sm space-y-12">
                                 {cart.items.map((item) => (
                                     <div key={`${item.productId}-${item.variantId}`} className="flex gap-6 pb-8 border-b border-border last:border-0 last:pb-0">
                                         <div className="w-24 h-24 bg-muted/30 rounded-sm border border-border flex-shrink-0 relative overflow-hidden p-2 shadow-inner">
@@ -203,9 +210,9 @@ export default function CheckoutPage() {
                     </div>
 
                     {/* Order Summary Sidebar */}
-                    <div className="lg:sticky lg:top-24 space-y-6">
-                        <div className="bg-background border border-border rounded-sm p-8 shadow-lg">
-                            <h3 className="text-sm font-bold mb-8 uppercase tracking-[0.2em] text-foreground border-b border-border pb-4">Tóm tắt đơn hàng</h3>
+                    <div className="lg:sticky lg:top-32 space-y-10">
+                        <div className="bg-white border border-foreground/5 rounded-sm p-12 shadow-lg">
+                            <h3 className="text-sm font-bold mb-10 uppercase tracking-[0.3em] text-foreground border-b border-foreground/10 pb-6 font-labels">Tóm tắt đơn hàng</h3>
 
                             <div className="space-y-6 mb-8 max-h-[300px] overflow-auto pr-2 custom-scrollbar">
                                 {cart.items.map((item) => (

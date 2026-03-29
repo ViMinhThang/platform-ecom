@@ -5,8 +5,7 @@ import { useGetProductReviewsQuery } from "@/lib/store/api/clientApi";
 import type { Review } from "@/types/review";
 import { StarRating } from "./ui/StarRating";
 import { Button } from "./ui/button";
-import { imageUrl } from "@/lib/utils/imageUrl";
-import { Badge } from "./ui/badge";
+import { User } from "lucide-react";
 import {
   Select,
   SelectContent,
@@ -14,7 +13,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "./ui/select";
-import Image from "next/image";
+import { RichTextPreview } from "./RichTextPreview";
 
 interface ReviewListProps {
   productId: number;
@@ -46,12 +45,17 @@ export function ReviewList({ productId }: ReviewListProps) {
 
   if (loading && reviews.length === 0) {
     return (
-      <div className="space-y-4">
+      <div className="space-y-12">
         {[1, 2, 3].map((i) => (
-          <div key={i} className="border rounded-lg p-6 animate-pulse">
-            <div className="h-4 bg-muted rounded w-1/4 mb-4"></div>
-            <div className="h-3 bg-muted rounded w-3/4 mb-2"></div>
-            <div className="h-3 bg-muted rounded w-1/2"></div>
+          <div key={i} className="grid grid-cols-1 md:grid-cols-12 gap-12 py-16 border-t border-border/10 animate-pulse">
+            <div className="md:col-span-4 space-y-4">
+              <div className="h-6 bg-muted rounded w-1/2"></div>
+              <div className="h-3 bg-muted rounded w-1/3"></div>
+            </div>
+            <div className="md:col-span-8 space-y-4">
+              <div className="h-4 bg-muted rounded w-3/4"></div>
+              <div className="h-20 bg-muted rounded w-full"></div>
+            </div>
           </div>
         ))}
       </div>
@@ -60,65 +64,64 @@ export function ReviewList({ productId }: ReviewListProps) {
 
   if (error) {
     return (
-      <div className="text-center py-8 text-destructive">
+      <div className="text-center py-16 text-destructive font-header italic">
         <p>{String(error)}</p>
       </div>
     );
   }
 
   return (
-    <div className="space-y-6">
-      <div className="flex justify-between items-center">
+    <div className="space-y-0">
+      <div className="flex justify-between items-end pb-12">
         <div className="flex items-center gap-4">
-          <h3 className="font-semibold">
-            {pagination.totalElements} đánh giá
+          <h3 className="text-[11px] font-bold uppercase tracking-[0.3em] text-foreground/40 font-labels">
+            {pagination.totalElements} ĐÁNH GIÁ
           </h3>
         </div>
         <Select value={`${sortBy}-${sortDir}`} onValueChange={handleSortChange}>
-          <SelectTrigger className="w-[200px]">
-            <SelectValue placeholder="Sắp xếp theo" />
+          <SelectTrigger className="w-[180px] border-none bg-transparent text-[10px] font-bold uppercase tracking-widest text-foreground/60 shadow-none focus:ring-0">
+            <SelectValue placeholder="SẮP XẾP THEO" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="createdAt-desc">Mới nhất</SelectItem>
-            <SelectItem value="createdAt-asc">Cũ nhất</SelectItem>
-            <SelectItem value="rating-desc">Đánh giá cao nhất</SelectItem>
-            <SelectItem value="rating-asc">Đánh giá thấp nhất</SelectItem>
-            <SelectItem value="helpfulCount-desc">Hữu ích nhất</SelectItem>
+            <SelectItem value="createdAt-desc">MỚI NHẤT</SelectItem>
+            <SelectItem value="createdAt-asc">CŨ NHẤT</SelectItem>
+            <SelectItem value="rating-desc">ĐÁNH GIÁ CAO</SelectItem>
+            <SelectItem value="rating-asc">ĐÁNH GIÁ THẤP</SelectItem>
           </SelectContent>
         </Select>
       </div>
 
       {!loading && reviews.length === 0 ? (
-        <div className="text-center py-8 text-muted-foreground border-2 border-dashed rounded-lg">
-          <p>Chưa có đánh giá nào. Hãy là người đầu tiên đánh giá!</p>
+        <div className="text-center py-32 border-t border-dashed border-border/20">
+          <p className="font-header italic text-foreground/30 text-lg">Chưa có đánh giá nào được ghi nhận.</p>
         </div>
       ) : (
         <>
-          <div className="space-y-4">
+          <div className="divide-y divide-border/10">
             {reviews.map((review) => (
               <ReviewCard key={review.id} review={review} />
             ))}
           </div>
 
           {pagination.totalPages > 1 && (
-            <div className="flex justify-center gap-2 pt-4">
-              <Button
-                variant="outline"
+            <div className="flex justify-center gap-12 pt-24 border-t border-border/10">
+              <button
                 onClick={() => setPage((p) => Math.max(0, p - 1))}
                 disabled={page === 0}
+                className="text-[10px] font-bold uppercase tracking-widest hover:text-primary disabled:opacity-20 transition-all"
               >
-                Trước
-              </Button>
-              <span className="flex items-center px-4 text-sm text-muted-foreground">
-                Trang {page + 1} trên {pagination.totalPages}
+                TRANG TRƯỚC
+              </button>
+              <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-foreground/30 font-labels">
+                {page + 1} / {pagination.totalPages}
               </span>
-              <Button
-                variant="outline"
+              <button
                 onClick={() => setPage((p) => Math.min(pagination.totalPages - 1, p + 1))}
                 disabled={page >= pagination.totalPages - 1}
+                className="text-[10px] font-bold uppercase tracking-widest hover:text-primary disabled:opacity-20 transition-all font-labels"
               >
-                Sau
-              </Button>
+                TRANG TIẾP
+              </button>
             </div>
           )}
         </>
@@ -127,67 +130,49 @@ export function ReviewList({ productId }: ReviewListProps) {
   );
 }
 
-import { RichTextPreview } from "./RichTextPreview";
-
 function ReviewCard({ review }: { review: Review }) {
-  const reviewDate = new Date(review.createdAt).toLocaleDateString("vi-VN", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  });
+  const reviewerName = review.email.split("@")[0].charAt(0).toUpperCase() + review.email.split("@")[0].slice(1);
+  const statusLabel = "Chuyên Gia Lưu Trữ";
 
   return (
-    <div className="border rounded-lg p-6 space-y-4">
-      {/* Header */}
-      <div className="flex items-start justify-between">
-        <div className="space-y-2">
-          <div className="flex items-center gap-2">
-            <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center font-semibold">
-              {review.email.charAt(0).toUpperCase()}
-            </div>
-            <div>
-              <p className="font-medium">{review.email.split("@")[0]}</p>
-              <p className="text-xs text-muted-foreground">{reviewDate}</p>
-            </div>
+    <div className="grid grid-cols-1 md:grid-cols-12 gap-12 py-16 border-t border-border/10 first:border-0">
+      {/* LEFT COLUMN: REVIEWER IDENTITY */}
+      <div className="md:col-span-4 space-y-6">
+        <div className="flex items-start gap-6">
+          <div className="w-12 h-12 bg-white rounded-sm border border-foreground/5 shadow-sm flex items-center justify-center shrink-0">
+            <User className="h-5 w-5 text-foreground/20" />
           </div>
-          <div className="flex items-center gap-2">
-            <StarRating rating={review.rating} size="sm" />
+          <div className="space-y-1">
+            <h4 className="font-labels text-lg font-bold tracking-tight text-foreground/90 uppercase">
+              {reviewerName}
+            </h4>
+            <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-foreground/20 font-labels">
+              KHÁCH HÀNG
+            </p>
           </div>
+        </div>
+        <div className="pt-1">
+          <StarRating rating={review.rating} size="sm" />
         </div>
       </div>
 
-
-      {/* Comment */}
-      {review.comment && (
-        <RichTextPreview content={review.comment} className="p-0 bg-transparent rounded-none" />
-      )}
-
-      {/* Images */}
-      {review.images && review.images.length > 0 && (
-        <div className="flex gap-2 flex-wrap">
-          {review.images.map((image, index) => (
-            <div
-              key={index}
-              className="w-20 h-20 rounded-md border bg-muted overflow-hidden"
-            >
-              <Image
-                width={100}
-                height={100}
-                src={imageUrl.review(image)}
-                alt=""
-              />
-            </div>
-          ))}
+      {/* RIGHT COLUMN: THE CRITIQUE */}
+      <div className="md:col-span-8 space-y-6">
+        <div className="space-y-4">
+          <div className="text-[16px] leading-relaxed text-foreground/80 font-labels font-medium">
+            {review.comment && (
+              <RichTextPreview content={review.comment} className="p-0 bg-transparent rounded-none" />
+            )}
+          </div>
         </div>
-      )}
 
-      {/* Helpful Counter */}
-      {review.helpfulCount > 0 && (
-        <div className="text-sm text-muted-foreground">
-          {review.helpfulCount}{" "}
-          người thấy đánh giá này hữu ích
-        </div>
-      )}
+        {/* HELPFUL COUNTER */}
+        {review.helpfulCount > 0 && (
+          <div className="pt-4 text-[9px] font-bold uppercase tracking-[0.3em] text-foreground/20 italic font-labels">
+            {review.helpfulCount} người thấy hữu ích
+          </div>
+        )}
+      </div>
     </div>
   );
 }

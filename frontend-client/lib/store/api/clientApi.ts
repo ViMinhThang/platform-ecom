@@ -317,6 +317,13 @@ export const api = createApi({
             }),
             invalidatesTags: ['User'],
         }),
+        getSellerInfo: builder.query<{ userId: number; username: string; imageUrl?: string }, number>({
+            query: (userId) => ({
+                url: `/api/v1/internal/user-service/users/${userId}`,
+                method: 'GET',
+            }),
+            providesTags: (_result, _error, id) => [{ type: 'User' as const, id: `seller-${id}` }],
+        }),
     }),
 });
 
@@ -361,6 +368,7 @@ export const {
     // User
     useGetUserProfileQuery,
     useUpdateUserProfileMutation,
+    useGetSellerInfoQuery,
 } = api;
 
 export default api;

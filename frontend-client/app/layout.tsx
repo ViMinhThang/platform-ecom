@@ -1,25 +1,20 @@
 import type { Metadata } from "next";
-import { Be_Vietnam_Pro, Inter, JetBrains_Mono } from "next/font/google";
+import { Roboto, Noto_Serif } from "next/font/google";
 import "./globals.css";
 import { Providers } from "@/components/providers";
 import { Toaster } from "@/components/ui/sonner";
 
-const beVietnam = Be_Vietnam_Pro({
-  weight: ['400', '500', '600', '700', '800', '900'],
-  variable: "--font-be-vietnam",
+const roboto = Roboto({
+  weight: ['100', '300', '400', '500', '700', '900'],
   subsets: ["latin", "vietnamese"],
+  variable: "--font-roboto",
   display: 'swap',
 });
 
-const inter = Inter({
-  variable: "--font-inter",
+const notoSerif = Noto_Serif({
+  weight: ['400', '500', '600', '700'],
+  variable: "--font-noto-serif",
   subsets: ["latin", "vietnamese"],
-  display: 'swap',
-});
-
-const jetBrainsMono = JetBrains_Mono({
-  variable: "--font-mono",
-  subsets: ["latin"],
   display: 'swap',
 });
 
@@ -36,7 +31,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${beVietnam.variable} ${inter.variable} ${jetBrainsMono.variable} antialiased min-h-screen flex flex-col font-inter`}
+        className={`${roboto.variable} ${notoSerif.variable} antialiased min-h-screen flex flex-col font-sans`}
         suppressHydrationWarning
       >
         <Providers>

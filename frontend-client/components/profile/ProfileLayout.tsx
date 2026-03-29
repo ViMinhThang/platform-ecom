@@ -1,9 +1,9 @@
 'use client';
 
 import Link from 'next/link';
-import { usePathname, useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import { cn } from '@/lib/utils';
-import { User, MapPin, ShoppingBag, LogOut } from 'lucide-react';
+import { User, MapPin, LogOut } from 'lucide-react';
 import { signOut } from 'next-auth/react';
 import { Button } from '@/components/ui/button';
 
@@ -13,7 +13,7 @@ interface ProfileLayoutProps {
 
 const sidebarItems = [
     {
-        title: 'THÔNG TIN CÁ NHÂN',
+        title: 'THÔNG TIN TÀI KHOẢN',
         href: '/profile',
         icon: User,
     },
@@ -25,57 +25,74 @@ const sidebarItems = [
 ];
 
 export function ProfileLayout({ children }: ProfileLayoutProps) {
-    const pathname = usePathname();
     const searchParams = useSearchParams();
     const currentTab = searchParams.get('tab') || 'profile';
 
-
     return (
-        <div className="container max-w-6xl py-12 mx-auto">
-            <div className="flex flex-col space-y-8 lg:flex-row lg:space-y-0 gap-12">
-                <aside className="lg:w-1/4">
-                    <nav className="flex space-x-2 overflow-x-auto lg:flex-col lg:space-x-0 lg:space-y-2 bg-background border border-border p-2 shadow-md rounded-sm">
-                        <div className="p-4 bg-primary/5 border-b border-border mb-2 hidden lg:block rounded-t-sm">
-                            <div className="text-[10px] font-bold text-primary uppercase tracking-[0.2em] opacity-70">
-                                Bảng điều khiển // Tài khoản
-                            </div>
-                        </div>
-                        {sidebarItems.map((item) => {
-                            // Determine if this item is active
-                            // For "Profile" (default), check if tab is missing or 'profile'
-                            // For others, check if tab matches
-                            const itemTab = item.href.split('tab=')[1] || 'profile';
-                            const isActive = currentTab === itemTab;
+        <div className="bg-background min-h-screen font-labels antialiased">
+            {/* STICKY HEADER BRIDGE */}
+            <div className="border-b border-foreground/5 bg-white/80 backdrop-blur-md sticky top-[72px] z-30 transition-all">
+                <div className="container max-w-[1600px] mx-auto px-12 py-5 flex items-center justify-between">
+                    <div className="flex items-center gap-3 text-[10px] font-bold uppercase tracking-[0.3em] text-foreground/40 font-labels">
+                        <Link href="/" className="hover:text-primary transition-colors">TRANG CHỦ</Link>
+                        <span>/</span>
+                        <span className="text-foreground">TÀI KHOẢN CỦA BẠN</span>
+                    </div>
+                </div>
+            </div>
 
-                            return (
-                                <Link
-                                    key={item.href}
-                                    href={item.href}
-                                    className={cn(
-                                        "flex items-center justify-start gap-4 p-4 text-[11px] font-bold uppercase tracking-widest transition-all rounded-sm border-l-2",
-                                        isActive
-                                            ? "bg-primary text-primary-foreground border-primary shadow-sm"
-                                            : "text-muted-foreground hover:bg-muted/30 border-transparent"
-                                    )}
+            <div className="container max-w-[1600px] py-20 mx-auto px-12">
+                <div className="flex flex-col space-y-12 lg:flex-row lg:space-y-0 gap-16 items-start">
+                    {/* SIDEBAR: WHITE CARD LIST */}
+                    <aside className="lg:w-80 shrink-0 sticky top-40">
+                        <nav className="bg-white border border-foreground/10 p-2 rounded-[4px] shadow-sm overflow-hidden">
+                            <div className="p-6 bg-secondary/5 border-b border-foreground/5 mb-2 hidden lg:block">
+                                <div className="text-[10px] font-bold text-foreground/40 uppercase tracking-[0.4em] font-labels">
+                                    DANH MỤC QUẢN LÝ
+                                </div>
+                            </div>
+                            
+                            <div className="space-y-1">
+                                {sidebarItems.map((item) => {
+                                    const itemTab = item.href.split('tab=')[1] || 'profile';
+                                    const isActive = currentTab === itemTab;
+
+                                    return (
+                                        <Link
+                                            key={item.href}
+                                            href={item.href}
+                                            className={cn(
+                                                "flex items-center justify-start gap-5 p-5 text-[11px] font-bold uppercase tracking-widest transition-all rounded-[2px] border-l-4",
+                                                isActive
+                                                    ? "bg-primary/5 text-primary border-primary"
+                                                    : "text-foreground/40 hover:bg-muted/30 border-transparent hover:text-foreground/60"
+                                            )}
+                                        >
+                                            <item.icon className={cn("h-4 w-4", isActive ? "text-primary" : "text-foreground/20")} />
+                                            {item.title}
+                                        </Link>
+                                    );
+                                })}
+                            </div>
+
+                            <div className="mt-8 pt-8 border-t border-foreground/5 p-4">
+                                <Button
+                                    variant="ghost"
+                                    className="justify-start gap-4 w-full rounded-sm p-5 h-auto text-red-500 hover:text-red-600 hover:bg-red-50/50 text-[11px] font-bold uppercase tracking-widest transition-all border border-transparent hover:border-red-100/20 font-labels"
+                                    onClick={() => signOut({ callbackUrl: '/' })}
                                 >
-                                    <item.icon className={cn("h-4 w-4", isActive ? "text-primary-foreground" : "text-primary")} />
-                                    {item.title}
-                                </Link>
-                            );
-                        })}
-                        <Button
-                            variant="ghost"
-                            className="justify-start gap-4 w-full rounded-sm p-4 h-auto text-red-500 hover:text-red-600 hover:bg-red-50 text-[11px] font-bold uppercase tracking-widest transition-all mt-4 border border-transparent hover:border-red-100"
-                            onClick={() => signOut({ callbackUrl: '/' })}
-                        >
-                            <LogOut className="h-4 w-4" />
-                            ĐĂNG XUẤT
-                        </Button>
-                    </nav>
-                </aside>
-                <div className="flex-1 lg:max-w-4xl">
-                    <div className="bg-background border border-border p-10 min-h-[600px] shadow-lg rounded-sm">
-                        {children}
+                                    <LogOut className="h-4 w-4" />
+                                    ĐĂNG XUẤT
+                                </Button>
+                            </div>
+                        </nav>
+                    </aside>
+
+                    {/* MAIN CONTENT AREA: WHITE CARD CANVAS */}
+                    <div className="flex-1 lg:max-w-5xl">
+                        <div className="bg-white border border-foreground/10 p-12 lg:p-20 min-h-[700px] shadow-sm rounded-[4px]">
+                            {children}
+                        </div>
                     </div>
                 </div>
             </div>

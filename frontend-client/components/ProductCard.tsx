@@ -1,7 +1,6 @@
+"use client";
+
 import Image from "next/image";
-import { Star, Zap } from "lucide-react";
-import { Card, CardContent, CardFooter } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
 import { ProductVariant } from "@/types/product";
 import { formatCurrency } from "@/lib/utils/formatCurrency";
@@ -16,10 +15,10 @@ interface ProductCardProps {
   image: string;
   category: string;
   isNew?: boolean;
-  rating?: number;
-  soldCount?: number;
   firstVariant?: ProductVariant;
   sourceContext?: string;
+  soldCount?: number;
+  rating?: number;
 }
 
 export function ProductCard({
@@ -29,105 +28,67 @@ export function ProductCard({
   price,
   image,
   category,
-  isNew,
-  rating = 0,
-  soldCount = 0,
   firstVariant,
   sourceContext = 'feed',
 }: ProductCardProps) {
   const { trackProductClick } = useAnalytics();
 
   const displayPrice = firstVariant ? (firstVariant.salePrice || firstVariant.price) : price;
-  const originalPrice = firstVariant ? firstVariant.price : price;
   const hasSale = firstVariant && !!firstVariant.salePrice;
-  const discountPercent = firstVariant?.discountPercent;
   const displayImage = firstVariant?.imageUrl || image;
   const inStock = firstVariant ? firstVariant.stock > 0 : true;
-  console.log(displayImage);
-  const totalSold = soldCount || firstVariant?.totalSold || 0;
 
   const handleTrackClick = () => {
     trackProductClick(Number(id), sourceContext);
   };
 
-  const formatSoldCount = (count: number) => {
-    if (count >= 1000) {
-      return `${(count / 1000).toFixed(1)}k`;
-    }
-    return count.toString();
-  };
-
   return (
-    <Link href={`/products/${slug}`} onClick={handleTrackClick} className="block h-full">
-      <Card className="p-0 border border-border rounded-sm bg-background h-full flex flex-col transition-all group overflow-hidden shadow-sm hover:shadow-md">
-        <CardContent className="p-0 relative aspect-square bg-muted/30 overflow-hidden border-b border-border transition-all duration-500">
-          {isNew && !hasSale && (
-            <Badge className="absolute top-0 left-0 z-10 bg-primary text-primary-foreground rounded-sm px-2 py-1 text-[8px] font-bold tracking-widest uppercase">
-              HÀNG MỚI
-            </Badge>
-          )}
-
-          {hasSale && (
-            <>
-              <Badge className="absolute top-0 left-0 z-10 bg-primary text-primary-foreground rounded-sm px-2 py-1 text-[10px] font-bold tracking-widest">
-                -{discountPercent}%
-              </Badge>
-              <Badge className="absolute top-0 right-0 z-10 bg-foreground/10 backdrop-blur-sm text-foreground rounded-sm px-2 py-1 text-[8px] font-bold tracking-widest flex items-center gap-1">
-                <Zap className="h-3 w-3 fill-primary text-primary" />
-                SALE
-              </Badge>
-            </>
-          )}
-
-          {!inStock && (
-            <div className="absolute inset-0 bg-background/80 z-20 flex items-center justify-center">
-              <span className="text-[10px] font-bold px-4 py-2 border border-border bg-background text-foreground uppercase tracking-widest shadow-sm">
-                HẾT HÀNG
-              </span>
-            </div>
-          )}
-          <Image
-            src={imageUrl.product(displayImage)}
-            alt={name}
-            fill
-            className="object-cover group-hover:scale-105 transition-transform duration-700"
-          />
-        </CardContent>
-        <CardFooter className="flex flex-col items-start p-4 space-y-4 grow bg-background transition-colors">
-          <div className="grow w-full">
-            <h3 className="font-bold text-[10px] uppercase tracking-widest leading-tight line-clamp-2 text-foreground transition-colors h-8">
-              {name}
-            </h3>
+    <Link 
+        href={`/products/${slug}`} 
+        onClick={handleTrackClick} 
+        className="group block space-y-4 animate-in fade-in duration-700"
+    >
+      <div className="relative aspect-square overflow-hidden bg-[#1c1917]/5 rounded-[4px] shadow-sm">
+        {/* Subtle Labels */}
+        {!inStock && (
+          <div className="absolute inset-0 bg-background/20 backdrop-blur-[2px] z-10 flex items-center justify-center">
+            <span className="text-[10px] font-bold px-4 py-2 bg-foreground text-background uppercase tracking-widest">
+              TẠM HẾT
+            </span>
           </div>
+        )}
+        
+        {hasSale && inStock && (
+            <div className="absolute top-4 left-4 z-10">
+                <span className="text-[10px] font-bold px-2 py-1 bg-primary text-white uppercase tracking-widest">
+                    GIÁ TỐT
+                </span>
+            </div>
+        )}
 
-          <div className="w-full pt-4 border-t border-border transition-colors">
-            {/* Price */}
-            <div className="flex items-baseline gap-2 w-full mb-3 font-header">
-              <span className="text-xl font-bold tracking-tighter text-primary">
+        <Image
+          src={imageUrl.product(displayImage)}
+          alt={name}
+          fill
+          className="object-cover"
+        />
+      </div>
+
+      <div className="space-y-1">
+        <span className="block text-[10px] font-bold uppercase tracking-[0.2em] text-foreground/30 font-labels">
+          {category}
+        </span>
+        
+        <h3 className="font-labels font-bold text-sm tracking-tight leading-tight text-foreground/90 line-clamp-2 h-10 transition-colors">
+          {name}
+        </h3>
+        
+        <div className="pt-1">
+            <span className="font-labels font-bold text-lg text-primary tracking-tight">
                 {formatCurrency(displayPrice)}
-              </span>
-              {hasSale && (
-                <span className="text-[10px] font-medium text-muted-foreground line-through">
-                  {formatCurrency(originalPrice)}
-                </span>
-              )}
-            </div>
-
-            {/* Rating & Sold - Technical Style */}
-            <div className="flex items-center justify-between w-full font-header">
-              <div className="flex items-center gap-1 bg-muted/50 px-1.5 py-0.5 transition-colors rounded-sm">
-                <Star className="w-2.5 h-2.5 fill-current text-primary" />
-                <span className="text-[8px] font-bold text-foreground uppercase leading-none">
-                  {rating > 0 ? rating.toFixed(1) : "N/A"}
-                </span>
-              </div>
-              <div className="text-[8px] font-bold text-muted-foreground uppercase tracking-tighter">
-                ĐÃ BÁN {formatSoldCount(totalSold)}
-              </div>
-            </div>
-          </div>
-        </CardFooter>
-      </Card>
+            </span>
+        </div>
+      </div>
     </Link>
   );
 }

@@ -17,8 +17,6 @@ export const CartRecommendations = () => {
             if (items.length === 0) return;
             
             setLoading(true);
-            // Get similar products for the first item in cart as a proxy for "Frequently bought together"
-            // In a real app, we'd have a specific endpoint for this
             const productId = items[0].productId;
             const data = await getSimilarProducts(productId, 4);
             setProducts(data);
@@ -33,12 +31,21 @@ export const CartRecommendations = () => {
     }
 
     return (
-        <div className="mt-12 border-t-2 border-black pt-8">
-            <h2 className="text-sm font-black uppercase tracking-[0.2em] mb-6">Bạn có thể muốn mua kèm</h2>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div className="mt-20 bg-[#F5F3F4] p-8 md:p-12 rounded-sm border border-foreground/5 overflow-hidden">
+            <div className="flex items-center gap-4 mb-12">
+                <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-foreground/40 font-labels">VẬT PHẨM BỔ SUNG</span>
+                <div className="h-px bg-foreground/10 flex-1" />
+                <h2 className="text-[10px] font-bold uppercase tracking-[0.3em] text-foreground font-labels">BẠN CÓ THỂ MUỐN MUA KÈM</h2>
+            </div>
+
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
                 {loading ? (
                     Array.from({ length: 4 }).map((_, i) => (
-                        <div key={i} className="aspect-[3/4] bg-zinc-100 animate-pulse border border-black/5" />
+                        <div key={i} className="space-y-4 animate-pulse">
+                            <div className="aspect-[4/5] bg-secondary/50 rounded-sm" />
+                            <div className="h-2 bg-secondary/50 w-1/4" />
+                            <div className="h-4 bg-secondary/50 w-3/4" />
+                        </div>
                     ))
                 ) : (
                     products.map((p) => (

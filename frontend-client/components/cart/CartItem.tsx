@@ -1,18 +1,16 @@
 "use client";
 
 import { CartItemDTO } from "@/types/cart.types";
-import { Button } from "@/components/ui/button";
-import { Trash2, Plus, Minus } from 'lucide-react';
+import { Plus, Minus, X } from 'lucide-react';
 import { imageUrl } from '@/lib/utils/imageUrl';
 import Image from "next/image";
 import { useCart } from "@/hooks/useCart";
 import { useState } from "react";
+import { formatCurrency } from "@/lib/utils/formatCurrency";
 
 interface CartItemProps {
     item: CartItemDTO;
 }
-
-import { formatCurrency } from "@/lib/utils/formatCurrency";
 
 export function CartItem({ item }: CartItemProps) {
     const { updateQuantity, removeItem } = useCart();
@@ -38,94 +36,88 @@ export function CartItem({ item }: CartItemProps) {
     };
 
     return (
-        <div className="flex gap-6 py-6 border-b border-border last:border-0 items-start font-header">
-            {/* Product Image */}
-            <div className="relative h-28 w-28 shrink-0 bg-background border border-border rounded-sm overflow-hidden shadow-sm">
+        <div className="flex gap-8 p-8 bg-white rounded-[4px] border border-foreground/5 items-start group shadow-[0_2px_8px_rgba(0,0,0,0.02)] transition-all hover:shadow-[0_4px_16px_rgba(0,0,0,0.04)] animate-in fade-in duration-700">
+            {/* Product Image: Sharp, Ghost Border */}
+            <div className="relative h-32 w-24 shrink-0 bg-secondary/50 border border-foreground/5 overflow-hidden">
                 <Image
                     src={imageUrl.product(item.imageUrl)}
                     alt={item.productName}
                     fill
-                    className="object-contain p-2"
+                    className="object-cover"
                     unoptimized
                 />
             </div>
 
-            {/* Product Details & Actions */}
-            <div className="flex flex-1 flex-col">
-                <div className="flex justify-between items-start gap-4">
-                    <div className="space-y-2">
-                        {/* Status Badge */}
-                        <div className="flex items-center gap-2">
-                            <span className="text-[9px] font-bold bg-primary/10 text-primary px-2 py-0.5 rounded-sm uppercase tracking-widest">
-                                SẴN SÀNG
-                            </span>
+            {/* Content & Controls */}
+            <div className="flex flex-1 flex-col h-full justify-between gap-6">
+                <div className="flex justify-between items-start gap-8">
+                    <div className="space-y-3">
+                        <div className="space-y-1">
+                            <span className="text-[9px] font-bold uppercase tracking-[0.2em] text-foreground/30 font-labels">Nhật ký vật phẩm sẵn sàng vận chuyển</span>
+                            <h3 className="font-labels font-bold text-[13px] uppercase tracking-wider leading-tight max-w-md group-hover:text-primary transition-all">
+                                {item.productName}
+                            </h3>
                         </div>
 
-                        <h3 className="font-bold text-sm uppercase md:text-base hover:text-primary transition-colors cursor-pointer leading-snug tracking-widest">
-                            {item.productName}
-                        </h3>
-
                         {item.variantName && (
-                            <p className="text-[10px] font-bold text-muted-foreground border-l-2 border-primary/30 pl-2 uppercase tracking-widest">
-                                {item.variantName}
-                            </p>
+                             <div className="inline-block px-3 py-1 bg-[#F5F3F4] rounded-sm">
+                                <p className="text-[9px] font-bold text-foreground/40 font-labels uppercase tracking-widest">
+                                    Loại: {item.variantName}
+                                </p>
+                            </div>
                         )}
                     </div>
 
-                    <div className="text-right">
-                        <div className="font-bold text-base tracking-tighter text-foreground">
+                    <div className="text-right space-y-1">
+                        <div className="font-labels font-bold text-lg text-foreground tracking-tight">
                             {formatCurrency(item.price)}
                         </div>
-                        <p className="text-[9px] text-muted-foreground font-bold tracking-widest uppercase opacity-50">
-                            ĐƠN GIÁ
-                        </p>
+                        <p className="text-[8px] font-bold text-foreground/30 uppercase tracking-[0.2em]">Đơn giá</p>
                     </div>
                 </div>
 
-                {/* Bottom Actions Row */}
-                <div className="flex flex-wrap items-end justify-between mt-4">
-                    {/* Quantity Block */}
-                    <div className="flex items-center gap-3">
-                        <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">SỐ LƯỢNG:</span>
-                        <div className="flex items-center border border-border rounded-sm h-8 bg-background shadow-sm overflow-hidden">
-                            <button
-                                className="px-2 h-full hover:bg-muted/50 disabled:opacity-30 flex items-center justify-center transition-colors border-r border-border"
-                                onClick={() => handleQuantityChange(item.quantity - 1)}
-                                disabled={item.quantity <= 1 || updating}
-                            >
-                                <Minus className="h-3 w-3" />
-                            </button>
-                            <span className="w-10 text-center text-xs font-bold tabular-nums h-full flex items-center justify-center text-foreground">
-                                {item.quantity}
-                            </span>
-                            <button
-                                className="px-2 h-full hover:bg-muted/50 disabled:opacity-30 flex items-center justify-center transition-colors border-l border-border"
-                                onClick={() => handleQuantityChange(item.quantity + 1)}
-                                disabled={updating}
-                            >
-                                <Plus className="h-3 w-3" />
-                            </button>
-                        </div>
-                    </div>
-
-                    <div className="flex items-center gap-4">
-                        <div className="text-right mr-4">
-                            <div className="font-bold text-lg tracking-tighter text-primary tabular-nums">
-                                {formatCurrency(item.totalPrice)}
+                <div className="flex items-end justify-between">
+                    <div className="flex items-center gap-10">
+                        {/* Quantity Selector: Minimal */}
+                        <div className="flex items-center gap-4">
+                            <span className="text-[10px] font-bold uppercase tracking-widest text-foreground/40 font-labels">Số lượng</span>
+                            <div className="flex items-center border border-foreground/10 h-9 rounded-sm overflow-hidden bg-white">
+                                <button
+                                    className="w-9 h-full flex items-center justify-center hover:bg-secondary transition-colors disabled:opacity-20"
+                                    onClick={() => handleQuantityChange(item.quantity - 1)}
+                                    disabled={item.quantity <= 1 || updating}
+                                >
+                                    <Minus className="h-3 w-3" />
+                                </button>
+                                <span className="w-9 text-center text-xs font-bold tabular-nums">
+                                    {item.quantity}
+                                </span>
+                                <button
+                                    className="w-9 h-full flex items-center justify-center hover:bg-secondary transition-colors disabled:opacity-20"
+                                    onClick={() => handleQuantityChange(item.quantity + 1)}
+                                    disabled={updating}
+                                >
+                                    <Plus className="h-3 w-3" />
+                                </button>
                             </div>
-                            <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground opacity-50">
-                                TỔNG CỘNG
-                            </p>
                         </div>
 
+                        {/* Remove Action: Minimal */}
                         <button
-                            className="bg-muted/50 hover:bg-red-500 hover:text-white p-2 border border-transparent rounded-sm transition-all shadow-sm"
+                            className="text-[9px] font-bold uppercase tracking-[0.2em] text-foreground/20 hover:text-red-500 transition-colors flex items-center gap-2 group/remove"
                             onClick={handleRemove}
                             disabled={updating}
-                            title="Xóa sản phẩm"
                         >
-                            <Trash2 className="h-4 w-4" />
+                            <X className="h-3 w-3 text-foreground/10 group-hover/remove:text-red-400 transition-colors" />
+                            Gỡ hồ sơ
                         </button>
+                    </div>
+
+                    <div className="text-right">
+                        <div className="font-labels font-bold text-xl text-primary tracking-tight">
+                            {formatCurrency(item.totalPrice)}
+                        </div>
+                        <p className="text-[9px] font-bold uppercase tracking-[0.2em] text-primary/40">Thành tiền</p>
                     </div>
                 </div>
             </div>

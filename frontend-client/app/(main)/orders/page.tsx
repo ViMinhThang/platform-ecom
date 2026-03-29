@@ -6,10 +6,8 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { useGetOrdersQuery } from '@/lib/store/api/clientApi';
 import { OrderGroupDTO, SubOrderStatus } from '@/types/order.types';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Card, CardContent } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Loader2, Package, ChevronRight, Truck } from 'lucide-react';
+import { Loader2, Package, ChevronRight, Truck, ShoppingBag } from 'lucide-react';
 import { format } from 'date-fns';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -22,12 +20,12 @@ import { Suspense } from 'react';
 type OrderTab = 'all' | 'to_ship' | 'shipping' | 'to_receive' | 'completed' | 'cancelled';
 
 const ORDER_TABS: { value: OrderTab; label: string }[] = [
-    { value: 'all', label: 'Tất cả' },
-    { value: 'to_ship', label: 'Chờ giao hàng' },
-    { value: 'shipping', label: 'Đang giao' },
-    { value: 'to_receive', label: 'Chờ nhận hàng' },
-    { value: 'completed', label: 'Đã hoàn thành' },
-    { value: 'cancelled', label: 'Đã hủy' },
+    { value: 'all', label: 'TẤT CẢ' },
+    { value: 'to_ship', label: 'CHỜ GIAO HÀNG' },
+    { value: 'shipping', label: 'ĐANG GIAO' },
+    { value: 'to_receive', label: 'CHỜ NHẬN HÀNG' },
+    { value: 'completed', label: 'HOÀN THÀNH' },
+    { value: 'cancelled', label: 'ĐÃ HỦY' },
 ];
 
 const TAB_STATUS_MAP: Record<OrderTab, SubOrderStatus[]> = {
@@ -82,26 +80,45 @@ function OrdersPageContent() {
 
     if (authStatus === 'loading' || (loading && orders.length === 0)) {
         return (
-            <div className="min-h-screen flex items-center justify-center">
-                <Loader2 className="h-8 w-8 animate-spin text-primary" />
+            <div className="min-h-screen bg-background flex flex-col items-center justify-center space-y-8">
+                <div className="w-12 h-12 border-2 border-primary/20 border-t-primary rounded-full animate-spin" />
+                <p className="font-labels italic text-foreground/40 animate-pulse">Đang truy xuất danh sách đơn hàng...</p>
             </div>
         );
     }
 
     return (
-        <div className="min-h-screen bg-background font-header">
-            <div className="container mx-auto py-12 px-4 max-w-5xl">
-                <h1 className="text-3xl font-bold mb-12 uppercase tracking-widest text-foreground border-b border-border pb-8">
-                    Đơn hàng <span className="text-primary italic">của tôi</span>
-                </h1>
+        <div className="min-h-screen bg-background text-foreground font-labels antialiased pb-40">
+            {/* STICKY HEADER BRIDGE */}
+            <div className="border-b border-foreground/5 bg-white/80 backdrop-blur-md sticky top-[72px] z-30 transition-all">
+                <div className="container max-w-[1600px] mx-auto px-12 py-5 flex items-center justify-between">
+                    <div className="flex items-center gap-3 text-[10px] font-bold uppercase tracking-[0.3em] text-foreground/40 font-labels">
+                        <Link href="/" className="hover:text-primary transition-colors">TRANG CHỦ</Link>
+                        <span>/</span>
+                        <span className="text-foreground">ĐƠN HÀNG CỦA BẠN</span>
+                    </div>
+                </div>
+            </div>
 
-                <Tabs value={activeTab} onValueChange={handleTabChange} className="mb-8">
-                    <TabsList className="w-full justify-start overflow-x-auto flex-nowrap bg-background border border-border rounded-sm h-auto p-1 gap-2 scrollbar-hide shadow-md">
+            <div className="container max-w-[1600px] mx-auto px-12 py-20">
+                <div className="mb-20 space-y-6">
+                    <h1 className="font-labels font-bold text-6xl uppercase tracking-tighter text-foreground">
+                        Đơn hàng của bạn
+                    </h1>
+                    <div className="flex items-center gap-4">
+                        <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-foreground/40 font-labels">Quản lý lịch sử giao dịch</span>
+                        <div className="h-px bg-foreground/10 flex-1" />
+                        <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-foreground/40 font-labels">{orders.length} HÓA ĐƠN</span>
+                    </div>
+                </div>
+
+                <Tabs value={activeTab} onValueChange={handleTabChange} className="mb-12">
+                    <TabsList className="w-full justify-start overflow-x-auto flex-nowrap bg-transparent border-b border-foreground/10 h-auto p-0 gap-12 scrollbar-hide rounded-none">
                         {ORDER_TABS.map((tab) => (
                             <TabsTrigger
                                 key={tab.value}
                                 value={tab.value}
-                                className="flex-shrink-0 h-10 px-6 rounded-sm data-[state=active]:bg-primary data-[state=active]:text-primary-foreground text-[10px] font-bold uppercase tracking-widest transition-all hover:bg-muted/50"
+                                className="shrink-0 h-14 px-0 rounded-none data-[state=active]:bg-transparent data-[state=active]:text-primary data-[state=active]:border-b-2 data-[state=active]:border-primary text-[11px] font-bold uppercase tracking-widest transition-all hover:text-primary border-transparent border-b-2"
                             >
                                 {tab.label}
                             </TabsTrigger>
@@ -110,32 +127,20 @@ function OrdersPageContent() {
                 </Tabs>
 
                 {filteredOrders.length === 0 ? (
-                    <Card className="border border-dashed border-border bg-muted/5 rounded-sm shadow-sm overflow-hidden">
-                        <CardContent className="py-24 text-center">
-                            <div className="bg-primary/5 w-24 h-24 rounded-sm flex items-center justify-center mx-auto mb-8 border border-primary/10">
-                                <Package className="h-10 w-10 text-primary opacity-40" />
-                            </div>
-                            <h3 className="text-xl font-bold uppercase tracking-widest text-foreground">Không tìm thấy đơn hàng</h3>
-                            <p className="text-[10px] text-muted-foreground mt-3 font-bold uppercase tracking-widest opacity-60">
-                                {activeTab === 'all'
-                                    ? "Bạn chưa thực hiện bất kỳ đơn hàng nào."
-                                    : `Không có đơn hàng nào ở trạng thái "${{
-                                        all: 'Tất cả',
-                                        to_ship: 'Chờ giao hàng',
-                                        shipping: 'Đang giao',
-                                        to_receive: 'Chờ nhận hàng',
-                                        completed: 'Đã hoàn thành',
-                                        cancelled: 'Đã hủy'
-                                    }[activeTab]}".`
-                                }
-                            </p>
-                            <Button asChild className="mt-12 px-10 h-12 text-[10px] font-bold uppercase tracking-widest rounded-sm shadow-lg shadow-primary/10">
-                                <Link href="/products">Bắt đầu mua sắm</Link>
-                            </Button>
-                        </CardContent>
-                    </Card>
+                    <div className="bg-white p-32 text-center rounded-[4px] border border-foreground/5 shadow-sm">
+                        <div className="bg-primary/5 w-24 h-24 rounded-full flex items-center justify-center mx-auto mb-10">
+                            <Package className="h-10 w-10 text-primary opacity-30" />
+                        </div>
+                        <h3 className="text-xl font-bold uppercase tracking-widest text-foreground font-labels">Không tìm thấy đơn hàng</h3>
+                        <p className="text-[10px] text-foreground/40 mt-4 font-bold uppercase tracking-widest font-labels">
+                            Hiện không có dữ liệu cho trạng thái này trong hồ sơ của bạn.
+                        </p>
+                        <Button asChild className="mt-12 px-12 h-14 text-[10px] font-bold uppercase tracking-widest rounded-sm bg-primary hover:opacity-90 transition-all font-labels">
+                            <Link href="/products">Tiếp tục mua sắm</Link>
+                        </Button>
+                    </div>
                 ) : (
-                    <div className="space-y-4">
+                    <div className="space-y-8">
                         {filteredOrders.map((order) => (
                             <OrderCard key={`${order.id}-${refreshCounter}`} order={order} onReview={handleReviewOrderItem} refreshTrigger={refreshCounter} />
                         ))}
@@ -158,71 +163,62 @@ function OrdersPageContent() {
 
 export default function OrdersPage() {
     return (
-        <Suspense fallback={<div>Loading...</div>}>
+        <Suspense fallback={<div className="min-h-screen bg-background animate-pulse" />}>
             <OrdersPageContent />
         </Suspense>
     );
 }
 
 function OrderCard({ order, onReview, refreshTrigger }: { order: OrderGroupDTO, onReview: (productId: number, orderId: number) => void, refreshTrigger?: number }) {
-    const getStatusStyles = (status: SubOrderStatus) => {
-        switch (status) {
-            case SubOrderStatus.DELIVERED: return 'bg-emerald-50 text-emerald-600 border-emerald-100';
-            case SubOrderStatus.DELIVERING:
-            case SubOrderStatus.TRANSPORTING:
-            case SubOrderStatus.SHIPPED: return 'bg-blue-50 text-blue-600 border-blue-100';
-            case SubOrderStatus.CANCELLED:
-            case SubOrderStatus.RETURNED: return 'bg-red-50 text-red-600 border-red-100';
-            default: return 'bg-primary/5 text-primary border-primary/10';
-        }
-    };
-
     return (
-        <Card className="overflow-hidden shadow-md border border-border rounded-sm bg-background transition-all hover:shadow-lg mb-6">
+        <div className="bg-white overflow-hidden border border-foreground/10 rounded-[4px] shadow-sm transition-all hover:border-foreground/20">
             {order.subOrders.map((subOrder) => (
-                <div key={subOrder.id} className="border-b border-border last:border-b-0">
-                    <div className="bg-muted/10 px-6 py-4 flex items-center justify-between border-b border-border">
-                        <div className="flex items-center gap-4">
-                            <span className="text-[11px] font-bold uppercase tracking-widest text-foreground">{subOrder.sellerName}</span>
-                            <Badge variant="outline" className={`text-[9px] font-bold uppercase tracking-widest px-2.5 py-0.5 rounded-sm border ${getStatusStyles(subOrder.status)}`}>
+                <div key={subOrder.id} className="border-b border-foreground/5 last:border-b-0">
+                    <div className="px-8 py-6 flex items-center justify-between border-b border-foreground/5 bg-secondary/5">
+                        <div className="flex items-center gap-6">
+                            <span className="text-[11px] font-bold uppercase tracking-widest text-foreground font-labels">{subOrder.sellerName}</span>
+                            <div className="px-4 py-1.5 bg-primary/5 text-primary border border-primary/10 text-[9px] font-bold uppercase tracking-widest rounded-[2px] font-labels">
                                 {subOrder.status.replace(/_/g, ' ')}
-                            </Badge>
+                            </div>
                         </div>
                         {subOrder.ghnOrderCode && (
-                            <div className="flex items-center gap-2 text-[9px] font-bold uppercase tracking-widest text-muted-foreground opacity-60">
-                                <Truck className="h-3.5 w-3.5" />
-                                <span>Vận chuyển: {subOrder.ghnOrderCode}</span>
+                            <div className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-foreground/30 font-labels">
+                                <Truck className="h-4 w-4" />
+                                <span>MÃ VẬN ĐƠN: {subOrder.ghnOrderCode}</span>
                             </div>
                         )}
                     </div>
 
-                    <div className="p-6 space-y-6">
+                    <div className="p-8 space-y-10">
                         {subOrder.items.map((item) => (
-                            <div key={item.id} className="flex gap-6 group">
-                                <div className="h-20 w-20 bg-muted/30 rounded-sm border border-border overflow-hidden flex-shrink-0 shadow-inner group-hover:shadow-md transition-shadow">
+                            <div key={item.id} className="flex gap-10 items-center">
+                                <div className="h-24 w-24 bg-secondary/5 rounded-sm border border-foreground/5 overflow-hidden flex-shrink-0 relative group">
                                     {item.imageUrl ? (
                                         <Image
                                             src={imageUrl.product(item.imageUrl)}
                                             alt={item.productName}
-                                            width={80}
-                                            height={80}
-                                            className="object-cover w-full h-full"
+                                            fill
+                                            className="object-cover group-hover:scale-105 transition-transform duration-500"
+                                            unoptimized
                                         />
                                     ) : (
-                                        <div className="w-full h-full flex items-center justify-center text-muted-foreground">
-                                            <Package className="h-6 w-6 opacity-30" />
+                                        <div className="w-full h-full flex items-center justify-center text-foreground/20">
+                                            <Package className="h-8 w-8" />
                                         </div>
                                     )}
                                 </div>
-                                <div className="flex-1 min-w-0 space-y-1">
-                                    <p className="font-bold text-sm uppercase tracking-widest text-foreground truncate">{item.productName}</p>
-                                    {item.variantName && (
-                                        <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest opacity-60 italic">{item.variantName}</p>
-                                    )}
-                                    <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest opacity-50">Số lượng: <span className="text-foreground">{item.quantity}</span></p>
+                                <div className="flex-1 min-w-0 space-y-2">
+                                    <p className="font-bold text-base uppercase tracking-tight text-foreground font-labels">{item.productName}</p>
+                                    <div className="flex items-center gap-4">
+                                        {item.variantName && (
+                                            <p className="text-[10px] font-bold text-foreground/30 uppercase tracking-widest font-labels">{item.variantName}</p>
+                                        )}
+                                        <div className="h-4 w-px bg-foreground/10" />
+                                        <p className="text-[10px] font-bold text-foreground/40 uppercase tracking-widest font-labels">SỐ LƯỢNG: <span className="text-foreground">{item.quantity}</span></p>
+                                    </div>
                                 </div>
-                                <div className="text-right flex flex-col items-end gap-3 justify-center">
-                                    <p className="font-bold text-base tracking-tighter text-foreground">{formatCurrency(item.totalPrice)}</p>
+                                <div className="text-right flex flex-col items-end gap-6">
+                                    <p className="font-bold text-xl tracking-tighter text-foreground font-labels">{formatCurrency(item.totalPrice)}</p>
                                     <ReviewAction 
                                         productId={item.productId}
                                         orderId={order.id}
@@ -235,25 +231,25 @@ function OrderCard({ order, onReview, refreshTrigger }: { order: OrderGroupDTO, 
                         ))}
                     </div>
 
-                    <div className="px-6 py-5 border-t border-border bg-muted/5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
-                        <div className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground opacity-60">
-                            Hóa đơn ngày {format(new Date(order.createdAt), 'dd/MM/yyyy')}
+                    <div className="px-8 py-6 border-t border-foreground/5 bg-secondary/3 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-8">
+                        <div className="text-[10px] font-bold uppercase tracking-[0.3em] text-foreground/30 font-labels">
+                            HÓA ĐƠN: {format(new Date(order.createdAt), 'dd.MM.yyyy')}
                         </div>
-                        <div className="flex items-center justify-between w-full sm:w-auto gap-12">
+                        <div className="flex items-center justify-between w-full sm:w-auto gap-16">
                             <div className="text-right">
-                                <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground mr-3 opacity-50">Tổng thanh toán: </span>
-                                <span className="font-bold text-2xl tracking-tighter text-primary">{formatCurrency(subOrder.total)}</span>
+                                <span className="text-[10px] font-bold uppercase tracking-widest text-foreground/30 mr-4 font-labels">TỔNG THANH TOÁN</span>
+                                <span className="font-bold text-3xl tracking-tighter text-primary font-labels">{formatCurrency(subOrder.total)}</span>
                             </div>
-                            <Button variant="outline" size="sm" asChild className="h-10 px-6 text-[10px] font-bold uppercase tracking-widest border-border shadow-sm hover:bg-muted/30 rounded-sm">
+                            <Button variant="outline" size="sm" asChild className="h-12 px-8 text-[10px] font-bold uppercase tracking-widest border-foreground/10 shadow-sm hover:bg-foreground hover:text-white transition-all rounded-sm font-labels">
                                 <Link href={`/orders/${order.id}?subOrder=${subOrder.id}`}>
-                                    Chi tiết
-                                    <ChevronRight className="h-3.5 w-3.5 ml-2 text-primary" />
+                                    XEM CHI TIẾT
+                                    <ChevronRight className="h-4 w-4 ml-3" />
                                 </Link>
                             </Button>
                         </div>
                     </div>
                 </div>
             ))}
-        </Card>
+        </div>
     );
 }

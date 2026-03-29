@@ -50,7 +50,7 @@ public class ReviewServiceImpl implements ReviewService {
         validateProductExists(createReviewDTO.getProductId());
         OrderDTO order = validateOrderAndOwnership(createReviewDTO.getOrderId(), userId);
         
-        String finalEmail = (email != null && !email.trim().isEmpty() && !"null".equalsIgnoreCase(email)) 
+        String finalEmail = (email != null && !email.trim().isEmpty())
                                 ? email : order.getUserEmail();
                                 
         validatePurchaseVerification(finalEmail, createReviewDTO.getProductId());

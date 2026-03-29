@@ -1,44 +1,63 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
-import { useCategories } from "@/hooks/useCategories";
-import { imageUrl } from "@/lib/utils/imageUrl";
+import { useGetCategoriesQuery } from "@/lib/store/api/clientApi";
+import { Laptop, Shirt, BookText, Home, GraduationCap, Package } from "lucide-react";
 
 export const QuickLinks = () => {
-    const { categories, loading } = useCategories();
+    const { data: categories, isLoading } = useGetCategoriesQuery();
 
-    if (loading && categories.length === 0) return null;
-    if (categories.length === 0) return null;
+    const getIcon = (slug: string) => {
+        const lowerSlug = slug.toLowerCase();
+        if (lowerSlug.includes('electronic')) return Laptop;
+        if (lowerSlug.includes('apparel') || lowerSlug.includes('thoi-trang')) return Shirt;
+        if (lowerSlug.includes('literature') || lowerSlug.includes('sach')) return BookText;
+        if (lowerSlug.includes('living') || lowerSlug.includes('gia-dung')) return Home;
+        if (lowerSlug.includes('scholarship') || lowerSlug.includes('hoc-thuat')) return GraduationCap;
+        return Package;
+    };
+
+    if (isLoading || !categories) {
+        return (
+            <div className="w-full bg-[#1c1917] py-6">
+                <div className="container mx-auto px-6 flex items-center gap-12 overflow-x-auto scrollbar-hide py-1">
+                    {[1, 2, 3, 4, 5].map((i) => (
+                        <div key={i} className="flex items-center gap-3 animate-pulse">
+                            <div className="h-4 w-4 bg-white/10 rounded-full" />
+                            <div className="h-2 w-16 bg-white/10 rounded-sm" />
+                        </div>
+                    ))}
+                </div>
+            </div>
+        );
+    }
 
     return (
-        <div className="container mx-auto px-4 mt-8 mb-8">
-            <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-10 border-l border-t border-border rounded-sm overflow-hidden shadow-sm">
-                {categories.map((category) => (
-                    <Link
-                        key={category.id}
-                        href={`/category/${category.slug}`}
-                        className="flex flex-col items-center gap-4 p-6 group border-r border-b border-border bg-background hover:bg-muted/50 transition-all duration-300"
-                    >
-                        <div className="relative w-10 h-10 grayscale group-hover:grayscale-0 transition-all duration-500">
-                            {category.imageUrl ? (
-                                <Image
-                                    src={imageUrl.category(category.imageUrl)}
-                                    alt={category.name}
-                                    fill
-                                    className="object-contain"
-                                />
-                            ) : (
-                                <div className="w-full h-full bg-zinc-100 flex items-center justify-center text-[10px] font-black text-black/20 font-mono">
-                                    N/A
-                                </div>
-                            )}
-                        </div>
-                        <span className="text-[10px] text-center font-bold uppercase tracking-[0.15em] leading-tight text-foreground group-hover:text-primary transition-colors">
-                            {category.name}
-                        </span>
-                    </Link>
-                ))}
+        <div className="w-full bg-[#1c1917] text-white py-6">
+            <div className="container mx-auto px-6 flex flex-wrap items-center justify-between gap-8">
+                <div className="flex items-center gap-10 overflow-x-auto pb-2 md:pb-0 scrollbar-hide">
+                    {categories.map((cat) => {
+                        const Icon = getIcon(cat.slug);
+                        return (
+                            <Link
+                                key={cat.id}
+                                href={`/category/${cat.slug}`}
+                                className="flex items-center gap-3 group whitespace-nowrap"
+                            >
+                                <Icon className="h-4 w-4 text-white/40 group-hover:text-white transition-colors" />
+                                <span className="text-[10px] font-bold uppercase tracking-[0.2em] transition-colors group-hover:text-white">
+                                    {cat.name}
+                                </span>
+                            </Link>
+                        );
+                    })}
+                </div>
+
+                <div className="hidden lg:block">
+                    <span className="text-[10px] opacity-40 tracking-widest uppercase font-bold">
+                        DUYỆT THEO DANH MỤC
+                    </span>
+                </div>
             </div>
         </div>
     );

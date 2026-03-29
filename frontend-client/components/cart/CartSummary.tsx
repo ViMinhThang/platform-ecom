@@ -3,7 +3,7 @@
 import { CartDTO } from "@/types/cart.types";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
-import { ShieldCheck } from "lucide-react";
+import { ShieldCheck, ChevronRight } from "lucide-react";
 import { formatCurrency } from "@/lib/utils/formatCurrency";
 import { usePromotion } from "@/hooks/usePromotion";
 import { VoucherSection } from "@/components/checkout/VoucherSection";
@@ -19,63 +19,74 @@ export function CartSummary({ cart }: CartSummaryProps) {
     const finalTotal = discountResult ? discountResult.finalTotal : cart.totalAmount;
 
     return (
-        <div className="bg-background border border-border sticky top-24 p-0 shadow-lg rounded-sm overflow-hidden font-header">
-            <div className="bg-muted/30 border-b border-border px-6 py-4 flex justify-between items-center">
-                <h2 className="text-[11px] font-bold uppercase tracking-[0.2em] text-foreground">Tóm tắt đơn hàng</h2>
-                <span className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest opacity-50">INV-{Date.now().toString().slice(-4)}</span>
+        <div className="space-y-12 animate-in fade-in slide-in-from-right-4 duration-1000">
+            {/* Header: Simplified Section Title */}
+            <div className="space-y-4">
+                <div className="flex items-center gap-4">
+                    <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-primary font-labels">THÔNG TIN ĐƠN HÀNG</span>
+                    <div className="h-px bg-primary/10 flex-1" />
+                </div>
             </div>
 
-            <div className="p-6 space-y-6">
-
-                <div className="space-y-4 text-sm">
-                    <div className="flex justify-between items-center">
-                        <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Tạm tính ({cart.totalItems})</span>
-                        <span className="font-bold tracking-tighter">{formatCurrency(cart.totalAmount)}</span>
+            {/* Calculations List */}
+            <div className="space-y-8">
+                <div className="space-y-4">
+                    <div className="flex justify-between items-end">
+                        <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-foreground/40 font-labels">Tạm tính</span>
+                        <div className="flex-1 border-b border-foreground/5 border-dotted mx-4 mb-1" />
+                        <span className="font-labels font-bold text-lg text-foreground">{formatCurrency(cart.totalAmount)}</span>
                     </div>
 
-                    <div className="flex justify-between items-center">
-                        <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Phí vận chuyển</span>
-                        <span className="text-[9px] font-bold bg-muted px-2 py-1 rounded-sm uppercase tracking-widest text-muted-foreground">TÍNH LÚC THANH TOÁN</span>
+                    <div className="flex justify-between items-end">
+                        <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-foreground/40 font-labels">Phí vận chuyển</span>
+                        <div className="flex-1 border-b border-foreground/5 border-dotted mx-4 mb-1" />
+                        <span className="text-[9px] font-bold uppercase tracking-widest text-foreground/30 font-labels">Tính khi thanh toán</span>
                     </div>
 
                     {discountResult && discountResult.totalDiscount > 0 && (
-                        <div className="flex justify-between items-center text-primary">
-                            <span className="text-[10px] font-bold uppercase tracking-widest">Giảm giá voucher</span>
-                            <span className="font-bold tracking-tighter">-{formatCurrency(discountResult.totalDiscount)}</span>
+                        <div className="flex justify-between items-end text-primary">
+                            <span className="text-[10px] font-bold uppercase tracking-[0.2em] font-labels">Giảm giá mã ưu đãi</span>
+                            <div className="flex-1 border-b border-primary/10 border-dotted mx-4 mb-1" />
+                            <span className="font-labels font-bold text-lg">-{formatCurrency(discountResult.totalDiscount)}</span>
                         </div>
                     )}
+                </div>
 
-                    {/* Voucher Section Integration */}
-                    <div className="pt-2">
-                        <VoucherSection discountResult={discountResult} appliedVoucherCodes={appliedVoucherCodes} />
-                    </div>
+                {/* Voucher Integration: Simplified */}
+                <div className="pt-4">
+                    <VoucherSection discountResult={discountResult} appliedVoucherCodes={appliedVoucherCodes} />
+                </div>
 
-                    <div className="border-t border-border mt-4 pt-4 flex justify-between items-end">
-                        <span className="font-bold uppercase tracking-widest text-xs">Tổng cộng</span>
-                        <span className="text-2xl font-bold tracking-tighter tabular-nums text-primary">
+                {/* Final Total */}
+                <div className="space-y-2 pt-8 border-t border-foreground/10">
+                    <div className="flex justify-between items-baseline">
+                        <span className="text-[11px] font-bold uppercase tracking-[0.3em] text-foreground font-labels">TỔNG CỘNG</span>
+                        <span className="font-labels font-bold text-3xl text-primary tracking-tighter">
                             {formatCurrency(finalTotal)}
                         </span>
                     </div>
                 </div>
+            </div>
 
+            {/* CTA Button: Modern Checkout */}
+            <div className="space-y-8">
                 <Button
-                    className="w-full h-14 bg-primary text-primary-foreground hover:bg-primary/90 rounded-sm font-bold text-[11px] uppercase tracking-[0.2em] transition-all shadow-md border-none"
+                    className="w-full h-16 bg-primary text-white hover:bg-primary/95 rounded-sm font-bold text-[11px] uppercase tracking-[0.2em] transition-all shadow-xl group border-2 border-primary"
                     onClick={() => router.push("/checkout")}
                 >
-                    Thanh toán ngay
+                    Tiến hành đặt hàng
+                    <ChevronRight className="ml-3 h-4 w-4 group-hover:translate-x-1 transition-transform" />
                 </Button>
 
-                <div className="border-t border-border pt-6">
-                    <div className="flex items-start gap-4">
-                        <div className="h-8 w-8 flex-shrink-0 bg-muted/50 border border-border flex items-center justify-center rounded-sm">
-                            <ShieldCheck className="h-4 w-4 text-primary" />
-                        </div>
-                        <div className="space-y-1">
-                            <p className="font-bold text-[10px] uppercase tracking-widest text-foreground">Bảo vệ người mua</p>
-                            <p className="text-[9px] text-muted-foreground font-bold tracking-widest leading-relaxed uppercase opacity-50">
-                                GIAO DỊCH CỦA BẠN ĐƯỢC BẢO MẬT TUYỆT ĐỐI. HOÀN TIỀN 100% NẾU CÓ SỰ CỐ.
-                            </p>
-                        </div>
+                {/* Security Commitment: Simplified */}
+                <div className="flex items-start gap-4 pt-8 border-t border-foreground/5">
+                    <ShieldCheck className="w-5 h-5 text-tertiary" />
+                    <div className="space-y-1">
+                        <p className="text-[10px] font-bold uppercase tracking-widest text-foreground/80 font-labels">An tâm mua sắm cùng ACME</p>
+                        <p className="text-[9px] leading-relaxed text-foreground/40 font-bold uppercase tracking-wider font-labels">
+                            Mọi đơn hàng đều được ACME bảo vệ 100%. 
+                            Hoàn trả giá trị nếu sản phẩm không đúng mô tả hoặc gặp lỗi.
+                        </p>
                     </div>
                 </div>
             </div>

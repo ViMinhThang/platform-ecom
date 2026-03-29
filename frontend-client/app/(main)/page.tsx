@@ -1,23 +1,21 @@
 import { HomeBanner } from "@/components/home/HomeBanner";
-import { QuickLinks } from "@/components/home/QuickLinks";
-import { SingleActiveCampaign } from "@/components/home/SingleActiveCampaign";
 import { ProductFeed } from "@/components/home/ProductFeed";
+import { CuratedCollections } from "@/components/home/CuratedCollections";
+import { SingleActiveCampaign } from "@/components/home/SingleActiveCampaign";
 
 export default function Home() {
   return (
-    <div className="flex flex-col min-h-screen pb-20 bg-background/50">
-      {/* SECTION 1: HERO BANNER & CATEGORIES */}
+    <div className="flex flex-col min-h-screen bg-background">
+      {/* SECTION 1: EDITORIAL HERO */}
       <HomeBanner />
 
-      <div className="container mx-auto px-4 my-8">
-        <div className="h-px bg-border w-full" />
-      </div>
-
-      <QuickLinks />
-
-      {/* SECTION 3: FLASH SALE */}
+      {/* SECTION 2: ACTIVE CAMPAIGN (Dossier Registry) */}
       <SingleActiveCampaign />
 
+      {/* SECTION 3: CURATED COLLECTIONS (FRAGMENTED GRID) */}
+      <CuratedCollections />
+
+      {/* SECTION 4: PRODUCT ACQUISITIONS (MINIMAL GRID) */}
       <ProductFeed />
     </div>
   );

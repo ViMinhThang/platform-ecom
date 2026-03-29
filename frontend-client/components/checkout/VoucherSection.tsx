@@ -33,7 +33,7 @@ export function VoucherSection({ discountResult, appliedVoucherCodes = [] }: Vou
             </div>
 
             {appliedCount > 0 ? (
-                <div className="bg-muted/30 border border-border p-4 rounded-sm space-y-3 shadow-inner">
+                <div className="bg-muted/30 border border-border p-4 rounded-sm space-y-3">
                     {appliedVoucherCodes.map(code => {
                         const voucher = availableVouchers.find(v => (v.code === code || `ID:${v.id}` === code));
                         const displayCode = voucher ? (voucher.code || 'AUTO APPLY') : code;
@@ -142,7 +142,7 @@ function VoucherManagerSheet({ availableVouchers, discountResult }: VoucherManag
                                 placeholder="MÃ GIẢM GIÁ" 
                                 className="font-bold uppercase tracking-widest h-12"
                             />
-                            <Button onClick={handleAddVoucher} disabled={checkingCode || !inputCode} className="h-12 px-6 shadow-lg shadow-primary/10">
+                            <Button onClick={handleAddVoucher} disabled={checkingCode || !inputCode} className="h-12 px-6">
                                 {checkingCode ? <Loader2 className="h-4 w-4 animate-spin" /> : 'THÊM'}
                             </Button>
                         </div>
@@ -200,7 +200,7 @@ function VoucherManagerSheet({ availableVouchers, discountResult }: VoucherManag
                 </div>
 
                 <div className="p-6 border-t border-border bg-muted/30">
-                    <Button className="w-full h-12 font-bold uppercase tracking-widest shadow-lg shadow-primary/10" onClick={() => setIsOpen(false)}>
+                    <Button className="w-full h-12 font-bold uppercase tracking-widest" onClick={() => setIsOpen(false)}>
                         Hoàn tất
                     </Button>
                 </div>
@@ -230,7 +230,7 @@ function VoucherItem({ voucher, availableVouchers, appliedCodes, discountResult 
     return (
         <Label 
             htmlFor={voucherIdentifier} 
-            className={`flex items-start space-x-4 border p-4 rounded-sm cursor-pointer transition-all duration-300 relative overflow-hidden group shadow-sm ${isApplied ? 'border-primary bg-primary/[0.03] shadow-md shadow-primary/5' : 'border-border hover:bg-muted/30 hover:shadow-md'}`}
+            className={`flex items-start space-x-4 border p-4 rounded-sm cursor-pointer transition-all duration-300 relative overflow-hidden group ${isApplied ? 'border-primary bg-primary/[0.03]' : 'border-border hover:bg-muted/30'}`}
         >
             <RadioGroupItem value={voucherIdentifier} id={voucherIdentifier} className="mt-1" />
             <div className="flex-1 space-y-2">

@@ -2,13 +2,6 @@
 
 import Image from "next/image";
 import { imageUrl } from "@/lib/utils/imageUrl";
-import {
-    Carousel,
-    CarouselContent,
-    CarouselItem,
-    CarouselNext,
-    CarouselPrevious,
-} from "@/components/ui/carousel";
 import { ProductDetail } from "@/types/product";
 
 interface ProductGalleryProps {
@@ -24,55 +17,58 @@ export const ProductGallery = ({
     product,
     currentImageIndex,
     setCurrentImageIndex,
-    setApi,
-    api,
     displayImage
 }: ProductGalleryProps) => {
     return (
-        <div className="space-y-4">
-            {/* MAIN DISPLAY */}
-            <div className="aspect-square relative bg-background border border-border overflow-hidden rounded-sm cursor-zoom-in group shadow-sm">
-                <Image
-                    width={800}
-                    height={800}
-                    src={imageUrl.product(
-                        product.images && product.images.length > 0
-                            ? product.images[currentImageIndex]?.imageUrl || product.images[0].imageUrl
-                            : displayImage
-                    )}
-                    alt={product.name}
-                    className="object-contain w-full h-full p-2 group-hover:scale-105 transition-transform duration-300"
-                    unoptimized
-                    priority
-                />
-            </div>
-
-            {/* THUMBNAIL STRIP */}
+        <div className="flex flex-col md:flex-row gap-8 items-start">
+            {/* THUMBNAIL STRIP: VERTICAL LEFT */}
             {product.images && product.images.length > 0 && (
-                <div className="grid grid-cols-5 gap-3">
+                <div className="flex flex-row md:flex-column md:flex-col gap-4 w-full md:w-24 order-2 md:order-1 overflow-x-auto md:overflow-y-auto no-scrollbar">
                     {product.images.map((image, index) => (
-                        <div
+                        <button
                             key={index}
-                            className={`cursor-pointer aspect-square rounded-sm overflow-hidden bg-background border transition-all ${currentImageIndex === index
-                                    ? "border-primary ring-1 ring-primary/30 shadow-md"
-                                    : "border-border hover:border-primary/50"
+                            className={`relative min-w-[70px] md:w-full aspect-[4/5] overflow-hidden border transition-all duration-300 rounded-sm bg-secondary/5 ${currentImageIndex === index
+                                    ? "border-primary ring-1 ring-primary/20 opacity-100"
+                                    : "border-foreground/5 opacity-50 hover:opacity-100 hover:border-foreground/20"
                                 }`}
                             onMouseEnter={() => setCurrentImageIndex(index)}
                         >
-                            <div className="w-full h-full relative p-1">
-                                <Image
-                                    width={100}
-                                    height={100}
-                                    src={imageUrl.product(image.imageUrl)}
-                                    alt={`${product.name} thumbnail ${index + 1}`}
-                                    className="object-contain w-full h-full"
-                                    unoptimized
-                                />
-                            </div>
-                        </div>
+                            <Image
+                                fill
+                                src={imageUrl.product(image.imageUrl)}
+                                alt={`${product.name} thumbnail ${index + 1}`}
+                                className="object-cover"
+                                unoptimized
+                            />
+                        </button>
                     ))}
                 </div>
             )}
+
+            {/* MAIN DISPLAY: RIGHT */}
+            <div className="flex-1 w-full order-1 md:order-2">
+                <div className="aspect-[4/5] relative bg-white/50 overflow-hidden border border-foreground/5 rounded-sm group cursor-crosshair">
+                    <Image
+                        fill
+                        src={imageUrl.product(
+                            product.images && product.images.length > 0
+                                ? product.images[currentImageIndex]?.imageUrl || product.images[0].imageUrl
+                                : displayImage
+                        )}
+                        alt={product.name}
+                        className="object-cover transition-transform duration-1000 group-hover:scale-105"
+                        unoptimized
+                        priority
+                    />
+                    
+                    {/* BỘ SƯU TẬP WATERMARK / BADGE */}
+                    <div className="absolute top-6 left-6 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none">
+                         <div className="bg-white/80 backdrop-blur-md px-4 py-2 border border-foreground/5 rounded-sm">
+                             <p className="text-[9px] font-bold uppercase tracking-[0.3em] text-foreground font-labels">ACME ARCHIVES</p>
+                         </div>
+                    </div>
+                </div>
+            </div>
         </div>
     );
 };

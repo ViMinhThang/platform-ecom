@@ -1,215 +1,155 @@
 "use client";
 
-import { Search, ShoppingCart, Clock, X } from "lucide-react";
+import { Search, ShoppingCart, User, Clock, X } from "lucide-react";
 import Link from "next/link";
-import { useState, useRef, useEffect } from "react";
-import { useRouter } from "next/navigation";
 import { useGetCartQuery } from "@/lib/store/api/clientApi";
-import { Badge } from "@/components/ui/badge";
 import { UserNav } from "@/components/UserNav";
-import { useSearchHistory } from "@/hooks/useSearchHistory";
+import { usePathname, useRouter } from "next/navigation";
+import { cn } from "@/lib/utils";
+import { useState, useEffect, useRef } from "react";
+
+const MAX_HISTORY = 5;
 
 export const SearchHeader = () => {
-    const [searchQuery, setSearchQuery] = useState("");
-    const [showHistory, setShowHistory] = useState(false);
-    const router = useRouter();
     const { data: cart } = useGetCartQuery();
     const cartItemCount = cart?.items?.reduce((total, item) => total + item.quantity, 0) || 0;
-    const { history, addSearch, removeSearch, clearHistory } = useSearchHistory();
-    const searchContainerRef = useRef<HTMLDivElement>(null);
-    const blurTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+    const pathname = usePathname();
+    const router = useRouter();
+    const [searchTerm, setSearchTerm] = useState("");
+    const [history, setHistory] = useState<string[]>([]);
+    const [showHistory, setShowHistory] = useState(false);
+    const historyRef = useRef<HTMLDivElement>(null);
 
-    // Close dropdown when clicking outside
+    // PERSISTENCE: Load History
     useEffect(() => {
-        const handleClickOutside = (e: MouseEvent) => {
-            if (
-                searchContainerRef.current &&
-                !searchContainerRef.current.contains(e.target as Node)
-            ) {
+        const saved = localStorage.getItem("acme_search_history");
+        if (saved) setHistory(JSON.parse(saved));
+    }, []);
+
+    // CLICK OUTSIDE: Close History
+    useEffect(() => {
+        const handler = (e: MouseEvent) => {
+            if (historyRef.current && !historyRef.current.contains(e.target as Node)) {
                 setShowHistory(false);
             }
         };
-        document.addEventListener("mousedown", handleClickOutside);
-        return () => document.removeEventListener("mousedown", handleClickOutside);
+        document.addEventListener("mousedown", handler);
+        return () => document.removeEventListener("mousedown", handler);
     }, []);
 
-    // Cleanup timeout on unmount
-    useEffect(() => {
-        return () => {
-            if (blurTimeoutRef.current) clearTimeout(blurTimeoutRef.current);
-        };
-    }, []);
+    const saveSearch = (term: string) => {
+        const normalized = term.trim();
+        if (!normalized) return;
+        const newHistory = [normalized, ...history.filter(h => h !== normalized)].slice(0, MAX_HISTORY);
+        setHistory(newHistory);
+        localStorage.setItem("acme_search_history", JSON.stringify(newHistory));
+    };
 
-    const handleSearch = () => {
-        if (searchQuery.trim()) {
-            addSearch(searchQuery.trim());
+    const handleSearch = (e: React.KeyboardEvent) => {
+        if (e.key === "Enter" && searchTerm.trim()) {
+            saveSearch(searchTerm);
             setShowHistory(false);
-            router.push(`/products?search=${encodeURIComponent(searchQuery.trim())}`);
+            router.push(`/products?q=${encodeURIComponent(searchTerm.trim())}`);
         }
     };
 
-    const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-        if (e.key === "Enter") {
-            handleSearch();
-        }
-        if (e.key === "Escape") {
-            setShowHistory(false);
-        }
-    };
-
-    const handleHistoryClick = (query: string) => {
-        setSearchQuery(query);
-        addSearch(query);
+    const handleHistoryClick = (term: string) => {
+        setSearchTerm(term);
+        saveSearch(term);
         setShowHistory(false);
-        router.push(`/products?search=${encodeURIComponent(query)}`);
+        router.push(`/products?q=${encodeURIComponent(term)}`);
     };
 
-    const handleRemoveEntry = (e: React.MouseEvent, query: string) => {
+    const clearHistory = (e: React.MouseEvent) => {
         e.stopPropagation();
-        removeSearch(query);
+        setHistory([]);
+        localStorage.removeItem("acme_search_history");
     };
 
-    const handleClearAll = () => {
-        clearHistory();
-        setShowHistory(false);
-    };
-
-    const handleFocus = () => {
-        if (blurTimeoutRef.current) clearTimeout(blurTimeoutRef.current);
-        if (history.length > 0) {
-            setShowHistory(true);
-        }
-    };
-
-    const handleBlur = () => {
-        blurTimeoutRef.current = setTimeout(() => {
-            setShowHistory(false);
-        }, 200);
+    const removeHistoryItem = (e: React.MouseEvent, term: string) => {
+        e.stopPropagation();
+        const newHistory = history.filter(h => h !== term);
+        setHistory(newHistory);
+        localStorage.setItem("acme_search_history", JSON.stringify(newHistory));
     };
 
     return (
-        <div className="w-full bg-background/80 backdrop-blur-md text-foreground py-4 sticky top-0 z-50 shadow-md">
-            <div className="container mx-auto px-4 flex items-center gap-8 md:gap-16">
-                {/* Logo */}
-                <Link href="/" className="shrink-0 flex items-center gap-3 group">
-                    <div className="bg-primary text-white p-2 shrink-0 rounded-sm shadow-sm">
-                        <ShoppingCartsIcon className="h-8 w-8" />
-                    </div>
-                    <div className="hidden lg:flex flex-col -space-y-1">
-                        <span className="font-black text-3xl tracking-tighter uppercase leading-none group-hover:tracking-normal transition-all duration-300">ACME</span>
-                        <span className="text-[10px] font-bold tracking-[0.1em] text-muted-foreground uppercase">MUA SẮM TRỰC TUYẾN</span>
-                    </div>
+        <header className="w-full bg-white/80 border-b border-[#E7E5E4]/20 backdrop-blur-xl shadow-sm sticky top-0 z-50 font-labels transition-all duration-300">
+            <div className="w-full px-12 h-[72px] flex items-center justify-between gap-16">
+                {/* LOGO: Far Left */}
+                <Link href="/" className="shrink-0">
+                    <span className="font-labels text-3xl font-bold tracking-tighter text-foreground hover:opacity-80 transition-opacity">
+                        ACME
+                    </span>
                 </Link>
 
-                {/* Search Bar */}
-                <div className="flex-1 max-w-4xl relative" ref={searchContainerRef}>
-                    <div className="relative flex bg-muted/30 border border-border focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/20 transition-all rounded-sm overflow-hidden shadow-sm">
+                {/* SEARCH: Center & Wider & Less Rounded */}
+                <div className="relative flex-1 max-w-3xl mx-auto" ref={historyRef}>
+                    <div className="flex items-center bg-[#F5F3F4] border border-foreground/5 rounded-sm px-5 py-2.5 focus-within:ring-1 focus-within:ring-primary/20 transition-all shadow-inner">
+                        <Search className="h-4 w-4 text-foreground/40 mr-3" />
                         <input
                             type="text"
-                            placeholder="Tìm tên sản phẩm..."
-                            className="flex-1 px-4 py-3 text-black placeholder:text-zinc-400 text-sm font-bold outline-none"
-                            value={searchQuery}
-                            onChange={(e) => {
-                                setSearchQuery(e.target.value);
-                                if (history.length > 0) setShowHistory(true);
-                            }}
-                            onKeyDown={handleKeyDown}
-                            onFocus={handleFocus}
-                            onBlur={handleBlur}
+                            placeholder="Tìm kiếm sản phẩm..."
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)}
+                            onKeyDown={handleSearch}
+                            onFocus={() => setShowHistory(true)}
+                            className="bg-transparent border-none outline-none text-[13px] font-medium w-full placeholder:text-foreground/30 focus:ring-0 uppercase tracking-widest font-labels"
                         />
-                        <button
-                            onClick={handleSearch}
-                            className="px-8 bg-primary hover:bg-primary/90 text-white transition-colors flex items-center justify-center font-bold uppercase tracking-widest text-xs"
-                        >
-                            <Search className="h-4 w-4 mr-2" />
-                            <span className="hidden sm:inline">Tìm kiếm</span>
-                        </button>
                     </div>
 
                     {/* Search History Dropdown */}
                     {showHistory && history.length > 0 && (
-                        <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-zinc-200 shadow-xl z-[60] overflow-hidden rounded-sm animate-in fade-in slide-in-from-top-1 duration-150">
-                            <div className="py-1">
-                                {history.map((item) => (
-                                    <button
-                                        key={item}
-                                        onClick={() => handleHistoryClick(item)}
-                                        className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-zinc-700 hover:bg-zinc-100 transition-colors group"
-                                    >
-                                        <Clock className="h-4 w-4 text-zinc-400 shrink-0" />
-                                        <span className="flex-1 text-left truncate font-medium">{item}</span>
-                                        <span
-                                            role="button"
-                                            onClick={(e) => handleRemoveEntry(e, item)}
-                                            className="opacity-0 group-hover:opacity-100 p-1 hover:bg-zinc-200 rounded transition-all shrink-0"
-                                            title="Xóa"
-                                        >
-                                            <X className="h-3.5 w-3.5 text-zinc-400 hover:text-zinc-600" />
-                                        </span>
-                                    </button>
-                                ))}
-                            </div>
-                            <div className="border-t border-zinc-200 px-4 py-2">
-                                <button
-                                    onClick={handleClearAll}
-                                    className="text-xs text-primary hover:text-primary/80 font-bold transition-colors"
+                        <div className="absolute top-full mt-1 left-0 right-0 bg-white/95 backdrop-blur-md border border-border/10 shadow-2xl rounded-sm p-8 animate-in fade-in slide-in-from-top-2 duration-300 z-50 overflow-hidden">
+                            <div className="flex items-center justify-between mb-8 pb-3 border-b border-border/5">
+                                <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-foreground/40 font-labels">Lịch sử tìm kiếm</span>
+                                <button 
+                                    onClick={clearHistory}
+                                    className="text-[9px] font-bold uppercase text-primary hover:opacity-70 transition-opacity font-labels tracking-widest"
                                 >
-                                    Xóa lịch sử tìm kiếm
+                                    Xóa hết
                                 </button>
+                            </div>
+                            <div className="space-y-3">
+                                {history.map((term) => (
+                                    <div 
+                                        key={term}
+                                        onClick={() => handleHistoryClick(term)}
+                                        className="flex items-center justify-between group/item p-4 hover:bg-[#F5F3F4] transition-colors cursor-pointer rounded-sm border border-transparent hover:border-foreground/5"
+                                    >
+                                        <div className="flex items-center gap-5">
+                                            <Clock className="h-4 w-4 text-foreground/10" />
+                                            <span className="text-[13px] font-bold uppercase tracking-widest text-foreground/70 group-hover/item:text-foreground transition-colors truncate max-w-[500px] font-labels">
+                                                {term}
+                                            </span>
+                                        </div>
+                                        <button 
+                                            onClick={(e) => removeHistoryItem(e, term)}
+                                            className="opacity-0 group-hover/item:opacity-100 hover:text-red-500 transition-all px-3"
+                                        >
+                                            <X className="h-4 w-4 text-foreground/20" />
+                                        </button>
+                                    </div>
+                                ))}
                             </div>
                         </div>
                     )}
-
-                    {/* Quick Search Tags */}
-                    <div className="hidden md:flex items-center gap-4 mt-2 text-[10px] text-muted-foreground font-bold uppercase tracking-widest overflow-hidden whitespace-nowrap">
-                        <span className="text-primary/70 font-black">Xu hướng:</span>
-                        {['Điện tử', 'Phụ kiện', 'Thời trang', 'Đồ gia dụng', 'Dụng cụ'].map((tag) => (
-                            <button
-                                key={tag}
-                                onClick={() => router.push(`/products?search=${encodeURIComponent(tag)}`)}
-                                className="hover:text-primary transition-colors"
-                            >
-                                {tag}
-                            </button>
-                        ))}
-                    </div>
                 </div>
 
-                {/* Cart & Actions */}
-                <div className="flex items-center gap-8 shrink-0">
-                    <Link href="/cart" className="relative group">
-                        <div className="p-2 border border-border group-hover:border-primary group-hover:bg-primary/5 transition-all rounded-sm">
-                            <ShoppingCart className="h-5 w-5" />
-                        </div>
+                {/* ACTIONS: Far Right */}
+                <div className="flex items-center gap-2 hrink-0 translate-y-[2px]">
+                    <Link href="/cart" className="relative p-2 hover:bg-secondary/20 rounded-full transition-all group">
+                        <ShoppingCart className="h-6 w-6 text-foreground/40 group-hover:text-primary transition-colors" />
                         {cartItemCount > 0 && (
-                            <Badge className="absolute -right-2 -top-2 h-5 min-w-[20px] px-1 flex items-center justify-center text-[10px] font-black bg-primary text-white border-none">
+                            <span className="absolute top-1 right-1 bg-primary text-white text-[8px] font-bold h-4 min-w-[18px] px-1 rounded-full flex items-center justify-center translate-x-1/2 translate-y-[-1/2] shadow-sm ring-2 ring-white">
                                 {cartItemCount}
-                            </Badge>
+                            </span>
                         )}
                     </Link>
 
-                    <div className="flex items-center">
-                        <UserNav />
-                    </div>
+                    <UserNav />
                 </div>
             </div>
-        </div>
+        </header>
     );
 };
-
-const ShoppingCartsIcon = ({ className }: { className?: string }) => (
-    <svg
-        xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        className={className}
-    >
-        <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z" />
-        <path d="M3 6h18" />
-        <path d="M16 10a4 4 0 0 1-8 0" />
-    </svg>
-)
