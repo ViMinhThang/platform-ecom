@@ -39,7 +39,7 @@ export function AuthBrandPanel({
                 <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/10 backdrop-blur-sm group-hover:bg-white/20 transition-colors">
                     <ShoppingBag className="h-5 w-5" />
                 </div>
-                <span className="text-xl font-bold tracking-tight">ShopHub</span>
+                <span className="text-xl font-bold tracking-tight">ACME</span>
             </Link>
 
             <div className="relative z-10 space-y-6">
@@ -65,7 +65,7 @@ export function AuthBrandPanel({
             <div className="relative z-10">
                 <div className="flex items-center gap-4 text-sm text-white/50">
                     <div className="h-px flex-1 bg-white/10" />
-                    <span>© 2024 ShopHub</span>
+                    <span>© 2026 ACME</span>
                 </div>
             </div>
         </div>

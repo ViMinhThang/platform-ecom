@@ -2,7 +2,7 @@ import { format, formatDistanceToNow } from 'date-fns';
 import { vi } from 'date-fns/locale';
 
 /**
- * Format date for order display (e.g., "15 thg 1, 2024")
+ * Format date for order display (e.g., "15 thg 1, 2026")
  */
 export function formatOrderDate(date: string | Date | null | undefined): string {
     if (!date) return 'N/A';
@@ -16,7 +16,7 @@ export function formatOrderDate(date: string | Date | null | undefined): string 
 }
 
 /**
- * Format date in long format (e.g., "January 15, 2024")
+ * Format date in long format (e.g., "January 15, 2026")
  */
 export function formatLongDate(date: string | Date | null | undefined): string {
     if (!date) return 'N/A';
@@ -30,7 +30,7 @@ export function formatLongDate(date: string | Date | null | undefined): string {
 }
 
 /**
- * Format date in short format (e.g., "01/15/2024")
+ * Format date in short format (e.g., "01/15/2026")
  */
 export function formatShortDate(date: string | Date | null | undefined): string {
     if (!date) return 'N/A';

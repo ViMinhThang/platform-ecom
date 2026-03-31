@@ -69,7 +69,7 @@ export function ProductVariantSection({
         selectedVariant ? selectedVariant.price : (product.minPrice || 0)
       );
 
-      toast.success("Vật phẩm đã được đưa vào bộ sưu tập");
+      toast.success("Vật phẩm đã được thêm vào giỏ hàng");
     } catch (error) {
       logger.error("Failed to add to cart:", error);
       toast.error("Giao dịch không thành công");
@@ -125,7 +125,7 @@ export function ProductVariantSection({
             onClick={handleAddToCart}
           >
             <ShoppingBag className="w-4 h-4 group-hover:scale-110 transition-transform" />
-            Đưa vào bộ sưu tập
+            Thêm vào giỏ hàng
           </Button>
         </div>
 

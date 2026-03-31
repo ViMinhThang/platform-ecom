@@ -14,24 +14,25 @@ const COLLECTIONS = [
     {
         title: "Trang phục thủ công",
         subtitle: "Lịch sử dệt may thịnh vượng.",
-        image: "/banner-2.jpg",
+        image: "/banner-2.png",
         href: "/category/apparel",
         className: "md:col-span-2 md:row-span-1 min-h-[200px]",
     },
     {
         title: "Văn học quý hiếm",
         subtitle: "Tuyển tập những bản thảo cổ điển.",
-        image: "/banner-3.jpg",
+        image: "/banner-3.png",
         href: "/category/literature",
         className: "md:col-span-1 md:row-span-1 min-h-[200px]",
     },
-    {
-        title: "Không gian sống",
-        subtitle: "Tạo dựng sự hài hòa cho ngôi nhà.",
-        image: "/hero.jpg",
-        href: "/category/living-spaces",
+        {
+        title: "Vasdasdsam",
+        subtitle: "Tuyển tập những bản thảo cổ điển.",
+        image: "/banner-4.png",
+        href: "/category/literature",
         className: "md:col-span-1 md:row-span-1 min-h-[200px]",
     },
+
 ];
 
 export const CuratedCollections = () => {

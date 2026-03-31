@@ -25,7 +25,7 @@ export const HomeBanner = () => {
                 {/* Background Image with Archival Tint */}
                 <div className="absolute inset-0">
                     <Image
-                        src="/hero.jpg"
+                        src="/hero.avif"
                         alt="ACME Collection"
                         fill
                         className="object-cover"

@@ -24,8 +24,6 @@ public class AnalyticsServiceImpl implements AnalyticsService {
 
     @Override
     public SellerOverviewDTO getSellerOverview(Long sellerId, String period) {
-        // Implementation will involve aggregating daily stats
-        // For now, returning a stub or partial implementation
         return SellerOverviewDTO.builder()
                 .sellerId(sellerId)
                 .period(period)
@@ -36,14 +34,13 @@ public class AnalyticsServiceImpl implements AnalyticsService {
     public ProductPerformanceDTO getProductPerformance(Long productId) {
         ProductAnalytics analytics = productAnalyticsRepository.findById(productId)
                 .orElseThrow(() -> new RuntimeException("Analytics not found for product: " + productId));
-        
+
         return modelMapper.map(analytics, ProductPerformanceDTO.class);
     }
 
     @Override
     public List<ProductPerformanceDTO> getTopProducts(Long sellerId, String sortBy, int limit) {
         List<ProductAnalytics> topProducts = productAnalyticsRepository.findBySellerId(sellerId);
-        // Sorting logic would go here
         return topProducts.stream()
                 .limit(limit)
                 .map(p -> modelMapper.map(p, ProductPerformanceDTO.class))

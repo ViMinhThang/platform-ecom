@@ -43,6 +43,7 @@ public class SellerProductImageController {
         productImageService.deleteProductImage(productId, imageId);
         return ResponseBuilder.deleted("Image deleted successfully", null);
     }
+
     @GetMapping
     @RequireRole("ROLE_SELLER")
     public ResponseEntity<APIResponse<List<ProductImageDTO>>> getProductImages(

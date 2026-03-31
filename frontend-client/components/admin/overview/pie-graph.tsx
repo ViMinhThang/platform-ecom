@@ -155,7 +155,7 @@ export function PieGraph() {
           <IconTrendingUp className='h-4 w-4' />
         </div>
         <div className='text-muted-foreground leading-none'>
-          Dựa trên dữ liệu từ tháng 1 - tháng 6 năm 2024
+          Dựa trên dữ liệu từ tháng 1 - tháng 6 năm 2026
         </div>
       </CardFooter>
     </Card>
