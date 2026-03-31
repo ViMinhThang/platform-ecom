@@ -10,7 +10,7 @@ import java.math.BigDecimal;
 @Configuration
 @ConfigurationProperties(prefix = "app.order")
 public class OrderConfigurationProperties {
-    private String defaultCurrency = "USD";
+    private String defaultCurrency = "VND";
     private BigDecimal taxRate = BigDecimal.valueOf(0.10);
     private String paymentProvider = "stripe";
     private String paymentMethod = "card";

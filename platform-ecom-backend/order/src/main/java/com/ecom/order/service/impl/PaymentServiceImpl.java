@@ -25,7 +25,7 @@ public class PaymentServiceImpl implements PaymentService {
 
     private final PaymentProviderFactory providerFactory;
 
-    // In-memory idempotency cache. In production, use Redis or database.
+    // In-memory idempotency cache.
     private final Map<String, String> idempotencyKeys = new ConcurrentHashMap<>();
 
     // ==================== Public API ====================

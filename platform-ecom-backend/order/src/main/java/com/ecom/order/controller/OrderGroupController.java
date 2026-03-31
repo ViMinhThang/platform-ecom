@@ -22,14 +22,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-/**
- * Order Group Controller - Multi-seller order management
- * 
- * Checkout Flow:
- * 1. POST /initiate-checkout - Validates cart, creates Stripe PaymentIntent (no order yet)
- * 2. Frontend completes payment with Stripe
- * 3. POST /confirm-payment - Verifies payment, creates order with PAID status
- */
 @Slf4j
 @RestController
 @RequestMapping("/api/v1/order-groups")

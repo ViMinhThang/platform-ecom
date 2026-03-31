@@ -13,9 +13,6 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 
-/**
- * Stripe Payment Provider Implementation
- */
 @Slf4j
 @Service
 public class StripePaymentProvider implements PaymentProvider {
@@ -35,7 +32,6 @@ public class StripePaymentProvider implements PaymentProvider {
     @PostConstruct
     public void init() {
         Stripe.apiKey = apiKey;
-        // Register this provider
         providerFactory.registerProvider("stripe", this);
         log.info("Stripe payment provider initialized and registered");
     }
@@ -43,14 +39,23 @@ public class StripePaymentProvider implements PaymentProvider {
     @Override
     public PaymentIntent createPaymentIntent(PaymentRequest request) {
         try {
-            // Convert amount to cents (Stripe uses smallest currency unit)
-            long amountInCents = request.getAmount()
-                    .multiply(BigDecimal.valueOf(100))
-                    .longValue();
+            String currency = request.getCurrency().toLowerCase();
+            long finalAmount;
+
+            // Stripe uses smallest currency units (e.g., cents for USD)
+            // But some currencies like VND, JPY, KRW are zero-decimal
+            if (isZeroDecimalCurrency(currency)) {
+                finalAmount = request.getAmount().longValue();
+                log.info("Processing zero-decimal currency: {}. Amount: {}", currency, finalAmount);
+            } else {
+                finalAmount = request.getAmount()
+                        .multiply(BigDecimal.valueOf(100))
+                        .longValue();
+            }
 
             PaymentIntentCreateParams.Builder paramsBuilder = PaymentIntentCreateParams.builder()
-                    .setAmount(amountInCents)
-                    .setCurrency(request.getCurrency().toLowerCase())
+                    .setAmount(finalAmount)
+                    .setCurrency(currency)
                     .setAutomaticPaymentMethods(
                             PaymentIntentCreateParams.AutomaticPaymentMethods.builder()
                                     .setEnabled(true)
@@ -139,5 +144,18 @@ public class StripePaymentProvider implements PaymentProvider {
                 .amount(stripeIntent.getAmount())
                 .currency(stripeIntent.getCurrency())
                 .build();
+    }
+
+    private boolean isZeroDecimalCurrency(String currency) {
+        if (currency == null)
+            return false;
+        // List of zero-decimal currencies supported by Stripe
+        // https://docs.stripe.com/currencies#zero-decimal
+        String c = currency.toLowerCase();
+        return c.equals("vnd") || c.equals("jpy") || c.equals("krw") ||
+                c.equals("clp") || c.equals("pyg") || c.equals("ugx") ||
+                c.equals("rwf") || c.equals("mga") || c.equals("bif") ||
+                c.equals("djf") || c.equals("gnf") || c.equals("kmf") ||
+                c.equals("vuv") || c.equals("xaf") || c.equals("xof") || c.equals("xpf");
     }
 }

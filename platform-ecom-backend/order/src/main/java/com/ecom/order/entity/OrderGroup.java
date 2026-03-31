@@ -58,7 +58,7 @@ public class OrderGroup {
 
     @Column(name = "currency", length = 3, nullable = false)
     @Builder.Default
-    private String currency = "USD";
+    private String currency = "VND";
 
     // Overall status
     @Enumerated(EnumType.STRING)
