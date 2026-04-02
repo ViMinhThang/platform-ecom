@@ -27,7 +27,7 @@ export function ProductCard({
   price,
   image,
   category,
-  description = "Premium quality, sustainable choice",
+  description,
   firstVariant,
 }: ProductCardProps) {
   const displayPrice = firstVariant ? (firstVariant.salePrice || firstVariant.price) : price;
@@ -36,11 +36,11 @@ export function ProductCard({
 
   return (
     <div className="group relative space-y-4 animate-in fade-in duration-700">
-      <Link href={`/products/${slug}`} className="block overflow-hidden rounded-2xl aspect-[4/5] bg-surface-container relative">
+      <Link href={`/products/${slug}`} className="block overflow-hidden rounded-xl aspect-[4/5] bg-surface-container relative">
         {/* Sale Badge */}
         {hasSale && (
             <div className="absolute top-4 left-4 z-10">
-                <span className="text-[10px] font-bold px-3 py-1 bg-primary text-white rounded-full">
+                <span className="text-[10px] font-bold px-3 py-1 bg-primary text-white rounded-sm">
                     New Arrival
                 </span>
             </div>
@@ -50,7 +50,7 @@ export function ProductCard({
           src={imageUrl.product(displayImage)}
           alt={name}
           fill
-          className="object-contain p-8 group-hover:scale-110 transition-transform duration-700"
+          className="object-contain p-8 transition-transform duration-700"
         />
       </Link>
 
@@ -70,7 +70,7 @@ export function ProductCard({
         </div>
 
         {/* Add to Cart Button */}
-        <button className="h-9 w-9 bg-primary/10 rounded-full flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-all shadow-sm">
+        <button className="h-9 w-9 bg-primary/10 rounded-lg flex items-center justify-center text-primary hover:bg-primary hover:text-white transition-all shadow-sm">
             <ShoppingCart className="h-4 w-4" />
         </button>
       </div>

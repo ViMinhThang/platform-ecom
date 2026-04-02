@@ -36,7 +36,7 @@ export function CartItem({ item }: CartItemProps) {
     };
 
     return (
-        <div className="bg-surface-container-lowest p-6 rounded-xl flex gap-6 items-center transition-transform hover:scale-[1.01] duration-300">
+        <div className="bg-surface-container-lowest p-6 rounded-xl flex gap-6 items-center">
             {/* Product Image: Magazine Style */}
             <div className="w-32 h-40 bg-surface-container rounded-lg overflow-hidden shrink-0">
 
@@ -68,7 +68,7 @@ export function CartItem({ item }: CartItemProps) {
 
                 <div className="flex items-center justify-between mt-auto">
                     {/* Quantity Controls: Editorial Style */}
-                    <div className="flex items-center bg-surface-container-low rounded-full px-2 py-1 border border-border">
+                    <div className="flex items-center bg-surface-container-low rounded-xl px-2 py-1 border border-border">
                         <button 
                             className="p-1 hover:text-primary transition-colors disabled:opacity-20"
                             onClick={() => handleQuantityChange(item.quantity - 1)}

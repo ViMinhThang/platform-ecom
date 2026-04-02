@@ -64,10 +64,12 @@
   --color-sidebar-ring: var(--sidebar-ring);
 
   /* Radii */
-  --radius-sm: 0.25rem;
-  --radius-md: 0.5rem;
-  --radius-lg: 0.75rem;
-  --radius-xl: 1rem;
+  --radius-sm: 0.125rem;
+  --radius-md: 0.25rem;
+  --radius-lg: 0.4rem;
+  --radius-xl: 0.5rem;
+  --radius-2xl: 0.75rem;
+  --radius-3xl: 1rem;
   --radius-pill: 9999px;
 
   /* Shadows */
@@ -76,13 +78,9 @@
   --shadow-lg: var(--shadow-lg);
 }
 
-/* ═══════════════════════════════════════════════════════════
-   THE EDITORIAL MARKETPLACE — Design Tokens
-   Based on DESIGN.md: "The Curated Kinetic"
-   ═══════════════════════════════════════════════════════════ */
 
 :root {
-  --radius: 0.75rem;
+  --radius: 0.4rem;
 
   /* ── Canvas & Surface Hierarchy (Warm Tonal Layering) ── */
   --background: #fff4f3;             /* Canvas: warm cream base */
@@ -183,7 +181,7 @@
 
   ::-webkit-scrollbar-thumb {
     background: rgba(171, 45, 0, 0.25);
-    border-radius: 9999px;
+    border-radius: 4px;
     border: 2px solid transparent;
     background-clip: padding-box;
   }

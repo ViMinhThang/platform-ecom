@@ -91,7 +91,7 @@ export function ProductVariantSection({
       <div className="space-y-4">
         <div className="flex items-center justify-between mb-2">
             <span className="text-[11px] font-bold uppercase tracking-widest text-foreground/40">Số lượng</span>
-            <div className="flex items-center bg-surface-container rounded-full overflow-hidden">
+            <div className="flex items-center bg-surface-container rounded-xl overflow-hidden">
                 <button
                     className="h-9 w-9 flex items-center justify-center hover:bg-surface-container-high transition-colors"
                     onClick={() => setQuantity(Math.max(1, quantity - 1))}
@@ -112,7 +112,7 @@ export function ProductVariantSection({
         <div className="grid grid-cols-1 gap-3">
             <Button
                 size="xl"
-                className="w-full rounded-full bg-primary text-white hover:brightness-110 h-14 font-bold text-sm tracking-tight"
+                className="w-full rounded-xl bg-primary text-white hover:brightness-110 h-14 font-bold text-sm tracking-tight"
                 disabled={!canAddToCart}
                 onClick={handleAddToCart}
             >
@@ -121,7 +121,7 @@ export function ProductVariantSection({
             <Button
                 size="xl"
                 variant="secondary"
-                className="w-full rounded-full bg-[#d4e3ff] text-[#001c38] hover:bg-[#c2d6ff] h-14 font-bold text-sm tracking-tight"
+                className="w-full rounded-xl bg-[#d4e3ff] text-[#001c38] hover:bg-[#c2d6ff] h-14 font-bold text-sm tracking-tight"
                 disabled={!canAddToCart}
             >
                 Mua ngay
@@ -129,8 +129,8 @@ export function ProductVariantSection({
         </div>
 
         {/* Shipping Trust Signal */}
-        <div className="mt-8 p-6 bg-surface-container rounded-2xl flex items-start gap-4">
-            <div className="h-10 w-10 bg-primary/10 rounded-xl flex items-center justify-center shrink-0">
+        <div className="mt-8 p-6 bg-surface-container rounded-xl flex items-start gap-4">
+            <div className="h-10 w-10 bg-primary/10 rounded-lg flex items-center justify-center shrink-0">
                 <Truck className="h-5 w-5 text-primary" />
             </div>
             <div className="space-y-1">

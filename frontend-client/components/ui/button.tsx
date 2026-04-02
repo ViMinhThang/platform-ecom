@@ -9,15 +9,15 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default: "bg-signature-gradient text-primary-foreground shadow-md hover:shadow-lg hover:brightness-110 active:scale-[0.98] rounded-full",
+        default: "bg-signature-gradient text-primary-foreground shadow-md hover:shadow-lg hover:brightness-110 active:scale-[0.98] rounded-xl",
         destructive:
-          "bg-destructive text-white shadow-sm hover:bg-destructive/90 focus-visible:ring-destructive/20 active:scale-[0.98] rounded-lg",
+          "bg-destructive text-white shadow-sm hover:bg-destructive/90 focus-visible:ring-destructive/20 active:scale-[0.98] rounded-md",
         outline:
-          "bg-transparent shadow-xs hover:bg-primary/5 hover:text-primary active:scale-[0.98] rounded-lg ghost-border",
+          "bg-transparent shadow-xs hover:bg-primary/5 hover:text-primary active:scale-[0.98] rounded-md ghost-border",
         secondary:
-          "bg-secondary-container text-on-secondary-container shadow-sm hover:brightness-95 active:scale-[0.98] rounded-lg",
+          "bg-secondary-container text-on-secondary-container shadow-sm hover:brightness-95 active:scale-[0.98] rounded-md",
         ghost:
-          "hover:bg-primary/10 hover:text-primary rounded-lg",
+          "hover:bg-primary/10 hover:text-primary rounded-md",
         link: "text-primary underline-offset-4 hover:underline",
       },
       size: {

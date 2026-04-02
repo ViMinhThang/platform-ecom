@@ -72,7 +72,7 @@ export const SingleActiveCampaign = () => {
 
     return (
         <section className="max-w-[1600px] w-full mx-auto px-6 md:px-12 my-16">
-            <div className="bg-surface-container-lowest rounded-lg overflow-hidden shadow-sunlight">
+            <div className="bg-surface-container-lowest rounded-xl overflow-hidden shadow-sunlight">
                 {/* MARQUEE HEADER */}
                 <div className="bg-signature-gradient text-white overflow-hidden py-3 flex relative">
                     <div className="animate-marquee whitespace-nowrap flex gap-16 items-center font-labels font-bold uppercase tracking-widest text-xs">
@@ -95,8 +95,8 @@ export const SingleActiveCampaign = () => {
                         />
 
                         <div className="relative z-10 space-y-6">
-                            <div className="inline-flex items-center gap-3 px-4 py-1.5 bg-surface-container-lowest rounded-full shadow-sm">
-                                <span className="w-2 h-2 bg-primary rounded-full animate-pulse" />
+                            <div className="inline-flex items-center gap-3 px-4 py-1.5 bg-surface-container-lowest rounded-lg shadow-sm">
+                                <span className="w-2 h-2 bg-primary rounded-sm animate-pulse" />
                                 <span className="text-xs font-bold uppercase tracking-widest text-primary">Flash Sale</span>
                             </div>
 
@@ -167,15 +167,15 @@ export const SingleActiveCampaign = () => {
                                 <Link
                                     key={item.id}
                                     href={`/products/${item.productSlug}`}
-                                    className="group relative p-8 md:p-10 flex flex-col justify-between h-full bg-surface-container-lowest hover:bg-surface-container-low transition-all duration-500"
+                                    className="group relative p-8 md:p-10 flex flex-col justify-between h-full bg-surface-container-lowest transition-all duration-500"
                                 >
                                     <div className="absolute top-6 right-6 z-10">
-                                        <div className="bg-signature-gradient text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-sm">
+                                        <div className="bg-signature-gradient text-white text-xs font-bold px-3 py-1.5 rounded-sm shadow-sm">
                                             Giảm {item.discountPercent}%
                                         </div>
                                     </div>
 
-                                    <div className="relative aspect-square mb-8 group-hover:scale-105 transition-all duration-500">
+                                    <div className="relative aspect-square mb-8 transition-all duration-500">
                                         {item.imageUrl && (
                                             <Image
                                                 src={imageUrl.product(item.imageUrl)}
@@ -188,7 +188,7 @@ export const SingleActiveCampaign = () => {
                                     </div>
 
                                     <div className="space-y-4">
-                                        <div className="h-px w-8 bg-primary/20 group-hover:w-full transition-all duration-700" />
+                                        <div className="h-px w-8 bg-primary/20 transition-all duration-700" />
                                         <div className="space-y-2">
                                             <h3 className="font-labels font-bold text-sm line-clamp-2 min-h-[2.5em] text-foreground leading-relaxed">
                                                 {item.productName}
@@ -209,9 +209,9 @@ export const SingleActiveCampaign = () => {
                                                 <span>Đã bán: {item.soldCount}</span>
                                                 <span>Còn lại: {item.remainingStock}</span>
                                             </div>
-                                            <div className="h-[3px] w-full bg-surface-container overflow-hidden rounded-full">
+                                            <div className="h-[3px] w-full bg-surface-container overflow-hidden rounded-sm">
                                                 <div
-                                                    className="h-full bg-signature-gradient transition-all duration-1000 block rounded-full"
+                                                    className="h-full bg-signature-gradient transition-all duration-1000 block rounded-sm"
                                                     style={{ width: `${Math.max(5, (item.soldCount / item.stockLimit) * 100)}%` }}
                                                 />
                                             </div>

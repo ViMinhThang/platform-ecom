@@ -53,9 +53,9 @@ export const CuratedCollections = () => {
                             src={"http://localhost:8080/uploads/"+cat.imageUrl || CATEGORY_IMAGES[cat.slug] || "/banner-grid-1.avif"}
                             alt={cat.name}
                             fill
-                            className="object-cover group-hover:scale-110 transition-transform duration-700 opacity-80"
+                            className="object-cover transition-transform duration-700 opacity-80"
                         />
-                        <div className="absolute inset-0 bg-black/10 group-hover:bg-black/20 transition-colors" />
+                        <div className="absolute inset-0 bg-black/10 transition-colors" />
                         <div className="absolute inset-0 flex items-center justify-center p-4 text-center">
                             <span className="font-bold text-[13px] md:text-sm text-white tracking-tight drop-shadow-md">
                                 {cat.name}
