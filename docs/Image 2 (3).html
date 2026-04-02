@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Your Cart | EditorialMarket</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Inter:wght@300;400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "on-primary-fixed": "#000000",
+              "error-container": "#fb5151",
+              "surface-tint": "#ab2d00",
+              "outline-variant": "#e09c99",
+              "on-background": "#4e2120",
+              "surface-container-high": "#ffdad8",
+              "surface-container-lowest": "#ffffff",
+              "on-tertiary-fixed-variant": "#611b79",
+              "inverse-on-surface": "#ce8c89",
+              "inverse-primary": "#ff5722",
+              "inverse-surface": "#240304",
+              "tertiary": "#833e9a",
+              "primary-dim": "#962700",
+              "on-secondary-fixed-variant": "#004ea4",
+              "on-tertiary": "#ffedfe",
+              "secondary-fixed-dim": "#a7c4ff",
+              "secondary-dim": "#004da2",
+              "surface": "#fff4f3",
+              "on-tertiary-fixed": "#360049",
+              "surface-variant": "#ffd2d0",
+              "on-surface-variant": "#834c4b",
+              "surface-dim": "#ffc7c4",
+              "surface-container": "#ffe1e0",
+              "tertiary-dim": "#76318d",
+              "surface-container-highest": "#ffd2d0",
+              "primary-fixed-dim": "#ff5d2b",
+              "secondary-fixed": "#bdd2ff",
+              "tertiary-fixed-dim": "#d88cee",
+              "on-primary-fixed-variant": "#581300",
+              "on-secondary-container": "#004592",
+              "secondary": "#0959b6",
+              "on-error-container": "#570008",
+              "primary": "#ab2d00",
+              "error": "#b31b25",
+              "on-secondary-fixed": "#00326e",
+              "error-dim": "#9f0519",
+              "on-secondary": "#eff2ff",
+              "tertiary-fixed": "#e699fd",
+              "on-primary": "#ffefeb",
+              "primary-container": "#ff7851",
+              "secondary-container": "#bdd2ff",
+              "surface-bright": "#fff4f3",
+              "on-primary-container": "#470e00",
+              "tertiary-container": "#e699fd",
+              "surface-container-low": "#ffedeb",
+              "on-error": "#ffefee",
+              "background": "#fff4f3",
+              "primary-fixed": "#ff7851",
+              "on-surface": "#4e2120",
+              "on-tertiary-container": "#570e6f",
+              "outline": "#a26765"
+            },
+            fontFamily: {
+              "headline": ["Plus Jakarta Sans"],
+              "body": ["Inter"],
+              "label": ["Inter"]
+            },
+            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body { font-family: 'Inter', sans-serif; }
+        h1, h2, h3, .headline { font-family: 'Plus Jakarta Sans', sans-serif; }
+    </style>
+</head>
+<body class="bg-surface text-on-surface">
+<!-- TopNavBar -->
+<header class="bg-surface dark:bg-slate-950 backdrop-blur-xl bg-opacity-70 dark:bg-opacity-70 docked full-width top-0 sticky z-50 shadow-sm dark:shadow-none">
+<nav class="flex justify-between items-center w-full px-6 py-4 max-w-screen-2xl mx-auto">
+<div class="text-2xl font-black text-orange-900 dark:text-orange-400 italic tracking-tighter">EditorialMarket</div>
+<div class="hidden md:flex items-center gap-8">
+<a class="text-orange-800/70 dark:text-orange-200/60 font-medium hover:text-orange-900 dark:hover:text-orange-300 hover:bg-orange-50 dark:hover:bg-orange-900/30 transition-all duration-300" href="#">Shop</a>
+<a class="text-orange-800/70 dark:text-orange-200/60 font-medium hover:text-orange-900 dark:hover:text-orange-300 hover:bg-orange-50 dark:hover:bg-orange-900/30 transition-all duration-300" href="#">Deals</a>
+<a class="text-orange-800/70 dark:text-orange-200/60 font-medium hover:text-orange-900 dark:hover:text-orange-300 hover:bg-orange-50 dark:hover:bg-orange-900/30 transition-all duration-300" href="#">New Arrivals</a>
+<a class="text-orange-800/70 dark:text-orange-200/60 font-medium hover:text-orange-900 dark:hover:text-orange-300 hover:bg-orange-50 dark:hover:bg-orange-900/30 transition-all duration-300" href="#">Best Sellers</a>
+</div>
+<div class="flex items-center gap-4">
+<button class="p-2 text-orange-900 dark:text-orange-400 hover:bg-orange-50 dark:hover:bg-orange-900/30 transition-all duration-300 rounded-full">
+<span class="material-symbols-outlined" data-icon="shopping_cart">shopping_cart</span>
+</button>
+<button class="p-2 text-orange-900 dark:text-orange-400 hover:bg-orange-50 dark:hover:bg-orange-900/30 transition-all duration-300 rounded-full">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+</button>
+</div>
+</nav>
+</header>
+<main class="max-w-screen-2xl mx-auto px-6 py-12">
+<div class="flex flex-col gap-2 mb-12">
+<h1 class="text-5xl font-black text-on-surface tracking-tight">Shopping Bag</h1>
+<p class="text-on-surface-variant font-body">Review your curated selection before checkout.</p>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+<!-- Cart Items List -->
+<div class="lg:col-span-8 flex flex-col gap-6">
+<!-- Item 1 -->
+<div class="bg-surface-container-lowest p-6 rounded-xl flex gap-6 items-center transition-transform hover:scale-[1.01] duration-300">
+<div class="w-32 h-40 bg-surface-container rounded-lg overflow-hidden flex-shrink-0">
+<img alt="Luxury Leather Sneaker" class="w-full h-full object-cover" data-alt="Premium minimalist white leather sneaker on a warm cream background with soft artistic shadows and elegant lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCmFQ2FH2lcrqlV4UBkVyugWwF7VswiHC06Q2hLecoqEzV4_8TeNr7qt09zOTBNsNMirAoF5tDVL8hPAuDvfJUHSjUu56DHso5TTZb5K4ZYwkz-hEPnurDAf6LLyQ6YldYu0mWvemE9D_Arfl9xbUeBCoZmvV1Slk2V9f6ZtwdfDsA96ioJ0E_nfOdgi2JohNukkDBAqQUlZJqF1dzqEQZxXLpCp8zDIWgXvHCQjjD5O9xScVWbNkld5JYSyKgbjrjCDVZC7ff2AehC"/>
+</div>
+<div class="flex-grow flex flex-col gap-2">
+<div class="flex justify-between items-start">
+<div>
+<span class="text-xs font-bold uppercase tracking-widest text-primary mb-1 block">New Arrival</span>
+<h3 class="text-xl font-bold font-headline leading-tight">Archival Leather Low-Top</h3>
+<p class="text-sm text-on-surface-variant">Size: 42 | Color: Bone White</p>
+</div>
+<span class="text-xl font-bold text-on-surface">$285.00</span>
+</div>
+<div class="flex items-center justify-between mt-auto">
+<div class="flex items-center bg-surface-container-low rounded-full px-2 py-1">
+<button class="p-1 hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-lg" data-icon="remove">remove</span>
+</button>
+<span class="px-4 font-bold text-on-surface">1</span>
+<button class="p-1 hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-lg" data-icon="add">add</span>
+</button>
+</div>
+<button class="flex items-center gap-1 text-sm font-medium text-on-surface-variant hover:text-error transition-colors">
+<span class="material-symbols-outlined text-lg" data-icon="delete">delete</span>
+<span>Remove</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Item 2 -->
+<div class="bg-surface-container-lowest p-6 rounded-xl flex gap-6 items-center transition-transform hover:scale-[1.01] duration-300">
+<div class="w-32 h-40 bg-surface-container rounded-lg overflow-hidden flex-shrink-0">
+<img alt="Structured Wool Blazer" class="w-full h-full object-cover" data-alt="High-end structured charcoal wool blazer hanging against a neutral warm wall with soft cinematic side lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBpnwugVMcLongM_toOVi1c_nnN_M5MbNtLWZruG8fiVztb3q9ee-evzihtVB1TRp-Egv3RxLdWYRGJbodwPMpkyzmSrlOVJZcq9zEgC1YC1wgLkeR7sf00gd46SfLvEhgld7pxbcIJNaEN8kukRaojLPQ3xe4z5FWHTesjmNVcxTN10d52yyFf2diBXhwJzLnAt-VoaKE_nj66eE_Ieo90mOlVa0iKGrzuv9FXGWUGTwFdSpLfVeI06hoJjCFjucO2h_8PGshIj57N"/>
+</div>
+<div class="flex-grow flex flex-col gap-2">
+<div class="flex justify-between items-start">
+<div>
+<span class="text-xs font-bold uppercase tracking-widest text-tertiary mb-1 block">Limited Edition</span>
+<h3 class="text-xl font-bold font-headline leading-tight">Sculptural Merino Wool Blazer</h3>
+<p class="text-sm text-on-surface-variant">Size: L | Color: Graphite</p>
+</div>
+<span class="text-xl font-bold text-on-surface">$540.00</span>
+</div>
+<div class="flex items-center justify-between mt-auto">
+<div class="flex items-center bg-surface-container-low rounded-full px-2 py-1">
+<button class="p-1 hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-lg" data-icon="remove">remove</span>
+</button>
+<span class="px-4 font-bold text-on-surface">1</span>
+<button class="p-1 hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-lg" data-icon="add">add</span>
+</button>
+</div>
+<button class="flex items-center gap-1 text-sm font-medium text-on-surface-variant hover:text-error transition-colors">
+<span class="material-symbols-outlined text-lg" data-icon="delete">delete</span>
+<span>Remove</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Item 3 -->
+<div class="bg-surface-container-lowest p-6 rounded-xl flex gap-6 items-center transition-transform hover:scale-[1.01] duration-300">
+<div class="w-32 h-40 bg-surface-container rounded-lg overflow-hidden flex-shrink-0">
+<img alt="Ceramic Scented Candle" class="w-full h-full object-cover" data-alt="Handcrafted minimalist ceramic candle with a matte finish on a stone surface with warm ambient glow" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCdKbhTuPSbtX7ijPlsOQxqZF4ACKv2c6ANTgDTBIIbakPc6hG-rpkJAneZlh45IRZ18UxaaWGiiKiRWYs9wXw_1i2NgLvWnnvUFVpYIZ8jaBc3qSVosqlC-blZTnGia58H8UhivWApd_reha1x-Hsv6duSoTuECIj3ko_wVAkNVHd3cwboM8lMWTIF-G9ngz3rOYGo7ICG53_ez6rcyiRLOzH9WAHQjQQl78s3RV_NeSq1OOWvzq8l39cW5GACrJkhbREavm5ZZqHo"/>
+</div>
+<div class="flex-grow flex flex-col gap-2">
+<div class="flex justify-between items-start">
+<div>
+<span class="text-xs font-bold uppercase tracking-widest text-secondary mb-1 block">Home Edit</span>
+<h3 class="text-xl font-bold font-headline leading-tight">Dusk No. 04 Scented Candle</h3>
+<p class="text-sm text-on-surface-variant">Size: 300g | Scent: Cedar &amp; Moss</p>
+</div>
+<span class="text-xl font-bold text-on-surface">$65.00</span>
+</div>
+<div class="flex items-center justify-between mt-auto">
+<div class="flex items-center bg-surface-container-low rounded-full px-2 py-1">
+<button class="p-1 hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-lg" data-icon="remove">remove</span>
+</button>
+<span class="px-4 font-bold text-on-surface">2</span>
+<button class="p-1 hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-lg" data-icon="add">add</span>
+</button>
+</div>
+<button class="flex items-center gap-1 text-sm font-medium text-on-surface-variant hover:text-error transition-colors">
+<span class="material-symbols-outlined text-lg" data-icon="delete">delete</span>
+<span>Remove</span>
+</button>
+</div>
+</div>
+</div>
+<div class="mt-8 flex items-center justify-between p-6 bg-surface-container rounded-xl">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-primary" data-icon="local_shipping">local_shipping</span>
+<p class="text-sm font-medium">You qualify for <span class="font-bold">Complimentary Express Shipping</span></p>
+</div>
+<a class="text-sm font-bold text-primary underline decoration-2 underline-offset-4" href="#">Continue Shopping</a>
+</div>
+</div>
+<!-- Summary Section -->
+<div class="lg:col-span-4 sticky top-28">
+<div class="bg-surface-container-low p-8 rounded-2xl shadow-sm">
+<h2 class="text-2xl font-bold font-headline mb-8 border-b border-outline-variant/20 pb-4">Order Summary</h2>
+<div class="flex flex-col gap-4 mb-8">
+<div class="flex justify-between items-center text-on-surface-variant">
+<span>Subtotal (4 items)</span>
+<span class="font-semibold text-on-surface">$955.00</span>
+</div>
+<div class="flex justify-between items-center text-on-surface-variant">
+<span>Estimated Shipping</span>
+<span class="text-secondary font-bold">FREE</span>
+</div>
+<div class="flex justify-between items-center text-on-surface-variant">
+<span>Tax (Calculated at checkout)</span>
+<span class="font-semibold text-on-surface">$0.00</span>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-4 rounded-xl mb-8 flex flex-col gap-4">
+<label class="text-xs font-bold uppercase tracking-wider text-on-surface-variant">Promo Code</label>
+<div class="flex gap-2">
+<input class="bg-surface-container-low border-none rounded-lg w-full text-sm focus:ring-2 focus:ring-primary/40 placeholder:text-outline" placeholder="Enter code" type="text"/>
+<button class="bg-secondary text-on-secondary px-4 py-2 rounded-lg text-sm font-bold hover:bg-secondary-dim transition-colors">Apply</button>
+</div>
+</div>
+<div class="flex justify-between items-end mb-8 pt-4 border-t border-outline-variant/20">
+<span class="text-lg font-medium">Total</span>
+<span class="text-3xl font-black text-primary tracking-tighter">$955.00</span>
+</div>
+<button class="w-full bg-gradient-to-br from-primary to-primary-container text-on-primary py-5 rounded-full font-bold text-lg shadow-lg shadow-primary/20 hover:scale-[0.98] active:scale-95 transition-all duration-300 flex items-center justify-center gap-3">
+<span>Proceed to Checkout</span>
+<span class="material-symbols-outlined" data-icon="arrow_forward">arrow_forward</span>
+</button>
+<div class="mt-8 flex flex-col gap-4">
+<p class="text-[10px] text-center text-on-surface-variant uppercase tracking-widest font-bold">Secure Payments Powered By</p>
+<div class="flex justify-center gap-6 opacity-40 grayscale contrast-125">
+<span class="material-symbols-outlined text-3xl" data-icon="credit_card">credit_card</span>
+<span class="material-symbols-outlined text-3xl" data-icon="account_balance">account_balance</span>
+<span class="material-symbols-outlined text-3xl" data-icon="shield">shield</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="bg-surface-container-low dark:bg-slate-900 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 px-12 py-16 w-full mt-24">
+<div class="flex flex-col gap-4">
+<div class="text-lg font-bold text-orange-900 dark:text-orange-100">EditorialMarket</div>
+<p class="text-sm font-light text-orange-800 dark:text-slate-400 max-w-xs">Curating the finest essential artifacts for the modern lifestyle. Quality over volume, always.</p>
+</div>
+<div class="flex flex-col gap-4">
+<h4 class="font-bold text-orange-900 dark:text-orange-400">Discover</h4>
+<nav class="flex flex-col gap-2">
+<a class="text-sm font-light text-orange-800 dark:text-slate-400 hover:text-orange-700 dark:hover:text-orange-200 transition-colors" href="#">About Us</a>
+<a class="text-sm font-light text-orange-800 dark:text-slate-400 hover:text-orange-700 dark:hover:text-orange-200 transition-colors" href="#">Sustainability</a>
+</nav>
+</div>
+<div class="flex flex-col gap-4">
+<h4 class="font-bold text-orange-900 dark:text-orange-400">Support</h4>
+<nav class="flex flex-col gap-2">
+<a class="text-sm font-light text-orange-800 dark:text-slate-400 hover:text-orange-700 dark:hover:text-orange-200 transition-colors" href="#">Shipping Policy</a>
+<a class="text-sm font-light text-orange-800 dark:text-slate-400 hover:text-orange-700 dark:hover:text-orange-200 transition-colors" href="#">Privacy</a>
+</nav>
+</div>
+<div class="flex flex-col gap-6">
+<p class="text-sm font-light text-orange-800 dark:text-slate-400">© 2024 The Editorial Marketplace. All rights reserved.</p>
+<div class="flex gap-4">
+<span class="material-symbols-outlined text-orange-900 dark:text-orange-400" data-icon="mail">mail</span>
+<span class="material-symbols-outlined text-orange-900 dark:text-orange-400" data-icon="share">share</span>
+</div>
+</div>
+</footer>
+</body></html>

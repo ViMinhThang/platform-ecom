@@ -8,7 +8,7 @@ import { AddressForm } from "@/components/checkout/AddressForm";
 import { PaymentForm } from "@/components/checkout/PaymentForm";
 import { Elements } from "@stripe/react-stripe-js";
 import { getStripe } from "@/lib/services/stripe.service";
-import { Loader2, AlertCircle, ShieldCheck } from "lucide-react";
+import { Loader2, AlertCircle, ShieldCheck, Check, CreditCard } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useShipping } from "@/hooks/useShipping";
 import { useGetAddressesQuery } from "@/lib/store/api/clientApi";
@@ -18,6 +18,13 @@ import { imageUrl } from "@/lib/utils/imageUrl";
 
 import { usePromotion } from "@/hooks/usePromotion";
 import { VoucherSection } from "@/components/checkout/VoucherSection";
+import Link from "next/link";
+
+const STEPS = [
+    { key: "address", label: "Địa chỉ", number: "01" },
+    { key: "payment", label: "Thanh toán", number: "02" },
+    { key: "review", label: "Xác nhận", number: "03" },
+];
 
 export default function CheckoutPage() {
     const {
@@ -37,7 +44,7 @@ export default function CheckoutPage() {
         const initStripe = async () => {
             const stripe = await getStripe();
             if (!stripe) {
-                setStripeError('Payment system is not configured. Please contact support.');
+                setStripeError('Hệ thống thanh toán chưa được cấu hình. Vui lòng liên hệ hỗ trợ.');
             }
             setStripePromise(Promise.resolve(stripe));
         };
@@ -71,12 +78,13 @@ export default function CheckoutPage() {
                 appearance: {
                     theme: 'stripe',
                     variables: {
-                        colorPrimary: '#0f172a',
+                        colorPrimary: '#ab2d00',
                     },
                 },
             });
         }
     }, [checkoutSession]);
+
     useEffect(() => {
         if (checkout.step === 'payment' && !checkoutSession && !orderLoading && !orderError && !currentOrder) {
             startCheckout().catch((err) => logger.error("Failed to initiate checkout", err));
@@ -84,81 +92,92 @@ export default function CheckoutPage() {
     }, [checkout.step, checkoutSession, orderLoading, startCheckout, orderError, currentOrder]);
 
     if (!cart) {
-        return <div className="container py-12 text-center text-muted-foreground font-bold uppercase tracking-widest">Đang tải trang thanh toán...</div>;
+        return <div className="max-w-[1600px] mx-auto py-12 text-center text-foreground/50 text-sm">Đang tải trang thanh toán...</div>;
     }
 
     const totalAmount = discountResult ? discountResult.finalTotal : (cart.totalAmount + shippingFee);
+    const currentStepIndex = STEPS.findIndex(s => s.key === checkout.step);
 
     return (
-        <div className="bg-background min-h-screen font-labels antialiased">
-            <div className="max-w-[1600px] mx-auto py-24 px-12 md:px-32">
-                <div className="mb-20 space-y-4">
-                    <h1 className="font-header text-5xl md:text-6xl font-bold tracking-tight text-foreground uppercase">
-                        Thanh <span className="text-primary italic">Toán</span>
+        <div className="bg-background min-h-screen antialiased">
+            <div className="max-w-[1600px] mx-auto py-12 md:py-24 px-6 md:px-12">
+                {/* Header */}
+                <div className="mb-12 space-y-4">
+                    <h1 className="font-header text-3xl md:text-5xl font-bold tracking-tight text-foreground">
+                        Thanh toán
                     </h1>
-                    <div className="flex items-center gap-4">
-                        <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-foreground/40 font-labels">Phân hệ thanh toán bảo mật</span>
-                        <div className="h-px bg-foreground/10 flex-1" />
-                        <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-foreground/40 font-labels">MÃ ĐƠN HÀNG: #ACME-{Date.now().toString().slice(-6)}</span>
-                    </div>
+                    <p className="text-sm text-foreground/50">Hoàn tất đơn hàng của bạn một cách an toàn</p>
                 </div>
 
-                <div className="grid lg:grid-cols-[1fr_400px] gap-12 items-start">
-                    {/* Main Checkout Flow */}
-                    <div className="space-y-12">
+                {/* Step Progress Indicator */}
+                <div className="mb-12 flex items-center gap-0 max-w-lg">
+                    {STEPS.map((step, i) => {
+                        const isActive = step.key === checkout.step;
+                        const isComplete = i < currentStepIndex;
+                        return (
+                            <div key={step.key} className="flex items-center flex-1">
+                                <div className="flex items-center gap-3">
+                                    <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm transition-all ${
+                                        isComplete ? 'bg-primary text-white' :
+                                        isActive ? 'bg-signature-gradient text-white shadow-md' : 
+                                        'bg-surface-container-low text-foreground/30'
+                                    }`}>
+                                        {isComplete ? <Check className="w-4 h-4" /> : step.number}
+                                    </div>
+                                    <span className={`text-sm font-semibold hidden md:block ${
+                                        isActive ? 'text-foreground' : 'text-foreground/40'
+                                    }`}>{step.label}</span>
+                                </div>
+                                {i < STEPS.length - 1 && (
+                                    <div className={`flex-1 h-0.5 mx-4 rounded-full transition-colors ${
+                                        isComplete ? 'bg-primary' : 'bg-surface-container'
+                                    }`} />
+                                )}
+                            </div>
+                        );
+                    })}
+                </div>
+
+                <div className="grid lg:grid-cols-[1fr_400px] gap-8 md:gap-12 items-start">
+                    {/* Main Flow */}
+                    <div className="space-y-8">
 
                         {/* Step 1: Address */}
-                        <div className={`transition-all duration-500 ${checkout.step !== 'address' ? 'opacity-50 blur-[1px]' : ''}`}>
-                            <div className="flex items-center gap-4 mb-12">
-                                <div className={`w-12 h-12 rounded-sm flex items-center justify-center font-bold text-xl shadow-md border ${checkout.step === 'address' ? 'bg-primary text-white border-primary' : 'bg-white text-foreground/20 border-foreground/5'
-                                    }`}>
-                                    01
-                                </div>
-                                <h2 className="text-2xl font-bold tracking-[0.2em] uppercase font-labels">Địa chỉ giao hàng</h2>
-                            </div>
-
-                            <div className="bg-white border border-foreground/5 rounded-sm p-12 shadow-sm">
+                        <div className={`transition-all duration-500 ${checkout.step !== 'address' ? 'opacity-50' : ''}`}>
+                            <h2 className="text-lg font-bold mb-6 text-foreground">Địa chỉ giao hàng</h2>
+                            <div className="bg-surface-container-lowest p-8 md:p-10 rounded-xl shadow-sm">
                                 <AddressForm />
                             </div>
                         </div>
 
                         {/* Step 2: Payment */}
-                        <div className={`transition-all duration-500 ${checkout.step !== 'payment' ? 'opacity-40 grayscale pointer-events-none' : ''}`}>
-                            <div className="flex items-center gap-4 mb-12">
-                                <div className={`w-12 h-12 rounded-sm flex items-center justify-center font-bold text-xl shadow-md border ${checkout.step === 'payment' ? 'bg-primary text-white border-primary' : 'bg-white text-foreground/20 border-foreground/5'
-                                    }`}>
-                                    02
-                                </div>
-                                <h2 className="text-2xl font-bold tracking-[0.2em] uppercase font-labels">Phương thức thanh toán</h2>
-                            </div>
-
-                            <div className="bg-white border border-foreground/5 rounded-sm p-12 shadow-sm">
+                        <div className={`transition-all duration-500 ${checkout.step !== 'payment' ? 'opacity-40 pointer-events-none' : ''}`}>
+                            <h2 className="text-lg font-bold mb-6 text-foreground">Phương thức thanh toán</h2>
+                            <div className="bg-surface-container-lowest p-8 md:p-10 rounded-xl shadow-sm">
                                 {checkout.step === 'payment' && (
                                     stripeError ? (
-                                        <Alert variant="destructive" className="rounded-sm">
+                                        <Alert variant="destructive" className="rounded-lg">
                                             <AlertCircle className="h-4 w-4" />
                                             <AlertTitle className="font-bold">Lỗi cấu hình thanh toán</AlertTitle>
-                                            <AlertDescription className="text-muted-foreground font-medium">{stripeError}</AlertDescription>
+                                            <AlertDescription className="text-sm">{stripeError}</AlertDescription>
                                         </Alert>
                                     ) : orderLoading ? (
-                                        <div className="flex flex-col items-center justify-center py-20 space-y-4">
-                                            <Loader2 className="h-10 w-10 animate-spin text-primary" />
-                                            <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest animate-pulse opacity-50 text-center">Đang thiết lập thanh toán bảo mật...</p>
+                                        <div className="flex flex-col items-center justify-center py-16 space-y-4">
+                                            <Loader2 className="h-8 w-8 animate-spin text-primary" />
+                                            <p className="text-sm text-foreground/50 animate-pulse">Đang thiết lập thanh toán bảo mật...</p>
                                         </div>
                                     ) : orderError ? (
-                                        <div className="flex flex-col items-center justify-center py-12 text-center space-y-6">
-                                            <div className="bg-red-50 p-6 rounded-full">
-                                                <AlertCircle className="h-10 w-10 text-red-500" />
+                                        <div className="flex flex-col items-center justify-center py-12 text-center space-y-5">
+                                            <div className="bg-destructive/10 p-5 rounded-full">
+                                                <AlertCircle className="h-8 w-8 text-destructive" />
                                             </div>
-                                            <div className="space-y-3">
-                                                <h3 className="font-bold text-lg tracking-widest uppercase text-foreground">Khởi tạo thanh toán thất bại</h3>
-                                                <p className="text-muted-foreground max-w-sm mx-auto leading-relaxed text-sm">{orderError}</p>
+                                            <div className="space-y-2">
+                                                <h3 className="font-bold text-foreground">Khởi tạo thanh toán thất bại</h3>
+                                                <p className="text-sm text-foreground/50 max-w-sm mx-auto">{orderError}</p>
                                             </div>
-                                            <div className="flex justify-center">
-                                                <Button onClick={() => startCheckout()} variant="outline" className="rounded-sm px-8 h-12 font-bold border-border shadow-sm uppercase tracking-widest text-[11px]">
-                                                    Thử lại ngay
-                                                </Button>
-                                            </div>
+                                            <Button onClick={() => startCheckout()} variant="outline" size="default">
+                                                Thử lại
+                                            </Button>
                                         </div>
                                     ) : (
                                         elementsOptions && (
@@ -171,37 +190,31 @@ export default function CheckoutPage() {
                             </div>
                         </div>
 
-                        {/* Step 3: Review Items */}
-                        <div className={`transition-all duration-500`}>
-                            <div className="flex items-center gap-4 mb-12">
-                                <div className="w-12 h-12 rounded-sm flex items-center justify-center font-bold text-xl shadow-md border bg-white text-foreground/20 border-foreground/5">
-                                    03
-                                </div>
-                                <h2 className="text-2xl font-bold tracking-[0.2em] uppercase font-labels">Kiểm tra lại sản phẩm</h2>
-                            </div>
-
-                            <div className="bg-white border border-foreground/5 rounded-sm p-12 shadow-sm space-y-12">
+                        {/* Step 3: Review */}
+                        <div>
+                            <h2 className="text-lg font-bold mb-6 text-foreground">Kiểm tra đơn hàng</h2>
+                            <div className="bg-surface-container-lowest p-8 md:p-10 rounded-xl shadow-sm space-y-6">
                                 {cart.items.map((item) => (
-                                    <div key={`${item.productId}-${item.variantId}`} className="flex gap-6 pb-8 border-b border-border last:border-0 last:pb-0">
-                                        <div className="w-24 h-24 bg-muted/30 rounded-sm border border-border flex-shrink-0 relative overflow-hidden p-2 shadow-inner">
+                                    <div key={`${item.productId}-${item.variantId}`} className="flex gap-5 pb-6 last:pb-0">
+                                        <div className="w-20 h-20 bg-surface-container-low rounded-lg flex-shrink-0 relative overflow-hidden p-1.5">
                                             <img src={imageUrl.product(item.imageUrl)} alt={item.productName} className="object-contain w-full h-full" />
                                         </div>
                                         <div className="flex-1 space-y-1">
-                                            <h3 className="font-bold text-sm uppercase tracking-widest text-foreground">{item.productName}</h3>
+                                            <h3 className="font-bold text-sm text-foreground">{item.productName}</h3>
                                             {item.variantName && (
-                                                <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest opacity-60 italic">{item.variantName}</p>
+                                                <p className="text-xs text-foreground/50">{item.variantName}</p>
                                             )}
-                                            <div className="flex items-center gap-4 mt-2">
-                                                <p className="text-[10px] uppercase tracking-widest font-bold text-muted-foreground">Số lượng: <span className="text-foreground ml-1">{item.quantity}</span></p>
-                                                <p className="text-[10px] uppercase tracking-widest font-bold text-muted-foreground">Đơn giá: <span className="text-foreground ml-1">{formatCurrency(item.price)}</span></p>
+                                            <div className="flex items-center gap-4 mt-1.5">
+                                                <p className="text-xs text-foreground/50">Số lượng: <span className="text-foreground font-medium">{item.quantity}</span></p>
+                                                <p className="text-xs text-foreground/50">Đơn giá: <span className="text-foreground font-medium">{formatCurrency(item.price)}</span></p>
                                             </div>
                                         </div>
                                         <div className="text-right">
-                                            <p className="text-lg font-bold tracking-tighter text-foreground">{formatCurrency(item.totalPrice)}</p>
+                                            <p className="font-bold text-foreground">{formatCurrency(item.totalPrice)}</p>
                                         </div>
                                     </div>
                                 ))}
-                                <div className="pt-4 flex items-center gap-2 text-muted-foreground text-[10px] font-bold uppercase tracking-widest opacity-50">
+                                <div className="pt-3 flex items-center gap-2 text-foreground/40 text-xs">
                                     <AlertCircle className="h-4 w-4" />
                                     <span>Vui lòng kiểm tra kỹ số lượng và phân loại trước khi thanh toán.</span>
                                 </div>
@@ -210,82 +223,83 @@ export default function CheckoutPage() {
                     </div>
 
                     {/* Order Summary Sidebar */}
-                    <div className="lg:sticky lg:top-32 space-y-10">
-                        <div className="bg-white border border-foreground/5 rounded-sm p-12 shadow-lg">
-                            <h3 className="text-sm font-bold mb-10 uppercase tracking-[0.3em] text-foreground border-b border-foreground/10 pb-6 font-labels">Tóm tắt đơn hàng</h3>
+                    <div className="lg:sticky lg:top-32 space-y-6">
+                        <div className="bg-surface-container-lowest p-8 md:p-10 rounded-xl shadow-sunlight">
+                            <h3 className="text-sm font-bold mb-8 text-foreground">Tóm tắt đơn hàng</h3>
 
-                            <div className="space-y-6 mb-8 max-h-[300px] overflow-auto pr-2 custom-scrollbar">
+                            <div className="space-y-4 mb-6 max-h-[300px] overflow-auto pr-2">
                                 {cart.items.map((item) => (
-                                    <div key={`${item.productId}-${item.variantId}`} className="flex gap-4 items-start">
-                                        <div className="w-16 h-16 bg-muted/30 rounded-sm border border-border flex-shrink-0 relative overflow-hidden shadow-inner">
+                                    <div key={`${item.productId}-${item.variantId}`} className="flex gap-3 items-start">
+                                        <div className="aspect-4/5 w-14 relative bg-surface-container rounded-3xl overflow-hidden group/img">
                                             <img src={imageUrl.product(item.imageUrl)} alt={item.productName} className="object-cover w-full h-full" />
-                                            <div className="absolute top-0 right-0 bg-primary/90 text-primary-foreground text-[8px] font-bold px-1.5 py-0.5 min-w-[18px] text-center rounded-bl-sm">
+                                            <div className="absolute top-0 right-0 bg-primary text-white text-[9px] font-bold px-1.5 py-0.5 min-w-[16px] text-center rounded-bl-md">
                                                 {item.quantity}
                                             </div>
                                         </div>
                                         <div className="flex-1 min-w-0">
-                                            <p className="text-[10px] font-bold truncate leading-tight mb-1 uppercase tracking-widest text-foreground">{item.productName}</p>
-                                            <p className="text-[9px] text-muted-foreground font-bold uppercase tracking-widest opacity-50">
-                                                {formatCurrency(item.price)}
-                                            </p>
+                                            <p className="text-xs font-semibold truncate text-foreground">{item.productName}</p>
+                                            <p className="text-xs text-foreground/40">{formatCurrency(item.price)}</p>
                                         </div>
                                         <div className="text-right whitespace-nowrap">
-                                            <p className="text-[11px] font-bold text-foreground">{formatCurrency(item.totalPrice)}</p>
+                                            <p className="text-xs font-bold text-foreground">{formatCurrency(item.totalPrice)}</p>
                                         </div>
                                     </div>
                                 ))}
                             </div>
 
-                            <div className="space-y-4 border-t border-border pt-6">
+                            <div className="space-y-3 pt-5">
                                 <div className="flex justify-between items-center">
-                                    <span className="text-[10px] uppercase tracking-widest font-bold text-muted-foreground">Tạm tính</span>
-                                    <span className="font-bold tabular-nums text-sm text-foreground">{formatCurrency(cart.totalAmount)}</span>
+                                    <span className="text-xs text-foreground/50">Tạm tính</span>
+                                    <span className="font-semibold tabular-nums text-sm text-foreground">{formatCurrency(cart.totalAmount)}</span>
                                 </div>
                                 <div className="flex justify-between items-center">
-                                    <span className="text-[10px] uppercase tracking-widest font-bold text-muted-foreground">Phí vận chuyển</span>
-                                    <span className="font-bold tabular-nums text-sm">
+                                    <span className="text-xs text-foreground/50">Phí vận chuyển</span>
+                                    <span className="font-semibold tabular-nums text-sm">
                                         {shippingLoading ? (
                                             <Loader2 className="h-4 w-4 animate-spin text-primary" />
                                         ) : (
                                             shippingFee > 0 ? (
                                                 <span className="text-foreground">{formatCurrency(shippingFee)}</span>
                                             ) : (
-                                                <span className="text-muted-foreground italic text-[10px] opacity-50">Chưa tính</span>
+                                                <span className="text-foreground/40 text-xs">Chưa tính</span>
                                             )
                                         )}
                                     </span>
                                 </div>
 
-                                {/* Voucher Section */}
-                                <div className="pt-2">
+                                {/* Voucher */}
+                                <div className="shrink-0">
+                                    <CreditCard className="h-4 w-4 text-primary" />
+                                </div>
+                                <div className="pt-1">
                                     <VoucherSection />
                                 </div>
 
-                                <div className="border-t border-border border-dashed pt-4 mt-4 flex justify-between items-center">
-                                    <span className="text-xs font-bold uppercase tracking-widest text-foreground">Tổng thanh toán</span>
-                                    <span className="text-2xl font-bold tracking-tighter text-primary tabular-nums">
+                                <div className="pt-4 mt-2 flex justify-between items-center">
+                                    <span className="text-sm font-bold text-foreground">Tổng thanh toán</span>
+                                    <span className="text-2xl font-bold tracking-tight text-primary tabular-nums">
                                         {formatCurrency(totalAmount)}
                                     </span>
                                 </div>
                             </div>
 
                             {/* Trust Badge */}
-                            <div className="mt-8 pt-6 border-t border-border flex items-start gap-3 bg-primary/5 p-4 rounded-sm border border-primary/10">
+                            <div className="mt-6 pt-5 flex items-start gap-3 bg-primary/5 p-4 rounded-lg">
                                 <ShieldCheck className="h-5 w-5 text-primary flex-shrink-0" />
-                                <div className="space-y-1">
-                                    <p className="text-[9px] font-bold text-primary uppercase tracking-[0.2em]">Bảo vệ mua hàng 100%</p>
-                                    <p className="text-[9px] text-muted-foreground leading-relaxed font-bold uppercase tracking-widest opacity-50">
+                                <div className="space-y-0.5">
+                                    <p className="text-xs font-bold text-primary">Bảo vệ mua hàng 100%</p>
+                                    <p className="text-xs text-foreground/40 leading-relaxed">
                                         Cam kết hoàn tiền và bảo mật thanh toán tuyệt đối.
                                     </p>
                                 </div>
                             </div>
                         </div>
 
-                        {/* Back Link */}
-                        <div className="text-center px-4 leading-relaxed opacity-50">
-                            <p className="text-[9px] text-muted-foreground font-bold uppercase tracking-widest px-4">
-                                Bằng cách đặt hàng, bạn đồng ý với các
-                                <span className="text-foreground font-bold hover:underline cursor-pointer px-1">Điều khoản dịch vụ</span>
+                        {/* Legal */}
+                        <div className="text-center px-4">
+                            <p className="text-xs text-foreground/40 leading-relaxed">
+                                Bằng cách đặt hàng, bạn đồng ý với
+                                <Link href="/terms" className="text-primary font-medium hover:underline mx-1">Điều khoản dịch vụ</Link>
                                 của chúng tôi.
                             </p>
                         </div>

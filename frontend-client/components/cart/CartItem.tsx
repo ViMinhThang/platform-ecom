@@ -36,91 +36,67 @@ export function CartItem({ item }: CartItemProps) {
     };
 
     return (
-        <div className="flex gap-8 p-8 bg-white rounded-[4px] border border-foreground/5 items-start group shadow-[0_2px_8px_rgba(0,0,0,0.02)] transition-all hover:shadow-[0_4px_16px_rgba(0,0,0,0.04)] animate-in fade-in duration-700">
-            {/* Product Image: Sharp, Ghost Border */}
-            <div className="relative h-32 w-24 shrink-0 bg-secondary/50 border border-foreground/5 overflow-hidden">
+        <div className="bg-surface-container-lowest p-6 rounded-xl flex gap-6 items-center transition-transform hover:scale-[1.01] duration-300">
+            {/* Product Image: Magazine Style */}
+            <div className="w-32 h-40 bg-surface-container rounded-lg overflow-hidden shrink-0">
+
                 <Image
                     src={imageUrl.product(item.imageUrl)}
                     alt={item.productName}
-                    fill
-                    className="object-cover"
+                    width={128}
+                    height={160}
+                    className="w-full h-full object-cover"
                     unoptimized
                 />
             </div>
 
-            {/* Content & Controls */}
-            <div className="flex flex-1 flex-col h-full justify-between gap-6">
-                <div className="flex justify-between items-start gap-8">
-                    <div className="space-y-3">
-                        <div className="space-y-1">
-                            <span className="text-[9px] font-bold uppercase tracking-[0.2em] text-foreground/30 font-labels">Nhật ký vật phẩm sẵn sàng vận chuyển</span>
-                            <h3 className="font-labels font-bold text-[13px] uppercase tracking-wider leading-tight max-w-md group-hover:text-primary transition-all">
-                                {item.productName}
-                            </h3>
-                        </div>
+            {/* Content & Layout */}
+            <div className="grow flex flex-col gap-2">
 
-                        {item.variantName && (
-                             <div className="inline-block px-3 py-1 bg-[#F5F3F4] rounded-sm">
-                                <p className="text-[9px] font-bold text-foreground/40 font-labels uppercase tracking-widest">
-                                    Loại: {item.variantName}
-                                </p>
-                            </div>
-                        )}
+                <div className="flex justify-between items-start">
+                    <div>
+                        <span className="text-xs font-bold uppercase tracking-widest text-primary mb-1 block">SỰ LỰA CHỌN MỚI</span>
+                        <h3 className="text-xl font-bold font-headline leading-tight">{item.productName}</h3>
+                        <p className="text-sm text-on-surface-variant">
+                            {item.variantName && <span>Loại: {item.variantName}</span>}
+                            {item.variantName && <span className="mx-2">|</span>}
+                            <span>Màu sắc: Tự nhiên</span>
+                        </p>
                     </div>
-
-                    <div className="text-right space-y-1">
-                        <div className="font-labels font-bold text-lg text-foreground tracking-tight">
-                            {formatCurrency(item.price)}
-                        </div>
-                        <p className="text-[8px] font-bold text-foreground/30 uppercase tracking-[0.2em]">Đơn giá</p>
-                    </div>
+                    <span className="text-xl font-bold text-on-surface">{formatCurrency(item.totalPrice)}</span>
                 </div>
 
-                <div className="flex items-end justify-between">
-                    <div className="flex items-center gap-10">
-                        {/* Quantity Selector: Minimal */}
-                        <div className="flex items-center gap-4">
-                            <span className="text-[10px] font-bold uppercase tracking-widest text-foreground/40 font-labels">Số lượng</span>
-                            <div className="flex items-center border border-foreground/10 h-9 rounded-sm overflow-hidden bg-white">
-                                <button
-                                    className="w-9 h-full flex items-center justify-center hover:bg-secondary transition-colors disabled:opacity-20"
-                                    onClick={() => handleQuantityChange(item.quantity - 1)}
-                                    disabled={item.quantity <= 1 || updating}
-                                >
-                                    <Minus className="h-3 w-3" />
-                                </button>
-                                <span className="w-9 text-center text-xs font-bold tabular-nums">
-                                    {item.quantity}
-                                </span>
-                                <button
-                                    className="w-9 h-full flex items-center justify-center hover:bg-secondary transition-colors disabled:opacity-20"
-                                    onClick={() => handleQuantityChange(item.quantity + 1)}
-                                    disabled={updating}
-                                >
-                                    <Plus className="h-3 w-3" />
-                                </button>
-                            </div>
-                        </div>
-
-                        {/* Remove Action: Minimal */}
-                        <button
-                            className="text-[9px] font-bold uppercase tracking-[0.2em] text-foreground/20 hover:text-red-500 transition-colors flex items-center gap-2 group/remove"
-                            onClick={handleRemove}
+                <div className="flex items-center justify-between mt-auto">
+                    {/* Quantity Controls: Editorial Style */}
+                    <div className="flex items-center bg-surface-container-low rounded-full px-2 py-1 border border-border">
+                        <button 
+                            className="p-1 hover:text-primary transition-colors disabled:opacity-20"
+                            onClick={() => handleQuantityChange(item.quantity - 1)}
+                            disabled={item.quantity <= 1 || updating}
+                        >
+                            <Minus className="h-4 w-4" strokeWidth={3} />
+                        </button>
+                        <span className="px-4 font-bold text-on-surface text-sm">{item.quantity}</span>
+                        <button 
+                            className="p-1 hover:text-primary transition-colors disabled:opacity-20"
+                            onClick={() => handleQuantityChange(item.quantity + 1)}
                             disabled={updating}
                         >
-                            <X className="h-3 w-3 text-foreground/10 group-hover/remove:text-red-400 transition-colors" />
-                            Gỡ hồ sơ
+                            <Plus className="h-4 w-4" strokeWidth={3} />
                         </button>
                     </div>
 
-                    <div className="text-right">
-                        <div className="font-labels font-bold text-xl text-primary tracking-tight">
-                            {formatCurrency(item.totalPrice)}
-                        </div>
-                        <p className="text-[9px] font-bold uppercase tracking-[0.2em] text-primary/40">Thành tiền</p>
-                    </div>
+                    <button 
+                        className="flex items-center gap-1 text-sm font-medium text-on-surface-variant hover:text-destructive transition-colors group"
+                        onClick={handleRemove}
+                        disabled={updating}
+                    >
+                        <X className="h-4 w-4 text-on-surface-variant/40 group-hover:text-destructive transition-colors" strokeWidth={3} />
+                        <span>Gỡ bỏ</span>
+                    </button>
                 </div>
             </div>
         </div>
     );
+
 }

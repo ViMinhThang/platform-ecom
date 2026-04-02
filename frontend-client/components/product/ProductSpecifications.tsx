@@ -35,27 +35,24 @@ export const ProductSpecifications = ({ product }: ProductSpecificationsProps) =
 
     if (specEntries.length === 0) {
         return (
-            <div className="col-span-full py-20 text-center">
-                <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-foreground/20 font-labels">
-                    Hiện chưa cập nhật thông số kỹ thuật chi tiết.
+            <div className="col-span-2 py-10">
+                <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-foreground/20">
+                    Hiện chưa cập nhật thông số chi tiết.
                 </p>
             </div>
         );
     }
 
     return (
-        <div className="contents">
-            {specEntries.map(([key, value]) => (
-                <div
-                    key={key}
-                    className="flex justify-between items-baseline w-full pb-6 border-b border-foreground/5"
-                >
-                    <div className="text-foreground/80 text-[10px] font-black uppercase tracking-[0.4em] font-labels">
+        <div className="grid grid-cols-2 gap-x-12 gap-y-10 pt-10 border-t border-foreground/5 w-full">
+            {specEntries.slice(0, 4).map(([key, value]) => (
+                <div key={key} className="space-y-2">
+                    <h4 className="text-[11px] font-bold uppercase tracking-widest text-foreground/40">
                         {TRANSLATIONS[key.toLowerCase()] || key.replace(/_/g, " ")}
-                    </div>
-                    <div className="text-foreground/90 font-bold text-lg tracking-tighter font-labels uppercase">
+                    </h4>
+                    <p className="text-sm font-bold text-foreground">
                         {String(value)}
-                    </div>
+                    </p>
                 </div>
             ))}
         </div>

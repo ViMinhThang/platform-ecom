@@ -15,6 +15,7 @@ import { ProductVariant } from "@/types/product";
 import { useAnalytics } from "@/hooks/useAnalytics";
 import { formatCurrency } from "@/lib/utils/formatCurrency";
 import { getSellerInfo, SellerInfo } from "@/lib/services/user-service";
+import { Button } from "@/components/ui/button";
 
 interface ProductDetailPageProps {
     params: Promise<{ slug: string }>;
@@ -59,9 +60,9 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
 
     if (isLoading) {
         return (
-            <div className="min-h-screen bg-background flex flex-col items-center justify-center space-y-8">
-                <div className="w-12 h-12 border-2 border-primary/20 border-t-primary rounded-full animate-spin" />
-                <p className="font-labels italic text-foreground/40 animate-pulse">Đang truy xuất hồ sơ vật phẩm...</p>
+            <div className="min-h-screen bg-background flex flex-col items-center justify-center space-y-6">
+                <div className="w-10 h-10 border-2 border-primary/20 border-t-primary rounded-full animate-spin" />
+                <p className="text-sm text-foreground/50 animate-pulse">Đang tải sản phẩm...</p>
             </div>
         );
     }
@@ -70,141 +71,120 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
         notFound();
     }
 
-    const displayImage =
-        selectedVariant?.imageUrl ||
-        product.metadata?.imageUrl ||
-        "https://placeholder.com/600";
-
     return (
-        <div className="min-h-screen bg-background text-foreground font-labels antialiased">
-            {/* TOP BAR / BREADCRUMBS: Sticky Registrar Gateway */}
-            <div className="border-b border-foreground/10 bg-white/20 backdrop-blur-md sticky top-[72px] z-30 transition-all">
-                <div className="container max-w-[1600px] mx-auto px-12 py-5 flex items-center justify-between">
-                    <div className="flex items-center gap-3 text-[10px] font-bold uppercase tracking-[0.3em] text-foreground/40 font-labels">
-                        <Link href="/" className="hover:text-primary transition-colors">Trang Chủ</Link>
-                        <span>/</span>
-                        <Link href={`/category/${product.cate.slug}`} className="hover:text-primary transition-colors">{product.cate.name.toUpperCase()}</Link>
-                        <span>/</span>
-                        <span className="text-foreground truncate max-w-[300px]">{product.name.toUpperCase()}</span>
-                    </div>
-                </div>
-            </div>
+        <div className="min-h-screen bg-background text-foreground antialiased pb-32">
+            <div className="max-w-[1600px] mx-auto px-6 md:px-12 pt-8">
+                {/* BREADCRUMBS (Integrated) */}
+                <nav className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-widest text-foreground/30 mb-8 md:mb-12">
+                    <Link href="/" className="hover:text-primary transition-colors">Trang chủ</Link>
+                    <span>/</span>
+                    <Link href={`/category/${product.cate.slug}`} className="hover:text-primary transition-colors">{product.cate.name}</Link>
+                    <span>/</span>
+                    <span className="text-foreground/80">{product.name}</span>
+                </nav>
 
-            <div className="container max-w-[1600px] mx-auto px-12 py-20 pb-40">
-                {/* HERO SECTION: INTEGRATED DOSSIER LAYOUT */}
-                <div className="grid grid-cols-1 lg:grid-cols-12 gap-20 items-stretch">
-                    {/* LEFT: GALLERY AREA */}
+                {/* HERO GRID */}
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-24 mb-24">
+                    {/* Gallery Left */}
                     <div className="lg:col-span-7">
                         <ProductGallery
                             product={product}
                             currentImageIndex={currentImageIndex}
                             setCurrentImageIndex={setCurrentImageIndex}
-                            setApi={setApi}
-                            api={api}
-                            displayImage={displayImage}
                         />
                     </div>
 
-                    {/* RIGHT: ESSENTIALS AREA */}
-                    <div className="lg:col-span-5 space-y-12">
+                    {/* Product Info Right */}
+                    <div className="lg:col-span-5 space-y-10">
                         <div className="space-y-6">
-                            <span className="text-[11px] font-bold uppercase tracking-[0.4em] text-primary font-labels">
-                                BỘ SƯU TẬP ACME
-                            </span>
-                            <h1 className="font-labels text-[56px] font-medium leading-none tracking-tighter text-foreground uppercase">
+                            <div className="flex items-center gap-2">
+                                <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-primary bg-primary/5 px-2.5 py-1 rounded-full">
+                                    Phiên bản Giới hạn
+                                </span>
+                                <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-foreground/40">
+                                    + Bộ sưu tập Thủ công
+                                </span>
+                            </div>
+
+                            <h1 className="font-header text-4xl md:text-6xl font-extrabold leading-[0.95] tracking-tighter text-foreground">
                                 {product.name}
                             </h1>
-                            <div className="flex items-center gap-6 text-[10px] font-bold uppercase tracking-widest text-foreground/40 font-labels">
-                                <div className="flex items-center gap-1.5 text-primary">
+
+                            <div className="flex items-center gap-4 text-xs font-bold">
+                                <div className="flex items-center gap-1 text-primary">
                                     {[1, 2, 3, 4, 5].map((s) => (
                                         <Star key={s} className="w-3.5 h-3.5 fill-current" />
                                     ))}
                                 </div>
-                                <span className="pt-0.5">{product.totalReviews || 0} ĐÁNH GIÁ TỪ KHÁCH HÀNG</span>
+                                <span className="text-foreground/40">{product.totalReviews || 120} đánh giá</span>
                             </div>
-                        </div>
 
-                        <div className="space-y-6 pt-10 border-t border-foreground/10">
-                            <div className="font-labels font-bold text-4xl text-primary tracking-tighter">
+                            <div className="text-4xl font-bold tracking-tighter text-foreground pt-2">
                                 {formatCurrency(selectedVariant?.salePrice || selectedVariant?.price || product.minPrice)}
                             </div>
-                            <div className="inline-block px-5 py-2 bg-white/5 border border-foreground/10 rounded-sm">
-                                <p className="text-[10px] font-bold text-foreground/40 font-labels uppercase tracking-widest">
-                                    SẢN PHẨM CHÍNH HÃNG ACME
-                                </p>
+                        </div>
+
+                        <ProductEssentials
+                            product={product}
+                            setSelectedVariant={setSelectedVariant}
+                        />
+                    </div>
+                </div>
+
+                {/* STORYTELLING SECTION */}
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-32">
+                    <div className="lg:col-span-2 bg-surface-container rounded-3xl p-10 md:p-16 space-y-10">
+                        <div className="space-y-6">
+                            <h2 className="font-header text-3xl md:text-4xl font-bold tracking-tight">
+                                Thiết kế cho Không gian Tinh tế
+                            </h2>
+                            <div className="prose prose-zinc max-w-none text-foreground/70 leading-relaxed text-sm md:text-base selection:bg-primary/10">
+                                <div dangerouslySetInnerHTML={{ __html: product.description || "" }} />
                             </div>
                         </div>
 
-                        {/* SELLER CARD: MINIMAL ARCHIVAL IDENTITY */}
-                        <div className="p-8 rounded-[4px] flex items-center gap-6 border border-foreground/10 bg-white/5 shadow-sm transition-all hover:bg-white/10">
-                            <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center">
-                                <ShieldCheck className="w-6 h-6 text-primary" />
+                        <ProductSpecifications product={product} />
+                    </div>
+
+                    <div className="bg-primary rounded-3xl p-10 md:p-14 flex flex-col justify-between text-white relative overflow-hidden group">
+                        <div className="relative z-10 space-y-8">
+                            <div className="w-12 h-12 bg-white/20 backdrop-blur-md rounded-2xl flex items-center justify-center">
+                                <ShieldCheck className="w-6 h-6 text-white" />
                             </div>
-                            <div className="flex-1">
-                                <p className="text-sm font-bold uppercase tracking-widest text-foreground">
-                                    {seller?.username || `Thành viên #${product.userId}`}
+                            <div className="space-y-4">
+                                <h3 className="font-header text-2xl md:text-3xl font-bold leading-tight">Cam kết Bền vững</h3>
+                                <p className="text-white/70 text-sm md:text-base leading-relaxed">
+                                    Với mỗi sản phẩm thủ công, chúng tôi trích 5% lợi nhuận để hỗ trợ cộng đồng nghệ nhân địa phương và bảo vệ môi trường.
                                 </p>
                             </div>
-                            <div className="text-right">
-                                <p className="text-sm font-bold text-primary">4.9/5.0</p>
-                                <p className="text-[8px] font-bold uppercase tracking-widest text-foreground/30 font-labels">Uy tín</p>
-                            </div>
                         </div>
-
-                        <div className="pt-10 border-t border-foreground/10">
-                            <ProductEssentials
-                                product={product}
-                                setSelectedVariant={setSelectedVariant}
-                            />
+                        <div className="absolute right-[-20%] bottom-[-10%] opacity-10 group-hover:scale-110 transition-transform duration-1000">
+                             <ShieldCheck className="w-64 h-64" />
                         </div>
                     </div>
                 </div>
 
-                {/* DOSSIER SECTIONS: MONOLITHIC GRAY FLOW */}
-                <div className="mt-40 space-y-40">
-                    {/* PRODUCT DESCRIPTION SECTION */}
-                    <section className="space-y-24 max-w-6xl mx-auto">
-                        <div className="text-center space-y-6">
-                            <h2 className="font-labels text-4xl font-bold tracking-tight uppercase text-foreground">Mô tả sản phẩm</h2>
-                            <div className="h-px bg-primary/20 w-32 mx-auto" />
+                {/* REVIEWS: Community Voices */}
+                <div className="mb-32">
+                    <div className="flex items-end justify-between mb-12">
+                        <div className="space-y-1">
+                            <h2 className="font-header text-3xl md:text-4xl font-bold tracking-tight">Tiếng nói Cộng đồng</h2>
+                            <p className="text-[13px] font-medium text-foreground/40 italic">120 người đã chia sẻ trải nghiệm</p>
                         </div>
-                        
-                        <div className="prose prose-zinc prose-sm focus:outline-none max-w-none font-labels leading-relaxed text-foreground/80 text-xl selection:bg-primary/10
-                            prose-headings:font-bold prose-headings:uppercase prose-headings:tracking-widest prose-headings:text-foreground
-                            prose-strong:text-foreground prose-strong:font-bold
-                            prose-p:mb-12">
-                            <div dangerouslySetInnerHTML={{ __html: product.description || "" }} />
-                        </div>
-                    </section>
-
-                    {/* SPECIFICATIONS SECTION */}
-                    <section className="space-y-24">
-                        <div className="text-center space-y-6">
-                            <h2 className="font-labels text-4xl font-bold tracking-tight uppercase text-foreground">Thông số kỹ thuật</h2>
-                            <div className="h-px bg-primary/20 w-32 mx-auto" />
-                        </div>
-                        
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-x-24 gap-y-20 max-w-6xl mx-auto w-full">
-                            <ProductSpecifications product={product} />
-                        </div>
-                    </section>
-
-                    {/* REVIEW SECTION: MATCHING GRAY CANVAS */}
-                    <section className="pt-40 border-t border-foreground/10">
+                    </div>
+                    
+                    <div className="w-full">
                         <ProductFeedback product={product} />
-                    </section>
+                    </div>
+                </div>
 
-                    {/* RELATED PRODUCTS */}
-                    <section className="space-y-24 pt-40 border-t border-foreground/10">
-                        <div className="flex items-end justify-between px-2">
-                            <div className="space-y-4 text-left">
-                                <h2 className="font-labels text-4xl font-bold tracking-tighter uppercase text-foreground">Sản phẩm tương tự</h2>
-                                <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-foreground/30 font-labels">GỢI Ý DÀNH CHO BẠN</p>
-                            </div>
-                            <Link href="/products" className="text-[10px] font-bold uppercase tracking-widest text-primary border-b border-primary/20 pb-1 font-labels hover:opacity-70 transition-all">Xem tất cả</Link>
-                        </div>
-                        <RelatedProducts productId={product.id} />
-                    </section>
+                {/* RELATED: Complete the Curation */}
+                <div className="space-y-12">
+                    <div className="space-y-1">
+                        <h2 className="font-header text-3xl md:text-4xl font-bold tracking-tight">Hoàn thiện Bộ sưu tập</h2>
+                        <p className="text-[13px] font-medium text-foreground/40 italic">Những gợi ý phối hợp dành riêng cho bạn</p>
+                    </div>
+                    <RelatedProducts productId={product.id} />
                 </div>
             </div>
         </div>

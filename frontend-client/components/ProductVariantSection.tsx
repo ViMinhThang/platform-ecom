@@ -1,16 +1,14 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { ProductDetail, ProductVariant } from "@/types/product";
 import { VariantSelector } from "./VariantSelector";
 import { Button } from "./ui/button";
-import { Minus, Plus, ShoppingBag, CreditCard } from "lucide-react";
+import { Minus, Plus, ShoppingBag, CheckCircle2, Truck, Info } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { toast } from "sonner";
 import { useAddToCartMutation } from "@/lib/store/api/clientApi";
-import { logger } from "@/lib/logger";
 import { useAnalytics } from "@/hooks/useAnalytics";
-import { getSaleCampaignPriceForVariant } from "@/lib/services/sale-campaign-service";
 
 export function ProductVariantSection({
   product,
@@ -25,19 +23,6 @@ export function ProductVariantSection({
   const [addToCartMutation] = useAddToCartMutation();
   const { data: session } = useSession();
 
-  useEffect(() => {
-    const fetchSalePrice = async () => {
-      if (selectedVariant) {
-        try {
-          await getSaleCampaignPriceForVariant(selectedVariant.id);
-        } catch (error) {
-          logger.error("Failed to fetch sale price:", error);
-        }
-      }
-    };
-    fetchSalePrice();
-  }, [selectedVariant]);
-
   const handleVariantChange = (variant: ProductVariant | null) => {
     setSelectedVariant(variant);
     onVariantChange?.(variant);
@@ -46,12 +31,11 @@ export function ProductVariantSection({
 
   const handleAddToCart = async () => {
     if (!session) {
-      toast.error("Vui lòng đăng nhập để thực hiện giao dịch");
+      toast.error("Vui lòng đăng nhập để thêm vào giỏ hàng");
       return;
     }
-
     if (product.variants && product.variants.length > 0 && !selectedVariant) {
-      toast.error("Vui lòng lựa chọn đặc tính vật phẩm");
+      toast.error("Vui lòng chọn phân loại sản phẩm");
       return;
     }
 
@@ -62,17 +46,10 @@ export function ProductVariantSection({
         variantId: selectedVariant ? selectedVariant.id : undefined,
       }).unwrap();
       
-      trackAddToCart(
-        product.id, 
-        selectedVariant ? selectedVariant.id : 0, 
-        quantity, 
-        selectedVariant ? selectedVariant.price : (product.minPrice || 0)
-      );
-
-      toast.success("Vật phẩm đã được thêm vào giỏ hàng");
+      trackAddToCart(product.id, selectedVariant ? selectedVariant.id : 0, quantity, selectedVariant ? selectedVariant.price : (product.minPrice || 0));
+      toast.success("Đã thêm vào giỏ hàng!");
     } catch (error) {
-      logger.error("Failed to add to cart:", error);
-      toast.error("Giao dịch không thành công");
+      toast.error("Lỗi khi thêm vào giỏ hàng");
     }
   };
 
@@ -82,59 +59,86 @@ export function ProductVariantSection({
   const canAddToCart = !hasVariants || (isVariantSelected && displayStock > 0);
 
   return (
-    <div className="space-y-12">
+    <div className="space-y-10">
       {/* Variant Selector */}
       {product.options && product.options.length > 0 && (
-        <div className="space-y-6">
-          <VariantSelector
-            options={product.options}
-            variants={product.variants}
-            onVariantChange={handleVariantChange}
-          />
-        </div>
+        <VariantSelector
+          options={product.options}
+          variants={product.variants}
+          onVariantChange={handleVariantChange}
+        />
       )}
 
-      {/* Quantity & Actions */}
-      <div className="space-y-8">
-        <div className="flex items-center justify-between">
-          <span className="text-[10px] font-bold uppercase tracking-widest text-foreground/40">Số lượng bản sao</span>
-          <div className="flex items-center border border-foreground/10 bg-background overflow-hidden">
-            <button
-              className="h-10 w-10 flex items-center justify-center hover:bg-secondary/50 transition-colors disabled:opacity-20"
-              onClick={() => setQuantity(Math.max(1, quantity - 1))}
-              disabled={quantity <= 1}
-            >
-              <Minus className="h-3 w-3" />
-            </button>
-            <div className="w-12 text-center text-xs font-bold">{quantity}</div>
-            <button
-              className="h-10 w-10 flex items-center justify-center hover:bg-secondary/50 transition-colors disabled:opacity-20"
-              onClick={() => setQuantity(Math.min(displayStock || 99, quantity + 1))}
-              disabled={selectedVariant ? quantity >= displayStock : false}
-            >
-              <Plus className="h-3 w-3" />
-            </button>
-          </div>
+      {/* Highlights List */}
+      <div className="space-y-4">
+        <h4 className="text-[11px] font-bold uppercase tracking-widest text-foreground/40">Chi tiết & Tiện ích</h4>
+        <ul className="space-y-3">
+          {[
+            "Dung tích 1.5L, phù hợp cho gia đình",
+            "Có thể sử dụng với máy rửa bát",
+            "Nguồn gốc bền vững từ Oaxaca",
+            "Kiểu dáng thủ công độc bản"
+          ].map((item) => (
+            <li key={item} className="flex items-center gap-3 text-sm font-medium text-foreground/70">
+              <CheckCircle2 className="h-4 w-4 text-primary" />
+              {item}
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      {/* Actions */}
+      <div className="space-y-4">
+        <div className="flex items-center justify-between mb-2">
+            <span className="text-[11px] font-bold uppercase tracking-widest text-foreground/40">Số lượng</span>
+            <div className="flex items-center bg-surface-container rounded-full overflow-hidden">
+                <button
+                    className="h-9 w-9 flex items-center justify-center hover:bg-surface-container-high transition-colors"
+                    onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                    disabled={quantity <= 1}
+                >
+                    <Minus className="h-3 w-3" />
+                </button>
+                <div className="w-8 text-center text-xs font-bold">{quantity}</div>
+                <button
+                    className="h-9 w-9 flex items-center justify-center hover:bg-surface-container-high transition-colors"
+                    onClick={() => setQuantity(quantity + 1)}
+                >
+                    <Plus className="h-3 w-3" />
+                </button>
+            </div>
         </div>
 
-        <div className="grid grid-cols-1 gap-4">
-          <Button
-            size="lg"
-            className="w-full h-14 bg-primary text-white hover:bg-primary/95 font-bold uppercase tracking-[0.2em] text-[10px] rounded-sm transition-all flex items-center justify-center gap-3 group"
-            disabled={!canAddToCart}
-            onClick={handleAddToCart}
-          >
-            <ShoppingBag className="w-4 h-4 group-hover:scale-110 transition-transform" />
-            Thêm vào giỏ hàng
-          </Button>
+        <div className="grid grid-cols-1 gap-3">
+            <Button
+                size="xl"
+                className="w-full rounded-full bg-primary text-white hover:brightness-110 h-14 font-bold text-sm tracking-tight"
+                disabled={!canAddToCart}
+                onClick={handleAddToCart}
+            >
+                Thêm vào giỏ hàng
+            </Button>
+            <Button
+                size="xl"
+                variant="secondary"
+                className="w-full rounded-full bg-[#d4e3ff] text-[#001c38] hover:bg-[#c2d6ff] h-14 font-bold text-sm tracking-tight"
+                disabled={!canAddToCart}
+            >
+                Mua ngay
+            </Button>
         </div>
 
-        {selectedVariant && (
-          <div className="flex items-center justify-between text-[10px] font-bold uppercase tracking-[0.3em] text-foreground/40 font-labels">
-            <span>SKU: {selectedVariant.sku}</span>
-            <span>{displayStock > 0 ? `${displayStock} BẢN SAO SẴN CÓ` : "HẾT LƯU TRỮ"}</span>
-          </div>
-        )}
+        {/* Shipping Trust Signal */}
+        <div className="mt-8 p-6 bg-surface-container rounded-2xl flex items-start gap-4">
+            <div className="h-10 w-10 bg-primary/10 rounded-xl flex items-center justify-center shrink-0">
+                <Truck className="h-5 w-5 text-primary" />
+            </div>
+            <div className="space-y-1">
+                <p className="text-xs font-bold text-foreground">Giao hàng toàn cầu miễn phí</p>
+                <p className="text-[11px] font-medium text-foreground/40">Giao hàng dự kiến trong 5-7 ngày làm việc</p>
+            </div>
+            <Info className="h-4 w-4 text-foreground/20 ml-auto" />
+        </div>
       </div>
     </div>
   );

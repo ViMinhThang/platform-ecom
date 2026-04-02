@@ -5,28 +5,29 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "@/lib/utils"
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all duration-200 ease-out disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:ring-primary/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 aria-invalid:border-destructive",
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-semibold transition-all duration-200 ease-out disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:ring-primary/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 aria-invalid:border-destructive cursor-pointer",
   {
     variants: {
       variant: {
-        default: "bg-primary text-primary-foreground shadow-sm hover:bg-primary/90 hover:shadow-md active:scale-[0.98]",
+        default: "bg-signature-gradient text-primary-foreground shadow-md hover:shadow-lg hover:brightness-110 active:scale-[0.98] rounded-full",
         destructive:
-          "bg-destructive text-white shadow-sm hover:bg-destructive/90 focus-visible:ring-destructive/20 active:scale-[0.98]",
+          "bg-destructive text-white shadow-sm hover:bg-destructive/90 focus-visible:ring-destructive/20 active:scale-[0.98] rounded-lg",
         outline:
-          "border-2 bg-background shadow-xs hover:bg-primary/5 hover:border-primary/30 hover:text-primary active:scale-[0.98]",
+          "bg-transparent shadow-xs hover:bg-primary/5 hover:text-primary active:scale-[0.98] rounded-lg ghost-border",
         secondary:
-          "bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/80 active:scale-[0.98]",
+          "bg-secondary-container text-on-secondary-container shadow-sm hover:brightness-95 active:scale-[0.98] rounded-lg",
         ghost:
-          "hover:bg-primary/10 hover:text-primary",
+          "hover:bg-primary/10 hover:text-primary rounded-lg",
         link: "text-primary underline-offset-4 hover:underline",
       },
       size: {
-        default: "h-9 px-4 py-2 has-[>svg]:px-3",
-        sm: "h-8 rounded-md gap-1.5 px-3 has-[>svg]:px-2.5",
-        lg: "h-10 rounded-md px-6 has-[>svg]:px-4",
-        icon: "size-9",
+        default: "h-10 px-5 py-2 has-[>svg]:px-4",
+        sm: "h-8 gap-1.5 px-4 has-[>svg]:px-3 text-xs",
+        lg: "h-12 px-8 has-[>svg]:px-5 text-sm",
+        xl: "h-14 px-10 text-sm font-bold tracking-wide",
+        icon: "size-10",
         "icon-sm": "size-8",
-        "icon-lg": "size-10",
+        "icon-lg": "size-12",
       },
     },
     defaultVariants: {

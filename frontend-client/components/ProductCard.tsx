@@ -7,6 +7,8 @@ import { formatCurrency } from "@/lib/utils/formatCurrency";
 import { useAnalytics } from "@/hooks/useAnalytics";
 import { imageUrl } from "@/lib/utils/imageUrl";
 
+import { ShoppingCart } from "lucide-react";
+
 interface ProductCardProps {
   id: string;
   slug: string;
@@ -14,54 +16,32 @@ interface ProductCardProps {
   price: number;
   image: string;
   category: string;
-  isNew?: boolean;
+  description?: string;
   firstVariant?: ProductVariant;
   sourceContext?: string;
-  soldCount?: number;
-  rating?: number;
 }
 
 export function ProductCard({
-  id,
   slug,
   name,
   price,
   image,
   category,
+  description = "Premium quality, sustainable choice",
   firstVariant,
-  sourceContext = 'feed',
 }: ProductCardProps) {
-  const { trackProductClick } = useAnalytics();
-
   const displayPrice = firstVariant ? (firstVariant.salePrice || firstVariant.price) : price;
-  const hasSale = firstVariant && !!firstVariant.salePrice;
   const displayImage = firstVariant?.imageUrl || image;
-  const inStock = firstVariant ? firstVariant.stock > 0 : true;
-
-  const handleTrackClick = () => {
-    trackProductClick(Number(id), sourceContext);
-  };
+  const hasSale = firstVariant && !!firstVariant.salePrice;
 
   return (
-    <Link 
-        href={`/products/${slug}`} 
-        onClick={handleTrackClick} 
-        className="group block space-y-4 animate-in fade-in duration-700"
-    >
-      <div className="relative aspect-square overflow-hidden bg-[#1c1917]/5 rounded-[4px] shadow-sm">
-        {/* Subtle Labels */}
-        {!inStock && (
-          <div className="absolute inset-0 bg-background/20 backdrop-blur-[2px] z-10 flex items-center justify-center">
-            <span className="text-[10px] font-bold px-4 py-2 bg-foreground text-background uppercase tracking-widest">
-              TẠM HẾT
-            </span>
-          </div>
-        )}
-        
-        {hasSale && inStock && (
+    <div className="group relative space-y-4 animate-in fade-in duration-700">
+      <Link href={`/products/${slug}`} className="block overflow-hidden rounded-2xl aspect-[4/5] bg-surface-container relative">
+        {/* Sale Badge */}
+        {hasSale && (
             <div className="absolute top-4 left-4 z-10">
-                <span className="text-[10px] font-bold px-2 py-1 bg-primary text-white uppercase tracking-widest">
-                    GIÁ TỐT
+                <span className="text-[10px] font-bold px-3 py-1 bg-primary text-white rounded-full">
+                    New Arrival
                 </span>
             </div>
         )}
@@ -70,25 +50,30 @@ export function ProductCard({
           src={imageUrl.product(displayImage)}
           alt={name}
           fill
-          className="object-cover"
+          className="object-contain p-8 group-hover:scale-110 transition-transform duration-700"
         />
-      </div>
+      </Link>
 
-      <div className="space-y-1">
-        <span className="block text-[10px] font-bold uppercase tracking-[0.2em] text-foreground/30 font-labels">
-          {category}
-        </span>
-        
-        <h3 className="font-labels font-bold text-sm tracking-tight leading-tight text-foreground/90 line-clamp-2 h-10 transition-colors">
-          {name}
-        </h3>
-        
-        <div className="pt-1">
-            <span className="font-labels font-bold text-lg text-primary tracking-tight">
-                {formatCurrency(displayPrice)}
-            </span>
+      <div className="flex items-start justify-between gap-4 px-1">
+        <div className="flex-1 min-w-0 space-y-1">
+            <h3 className="font-bold text-sm text-foreground tracking-tight truncate">
+              {name}
+            </h3>
+            <p className="text-[11px] font-medium text-foreground/40 line-clamp-1">
+              {description}
+            </p>
+            <div className="pt-2">
+                <span className="font-bold text-base text-foreground tracking-tight">
+                    {formatCurrency(displayPrice)}
+                </span>
+            </div>
         </div>
+
+        {/* Add to Cart Button */}
+        <button className="h-9 w-9 bg-primary/10 rounded-full flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-all shadow-sm">
+            <ShoppingCart className="h-4 w-4" />
+        </button>
       </div>
-    </Link>
+    </div>
   );
 }

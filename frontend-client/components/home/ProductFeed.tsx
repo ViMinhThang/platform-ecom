@@ -7,12 +7,15 @@ import { Button } from "@/components/ui/button";
 import { getPersonalizedFeed } from "@/lib/services/recommendation-service";
 import { useSession } from "next-auth/react";
 import { ProductRecommendation } from "@/types/recommendation";
+import Link from "next/link";
+
+import { ArrowLeft, ArrowRight } from "lucide-react";
 
 export function ProductFeed() {
     const { data: session } = useSession();
-    const [activeTab, setActiveTab] = useState("daily");
-    const [personalizedProducts, setPersonalizedProducts] = useState<ProductRecommendation[]>([]);
-    const [recLoading, setRecLoading] = useState(false);
+    const [activeTab] = useState("daily");
+    const [personalizedProducts] = useState<ProductRecommendation[]>([]);
+    const [recLoading] = useState(false);
     const [isMounted, setIsMounted] = useState(false);
 
     useEffect(() => {
@@ -22,65 +25,39 @@ export function ProductFeed() {
     const { data: productsData, isLoading: productsLoading } = useGetProductsQuery({
         sortBy: 'createdAt',
         sortOrder: 'desc',
-        perPage: 12
+        perPage: 4 // Showing a single row as per image
     });
 
     const products = productsData?.content || [];
 
-    const fetchPersonalized = async () => {
-        setRecLoading(true);
-        try {
-            const data = await getPersonalizedFeed(session?.user?.id ? Number(session.user.id) : 1, 12);
-            setPersonalizedProducts(data || []);
-        } catch (error) {
-            console.error(error);
-            setPersonalizedProducts([]);
-        }
-        setRecLoading(false);
-    };
-
     return (
-        <div className="bg-[#F5F3F4] w-full py-32">
-            <section className="max-w-[1600px] mx-auto">
-                {/* Editorial Header */}
-                <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-16">
-                    <div className="space-y-4">
-                        <h2 className="font-labels font-bold text-4xl text-foreground/90 tracking-tight">Sản phẩm đề xuất cho bạn</h2>
-                        <div className="flex items-center gap-10 border-b border-border/5 pb-4">
-                            <button
-                                onClick={() => setActiveTab('daily')}
-                                className={`text-[11px] font-bold uppercase tracking-[0.25em] transition-all relative pb-4 ${activeTab === 'daily'
-                                    ? 'text-primary after:absolute after:bottom-0 after:left-0 after:right-0 after:h-px after:bg-primary'
-                                    : 'text-foreground/30 hover:text-foreground'
-                                    }`}
-                            >
-                                Gợi ý hàng ngày
-                            </button>
-                            <button
-                                onClick={() => {
-                                    setActiveTab('personalized');
-                                    if (personalizedProducts.length === 0) fetchPersonalized();
-                                }}
-                                className={`text-[11px] font-bold uppercase tracking-[0.25em] transition-all relative pb-4 ${activeTab === 'personalized'
-                                    ? 'text-primary after:absolute after:bottom-0 after:left-0 after:right-0 after:h-px after:bg-primary'
-                                    : 'text-foreground/30 hover:text-foreground'
-                                    }`}
-                            >
-                                Dành riêng cho bạn
-                            </button>
-                        </div>
+        <div className="bg-background w-full py-16">
+            <section className="max-w-[1600px] w-full mx-auto px-6 md:px-12">
+                {/* Header */}
+                <div className="flex items-center justify-between mb-10">
+                    <div className="space-y-1">
+                        <h2 className="font-header text-xl md:text-2xl font-bold text-foreground">Gợi ý cho bạn</h2>
+                        <p className="text-[13px] font-medium text-foreground/40 italic">Dựa trên sở thích của bạn</p>
+                    </div>
+                    <div className="flex items-center gap-3">
+                        <button className="h-9 w-9 rounded-full border border-foreground/5 bg-surface-container/50 flex items-center justify-center hover:bg-surface-container transition-colors shadow-sm">
+                            <ArrowLeft className="h-4 w-4 text-foreground/40" />
+                        </button>
+                        <button className="h-9 w-9 rounded-full border border-foreground/5 bg-surface-container/50 flex items-center justify-center hover:bg-surface-container transition-colors shadow-sm">
+                            <ArrowRight className="h-4 w-4 text-foreground/40" />
+                        </button>
                     </div>
                 </div>
 
-                {/* Grid */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-16">
+                {/* Product Grid */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-12">
                     {!isMounted || (productsLoading || recLoading) && (activeTab === 'personalized' ? personalizedProducts.length === 0 : products.length === 0) ? (
                         Array.from({ length: 8 }).map((_, i) => (
                             <div key={i} className="space-y-4 animate-pulse">
-                                <div className="aspect-square bg-secondary/50 rounded-sm" />
-                                <div className="h-2 bg-secondary/50 w-1/4" />
-                                <div className="h-4 bg-secondary/50 w-3/4" />
-                                <div className="h-4 bg-secondary/50 w-1/2" />
+                                <div className="aspect-square bg-surface-container rounded-lg" />
+                                <div className="h-2 bg-surface-container w-1/4 rounded" />
+                                <div className="h-4 bg-surface-container w-3/4 rounded" />
+                                <div className="h-4 bg-surface-container w-1/2 rounded" />
                             </div>
                         ))
                     ) : (
@@ -122,9 +99,11 @@ export function ProductFeed() {
                     )}
                 </div>
 
-                <div className="flex justify-center mt-24">
-                    <Button className="group bg-transparent text-primary hover:bg-primary hover:text-white border border-primary/20 px-12 py-6 rounded-sm text-[10px] font-bold uppercase tracking-[0.2em] transition-all">
-                        Xem tất cả sản phẩm
+                <div className="flex justify-center mt-16">
+                    <Button variant="outline" size="lg" asChild>
+                        <Link href="/products">
+                            Xem tất cả sản phẩm
+                        </Link>
                     </Button>
                 </div>
             </section>

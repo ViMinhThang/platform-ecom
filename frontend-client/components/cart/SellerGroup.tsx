@@ -36,7 +36,7 @@ export function SellerGroup({ group }: SellerGroupProps) {
                 </div>
             </div>
 
-            <div className="space-y-6">
+            <div className="space-y-12 pt-8">
                 {group.items.map((item) => (
                     <CartItem key={`${item.productId}-${item.variantId || 'base'}`} item={item} />
                 ))}

@@ -19,77 +19,52 @@ export function CartSummary({ cart }: CartSummaryProps) {
     const finalTotal = discountResult ? discountResult.finalTotal : cart.totalAmount;
 
     return (
-        <div className="space-y-12 animate-in fade-in slide-in-from-right-4 duration-1000">
-            {/* Header: Simplified Section Title */}
-            <div className="space-y-4">
-                <div className="flex items-center gap-4">
-                    <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-primary font-labels">THÔNG TIN ĐƠN HÀNG</span>
-                    <div className="h-px bg-primary/10 flex-1" />
+        <div className="space-y-8">
+            <h2 className="text-2xl font-bold font-headline mb-8 border-b border-border pb-4">Tóm tắt Đơn hàng</h2>
+            
+            <div className="flex flex-col gap-4 mb-8">
+                <div className="flex justify-between items-center text-on-surface-variant">
+                    <span className="text-sm">Tạm tính ({cart.totalItems} sản phẩm)</span>
+                    <span className="font-semibold text-on-surface">{formatCurrency(cart.totalAmount)}</span>
+                </div>
+                <div className="flex justify-between items-center text-on-surface-variant">
+                    <span>Phí vận chuyển Ước tính</span>
+                    <span className="text-secondary font-bold uppercase tracking-widest text-xs">MIỄN PHÍ</span>
+                </div>
+                <div className="flex justify-between items-center text-on-surface-variant">
+                    <span>Thuế (Ước tính)</span>
+                    <span className="font-semibold text-on-surface">{formatCurrency(0)}</span>
                 </div>
             </div>
 
-            {/* Calculations List */}
-            <div className="space-y-8">
-                <div className="space-y-4">
-                    <div className="flex justify-between items-end">
-                        <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-foreground/40 font-labels">Tạm tính</span>
-                        <div className="flex-1 border-b border-foreground/5 border-dotted mx-4 mb-1" />
-                        <span className="font-labels font-bold text-lg text-foreground">{formatCurrency(cart.totalAmount)}</span>
-                    </div>
-
-                    <div className="flex justify-between items-end">
-                        <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-foreground/40 font-labels">Phí vận chuyển</span>
-                        <div className="flex-1 border-b border-foreground/5 border-dotted mx-4 mb-1" />
-                        <span className="text-[9px] font-bold uppercase tracking-widest text-foreground/30 font-labels">Tính khi thanh toán</span>
-                    </div>
-
-                    {discountResult && discountResult.totalDiscount > 0 && (
-                        <div className="flex justify-between items-end text-primary">
-                            <span className="text-[10px] font-bold uppercase tracking-[0.2em] font-labels">Giảm giá mã ưu đãi</span>
-                            <div className="flex-1 border-b border-primary/10 border-dotted mx-4 mb-1" />
-                            <span className="font-labels font-bold text-lg">-{formatCurrency(discountResult.totalDiscount)}</span>
-                        </div>
-                    )}
-                </div>
-
-                {/* Voucher Integration: Simplified */}
-                <div className="pt-4">
-                    <VoucherSection discountResult={discountResult} appliedVoucherCodes={appliedVoucherCodes} />
-                </div>
-
-                {/* Final Total */}
-                <div className="space-y-2 pt-8 border-t border-foreground/10">
-                    <div className="flex justify-between items-baseline">
-                        <span className="text-[11px] font-bold uppercase tracking-[0.3em] text-foreground font-labels">TỔNG CỘNG</span>
-                        <span className="font-labels font-bold text-3xl text-primary tracking-tighter">
-                            {formatCurrency(finalTotal)}
-                        </span>
-                    </div>
-                </div>
+            <div className="bg-surface-container-lowest p-6 rounded-xl space-y-4 shadow-sm border border-border">
+                <VoucherSection discountResult={discountResult} appliedVoucherCodes={appliedVoucherCodes} />
             </div>
 
-            {/* CTA Button: Modern Checkout */}
-            <div className="space-y-8">
-                <Button
-                    className="w-full h-16 bg-primary text-white hover:bg-primary/95 rounded-sm font-bold text-[11px] uppercase tracking-[0.2em] transition-all shadow-xl group border-2 border-primary"
-                    onClick={() => router.push("/checkout")}
-                >
-                    Tiến hành đặt hàng
-                    <ChevronRight className="ml-3 h-4 w-4 group-hover:translate-x-1 transition-transform" />
-                </Button>
+            <div className="flex justify-between items-end mb-8 pt-4 border-t border-border">
+                <span className="text-lg font-medium">Tổng cộng</span>
+                <span className="text-3xl font-black text-primary tracking-tighter">
+                    {formatCurrency(finalTotal)}
+                </span>
+            </div>
 
-                {/* Security Commitment: Simplified */}
-                <div className="flex items-start gap-4 pt-8 border-t border-foreground/5">
-                    <ShieldCheck className="w-5 h-5 text-tertiary" />
-                    <div className="space-y-1">
-                        <p className="text-[10px] font-bold uppercase tracking-widest text-foreground/80 font-labels">An tâm mua sắm cùng ACME</p>
-                        <p className="text-[9px] leading-relaxed text-foreground/40 font-bold uppercase tracking-wider font-labels">
-                            Mọi đơn hàng đều được ACME bảo vệ 100%. 
-                            Hoàn trả giá trị nếu sản phẩm không đúng mô tả hoặc gặp lỗi.
-                        </p>
-                    </div>
+            <Button
+                className="w-full bg-signature-gradient text-white py-8 rounded-full font-bold text-lg shadow-lg shadow-primary/20 hover:scale-[0.98] active:scale-95 transition-all duration-300 flex items-center justify-center gap-3 border-none"
+                onClick={() => router.push("/checkout")}
+            >
+                <span>Tiến hành Thanh toán</span>
+                <ChevronRight className="h-5 w-5" strokeWidth={3} />
+            </Button>
+
+            <div className="mt-8 flex flex-col gap-4">
+                <p className="text-[10px] text-center text-on-surface-variant uppercase tracking-widest font-bold">Thanh toán Bảo mật bởi</p>
+                <div className="flex justify-center gap-6 opacity-40 grayscale contrast-125">
+                    <ShieldCheck className="h-6 w-6" />
+                    <div className="w-8 h-4 bg-foreground/20 rounded-sm" />
+                    <div className="w-8 h-4 bg-foreground/30 rounded-sm" />
                 </div>
             </div>
         </div>
     );
+
 }
