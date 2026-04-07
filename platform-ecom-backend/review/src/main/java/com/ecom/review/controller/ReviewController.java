@@ -66,9 +66,15 @@ public class ReviewController {
     @GetMapping("/check")
     public ResponseEntity<ReviewDTO> checkUserReview(
             @RequestParam Long productId,
+            @RequestParam(required = false) Long orderId,
             HttpServletRequest request) {
         Long userId = authContext.getUserId(request);
-        ReviewDTO reviewDTO = reviewService.getReviewByUserAndProduct(userId, productId);
+        ReviewDTO reviewDTO;
+        if (orderId != null) {
+            reviewDTO = reviewService.getReviewByUserAndProductAndOrder(userId, productId, orderId);
+        } else {
+            reviewDTO = reviewService.getReviewByUserAndProduct(userId, productId);
+        }
         return ResponseEntity.ok(reviewDTO); // Returns 200 with review, or 200 with null body
     }
 

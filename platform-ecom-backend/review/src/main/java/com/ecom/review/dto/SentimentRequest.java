@@ -9,5 +9,4 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class SentimentRequest {
     private String text;
-    private Integer rating;
 }

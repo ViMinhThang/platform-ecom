@@ -1,10 +1,9 @@
-from pydantic import BaseModel, Field
+from pydantic import BaseModel
 from typing import Optional
 
 
 class SentimentRequest(BaseModel):
     text: Optional[str] = None
-    rating: int = Field(..., ge=1, le=5)
 
 
 class SentimentResponse(BaseModel):

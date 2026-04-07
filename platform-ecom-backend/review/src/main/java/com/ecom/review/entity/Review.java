@@ -11,7 +11,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "reviews", uniqueConstraints = {
-        @UniqueConstraint(columnNames = { "user_id", "product_id" })
+        @UniqueConstraint(columnNames = { "user_id", "product_id", "order_id" })
 })
 @Data
 @NoArgsConstructor

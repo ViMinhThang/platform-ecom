@@ -1,5 +1,6 @@
 package com.ecom.user.service.impl;
 
+import com.ecom.common.exception.ResourceNotFoundException;
 import com.ecom.common.service.FileStorageService;
 import com.ecom.user.dtos.UserDTO;
 import com.ecom.user.dtos.response.UserResponse;
@@ -108,6 +109,13 @@ public class AdminUserServiceImpl implements AdminUserService {
     @Override
     public UserDTO getUserById(Long userId) {
         return modelMapper.map(userHelper.findByIdOrThrow(userId), UserDTO.class);
+    }
+
+    @Override
+    public UserDTO getUserByEmail(String email) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException("User", "email", email));
+        return modelMapper.map(user, UserDTO.class);
     }
 
     @Override

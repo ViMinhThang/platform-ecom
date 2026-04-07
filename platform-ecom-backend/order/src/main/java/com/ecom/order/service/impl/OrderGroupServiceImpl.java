@@ -30,6 +30,7 @@ import java.math.BigDecimal;
 public class OrderGroupServiceImpl implements OrderGroupService {
 
     private final OrderGroupRepository orderGroupRepository;
+    private final SubOrderRepository subOrderRepository;
     private final PaymentService paymentService;
     private final UserServiceClient userServiceClient;
     private final AdminOrderMapper adminOrderMapper;
@@ -182,6 +183,15 @@ public class OrderGroupServiceImpl implements OrderGroupService {
         orderGroupRepository.save(group);
 
         return adminOrderMapper.toAdminSubOrderDTO(subOrder);
+    }
+
+    @Override
+    public boolean hasUserPurchasedProduct(String email, Long productId) {
+        UserDTO user = userServiceClient.getUserByEmailSafe(email);
+        if (user == null || user.getId() == null) {
+            return false;
+        }
+        return subOrderRepository.existsByUserIdAndProductIdAndStatusIn(user.getId(), productId);
     }
 
     // ==================== Private Helper Methods ====================

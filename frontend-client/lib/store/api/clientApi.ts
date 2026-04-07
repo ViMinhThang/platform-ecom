@@ -231,12 +231,25 @@ export const api = createApi({
             }),
             providesTags: (_result, _error, productId) => [{ type: 'Review' as const, id: `summary-${productId}` }],
         }),
-        createReview: builder.mutation<void, { productId: number; orderId: number; rating: number; comment?: string; email: string }>({
-            query: (payload) => ({
-                url: '/api/v1/reviews',
-                method: 'POST',
-                body: payload,
-            }),
+        createReview: builder.mutation<void, { productId: number; orderId: number; rating: number; comment?: string; email: string; images?: File[] }>({
+            query: (payload) => {
+                const formData = new FormData();
+                formData.append('review', new Blob([JSON.stringify({
+                    productId: payload.productId,
+                    orderId: payload.orderId,
+                    rating: payload.rating,
+                    comment: payload.comment,
+                    email: payload.email
+                })], { type: 'application/json' }));
+                if (payload.images) {
+                    payload.images.forEach((img) => formData.append('images', img));
+                }
+                return {
+                    url: '/api/v1/reviews',
+                    method: 'POST',
+                    body: formData,
+                };
+            },
             invalidatesTags: ['Review'],
         }),
 

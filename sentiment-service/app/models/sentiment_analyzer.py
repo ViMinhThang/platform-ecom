@@ -12,7 +12,7 @@ NEGATIVE = "NEGATIVE"
 class SentimentAnalyzer:
     """
     Loads a HuggingFace sentiment model from a local directory or model ID.
-    Combines NLP text analysis with the star rating for a weighted sentiment score.
+    Analyzes sentiment purely from text using NLP.
     """
 
     def __init__(self, model_path: str):
@@ -77,11 +77,6 @@ class SentimentAnalyzer:
             return probabilities[-1].item()
 
     @staticmethod
-    def _normalize_rating(rating: int) -> float:
-        """Normalize a 1-5 star rating to a 0.0-1.0 scale."""
-        return (rating - 1) / 4.0
-
-    @staticmethod
     def _score_to_label(score: float) -> str:
         """Convert a 0.0-1.0 score to a sentiment label."""
         if score >= 0.6:
@@ -91,41 +86,28 @@ class SentimentAnalyzer:
         else:
             return NEGATIVE
 
-    @staticmethod
-    def _calculate_rating_sentiment(rating: int) -> tuple[str, float, None]:
-        """Fallback: calculate sentiment from rating only."""
-        score = SentimentAnalyzer._normalize_rating(rating)
-        label = SentimentAnalyzer._score_to_label(score)
-        return label, score, None
-
-    def analyze(self, text: str | None, rating: int) -> tuple[str, float, float | None]:
+    def analyze(self, text: str | None) -> tuple[str, float, float]:
         """
-        Analyze sentiment by combining NLP text analysis with the star rating.
+        Analyze sentiment purely from text using NLP.
 
         Args:
             text: Review comment text (can be None or empty)
-            rating: Star rating (1-5)
 
         Returns:
             Tuple of (sentiment_label, confidence_score, nlp_score)
             - sentiment_label: POSITIVE, NEUTRAL, or NEGATIVE
             - confidence_score: 0.0 to 1.0
-            - nlp_score: Pure text sentiment score (0.0 to 1.0) or None
+            - nlp_score: Pure text sentiment score (0.0 to 1.0)
         """
-        # Fallback to rating-based sentiment if no text
+        # Default to neutral if no text
         if not text or not text.strip():
-            return self._calculate_rating_sentiment(rating)
+            return NEUTRAL, 0.5, 0.5
 
         try:
             nlp_score = self._get_nlp_score(text)
-            rating_score = self._normalize_rating(rating)
-
-            # Weighted combination: 60% NLP, 40% rating
-            final_score = 0.6 * nlp_score + 0.4 * rating_score
-
-            label = self._score_to_label(final_score)
-            return label, round(final_score, 4), round(nlp_score, 4)
+            label = self._score_to_label(nlp_score)
+            return label, round(nlp_score, 4), round(nlp_score, 4)
 
         except Exception as e:
-            logger.error(f"NLP analysis failed, falling back to rating-based: {e}")
-            return self._calculate_rating_sentiment(rating)
+            logger.error(f"NLP analysis failed, falling back to neutral: {e}")
+            return NEUTRAL, 0.5, 0.5

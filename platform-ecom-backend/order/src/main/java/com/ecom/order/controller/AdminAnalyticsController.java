@@ -1,5 +1,6 @@
 package com.ecom.order.controller;
 
+import com.ecom.common.security.AuthContext;
 import com.ecom.common.util.APIResponse;
 import com.ecom.order.dto.DashboardOverviewDTO;
 import com.ecom.order.dto.MonthlyOrdersDTO;
@@ -20,12 +21,12 @@ import java.util.List;
 public class AdminAnalyticsController {
 
     private final AdminAnalyticsService analyticsService;
-
+    private final AuthContext authContext;
     @GetMapping("/overview")
     public ResponseEntity<APIResponse<DashboardOverviewDTO>> getOverview(
             @RequestParam(required = false) Integer year,
             jakarta.servlet.http.HttpServletRequest request) {
-        Long sellerId = extractUserId(request);
+        Long sellerId = authContext.getUserId(request);
         int targetYear = year != null ? year : Year.now().getValue();
         return ResponseBuilder.success("Dashboard overview retrieved successfully",
                 analyticsService.getDashboardOverview(sellerId, targetYear));
@@ -35,7 +36,7 @@ public class AdminAnalyticsController {
     public ResponseEntity<APIResponse<List<MonthlyRevenueDTO>>> getRevenueByMonth(
             @RequestParam(required = false) Integer year,
             jakarta.servlet.http.HttpServletRequest request) {
-        Long sellerId = extractUserId(request);
+        Long sellerId = authContext.getUserId(request);
         int targetYear = year != null ? year : Year.now().getValue();
         return ResponseBuilder.success("Monthly revenue data retrieved successfully",
                 analyticsService.getRevenueByMonth(sellerId, targetYear));
@@ -45,7 +46,7 @@ public class AdminAnalyticsController {
     public ResponseEntity<APIResponse<List<MonthlyOrdersDTO>>> getOrdersByMonth(
             @RequestParam(required = false) Integer year,
             jakarta.servlet.http.HttpServletRequest request) {
-        Long sellerId = extractUserId(request);
+        Long sellerId = authContext.getUserId(request);
         int targetYear = year != null ? year : Year.now().getValue();
         return ResponseBuilder.success("Monthly orders data retrieved successfully",
                 analyticsService.getOrdersByMonth(sellerId, targetYear));
@@ -55,16 +56,10 @@ public class AdminAnalyticsController {
     public ResponseEntity<APIResponse<List<RecentOrderDTO>>> getRecentOrders(
             @RequestParam(defaultValue = "10") int limit,
             jakarta.servlet.http.HttpServletRequest request) {
-        Long sellerId = extractUserId(request);
+        Long sellerId = authContext.getUserId(request);
         return ResponseBuilder.success("Recent orders retrieved successfully",
                 analyticsService.getRecentOrders(sellerId, limit));
     }
 
-    private Long extractUserId(jakarta.servlet.http.HttpServletRequest request) {
-        Object userIdAttr = request.getAttribute("userId");
-        if (userIdAttr == null) {
-            throw new IllegalStateException("Không tìm thấy ID người dùng trong yêu cầu");
-        }
-        return Long.valueOf(userIdAttr.toString());
-    }
+
 }

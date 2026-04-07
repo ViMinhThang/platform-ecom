@@ -18,6 +18,16 @@ public class InternalController {
     private final AddressService addressService;
 
     /**
+     * GET /api/v1/internal/user-service/users/email/{email}
+     * Internal endpoint to get user by email
+     */
+    @GetMapping("/users/email/{email}")
+    public ResponseEntity<APIResponse<UserDTO>> getUserByEmail(@PathVariable String email) {
+        UserDTO user = adminUserService.getUserByEmail(email);
+        return ResponseBuilder.success("User retrieved successfully", user);
+    }
+
+    /**
      * GET /api/v1/internal/users/{userId}/email
      * Internal endpoint for other microservices to get user email
      * Should be protected at gateway level (not exposed publicly)

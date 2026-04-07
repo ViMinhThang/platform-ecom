@@ -110,4 +110,14 @@ public interface SubOrderRepository extends JpaRepository<SubOrder, Long> {
     List<Object[]> getMonthlyOrdersByStatus(
             @Param("sellerId") Long sellerId,
             @Param("year") int year);
+
+    @Query("SELECT COUNT(so) > 0 FROM SubOrder so " +
+            "JOIN so.orderGroup og " +
+            "JOIN so.items item " +
+            "WHERE og.userId = :userId " +
+            "AND item.productId = :productId " +
+            "AND so.status IN ('DELIVERED', 'SHIPPED', 'DELIVERING')")
+    boolean existsByUserIdAndProductIdAndStatusIn(
+            @Param("userId") Long userId,
+            @Param("productId") Long productId);
 }

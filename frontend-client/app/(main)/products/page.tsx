@@ -1,11 +1,13 @@
 "use client";
 
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 import { ProductCard } from "@/components/ProductCard";
 import { useGetProductsQuery } from "@/lib/store/api/clientApi";
+import { Pagination } from "@/components/common/Pagination";
 import { Suspense } from "react";
 
 function ProductsPageContent() {
+  const router = useRouter();
   const searchParams = useSearchParams();
   
   const page = Number(searchParams.get("page")) || 0;
@@ -24,6 +26,12 @@ function ProductsPageContent() {
     pageNumber: data.pageNumber,
     totalPages: data.totalPages,
   } : { pageNumber: 0, totalPages: 0 };
+
+  const handlePageChange = (newPage: number) => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.set("page", newPage.toString());
+    router.push(`${window.location.pathname}?${params.toString()}`);
+  };
 
   return (
     <div className="bg-surface-container-low min-h-screen">
@@ -73,9 +81,11 @@ function ProductsPageContent() {
 
             {pagination.totalPages > 1 && (
               <div className="mt-20 flex justify-center pt-10">
-                <div className="text-sm font-medium text-foreground/50">
-                  Trang {pagination.pageNumber + 1} / {pagination.totalPages}
-                </div>
+                <Pagination
+                  currentPage={pagination.pageNumber}
+                  totalPages={pagination.totalPages}
+                  onPageChange={handlePageChange}
+                />
               </div>
             )}
           </>

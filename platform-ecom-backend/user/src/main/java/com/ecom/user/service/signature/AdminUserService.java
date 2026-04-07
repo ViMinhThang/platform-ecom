@@ -16,5 +16,7 @@ public interface AdminUserService {
 
     public UserDTO getUserById(Long userId);
 
+    public UserDTO getUserByEmail(String email);
+
     public String uploadUserImage(Long userId, org.springframework.web.multipart.MultipartFile image);
 }

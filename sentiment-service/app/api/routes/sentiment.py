@@ -24,11 +24,11 @@ def set_analyzer(sentiment_analyzer):
 
 @router.post("/analyze", response_model=SentimentResponse)
 async def analyze_sentiment(request: SentimentRequest):
-    """Analyze the sentiment of a single review text combined with its star rating."""
+    """Analyze the sentiment of a single review text."""
     if analyzer is None:
         raise HTTPException(status_code=503, detail="Sentiment model not loaded yet")
 
-    label, score, nlp_score = analyzer.analyze(request.text, request.rating)
+    label, score, nlp_score = analyzer.analyze(request.text)
 
     return SentimentResponse(sentiment=label, score=score, nlp_score=nlp_score)
 
@@ -41,7 +41,7 @@ async def analyze_sentiment_batch(request: BatchSentimentRequest):
 
     results = []
     for item in request.items:
-        label, score, nlp_score = analyzer.analyze(item.text, item.rating)
+        label, score, nlp_score = analyzer.analyze(item.text)
         results.append(SentimentResponse(sentiment=label, score=score, nlp_score=nlp_score))
 
     return BatchSentimentResponse(results=results)

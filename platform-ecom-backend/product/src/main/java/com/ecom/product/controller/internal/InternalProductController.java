@@ -2,6 +2,7 @@ package com.ecom.product.controller.internal;
 
 import com.ecom.common.util.APIResponse;
 import com.ecom.common.util.ResponseBuilder;
+import com.ecom.product.dto.ProductDTO;
 import com.ecom.product.service.signature.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +16,12 @@ import java.util.List;
 public class InternalProductController {
 
     private final ProductService productService;
+
+    @GetMapping("/{productId}")
+    public ResponseEntity<APIResponse<ProductDTO>> getProductById(@PathVariable Long productId) {
+        ProductDTO product = productService.getProductById(productId);
+        return ResponseBuilder.success("Product retrieved successfully", product);
+    }
 
     @GetMapping("/seller/{sellerId}/ids")
     public ResponseEntity<APIResponse<List<Long>>> getProductIdsBySellerId(@PathVariable Long sellerId) {

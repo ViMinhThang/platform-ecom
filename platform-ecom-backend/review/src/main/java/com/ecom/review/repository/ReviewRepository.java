@@ -21,6 +21,8 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
 
     Optional<Review> findByUserIdAndProductId(Long userId, Long productId);
 
+    Optional<Review> findByUserIdAndProductIdAndOrderId(Long userId, Long productId, Long orderId);
+
     @Query("SELECT AVG(r.rating) FROM Review r WHERE r.productId = :productId")
     Double findAverageRatingByProductId(@Param("productId") Long productId);
 
@@ -31,6 +33,8 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
     java.util.List<Object[]> getRatingDistributionByProductId(@Param("productId") Long productId);
 
     boolean existsByUserIdAndProductId(Long userId, Long productId);
+
+    boolean existsByUserIdAndProductIdAndOrderId(Long userId, Long productId, Long orderId);
 
     @Query("SELECT r.sentiment, COUNT(r) FROM Review r WHERE r.productId = :productId GROUP BY r.sentiment")
     java.util.List<Object[]> getSentimentDistributionByProductId(@Param("productId") Long productId);

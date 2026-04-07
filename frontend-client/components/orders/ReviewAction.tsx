@@ -23,7 +23,7 @@ export function ReviewAction({ productId, orderId, status, onReview, refreshTrig
             const fetchStatus = async () => {
                 setLoading(true);
                 try {
-                    const data = await checkUserReview(productId);
+                    const data = await checkUserReview(productId, orderId);
                     setReview(data);
                 } catch (error) {
                     console.error("Failed to check review status", error);
@@ -33,7 +33,7 @@ export function ReviewAction({ productId, orderId, status, onReview, refreshTrig
             };
             fetchStatus();
         }
-    }, [productId, status, refreshTrigger]);
+    }, [productId, orderId, status, refreshTrigger]);
 
     if (status !== "DELIVERED") return null;
     if (loading) return <div className="h-8 w-20 animate-pulse bg-muted rounded" />;

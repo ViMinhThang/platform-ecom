@@ -25,4 +25,6 @@ public interface OrderGroupService {
     AdminSubOrderDTO updateSubOrderStatus(Long groupId, Long subOrderId, String newStatus, Long adminId, String notes);
 
     AdminSubOrderDTO updateSubOrderTracking(Long groupId, Long subOrderId, TrackingUpdateRequest request);
+
+    boolean hasUserPurchasedProduct(String email, Long productId);
 }

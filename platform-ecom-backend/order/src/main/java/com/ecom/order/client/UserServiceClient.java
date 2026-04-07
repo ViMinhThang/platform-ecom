@@ -20,6 +20,9 @@ public interface UserServiceClient {
     @GetExchange("/users/{userId}")
     APIResponse<UserDTO> getUser(@PathVariable("userId") Long userId);
 
+    @GetExchange("/users/email/{email}")
+    APIResponse<UserDTO> getUserByEmail(@PathVariable("email") String email);
+
     @GetExchange("/addresses/{addressId}")
     APIResponse<AddressDTO> getAddress(@PathVariable("addressId") Long addressId);
 
@@ -43,6 +46,18 @@ public interface UserServiceClient {
             }
         } catch (Exception e) {
             log.error("Error fetching address details for addressId: {}", addressId, e);
+        }
+        return null;
+    }
+
+    default UserDTO getUserByEmailSafe(String email) {
+        try {
+            APIResponse<UserDTO> response = getUserByEmail(email);
+            if (response != null && response.isSuccess()) {
+                return response.getData();
+            }
+        } catch (Exception e) {
+            log.error("Error fetching user by email: {}", email, e);
         }
         return null;
     }

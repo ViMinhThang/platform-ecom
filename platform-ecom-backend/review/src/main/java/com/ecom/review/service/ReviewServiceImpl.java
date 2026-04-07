@@ -17,6 +17,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -46,14 +47,14 @@ public class ReviewServiceImpl implements ReviewService {
     @Override
     @Transactional
     public ReviewDTO createReview(CreateReviewDTO createReviewDTO, MultipartFile[] images, Long userId, String email) {
-        validateNoDuplicateReview(userId, createReviewDTO.getProductId());
+        validateNoDuplicateReview(userId, createReviewDTO.getProductId(), createReviewDTO.getOrderId());
         validateProductExists(createReviewDTO.getProductId());
         OrderDTO order = validateOrderAndOwnership(createReviewDTO.getOrderId(), userId);
-        
-        String finalEmail = (email != null && !email.trim().isEmpty())
-                                ? email : order.getUserEmail();
-                                
-        validatePurchaseVerification(finalEmail, createReviewDTO.getProductId());
+        validateProductInOrder(order, createReviewDTO.getProductId());
+
+        String finalEmail = (order.getUserEmail() != null && !order.getUserEmail().trim().isEmpty())
+                ? order.getUserEmail()
+                : email;
 
         if (images != null && images.length > 0) {
             for (MultipartFile file : images) {
@@ -137,6 +138,13 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
+    public ReviewDTO getReviewByUserAndProductAndOrder(Long userId, Long productId, Long orderId) {
+        return reviewRepository.findByUserIdAndProductIdAndOrderId(userId, productId, orderId)
+                .map(this::mapToReviewDTO)
+                .orElse(null);
+    }
+
+    @Override
     public ProductReviewSummaryDTO getProductReviewSummary(Long productId) {
         Double averageRating = reviewRepository.findAverageRatingByProductId(productId);
         Long totalReviews = reviewRepository.countByProductId(productId);
@@ -152,9 +160,9 @@ public class ReviewServiceImpl implements ReviewService {
 
     // ==================== Private Validation Methods ====================
 
-    private void validateNoDuplicateReview(Long userId, Long productId) {
-        if (reviewRepository.existsByUserIdAndProductId(userId, productId)) {
-            throw new APIException("You have already reviewed this product");
+    private void validateNoDuplicateReview(Long userId, Long productId, Long orderId) {
+        if (reviewRepository.existsByUserIdAndProductIdAndOrderId(userId, productId, orderId)) {
+            throw new APIException(HttpStatus.BAD_REQUEST, "You have already reviewed this product for this order");
         }
     }
 
@@ -167,7 +175,7 @@ public class ReviewServiceImpl implements ReviewService {
         } catch (ResourceNotFoundException e) {
             throw e;
         } catch (Exception e) {
-            throw new APIException("Unable to verify product. Please try again later.");
+            throw new APIException(HttpStatus.INTERNAL_SERVER_ERROR, "Unable to verify product. Please try again later.");
         }
     }
 
@@ -183,7 +191,7 @@ public class ReviewServiceImpl implements ReviewService {
             OrderDTO order = wrapper.getData();
 
             if (!order.getUserId().equals(userId)) {
-                throw new APIException("This order does not belong to you");
+                throw new APIException(HttpStatus.FORBIDDEN, "This order does not belong to you");
             }
 
             boolean isDelivered = DELIVERED_STATUS.equalsIgnoreCase(order.getOverallStatus())
@@ -194,35 +202,42 @@ public class ReviewServiceImpl implements ReviewService {
             }
 
             if (!isDelivered) {
-                throw new APIException("You can only review products from delivered orders");
+                throw new APIException(HttpStatus.BAD_REQUEST, "You can only review products from delivered orders");
             }
             
             return order;
         } catch (APIException e) {
             throw e;
         } catch (Exception e) {
-            throw new APIException("Unable to verify order. Please try again later.");
+            throw new APIException(HttpStatus.INTERNAL_SERVER_ERROR, "Unable to verify order. Please try again later.");
         }
     }
 
-    private void validatePurchaseVerification(String email, Long productId) {
-        try {
-            ResponseEntity<Boolean> verifyResponse = orderServiceClient.verifyPurchase(email, productId);
-            Boolean hasPurchased = verifyResponse.getBody();
-
-            if (hasPurchased == null || !hasPurchased) {
-                throw new APIException("You must purchase this product before reviewing it");
-            }
-        } catch (APIException e) {
-            throw e;
-        } catch (Exception e) {
-            System.out.println("Warning: Unable to verify purchase: " + e.getMessage());
+    private void validateProductInOrder(OrderDTO order, Long productId) {
+        if (order.getSubOrders() == null || order.getSubOrders().isEmpty()) {
+            throw new APIException(HttpStatus.BAD_REQUEST, "You must purchase this product before reviewing it");
         }
+
+        boolean hasProductInOrder = order.getSubOrders().stream()
+                .filter(subOrder -> isReviewEligibleStatus(subOrder.getStatus()))
+                .filter(subOrder -> subOrder.getItems() != null)
+                .flatMap(subOrder -> subOrder.getItems().stream())
+                .anyMatch(item -> productId.equals(item.getProductId()));
+
+        if (!hasProductInOrder) {
+            throw new APIException(HttpStatus.BAD_REQUEST, "You must purchase this product before reviewing it");
+        }
+    }
+
+    private boolean isReviewEligibleStatus(String status) {
+        return DELIVERED_STATUS.equalsIgnoreCase(status)
+                || "SHIPPED".equalsIgnoreCase(status)
+                || "DELIVERING".equalsIgnoreCase(status);
     }
 
     private void validateReviewOwnership(Review review, Long userId) {
         if (!review.getUserId().equals(userId)) {
-            throw new APIException("You can only modify your own reviews");
+            throw new APIException(HttpStatus.FORBIDDEN, "You can only modify your own reviews");
         }
     }
 
@@ -261,16 +276,16 @@ public class ReviewServiceImpl implements ReviewService {
         double nlpScore = sentimentResult.getNlpScore();
 
         if (rating >= 4 && nlpScore < 0.3) {
-            throw new APIException("Đánh giá không hợp lệ");
+            throw new APIException(HttpStatus.BAD_REQUEST, "Đánh giá không hợp lệ");
         }
         if (rating <= 2 && nlpScore > 0.7) {
-            throw new APIException("Đánh giá không hợp lệ");
+            throw new APIException(HttpStatus.BAD_REQUEST, "Đánh giá không hợp lệ");
         }
         if (rating == 3 && nlpScore < 0.3) {
-            throw new APIException("Đánh giá không hợp lệ");
+            throw new APIException(HttpStatus.BAD_REQUEST, "Đánh giá không hợp lệ");
         }
         if (rating == 3 && nlpScore > 0.7) {
-            throw new APIException("Đánh giá không hợp lệ");
+            throw new APIException(HttpStatus.BAD_REQUEST, "Đánh giá không hợp lệ");
         }
     }
 
@@ -378,7 +393,7 @@ public class ReviewServiceImpl implements ReviewService {
 
     private SentimentResponse analyzeSentiment(String comment) {
         try {
-            SentimentRequest request = new SentimentRequest(comment, null);
+            SentimentRequest request = new SentimentRequest(comment);
             SentimentResponse response = sentimentServiceClient.analyze(request).getBody();
             if (response != null) {
                 return response;

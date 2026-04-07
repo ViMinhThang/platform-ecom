@@ -21,6 +21,14 @@ public class OrderDTO {
     @AllArgsConstructor
     public static class SubOrderDTO {
         private String status;
+        private List<SubOrderItemDTO> items;
+    }
+
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class SubOrderItemDTO {
+        private Long productId;
     }
 
     @Data

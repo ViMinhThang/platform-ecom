@@ -5,6 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useSession } from "next-auth/react";
 import { toast } from "sonner";
 import { useCreateReviewMutation } from "@/lib/store/api/clientApi";
+import { getApiErrorMessage } from "@/lib/api-error-message";
 
 const reviewSchema = z.object({
     rating: z.number().min(1, "Vui lòng chọn số sao đánh giá").max(5),
@@ -71,7 +72,7 @@ export function useReviewForm({
                 onSuccess();
             }
         } catch (error: unknown) {
-            const message = (error as Error).message || "Gửi đánh giá thất bại";
+            const message = getApiErrorMessage(error, "Failed to submit review");
             toast.error(message);
         }
     };
@@ -83,3 +84,4 @@ export function useReviewForm({
         session,
     };
 }
+

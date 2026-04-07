@@ -28,6 +28,14 @@ public class AdminOrderController {
                 orderGroupService.getOrderDetailsAdmin(groupId));
     }
 
+    @GetMapping("/user/{email}/verify-purchase")
+    public ResponseEntity<APIResponse<Boolean>> verifyPurchase(
+            @PathVariable String email,
+            @RequestParam Long productId) {
+        boolean hasPurchased = orderGroupService.hasUserPurchasedProduct(email, productId);
+        return ResponseBuilder.success("Purchase verification completed", hasPurchased);
+    }
+
     @PutMapping("/{groupId}/status")
     public ResponseEntity<APIResponse<AdminOrderGroupDTO>> updateOrderStatus(
             @PathVariable Long groupId,

@@ -91,9 +91,15 @@ export async function getUserReviews(
 
 
 export async function checkUserReview(
-    productId: number | string
+    productId: number | string,
+    orderId?: number | string
 ): Promise<any> {
-    const response = await apiClient.get(`/v1/reviews/check?productId=${productId}`);
+    const params = new URLSearchParams();
+    params.set('productId', productId.toString());
+    if (orderId !== undefined) {
+        params.set('orderId', orderId.toString());
+    }
+    const response = await apiClient.get(`/v1/reviews/check?${params.toString()}`);
     return response.data;
 }
 

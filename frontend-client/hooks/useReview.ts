@@ -2,6 +2,7 @@ import { useSession } from 'next-auth/react';
 import { toast } from 'sonner';
 import { useCreateReviewMutation } from '@/lib/store/api/clientApi';
 import { CreateReviewPayload } from '@/lib/services/review-service';
+import { getApiErrorMessage } from '@/lib/api-error-message';
 
 export function useReview() {
     const { data: session } = useSession();
@@ -22,7 +23,8 @@ export function useReview() {
             await createReviewMutation(payloadWithEmail).unwrap();
             toast.success('Review submitted successfully');
         } catch (error: unknown) {
-            toast.error((error as Error).message || 'Failed to submit review');
+            const message = getApiErrorMessage(error, 'Failed to submit review');
+            toast.error(message);
             throw error;
         }
     };
