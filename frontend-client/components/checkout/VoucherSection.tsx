@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import type { Dispatch, SetStateAction } from 'react';
 import { useGetAutoApplyVouchersQuery, useValidateVoucherMutation, useGetUserProfileQuery } from '@/lib/store/api/clientApi';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -14,9 +15,14 @@ import { Label } from "@/components/ui/label";
 interface VoucherSectionProps {
     discountResult?: DiscountResult | null;
     appliedVoucherCodes?: string[];
+    onAppliedVoucherCodesChange: Dispatch<SetStateAction<string[]>>;
 }
 
-export function VoucherSection({ discountResult, appliedVoucherCodes = [] }: VoucherSectionProps) {
+export function VoucherSection({
+    discountResult,
+    appliedVoucherCodes = [],
+    onAppliedVoucherCodesChange,
+}: VoucherSectionProps) {
     const { data: availableVouchers = [] } = useGetAutoApplyVouchersQuery();
 
     const totalSavings = discountResult ? discountResult.totalDiscount : 0;
@@ -29,7 +35,12 @@ export function VoucherSection({ discountResult, appliedVoucherCodes = [] }: Vou
                     <TicketPercent className="h-4 w-4 text-primary" />
                     Vouchers
                 </h3>
-                <VoucherManagerSheet availableVouchers={availableVouchers} discountResult={discountResult} />
+                <VoucherManagerSheet
+                    availableVouchers={availableVouchers}
+                    discountResult={discountResult}
+                    appliedCodes={appliedVoucherCodes}
+                    setAppliedCodes={onAppliedVoucherCodesChange}
+                />
             </div>
 
             {appliedCount > 0 ? (
@@ -63,12 +74,13 @@ export function VoucherSection({ discountResult, appliedVoucherCodes = [] }: Vou
 interface VoucherManagerSheetProps {
     availableVouchers: VoucherDTO[];
     discountResult?: DiscountResult | null;
+    appliedCodes: string[];
+    setAppliedCodes: Dispatch<SetStateAction<string[]>>;
 }
 
-function VoucherManagerSheet({ availableVouchers, discountResult }: VoucherManagerSheetProps) {
+function VoucherManagerSheet({ availableVouchers, discountResult, appliedCodes, setAppliedCodes }: VoucherManagerSheetProps) {
     const [inputCode, setInputCode] = useState('');
     const [isOpen, setIsOpen] = useState(false);
-    const [appliedCodes, setAppliedCodes] = useState<string[]>([]);
     
     const { data: user } = useGetUserProfileQuery();
     const [validateVoucher, { isLoading: checkingCode }] = useValidateVoucherMutation();
@@ -86,7 +98,7 @@ function VoucherManagerSheet({ availableVouchers, discountResult }: VoucherManag
         try {
             await validateVoucher({ code: inputCode, userId: Number(user.userId) }).unwrap();
             toast.success("Voucher added!");
-            setAppliedCodes(prev => [...prev, inputCode]);
+            setAppliedCodes(prev => (prev.includes(inputCode) ? prev : [...prev, inputCode]));
             setInputCode('');
         } catch (err) {
             toast.error((err as Error).message || "Invalid voucher");
@@ -165,7 +177,7 @@ function VoucherManagerSheet({ availableVouchers, discountResult }: VoucherManag
                                     <Label htmlFor="prod-none" className="text-sm cursor-pointer flex-1 text-zinc-500">None</Label>
                                 </div>
                                 {productVouchers.map(v => (
-                                    <VoucherItem key={v.id} voucher={v} availableVouchers={availableVouchers} appliedCodes={appliedCodes} discountResult={discountResult} />
+                                    <VoucherItem key={v.id} voucher={v} appliedCodes={appliedCodes} discountResult={discountResult} />
                                 ))}
                             </RadioGroup>
                         ) : (
@@ -190,7 +202,7 @@ function VoucherManagerSheet({ availableVouchers, discountResult }: VoucherManag
                                     <Label htmlFor="ship-none" className="text-[10px] font-bold uppercase tracking-widest cursor-pointer flex-1 text-muted-foreground">Không sử dụng</Label>
                                 </div>
                                 {shippingVouchers.map(v => (
-                                    <VoucherItem key={v.id} voucher={v} availableVouchers={availableVouchers} appliedCodes={appliedCodes} discountResult={discountResult} />
+                                    <VoucherItem key={v.id} voucher={v} appliedCodes={appliedCodes} discountResult={discountResult} />
                                 ))}
                             </RadioGroup>
                         ) : (
@@ -211,12 +223,11 @@ function VoucherManagerSheet({ availableVouchers, discountResult }: VoucherManag
 
 interface VoucherItemProps {
     voucher: VoucherDTO;
-    availableVouchers: VoucherDTO[];
     appliedCodes: string[];
     discountResult?: DiscountResult | null;
 }
 
-function VoucherItem({ voucher, availableVouchers, appliedCodes, discountResult }: VoucherItemProps) {
+function VoucherItem({ voucher, appliedCodes, discountResult }: VoucherItemProps) {
     const voucherIdentifier = voucher.code || `ID:${voucher.id}`;
     
     const isActuallyApplied = discountResult && (
@@ -262,3 +273,4 @@ function VoucherItem({ voucher, availableVouchers, appliedCodes, discountResult 
         </Label>
     );
 }
+

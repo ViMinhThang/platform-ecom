@@ -54,7 +54,7 @@ export default function CheckoutPage() {
 
     const { shippingFee, loading: shippingLoading, calculateTotalShipping } = useShipping();
     const { data: addresses = [] } = useGetAddressesQuery();
-    const { discountResult } = usePromotion(cart, shippingFee);
+    const { discountResult, appliedVoucherCodes, setAppliedVoucherCodes } = usePromotion(cart, shippingFee);
 
     useEffect(() => {
         if (cart && checkout.selectedAddressId && addresses.length > 0) {
@@ -272,7 +272,11 @@ export default function CheckoutPage() {
                                     <CreditCard className="h-4 w-4 text-primary" />
                                 </div>
                                 <div className="pt-1">
-                                    <VoucherSection />
+                                    <VoucherSection
+                                        discountResult={discountResult}
+                                        appliedVoucherCodes={appliedVoucherCodes}
+                                        onAppliedVoucherCodesChange={setAppliedVoucherCodes}
+                                    />
                                 </div>
 
                                 <div className="pt-4 mt-2 flex justify-between items-center">

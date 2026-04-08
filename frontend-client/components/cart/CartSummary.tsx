@@ -14,7 +14,7 @@ interface CartSummaryProps {
 
 export function CartSummary({ cart }: CartSummaryProps) {
     const router = useRouter();
-    const { discountResult, appliedVoucherCodes } = usePromotion(cart);
+    const { discountResult, appliedVoucherCodes, setAppliedVoucherCodes } = usePromotion(cart);
 
     const finalTotal = discountResult ? discountResult.finalTotal : cart.totalAmount;
 
@@ -38,7 +38,11 @@ export function CartSummary({ cart }: CartSummaryProps) {
             </div>
 
             <div className="bg-surface-container-lowest p-6 rounded-xl space-y-4 shadow-sm border border-border">
-                <VoucherSection discountResult={discountResult} appliedVoucherCodes={appliedVoucherCodes} />
+                <VoucherSection
+                    discountResult={discountResult}
+                    appliedVoucherCodes={appliedVoucherCodes}
+                    onAppliedVoucherCodesChange={setAppliedVoucherCodes}
+                />
             </div>
 
             <div className="flex justify-between items-end mb-8 pt-4 border-t border-border">
