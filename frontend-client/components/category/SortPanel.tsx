@@ -28,23 +28,23 @@ export function SortPanel({ totalResults }: SortPanelProps) {
     };
 
     return (
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 gap-4">
-            <p className="text-sm text-muted-foreground">
-                Showing <span className="font-medium text-foreground">{totalResults}</span> results
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 font-labels">
+            <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-foreground/40">
+                Hiển thị <span className="text-foreground">{totalResults}</span> kết quả
             </p>
 
-            <div className="flex items-center gap-2">
-                <span className="text-sm text-muted-foreground whitespace-nowrap">Sort by:</span>
+            <div className="flex items-center gap-4">
+                <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-foreground/40 whitespace-nowrap">Sắp xếp:</span>
                 <Select value={currentSort} onValueChange={handleSortChange}>
-                    <SelectTrigger className="w-[180px]">
-                        <SelectValue placeholder="Sort by" />
+                    <SelectTrigger className="w-[200px] rounded-none border-foreground/10 bg-transparent text-[10px] font-bold uppercase tracking-widest h-10">
+                        <SelectValue placeholder="Sắp xếp theo" />
                     </SelectTrigger>
-                    <SelectContent>
-                        <SelectItem value="createdAt-desc">Newest</SelectItem>
-                        <SelectItem value="price-asc">Price: Low to High</SelectItem>
-                        <SelectItem value="price-desc">Price: High to Low</SelectItem>
-                        <SelectItem value="totalSold-desc">Best Selling</SelectItem>
-                        <SelectItem value="averageRating-desc">Top Rated</SelectItem>
+                    <SelectContent className="rounded-none border-foreground/10 font-labels">
+                        <SelectItem value="createdAt-desc" className="text-[10px] font-bold uppercase tracking-widest">Mới nhất</SelectItem>
+                        <SelectItem value="totalSold-desc" className="text-[10px] font-bold uppercase tracking-widest">Bán chạy nhất</SelectItem>
+                        <SelectItem value="price-asc" className="text-[10px] font-bold uppercase tracking-widest">Giá: Thấp đến Cao</SelectItem>
+                        <SelectItem value="price-desc" className="text-[10px] font-bold uppercase tracking-widest">Giá: Cao đến Thấp</SelectItem>
+                        <SelectItem value="averageRating-desc" className="text-[10px] font-bold uppercase tracking-widest">Đánh giá cao nhất</SelectItem>
                     </SelectContent>
                 </Select>
             </div>

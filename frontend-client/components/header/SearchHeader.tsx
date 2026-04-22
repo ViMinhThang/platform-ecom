@@ -85,10 +85,9 @@ export const SearchHeader = () => {
                 {/* CENTER NAVIGATION */}
                 <nav className="hidden lg:flex items-center gap-10">
                     {[
-                        { label: "Cửa hàng", href: "/shop" },
-                        { label: "Khuyến mãi", href: "/deals" },
-                        { label: "Hàng mới về", href: "/new-arrivals" },
-                        { label: "Bán chạy", href: "/best-sellers" }
+                        { label: "Sản phẩm", href: "/products" },
+                        { label: "Khuyến mãi", href: "/sale-campaigns" },
+                        { label: "Bán chạy", href: "/products?sortBy=totalSold&sortOrder=desc" }
                     ].map((item) => (
                         <Link 
                             key={item.label} 

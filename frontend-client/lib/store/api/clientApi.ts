@@ -2,7 +2,7 @@ import { createApi, fetchBaseQuery, BaseQueryFn } from '@reduxjs/toolkit/query/r
 import { getSession } from 'next-auth/react';
 import { env } from '@/lib/config/env';
 
-import type { Category, ProductResponse, ProductDetail } from '@/types/product';
+import type { Category, ProductResponse, ProductDetail, TopSeller } from '@/types/product';
 import type { CartDTO, AddToCartRequest } from '@/types/cart.types';
 import type { Address } from '@/types/user';
 import type { ReviewResponse, ProductReviewSummary } from '@/types/review';
@@ -54,6 +54,8 @@ interface GetProductsQueryParams {
     minPrice?: number;
     maxPrice?: number;
     minRating?: number;
+    inStock?: boolean;
+    sellerIds?: number[];
 }
 
 const transformProductsParams = (params: GetProductsQueryParams): URLSearchParams => {
@@ -68,6 +70,8 @@ const transformProductsParams = (params: GetProductsQueryParams): URLSearchParam
     if (params.minPrice !== undefined) searchParams.set('minPrice', params.minPrice.toString());
     if (params.maxPrice !== undefined) searchParams.set('maxPrice', params.maxPrice.toString());
     if (params.minRating !== undefined) searchParams.set('minRating', params.minRating.toString());
+    if (params.inStock !== undefined) searchParams.set('inStock', params.inStock.toString());
+    if (params.sellerIds && params.sellerIds.length > 0) searchParams.set('sellerIds', params.sellerIds.join(','));
     
     return searchParams;
 };
@@ -118,6 +122,12 @@ export const api = createApi({
                 method: 'GET',
             }),
             providesTags: (_result, _error, slug) => [{ type: 'ProductDetail' as const, id: `slug-${slug}` }],
+        }),
+        getTopSellers: builder.query<TopSeller[], { categorySlug: string; limit?: number }>({
+            query: ({ categorySlug, limit = 10 }) => ({
+                url: `/api/v1/products/categories/${categorySlug}/top-sellers?limit=${limit}`,
+                method: 'GET',
+            }),
         }),
 
         // ============== CART ==============
@@ -349,6 +359,7 @@ export const {
     useLazyGetProductsQuery,
     useGetProductByIdQuery,
     useGetProductBySlugQuery,
+    useGetTopSellersQuery,
     // Cart
     useGetCartQuery,
     useLazyGetCartQuery,

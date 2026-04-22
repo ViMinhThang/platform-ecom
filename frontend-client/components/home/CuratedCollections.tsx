@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { useGetCategoriesQuery } from "@/lib/store/api/clientApi";
+import { imageUrl } from "@/lib/utils/imageUrl";
 
 // Mapping fallback images for categories that might not have them in backend
 const CATEGORY_IMAGES: Record<string, string> = {
@@ -46,11 +47,11 @@ export const CuratedCollections = () => {
                 {(categories || []).slice(0, 6).map((cat) => (
                     <Link
                         key={cat.id}
-                        href={`/products?category=${cat.slug}`}
+                        href={`/category/${cat.slug}`}
                         className="group relative aspect-square overflow-hidden rounded-xl bg-surface-container/30"
                     >
                         <Image
-                            src={"http://localhost:8080/uploads/"+cat.imageUrl || CATEGORY_IMAGES[cat.slug] || "/banner-grid-1.avif"}
+                            src={cat.imageUrl ? imageUrl.category(cat.imageUrl) : (CATEGORY_IMAGES[cat.slug] || "/banner-grid-1.avif")}
                             alt={cat.name}
                             fill
                             className="object-cover transition-transform duration-700 opacity-80"

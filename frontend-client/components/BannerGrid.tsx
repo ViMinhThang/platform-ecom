@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 
 export function BannerGrid() {
@@ -22,10 +23,11 @@ export function BannerGrid() {
               Up to 50% off on selected items. Don't miss out on these deals.
             </p>
             <Button
+              asChild
               size="lg"
               className="bg-white text-black hover:bg-zinc-200 border-none"
             >
-              Shop Sale
+              <Link href="/sale-campaigns">Shop Sale</Link>
             </Button>
           </div>
         </div>
@@ -45,10 +47,11 @@ export function BannerGrid() {
                 New Arrivals
               </h4>
               <Button
+                asChild
                 variant="outline"
                 className="text-white border-white hover:bg-white/20"
               >
-                Check It Out
+                <Link href="/products?sortBy=createdAt&sortOrder=desc">Check It Out</Link>
               </Button>
             </div>
           </div>
@@ -65,10 +68,11 @@ export function BannerGrid() {
                 Tech Deals
               </h4>
               <Button
+                asChild
                 variant="outline"
                 className="text-white border-white hover:bg-white/20"
               >
-                Shop Gadgets
+                <Link href="/category/electronics">Shop Gadgets</Link>
               </Button>
             </div>
           </div>

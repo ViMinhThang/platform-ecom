@@ -104,6 +104,13 @@ export interface ProductDetail extends Product {
   options: ProductOption[];
   variants: ProductVariant[];
 }
+
+export interface TopSeller {
+  sellerId: number;
+  sellerName: string;
+  imageUrl?: string;
+}
+
 export interface ProductImage {
   id: number;
   imageUrl: string;

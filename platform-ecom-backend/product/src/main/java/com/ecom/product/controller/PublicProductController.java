@@ -28,7 +28,9 @@ public class PublicProductController {
             @RequestParam(name = "search", required = false) String search,
             @RequestParam(name = "minPrice", required = false) BigDecimal minPrice,
             @RequestParam(name = "maxPrice", required = false) BigDecimal maxPrice,
-            @RequestParam(name = "minRating", required = false) Double minRating) {
+            @RequestParam(name = "minRating", required = false) Double minRating,
+            @RequestParam(name = "inStock", required = false) Boolean inStock,
+            @RequestParam(name = "sellerIds", required = false) List<Long> sellerIds) {
         ProductResponse productResponse = productService.getAllPublicProducts(
                 paginationRequest.getPageNumber(),
                 paginationRequest.getPageSize(),
@@ -38,7 +40,9 @@ public class PublicProductController {
                 paginationRequest.getSortOrder(),
                 minPrice,
                 maxPrice,
-                minRating);
+                minRating,
+                inStock,
+                sellerIds);
         return ResponseBuilder.success("Products retrieved successfully", productResponse);
     }
 
@@ -115,7 +119,8 @@ public class PublicProductController {
             @RequestParam(name = "category", required = false) String category,
             @RequestParam(name = "minPrice", required = false) BigDecimal minPrice,
             @RequestParam(name = "maxPrice", required = false) BigDecimal maxPrice,
-            @RequestParam(name = "minRating", required = false) Double minRating) {
+            @RequestParam(name = "minRating", required = false) Double minRating,
+            @RequestParam(name = "inStock", required = false) Boolean inStock) {
         ProductResponse productResponse = productService.getAllPublicProductsBySeller(
                 userId,
                 paginationRequest.getPageNumber(),
@@ -125,7 +130,8 @@ public class PublicProductController {
                 paginationRequest.getSortOrder(),
                 minPrice,
                 maxPrice,
-                minRating);
+                minRating,
+                inStock);
         return ResponseBuilder.success("Products retrieved successfully", productResponse);
     }
 

@@ -96,38 +96,57 @@ public interface ProductRepository extends JpaRepository<Product, Long>, JpaSpec
     // ==================== Vector Search Queries ====================
 
     /**
-     * Vector similarity search - finds products most similar to query vector
+     * Hybrid search - combines vector similarity with keyword text matching boost.
+     * Keyword boost: +0.3 for name match, +0.15 for category/description match.
+     * Filters out results below minimum similarity threshold.
      */
     @Query(value = """
                   SELECT p.id, p.name, p.slug, p.description, c.name as category_name,
                          p.min_price, p.max_price, p.average_rating, p.total_sold, p.updated_at,
                          (SELECT image_url FROM product_images WHERE product_id = p.id LIMIT 1) as image_url,
-                         1 - (p.embedding <=> cast(:queryVector as vector)) as similarity
+                         (
+                           (1 - (p.embedding <=> cast(:queryVector as vector)))
+                           + CASE WHEN :keyword != '' AND LOWER(p.name) LIKE LOWER(CONCAT('%', :keyword, '%')) THEN 0.3 ELSE 0 END
+                           + CASE WHEN :keyword != '' AND (LOWER(COALESCE(c.name, '')) LIKE LOWER(CONCAT('%', :keyword, '%'))
+                                  OR LOWER(COALESCE(p.description, '')) LIKE LOWER(CONCAT('%', :keyword, '%'))) THEN 0.15 ELSE 0 END
+                         ) as similarity
                   FROM products p
                   LEFT JOIN categories c ON p.category_id = c.id
-                  WHERE p.embedding IS NOT NULL AND p.deleted = false
-                  ORDER BY p.embedding <=> cast(:queryVector as vector)
+                  WHERE p.embedding IS NOT NULL AND p.deleted = false AND p.status = 'ACTIVE'
+                    AND (1 - (p.embedding <=> cast(:queryVector as vector))) >= 0.3
+                  ORDER BY similarity DESC
                   LIMIT :limit
                   """, nativeQuery = true)
-    List<Object[]> findSimilarProducts(@Param("queryVector") String queryVector, @Param("limit") int limit);
+    List<Object[]> findSimilarProducts(
+                  @Param("queryVector") String queryVector,
+                  @Param("keyword") String keyword,
+                  @Param("limit") int limit);
 
     /**
-     * Vector similarity search with price range filter
+     * Hybrid search with price range filter.
+     * Combines vector similarity with keyword text matching boost.
      */
     @Query(value = """
                   SELECT p.id, p.name, p.slug, p.description, c.name as category_name,
                          p.min_price, p.max_price, p.average_rating, p.total_sold, p.updated_at,
                          (SELECT image_url FROM product_images WHERE product_id = p.id LIMIT 1) as image_url,
-                         1 - (p.embedding <=> cast(:queryVector as vector)) as similarity
+                         (
+                           (1 - (p.embedding <=> cast(:queryVector as vector)))
+                           + CASE WHEN :keyword != '' AND LOWER(p.name) LIKE LOWER(CONCAT('%', :keyword, '%')) THEN 0.3 ELSE 0 END
+                           + CASE WHEN :keyword != '' AND (LOWER(COALESCE(c.name, '')) LIKE LOWER(CONCAT('%', :keyword, '%'))
+                                  OR LOWER(COALESCE(p.description, '')) LIKE LOWER(CONCAT('%', :keyword, '%'))) THEN 0.15 ELSE 0 END
+                         ) as similarity
                   FROM products p
                   LEFT JOIN categories c ON p.category_id = c.id
-                  WHERE p.embedding IS NOT NULL AND p.deleted = false
+                  WHERE p.embedding IS NOT NULL AND p.deleted = false AND p.status = 'ACTIVE'
                     AND p.min_price >= :minPrice AND p.min_price <= :maxPrice
-                  ORDER BY p.embedding <=> cast(:queryVector as vector)
+                    AND (1 - (p.embedding <=> cast(:queryVector as vector))) >= 0.25
+                  ORDER BY similarity DESC
                   LIMIT :limit
                   """, nativeQuery = true)
     List<Object[]> findSimilarProductsWithPriceRange(
                   @Param("queryVector") String queryVector,
+                  @Param("keyword") String keyword,
                   @Param("minPrice") BigDecimal minPrice,
                   @Param("maxPrice") BigDecimal maxPrice,
                   @Param("limit") int limit);
@@ -161,7 +180,8 @@ public interface ProductRepository extends JpaRepository<Product, Long>, JpaSpec
                           1.0 as similarity
                    FROM products p
                    LEFT JOIN categories c ON p.category_id = c.id
-                   WHERE p.deleted = false AND p.min_price BETWEEN :minPrice AND :maxPrice
+                   WHERE p.deleted = false AND p.status = 'ACTIVE'
+                     AND p.min_price BETWEEN :minPrice AND :maxPrice
                   ORDER BY p.total_sold DESC NULLS LAST
                   LIMIT :limit
                   """, nativeQuery = true)
@@ -180,7 +200,7 @@ public interface ProductRepository extends JpaRepository<Product, Long>, JpaSpec
                           1.0 as similarity
                    FROM products p
                    LEFT JOIN categories c ON p.category_id = c.id
-                   WHERE p.deleted = false
+                   WHERE p.deleted = false AND p.status = 'ACTIVE'
                      AND (LOWER(p.name) LIKE LOWER(CONCAT('%', :brand, '%'))
                          OR LOWER(c.name) LIKE LOWER(CONCAT('%', :brand, '%')))
                   ORDER BY p.total_sold DESC NULLS LAST
@@ -198,7 +218,7 @@ public interface ProductRepository extends JpaRepository<Product, Long>, JpaSpec
                           1.0 as similarity
                    FROM products p
                    LEFT JOIN categories c ON p.category_id = c.id
-                   WHERE p.deleted = false
+                   WHERE p.deleted = false AND p.status = 'ACTIVE'
                      AND (:keyword = '' OR LOWER(p.name) LIKE LOWER(CONCAT('%', :keyword, '%'))
                           OR LOWER(c.name) LIKE LOWER(CONCAT('%', :keyword, '%')))
                    ORDER BY
@@ -220,7 +240,7 @@ public interface ProductRepository extends JpaRepository<Product, Long>, JpaSpec
                           1.0 as similarity
                    FROM products p
                    LEFT JOIN categories c ON p.category_id = c.id
-                   WHERE p.deleted = false
+                   WHERE p.deleted = false AND p.status = 'ACTIVE'
                      AND (:keyword = '' OR LOWER(p.name) LIKE LOWER(CONCAT('%', :keyword, '%'))
                           OR LOWER(c.name) LIKE LOWER(CONCAT('%', :keyword, '%')))
                    ORDER BY

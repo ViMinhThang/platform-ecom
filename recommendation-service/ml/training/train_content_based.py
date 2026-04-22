@@ -44,7 +44,7 @@ async def train_content_based_model():
         logger.warning("No valid products for training after filtering")
         return
     
-    model = ContentBasedModel()
+    model = ContentBasedModel(model_path=settings.content_model_path)
     model.train(df)
     
     logger.info(f"Content-based model trained successfully with {len(df)} products")

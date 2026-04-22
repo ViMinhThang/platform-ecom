@@ -5,12 +5,43 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c48beeac-7758-42e4-81dd-f068fbcd38be" name="Changes" comment="update spring cloud stream dependency">
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/app/(main)/checkout/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/app/(main)/checkout/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/cart/CartSummary.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/cart/CartSummary.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/checkout/VoucherSection.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/checkout/VoucherSection.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-client/app/(main)/category/[slug]/CategoryPageClient.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/app/(main)/category/[slug]/CategoryPageClient.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-client/components/BannerGrid.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/BannerGrid.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-client/components/ProductCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/ProductCard.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-client/components/category/FilterPanel.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/category/FilterPanel.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-client/components/category/SortPanel.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/category/SortPanel.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-client/components/header/SearchHeader.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/header/SearchHeader.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-client/components/home/CuratedCollections.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/home/CuratedCollections.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-client/components/home/ProductFeed.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/home/ProductFeed.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-client/components/product/RelatedProducts.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/product/RelatedProducts.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-client/lib/store/api/clientApi.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/lib/store/api/clientApi.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-client/types/product.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/types/product.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/logs/order-service.log" beforeDir="false" afterPath="$PROJECT_DIR$/logs/order-service.log" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/logs/user-service.log" beforeDir="false" afterPath="$PROJECT_DIR$/logs/user-service.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/analytics/src/main/java/com/ecom/analytics/controller/MLDataController.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/analytics/src/main/java/com/ecom/analytics/controller/MLDataController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/analytics/src/main/java/com/ecom/analytics/repository/UserEventRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/analytics/src/main/java/com/ecom/analytics/repository/UserEventRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/analytics/src/main/java/com/ecom/analytics/service/MLDataService.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/analytics/src/main/java/com/ecom/analytics/service/MLDataService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/analytics/src/main/java/com/ecom/analytics/service/impl/MLDataServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/analytics/src/main/java/com/ecom/analytics/service/impl/MLDataServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/chatbot/src/main/java/com/ecom/chatbot/client/EmbeddingServiceClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/chatbot/src/main/java/com/ecom/chatbot/client/EmbeddingServiceClient.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/chatbot/src/main/java/com/ecom/chatbot/service/impl/ChatbotServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/chatbot/src/main/java/com/ecom/chatbot/service/impl/ChatbotServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/chatbot/src/main/java/com/ecom/chatbot/tools/ProductTools.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/chatbot/src/main/java/com/ecom/chatbot/tools/ProductTools.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/controller/PublicProductController.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/controller/PublicProductController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/helper/ProductSearchHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/helper/ProductSearchHelper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/repository/ProductRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/repository/ProductRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/service/impl/EmbeddingServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/service/impl/EmbeddingServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/service/impl/ProductServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/service/impl/ProductServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/service/signature/ProductService.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/service/signature/ProductService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/utils/ProductUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/utils/ProductUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/recommendation-service/app/clients/analytics_client.py" beforeDir="false" afterPath="$PROJECT_DIR$/recommendation-service/app/clients/analytics_client.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/recommendation-service/app/clients/product_client.py" beforeDir="false" afterPath="$PROJECT_DIR$/recommendation-service/app/clients/product_client.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/recommendation-service/app/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/recommendation-service/app/config.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/recommendation-service/app/models/collaborative.py" beforeDir="false" afterPath="$PROJECT_DIR$/recommendation-service/app/models/collaborative.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/recommendation-service/app/models/content_based.py" beforeDir="false" afterPath="$PROJECT_DIR$/recommendation-service/app/models/content_based.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/recommendation-service/app/services/feature_store.py" beforeDir="false" afterPath="$PROJECT_DIR$/recommendation-service/app/services/feature_store.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/recommendation-service/app/services/recommendation_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/recommendation-service/app/services/recommendation_service.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/recommendation-service/ml/training/train_content_based.py" beforeDir="false" afterPath="$PROJECT_DIR$/recommendation-service/ml/training/train_content_based.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -101,12 +132,12 @@
     &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
     &quot;last_opened_file_path&quot;: &quot;C:/Users/huynh/Desktop/Projects/platform-ecom&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;SDKs&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
     &quot;project.structure.proportion&quot;: &quot;0.15845825&quot;,
     &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
     &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;,
     &quot;run.configurations.included.in.services&quot;: &quot;true&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;kafka_conn_settings&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
@@ -164,7 +195,7 @@
       </map>
     </option>
   </component>
-  <component name="RunManager" selected="Python.main (1)">
+  <component name="RunManager" selected="Python.main">
     <configuration name="analytics-server" type="Application" factoryName="Application" focusToolWindowBeforeRun="true">
       <option name="ALTERNATIVE_JRE_PATH" value="25" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
@@ -241,6 +272,16 @@
       </option>
       <option name="MAIN_CLASS_NAME" value="com.ecom.order.OrderApplication" />
       <module name="order" />
+      <extension name="net.ashald.envfile">
+        <option name="IS_ENABLED" value="false" />
+        <option name="IS_SUBST" value="false" />
+        <option name="IS_PATH_MACRO_SUPPORTED" value="false" />
+        <option name="IS_IGNORE_MISSING_FILES" value="false" />
+        <option name="IS_ENABLE_EXPERIMENTAL_INTEGRATIONS" value="false" />
+        <ENTRIES>
+          <ENTRY IS_ENABLED="true" PARSER="runconfig" IS_EXECUTABLE="false" />
+        </ENTRIES>
+      </extension>
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -345,6 +386,7 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
+      <option name="SDK_NAME" value="Python 3.12 (platform-ecom)" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/recommendation-service/app" />
       <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
@@ -475,8 +517,8 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.main (1)" />
         <item itemvalue="Python.main" />
+        <item itemvalue="Python.main (1)" />
         <item itemvalue="JUnit.com.ecom.product.service in product" />
       </list>
     </recent_temporary>
@@ -696,8 +738,17 @@
           <line>71</line>
           <option name="timeStamp" value="2" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/recommendation-service/app/main.py</url>
+          <line>88</line>
+          <option name="timeStamp" value="3" />
+        </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/platform_ecom$user_service.ic" NAME="user-service Coverage Results" MODIFIED="1758374933525" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true" />

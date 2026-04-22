@@ -86,9 +86,10 @@ public class ProductServiceImpl implements ProductService {
     public ProductResponse getAllPublicProducts(Integer page, Integer perPage,
             String category, String search,
             String sortBy, String sortOrder,
-            BigDecimal minPrice, BigDecimal maxPrice, Double minRating) {
+            BigDecimal minPrice, BigDecimal maxPrice, Double minRating,
+            Boolean inStock, List<Long> sellerIds) {
         Pageable pageable = PageableUtils.createPageable(page, perPage, sortBy, sortOrder);
-        return searchHelper.getAllPublicProducts(pageable, category, search, minPrice, maxPrice, minRating);
+        return searchHelper.getAllPublicProducts(pageable, category, search, minPrice, maxPrice, minRating, inStock, sellerIds);
     }
 
     @Override
@@ -147,9 +148,9 @@ public class ProductServiceImpl implements ProductService {
     @Override
     @Transactional(readOnly = true)
     public ProductResponse getAllPublicProductsBySeller(Long userId, Integer page, Integer perPage, String category,
-            String sortBy, String sortOrder, BigDecimal minPrice, BigDecimal maxPrice, Double minRating) {
+            String sortBy, String sortOrder, BigDecimal minPrice, BigDecimal maxPrice, Double minRating, Boolean inStock) {
         Pageable pageable = PageableUtils.createPageable(page, perPage, sortBy, sortOrder);
-        return searchHelper.getAllPublicProductsBySeller(userId, pageable, category, minPrice, maxPrice, minRating);
+        return searchHelper.getAllPublicProductsBySeller(userId, pageable, category, minPrice, maxPrice, minRating, inStock);
     }
 
     @Override

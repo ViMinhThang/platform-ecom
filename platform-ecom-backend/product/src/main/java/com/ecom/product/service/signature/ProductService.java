@@ -23,7 +23,8 @@ public interface ProductService {
 
         ProductResponse getAllPublicProducts(Integer page, Integer perPage, String category, String search,
                         String sortBy,
-                        String sortOrder, BigDecimal minPrice, BigDecimal maxPrice, Double minRating);
+                        String sortOrder, BigDecimal minPrice, BigDecimal maxPrice, Double minRating,
+                        Boolean inStock, List<Long> sellerIds);
 
         ProductDTO getPublicProductById(Long productId);
 
@@ -34,7 +35,8 @@ public interface ProductService {
         List<TopSellerDTO> getTopSellersByCategory(String categorySlug, int limit);
 
         ProductResponse getAllPublicProductsBySeller(Long userId, Integer page, Integer perPage, String category,
-                        String sortBy, String sortOrder, BigDecimal minPrice, BigDecimal maxPrice, Double minRating);
+                        String sortBy, String sortOrder, BigDecimal minPrice, BigDecimal maxPrice, Double minRating,
+                        Boolean inStock);
 
         ProductDetailDTO getProductBySlug(String slug);
 

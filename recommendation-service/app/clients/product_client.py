@@ -26,7 +26,8 @@ class ProductClient:
         url = f"{self.BASE_URL}/api/v1/products"
         
         async with httpx.AsyncClient(timeout=10.0) as client:
-            response = await client.get(url, params={"page": page, "perPage": per_page})
+            # product-service uses PaginationRequest: page + size
+            response = await client.get(url, params={"page": page, "size": per_page})
             response.raise_for_status()
             result = response.json()
             return result.get("data", {}).get("content", [])
@@ -36,7 +37,11 @@ class ProductClient:
         if not product_ids:
             return []
         
-        # Fetch all products and filter by ID
-        all_products = await self.fetch_all_paginated(max_pages=10)
-        id_set = set(product_ids)
-        return [p for p in all_products if p.get("id") in id_set]
+        url = f"{self.BASE_URL}/api/v1/products/batch"
+        payload = {"productIds": product_ids}
+
+        async with httpx.AsyncClient(timeout=10.0) as client:
+            response = await client.post(url, json=payload)
+            response.raise_for_status()
+            result = response.json()
+            return result.get("data", [])

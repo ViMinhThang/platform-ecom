@@ -29,16 +29,16 @@ public class ProductSearchHelper {
     }
 
     public ProductResponse getAllPublicProducts(Pageable pageable, String category, String search,
-            BigDecimal minPrice, BigDecimal maxPrice, Double minRating) {
+            BigDecimal minPrice, BigDecimal maxPrice, Double minRating, Boolean inStock, List<Long> sellerIds) {
         Specification<Product> specification = buildPublicProductSpecification(search, category, minPrice, maxPrice,
-                minRating);
+                minRating, inStock, sellerIds);
         return fetchAndMapProducts(specification, pageable);
     }
 
     public ProductResponse getAllPublicProductsBySeller(Long userId, Pageable pageable, String category,
-            BigDecimal minPrice, BigDecimal maxPrice, Double minRating) {
+            BigDecimal minPrice, BigDecimal maxPrice, Double minRating, Boolean inStock) {
         Specification<Product> specification = buildPublicProductSpecification(null, category, minPrice, maxPrice,
-                minRating).and(ProductUtils.userIdEquals(userId));
+                minRating, inStock, null).and(ProductUtils.userIdEquals(userId));
         return fetchAndMapProducts(specification, pageable);
     }
 
@@ -49,7 +49,7 @@ public class ProductSearchHelper {
     }
 
     private Specification<Product> buildPublicProductSpecification(String search, String category, BigDecimal minPrice,
-            BigDecimal maxPrice, Double minRating) {
+            BigDecimal maxPrice, Double minRating, Boolean inStock, List<Long> sellerIds) {
         Specification<Product> spec = ProductUtils.statusEquals(ProductStatus.ACTIVE.getValue())
                 .and(ProductUtils.isNotDeleted());
 
@@ -68,6 +68,14 @@ public class ProductSearchHelper {
 
         if (minRating != null) {
             spec = spec.and(ProductUtils.ratingGreaterThanOrEqual(minRating));
+        }
+
+        if (inStock != null && inStock) {
+            spec = spec.and(ProductUtils.hasStock(inStock));
+        }
+
+        if (sellerIds != null && !sellerIds.isEmpty()) {
+            spec = spec.and(ProductUtils.userIdIn(sellerIds));
         }
 
         return spec;

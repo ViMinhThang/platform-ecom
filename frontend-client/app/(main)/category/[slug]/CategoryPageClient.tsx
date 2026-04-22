@@ -38,6 +38,8 @@ export function CategoryPageClient({ slug }: CategoryPageClientProps) {
     const minPrice = searchParams.get("minPrice") ? Number(searchParams.get("minPrice")) : undefined;
     const maxPrice = searchParams.get("maxPrice") ? Number(searchParams.get("maxPrice")) : undefined;
     const minRating = searchParams.get("minRating") ? Number(searchParams.get("minRating")) : undefined;
+    const inStock = searchParams.get("inStock") === "true";
+    const sellerIds = searchParams.get("sellerIds") ? searchParams.get("sellerIds")?.split(",").map(Number) : undefined;
 
     const { data, isLoading, isError, error } = useGetProductsQuery({
         page,
@@ -48,6 +50,8 @@ export function CategoryPageClient({ slug }: CategoryPageClientProps) {
         minPrice,
         maxPrice,
         minRating,
+        inStock,
+        sellerIds,
     });
 
     const products = data?.content || [];
@@ -100,7 +104,7 @@ export function CategoryPageClient({ slug }: CategoryPageClientProps) {
                     {/* Desktop Sidebar: Filter Panel */}
                     <aside className="hidden lg:block w-72 shrink-0 sticky top-32">
                         <div className="p-6 border border-foreground/5 bg-white/50 backdrop-blur-sm rounded-sm">
-                            <FilterPanel />
+                            <FilterPanel categorySlug={categorySlug} />
                         </div>
                     </aside>
 
@@ -119,7 +123,7 @@ export function CategoryPageClient({ slug }: CategoryPageClientProps) {
                                         <SheetHeader className="pb-8 border-b border-border/10 mb-8">
                                             <SheetTitle className="text-left font-bold uppercase tracking-widest text-lg font-labels">Bộ lọc sản phẩm</SheetTitle>
                                         </SheetHeader>
-                                        <FilterPanel />
+                                        <FilterPanel categorySlug={categorySlug} />
                                     </SheetContent>
                                 </Sheet>
                             </div>
@@ -153,9 +157,6 @@ export function CategoryPageClient({ slug }: CategoryPageClientProps) {
                                             name={product.name}
                                             price={product.minPrice || 0}
                                             image={product.imageUrl || ""}
-                                            category={product.category.name}
-                                            isNew={false}
-                                            soldCount={product.totalSold}
                                             firstVariant={product.firstVariant}
                                         />
                                     ))}

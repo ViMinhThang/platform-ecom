@@ -1,5 +1,9 @@
-import os
+from pathlib import Path
+
 from pydantic_settings import BaseSettings
+
+
+BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 class Settings(BaseSettings):
@@ -19,12 +23,11 @@ class Settings(BaseSettings):
     training_minute: int = 0
 
     # Model paths
-    content_model_path: str = "ml/models/content_similarity.pkl"
-    collaborative_model_path: str = "ml/models/collaborative_als.pkl"
+    content_model_path: str = str(BASE_DIR / "ml" / "models" / "content_similarity.pkl")
+    collaborative_model_path: str = str(BASE_DIR / "ml" / "models" / "collaborative_als.pkl")
 
     class Config:
-        # Look for .env in parent directory (project root) since config.py is in app/
-        env_file = os.path.join(os.path.dirname(os.path.dirname(__file__)), ".env")
+        env_file = str(BASE_DIR / ".env")
         case_sensitive = False
 
 

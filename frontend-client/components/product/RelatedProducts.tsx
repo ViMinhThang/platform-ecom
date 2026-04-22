@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { getSimilarProducts } from '@/lib/services/recommendation-service';
 import { ProductRecommendation } from '@/types/recommendation';
 import { ProductCard } from '@/components/ProductCard';
-import { useAnalytics } from '@/hooks/useAnalytics';
+import { ProductVariant } from '@/types/product';
 
 interface RelatedProductsProps {
     productId: number;
@@ -13,7 +13,6 @@ interface RelatedProductsProps {
 export const RelatedProducts = ({ productId }: RelatedProductsProps) => {
     const [products, setProducts] = useState<ProductRecommendation[]>([]);
     const [loading, setLoading] = useState(true);
-    const { trackEvent, EventType } = useAnalytics();
 
     useEffect(() => {
         const fetchRelated = async () => {
@@ -21,15 +20,6 @@ export const RelatedProducts = ({ productId }: RelatedProductsProps) => {
             const data = await getSimilarProducts(productId, 6);
             setProducts(data);
             setLoading(false);
-            
-            data.forEach(p => {
-                trackEvent({
-                    eventType: EventType.PRODUCT_VIEW,
-                    productId: p.product_id,
-                    sourceContext: 'related_products',
-                    metadata: { recommendationScore: p.score, reason: p.reason }
-                });
-            });
         };
 
         if (productId) {
@@ -83,7 +73,7 @@ export const RelatedProducts = ({ productId }: RelatedProductsProps) => {
                                 optionValues: [],
                                 createdAt: '',
                                 updatedAt: ''
-                            } as any}
+                            } as unknown as ProductVariant}
                         />
                     ))
                 )}

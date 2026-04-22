@@ -28,21 +28,38 @@ public class ProductTools {
         lastFoundProducts.remove();
     }
 
-    @Tool(description = "Semantic search for products by text query. Use for general searches like 'find phones' or 'show me laptops'")
+    @Tool(description = """
+        Semantic search for products by text query. Uses AI embeddings + keyword matching for accurate results.
+        Use for general searches like 'find phones', 'show me laptops', 'tìm tai nghe'.
+        For brand-specific searches (iPhone, Samsung, Apple), prefer searchByBrand tool instead.
+        For searches with price constraints, prefer searchWithFilters tool instead.
+        """)
     public List<ProductSummaryDTO> searchProducts(
-            @ToolParam(description = "Search query text") String query,
+            @ToolParam(description = "Search query text - the product name or type to search for") String query,
             @ToolParam(description = "Max results (1-20), defaults to 5") Integer limit) {
         log.info("Tool searchProducts called with query='{}', limit={}", query, limit);
         int maxResults = (limit != null && limit > 0 && limit <= 20) ? limit : 5;
 
         List<ProductSummaryDTO> results = embeddingService.findSimilarProducts(query, maxResults);
+
+        // Fallback to brand text matching if semantic search returns no results
+        if (results.isEmpty() && query != null && !query.isBlank()) {
+            log.info("Semantic search returned no results, falling back to brand search for '{}'", query);
+            results = embeddingService.findByBrand(query, maxResults);
+        }
+
         lastFoundProducts.set(results);
         return results;
     }
 
-    @Tool(description = "Search products within a specific price range in VND. Use when user mentions price like '240k', '240 nghìn', 'dưới 10 triệu', or 'từ 5 đến 10 triệu'")
+    @Tool(description = """
+        Search products within a specific price range in VND. NO keyword/brand filtering - only price.
+        Use when user ONLY mentions price without a specific product type, e.g. 'sản phẩm dưới 10 triệu'.
+        If user mentions BOTH a product/brand AND price, use searchWithFilters instead.
+        Price examples: '240k' = 240000, '10 triệu' = 10000000, 'dưới 5 triệu' = maxPrice 5000000.
+        """)
     public List<ProductSummaryDTO> searchByPriceRange(
-            @ToolParam(description = "Minimum price in VND") BigDecimal minPrice,
+            @ToolParam(description = "Minimum price in VND (use 0 if not specified)") BigDecimal minPrice,
             @ToolParam(description = "Maximum price in VND") BigDecimal maxPrice,
             @ToolParam(description = "Max results, defaults to 5") Integer limit) {
         log.info("Tool searchByPriceRange called with min={}, max={}, limit={}", minPrice, maxPrice, limit);
@@ -53,9 +70,14 @@ public class ProductTools {
         return results;
     }
 
-    @Tool(description = "Search products by brand name. Use when user asks for specific brand like 'Samsung', 'Apple', 'iPhone', 'Xiaomi'")
+    @Tool(description = """
+        Search products by brand or product line name using exact text matching.
+        MUST use this when user asks for a specific brand: 'iPhone', 'Samsung', 'Apple', 'Xiaomi', 'Sony', 'MacBook', 'iPad', 'AirPods', etc.
+        This tool does exact text matching on product names, not semantic search.
+        For 'tìm iPhone' or 'sản phẩm Apple', use brand='iPhone' or brand='Apple'.
+        """)
     public List<ProductSummaryDTO> searchByBrand(
-            @ToolParam(description = "Brand name (Samsung, Apple, iPhone, etc.)") String brand,
+            @ToolParam(description = "Brand or product line name (iPhone, Samsung, Apple, Xiaomi, Sony, etc.)") String brand,
             @ToolParam(description = "Max results, defaults to 5") Integer limit) {
         log.info("Tool searchByBrand called with brand='{}', limit={}", brand, limit);
         int maxResults = (limit != null && limit > 0) ? limit : 5;
@@ -71,10 +93,15 @@ public class ProductTools {
         return null;
     }
 
-    @Tool(description = "Combined search with both text query and optional price range filter")
+    @Tool(description = """
+        RECOMMENDED tool when user mentions BOTH a product keyword/brand AND a price range.
+        Examples: 'iPhone dưới 10 triệu', 'laptop từ 15 đến 25 triệu', 'tai nghe Samsung giá rẻ'.
+        Combines AI semantic search + keyword text matching + price filtering for best accuracy.
+        For the query parameter, pass the product keyword/brand (e.g. 'iPhone', 'laptop gaming').
+        """)
     public List<ProductSummaryDTO> searchWithFilters(
-            @ToolParam(description = "Search query text") String query,
-            @ToolParam(description = "Minimum price in VND, null for no minimum") BigDecimal minPrice,
+            @ToolParam(description = "Product keyword or brand name to search for (e.g. 'iPhone', 'laptop', 'tai nghe Samsung')") String query,
+            @ToolParam(description = "Minimum price in VND, use 0 if no minimum specified") BigDecimal minPrice,
             @ToolParam(description = "Maximum price in VND, null for no maximum") BigDecimal maxPrice,
             @ToolParam(description = "Max results, defaults to 5") Integer limit) {
         log.info("Tool searchWithFilters called with query='{}', min={}, max={}, limit={}",
@@ -89,15 +116,27 @@ public class ProductTools {
             products = embeddingService.findSimilarProducts(query, maxResults);
         }
 
+        // If semantic search returns no results, fall back to brand text matching
+        if (products.isEmpty() && query != null && !query.isBlank()) {
+            log.info("Semantic search returned no results, falling back to brand search for '{}'", query);
+            products = embeddingService.findByBrand(query, maxResults);
+        }
+
         lastFoundProducts.set(products);
         return products;
     }
 
-    @Tool(description = "Search and sort products dynamically. Use this when the user asks for 'cheapest' (rẻ nhất), 'most expensive' (đắt nhất), 'best selling' (bán chạy nhất), or 'highest rated' (đánh giá cao nhất).")
+    @Tool(description = """
+        Search and sort products dynamically. Use this when the user asks for:
+        - 'cheapest' or 'rẻ nhất' -> sortBy='price', sortDirection='ASC'
+        - 'most expensive' or 'đắt nhất' -> sortBy='price', sortDirection='DESC'
+        - 'best selling' or 'bán chạy nhất' -> sortBy='total_sold', sortDirection='DESC'
+        - 'highest rated' or 'đánh giá cao nhất' -> sortBy='average_rating', sortDirection='DESC'
+        """)
     public List<ProductSummaryDTO> searchAndSortProducts(
-            @ToolParam(description = "Search query or keyword (e.g. 'iphone', 'samsung', 'laptop'). Leave empty if no specific product is mentioned.") String query,
-            @ToolParam(description = "Field to sort by. MUST be one of: 'price' (for cheapest/expensive), 'total_sold' (for best sellers), 'average_rating' (for highest rated).") String sortBy,
-            @ToolParam(description = "Sort direction. MUST be 'ASC' (for cheapest) or 'DESC' (for most expensive, best selling, highest rated).") String sortDirection,
+            @ToolParam(description = "Search query or keyword (e.g. 'iphone', 'samsung', 'laptop'). Leave empty if no specific product.") String query,
+            @ToolParam(description = "Field to sort by: 'price', 'total_sold', or 'average_rating'") String sortBy,
+            @ToolParam(description = "Sort direction: 'ASC' (cheapest) or 'DESC' (most expensive, best selling, highest rated)") String sortDirection,
             @ToolParam(description = "Max results, defaults to 5") Integer limit) {
         log.info("Tool searchAndSortProducts called with query='{}', sortBy='{}', sortDirection='{}', limit={}", query,
                 sortBy, sortDirection, limit);

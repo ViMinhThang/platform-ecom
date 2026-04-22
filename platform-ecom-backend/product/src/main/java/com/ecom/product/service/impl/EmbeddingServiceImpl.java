@@ -75,7 +75,8 @@ public class EmbeddingServiceImpl implements EmbeddingService {
         log.debug("Finding similar products for query: '{}'", query);
 
         String vectorString = generateQueryVector(query);
-        List<Object[]> results = productRepository.findSimilarProducts(vectorString, limit);
+        String keyword = extractKeyword(query);
+        List<Object[]> results = productRepository.findSimilarProducts(vectorString, keyword, limit);
 
         return results.stream()
                 .map(this::mapToProductSummary)
@@ -88,7 +89,8 @@ public class EmbeddingServiceImpl implements EmbeddingService {
         log.debug("Finding similar products with price range for query: '{}', min={}, max={}", query, minPrice, maxPrice);
 
         String vectorString = generateQueryVector(query);
-        List<Object[]> results = productRepository.findSimilarProductsWithPriceRange(vectorString, minPrice, maxPrice, limit);
+        String keyword = extractKeyword(query);
+        List<Object[]> results = productRepository.findSimilarProductsWithPriceRange(vectorString, keyword, minPrice, maxPrice, limit);
 
         return results.stream()
                 .map(this::mapToProductSummary)
@@ -183,13 +185,30 @@ public class EmbeddingServiceImpl implements EmbeddingService {
         sb.append(product.getName());
 
         if (product.getDescription() != null && !product.getDescription().isEmpty()) {
-            sb.append(". ").append(product.getDescription());
+            String desc = product.getDescription();
+            // Strip HTML tags for cleaner embeddings
+            desc = desc.replaceAll("<[^>]*>", " ").replaceAll("\\s+", " ").trim();
+            if (desc.length() > 500) {
+                desc = desc.substring(0, 500);
+            }
+            sb.append(". ").append(desc);
         }
         if (product.getCategory() != null && product.getCategory().getName() != null) {
-            sb.append(". Category: ").append(product.getCategory().getName());
+            sb.append(". Danh mục: ").append(product.getCategory().getName());
         }
         if (product.getMinPrice() != null) {
-            sb.append(". Price: ").append(product.getMinPrice()).append(" VND");
+            sb.append(". Giá: ").append(product.getMinPrice()).append(" VND");
+        }
+
+        // Extract brand-like keywords from product name for better brand matching
+        String name = product.getName().toLowerCase();
+        String[] commonBrands = {"iphone", "samsung", "xiaomi", "oppo", "vivo", "huawei", "apple",
+                "sony", "lg", "asus", "acer", "dell", "hp", "lenovo", "macbook", "ipad", "airpods"};
+        for (String brand : commonBrands) {
+            if (name.contains(brand)) {
+                sb.append(". Thương hiệu: ").append(brand);
+                break;
+            }
         }
 
         String text = sb.toString();
@@ -225,5 +244,38 @@ public class EmbeddingServiceImpl implements EmbeddingService {
                 .imageUrl(row.length > 10 && row[10] != null ? (String) row[10] : null)
                 .similarityScore(row.length > 11 && row[11] != null ? ((Number) row[11]).doubleValue() : null)
                 .build();
+    }
+
+    /**
+     * Extract the core product keyword from a natural language query.
+     * Removes Vietnamese stop words and common search phrases to get the product name/brand.
+     * Examples: "Tìm sản phẩm iPhone" → "iPhone", "laptop gaming giá rẻ" → "laptop gaming"
+     */
+    private String extractKeyword(String query) {
+        if (query == null || query.isBlank()) return "";
+
+        String cleaned = query.toLowerCase().trim();
+
+        // Remove common Vietnamese search prefixes/phrases
+        String[] stopPhrases = {
+                "tìm sản phẩm", "tìm kiếm", "tìm cho tôi", "tìm giúp tôi",
+                "cho tôi xem", "xem", "tìm", "tôi muốn mua", "tôi cần",
+                "mua", "show me", "find", "search for", "search",
+                "sản phẩm", "giá rẻ", "giá tốt", "chất lượng",
+                "trong tầm giá", "khoảng giá", "dưới", "trên",
+                "từ", "đến", "triệu", "nghìn", "vnđ", "vnd", "đồng",
+                "k ", "tr "
+        };
+
+        for (String phrase : stopPhrases) {
+            cleaned = cleaned.replace(phrase, " ");
+        }
+
+        // Remove price-like patterns (numbers with units)
+        cleaned = cleaned.replaceAll("\\d+[.,]?\\d*\\s*(triệu|nghìn|tr|k|vnđ|vnd|đồng)?", " ");
+        // Collapse whitespace
+        cleaned = cleaned.replaceAll("\\s+", " ").trim();
+
+        return cleaned;
     }
 }

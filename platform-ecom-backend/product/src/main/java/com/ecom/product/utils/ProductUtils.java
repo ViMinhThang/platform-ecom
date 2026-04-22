@@ -67,4 +67,19 @@ public class ProductUtils {
             return null;
         };
     }
+
+    public static Specification<Product> hasStock(Boolean inStock) {
+        if (inStock == null || !inStock)
+            return null;
+        return (root, query, cb) -> {
+            query.distinct(true);
+            return cb.greaterThan(root.join("variants").get("stock"), 0);
+        };
+    }
+
+    public static Specification<Product> userIdIn(java.util.List<Long> userIds) {
+        if (userIds == null || userIds.isEmpty())
+            return null;
+        return (root, query, cb) -> root.get("userId").in(userIds);
+    }
 }

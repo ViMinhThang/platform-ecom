@@ -1,6 +1,7 @@
 package com.ecom.analytics.controller;
 
 import com.ecom.analytics.dto.MLInteractionsResponse;
+import com.ecom.analytics.dto.MLTrendingResponse;
 import com.ecom.analytics.service.MLDataService;
 import com.ecom.common.util.APIResponse;
 import com.ecom.common.util.ResponseBuilder;
@@ -20,5 +21,13 @@ public class MLDataController {
             @RequestParam(defaultValue = "90") Integer days) {
         MLInteractionsResponse response = mlDataService.getUserProductInteractions(days);
         return ResponseBuilder.success("Interactions retrieved successfully", response);
+    }
+
+    @GetMapping("/trending")
+    public ResponseEntity<APIResponse<MLTrendingResponse>> getTrendingProducts(
+            @RequestParam(defaultValue = "30") Integer days,
+            @RequestParam(defaultValue = "200") Integer limit) {
+        MLTrendingResponse response = mlDataService.getTrendingProducts(days, limit);
+        return ResponseBuilder.success("Trending products retrieved successfully", response);
     }
 }

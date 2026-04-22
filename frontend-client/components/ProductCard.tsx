@@ -22,21 +22,34 @@ interface ProductCardProps {
 }
 
 export function ProductCard({
+  id,
   slug,
   name,
   price,
   image,
-  category,
   description,
   firstVariant,
+  sourceContext,
 }: ProductCardProps) {
+  const { trackProductClick } = useAnalytics();
   const displayPrice = firstVariant ? (firstVariant.salePrice || firstVariant.price) : price;
   const displayImage = firstVariant?.imageUrl || image;
   const hasSale = firstVariant && !!firstVariant.salePrice;
+  const numericProductId = Number(id);
+
+  const handleProductClick = () => {
+    if (!Number.isNaN(numericProductId)) {
+      trackProductClick(numericProductId, sourceContext || "product_card");
+    }
+  };
 
   return (
     <div className="group relative space-y-4 animate-in fade-in duration-700">
-      <Link href={`/products/${slug}`} className="block overflow-hidden rounded-xl aspect-[4/5] bg-surface-container relative">
+      <Link
+        href={`/products/${slug}`}
+        className="block overflow-hidden rounded-xl aspect-[4/5] bg-surface-container relative"
+        onClick={handleProductClick}
+      >
         {/* Sale Badge */}
         {hasSale && (
             <div className="absolute top-4 left-4 z-10">

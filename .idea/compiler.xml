@@ -2,7 +2,11 @@
 <project version="4">
   <component name="CompilerConfiguration">
     <annotationProcessing>
-      <profile default="true" name="Default" enabled="true" />
+      <profile default="true" name="Default" enabled="true">
+        <processorPath useClasspath="false">
+          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.40/lombok-1.18.40.jar" />
+        </processorPath>
+      </profile>
       <profile name="Maven default annotation processors profile" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
@@ -29,10 +33,9 @@
         </processorPath>
         <module name="analytics" />
         <module name="shared-commons" />
-        <module name="review" />
         <module name="user" />
+        <module name="review" />
         <module name="gateway" />
-        <module name="order" />
         <module name="promotion" />
       </profile>
       <profile name="Annotation profile for chatbot" enabled="true">
