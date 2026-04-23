@@ -1,5 +1,7 @@
 package com.ecom.inventory.service.impl;
 
+import com.ecom.common.exception.APIException;
+import com.ecom.common.exception.InsufficientStockException;
 import com.ecom.common.exception.ResourceNotFoundException;
 import com.ecom.inventory.dto.ReservationRequest;
 import com.ecom.inventory.dto.StockReservationDTO;
@@ -13,6 +15,7 @@ import com.ecom.inventory.service.signature.StockReservationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,27 +37,41 @@ public class StockReservationServiceImpl implements StockReservationService {
     @Transactional
     public StockReservationDTO reserve(ReservationRequest request) {
         Inventory inventory = inventoryHelper.findByVariantIdForUpdateOrThrow(request.getVariantId());
+        int durationMinutes = request.getDurationMinutes() != null ? request.getDurationMinutes() : 15;
+        LocalDateTime expiresAt = LocalDateTime.now().plusMinutes(durationMinutes);
 
-        if (!inventory.hasAvailableStock(request.getQuantity())) {
-            throw new IllegalStateException("Insufficient stock for reservation");
+        StockReservation existingReservation = reservationRepository
+                .findByInventoryIdAndCartIdAndStatus(inventory.getId(), request.getCartId(), ReservationStatus.PENDING)
+                .orElse(null);
+
+        if (existingReservation != null) {
+            return updateExistingReservation(inventory, existingReservation, request, expiresAt);
         }
 
-        // Update reserved stock
+        if (!inventory.hasAvailableStock(request.getQuantity())) {
+            throw new InsufficientStockException("Insufficient stock for reservation");
+        }
+
+        int previousStock = inventory.getTotalStock();
         inventory.setReservedStock(inventory.getReservedStock() + request.getQuantity());
         inventory.recalculateAvailableStock();
         inventoryRepository.save(inventory);
 
-        // Create reservation
-        int durationMinutes = request.getDurationMinutes() != null ? request.getDurationMinutes() : 15;
         StockReservation reservation = StockReservation.builder()
                 .inventory(inventory)
                 .cartId(request.getCartId())
                 .userId(request.getUserId())
                 .quantity(request.getQuantity())
-                .expiresAt(LocalDateTime.now().plusMinutes(durationMinutes))
+                .expiresAt(expiresAt)
                 .build();
 
         StockReservation saved = reservationRepository.save(reservation);
+        transactionHelper.recordTransaction(inventory, TransactionType.RESERVATION, -request.getQuantity(),
+                previousStock, inventory.getTotalStock(), "CART",
+                String.valueOf(request.getCartId()), "Reserved stock for checkout", request.getUserId());
+        transactionHelper.publishStockUpdatedEvent(inventory, previousStock, TransactionType.RESERVATION,
+                "Reserved stock for checkout", request.getUserId());
+        transactionHelper.checkAndAlert(inventory);
         log.info("Created reservation {} for variant {} qty {}", saved.getId(), request.getVariantId(),
                 request.getQuantity());
 
@@ -67,6 +84,10 @@ public class StockReservationServiceImpl implements StockReservationService {
         StockReservation reservation = reservationRepository.findById(reservationId)
                 .orElseThrow(() -> new ResourceNotFoundException("Reservation", "id", reservationId));
 
+        if (reservation.getStatus() == ReservationStatus.CONFIRMED) {
+            log.info("Reservation {} already confirmed", reservationId);
+            return;
+        }
         if (reservation.getStatus() != ReservationStatus.PENDING) {
             throw new IllegalStateException("Reservation is not pending: " + reservation.getStatus());
         }
@@ -74,6 +95,12 @@ public class StockReservationServiceImpl implements StockReservationService {
         Inventory inventory = inventoryHelper
                 .findByVariantIdForUpdateOrThrow(reservation.getInventory().getVariantId());
         int previousStock = inventory.getTotalStock();
+        if (previousStock < reservation.getQuantity()) {
+            throw new InsufficientStockException("Insufficient stock to confirm reservation " + reservationId);
+        }
+        if (inventory.getReservedStock() < reservation.getQuantity()) {
+            throw new APIException(HttpStatus.CONFLICT, "Reservation quantity exceeds reserved stock");
+        }
 
         // Convert reservation to actual sale
         inventory.setTotalStock(inventory.getTotalStock() - reservation.getQuantity());
@@ -81,8 +108,8 @@ public class StockReservationServiceImpl implements StockReservationService {
         inventory.recalculateAvailableStock();
 
         transactionHelper.recordTransaction(inventory, TransactionType.SALE, -reservation.getQuantity(),
-                previousStock, inventory.getTotalStock(), "ORDER",
-                reservation.getCartId().toString(), "Reservation confirmed", reservation.getUserId());
+                previousStock, inventory.getTotalStock(), "RESERVATION",
+                reservation.getId().toString(), "Reservation confirmed", reservation.getUserId());
 
         inventoryRepository.save(inventory);
         reservation.confirm();
@@ -107,12 +134,7 @@ public class StockReservationServiceImpl implements StockReservationService {
 
         Inventory inventory = inventoryHelper
                 .findByVariantIdForUpdateOrThrow(reservation.getInventory().getVariantId());
-
-        // Release reserved stock
-        inventory.setReservedStock(Math.max(0, inventory.getReservedStock() - reservation.getQuantity()));
-        inventory.recalculateAvailableStock();
-        inventoryRepository.save(inventory);
-
+        releaseReservationStock(inventory, reservation, TransactionType.RELEASE, "Reservation cancelled");
         reservation.cancel();
         reservationRepository.save(reservation);
 
@@ -130,10 +152,7 @@ public class StockReservationServiceImpl implements StockReservationService {
                 Inventory inventory = inventoryHelper
                         .findByVariantIdForUpdateOrThrow(reservation.getInventory().getVariantId());
 
-                inventory.setReservedStock(Math.max(0, inventory.getReservedStock() - reservation.getQuantity()));
-                inventory.recalculateAvailableStock();
-                inventoryRepository.save(inventory);
-
+                releaseReservationStock(inventory, reservation, TransactionType.RELEASE, "Reservation expired");
                 reservation.expire();
                 reservationRepository.save(reservation);
 
@@ -146,5 +165,67 @@ public class StockReservationServiceImpl implements StockReservationService {
         if (!expired.isEmpty()) {
             log.info("Expired {} stale reservations", expired.size());
         }
+    }
+
+    private StockReservationDTO updateExistingReservation(
+            Inventory inventory,
+            StockReservation reservation,
+            ReservationRequest request,
+            LocalDateTime expiresAt) {
+        int existingQuantity = reservation.getQuantity();
+        int quantityDelta = request.getQuantity() - existingQuantity;
+
+        if (quantityDelta > 0 && !inventory.hasAvailableStock(quantityDelta)) {
+            throw new InsufficientStockException("Insufficient stock for reservation");
+        }
+
+        int previousStock = inventory.getTotalStock();
+        if (quantityDelta != 0) {
+            inventory.setReservedStock(inventory.getReservedStock() + quantityDelta);
+            inventory.recalculateAvailableStock();
+            inventoryRepository.save(inventory);
+
+            TransactionType transactionType = quantityDelta > 0 ? TransactionType.RESERVATION : TransactionType.RELEASE;
+            String reason = quantityDelta > 0
+                    ? "Increased reservation quantity"
+                    : "Reduced reservation quantity";
+            transactionHelper.recordTransaction(inventory, transactionType, -quantityDelta,
+                    previousStock, inventory.getTotalStock(), "CART",
+                    String.valueOf(request.getCartId()), reason, request.getUserId());
+            transactionHelper.publishStockUpdatedEvent(inventory, previousStock, transactionType, reason,
+                    request.getUserId());
+            transactionHelper.checkAndAlert(inventory);
+        }
+
+        reservation.setQuantity(request.getQuantity());
+        reservation.setUserId(request.getUserId());
+        reservation.setExpiresAt(expiresAt);
+        StockReservation savedReservation = reservationRepository.save(reservation);
+
+        log.info("Updated pending reservation {} for variant {} qty {}", savedReservation.getId(),
+                request.getVariantId(), request.getQuantity());
+        return mapper.toDTO(savedReservation);
+    }
+
+    private void releaseReservationStock(
+            Inventory inventory,
+            StockReservation reservation,
+            TransactionType transactionType,
+            String reason) {
+        if (inventory.getReservedStock() < reservation.getQuantity()) {
+            throw new APIException(HttpStatus.CONFLICT, "Reservation quantity exceeds reserved stock");
+        }
+
+        int previousStock = inventory.getTotalStock();
+        inventory.setReservedStock(inventory.getReservedStock() - reservation.getQuantity());
+        inventory.recalculateAvailableStock();
+        inventoryRepository.save(inventory);
+
+        transactionHelper.recordTransaction(inventory, transactionType, reservation.getQuantity(),
+                previousStock, inventory.getTotalStock(), "RESERVATION",
+                reservation.getId().toString(), reason, reservation.getUserId());
+        transactionHelper.publishStockUpdatedEvent(inventory, previousStock, transactionType, reason,
+                reservation.getUserId());
+        transactionHelper.checkAndAlert(inventory);
     }
 }

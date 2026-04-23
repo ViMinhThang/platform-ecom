@@ -1,5 +1,7 @@
 package com.ecom.inventory.service.impl;
 
+import com.ecom.common.exception.APIException;
+import com.ecom.common.exception.InsufficientStockException;
 import com.ecom.inventory.dto.*;
 import com.ecom.inventory.entity.*;
 import com.ecom.inventory.helper.InventoryHelper;
@@ -14,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -111,7 +114,7 @@ public class InventoryServiceImpl implements InventoryService {
         int newStock = previousStock + request.getAdjustment();
 
         if (newStock < 0) {
-            throw new IllegalArgumentException("Stock cannot be negative. Current: " + previousStock);
+            throw new APIException(HttpStatus.BAD_REQUEST, "Stock cannot be negative. Current: " + previousStock);
         }
 
         inventory.setTotalStock(newStock);
@@ -133,6 +136,10 @@ public class InventoryServiceImpl implements InventoryService {
     @Override
     @Transactional
     public InventoryDTO setStock(Long variantId, int newQuantity, String reason, Long performedBy) {
+        if (newQuantity < 0) {
+            throw new APIException(HttpStatus.BAD_REQUEST, "Stock cannot be negative");
+        }
+
         Inventory inventory = inventoryHelper.findByVariantIdForUpdateOrThrow(variantId);
         int previousStock = inventory.getTotalStock();
         int adjustment = newQuantity - previousStock;
@@ -155,6 +162,7 @@ public class InventoryServiceImpl implements InventoryService {
     @Transactional
     public InventoryDTO updateSettings(Long variantId, InventorySettingsRequest request) {
         Inventory inventory = inventoryHelper.findByVariantIdOrThrow(variantId);
+        int previousStock = inventory.getTotalStock();
 
         if (request.getLowStockThreshold() != null)
             inventory.setLowStockThreshold(request.getLowStockThreshold());
@@ -165,7 +173,12 @@ public class InventoryServiceImpl implements InventoryService {
         if (request.getTrackInventory() != null)
             inventory.setTrackInventory(request.getTrackInventory());
 
-        return mapper.toDTO(inventoryRepository.save(inventory));
+        inventory.recalculateAvailableStock();
+        Inventory saved = inventoryRepository.save(inventory);
+        transactionHelper.publishStockUpdatedEvent(saved, previousStock, TransactionType.ADJUSTMENT,
+                "Inventory settings updated", null);
+        transactionHelper.checkAndAlert(saved);
+        return mapper.toDTO(saved);
     }
 
     // ==================== Reservations ====================
@@ -200,8 +213,22 @@ public class InventoryServiceImpl implements InventoryService {
     @Transactional
     public void processOrderCreated(Long variantId, int quantity, String orderNumber) {
         Inventory inventory = inventoryHelper.findByVariantIdForUpdateOrThrow(variantId);
+
+        if (transactionRepository.existsByInventoryIdAndReferenceTypeAndReferenceId(
+                inventory.getId(), "ORDER", orderNumber)) {
+            log.info("Skipping already processed order {} for variant {}", orderNumber, variantId);
+            return;
+        }
+
         int previousStock = inventory.getTotalStock();
-        int newStock = Math.max(0, previousStock - quantity);
+        if (quantity <= 0) {
+            throw new APIException(HttpStatus.BAD_REQUEST, "Order quantity must be greater than zero");
+        }
+        if (previousStock < quantity) {
+            throw new InsufficientStockException(
+                    "Insufficient stock for order " + orderNumber + " on variant " + variantId);
+        }
+        int newStock = previousStock - quantity;
 
         inventory.setTotalStock(newStock);
         inventory.recalculateAvailableStock();
@@ -223,6 +250,10 @@ public class InventoryServiceImpl implements InventoryService {
     @Override
     @Transactional
     public InventoryDTO createInventory(Long productId, Long variantId, String sku, int initialStock) {
+        if (initialStock < 0) {
+            throw new APIException(HttpStatus.BAD_REQUEST, "Initial stock cannot be negative");
+        }
+
         if (inventoryHelper.existsByVariantId(variantId)) {
             throw new IllegalStateException("Inventory already exists for variant: " + variantId);
         }

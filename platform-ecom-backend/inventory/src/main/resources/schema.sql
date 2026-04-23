@@ -25,7 +25,14 @@ CREATE TABLE IF NOT EXISTS inventory (
     track_inventory BOOLEAN DEFAULT TRUE,
     version BIGINT DEFAULT 0,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT chk_inventory_total_stock_non_negative CHECK (total_stock >= 0),
+    CONSTRAINT chk_inventory_reserved_stock_non_negative CHECK (reserved_stock >= 0),
+    CONSTRAINT chk_inventory_available_stock_non_negative CHECK (available_stock >= 0),
+    CONSTRAINT chk_inventory_reserved_not_gt_total CHECK (reserved_stock <= total_stock),
+    CONSTRAINT chk_inventory_low_stock_threshold_non_negative CHECK (low_stock_threshold >= 0),
+    CONSTRAINT chk_inventory_reorder_point_non_negative CHECK (reorder_point >= 0),
+    CONSTRAINT chk_inventory_reorder_quantity_non_negative CHECK (reorder_quantity >= 0)
 );
 
 CREATE INDEX idx_inventory_variant ON inventory(variant_id);
@@ -73,3 +80,6 @@ CREATE INDEX idx_reservation_inventory ON stock_reservations(inventory_id);
 CREATE INDEX idx_reservation_status ON stock_reservations(status);
 CREATE INDEX idx_reservation_expires ON stock_reservations(expires_at);
 CREATE INDEX idx_reservation_cart ON stock_reservations(cart_id);
+CREATE UNIQUE INDEX IF NOT EXISTS idx_reservation_pending_inventory_cart
+    ON stock_reservations(inventory_id, cart_id)
+    WHERE status = 'PENDING';

@@ -13,4 +13,9 @@ public interface ProductServiceClient {
 
     @GetExchange("/api/v1/internal/product-service/seller/{sellerId}/ids")
     ResponseEntity<APIResponse<List<Long>>> getProductIdsBySellerId(@PathVariable("sellerId") Long sellerId);
+
+    @GetExchange("/api/v1/internal/product-service/products/{productId}/variants/{variantId}/exists")
+    ResponseEntity<APIResponse<Boolean>> variantBelongsToProduct(
+            @PathVariable("productId") Long productId,
+            @PathVariable("variantId") Long variantId);
 }

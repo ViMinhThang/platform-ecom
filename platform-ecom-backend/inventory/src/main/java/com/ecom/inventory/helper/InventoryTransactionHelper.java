@@ -47,6 +47,7 @@ public class InventoryTransactionHelper {
                 .productId(inventory.getProductId())
                 .previousStock(previousStock)
                 .newStock(inventory.getTotalStock())
+                .availableStock(inventory.getAvailableStock())
                 .reservedStock(inventory.getReservedStock())
                 .transactionType(type.name())
                 .reason(reason)
@@ -58,6 +59,9 @@ public class InventoryTransactionHelper {
     }
 
     public void checkAndAlert(Inventory inventory) {
+        if (!Boolean.TRUE.equals(inventory.getTrackInventory())) {
+            return;
+        }
         checkAndAlertLowStock(inventory);
         checkAndAlertOutOfStock(inventory);
     }

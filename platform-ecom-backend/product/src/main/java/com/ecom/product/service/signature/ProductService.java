@@ -43,4 +43,6 @@ public interface ProductService {
         List<ProductRowDTO> getProductsByIds(List<Long> productIds);
 
         List<Long> getProductIdsBySellerId(Long sellerId);
+
+        boolean variantBelongsToProduct(Long variantId, Long productId);
 }

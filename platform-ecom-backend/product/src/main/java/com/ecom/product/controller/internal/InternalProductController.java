@@ -28,4 +28,12 @@ public class InternalProductController {
         List<Long> productIds = productService.getProductIdsBySellerId(sellerId);
         return ResponseBuilder.success("Product IDs retrieved successfully", productIds);
     }
+
+    @GetMapping("/products/{productId}/variants/{variantId}/exists")
+    public ResponseEntity<APIResponse<Boolean>> variantBelongsToProduct(
+            @PathVariable Long productId,
+            @PathVariable Long variantId) {
+        boolean exists = productService.variantBelongsToProduct(variantId, productId);
+        return ResponseBuilder.success("Variant ownership verified successfully", exists);
+    }
 }

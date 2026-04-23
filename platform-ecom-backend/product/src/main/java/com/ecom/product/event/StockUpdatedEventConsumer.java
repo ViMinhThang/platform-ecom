@@ -35,9 +35,13 @@ public class StockUpdatedEventConsumer {
 
         try {
             variantRepository.findById(event.getVariantId()).ifPresent(variant -> {
-                variant.setStock(event.getNewStock());
+                int reservedStock = event.getReservedStock() != null ? event.getReservedStock() : 0;
+                int sellableStock = event.getAvailableStock() != null
+                        ? event.getAvailableStock()
+                        : Math.max(0, event.getNewStock() - reservedStock);
+                variant.setStock(sellableStock);
                 variantRepository.save(variant);
-                log.debug("Updated variant {} stock to {}", event.getVariantId(), event.getNewStock());
+                log.debug("Updated variant {} sellable stock to {}", event.getVariantId(), sellableStock);
             });
         } catch (Exception e) {
             log.error("Error syncing stock for variant {}: {}", event.getVariantId(), e.getMessage());

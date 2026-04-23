@@ -26,6 +26,7 @@ import java.util.stream.Collectors;
 public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;
+    private final ProductVariantRepository productVariantRepository;
     private final ProductMapper productMapper;
     private final ProductVariantMapper productVariantMapper;
     private final UserServiceClient userServiceClient;
@@ -166,6 +167,12 @@ public class ProductServiceImpl implements ProductService {
     @Transactional(readOnly = true)
     public List<Long> getProductIdsBySellerId(Long sellerId) {
         return productRepository.findIdsByUserId(sellerId);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public boolean variantBelongsToProduct(Long variantId, Long productId) {
+        return productVariantRepository.existsByIdAndProductId(variantId, productId);
     }
 
     // ==================== Private Helper Methods ====================

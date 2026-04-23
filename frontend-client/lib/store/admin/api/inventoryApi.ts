@@ -72,7 +72,7 @@ export const inventoryApi = baseApi.injectEndpoints({
 
         adjustStock: builder.mutation<InventoryDTO, { variantId: number; request: StockAdjustmentRequest }>({
             query: ({ variantId, request }) => ({
-                url: `${API_BASE}/${variantId}/adjust`,
+                url: `${API_BASE}/${variantId}/stock`,
                 method: 'PUT',
                 body: request,
             }),
@@ -80,6 +80,7 @@ export const inventoryApi = baseApi.injectEndpoints({
                 { type: 'Inventory', id: variantId },
                 { type: 'Inventory', id: `TX_${variantId}` },
                 { type: 'Inventory', id: 'LIST' },
+                { type: 'Inventory', id: 'LOW_STOCK' },
             ],
         }),
 
@@ -92,6 +93,7 @@ export const inventoryApi = baseApi.injectEndpoints({
             invalidatesTags: (result, error, { variantId }) => [
                 { type: 'Inventory', id: variantId },
                 { type: 'Inventory', id: 'LIST' },
+                { type: 'Inventory', id: 'LOW_STOCK' },
             ],
         }),
 
@@ -101,7 +103,10 @@ export const inventoryApi = baseApi.injectEndpoints({
                 method: 'POST',
                 params: { productId, variantId, sku, initialStock },
             }),
-            invalidatesTags: [{ type: 'Inventory', id: 'LIST' }],
+            invalidatesTags: [
+                { type: 'Inventory', id: 'LIST' },
+                { type: 'Inventory', id: 'LOW_STOCK' },
+            ],
         }),
 
         deleteInventory: builder.mutation<void, number>({
@@ -109,7 +114,10 @@ export const inventoryApi = baseApi.injectEndpoints({
                 url: `${API_BASE}/${variantId}`,
                 method: 'DELETE',
             }),
-            invalidatesTags: [{ type: 'Inventory', id: 'LIST' }],
+            invalidatesTags: [
+                { type: 'Inventory', id: 'LIST' },
+                { type: 'Inventory', id: 'LOW_STOCK' },
+            ],
         }),
     }),
 });

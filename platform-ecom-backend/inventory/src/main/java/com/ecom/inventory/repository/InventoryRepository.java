@@ -32,7 +32,7 @@ public interface InventoryRepository extends JpaRepository<Inventory, Long> {
     /**
      * Find all items with low stock
      */
-    @Query("SELECT i FROM Inventory i WHERE i.availableStock <= i.lowStockThreshold")
+    @Query("SELECT i FROM Inventory i WHERE i.trackInventory = true AND i.availableStock <= i.lowStockThreshold")
     List<Inventory> findLowStockItems();
 
     /**
@@ -55,6 +55,6 @@ public interface InventoryRepository extends JpaRepository<Inventory, Long> {
     /**
      * Find low stock items by seller (via product IDs)
      */
-    @Query("SELECT i FROM Inventory i WHERE i.productId IN :productIds AND i.availableStock <= i.lowStockThreshold")
+    @Query("SELECT i FROM Inventory i WHERE i.productId IN :productIds AND i.trackInventory = true AND i.availableStock <= i.lowStockThreshold")
     List<Inventory> findLowStockItemsByProductIds(@Param("productIds") List<Long> productIds);
 }

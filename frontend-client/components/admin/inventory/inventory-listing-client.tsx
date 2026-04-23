@@ -1,9 +1,13 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useMemo, useState } from "react";
 import { InventoryTable } from "./inventory-tables";
-import { columns } from "./inventory-tables/columns";
-import { useGetInventoryQuery, useGetLowStockItemsQuery, useDeleteInventoryMutation } from "@/lib/store/admin";
+import { getInventoryColumns } from "./inventory-tables/columns";
+import {
+    useDeleteInventoryMutation,
+    useGetInventoryQuery,
+    useGetLowStockItemsQuery
+} from "@/lib/store/admin";
 import { StockAdjustmentDialog } from "./stock-adjustment-dialog";
 import { LowStockAlert } from "./low-stock-alert";
 import { InventoryStats } from "./inventory-stats";
@@ -31,6 +35,8 @@ import {
 import { toast } from "sonner";
 import { CreateInventoryDialog } from "./create-inventory-dialog";
 
+const EMPTY_INVENTORY_ITEMS: InventoryDTO[] = [];
+
 export default function InventoryListingClient() {
     const [selectedInventory, setSelectedInventory] = useState<InventoryDTO | null>(null);
     const [adjustDialogOpen, setAdjustDialogOpen] = useState(false);
@@ -43,13 +49,18 @@ export default function InventoryListingClient() {
     const [sortBy, setSortBy] = useState("variantId");
     const [sortOrder, setSortOrder] = useState("asc");
 
-    const { data, isLoading, refetch } = useGetInventoryQuery({ page, size: perPage, sortBy, sortOrder });
+    const { data, isLoading, refetch } = useGetInventoryQuery({
+        page,
+        size: perPage,
+        sortBy,
+        sortOrder
+    });
     const { data: lowStockData } = useGetLowStockItemsQuery();
     const [deleteInventory] = useDeleteInventoryMutation();
 
-    const items = data?.content || [];
+    const items = data?.content ?? EMPTY_INVENTORY_ITEMS;
     const totalItems = data?.totalElements || 0;
-    const lowStockItems = lowStockData || [];
+    const lowStockItems = lowStockData ?? EMPTY_INVENTORY_ITEMS;
 
     const loadInventory = () => {
         refetch();
@@ -58,6 +69,16 @@ export default function InventoryListingClient() {
     const handleAdjustFromAlert = (item: InventoryDTO) => {
         setSelectedInventory(item);
         setAdjustDialogOpen(true);
+    };
+
+    const handleEditInventory = (item: InventoryDTO) => {
+        setSelectedInventory(item);
+        setAdjustDialogOpen(true);
+    };
+
+    const handleDeleteRequest = (item: InventoryDTO) => {
+        setInventoryToDelete(item);
+        setDeleteDialogOpen(true);
     };
 
     const handleDialogClose = (open: boolean) => {
@@ -72,27 +93,44 @@ export default function InventoryListingClient() {
         setCreateDialogOpen(open);
     };
 
+    const handleDeleteDialogChange = (open: boolean) => {
+        setDeleteDialogOpen(open);
+        if (!open) {
+            setInventoryToDelete(null);
+        }
+    };
+
     const handleConfirmDelete = async () => {
         if (inventoryToDelete) {
             try {
                 await deleteInventory(inventoryToDelete.variantId).unwrap();
                 toast.success(`Inventory for variant #${inventoryToDelete.variantId} deleted successfully`);
                 loadInventory();
-            } catch (error) {
+            } catch {
                 toast.error("Failed to delete inventory");
             }
         }
+
         setDeleteDialogOpen(false);
         setInventoryToDelete(null);
     };
 
-    const filteredItems = useMemo(() => searchQuery
-        ? items.filter(
-            (item) =>
-                item.variantId.toString().includes(searchQuery) ||
-                item.sku?.toLowerCase().includes(searchQuery.toLowerCase())
-        )
-        : items, [items, searchQuery]);
+    const filteredItems = useMemo(
+        () =>
+            searchQuery
+                ? items.filter(
+                      (item) =>
+                          item.variantId.toString().includes(searchQuery) ||
+                          item.sku?.toLowerCase().includes(searchQuery.toLowerCase())
+                  )
+                : items,
+        [items, searchQuery]
+    );
+
+    const columns = getInventoryColumns({
+        onEdit: handleEditInventory,
+        onDelete: handleDeleteRequest,
+    });
 
     if (isLoading && items.length === 0) {
         return <div>Đang tải kho hàng...</div>;
@@ -165,6 +203,7 @@ export default function InventoryListingClient() {
             />
 
             <StockAdjustmentDialog
+                key={selectedInventory?.variantId ?? "inventory-empty"}
                 inventory={selectedInventory}
                 open={adjustDialogOpen}
                 onOpenChange={handleDialogClose}
@@ -176,7 +215,7 @@ export default function InventoryListingClient() {
                 onSuccess={loadInventory}
             />
 
-            <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
+            <AlertDialog open={deleteDialogOpen} onOpenChange={handleDeleteDialogChange}>
                 <AlertDialogContent>
                     <AlertDialogHeader>
                         <AlertDialogTitle>Xóa kho hàng</AlertDialogTitle>
@@ -187,7 +226,10 @@ export default function InventoryListingClient() {
                     </AlertDialogHeader>
                     <AlertDialogFooter>
                         <AlertDialogCancel>Hủy</AlertDialogCancel>
-                        <AlertDialogAction onClick={handleConfirmDelete} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
+                        <AlertDialogAction
+                            onClick={handleConfirmDelete}
+                            className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                        >
                             Xóa
                         </AlertDialogAction>
                     </AlertDialogFooter>

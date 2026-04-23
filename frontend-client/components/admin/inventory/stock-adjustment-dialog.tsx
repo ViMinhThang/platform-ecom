@@ -1,7 +1,10 @@
 'use client';
 
-import { useState } from 'react';
-import { useAdjustStockMutation } from '@/lib/store/admin';
+import { useMemo, useState } from 'react';
+import {
+    useAdjustStockMutation,
+    useUpdateInventorySettingsMutation
+} from '@/lib/store/admin';
 import {
     Dialog,
     DialogContent,
@@ -13,9 +16,10 @@ import {
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Switch } from '@/components/ui/switch';
 import { Textarea } from '@/components/ui/textarea';
 import { toast } from 'sonner';
-import { Loader2, Plus, Minus } from 'lucide-react';
+import { Loader2, Minus, Plus } from 'lucide-react';
 import { InventoryDTO } from '@/types/inventory/inventory';
 
 interface StockAdjustmentDialogProps {
@@ -30,42 +34,32 @@ export function StockAdjustmentDialog({
     onOpenChange,
 }: StockAdjustmentDialogProps) {
     const [adjustStock, { isLoading: isAdjusting }] = useAdjustStockMutation();
+    const [updateInventorySettings, { isLoading: isSavingSettings }] =
+        useUpdateInventorySettingsMutation();
 
     const [adjustmentType, setAdjustmentType] = useState<'add' | 'subtract'>('add');
-    const [quantity, setQuantity] = useState<number>(0);
+    const [quantity, setQuantity] = useState(0);
     const [reason, setReason] = useState('');
+    const [lowStockThreshold, setLowStockThreshold] = useState(
+        inventory?.lowStockThreshold ?? 0
+    );
+    const [reorderPoint, setReorderPoint] = useState(inventory?.reorderPoint ?? 0);
+    const [reorderQuantity, setReorderQuantity] = useState(
+        inventory?.reorderQuantity ?? 0
+    );
+    const [trackInventory, setTrackInventory] = useState(
+        inventory?.trackInventory ?? true
+    );
 
-    const handleSubmit = async () => {
-        if (!inventory || quantity <= 0) return;
-
-        try {
-            const adjustment = adjustmentType === 'add' ? quantity : -quantity;
-            await adjustStock({
-                variantId: inventory.variantId,
-                request: {
-                    adjustment,
-                    reason: reason || `Manual ${adjustmentType}`,
-                    referenceType: 'MANUAL',
-                },
-            }).unwrap();
-
-            toast.success('Đã điều chỉnh tồn kho', {
-                description: `Đã ${adjustmentType === 'add' ? 'thêm' : 'trừ'} ${quantity} đơn vị.`,
-            });
-            onOpenChange(false);
-            resetForm();
-        } catch (error) {
-            toast.error('Lỗi', {
-                description: 'Không thể điều chỉnh tồn kho',
-            });
-        }
-    };
-
-    const resetForm = () => {
-        setQuantity(0);
-        setReason('');
-        setAdjustmentType('add');
-    };
+    const hasStockAdjustment = quantity > 0;
+    const hasSettingsChanges = Boolean(
+        inventory &&
+            (lowStockThreshold !== inventory.lowStockThreshold ||
+                reorderPoint !== inventory.reorderPoint ||
+                reorderQuantity !== inventory.reorderQuantity ||
+                trackInventory !== inventory.trackInventory)
+    );
+    const isSaving = isAdjusting || isSavingSettings;
 
     const newStock = inventory
         ? adjustmentType === 'add'
@@ -73,19 +67,97 @@ export function StockAdjustmentDialog({
             : inventory.totalStock - quantity
         : 0;
 
+    const dialogDescription = useMemo(() => {
+        if (!inventory) {
+            return '';
+        }
+
+        return inventory.sku
+            ? `Biến thể #${inventory.variantId} • SKU: ${inventory.sku}`
+            : `Biến thể #${inventory.variantId}`;
+    }, [inventory]);
+
+    const resetForm = () => {
+        setAdjustmentType('add');
+        setQuantity(0);
+        setReason('');
+        if (inventory) {
+            setLowStockThreshold(inventory.lowStockThreshold);
+            setReorderPoint(inventory.reorderPoint);
+            setReorderQuantity(inventory.reorderQuantity);
+            setTrackInventory(inventory.trackInventory);
+        }
+    };
+
+    const handleSubmit = async () => {
+        if (!inventory) {
+            return;
+        }
+
+        if (!hasStockAdjustment && !hasSettingsChanges) {
+            onOpenChange(false);
+            return;
+        }
+
+        try {
+            if (hasSettingsChanges) {
+                await updateInventorySettings({
+                    variantId: inventory.variantId,
+                    request: {
+                        ...(lowStockThreshold !== inventory.lowStockThreshold
+                            ? { lowStockThreshold }
+                            : {}),
+                        ...(reorderPoint !== inventory.reorderPoint
+                            ? { reorderPoint }
+                            : {}),
+                        ...(reorderQuantity !== inventory.reorderQuantity
+                            ? { reorderQuantity }
+                            : {}),
+                        ...(trackInventory !== inventory.trackInventory
+                            ? { trackInventory }
+                            : {}),
+                    },
+                }).unwrap();
+            }
+
+            if (hasStockAdjustment) {
+                const adjustment = adjustmentType === 'add' ? quantity : -quantity;
+                await adjustStock({
+                    variantId: inventory.variantId,
+                    request: {
+                        adjustment,
+                        reason: reason || `Manual ${adjustmentType}`,
+                        referenceType: 'MANUAL',
+                    },
+                }).unwrap();
+            }
+
+            toast.success('Đã cập nhật kho hàng', {
+                description: hasStockAdjustment
+                    ? `Đã ${adjustmentType === 'add' ? 'thêm' : 'trừ'} ${quantity} đơn vị và lưu cài đặt.`
+                    : 'Đã lưu cài đặt kho hàng.',
+            });
+
+            onOpenChange(false);
+            resetForm();
+        } catch {
+            toast.error('Lỗi', {
+                description: 'Không thể cập nhật kho hàng',
+            });
+        }
+    };
+
+    const saveDisabled =
+        isSaving ||
+        (!hasSettingsChanges && !hasStockAdjustment) ||
+        (hasStockAdjustment && newStock < 0);
+
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
-            <DialogContent className="sm:max-w-[425px]">
+            <DialogContent className="sm:max-w-[560px]">
                 <DialogHeader>
-                    <DialogTitle>Điều chỉnh tồn kho</DialogTitle>
-                    <DialogDescription>
-                        {inventory && (
-                            <>
-                                Biến thể #{inventory.variantId}
-                                {inventory.sku && ` • SKU: ${inventory.sku}`}
-                            </>
-                        )}
-                    </DialogDescription>
+                    <DialogTitle>Chỉnh sửa kho hàng</DialogTitle>
+                    <DialogDescription>{dialogDescription}</DialogDescription>
                 </DialogHeader>
 
                 <div className="grid gap-4 py-4">
@@ -96,82 +168,160 @@ export function StockAdjustmentDialog({
                         </div>
                         <div className="text-center">
                             <p className="text-sm text-muted-foreground">Thay đổi</p>
-                            <p className={`text-2xl font-bold ${adjustmentType === 'add' ? 'text-green-600' : 'text-red-600'}`}>
-                                {adjustmentType === 'add' ? '+' : '-'}{quantity}
+                            <p
+                                className={`text-2xl font-bold ${
+                                    adjustmentType === 'add' ? 'text-green-600' : 'text-red-600'
+                                }`}
+                            >
+                                {hasStockAdjustment ? `${adjustmentType === 'add' ? '+' : '-'}${quantity}` : '0'}
                             </p>
                         </div>
                         <div className="text-center">
                             <p className="text-sm text-muted-foreground">Mới</p>
-                            <p className={`text-2xl font-bold ${newStock < 0 ? 'text-red-600' : ''}`}>
-                                {newStock}
+                            <p
+                                className={`text-2xl font-bold ${
+                                    hasStockAdjustment && newStock < 0 ? 'text-red-600' : ''
+                                }`}
+                            >
+                                {hasStockAdjustment ? newStock : inventory?.totalStock ?? 0}
                             </p>
                         </div>
                     </div>
 
-                    <div className="grid gap-2">
-                        <Label>Loại điều chỉnh</Label>
-                        <div className="flex gap-2">
-                            <Button
-                                type="button"
-                                variant={adjustmentType === 'add' ? 'default' : 'outline'}
-                                className="flex-1"
-                                onClick={() => setAdjustmentType('add')}
-                            >
-                                <Plus className="mr-2 h-4 w-4" />
-                                Thêm tồn kho
-                            </Button>
-                            <Button
-                                type="button"
-                                variant={adjustmentType === 'subtract' ? 'destructive' : 'outline'}
-                                className="flex-1"
-                                onClick={() => setAdjustmentType('subtract')}
-                            >
-                                <Minus className="mr-2 h-4 w-4" />
-                                Giảm tồn kho
-                            </Button>
+                    <div className="grid gap-4 rounded-lg border p-4">
+                        <div>
+                            <h3 className="font-medium">Cài đặt kho hàng</h3>
+                            <p className="text-sm text-muted-foreground">
+                                Cập nhật ngưỡng cảnh báo và hành vi theo dõi tồn kho.
+                            </p>
+                        </div>
+
+                        <div className="grid gap-4 md:grid-cols-2">
+                            <div className="grid gap-2">
+                                <Label htmlFor="lowStockThreshold">Ngưỡng sắp hết hàng</Label>
+                                <Input
+                                    id="lowStockThreshold"
+                                    type="number"
+                                    min={0}
+                                    value={lowStockThreshold}
+                                    onChange={(e) =>
+                                        setLowStockThreshold(Math.max(0, parseInt(e.target.value) || 0))
+                                    }
+                                />
+                            </div>
+
+                            <div className="grid gap-2">
+                                <Label htmlFor="reorderPoint">Điểm đặt hàng lại</Label>
+                                <Input
+                                    id="reorderPoint"
+                                    type="number"
+                                    min={0}
+                                    value={reorderPoint}
+                                    onChange={(e) =>
+                                        setReorderPoint(Math.max(0, parseInt(e.target.value) || 0))
+                                    }
+                                />
+                            </div>
+
+                            <div className="grid gap-2">
+                                <Label htmlFor="reorderQuantity">Số lượng đặt hàng lại</Label>
+                                <Input
+                                    id="reorderQuantity"
+                                    type="number"
+                                    min={0}
+                                    value={reorderQuantity}
+                                    onChange={(e) =>
+                                        setReorderQuantity(Math.max(0, parseInt(e.target.value) || 0))
+                                    }
+                                />
+                            </div>
+
+                            <div className="flex items-center justify-between rounded-md border px-3 py-2">
+                                <div className="space-y-1">
+                                    <Label htmlFor="trackInventory">Theo dõi kho</Label>
+                                    <p className="text-sm text-muted-foreground">
+                                        Bật hoặc tắt việc theo dõi số lượng cho biến thể này.
+                                    </p>
+                                </div>
+                                <Switch
+                                    id="trackInventory"
+                                    checked={trackInventory}
+                                    onCheckedChange={setTrackInventory}
+                                />
+                            </div>
                         </div>
                     </div>
 
-                    <div className="grid gap-2">
-                        <Label htmlFor="quantity">Số lượng</Label>
-                        <Input
-                            id="quantity"
-                            type="number"
-                            min={0}
-                            value={quantity}
-                            onChange={(e) => setQuantity(Math.max(0, parseInt(e.target.value) || 0))}
-                            placeholder="Nhập số lượng"
-                        />
-                    </div>
+                    <div className="grid gap-4 rounded-lg border p-4">
+                        <div>
+                            <h3 className="font-medium">Điều chỉnh tồn kho</h3>
+                            <p className="text-sm text-muted-foreground">
+                                Tùy chọn thêm hoặc giảm tồn kho hiện tại. Bỏ trống nếu chỉ cần lưu cài đặt.
+                            </p>
+                        </div>
 
-                    <div className="grid gap-2">
-                        <Label htmlFor="reason">Lý do (tùy chọn)</Label>
-                        <Textarea
-                            id="reason"
-                            value={reason}
-                            onChange={(e) => setReason(e.target.value)}
-                            placeholder="ví dụ: Nhận hàng, Hàng hỏng, v.v."
-                            rows={2}
-                        />
-                    </div>
+                        <div className="grid gap-2">
+                            <Label>Loại điều chỉnh</Label>
+                            <div className="flex gap-2">
+                                <Button
+                                    type="button"
+                                    variant={adjustmentType === 'add' ? 'default' : 'outline'}
+                                    className="flex-1"
+                                    onClick={() => setAdjustmentType('add')}
+                                >
+                                    <Plus className="mr-2 h-4 w-4" />
+                                    Thêm tồn kho
+                                </Button>
+                                <Button
+                                    type="button"
+                                    variant={adjustmentType === 'subtract' ? 'destructive' : 'outline'}
+                                    className="flex-1"
+                                    onClick={() => setAdjustmentType('subtract')}
+                                >
+                                    <Minus className="mr-2 h-4 w-4" />
+                                    Giảm tồn kho
+                                </Button>
+                            </div>
+                        </div>
 
-                    {newStock < 0 && (
-                        <p className="text-sm text-red-600">
-                            Cảnh báo: Tồn kho không thể nhỏ hơn 0. Tối đa có thể giảm: {inventory?.totalStock ?? 0}
-                        </p>
-                    )}
+                        <div className="grid gap-2">
+                            <Label htmlFor="quantity">Số lượng</Label>
+                            <Input
+                                id="quantity"
+                                type="number"
+                                min={0}
+                                value={quantity}
+                                onChange={(e) => setQuantity(Math.max(0, parseInt(e.target.value) || 0))}
+                                placeholder="Nhập số lượng"
+                            />
+                        </div>
+
+                        <div className="grid gap-2">
+                            <Label htmlFor="reason">Lý do (tùy chọn)</Label>
+                            <Textarea
+                                id="reason"
+                                value={reason}
+                                onChange={(e) => setReason(e.target.value)}
+                                placeholder="Ví dụ: Nhận hàng, Hàng hỏng, v.v."
+                                rows={2}
+                            />
+                        </div>
+
+                        {hasStockAdjustment && newStock < 0 && (
+                            <p className="text-sm text-red-600">
+                                Cảnh báo: Tồn kho không thể nhỏ hơn 0. Tối đa có thể giảm: {inventory?.totalStock ?? 0}
+                            </p>
+                        )}
+                    </div>
                 </div>
 
                 <DialogFooter>
-                    <Button variant="outline" onClick={() => onOpenChange(false)}>
+                    <Button variant="outline" onClick={() => onOpenChange(false)} disabled={isSaving}>
                         Hủy
                     </Button>
-                    <Button
-                        onClick={handleSubmit}
-                        disabled={isAdjusting || quantity <= 0 || newStock < 0}
-                    >
-                        {isAdjusting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                        Xác nhận điều chỉnh
+                    <Button onClick={handleSubmit} disabled={saveDisabled}>
+                        {isSaving && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                        Lưu thay đổi
                     </Button>
                 </DialogFooter>
             </DialogContent>

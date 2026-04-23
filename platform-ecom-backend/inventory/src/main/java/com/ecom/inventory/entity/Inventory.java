@@ -87,20 +87,74 @@ public class Inventory {
      * Available stock = total stock - reserved stock
      */
     public void recalculateAvailableStock() {
-        this.availableStock = Math.max(0, this.totalStock - this.reservedStock);
+        normalizeDefaults();
+        validateSettings();
+        validateStockLevels();
+        this.availableStock = Boolean.TRUE.equals(this.trackInventory)
+                ? this.totalStock - this.reservedStock
+                : this.totalStock;
     }
 
     /**
      * Check if stock is below threshold
      */
     public boolean isLowStock() {
-        return this.availableStock <= this.lowStockThreshold;
+        return Boolean.TRUE.equals(this.trackInventory)
+                && this.availableStock <= this.lowStockThreshold;
     }
 
     /**
      * Check if requested quantity is available
      */
     public boolean hasAvailableStock(int quantity) {
-        return this.availableStock >= quantity;
+        if (quantity <= 0) {
+            return true;
+        }
+        return !Boolean.TRUE.equals(this.trackInventory) || this.availableStock >= quantity;
+    }
+
+    private void normalizeDefaults() {
+        if (this.totalStock == null) {
+            this.totalStock = 0;
+        }
+        if (this.reservedStock == null) {
+            this.reservedStock = 0;
+        }
+        if (this.lowStockThreshold == null) {
+            this.lowStockThreshold = 0;
+        }
+        if (this.reorderPoint == null) {
+            this.reorderPoint = 0;
+        }
+        if (this.reorderQuantity == null) {
+            this.reorderQuantity = 0;
+        }
+        if (this.trackInventory == null) {
+            this.trackInventory = true;
+        }
+    }
+
+    private void validateSettings() {
+        if (this.lowStockThreshold < 0) {
+            throw new IllegalArgumentException("Low stock threshold cannot be negative");
+        }
+        if (this.reorderPoint < 0) {
+            throw new IllegalArgumentException("Reorder point cannot be negative");
+        }
+        if (this.reorderQuantity < 0) {
+            throw new IllegalArgumentException("Reorder quantity cannot be negative");
+        }
+    }
+
+    private void validateStockLevels() {
+        if (this.totalStock < 0) {
+            throw new IllegalArgumentException("Total stock cannot be negative");
+        }
+        if (this.reservedStock < 0) {
+            throw new IllegalArgumentException("Reserved stock cannot be negative");
+        }
+        if (this.reservedStock > this.totalStock) {
+            throw new IllegalArgumentException("Reserved stock cannot exceed total stock");
+        }
     }
 }

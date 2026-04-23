@@ -20,6 +20,8 @@ public interface ProductVariantRepository extends JpaRepository<ProductVariant, 
 
         Optional<ProductVariant> findByProductIdAndId(Long productId, Long variantId);
 
+        boolean existsByIdAndProductId(Long variantId, Long productId);
+
         @Query("SELECT v FROM ProductVariant v " +
                         "JOIN v.optionValues ov " +
                         "WHERE ov.optionValue.id IN :optionValueIds " +

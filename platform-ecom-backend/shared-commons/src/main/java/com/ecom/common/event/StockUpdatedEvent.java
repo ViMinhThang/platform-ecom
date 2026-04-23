@@ -24,6 +24,7 @@ public class StockUpdatedEvent implements Serializable {
     private Long productId;
     private Integer previousStock;
     private Integer newStock;
+    private Integer availableStock;
     private Integer reservedStock;
     private String transactionType; // SALE, ADJUSTMENT, RESERVATION, RELEASE
     private String reason;
