@@ -1,0 +1,141 @@
+services:
+  postgres:
+    container_name: postgres
+    image: pgvector/pgvector:pg17
+    mem_limit: 700m
+    environment:
+      POSTGRES_USER: fragile
+      POSTGRES_PASSWORD: 204863
+      PGDATA: /var/lib/postgresql/data
+    volumes:
+      - postgres:/var/lib/postgresql/data
+      - ./init-multi-db.sh:/docker-entrypoint-initdb.d/init.sh
+    ports:
+      - "5432:5432"
+    networks:
+      - backend
+    restart: unless-stopped
+
+  redis:
+    container_name: redis
+    image: redis:7-alpine
+    mem_limit: 256m
+    ports:
+      - "6379:6379"
+    networks:
+      - backend
+    restart: unless-stopped
+
+  pgadmin:
+    container_name: pgadmin_container
+    image: dpage/pgadmin4
+    mem_limit: 700m
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-pgadmin4@pgadmin.org}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-admin}
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
+    volumes:
+      - pgadmin:/var/lib/pgadmin
+    ports:
+      - "5050:80"
+    networks:
+      - backend
+    restart: unless-stopped
+
+  #  keycloak:
+  #    container_name: keycloak
+  #    image: quay.io/keycloak/keycloak:26.2.5
+  #    mem_limit: 700m
+  #    ports:
+  #      - "8443:8080"
+  #    environment:
+  #      KC_BOOTSTRAP_ADMIN_USERNAME: admin
+  #      KC_BOOTSTRAP_ADMIN_PASSWORD: admin
+  #    #      PROXY_ADDRESS_FORWARDING: "true"
+  #    #      KEYCLOAK_FRONTEND_URL: "http://localhost:8443"
+  #    command: [ "start-dev" ]
+  #    networks:
+  #      - backend
+
+  #  mongo:
+  #    image: mongodb/mongodb-community-server:latest
+  #    container_name: mongo
+  #    mem_limit: 700m
+  #    ports:
+  #      - "27017:27017"
+  #    networks:
+  #      - backend
+
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.5.0
+    container_name: zookeeper
+    ports:
+      - "2181:2181"
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    networks:
+      - backend
+
+  kafka:
+    image: confluentinc/cp-kafka:7.5.0
+    container_name: kafka
+    ports:
+      - "9093:9093"
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_LISTENERS: INTERNAL://0.0.0.0:9092,EXTERNAL://0.0.0.0:9093
+      KAFKA_ADVERTISED_LISTENERS: INTERNAL://kafka:9092,EXTERNAL://localhost:9093
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:PLAINTEXT,EXTERNAL:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+    depends_on:
+      - zookeeper
+    networks:
+      - backend
+
+  rabbitmq:
+    container_name: rabbitmq
+    image: rabbitmq:3-management
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    ports:
+      - "5672:5672" # RabbitMQ Message Broker
+      - "15672:15672" # RabbitMQ Management UI (http://localhost:15672)
+    networks:
+      - backend
+    restart: unless-stopped
+
+  zipkin:
+    image: openzipkin/zipkin
+    container_name: zipkin
+    ports:
+      - 9411:9411
+    networks:
+      - backend
+      - loki
+  eureka:
+    #    build: ../../eureka
+    image: dcode007/eureka-server
+    container_name: eureka
+    ports:
+      - 8761:8761
+    networks:
+      - backend
+    healthcheck:
+      test: [ "CMD", "wget", "--spider", "http://localhost:8761/actuator/health" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+networks:
+  backend:
+    driver: bridge
+  loki:
+    driver: bridge
+
+volumes:
+  postgres:
+  pgadmin:

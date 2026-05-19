@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding">
+    <file url="file://$PROJECT_DIR$/platform-ecom-backend/analytics/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/platform-ecom-backend/auth-services/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/platform-ecom-backend/bff/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/platform-ecom-backend/chatbot/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/platform-ecom-backend/configserver/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/platform-ecom-backend/eureka/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/platform-ecom-backend/gateway/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/platform-ecom-backend/inventory/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/platform-ecom-backend/media/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/platform-ecom-backend/notification/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/platform-ecom-backend/order/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/platform-ecom-backend/product/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/platform-ecom-backend/promotion/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/platform-ecom-backend/review/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/platform-ecom-backend/shared-commons/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/platform-ecom-backend/user/src/main/java" charset="UTF-8" />
+  </component>
+</project>

@@ -1,0 +1,142 @@
+2026-04-21T11:39:23.858+07:00  INFO 23604 --- [user-service] [main] [                                                 ] com.ecom.user.UserApplication            : Starting UserApplication using Java 25.0.2 with PID 23604 (C:\Users\huynh\Desktop\Projects\platform-ecom\platform-ecom-backend\user\target\classes started by huynh in C:\Users\huynh\Desktop\Projects\platform-ecom)
+2026-04-21T11:39:23.887+07:00  INFO 23604 --- [user-service] [main] [                                                 ] com.ecom.user.UserApplication            : No active profile set, falling back to 1 default profile: "default"
+2026-04-21T11:39:24.029+07:00  INFO 23604 --- [user-service] [main] [                                                 ] o.s.c.c.c.ConfigServerConfigDataLoader   : Fetching config from server at : http://localhost:8888
+2026-04-21T11:39:24.029+07:00  INFO 23604 --- [user-service] [main] [                                                 ] o.s.c.c.c.ConfigServerConfigDataLoader   : Located environment: name=user-service, profiles=[default], label=null, version=null, state=null
+2026-04-21T11:39:26.262+07:00  INFO 23604 --- [user-service] [main] [                                                 ] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-04-21T11:39:26.669+07:00  INFO 23604 --- [user-service] [main] [                                                 ] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 389 ms. Found 4 JPA repository interfaces.
+2026-04-21T11:39:27.359+07:00  INFO 23604 --- [user-service] [main] [                                                 ] o.s.cloud.context.scope.GenericScope     : BeanFactory id=1ea69e83-cc5d-3988-a013-c7ebf32fa645
+2026-04-21T11:39:28.598+07:00  INFO 23604 --- [user-service] [main] [                                                 ] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8082 (http)
+2026-04-21T11:39:28.628+07:00  INFO 23604 --- [user-service] [main] [                                                 ] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-04-21T11:39:28.629+07:00  INFO 23604 --- [user-service] [main] [                                                 ] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.46]
+2026-04-21T11:39:28.805+07:00  INFO 23604 --- [user-service] [main] [                                                 ] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2026-04-21T11:39:28.806+07:00  INFO 23604 --- [user-service] [main] [                                                 ] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 4774 ms
+2026-04-21T11:39:30.226+07:00  INFO 23604 --- [user-service] [main] [                                                 ] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-04-21T11:39:30.431+07:00  INFO 23604 --- [user-service] [main] [                                                 ] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.6.29.Final
+2026-04-21T11:39:30.502+07:00  INFO 23604 --- [user-service] [main] [                                                 ] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2026-04-21T11:39:31.022+07:00  INFO 23604 --- [user-service] [main] [                                                 ] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-04-21T11:39:31.071+07:00  INFO 23604 --- [user-service] [main] [                                                 ] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-04-21T11:39:31.324+07:00  INFO 23604 --- [user-service] [main] [                                                 ] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@3724ab90
+2026-04-21T11:39:31.326+07:00  INFO 23604 --- [user-service] [main] [                                                 ] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-04-21T11:39:31.393+07:00  WARN 23604 --- [user-service] [main] [                                                 ] org.hibernate.orm.deprecation            : HHH90000025: PostgreSQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-04-21T11:39:31.430+07:00  INFO 23604 --- [user-service] [main] [                                                 ] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 17.7
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-04-21T11:39:33.254+07:00  INFO 23604 --- [user-service] [main] [                                                 ] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-04-21T11:39:34.199+07:00  INFO 23604 --- [user-service] [main] [                                                 ] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-04-21T11:39:35.642+07:00  INFO 23604 --- [user-service] [main] [                                                 ] o.s.d.j.r.query.QueryEnhancerFactory     : Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-04-21T11:39:37.030+07:00  INFO 23604 --- [user-service] [main] [                                                 ] c.e.c.s.LocalFileStorageServiceImpl      : File storage location created/verified at: C:\Users\huynh\Desktop\Projects\platform-ecom\uploads
+2026-04-21T11:39:38.040+07:00  WARN 23604 --- [user-service] [main] [                                                 ] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-04-21T11:39:40.289+07:00  INFO 23604 --- [user-service] [main] [                                                 ] DiscoveryClientOptionalArgsConfiguration : Eureka HTTP Client uses RestTemplate.
+2026-04-21T11:39:40.417+07:00  WARN 23604 --- [user-service] [main] [                                                 ] iguration$LoadBalancerCaffeineWarnLogger : Spring Cloud LoadBalancer is currently working with the default cache. While this cache implementation is useful for development and tests, it's recommended to use Caffeine cache in production.You can switch to using Caffeine cache, by adding it and org.springframework.cache.caffeine.CaffeineCacheManager to the classpath.
+2026-04-21T11:39:40.455+07:00  INFO 23604 --- [user-service] [main] [                                                 ] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 18 endpoints beneath base path '/actuator'
+2026-04-21T11:39:40.736+07:00  INFO 23604 --- [user-service] [main] [                                                 ] o.s.c.n.eureka.InstanceInfoFactory       : Setting initial instance status as: STARTING
+2026-04-21T11:39:40.800+07:00  INFO 23604 --- [user-service] [main] [                                                 ] com.netflix.discovery.DiscoveryClient    : Initializing Eureka in region us-east-1
+2026-04-21T11:39:40.807+07:00  INFO 23604 --- [user-service] [main] [                                                 ] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2026-04-21T11:39:40.823+07:00  INFO 23604 --- [user-service] [main] [                                                 ] com.netflix.discovery.DiscoveryClient    : Disable delta property : false
+2026-04-21T11:39:40.824+07:00  INFO 23604 --- [user-service] [main] [                                                 ] com.netflix.discovery.DiscoveryClient    : Single vip registry refresh property : null
+2026-04-21T11:39:40.824+07:00  INFO 23604 --- [user-service] [main] [                                                 ] com.netflix.discovery.DiscoveryClient    : Force full registry fetch : false
+2026-04-21T11:39:40.824+07:00  INFO 23604 --- [user-service] [main] [                                                 ] com.netflix.discovery.DiscoveryClient    : Application is null : false
+2026-04-21T11:39:40.824+07:00  INFO 23604 --- [user-service] [main] [                                                 ] com.netflix.discovery.DiscoveryClient    : Registered Applications size is zero : true
+2026-04-21T11:39:40.824+07:00  INFO 23604 --- [user-service] [main] [                                                 ] com.netflix.discovery.DiscoveryClient    : Application version is -1: true
+2026-04-21T11:39:40.824+07:00  INFO 23604 --- [user-service] [main] [                                                 ] com.netflix.discovery.DiscoveryClient    : Getting all instance registry info from the eureka server
+2026-04-21T11:39:41.315+07:00  INFO 23604 --- [user-service] [main] [                                                 ] com.netflix.discovery.DiscoveryClient    : The response status is 200
+2026-04-21T11:39:41.327+07:00  INFO 23604 --- [user-service] [main] [                                                 ] com.netflix.discovery.DiscoveryClient    : Starting heartbeat executor: renew interval is: 30
+2026-04-21T11:39:41.331+07:00  INFO 23604 --- [user-service] [main] [                                                 ] c.n.discovery.InstanceInfoReplicator     : InstanceInfoReplicator onDemand update allowed rate per min is 4
+2026-04-21T11:39:41.334+07:00  INFO 23604 --- [user-service] [main] [                                                 ] com.netflix.discovery.DiscoveryClient    : Discovery Client initialized at timestamp 1776746381334 with initial instances count: 4
+2026-04-21T11:39:41.341+07:00  INFO 23604 --- [user-service] [main] [                                                 ] o.s.c.n.e.s.EurekaServiceRegistry        : Registering application USER-SERVICE with eureka with status UP
+2026-04-21T11:39:41.346+07:00  INFO 23604 --- [user-service] [main] [                                                 ] com.netflix.discovery.DiscoveryClient    : Saw local status change event StatusChangeEvent [timestamp=1776746381345, current=UP, previous=STARTING]
+2026-04-21T11:39:41.350+07:00  INFO 23604 --- [user-service] [DiscoveryClient-InstanceInfoReplicator-%d] [                                                 ] com.netflix.discovery.DiscoveryClient    : DiscoveryClient_USER-SERVICE/fragile.mshome.net:user-service:8082: registering service...
+2026-04-21T11:39:41.392+07:00  INFO 23604 --- [user-service] [main] [                                                 ] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8082 (http) with context path '/'
+2026-04-21T11:39:41.399+07:00  INFO 23604 --- [user-service] [main] [                                                 ] .s.c.n.e.s.EurekaAutoServiceRegistration : Updating port to 8082
+2026-04-21T11:39:41.490+07:00  INFO 23604 --- [user-service] [DiscoveryClient-InstanceInfoReplicator-%d] [                                                 ] com.netflix.discovery.DiscoveryClient    : DiscoveryClient_USER-SERVICE/fragile.mshome.net:user-service:8082 - registration status: 204
+2026-04-21T11:39:41.563+07:00  INFO 23604 --- [user-service] [main] [                                                 ] com.ecom.user.UserApplication            : Started UserApplication in 19.551 seconds (process running for 21.01)
+2026-04-21T11:39:41.983+07:00  INFO 23604 --- [user-service] [main] [                                                 ] com.ecom.user.seeder.FakeDataSeeder      : Database already seeded with users. Skipping user seeding.
+2026-04-21T11:39:42.465+07:00  WARN 23604 --- [user-service] [AsyncReporter{ZipkinHttpClientSender{http://localhost:9411/api/v2/spans}}] [                                                 ] z.r.i.AsyncReporter$BoundedAsyncReporter : Spans were dropped due to exceptions. All subsequent errors will be logged at FINE level.
+2026-04-21T11:39:42.466+07:00  WARN 23604 --- [user-service] [AsyncReporter{ZipkinHttpClientSender{http://localhost:9411/api/v2/spans}}] [                                                 ] z.r.i.AsyncReporter$BoundedAsyncReporter : Dropped 2 spans due to ConnectException()
+
+java.net.ConnectException: null
+	at java.net.http/jdk.internal.net.http.HttpClientImpl.send(HttpClientImpl.java:923) ~[java.net.http:na]
+	at java.net.http/jdk.internal.net.http.HttpClientFacade.send(HttpClientFacade.java:133) ~[java.net.http:na]
+	at org.springframework.boot.actuate.autoconfigure.tracing.zipkin.ZipkinHttpClientSender.postSpans(ZipkinHttpClientSender.java:60) ~[spring-boot-actuator-autoconfigure-3.5.6.jar:3.5.6]
+	at org.springframework.boot.actuate.autoconfigure.tracing.zipkin.HttpSender.postSpans(HttpSender.java:69) ~[spring-boot-actuator-autoconfigure-3.5.6.jar:3.5.6]
+	at org.springframework.boot.actuate.autoconfigure.tracing.zipkin.HttpSender.postSpans(HttpSender.java:41) ~[spring-boot-actuator-autoconfigure-3.5.6.jar:3.5.6]
+	at zipkin2.reporter.BaseHttpSender.send(BaseHttpSender.java:123) ~[zipkin-reporter-3.5.1.jar:na]
+	at zipkin2.reporter.internal.AsyncReporter$BoundedAsyncReporter.flush(AsyncReporter.java:266) ~[zipkin-reporter-3.5.1.jar:na]
+	at zipkin2.reporter.internal.AsyncReporter$Flusher.run(AsyncReporter.java:352) ~[zipkin-reporter-3.5.1.jar:na]
+	at java.base/java.lang.Thread.run(Thread.java:1474) ~[na:na]
+Caused by: java.net.ConnectException: null
+	at java.net.http/jdk.internal.net.http.common.Utils.toConnectException(Utils.java:1070) ~[java.net.http:na]
+	at java.net.http/jdk.internal.net.http.PlainHttpConnection.connectAsync(PlainHttpConnection.java:223) ~[java.net.http:na]
+	at java.net.http/jdk.internal.net.http.PlainHttpConnection.checkRetryConnect(PlainHttpConnection.java:277) ~[java.net.http:na]
+	at java.net.http/jdk.internal.net.http.PlainHttpConnection.lambda$connectAsync$0(PlainHttpConnection.java:235) ~[java.net.http:na]
+	at java.base/java.util.concurrent.CompletableFuture.uniHandle(CompletableFuture.java:955) ~[na:na]
+	at java.base/java.util.concurrent.CompletableFuture$UniHandle.tryFire(CompletableFuture.java:932) ~[na:na]
+	at java.base/java.util.concurrent.CompletableFuture.postComplete(CompletableFuture.java:531) ~[na:na]
+	at java.base/java.util.concurrent.CompletableFuture$AsyncSupply.run(CompletableFuture.java:1794) ~[na:na]
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1090) ~[na:na]
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:614) ~[na:na]
+	... 1 common frames omitted
+Caused by: java.nio.channels.ClosedChannelException: null
+	at java.base/sun.nio.ch.SocketChannelImpl.ensureOpen(SocketChannelImpl.java:204) ~[na:na]
+	at java.base/sun.nio.ch.SocketChannelImpl.connect(SocketChannelImpl.java:942) ~[na:na]
+	at java.net.http/jdk.internal.net.http.PlainHttpConnection.connectAsync(PlainHttpConnection.java:211) ~[java.net.http:na]
+	... 9 common frames omitted
+
+2026-04-21T11:44:40.827+07:00  INFO 23604 --- [user-service] [AsyncResolver-bootstrap-executor-%d] [                                                 ] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2026-04-21T11:45:41.839+07:00  INFO 23604 --- [user-service] [http-nio-8082-exec-2] [                                                 ] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-04-21T11:45:41.840+07:00  INFO 23604 --- [user-service] [http-nio-8082-exec-2] [                                                 ] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2026-04-21T11:45:41.848+07:00  INFO 23604 --- [user-service] [http-nio-8082-exec-2] [                                                 ] o.s.web.servlet.DispatcherServlet        : Completed initialization in 4 ms
+2026-04-21T11:49:40.830+07:00  INFO 23604 --- [user-service] [AsyncResolver-bootstrap-executor-%d] [                                                 ] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2026-04-21T11:54:40.837+07:00  INFO 23604 --- [user-service] [AsyncResolver-bootstrap-executor-%d] [                                                 ] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2026-04-21T11:56:21.404+07:00  WARN 23604 --- [user-service] [http-nio-8082-exec-4] [69e70375f136607baacd5156677aec9e-4bc2721bc045acb7] c.e.user.service.impl.AuthServiceImpl    : Failed login attempt for email: admin@ecom.com
+2026-04-21T11:56:21.408+07:00 ERROR 23604 --- [user-service] [http-nio-8082-exec-4] [69e70375f136607baacd5156677aec9e-4bc2721bc045acb7] c.e.c.exception.GlobalExceptionHandler   : Exception handled: Invalid email or password! - Status: 500 INTERNAL_SERVER_ERROR
+2026-04-21T11:59:40.852+07:00  INFO 23604 --- [user-service] [AsyncResolver-bootstrap-executor-%d] [                                                 ] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2026-04-21T11:59:51.432+07:00  INFO 23604 --- [user-service] [http-nio-8082-exec-7] [69e70442369b13652f297231e6787d94-5d492ad25063c810] c.e.u.s.impl.ForgotPasswordServiceImpl   : OTP email sent successfully to: h***************6@gmail.com
+2026-04-21T11:59:51.432+07:00  INFO 23604 --- [user-service] [http-nio-8082-exec-7] [69e70442369b13652f297231e6787d94-5d492ad25063c810] c.e.u.s.impl.ForgotPasswordServiceImpl   : Generated OTP for user: huynhminhthang246@gmail.com
+2026-04-21T12:00:18.932+07:00  INFO 23604 --- [user-service] [http-nio-8082-exec-8] [69e704626e716f42c66d617922bb0ec0-f1cd1d0861bd6669] c.e.u.s.impl.ForgotPasswordServiceImpl   : Password reset successfully for user: huynhminhthang246@gmail.com
+2026-04-21T12:00:46.698+07:00  INFO 23604 --- [user-service] [http-nio-8082-exec-1] [69e7047a43124fe2805a862600f11e61-a48d4c2b90a8c858] c.e.u.s.impl.ForgotPasswordServiceImpl   : OTP email sent successfully to: h***************6@gmail.com
+2026-04-21T12:00:46.698+07:00  INFO 23604 --- [user-service] [http-nio-8082-exec-1] [69e7047a43124fe2805a862600f11e61-a48d4c2b90a8c858] c.e.u.s.impl.ForgotPasswordServiceImpl   : Generated OTP for user: huynhminhthang246@gmail.com
+2026-04-21T12:04:40.853+07:00  INFO 23604 --- [user-service] [AsyncResolver-bootstrap-executor-%d] [                                                 ] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2026-04-21T12:06:10.613+07:00 ERROR 23604 --- [user-service] [http-nio-8082-exec-5] [69e705c2df3878eaee8cc892760bb9d1-14b80bfd7abedb7f] c.e.c.exception.GlobalExceptionHandler   : Exception handled: Email is already in use! - Status: 500 INTERNAL_SERVER_ERROR
+2026-04-21T12:09:40.865+07:00  INFO 23604 --- [user-service] [AsyncResolver-bootstrap-executor-%d] [                                                 ] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2026-04-21T12:14:40.880+07:00  INFO 23604 --- [user-service] [AsyncResolver-bootstrap-executor-%d] [                                                 ] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2026-04-21T12:19:40.890+07:00  INFO 23604 --- [user-service] [AsyncResolver-bootstrap-executor-%d] [                                                 ] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2026-04-21T12:24:40.903+07:00  INFO 23604 --- [user-service] [AsyncResolver-bootstrap-executor-%d] [                                                 ] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2026-04-21T12:29:40.912+07:00  INFO 23604 --- [user-service] [AsyncResolver-bootstrap-executor-%d] [                                                 ] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2026-04-21T12:34:40.919+07:00  INFO 23604 --- [user-service] [AsyncResolver-bootstrap-executor-%d] [                                                 ] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2026-04-21T12:39:40.924+07:00  INFO 23604 --- [user-service] [AsyncResolver-bootstrap-executor-%d] [                                                 ] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2026-04-21T12:44:40.934+07:00  INFO 23604 --- [user-service] [AsyncResolver-bootstrap-executor-%d] [                                                 ] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2026-04-21T12:49:40.945+07:00  INFO 23604 --- [user-service] [AsyncResolver-bootstrap-executor-%d] [                                                 ] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2026-04-21T12:54:40.960+07:00  INFO 23604 --- [user-service] [AsyncResolver-bootstrap-executor-%d] [                                                 ] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2026-04-21T12:59:40.973+07:00  INFO 23604 --- [user-service] [AsyncResolver-bootstrap-executor-%d] [                                                 ] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2026-04-21T13:04:40.989+07:00  INFO 23604 --- [user-service] [AsyncResolver-bootstrap-executor-%d] [                                                 ] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2026-04-21T13:09:40.997+07:00  INFO 23604 --- [user-service] [AsyncResolver-bootstrap-executor-%d] [                                                 ] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2026-04-21T13:14:41.004+07:00  INFO 23604 --- [user-service] [AsyncResolver-bootstrap-executor-%d] [                                                 ] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2026-04-21T13:19:41.007+07:00  INFO 23604 --- [user-service] [AsyncResolver-bootstrap-executor-%d] [                                                 ] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2026-04-21T13:24:41.020+07:00  INFO 23604 --- [user-service] [AsyncResolver-bootstrap-executor-%d] [                                                 ] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2026-04-21T13:29:41.031+07:00  INFO 23604 --- [user-service] [AsyncResolver-bootstrap-executor-%d] [                                                 ] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2026-04-21T13:34:41.045+07:00  INFO 23604 --- [user-service] [AsyncResolver-bootstrap-executor-%d] [                                                 ] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2026-04-21T13:39:41.054+07:00  INFO 23604 --- [user-service] [AsyncResolver-bootstrap-executor-%d] [                                                 ] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2026-04-21T13:44:41.068+07:00  INFO 23604 --- [user-service] [AsyncResolver-bootstrap-executor-%d] [                                                 ] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2026-04-21T13:49:41.084+07:00  INFO 23604 --- [user-service] [AsyncResolver-bootstrap-executor-%d] [                                                 ] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2026-04-21T13:54:41.086+07:00  INFO 23604 --- [user-service] [AsyncResolver-bootstrap-executor-%d] [                                                 ] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2026-04-21T13:59:41.101+07:00  INFO 23604 --- [user-service] [AsyncResolver-bootstrap-executor-%d] [                                                 ] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2026-04-21T14:04:41.118+07:00  INFO 23604 --- [user-service] [AsyncResolver-bootstrap-executor-%d] [                                                 ] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2026-04-21T14:07:04.758+07:00  INFO 23604 --- [user-service] [SpringApplicationShutdownHook] [                                                 ] o.s.c.n.e.s.EurekaServiceRegistry        : Unregistering application USER-SERVICE with eureka with status DOWN
+2026-04-21T14:07:04.759+07:00  INFO 23604 --- [user-service] [SpringApplicationShutdownHook] [                                                 ] com.netflix.discovery.DiscoveryClient    : Saw local status change event StatusChangeEvent [timestamp=1776755224759, current=DOWN, previous=UP]
+2026-04-21T14:07:04.759+07:00  INFO 23604 --- [user-service] [DiscoveryClient-InstanceInfoReplicator-%d] [                                                 ] com.netflix.discovery.DiscoveryClient    : DiscoveryClient_USER-SERVICE/fragile.mshome.net:user-service:8082: registering service...
+2026-04-21T14:07:04.772+07:00  INFO 23604 --- [user-service] [SpringApplicationShutdownHook] [                                                 ] o.s.b.w.e.tomcat.GracefulShutdown        : Commencing graceful shutdown. Waiting for active requests to complete
+2026-04-21T14:07:04.825+07:00  INFO 23604 --- [user-service] [DiscoveryClient-InstanceInfoReplicator-%d] [                                                 ] com.netflix.discovery.DiscoveryClient    : DiscoveryClient_USER-SERVICE/fragile.mshome.net:user-service:8082 - registration status: 204
+2026-04-21T14:07:04.839+07:00  INFO 23604 --- [user-service] [tomcat-shutdown] [                                                 ] o.s.b.w.e.tomcat.GracefulShutdown        : Graceful shutdown complete
+2026-04-21T14:07:04.896+07:00  INFO 23604 --- [user-service] [SpringApplicationShutdownHook] [                                                 ] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-04-21T14:07:04.902+07:00  INFO 23604 --- [user-service] [SpringApplicationShutdownHook] [                                                 ] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2026-04-21T14:07:04.927+07:00  INFO 23604 --- [user-service] [SpringApplicationShutdownHook] [                                                 ] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2026-04-21T14:07:05.469+07:00  INFO 23604 --- [user-service] [SpringApplicationShutdownHook] [                                                 ] com.netflix.discovery.DiscoveryClient    : Shutting down DiscoveryClient ...
+2026-04-21T14:07:08.471+07:00  INFO 23604 --- [user-service] [SpringApplicationShutdownHook] [                                                 ] com.netflix.discovery.DiscoveryClient    : Unregistering ...
+2026-04-21T14:07:08.480+07:00  INFO 23604 --- [user-service] [SpringApplicationShutdownHook] [                                                 ] com.netflix.discovery.DiscoveryClient    : DiscoveryClient_USER-SERVICE/fragile.mshome.net:user-service:8082 - deregister  status: 200
+2026-04-21T14:07:08.480+07:00  INFO 23604 --- [user-service] [SpringApplicationShutdownHook] [                                                 ] com.netflix.discovery.DiscoveryClient    : Completed shut down of DiscoveryClient
