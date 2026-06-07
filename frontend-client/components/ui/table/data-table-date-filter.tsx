@@ -131,7 +131,7 @@ export function DataTableDateFilter<TData>({
       const hasSelectedDates = selectedDates.from || selectedDates.to;
       const dateText = hasSelectedDates
         ? formatDateRange(selectedDates)
-        : 'Select date range';
+        : 'Chọn khoảng ngày';
 
       return (
         <span className='flex items-center gap-2'>
@@ -154,7 +154,7 @@ export function DataTableDateFilter<TData>({
     const hasSelectedDate = selectedDates.length > 0;
     const dateText = hasSelectedDate
       ? formatDate(selectedDates[0])
-      : 'Select date';
+      : 'Chọn ngày';
 
     return (
       <span className='flex items-center gap-2'>
@@ -179,9 +179,10 @@ export function DataTableDateFilter<TData>({
           {hasValue ? (
             <div
               role='button'
-              aria-label={`Clear ${title} filter`}
+              aria-label={`Xóa bộ lọc ${title}`}
               tabIndex={0}
               onClick={onReset}
+              onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') onReset(e as unknown as React.MouseEvent); }}
               className='focus-visible:ring-ring rounded-sm opacity-70 transition-opacity hover:opacity-100 focus-visible:ring-1 focus-visible:outline-none'
             >
               <XCircle />

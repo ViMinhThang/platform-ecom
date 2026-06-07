@@ -239,7 +239,7 @@ export function AddressForm({ initialData, onSubmit, onCancel }: AddressFormProp
                     HỦY BỎ
                 </Button>
                 <Button type="submit" disabled={isSubmitting} className="rounded-sm shadow-lg shadow-primary/10 text-[11px] font-bold uppercase tracking-widest px-10 h-12 transition-all">
-                    {isSubmitting && <Loader2 className="mr-3 h-4 w-4 animate-spin" />}
+                    {isSubmitting && <Loader2 className="mr-3 size-4 animate-spin" />}
                     LƯU ĐỊA CHỈ
                 </Button>
             </div>

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { productVariantService } from "@/lib/services/product-variant-service";
 import { Button } from "@/components/ui/button";
 import {
@@ -20,6 +20,8 @@ import { Check, ChevronsUpDown, Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { VariantFormValues } from "@/types/product/product-variant";
 
+const EMPTY_EXCLUDE_IDS: number[] = [];
+
 interface VariantComboboxProps {
     productId: number | null;
     value: VariantFormValues | null;
@@ -28,21 +30,12 @@ interface VariantComboboxProps {
     excludeVariantIds?: number[];
 }
 
-export function VariantCombobox({ productId, value, onChange, disabled, excludeVariantIds = [] }: VariantComboboxProps) {
+export function VariantCombobox({ productId, value, onChange, disabled, excludeVariantIds = EMPTY_EXCLUDE_IDS }: VariantComboboxProps) {
     const [open, setOpen] = useState(false);
     const [variants, setVariants] = useState<VariantFormValues[]>([]);
     const [loading, setLoading] = useState(false);
 
-    useEffect(() => {
-        if (productId) {
-            fetchVariants(productId);
-        } else {
-            setVariants([]);
-            onChange(null);
-        }
-    }, [productId]);
-
-    const fetchVariants = async (pid: number) => {
+    const fetchVariants = useCallback(async (pid: number) => {
         setLoading(true);
         try {
             const result = await productVariantService.getProductVariants(pid);
@@ -52,7 +45,20 @@ export function VariantCombobox({ productId, value, onChange, disabled, excludeV
         } finally {
             setLoading(false);
         }
-    };
+    }, []);
+
+    const onProductIdChange = useCallback((pid: number | null) => {
+        if (pid) {
+            fetchVariants(pid);
+        } else {
+            setVariants([]);
+            onChange(null);
+        }
+    }, [fetchVariants, onChange]);
+
+    useEffect(() => {
+        onProductIdChange(productId);
+    }, [productId, onProductIdChange]);
 
     // Filter out variants that already have inventory
     const availableVariants = variants.filter(v => !excludeVariantIds.includes(v.id!));
@@ -60,8 +66,7 @@ export function VariantCombobox({ productId, value, onChange, disabled, excludeV
     const getVariantDisplayName = (variant: VariantFormValues): string => {
         if (variant.optionValues?.length > 0) {
             return variant.optionValues
-                .map(ov => ov.productOptionValue?.displayValue || ov.productOptionValue?.value)
-                .filter(Boolean)
+                .flatMap(ov => (ov.productOptionValue?.displayValue || ov.productOptionValue?.value) ? [ov.productOptionValue?.displayValue || ov.productOptionValue?.value] : [])
                 .join(", ") || "Mặc định";
         }
         return "Mặc định";
@@ -72,13 +77,12 @@ export function VariantCombobox({ productId, value, onChange, disabled, excludeV
             <PopoverTrigger asChild>
                 <Button
                     variant="outline"
-                    role="combobox"
                     aria-expanded={open}
                     className="w-full justify-between"
                     disabled={disabled || !productId}
                 >
                     {loading ? (
-                        <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Đang tải...</>
+                        <><Loader2 className="mr-2 size-4 animate-spin" /> Đang tải…</>
                     ) : value ? (
                         <span className="truncate">
                             #{value.id} - {value.sku || getVariantDisplayName(value)}
@@ -86,7 +90,7 @@ export function VariantCombobox({ productId, value, onChange, disabled, excludeV
                     ) : (
                         productId ? "Chọn biến thể..." : "Chọn sản phẩm trước"
                     )}
-                    <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                    <ChevronsUpDown className="ml-2 size-4 shrink-0 opacity-50" />
                 </Button>
             </PopoverTrigger>
             <PopoverContent className="w-[350px] p-0">
@@ -110,7 +114,7 @@ export function VariantCombobox({ productId, value, onChange, disabled, excludeV
                                 >
                                     <Check
                                         className={cn(
-                                            "mr-2 h-4 w-4",
+                                            "mr-2 size-4",
                                             value?.id === variant.id ? "opacity-100" : "opacity-0"
                                         )}
                                     />

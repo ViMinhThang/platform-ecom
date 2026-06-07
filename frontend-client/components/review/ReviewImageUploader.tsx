@@ -1,6 +1,8 @@
 'use client';
 
 import { IconX, IconUpload } from '@tabler/icons-react';
+
+const EMPTY_IMAGES: File[] = [];
 import Image from 'next/image';
 import * as React from 'react';
 import Dropzone, {
@@ -20,7 +22,7 @@ export interface ReviewImageUploaderProps {
 }
 
 export function ReviewImageUploader({
-    value = [],
+    value = EMPTY_IMAGES,
     onChange,
     maxFiles = 5,
     maxSize = 1024 * 1024 * 5, // 5MB
@@ -28,7 +30,7 @@ export function ReviewImageUploader({
     const onDrop = React.useCallback(
         (acceptedFiles: File[], rejectedFiles: FileRejection[]) => {
             if (value.length + acceptedFiles.length > maxFiles) {
-                toast.error(`You can only upload up to ${maxFiles} images`);
+                toast.error(`Bạn chỉ có thể tải lên tối đa ${maxFiles} ảnh`);
                 return;
             }
 
@@ -44,9 +46,9 @@ export function ReviewImageUploader({
             if (rejectedFiles.length > 0) {
                 rejectedFiles.forEach(({ file, errors }) => {
                     if (errors[0]?.code === 'file-too-large') {
-                        toast.error(`File ${file.name} is too large. Max size is ${formatBytes(maxSize)}`);
+                        toast.error(`Tệp ${file.name} quá lớn. Kích thước tối đa là ${formatBytes(maxSize)}`);
                     } else {
-                        toast.error(`File ${file.name} was rejected`);
+                        toast.error(`Tệp ${file.name} bị từ chối`);
                     }
                 });
             }
@@ -93,13 +95,13 @@ export function ReviewImageUploader({
                         )}
                     >
                         <input {...getInputProps()} />
-                        <IconUpload className="w-6 h-6 text-muted-foreground" />
+                        <IconUpload className="size-6 text-muted-foreground" />
                         <div className="text-center">
                             <p className="text-sm font-medium">
-                                Click or drag images to upload
+                                Bấm hoặc kéo ảnh để tải lên
                             </p>
                             <p className="text-xs text-muted-foreground">
-                                Up to {maxFiles} images. Max {formatBytes(maxSize)} each.
+                                Tối đa {maxFiles} ảnh. Mỗi ảnh tối đa {formatBytes(maxSize)}.
                             </p>
                         </div>
                     </div>
@@ -109,11 +111,12 @@ export function ReviewImageUploader({
             {value.length > 0 && (
                 <div className="grid grid-cols-3 sm:grid-cols-5 gap-4">
                     {value.map((file, index) => (
-                        <div key={index} className="relative group aspect-square rounded-md overflow-hidden border">
+                        <div key={"review-image-" + index} className="relative group aspect-square rounded-md overflow-hidden border">
                             <Image
                                 src={(file as any).preview || ''}
                                 alt={file.name}
                                 fill
+                                sizes="40px"
                                 className="object-cover"
                             />
                             <button

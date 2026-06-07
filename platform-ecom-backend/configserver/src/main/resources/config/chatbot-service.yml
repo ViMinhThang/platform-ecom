@@ -17,7 +17,9 @@ spring:
         gemini:
           project-id: gen-lang-client-0858695901
           location: "europe-west1"
-          model: "gemini-2.0-flash-lite"
+          chat:
+            options:
+              model: "gemini-2.5-flash-lite"
         embedding:
           project-id: gen-lang-client-0858695901
           location: "asia-east1"

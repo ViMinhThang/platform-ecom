@@ -40,7 +40,7 @@ export function OrderHistory() {
     };
 
     const handleReviewSuccess = () => {
-        toast.success('Thank you for your review!');
+        toast.success('Cảm ơn bạn đã đánh giá!');
     };
 
     if (isLoading && orders.length === 0) {
@@ -50,11 +50,11 @@ export function OrderHistory() {
     if (orders.length === 0) {
         return (
             <div className="flex flex-col items-center justify-center py-16 border-2 border-dashed rounded-xl bg-muted/30 text-muted-foreground">
-                <div className="h-12 w-12 rounded-full bg-muted flex items-center justify-center mb-4">
-                    <Package className="h-6 w-6" />
+                <div className="size-12 rounded-full bg-muted flex items-center justify-center mb-4">
+                    <Package className="size-6" />
                 </div>
-                <h3 className="text-lg font-medium text-foreground">No orders yet</h3>
-                <p className="text-sm mt-1 mb-4">When you place an order, it will appear here.</p>
+                <h3 className="text-lg font-medium text-foreground">Chưa có đơn hàng</h3>
+                <p className="text-sm mt-1 mb-4">Khi bạn đặt hàng, đơn hàng sẽ xuất hiện tại đây.</p>
             </div>
         );
     }

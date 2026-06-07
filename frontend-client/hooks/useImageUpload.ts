@@ -36,10 +36,10 @@ export function useImageUpload(userId: number, onSuccess?: () => void) {
         setIsUploading(true);
         try {
             await uploadProfileImage(file);
-            toast.success('Profile image updated');
+            toast.success('Đã cập nhật ảnh hồ sơ');
             onSuccess?.();
         } catch (error: any) {
-            toast.error(error.message || 'Failed to upload image');
+            toast.error(error.message || 'Không thể tải ảnh lên');
         } finally {
             setIsUploading(false);
         }

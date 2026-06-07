@@ -2,7 +2,7 @@
 
 import {
   createContext,
-  useContext,
+  use,
   ReactNode,
 } from "react";
 import { toast } from "sonner";
@@ -49,11 +49,11 @@ export const ProductOptionProvider: React.FC<ProductOptionProviderProps> = ({
         option,
       }).unwrap();
 
-      toast.success("Option created successfully");
+      toast.success("Đã tạo tùy chọn");
       return result;
     } catch (error) {
       console.error("Error creating option:", error);
-      toast.error("Failed to create option");
+      toast.error("Không thể tạo tùy chọn");
       return null;
     }
   };
@@ -69,11 +69,11 @@ export const ProductOptionProvider: React.FC<ProductOptionProviderProps> = ({
         option,
       }).unwrap();
 
-      toast.success("Option updated successfully");
+      toast.success("Đã cập nhật tùy chọn");
       return result;
     } catch (error) {
       console.error("Error updating option:", error);
-      toast.error("Failed to update option");
+      toast.error("Không thể cập nhật tùy chọn");
       return null;
     }
   };
@@ -85,10 +85,10 @@ export const ProductOptionProvider: React.FC<ProductOptionProviderProps> = ({
         optionId,
       }).unwrap();
 
-      toast.success("Option deleted successfully");
+      toast.success("Đã xóa tùy chọn");
     } catch (error) {
       console.error("Error deleting option:", error);
-      toast.error("Failed to delete option");
+      toast.error("Không thể xóa tùy chọn");
     }
   };
 
@@ -110,10 +110,10 @@ export const ProductOptionProvider: React.FC<ProductOptionProviderProps> = ({
 };
 
 export const useProductOptions = () => {
-  const context = useContext(ProductOptionContext);
+  const context = use(ProductOptionContext);
   if (!context)
     throw new Error(
-      "useProductOptions must be used within a ProductOptionProvider"
+      "useProductOptions phải được dùng bên trong ProductOptionProvider"
     );
   return context;
 };

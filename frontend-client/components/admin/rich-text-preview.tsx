@@ -14,6 +14,7 @@ export const RichTextPreview = ({ content, className }: RichTextPreviewProps) =>
                 'prose prose-sm dark:prose-invert max-w-none p-4 min-h-[400px]',
                 className
             )}
+            // eslint-disable-next-line react/no-danger
             dangerouslySetInnerHTML={{ __html: content }}
         />
     );

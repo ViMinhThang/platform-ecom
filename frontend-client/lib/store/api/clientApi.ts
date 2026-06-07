@@ -347,6 +347,23 @@ export const api = createApi({
             }),
             providesTags: (_result, _error, id) => [{ type: 'User' as const, id: `seller-${id}` }],
         }),
+        getGhnTracking: builder.query<{ status: string; log: Array<{ status: string; status_name?: string; updated_date: string; location?: { address?: string } }>; leadtime?: string }, string>({
+            queryFn: async (orderCode) => {
+                const response = await fetch('https://online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/detail', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Token': process.env.NEXT_PUBLIC_GHN_TOKEN || '',
+                    },
+                    body: JSON.stringify({ order_code: orderCode }),
+                });
+                const data = await response.json();
+                if (data.code !== 200) {
+                    return { error: { status: data.code, data: data.message } };
+                }
+                return { data: data.data };
+            },
+        }),
     }),
 });
 
@@ -393,6 +410,8 @@ export const {
     useGetUserProfileQuery,
     useUpdateUserProfileMutation,
     useGetSellerInfoQuery,
+    // GHN
+    useGetGhnTrackingQuery,
 } = api;
 
 export default api;

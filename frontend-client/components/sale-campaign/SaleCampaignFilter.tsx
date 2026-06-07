@@ -31,7 +31,7 @@ export function SaleCampaignFilter({
     return (
         <div className={`space-y-8 ${className}`}>
             <div className="flex items-center justify-between">
-                <h3 className="font-black uppercase tracking-wider text-sm">Bộ lọc</h3>
+                <h3 className="font-semibold uppercase tracking-wider text-sm">Bộ lọc</h3>
                 <Button 
                     variant="ghost" 
                     size="sm" 
@@ -65,7 +65,7 @@ export function SaleCampaignFilter({
             {/* Availability Filter */}
             <div className="space-y-4">
                 <Label className="text-xs uppercase font-bold text-zinc-500">Trạng thái</Label>
-                <div className="flex items-center space-x-2">
+                <div className="flex items-center gap-x-2">
                     <Checkbox 
                         id="instock" 
                         checked={showInStockOnly}

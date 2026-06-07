@@ -21,9 +21,9 @@ interface EmptyStateProps {
  * 
  * @example
  * <EmptyState
- *   icon={<Package className="h-12 w-12" />}
- *   title="No orders found"
- *   description="Your order history will appear here"
+ *   icon={<Package className="size-12" />}
+ *   title="Không tìm thấy đơn hàng"
+ *   description="Lịch sử đơn hàng của bạn sẽ xuất hiện tại đây"
  *   action={{ label: "Start Shopping", onClick: () => router.push('/') }}
  * />
  */

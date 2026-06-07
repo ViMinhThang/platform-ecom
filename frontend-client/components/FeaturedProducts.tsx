@@ -11,8 +11,8 @@ export function FeaturedProducts() {
   if (isLoading && products.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center py-24">
-        <Loader2 className="w-8 h-8 animate-spin text-primary mb-4" />
-        <p className="text-slate-500 font-medium">Đang tải sản phẩm...</p>
+        <Loader2 className="size-8 animate-spin text-primary mb-4" />
+        <p className="text-zinc-500 font-medium">Đang tải sản phẩm…</p>
       </div>
     );
   }
@@ -28,14 +28,13 @@ export function FeaturedProducts() {
             price={product.minPrice || 0}
             image={product.imageUrl || "https://placehold.co/600x400"}
             category={product.category.name}
-            isNew={false}
             firstVariant={product.firstVariant}
             slug={product.slug}
           />
         ))
       ) : (
-        <div className="col-span-full py-20 text-center bg-white rounded-3xl border border-dashed border-slate-200">
-          <p className="text-slate-400 font-medium">
+        <div className="col-span-full py-20 text-center bg-white rounded-3xl border border-dashed border-zinc-200">
+          <p className="text-zinc-400 font-medium">
             Hiện không có sản phẩm nào khả dụng.
           </p>
         </div>

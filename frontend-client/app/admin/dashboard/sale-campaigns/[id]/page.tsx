@@ -42,6 +42,15 @@ export default function SaleCampaignDetailPage() {
     const [campaign, setCampaign] = useState<SaleCampaign | null>(null);
     const [loading, setLoading] = useState(true);
     const [actionLoading, setActionLoading] = useState(false);
+    const [startDate, setStartDate] = useState("");
+    const [endDate, setEndDate] = useState("");
+
+    useEffect(() => {
+        if (campaign) {
+            setStartDate(format(new Date(campaign.startTime), 'dd/MM/yyyy HH:mm', { locale: vi }));
+            setEndDate(format(new Date(campaign.endTime), 'dd/MM/yyyy HH:mm', { locale: vi }));
+        }
+    }, [campaign?.startTime, campaign?.endTime]);
 
     useEffect(() => {
         const fetchCampaign = async () => {
@@ -84,7 +93,7 @@ export default function SaleCampaignDetailPage() {
     };
 
     if (loading) {
-        return <div className="p-8 text-center">Đang tải...</div>;
+        return <div className="p-8 text-center">Đang tải…</div>;
     }
 
     if (!campaign) {
@@ -113,20 +122,20 @@ export default function SaleCampaignDetailPage() {
                         {canEdit && (
                             <Button variant="outline" asChild>
                                 <Link href={`/admin/dashboard/sale-campaigns/${campaignId}/edit`}>
-                                    <Pencil className="mr-2 h-4 w-4" />
+                                    <Pencil className="mr-2 size-4" />
                                     Chỉnh sửa
                                 </Link>
                             </Button>
                         )}
                         {canActivate && (
                             <Button onClick={handleActivate} disabled={actionLoading}>
-                                <Play className="mr-2 h-4 w-4" />
+                                <Play className="mr-2 size-4" />
                                 Kích hoạt
                             </Button>
                         )}
                         {canCancel && (
                             <Button variant="destructive" onClick={handleCancel} disabled={actionLoading}>
-                                <XCircle className="mr-2 h-4 w-4" />
+                                <XCircle className="mr-2 size-4" />
                                 Hủy
                             </Button>
                         )}
@@ -144,7 +153,7 @@ export default function SaleCampaignDetailPage() {
                             <Card>
                                 <CardHeader>
                                     <CardTitle className="flex items-center gap-2">
-                                        Banner
+                                        Ảnh bìa
                                     </CardTitle>
                                 </CardHeader>
                                 <CardContent>
@@ -153,6 +162,7 @@ export default function SaleCampaignDetailPage() {
                                             src={campaign.bannerUrl.startsWith('http') ? campaign.bannerUrl : `http://localhost:8080/uploads/${campaign.bannerUrl}`}
                                             alt={campaign.name}
                                             fill
+                                            sizes="100vw"
                                             className="object-cover"
                                         />
                                     </div>
@@ -164,7 +174,7 @@ export default function SaleCampaignDetailPage() {
                         <Card>
                             <CardHeader>
                                 <CardTitle className="flex items-center gap-2">
-                                    <Tag className="h-5 w-5" />
+                                    <Tag className="size-5" />
                                     Danh mục áp dụng
                                 </CardTitle>
                             </CardHeader>
@@ -186,14 +196,14 @@ export default function SaleCampaignDetailPage() {
                         <Card>
                             <CardHeader>
                                 <CardTitle className="flex items-center gap-2">
-                                    <Percent className="h-5 w-5" />
+                                    <Percent className="size-5" />
                                     Khung giá giảm
                                 </CardTitle>
                             </CardHeader>
                             <CardContent>
                                 <div className="space-y-2">
                                     {campaign.discountTiers?.map((tier, idx) => (
-                                        <div key={idx} className="flex items-center justify-between p-3 bg-muted rounded-lg">
+                                        <div key={"tier-" + (tier.id ?? idx)} className="flex items-center justify-between p-3 bg-muted rounded-lg">
                                             <span>
                                                 {tier.minPrice?.toLocaleString() ?? 0}đ - {tier.maxPrice?.toLocaleString() ?? 0}đ
                                             </span>
@@ -214,7 +224,7 @@ export default function SaleCampaignDetailPage() {
                         <Card>
                             <CardHeader>
                                 <CardTitle className="flex items-center gap-2">
-                                    <Calendar className="h-5 w-5" />
+                                    <Calendar className="size-5" />
                                     Lịch trình
                                 </CardTitle>
                             </CardHeader>
@@ -222,13 +232,13 @@ export default function SaleCampaignDetailPage() {
                                 <div>
                                     <div className="text-sm text-muted-foreground">Bắt đầu</div>
                                     <div className="font-medium">
-                                        {format(new Date(campaign.startTime), 'dd/MM/yyyy HH:mm', { locale: vi })}
+                                        {startDate}
                                     </div>
                                 </div>
                                 <div>
                                     <div className="text-sm text-muted-foreground">Kết thúc</div>
                                     <div className="font-medium">
-                                        {format(new Date(campaign.endTime), 'dd/MM/yyyy HH:mm', { locale: vi })}
+                                        {endDate}
                                     </div>
                                 </div>
                             </CardContent>
@@ -238,7 +248,7 @@ export default function SaleCampaignDetailPage() {
                         <Card>
                             <CardHeader>
                                 <CardTitle className="flex items-center gap-2">
-                                    <Package className="h-5 w-5" />
+                                    <Package className="size-5" />
                                     Thống kê
                                 </CardTitle>
                             </CardHeader>

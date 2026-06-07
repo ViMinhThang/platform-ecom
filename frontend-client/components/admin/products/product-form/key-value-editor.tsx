@@ -13,6 +13,43 @@ interface JsonKeyValueEditorProps {
   control: Control<any>;
 }
 
+const KeyValueEditorField: React.FC<{ field: any; label: string }> = ({ field, label }) => {
+  const { items, handleAddRow, handleRemoveRow, handleChange } =
+    useJsonKeyValue(field);
+
+  return (
+    <div className="space-y-2">
+      <Label>{label}</Label>
+      {items.map((item, index) => (
+        <div key={"kv-" + index} className="flex gap-2 mb-2 items-center">
+          <Input
+            placeholder="Khóa"
+            value={item.key}
+            onChange={(e) => handleChange(index, "key", e.target.value)}
+            className="flex-1"
+          />
+          <Input
+            placeholder="Giá trị"
+            value={item.value}
+            onChange={(e) => handleChange(index, "value", e.target.value)}
+            className="flex-1"
+          />
+          <Button
+            type="button"
+            variant="destructive"
+            onClick={() => handleRemoveRow(index)}
+          >
+            Xóa
+          </Button>
+        </div>
+      ))}
+      <Button type="button" onClick={handleAddRow}>
+        Thêm trường
+      </Button>
+    </div>
+  );
+};
+
 export const JsonKeyValueEditor: React.FC<JsonKeyValueEditorProps> = ({
   name,
   label,
@@ -23,42 +60,7 @@ export const JsonKeyValueEditor: React.FC<JsonKeyValueEditorProps> = ({
       name={name}
       control={control}
       defaultValue="{}"
-      render={({ field }) => {
-        const { items, handleAddRow, handleRemoveRow, handleChange } =
-          useJsonKeyValue(field);
-
-        return (
-          <div className="space-y-2">
-            <Label>{label}</Label>
-            {items.map((item, index) => (
-              <div key={index} className="flex gap-2 mb-2 items-center">
-                <Input
-                  placeholder="Khóa"
-                  value={item.key}
-                  onChange={(e) => handleChange(index, "key", e.target.value)}
-                  className="flex-1"
-                />
-                <Input
-                  placeholder="Giá trị"
-                  value={item.value}
-                  onChange={(e) => handleChange(index, "value", e.target.value)}
-                  className="flex-1"
-                />
-                <Button
-                  type="button"
-                  variant="destructive"
-                  onClick={() => handleRemoveRow(index)}
-                >
-                  Xóa
-                </Button>
-              </div>
-            ))}
-            <Button type="button" onClick={handleAddRow}>
-              Thêm trường
-            </Button>
-          </div>
-        );
-      }}
+      render={({ field }) => <KeyValueEditorField field={field} label={label} />}
     />
   );
 };

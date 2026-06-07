@@ -120,7 +120,7 @@ export const ProductVariantOptions: React.FC<ProductVariantOptionsProps> = ({
                   >
                     <FormControl>
                       <SelectTrigger>
-                        <SelectValue placeholder={`Select ${option.name}`} />
+                        <SelectValue placeholder={`Chọn ${option.name}`} />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>

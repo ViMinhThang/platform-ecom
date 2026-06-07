@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { useCheckout } from "@/hooks/useCheckout";
 import { useCart } from "@/hooks/useCart";
@@ -37,7 +38,7 @@ export default function CheckoutPage() {
     const checkoutSession = checkout.checkoutSession;
     const currentOrder = checkout.currentOrder;
     const { cart } = useCart();
-    const [stripePromise, setStripePromise] = useState<Promise<any>>(Promise.resolve(null));
+    const [stripePromise, setStripePromise] = useState<Promise<any>>(() => Promise.resolve(null));
     const [stripeError, setStripeError] = useState<string | null>(null);
 
     useEffect(() => {
@@ -92,7 +93,7 @@ export default function CheckoutPage() {
     }, [checkout.step, checkoutSession, orderLoading, startCheckout, orderError, currentOrder]);
 
     if (!cart) {
-        return <div className="max-w-[1600px] mx-auto py-12 text-center text-foreground/50 text-sm">Đang tải trang thanh toán...</div>;
+        return <div className="max-w-[1600px] mx-auto py-12 text-center text-foreground/50 text-sm">Đang tải trang thanh toán…</div>;
     }
 
     const totalAmount = discountResult ? discountResult.finalTotal : (cart.totalAmount + shippingFee);
@@ -103,7 +104,7 @@ export default function CheckoutPage() {
             <div className="max-w-[1600px] mx-auto py-12 md:py-24 px-6 md:px-12">
                 {/* Header */}
                 <div className="mb-12 space-y-4">
-                    <h1 className="font-header text-3xl md:text-5xl font-bold tracking-tight text-foreground">
+                    <h1 className="font-header text-3xl md:text-5xl font-semibold tracking-tight text-foreground">
                         Thanh toán
                     </h1>
                     <p className="text-sm text-foreground/50">Hoàn tất đơn hàng của bạn một cách an toàn</p>
@@ -117,12 +118,12 @@ export default function CheckoutPage() {
                         return (
                             <div key={step.key} className="flex items-center flex-1">
                                 <div className="flex items-center gap-3">
-                                    <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm transition-all ${
+                                    <div className={`size-10 rounded-full flex items-center justify-center font-bold text-sm transition-all ${
                                         isComplete ? 'bg-primary text-white' :
                                         isActive ? 'bg-signature-gradient text-white shadow-md' : 
                                         'bg-surface-container-low text-foreground/30'
                                     }`}>
-                                        {isComplete ? <Check className="w-4 h-4" /> : step.number}
+                                        {isComplete ? <Check className="size-4" /> : step.number}
                                     </div>
                                     <span className={`text-sm font-semibold hidden md:block ${
                                         isActive ? 'text-foreground' : 'text-foreground/40'
@@ -144,7 +145,7 @@ export default function CheckoutPage() {
 
                         {/* Step 1: Address */}
                         <div className={`transition-all duration-500 ${checkout.step !== 'address' ? 'opacity-50' : ''}`}>
-                            <h2 className="text-lg font-bold mb-6 text-foreground">Địa chỉ giao hàng</h2>
+                            <h2 className="text-lg font-semibold mb-6 text-foreground">Địa chỉ giao hàng</h2>
                             <div className="bg-surface-container-lowest p-8 md:p-10 rounded-xl shadow-sm">
                                 <AddressForm />
                             </div>
@@ -152,27 +153,27 @@ export default function CheckoutPage() {
 
                         {/* Step 2: Payment */}
                         <div className={`transition-all duration-500 ${checkout.step !== 'payment' ? 'opacity-40 pointer-events-none' : ''}`}>
-                            <h2 className="text-lg font-bold mb-6 text-foreground">Phương thức thanh toán</h2>
+                            <h2 className="text-lg font-semibold mb-6 text-foreground">Phương thức thanh toán</h2>
                             <div className="bg-surface-container-lowest p-8 md:p-10 rounded-xl shadow-sm">
                                 {checkout.step === 'payment' && (
                                     stripeError ? (
                                         <Alert variant="destructive" className="rounded-lg">
-                                            <AlertCircle className="h-4 w-4" />
+                                            <AlertCircle className="size-4" />
                                             <AlertTitle className="font-bold">Lỗi cấu hình thanh toán</AlertTitle>
                                             <AlertDescription className="text-sm">{stripeError}</AlertDescription>
                                         </Alert>
                                     ) : orderLoading ? (
-                                        <div className="flex flex-col items-center justify-center py-16 space-y-4">
-                                            <Loader2 className="h-8 w-8 animate-spin text-primary" />
-                                            <p className="text-sm text-foreground/50 animate-pulse">Đang thiết lập thanh toán bảo mật...</p>
+                                        <div className="flex flex-col items-center justify-center py-16 gap-y-4">
+                                            <Loader2 className="size-8 animate-spin text-primary" />
+                                            <p className="text-sm text-foreground/50 animate-pulse">Đang thiết lập thanh toán bảo mật…</p>
                                         </div>
                                     ) : orderError ? (
-                                        <div className="flex flex-col items-center justify-center py-12 text-center space-y-5">
+                                        <div className="flex flex-col items-center justify-center py-12 text-center gap-y-5">
                                             <div className="bg-destructive/10 p-5 rounded-full">
-                                                <AlertCircle className="h-8 w-8 text-destructive" />
+                                                <AlertCircle className="size-8 text-destructive" />
                                             </div>
                                             <div className="space-y-2">
-                                                <h3 className="font-bold text-foreground">Khởi tạo thanh toán thất bại</h3>
+                                                <h3 className="font-semibold text-foreground">Khởi tạo thanh toán thất bại</h3>
                                                 <p className="text-sm text-foreground/50 max-w-sm mx-auto">{orderError}</p>
                                             </div>
                                             <Button onClick={() => startCheckout()} variant="outline" size="default">
@@ -192,15 +193,15 @@ export default function CheckoutPage() {
 
                         {/* Step 3: Review */}
                         <div>
-                            <h2 className="text-lg font-bold mb-6 text-foreground">Kiểm tra đơn hàng</h2>
+                            <h2 className="text-lg font-semibold mb-6 text-foreground">Kiểm tra đơn hàng</h2>
                             <div className="bg-surface-container-lowest p-8 md:p-10 rounded-xl shadow-sm space-y-6">
                                 {cart.items.map((item) => (
                                     <div key={`${item.productId}-${item.variantId}`} className="flex gap-5 pb-6 last:pb-0">
-                                        <div className="w-20 h-20 bg-surface-container-low rounded-lg flex-shrink-0 relative overflow-hidden p-1.5">
-                                            <img src={imageUrl.product(item.imageUrl)} alt={item.productName} className="object-contain w-full h-full" />
+                                        <div className="size-20 bg-surface-container-low rounded-lg flex-shrink-0 relative overflow-hidden p-1.5">
+                                            <Image src={imageUrl.product(item.imageUrl)} alt={item.productName} fill className="object-contain" unoptimized />
                                         </div>
                                         <div className="flex-1 space-y-1">
-                                            <h3 className="font-bold text-sm text-foreground">{item.productName}</h3>
+                                            <h3 className="font-semibold text-sm text-foreground">{item.productName}</h3>
                                             {item.variantName && (
                                                 <p className="text-xs text-foreground/50">{item.variantName}</p>
                                             )}
@@ -215,7 +216,7 @@ export default function CheckoutPage() {
                                     </div>
                                 ))}
                                 <div className="pt-3 flex items-center gap-2 text-foreground/40 text-xs">
-                                    <AlertCircle className="h-4 w-4" />
+                                    <AlertCircle className="size-4" />
                                     <span>Vui lòng kiểm tra kỹ số lượng và phân loại trước khi thanh toán.</span>
                                 </div>
                             </div>
@@ -225,13 +226,13 @@ export default function CheckoutPage() {
                     {/* Order Summary Sidebar */}
                     <div className="lg:sticky lg:top-32 space-y-6">
                         <div className="bg-surface-container-lowest p-8 md:p-10 rounded-xl shadow-sunlight">
-                            <h3 className="text-sm font-bold mb-8 text-foreground">Tóm tắt đơn hàng</h3>
+                            <h3 className="text-sm font-semibold mb-8 text-foreground">Tóm tắt đơn hàng</h3>
 
                             <div className="space-y-4 mb-6 max-h-[300px] overflow-auto pr-2">
                                 {cart.items.map((item) => (
                                     <div key={`${item.productId}-${item.variantId}`} className="flex gap-3 items-start">
                                         <div className="aspect-4/5 w-14 relative bg-surface-container rounded-3xl overflow-hidden group/img">
-                                            <img src={imageUrl.product(item.imageUrl)} alt={item.productName} className="object-cover w-full h-full" />
+                                            <Image src={imageUrl.product(item.imageUrl)} alt={item.productName} fill className="object-cover" unoptimized />
                                             <div className="absolute top-0 right-0 bg-primary text-white text-[9px] font-bold px-1.5 py-0.5 min-w-[16px] text-center rounded-bl-md">
                                                 {item.quantity}
                                             </div>
@@ -256,7 +257,7 @@ export default function CheckoutPage() {
                                     <span className="text-xs text-foreground/50">Phí vận chuyển</span>
                                     <span className="font-semibold tabular-nums text-sm">
                                         {shippingLoading ? (
-                                            <Loader2 className="h-4 w-4 animate-spin text-primary" />
+                                            <Loader2 className="size-4 animate-spin text-primary" />
                                         ) : (
                                             shippingFee > 0 ? (
                                                 <span className="text-foreground">{formatCurrency(shippingFee)}</span>
@@ -269,7 +270,7 @@ export default function CheckoutPage() {
 
                                 {/* Voucher */}
                                 <div className="shrink-0">
-                                    <CreditCard className="h-4 w-4 text-primary" />
+                                    <CreditCard className="size-4 text-primary" />
                                 </div>
                                 <div className="pt-1">
                                     <VoucherSection
@@ -289,7 +290,7 @@ export default function CheckoutPage() {
 
                             {/* Trust Badge */}
                             <div className="mt-6 pt-5 flex items-start gap-3 bg-primary/5 p-4 rounded-lg">
-                                <ShieldCheck className="h-5 w-5 text-primary flex-shrink-0" />
+                                <ShieldCheck className="size-5 text-primary flex-shrink-0" />
                                 <div className="space-y-0.5">
                                     <p className="text-xs font-bold text-primary">Bảo vệ mua hàng 100%</p>
                                     <p className="text-xs text-foreground/40 leading-relaxed">

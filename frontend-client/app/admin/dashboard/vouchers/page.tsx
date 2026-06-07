@@ -13,7 +13,7 @@ import { Suspense } from 'react';
 import VoucherListingPage from '@/components/admin/vouchers/voucher-listing';
 
 export const metadata = {
-    title: 'Bảng điều khiển: Voucher',
+    title: 'Bảng điều khiển: Mã giảm giá',
 };
 
 type PageProps = {
@@ -25,23 +25,23 @@ export default async function Page(props: PageProps) {
     const searchParams = await props.searchParams;
 
     if (!session?.accessToken) {
-        return <div>Bạn phải đăng nhập để xem voucher.</div>;
+        return <div>Bạn phải đăng nhập để xem mã giảm giá.</div>;
     }
 
     return (
         <PageContainer scrollable={false}>
-            <div className="flex flex-1 flex-col space-y-4">
+            <div className="flex flex-1 flex-col gap-y-4">
                 <div className="flex items-start justify-between">
                     <Heading
-                        title="Quản lý Voucher"
+                        title="Quản lý mã giảm giá"
                         description="Tạo và quản lý các mã giảm giá"
                     />
                     <Link
                         href="/admin/dashboard/vouchers/new"
                         className={cn(buttonVariants(), 'gap-2')}
                     >
-                        <IconPlus className="h-4 w-4" />
-                        Tạo voucher
+                        <IconPlus className="size-4" />
+                        Tạo mã giảm giá
                     </Link>
                 </div>
                 <Separator />

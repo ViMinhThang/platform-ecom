@@ -36,9 +36,11 @@ const DEFAULT_FORM_VALUES: UserFormValues = {
 };
 
 function transformUserToFormValues(user: User): UserFormValues {
-  const roleIds = user.roles
-    ?.filter((r) => r.roleId != null)
-    .map((r) => String(r.roleId)) || [];
+  const roleIds = (user.roles
+    ?.reduce<string[]>((acc, r) => {
+      if (r.roleId != null) acc.push(String(r.roleId));
+      return acc;
+    }, []) || []);
 
   return {
     userId: user.userId,
@@ -56,9 +58,12 @@ function transformFormValuesToUserData(formValues: UserFormValues, availableRole
     ...formValues,
     isActive: formValues.isActive === "true",
     roles: Array.isArray(availableRoles)
-      ? availableRoles
-          .filter((role) => formValues.roles.includes(String(role.roleId)))
-          .map((role) => ({ roleId: role.roleId, roleName: role.roleName }))
+      ? availableRoles.reduce<{ roleId: number; roleName: string }[]>((acc, role) => {
+          if (formValues.roles.includes(String(role.roleId))) {
+            acc.push({ roleId: role.roleId, roleName: role.roleName });
+          }
+          return acc;
+        }, [])
       : [],
   };
 }

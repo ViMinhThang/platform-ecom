@@ -11,12 +11,12 @@ export async function generateMetadata({ params }: SellerStorePageProps): Promis
     try {
         const seller = await getSellerInfo(Number(sellerId));
         return {
-            title: `${seller.username} Store | Antigravity E-com`,
-            description: `Shop high-quality products from ${seller.username} on Antigravity E-commerce platform.`,
+            title: `${seller.username} | Sàn thương mại ACME`,
+            description: `Mua sắm sản phẩm chất lượng cao từ ${seller.username} trên sàn thương mại ACME.`,
         };
     } catch {
         return {
-            title: 'Seller Store | Antigravity E-com',
+            title: 'Cửa hàng người bán | Sàn thương mại ACME',
         };
     }
 }

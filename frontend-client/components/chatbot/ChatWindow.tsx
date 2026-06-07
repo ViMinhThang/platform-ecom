@@ -30,7 +30,7 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
         {
             id: "welcome",
             role: "assistant",
-            content: "KÍNH CHÀO QUÝ KHÁCH. HỆ THỐNG AI ACME ĐÃ SẴN SÀNG. Tôi có thể hỗ trợ quý khách thực hiện truy xuất hồ sơ vật phẩm hoặc giải đáp các thắc mắc về di sản trong bộ sưu tập. Quý khách đang quan tâm đến hạng mục lưu trữ nào?",
+            content: "KÍNH CHÀO QUÝ KHÁCH. TRỢ LÝ ACME ĐÃ SẴN SÀNG. Tôi có thể hỗ trợ quý khách thực hiện truy xuất hồ sơ vật phẩm hoặc giải đáp các thắc mắc về di sản trong bộ sưu tập. Quý khách đang quan tâm đến hạng mục lưu trữ nào?",
             timestamp: new Date(),
         },
     ]);
@@ -109,12 +109,12 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
                 
                 <div className="flex items-center gap-4 relative z-10">
                     <div className="bg-white/20 p-2 rounded-[2px] border border-white/10">
-                        <Zap className="w-5 h-5 fill-current" />
+                        <Zap className="size-5 fill-current" />
                     </div>
                     <div>
-                        <h3 className="text-[11px] font-bold uppercase tracking-[0.3em] font-labels">HỆ THỐNG AI // ACME</h3>
+                        <h3 className="text-[11px] font-semibold uppercase tracking-[0.3em] font-labels">HỆ THỐNG TRỢ LÝ // ACME</h3>
                         <div className="flex items-center gap-2 mt-1">
-                            <span className="w-2 h-2 bg-green-400 rounded-sm animate-pulse shadow-sm shadow-green-400/50" />
+                            <span className="size-2 bg-green-400 rounded-sm animate-pulse shadow-sm shadow-green-400/50" />
                             <span className="text-[9px] font-bold uppercase tracking-[0.2em] opacity-60">TRỰC TUYẾN</span>
                         </div>
                     </div>
@@ -124,9 +124,9 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
                     variant="ghost"
                     size="icon"
                     onClick={onClose}
-                    className="text-white hover:bg-white/10 rounded-[2px] h-10 w-10 relative z-10 transition-all"
+                    className="text-white hover:bg-white/10 rounded-[2px] size-10 relative z-10 transition-all"
                 >
-                    <X className="w-5 h-5" />
+                    <X className="size-5" />
                 </Button>
             </div>
 
@@ -142,8 +142,8 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
                 {isLoading && (
                     <div className="flex justify-start">
                         <div className="bg-white rounded-[4px] p-5 shadow-sm border border-foreground/5 flex items-center gap-4 animate-in fade-in-0 slide-in-from-left-2">
-                            <Loader2 className="w-4 h-4 animate-spin text-primary" />
-                            <span className="text-[10px] font-bold uppercase tracking-widest text-foreground/30 italic">TRUY XUẤT DỮ LIỆU...</span>
+                            <Loader2 className="size-4 animate-spin text-primary" />
+                            <span className="text-[10px] font-bold uppercase tracking-widest text-foreground/30 italic">TRUY XUẤT DỮ LIỆU…</span>
                         </div>
                     </div>
                 )}
@@ -158,7 +158,7 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
                         value={input}
                         onChange={(e) => setInput(e.target.value)}
                         onKeyDown={handleKeyPress}
-                        placeholder="HỎI BẤT CỨ ĐIỀU GÌ..."
+                        placeholder="HỎI BẤT CỨ ĐIỀU GÌ…"
                         className="flex-1 h-16 pl-6 pr-20 rounded-[4px] bg-secondary/5 border-foreground/5 focus-visible:ring-primary/20 text-[11px] font-bold uppercase tracking-widest placeholder:text-foreground/20 transition-all font-labels"
                         disabled={isLoading}
                     />
@@ -166,19 +166,19 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
                         size="icon"
                         onClick={handleSend}
                         disabled={!input.trim() || isLoading}
-                        className="absolute right-2 top-2 bottom-2 h-12 w-12 rounded-[2px] shadow-lg transition-all active:scale-95"
+                        className="absolute right-2 top-2 bottom-2 size-12 rounded-[2px] shadow-lg transition-all active:scale-95"
                     >
                         {isLoading ? (
-                            <Loader2 className="w-4 h-4 animate-spin" />
+                            <Loader2 className="size-4 animate-spin" />
                         ) : (
-                            <Send className="w-5 h-5" />
+                            <Send className="size-5" />
                         )}
                     </Button>
                 </div>
                 
                 <div className="mt-4 flex items-center justify-center gap-2 opacity-20 hover:opacity-100 transition-opacity cursor-default">
-                    <HelpCircle className="w-3 h-3" />
-                    <span className="text-[8px] font-bold uppercase tracking-[0.4em]">ACME_REGISTRY_AI_v4.2</span>
+                    <HelpCircle className="size-3" />
+                    <span className="text-[8px] font-bold uppercase tracking-[0.4em]">ACME_TRỢ_LÝ_v4.2</span>
                 </div>
             </div>
         </div>

@@ -10,6 +10,13 @@ export type User = {
 };
 export const navItems: NavItem[] = [
   {
+    title: 'Về trang chủ',
+    url: '/',
+    icon: 'home',
+    isActive: false,
+    items: []
+  },
+  {
     title: 'Tổng quan',
     url: '/admin/dashboard/overview',
     icon: 'dashboard',

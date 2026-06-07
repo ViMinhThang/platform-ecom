@@ -35,7 +35,7 @@ export function SaleCampaignBanner() {
     }
 
     return (
-        <div className="relative overflow-hidden bg-slate-950 border-y border-border shadow-inner">
+        <div className="relative overflow-hidden bg-zinc-950 border-y border-border shadow-inner">
             {/* Background pattern */}
             <div className="absolute inset-0 opacity-10">
                 <div className="absolute inset-0" style={{
@@ -56,6 +56,7 @@ export function SaleCampaignBanner() {
                         src={saleCampaign.bannerUrl}
                         alt=""
                         fill
+                        sizes="100vw"
                         className="object-cover"
                     />
                 </div>
@@ -66,15 +67,15 @@ export function SaleCampaignBanner() {
                     {/* Left side - Title and description */}
                     <div className="flex items-center gap-4">
                         <div className="p-3 bg-primary/20 border border-primary/30 rounded-sm animate-pulse shadow-lg shadow-primary/20">
-                            <Zap className="h-8 w-8 text-primary" />
+                            <Zap className="size-8 text-primary" />
                         </div>
                         <div>
                             <div className="flex items-center gap-2">
-                                <h2 className="text-2xl md:text-3xl font-bold text-white uppercase tracking-widest leading-none">
+                                <h2 className="text-2xl md:text-3xl font-semibold text-white uppercase tracking-widest leading-none">
                                     {saleCampaign.name}
                                 </h2>
                                 <span className="px-3 py-1 bg-primary/20 border border-primary/30 text-primary text-[10px] font-bold uppercase tracking-widest rounded-sm animate-pulse">
-                                    Live Now
+                                    Đang diễn ra
                                 </span>
                             </div>
                             {saleCampaign.description && (
@@ -104,7 +105,7 @@ export function SaleCampaignBanner() {
                     >
                         <Link href="/sale-campaigns">
                             Xem ngay
-                            <ArrowRight className="ml-3 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                            <ArrowRight className="ml-3 size-4 group-hover:translate-x-1 transition-transform" />
                         </Link>
                     </Button>
                 </div>

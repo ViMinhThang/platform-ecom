@@ -4,6 +4,7 @@ import { Control, useController } from "react-hook-form";
 import { FormInput } from "@/components/admin/form-input";
 import { CategoryFormValues } from "@/types/category/category-form";
 import { useState } from "react";
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { useUpdateCategoryImageMutation } from "@/lib/store/admin";
 
@@ -40,7 +41,7 @@ export const CategoryFormFields: React.FC<CategoryFormFieldsProps> = ({
   };
 
   return (
-    <div className="flex flex-col space-y-4">
+    <div className="flex flex-col gap-y-4">
       <div className="space-y-4">
         <FormInput
           control={control}
@@ -53,15 +54,17 @@ export const CategoryFormFields: React.FC<CategoryFormFieldsProps> = ({
 
       {categoryId && (
         <div className="space-y-4">
-          <div className="w-full h-48 border rounded-lg flex justify-center items-center overflow-hidden bg-gray-50">
+          <div className="w-full h-48 border rounded-lg flex justify-center items-center overflow-hidden bg-zinc-50 relative">
             {imageUrl ? (
-              <img
+              <Image
                 src={`http://localhost:8080/uploads/${imageUrl}`}
-                className="object-cover h-full w-full"
+                fill
+                sizes="(max-width: 768px) 100vw, 400px"
+                className="object-cover"
                 alt="Hình ảnh danh mục"
               />
             ) : (
-              <span className="text-gray-400">Chưa chọn hình ảnh</span>
+              <span className="text-zinc-400">Chưa chọn hình ảnh</span>
             )}
           </div>
 
@@ -73,7 +76,7 @@ export const CategoryFormFields: React.FC<CategoryFormFieldsProps> = ({
               document.getElementById("category-image-input")?.click()
             }
           >
-            {isUploading ? "Đang tải lên..." : "Chọn hình ảnh"}
+            {isUploading ? "Đang tải lên…" : "Chọn hình ảnh"}
           </Button>
 
           <input

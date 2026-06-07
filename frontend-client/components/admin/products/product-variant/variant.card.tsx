@@ -67,9 +67,9 @@ export const VariantCard: React.FC<VariantCardProps> = ({ variant }) => {
           <div className="flex items-center justify-between pb-2 border-b">
             <div className="flex items-center gap-2">
               {isHidden ? (
-                <EyeOff className="h-4 w-4 text-muted-foreground" />
+                <EyeOff className="size-4 text-muted-foreground" />
               ) : (
-                <Eye className="h-4 w-4 text-green-500" />
+                <Eye className="size-4 text-green-500" />
               )}
               <Label className="text-sm font-medium">
                 {isHidden ? "Ẩn khỏi khách hàng" : "Hiển thị với khách hàng"}

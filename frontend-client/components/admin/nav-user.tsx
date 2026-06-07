@@ -46,7 +46,7 @@ export function NavUser({
               size='lg'
               className='data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground'
             >
-              <Avatar className='h-8 w-8 rounded-lg'>
+              <Avatar className='size-8 rounded-lg'>
                 <AvatarImage src={user.avatar} alt={user.name} />
                 <AvatarFallback className='rounded-lg'>CN</AvatarFallback>
               </Avatar>
@@ -65,7 +65,7 @@ export function NavUser({
           >
             <DropdownMenuLabel className='p-0 font-normal'>
               <div className='flex items-center gap-2 px-1 py-1.5 text-left text-sm'>
-                <Avatar className='h-8 w-8 rounded-lg'>
+                <Avatar className='size-8 rounded-lg'>
                   <AvatarImage src={user.avatar} alt={user.name} />
                   <AvatarFallback className='rounded-lg'>CN</AvatarFallback>
                 </Avatar>
@@ -78,29 +78,29 @@ export function NavUser({
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
               <DropdownMenuItem>
-                <IconSparkles className='mr-2 h-4 w-4' />
-                Upgrade to Pro
+                <IconSparkles className='mr-2 size-4' />
+                Nâng cấp Pro
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
               <DropdownMenuItem>
-                <IconCircleCheck className='mr-2 h-4 w-4' />
-                Account
+                <IconCircleCheck className='mr-2 size-4' />
+                Tài khoản
               </DropdownMenuItem>
               <DropdownMenuItem>
-                <IconCreditCard className='mr-2 h-4 w-4' />
-                Billing
+                <IconCreditCard className='mr-2 size-4' />
+                Thanh toán
               </DropdownMenuItem>
               <DropdownMenuItem>
-                <IconBell className='mr-2 h-4 w-4' />
-                Notifications
+                <IconBell className='mr-2 size-4' />
+                Thông báo
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuItem>
-              <IconLogout className='mr-2 h-4 w-4' />
-              Log out
+              <IconLogout className='mr-2 size-4' />
+              Đăng xuất
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

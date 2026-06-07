@@ -8,6 +8,8 @@ import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { formatOrderDate } from '@/lib/utils/dateUtils';
 import { ShoppingCart, Package } from 'lucide-react';
 import { transformSubOrderItemToOrderItem } from '@/lib/utils/transformers';
+import { formatCurrency } from '@/lib/utils';
+import { getPaymentStatusLabel } from '@/lib/utils/order-labels';
 
 interface OrderCardProps {
     order: OrderGroupDTO;
@@ -25,8 +27,8 @@ export function OrderCard({ order, onReviewOrderItem, onBuyAgain }: OrderCardPro
             <CardHeader className="pb-3">
                 <div className="flex flex-wrap items-center justify-between gap-2">
                     <div className="flex items-center gap-2">
-                        <Package className="h-4 w-4 text-muted-foreground" />
-                        <span className="font-semibold">Order #{order.groupNumber}</span>
+                        <Package className="size-4 text-muted-foreground" />
+                        <span className="font-semibold">Đơn hàng #{order.groupNumber}</span>
                     </div>
                     <div className="flex items-center gap-2">
                         <span className="text-sm text-muted-foreground">
@@ -41,43 +43,44 @@ export function OrderCard({ order, onReviewOrderItem, onBuyAgain }: OrderCardPro
                 {/* Order Items */}
                 <div>
                     <h4 className="text-sm font-medium mb-2 text-muted-foreground">
-                        Items ({order.subOrders.flatMap(o => o.items).length})
+                        Sản phẩm ({order.subOrders.flatMap(o => o.items).length})
                     </h4>
                     <div className="grid grid-cols-1 gap-2">
                         {order.subOrders.flatMap(subOrder =>
-                            subOrder.items.map(item =>
-                                transformSubOrderItemToOrderItem(item, subOrder.id, subOrder.status)
-                            )
-                        ).map((item) => (
-                            <OrderItemCard
-                                key={`${item.productId}-${item.productVariant?.id || 'no-variant'}`}
-                                item={item}
-                                orderStatus={order.overallStatus}
-                                onReviewClick={() => onReviewOrderItem(item.productId, order.id)}
-                            />
-                        ))}
+                            subOrder.items.map(item => {
+                                const orderItem = transformSubOrderItemToOrderItem(item, subOrder.id, subOrder.status);
+                                return (
+                                    <OrderItemCard
+                                        key={`${orderItem.productId}-${orderItem.productVariant?.id || 'no-variant'}`}
+                                        item={orderItem}
+                                        orderStatus={order.overallStatus}
+                                        onReviewClick={() => onReviewOrderItem(orderItem.productId, order.id)}
+                                    />
+                                );
+                            })
+                        )}
                     </div>
                 </div>
 
                 {/* Total and Actions */}
                 <div className="flex flex-wrap items-center justify-between gap-2 pt-2 border-t">
                     <div>
-                        <p className="text-xs text-muted-foreground">Total Amount</p>
-                        <p className="text-2xl font-bold">${order.totalAmount.toFixed(2)}</p>
+                        <p className="text-xs text-muted-foreground">Tổng tiền</p>
+                        <p className="text-2xl font-bold">{formatCurrency(order.totalAmount)}</p>
                     </div>
                     <Button
                         variant="outline"
                         onClick={() => onBuyAgain(order)}
                         className="gap-2"
                     >
-                        <ShoppingCart className="h-4 w-4" />
-                        Buy Again
+                        <ShoppingCart className="size-4" />
+                        Mua lại
                     </Button>
                 </div>
 
                 {/* Payment Info */}
                 <div className="text-xs text-muted-foreground pt-2 border-t">
-                    Payment Status: {order.paymentStatus}
+                    Trạng thái thanh toán: {getPaymentStatusLabel(order.paymentStatus.toUpperCase())}
                 </div>
             </CardContent>
         </Card>

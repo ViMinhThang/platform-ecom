@@ -17,7 +17,7 @@ interface PageProps {
 
 export default function EditVoucherPage({ params }: PageProps) {
     const { id } = use(params);
-    const router = useRouter();
+    const { push, refresh } = useRouter();
     const [loading, setLoading] = useState(false);
     const [voucher, setVoucher] = useState<Voucher | null>(null);
     const [fetchLoading, setFetchLoading] = useState(true);
@@ -28,12 +28,14 @@ export default function EditVoucherPage({ params }: PageProps) {
                 const data = await voucherService.getById(parseInt(id));
                 setVoucher(data);
             } catch (error) {
-                toast.error('Không tìm thấy voucher');
-                router.push('/admin/dashboard/vouchers');
+                toast.error('Không tìm thấy mã giảm giá');
+                push('/admin/dashboard/vouchers');
+            } finally {
+                setFetchLoading(false);
             }
         };
         fetchVoucher();
-    }, [id, router]);
+    }, [id, push]);
 
     const handleSubmit = async (data: any) => {
         try {
@@ -43,11 +45,11 @@ export default function EditVoucherPage({ params }: PageProps) {
                 startTime: new Date(data.startTime).toISOString(),
                 endTime: new Date(data.endTime).toISOString(),
             });
-            toast.success('Cập nhật voucher thành công');
-            router.push('/admin/dashboard/vouchers');
-            router.refresh();
+            toast.success('Cập nhật mã giảm giá thành công');
+            push('/admin/dashboard/vouchers');
+            refresh();
         } catch (error) {
-            toast.error('Có lỗi xảy ra khi cập nhật voucher');
+            toast.error('Có lỗi xảy ra khi cập nhật mã giảm giá');
         } finally {
             setLoading(false);
         }
@@ -56,7 +58,7 @@ export default function EditVoucherPage({ params }: PageProps) {
     if (fetchLoading) {
         return (
             <PageContainer scrollable>
-                <div className="flex flex-1 flex-col space-y-4">
+                <div className="flex flex-1 flex-col gap-y-4">
                     <Skeleton className="h-8 w-48" />
                     <Skeleton className="h-4 w-64" />
                     <Separator />
@@ -75,10 +77,10 @@ export default function EditVoucherPage({ params }: PageProps) {
 
     return (
         <PageContainer scrollable>
-            <div className="flex flex-1 flex-col space-y-4">
+            <div className="flex flex-1 flex-col gap-y-4">
                 <Heading
-                    title="Chỉnh sửa voucher"
-                    description={`Cập nhật thông tin voucher: ${voucher.name}`}
+                    title="Chỉnh sửa mã giảm giá"
+                    description={`Cập nhật thông tin mã giảm giá: ${voucher.name}`}
                 />
                 <Separator />
                 <VoucherForm voucher={voucher} onSubmit={handleSubmit} loading={loading} />

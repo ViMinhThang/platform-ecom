@@ -20,20 +20,20 @@ export default function AuthenticationPage() {
                 <div className="w-full max-w-md space-y-6 animate-fade-in-up">
                     <AuthCard>
                         <div className="space-y-2 text-center mb-6">
-                            <h1 className="text-2xl font-bold tracking-tight">
+                            <h1 className="text-2xl font-semibold tracking-tight">
                                 Đăng nhập
                             </h1>
                             <p className="text-sm text-muted-foreground">
                                 Nhập thông tin tài khoản của bạn
                             </p>
                         </div>
-                        <Suspense fallback={<div className="text-sm text-muted-foreground">Đang tải...</div>}>
+                        <Suspense fallback={<div className="text-sm text-muted-foreground">Đang tải…</div>}>
                             <UserAuthForm />
                         </Suspense>
                     </AuthCard>
 
                     <div className="flex items-center justify-center gap-2 text-xs text-muted-foreground">
-                        <ShieldCheck className="h-4 w-4" />
+                        <ShieldCheck className="size-4" />
                         <span>Thông tin của bạn được bảo mật</span>
                     </div>
 

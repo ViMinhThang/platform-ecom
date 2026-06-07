@@ -62,7 +62,7 @@ export const UserAddressesField: React.FC<UserAddressesFieldProps> = ({
                             </div>
                             {address.isDefault && (
                                 <Badge variant="default" className="text-xs">
-                                    Default
+                                    Mặc định
                                 </Badge>
                             )}
                         </div>

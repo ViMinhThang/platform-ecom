@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useReducer } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { RichTextEditor } from '@/components/admin/rich-text-editor';
 import { RichTextPreview } from '@/components/admin/rich-text-preview';
@@ -17,23 +17,25 @@ export default function ProductDescriptionPage() {
     const router = useRouter();
     const productId = parseInt(params.id as string);
 
-    const [product, setProduct] = useState<Product | null>(null);
+    const [fetchState, dispatchFetch] = useReducer(
+        (prev: { product: Product | null; loading: boolean }, next: Partial<{ product: Product | null; loading: boolean }>) => ({ ...prev, ...next }),
+        { product: null as Product | null, loading: true }
+    );
     const [description, setDescription] = useState('');
-    const [loading, setLoading] = useState(true);
     const [saving, setSaving] = useState(false);
 
     useEffect(() => {
         const fetchProduct = async () => {
             try {
-                setLoading(true);
+                dispatchFetch({ loading: true });
                 const data = await productService.getProductById(productId);
-                setProduct(data);
+                dispatchFetch({ product: data });
                 setDescription(data.description || '');
             } catch (error) {
                 console.error('Failed to fetch product:', error);
-                toast.error('Failed to load product data');
+                toast.error('Không thể tải dữ liệu sản phẩm');
             } finally {
-                setLoading(false);
+                dispatchFetch({ loading: false });
             }
         };
 
@@ -48,17 +50,17 @@ export default function ProductDescriptionPage() {
             await productService.updateProduct(productId, {
                 description: description
             });
-            toast.success('Product description updated successfully');
+            toast.success('Cập nhật mô tả sản phẩm thành công');
         } catch (error) {
             console.error('Failed to update product:', error);
-            toast.error('Failed to save description');
+            toast.error('Không thể lưu mô tả');
         } finally {
             setSaving(false);
         }
     };
 
-    if (loading) {
-        return <div className="flex h-full items-center justify-center">Loading...</div>;
+    if (fetchState.loading) {
+        return <div className="flex h-full items-center justify-center">Đang tải…</div>;
     }
 
     return (
@@ -69,26 +71,26 @@ export default function ProductDescriptionPage() {
                         <IconChevronLeft size={18} />
                     </Button>
                     <div>
-                        <h1 className="text-2xl font-bold tracking-tight">Edit Description</h1>
+                        <h1 className="text-2xl font-semibold tracking-tight">Chỉnh sửa mô tả</h1>
                         <p className="text-muted-foreground">
-                            {product?.name || 'Product'}
+                            {fetchState.product?.name || 'Sản phẩm'}
                         </p>
                     </div>
                 </div>
                 <Button onClick={handleSave} disabled={saving} className="gap-2">
                     <IconDeviceFloppy size={18} />
-                    {saving ? 'Saving...' : 'Save Description'}
+                    {saving ? 'Đang lưu…' : 'Lưu mô tả'}
                 </Button>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 flex-1 min-h-0">
                 <Card className="flex flex-col overflow-hidden">
                     <div className="p-2 bg-muted/30 border-b text-xs font-semibold uppercase tracking-wider text-muted-foreground flex justify-between items-center">
-                        Editor
-                        <span className="text-[10px] normal-case bg-background px-1 rounded border">Real-time sync enabled</span>
+                        Trình soạn thảo
+                        <span className="text-[10px] normal-case bg-background px-1 rounded border">Đã bật đồng bộ thời gian thực</span>
                     </div>
                     <ScrollArea className="flex-1">
-                        {!loading && (
+                        {!fetchState.loading && (
                             <RichTextEditor
                                 key={productId}
                                 value={description || ''}
@@ -102,7 +104,7 @@ export default function ProductDescriptionPage() {
 
                 <Card className="flex flex-col overflow-hidden">
                     <div className="p-2 bg-muted/30 border-b text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                        Preview
+                        Xem trước
                     </div>
                     <ScrollArea className="flex-1">
                         <RichTextPreview

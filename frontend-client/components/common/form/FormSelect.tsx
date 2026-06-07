@@ -32,11 +32,11 @@ interface FormSelectProps<T extends FieldValues> {
  * 
  * @example
  * <FormSelect
- *   label="Province"
+ *   label="Tỉnh / Thành phố"
  *   name="provinceId"
  *   control={form.control}
  *   options={provinces.map(p => ({ value: p.id, label: p.name }))}
- *   placeholder="Select province"
+ *   placeholder="Chọn tỉnh / thành phố"
  *   error={form.formState.errors.provinceId}
  *   disabled={isLoading}
  * />
@@ -46,7 +46,7 @@ export function FormSelect<T extends FieldValues>({
     name,
     control,
     options,
-    placeholder = 'Select an option',
+    placeholder = 'Chọn một tùy chọn',
     disabled = false,
     error,
     onValueChange,

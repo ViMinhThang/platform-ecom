@@ -11,7 +11,7 @@ export async function generateMetadata(): Promise<Metadata> {
         if (saleCampaigns.length > 0) {
             const campaign = saleCampaigns[0];
             return {
-                title: `${campaign.name} - Sale Campaign`,
+                title: `${campaign.name} - Chiến dịch khuyến mãi`,
                 description: campaign.description || 'Khám phá các sản phẩm giảm giá sốc trong thời gian có hạn',
             };
         }
@@ -20,7 +20,7 @@ export async function generateMetadata(): Promise<Metadata> {
     }
 
     return {
-        title: 'Sale Campaigns - Siêu giảm giá',
+        title: 'Chiến dịch khuyến mãi - Siêu giảm giá',
         description: 'Khám phá các sản phẩm giảm giá sốc trong thời gian có hạn',
     };
 }
@@ -29,8 +29,8 @@ function LoadingState() {
     return (
         <div className="container mx-auto py-8">
             <div className="animate-pulse space-y-4">
-                <div className="h-8 bg-gray-200 rounded w-1/3"></div>
-                <div className="h-64 bg-gray-200 rounded"></div>
+                <div className="h-8 bg-zinc-200 rounded w-1/3"></div>
+                <div className="h-64 bg-zinc-200 rounded"></div>
             </div>
         </div>
     );

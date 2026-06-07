@@ -16,25 +16,25 @@ export const TopBar = () => {
                     </Link>
                     <div className="flex items-center gap-4 pl-6">
                         <Link href="#" className="hover:text-primary transition-colors" aria-label="Facebook">
-                            <Facebook className="h-3.5 w-3.5" />
+                            <Facebook className="size-3.5" />
                         </Link>
                         <Link href="#" className="hover:text-primary transition-colors" aria-label="Instagram">
-                            <Instagram className="h-3.5 w-3.5" />
+                            <Instagram className="size-3.5" />
                         </Link>
                     </div>
                 </div>
 
                 <div className="flex items-center gap-8">
                     <Link href="/notifications" className="flex items-center gap-2 hover:text-primary transition-colors">
-                        <Bell className="h-3.5 w-3.5" />
+                        <Bell className="size-3.5" />
                         <span>Thông báo</span>
                     </Link>
                     <Link href="/help" className="flex items-center gap-2 hover:text-primary transition-colors">
-                        <HelpCircle className="h-3.5 w-3.5" />
+                        <HelpCircle className="size-3.5" />
                         <span>Hỗ trợ</span>
                     </Link>
                     <div className="flex items-center gap-2 hover:text-primary transition-colors cursor-pointer pl-8">
-                        <Globe className="h-3.5 w-3.5" />
+                        <Globe className="size-3.5" />
                         <span>Tiếng Việt</span>
                     </div>
                 </div>

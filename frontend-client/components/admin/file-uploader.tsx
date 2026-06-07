@@ -116,12 +116,12 @@ export function FileUploader(props: FileUploaderProps) {
   const onDrop = React.useCallback(
     (acceptedFiles: File[], rejectedFiles: FileRejection[]) => {
       if (!multiple && maxFiles === 1 && acceptedFiles.length > 1) {
-        toast.error('Cannot upload more than 1 file at a time');
+        toast.error('Không thể tải lên nhiều hơn 1 tệp mỗi lần');
         return;
       }
 
       if ((files?.length ?? 0) + acceptedFiles.length > maxFiles) {
-        toast.error(`Cannot upload more than ${maxFiles} files`);
+        toast.error(`Không thể tải lên nhiều hơn ${maxFiles} tệp`);
         return;
       }
 
@@ -137,7 +137,7 @@ export function FileUploader(props: FileUploaderProps) {
 
       if (rejectedFiles.length > 0) {
         rejectedFiles.forEach(({ file }) => {
-          toast.error(`File ${file.name} was rejected`);
+          toast.error(`Tệp ${file.name} bị từ chối`);
         });
       }
 
@@ -147,15 +147,15 @@ export function FileUploader(props: FileUploaderProps) {
         updatedFiles.length <= maxFiles
       ) {
         const target =
-          updatedFiles.length > 0 ? `${updatedFiles.length} files` : `file`;
+          updatedFiles.length > 1 ? `${updatedFiles.length} tệp` : `1 tệp`;
 
         toast.promise(onUpload(updatedFiles), {
-          loading: `Uploading ${target}...`,
+          loading: `Đang tải lên ${target}…`,
           success: () => {
             setFiles([]);
-            return `${target} uploaded`;
+            return `Đã tải lên ${target}`;
           },
-          error: `Failed to upload ${target}`
+          error: `Không thể tải lên ${target}`
         });
       }
     },
@@ -217,7 +217,7 @@ export function FileUploader(props: FileUploaderProps) {
                   />
                 </div>
                 <p className='text-muted-foreground font-medium'>
-                  Drop the files here
+                  Thả tệp vào đây
                 </p>
               </div>
             ) : (
@@ -230,14 +230,14 @@ export function FileUploader(props: FileUploaderProps) {
                 </div>
                 <div className='space-y-px'>
                   <p className='text-muted-foreground font-medium'>
-                    Drag {`'n'`} drop files here, or click to select files
+                    Kéo thả tệp vào đây hoặc bấm để chọn tệp
                   </p>
                   <p className='text-muted-foreground/70 text-sm'>
-                    You can upload
+                    Bạn có thể tải lên
                     {maxFiles > 1
-                      ? ` ${maxFiles === Infinity ? 'multiple' : maxFiles}
-                      files (up to ${formatBytes(maxSize)} each)`
-                      : ` a file with ${formatBytes(maxSize)}`}
+                      ? ` ${maxFiles === Infinity ? 'nhiều' : maxFiles}
+                      tệp (tối đa ${formatBytes(maxSize)} mỗi tệp)`
+                      : ` 1 tệp tối đa ${formatBytes(maxSize)}`}
                   </p>
                 </div>
               </div>
@@ -250,7 +250,7 @@ export function FileUploader(props: FileUploaderProps) {
           <div className='max-h-48 space-y-4'>
             {files?.map((file, index) => (
               <FileCard
-                key={index}
+                key={"file-" + index}
                 file={file}
                 onRemove={() => onRemove(index)}
                 progress={progresses?.[file.name]}
@@ -271,8 +271,8 @@ interface FileCardProps {
 
 function FileCard({ file, progress, onRemove }: FileCardProps) {
   return (
-    <div className='relative flex items-center space-x-4'>
-      <div className='flex flex-1 space-x-4'>
+    <div className='relative flex items-center gap-x-4'>
+      <div className='flex flex-1 gap-x-4'>
         {isFileWithPreview(file) ? (
           <Image
             src={file.preview}
@@ -305,7 +305,7 @@ function FileCard({ file, progress, onRemove }: FileCardProps) {
           className='size-8 rounded-full'
         >
           <IconX className='text-muted-foreground' />
-          <span className='sr-only'>Remove file</span>
+          <span className='sr-only'>Xóa tệp</span>
         </Button>
       </div>
     </div>

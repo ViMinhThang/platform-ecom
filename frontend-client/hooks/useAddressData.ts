@@ -34,7 +34,7 @@ export function useAddressData(provinceId?: number, districtId?: number) {
                 const data = await getProvinces();
                 setProvinces(data);
             } catch (error) {
-                toast.error('Failed to load provinces');
+                toast.error('Không thể tải danh sách tỉnh/thành phố');
             } finally {
                 setLoadingProvinces(false);
             }
@@ -55,7 +55,7 @@ export function useAddressData(provinceId?: number, districtId?: number) {
                 const data = await getDistricts(provinceId);
                 setDistricts(data);
             } catch (error) {
-                toast.error('Failed to load districts');
+                toast.error('Không thể tải danh sách quận/huyện');
             } finally {
                 setLoadingDistricts(false);
             }
@@ -76,7 +76,7 @@ export function useAddressData(provinceId?: number, districtId?: number) {
                 const data = await getWards(districtId);
                 setWards(data);
             } catch (error) {
-                toast.error('Failed to load wards');
+                toast.error('Không thể tải danh sách phường/xã');
             } finally {
                 setLoadingWards(false);
             }

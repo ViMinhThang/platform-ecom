@@ -10,20 +10,22 @@ import { CellAction } from "./cell-action";
 import { formatDistanceToNow } from "date-fns";
 import { vi } from "date-fns/locale";
 
+const VND_FORMATTER = new Intl.NumberFormat('vi-VN', {
+  style: 'currency',
+  currency: 'VND'
+});
+
 const formatCurrency = (value: number | undefined) => {
-  if (!value) return "N/A";
-  return new Intl.NumberFormat('vi-VN', {
-    style: 'currency',
-    currency: 'VND'
-  }).format(value);
+  if (!value) return "Không có";
+  return VND_FORMATTER.format(value);
 };
 
 const formatDate = (dateString: string | undefined) => {
-  if (!dateString) return "N/A";
+  if (!dateString) return "Không có";
   try {
     return formatDistanceToNow(new Date(dateString), { addSuffix: true, locale: vi });
   } catch {
-    return "N/A";
+    return "Không có";
   }
 };
 
@@ -49,7 +51,7 @@ const getStatusLabel = (status: string) => {
     case "OUT_OF_STOCK":
       return "Hết hàng";
     default:
-      return status;
+      return "Không xác định";
   }
 };
 
@@ -62,11 +64,12 @@ export const columns: ColumnDef<ProductRow>[] = [
       const imageUrl = ProductRow.imageUrl || "/placeholder.png";
 
       return (
-        <div className="relative w-16 h-16">
+        <div className="relative size-16">
           <Image
             src={`http://localhost:8080/uploads/${imageUrl}`}
             alt={ProductRow.name}
             fill
+            sizes="40px"
             className="object-cover rounded-md border"
           />
         </div>

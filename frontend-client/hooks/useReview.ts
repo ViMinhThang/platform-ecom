@@ -10,7 +10,7 @@ export function useReview() {
 
     const submitReview = async (payload: CreateReviewPayload): Promise<void> => {
         if (!session?.user?.email) {
-            toast.error('Could not determine user email');
+            toast.error('Không xác định được email người dùng');
             return;
         }
 
@@ -21,9 +21,9 @@ export function useReview() {
 
         try {
             await createReviewMutation(payloadWithEmail).unwrap();
-            toast.success('Review submitted successfully');
+            toast.success('Gửi đánh giá thành công');
         } catch (error: unknown) {
-            const message = getApiErrorMessage(error, 'Failed to submit review');
+            const message = getApiErrorMessage(error, 'Không thể gửi đánh giá');
             toast.error(message);
             throw error;
         }

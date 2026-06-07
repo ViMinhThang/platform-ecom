@@ -43,7 +43,7 @@ export function SellerInfoCard({
         fetchSellerInfo();
     }, [sellerId]);
 
-    const sellerName = sellerInfo?.username || 'Unknown Seller';
+    const sellerName = sellerInfo?.username || 'Người bán không xác định';
     const sellerImage = sellerInfo?.imageUrl;
 
     if (isLoading) {
@@ -51,7 +51,7 @@ export function SellerInfoCard({
             <div className="border p-4 space-y-4 sticky top-24 animate-pulse">
                 <div className="h-3 bg-muted rounded w-24"></div>
                 <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 rounded-full bg-muted"></div>
+                    <div className="size-12 rounded-full bg-muted"></div>
                     <div className="space-y-2 flex-1">
                         <div className="h-4 bg-muted rounded w-3/4"></div>
                         <div className="h-3 bg-muted rounded w-1/2"></div>
@@ -77,12 +77,13 @@ export function SellerInfoCard({
 
     return (
         <div className="flex items-start gap-4 p-4 border border-border rounded-sm bg-background shadow-sm">
-            <div className="w-12 h-12 rounded-full bg-muted overflow-hidden relative shrink-0 border border-border shadow-inner">
+            <div className="size-12 rounded-full bg-muted overflow-hidden relative shrink-0 border border-border shadow-inner">
                 {sellerImage ? (
                     <Image
                         src={imageUrl.avatar(sellerImage)}
                         alt={sellerName}
                         fill
+                        sizes="80px"
                         className="object-cover"
                     />
                 ) : (
@@ -96,11 +97,11 @@ export function SellerInfoCard({
                 <div className="flex justify-between items-start">
                     <div>
                         <p className="font-bold text-[11px] uppercase tracking-widest text-foreground">{sellerName}</p>
-                        <p className="text-[9px] font-bold uppercase tracking-widest text-muted-foreground mt-0.5 opacity-50">Online vừa xong</p>
+                        <p className="text-[9px] font-bold uppercase tracking-widest text-muted-foreground mt-0.5 opacity-50">Vừa trực tuyến</p>
                     </div>
                     <Link href={`/seller/${sellerId}`}>
                         <Button variant="ghost" size="sm" className="h-8 px-3 text-[10px] font-bold uppercase tracking-widest text-primary hover:bg-primary/5 hover:text-primary rounded-sm transition-colors">
-                            Xem Shop
+                            Xem cửa hàng
                         </Button>
                     </Link>
                 </div>

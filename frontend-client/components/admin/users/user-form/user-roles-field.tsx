@@ -21,19 +21,22 @@ export const UserRolesField: React.FC<UserRolesFieldProps> = ({
     } = useController({ control, name: "roles" });
 
     const roleOptions = Array.isArray(allRoles)
-        ? allRoles
-            .filter((role) => role && role.roleId != null && role.roleName)
-            .map((role, index) => ({
+        ? allRoles.reduce<{ value: string; label: string; key: string }[]>((acc, role, index) => {
+            if (role && role.roleId != null && role.roleName) {
+              acc.push({
                 value: String(role.roleId),
                 label: role.roleName.replace("ROLE_", ""),
                 key: `role-${role.roleId}-${index}`,
-            }))
+              });
+            }
+            return acc;
+          }, [])
         : [];
 
     if (isLoading || !allRoles || allRoles.length === 0) {
         return (
             <div className="space-y-2">
-                <label className="text-sm font-medium">Vai trò người dùng <span className="text-red-500">*</span></label>
+                <p className="text-sm font-medium">Vai trò người dùng <span className="text-red-500">*</span></p>
                 <p className="text-sm text-muted-foreground">Đang tải vai trò...</p>
             </div>
         );

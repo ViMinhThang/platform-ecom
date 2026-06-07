@@ -9,9 +9,9 @@ interface LoadingSpinnerProps {
 }
 
 const sizeClasses = {
-    sm: 'h-4 w-4',
-    md: 'h-8 w-8',
-    lg: 'h-12 w-12',
+    sm: 'size-4',
+    md: 'size-8',
+    lg: 'size-12',
 };
 
 /**
@@ -19,7 +19,7 @@ const sizeClasses = {
  * Provides consistent loading UI across the application
  * 
  * @example
- * <LoadingSpinner size="lg" message="Loading orders..." />
+ * <LoadingSpinner size="lg" message="Đang tải đơn hàng..." />
  * <LoadingSpinner fullScreen />
  */
 export function LoadingSpinner({

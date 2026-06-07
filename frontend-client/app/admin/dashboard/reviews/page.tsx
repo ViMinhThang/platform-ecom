@@ -9,7 +9,11 @@ import {
   CardHeader,
   CardTitle
 } from '@/components/ui/card';
-import { Label, Pie, PieChart } from 'recharts';
+import dynamic from 'next/dynamic';
+
+const PieChart = dynamic(() => import('recharts').then(m => ({ default: m.PieChart })), { ssr: false }) as React.ComponentType<any>;
+const Pie = dynamic(() => import('recharts').then(m => ({ default: m.Pie })), { ssr: false }) as React.ComponentType<any>;
+const Label = dynamic(() => import('recharts').then(m => ({ default: m.Label })), { ssr: false }) as React.ComponentType<any>;
 import {
   ChartConfig,
   ChartContainer,
@@ -61,27 +65,29 @@ const chartConfig = {
   }
 } satisfies ChartConfig;
 
+function ReviewDate({ createdAt }: { createdAt: string }) {
+    const [displayDate, setDisplayDate] = React.useState("");
+    React.useEffect(() => {
+        setDisplayDate(new Date(createdAt).toLocaleDateString('vi-VN'));
+    }, [createdAt]);
+    return <>{displayDate}</>;
+}
+
 export default function ReviewsPage() {
   const { data: session } = useSession();
-  const [stats, setStats] = React.useState<SellerReviewStats | null>(null);
-  const [reviews, setReviews] = React.useState<Review[]>([]);
-  const [loading, setLoading] = React.useState(true);
-  const [error, setError] = React.useState<string | null>(null);
+  const [fetchState, dispatchFetch] = React.useReducer(
+    (prev: any, next: any) => ({ ...prev, ...next }),
+    { stats: null as SellerReviewStats | null, reviews: [] as Review[], loading: true, error: null as string | null }
+  );
   const [selectedSentiment, setSelectedSentiment] = React.useState<string>('');
 
   const sellerId = session?.user?.id;
 
-  React.useEffect(() => {
-    if (sellerId) {
-      fetchData();
-    }
-  }, [sellerId, selectedSentiment]);
-
-  const fetchData = async () => {
+  const fetchData = React.useCallback(async () => {
     if (!sellerId || !session?.accessToken) return;
 
     try {
-      setLoading(true);
+      dispatchFetch({ loading: true });
       const token = session.accessToken;
       const baseUrl = process.env.NEXT_PUBLIC_API_URL || '';
       const headers = { Authorization: `Bearer ${token}` };
@@ -104,45 +110,50 @@ export default function ReviewsPage() {
         reviewsRes.json(),
       ]);
 
-      setStats(statsData.data || statsData);
-      setReviews(reviewsData.content || []);
+      dispatchFetch({ stats: statsData.data || statsData, reviews: reviewsData.content || [] });
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Đã xảy ra lỗi');
+      dispatchFetch({ error: err instanceof Error ? err.message : 'Đã xảy ra lỗi' });
     } finally {
-      setLoading(false);
+      dispatchFetch({ loading: false });
     }
-  };
+  }, [sellerId, session, selectedSentiment, dispatchFetch]);
 
-  const chartData = React.useMemo(() => stats ? [
-    { sentiment: 'positive', count: stats.positiveCount, fill: '#22c55e' },
-    { sentiment: 'neutral', count: stats.neutralCount, fill: '#eab308' },
-    { sentiment: 'negative', count: stats.negativeCount, fill: '#ef4444' },
-  ].filter(d => d.count > 0) : [], [stats]);
+  const onFilterChange = React.useCallback(() => {
+    if (!sellerId) return;
+    fetchData();
+  }, [sellerId, fetchData]);
 
-  const totalSentiments = React.useMemo(
-    () => stats ? stats.positiveCount + stats.neutralCount + stats.negativeCount : 0,
-    [stats]
-  );
+  React.useEffect(() => {
+    onFilterChange();
+  }, [onFilterChange]);
 
-  if (loading) {
+  const chartData = React.useMemo(() => fetchState.stats ? [
+    { sentiment: 'positive', count: fetchState.stats.positiveCount, fill: '#22c55e' },
+    { sentiment: 'neutral', count: fetchState.stats.neutralCount, fill: '#eab308' },
+    { sentiment: 'negative', count: fetchState.stats.negativeCount, fill: '#ef4444' },
+  ].filter(d => d.count > 0) : [], [fetchState.stats]);
+
+  const totalSentiments = fetchState.stats ? fetchState.stats.positiveCount + fetchState.stats.neutralCount + fetchState.stats.negativeCount : 0;
+
+  if (fetchState.loading) {
     return (
       <PageContainer scrollable={false}>
         <div className="flex items-center justify-center h-64">
           <div className="text-center">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
-            <p className="mt-2 text-sm text-muted-foreground">Đang tải...</p>
+            <div className="animate-spin rounded-full size-8 border-b-2 border-primary mx-auto"></div>
+            <p className="mt-2 text-sm text-muted-foreground">Đang tải…</p>
           </div>
         </div>
       </PageContainer>
     );
   }
 
-  if (error) {
+  if (fetchState.error) {
     return (
       <PageContainer scrollable={false}>
         <div className="flex items-center justify-center h-64">
           <div className="text-center text-red-500">
-            <p>{error}</p>
+            <p>{fetchState.error}</p>
           </div>
         </div>
       </PageContainer>
@@ -151,10 +162,10 @@ export default function ReviewsPage() {
 
   return (
     <PageContainer scrollable={false}>
-      <div className="flex flex-1 flex-col space-y-4">
+      <div className="flex flex-1 flex-col gap-y-4">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-3xl font-bold tracking-tight">Đánh giá sản phẩm</h2>
+          <h2 className="text-3xl font-semibold tracking-tight">Đánh giá sản phẩm</h2>
           <p className="text-muted-foreground">
             Phân tích cảm xúc khách hàng từ các đánh giá sản phẩm của bạn
           </p>
@@ -168,7 +179,7 @@ export default function ReviewsPage() {
             <CardTitle className="text-sm font-medium">Tổng đánh giá</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{stats?.totalReviews || 0}</div>
+            <div className="text-2xl font-bold">{fetchState.stats?.totalReviews || 0}</div>
           </CardContent>
         </Card>
         <Card>
@@ -177,7 +188,7 @@ export default function ReviewsPage() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
-              {stats?.averageRating ? stats.averageRating.toFixed(1) : '0.0'}
+              {fetchState.stats?.averageRating ? fetchState.stats.averageRating.toFixed(1) : '0.0'}
             </div>
           </CardContent>
         </Card>
@@ -187,7 +198,7 @@ export default function ReviewsPage() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-green-500">
-              {stats?.positivePercentage?.toFixed(1) || '0.0'}%
+              {fetchState.stats?.positivePercentage?.toFixed(1) || '0.0'}%
             </div>
           </CardContent>
         </Card>
@@ -197,7 +208,7 @@ export default function ReviewsPage() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-red-500">
-              {stats?.negativePercentage?.toFixed(1) || '0.0'}%
+              {fetchState.stats?.negativePercentage?.toFixed(1) || '0.0'}%
             </div>
           </CardContent>
         </Card>
@@ -227,7 +238,7 @@ export default function ReviewsPage() {
                     stroke="var(--background)"
                   >
                     <Label
-                      content={({ viewBox }) => {
+                      content={({ viewBox }: { viewBox: { cx?: number; cy?: number } }) => {
                         if (viewBox && 'cx' in viewBox && 'cy' in viewBox) {
                           return (
                             <text
@@ -275,14 +286,14 @@ export default function ReviewsPage() {
           <CardContent>
             <div className="space-y-3">
               {[5, 4, 3, 2, 1].map((star) => {
-                const count = stats?.ratingDistribution?.[star] || 0;
-                const percentage = stats?.totalReviews 
-                  ? ((count / stats.totalReviews) * 100).toFixed(1) 
+                const count = fetchState.stats?.ratingDistribution?.[star] || 0;
+                const percentage = fetchState.stats?.totalReviews
+                  ? ((count / fetchState.stats.totalReviews) * 100).toFixed(1)
                   : '0.0';
                 return (
                   <div key={star} className="flex items-center gap-2">
                     <span className="w-8 text-sm">{star} ★</span>
-                    <div className="flex-1 h-3 bg-gray-200 rounded-full overflow-hidden">
+                    <div className="flex-1 h-3 bg-zinc-200 rounded-full overflow-hidden">
                       <div 
                         className="h-full bg-yellow-400 rounded-full"
                         style={{ width: `${percentage}%` }}
@@ -318,9 +329,9 @@ export default function ReviewsPage() {
           </div>
         </CardHeader>
         <CardContent>
-          {reviews.length > 0 ? (
+          {fetchState.reviews.length > 0 ? (
             <div className="space-y-4">
-              {reviews.map((review) => (
+              {fetchState.reviews.map((review: any) => (
                 <div 
                   key={review.id} 
                   className="border rounded-lg p-4 space-y-2"
@@ -351,7 +362,7 @@ export default function ReviewsPage() {
                     <p className="text-sm text-muted-foreground">{review.comment}</p>
                   )}
                   <p className="text-xs text-muted-foreground">
-                    {new Date(review.createdAt).toLocaleDateString('vi-VN')}
+                    <ReviewDate createdAt={review.createdAt} />
                   </p>
                 </div>
               ))}

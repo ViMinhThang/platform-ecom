@@ -55,12 +55,12 @@ function FormRadioGroup<
               disabled={disabled}
               className={
                 orientation === 'horizontal'
-                  ? 'flex flex-row space-x-6'
+                  ? 'flex flex-row gap-x-6'
                   : 'space-y-2'
               }
             >
               {options.map((option) => (
-                <div key={option.value} className='flex items-center space-x-2'>
+                <div key={option.value} className='flex items-center gap-x-2'>
                   <RadioGroupItem
                     value={option.value}
                     id={`${name}-${option.value}`}

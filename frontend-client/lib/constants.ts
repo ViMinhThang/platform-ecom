@@ -20,11 +20,11 @@ export const FILE_TYPES = {
 } as const;
 
 export const VALIDATION_MESSAGES = {
-    REQUIRED_FIELD: 'This field is required',
-    INVALID_EMAIL: 'Invalid email address',
-    ADDRESS_LIMIT_REACHED: 'You can only have a maximum of 5 addresses',
-    IMAGE_TYPE_INVALID: 'Please upload an image file',
-    IMAGE_SIZE_TOO_LARGE: 'Image size should be less than 5MB',
+    REQUIRED_FIELD: 'Trường này là bắt buộc',
+    INVALID_EMAIL: 'Địa chỉ email không hợp lệ',
+    ADDRESS_LIMIT_REACHED: 'Bạn chỉ có thể có tối đa 5 địa chỉ',
+    IMAGE_TYPE_INVALID: 'Vui lòng tải lên tệp hình ảnh',
+    IMAGE_SIZE_TOO_LARGE: 'Kích thước ảnh phải nhỏ hơn 5MB',
 } as const;
 
 export const ORDER_STATUSES = {

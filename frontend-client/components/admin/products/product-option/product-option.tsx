@@ -12,15 +12,15 @@ import { ProductOption } from "@/types/product/product-option";
 
 const OptionSchema = z.object({
   id: z.number().optional(),
-  name: z.string().min(1),
-  displayName: z.string().min(1),
+  name: z.string().min(1, "Tên là bắt buộc"),
+  displayName: z.string().min(1, "Tên hiển thị là bắt buộc"),
   isRequired: z.string(),
   sortOrder: z.number().optional(),
   values: z.array(
     z.object({
       id: z.number().optional(),
-      value: z.string().min(1),
-      displayValue: z.string().min(1),
+      value: z.string().min(1, "Giá trị là bắt buộc"),
+      displayValue: z.string().min(1, "Giá trị hiển thị là bắt buộc"),
       sortOrder: z.number().optional(),
     })
   ),

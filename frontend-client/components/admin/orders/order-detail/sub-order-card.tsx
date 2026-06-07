@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { formatCurrency } from '@/lib/utils';
+import { getOrderStatusLabel } from '@/lib/utils/order-labels';
 import { UpdateStatusDialog } from './update-status-dialog';
 import { Package, Truck } from 'lucide-react';
 
@@ -16,8 +17,8 @@ interface SubOrderCardProps {
 export const SubOrderCard: React.FC<SubOrderCardProps> = ({ subOrder, groupId }) => {
     return (
         <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <div className="flex flex-col space-y-1">
+            <CardHeader className="flex flex-row items-center justify-between gap-y-0 pb-2">
+                <div className="flex flex-col gap-y-1">
                     <CardTitle className="text-base font-medium">
                         Bán bởi: {subOrder.sellerName}
                     </CardTitle>
@@ -26,7 +27,7 @@ export const SubOrderCard: React.FC<SubOrderCardProps> = ({ subOrder, groupId })
                     </span>
                 </div>
                 <div className="flex items-center gap-2">
-                    <Badge variant="outline">{subOrder.status}</Badge>
+                    <Badge variant="outline">{getOrderStatusLabel(subOrder.status)}</Badge>
                     <UpdateStatusDialog
                         groupId={groupId}
                         subOrderId={subOrder.id}
@@ -39,7 +40,7 @@ export const SubOrderCard: React.FC<SubOrderCardProps> = ({ subOrder, groupId })
                     {/* Items */}
                     <div className="space-y-2">
                         <div className="text-sm font-medium flex items-center gap-2">
-                            <Package className="h-4 w-4" /> Sản phẩm
+                            <Package className="size-4" /> Sản phẩm
                         </div>
                         <div className="border rounded-md divide-y">
                             {subOrder.items.map((item) => (
@@ -64,7 +65,7 @@ export const SubOrderCard: React.FC<SubOrderCardProps> = ({ subOrder, groupId })
                     {subOrder.trackingNumber && (
                         <div className="space-y-2">
                             <div className="text-sm font-medium flex items-center gap-2">
-                                <Truck className="h-4 w-4" /> Thông tin theo dõi
+                                <Truck className="size-4" /> Thông tin theo dõi
                             </div>
                             <div className="bg-muted/50 p-3 rounded-md text-sm space-y-1">
                                 <div className="flex justify-between">

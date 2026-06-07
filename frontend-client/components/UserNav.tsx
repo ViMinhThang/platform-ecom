@@ -23,8 +23,8 @@ export function UserNav() {
         return (
             <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" className="relative h-10 w-10 rounded-full p-0">
-                        <Avatar className="h-10 w-10">
+                    <Button variant="ghost" className="relative size-10 rounded-full p-0">
+                        <Avatar className="size-10">
                             <AvatarImage src={imageUrl.avatar(session.user?.imageUrl)} alt={session.user?.name || ""} className="object-cover" />
                             <AvatarFallback>{session.user?.name?.charAt(0) || "U"}</AvatarFallback>
                         </Avatar>
@@ -32,7 +32,7 @@ export function UserNav() {
                 </DropdownMenuTrigger>
                 <DropdownMenuContent className="w-56" align="end" forceMount>
                     <DropdownMenuLabel className="font-normal">
-                        <div className="flex flex-col space-y-1">
+                        <div className="flex flex-col gap-y-1">
                             <p className="text-sm font-medium leading-none">
                                 {session.user?.name}
                             </p>
@@ -60,7 +60,7 @@ export function UserNav() {
     return (
         <Button variant="ghost" size="icon" asChild>
             <Link href="/auth/sign-in">
-                <User className="h-5 w-5" />
+                <User className="size-5" />
                 <span className="sr-only">Đăng nhập</span>
             </Link>
         </Button>

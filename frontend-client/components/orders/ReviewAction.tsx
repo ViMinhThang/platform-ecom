@@ -43,9 +43,9 @@ export function ReviewAction({ productId, orderId, status, onReview, refreshTrig
             <div className="mt-2 text-right">
                 <div className="flex items-center gap-1 justify-end">
                     {[...Array(5)].map((_, i) => (
-                        <Star 
-                            key={i} 
-                            className={`h-3 w-3 ${i < review.rating ? 'fill-yellow-400 text-yellow-400' : 'text-zinc-300'}`} 
+                        <Star
+                            key={"star-" + i}
+                            className={`size-3 ${i < review.rating ? 'fill-yellow-400 text-yellow-400' : 'text-zinc-300'}`}
                         />
                     ))}
                 </div>

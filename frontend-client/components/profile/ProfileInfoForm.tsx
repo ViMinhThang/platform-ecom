@@ -87,7 +87,7 @@ export function ProfileInfoForm({ user, onUpdate }: ProfileInfoFormProps) {
                 {/* Avatar Section */}
                 <div className="flex flex-col items-center gap-6">
                     <div className="relative group p-1 bg-background border border-border shadow-md rounded-sm">
-                        <Avatar className="h-32 w-32 rounded-sm">
+                        <Avatar className="size-32 rounded-sm">
                             <AvatarImage src={user.imageUrl} alt={user.username} className="object-cover" />
                             <AvatarFallback className="text-4xl bg-primary/5 rounded-sm font-bold text-primary opacity-30">
                                 {user.username.substring(0, 2).toUpperCase()}
@@ -96,9 +96,9 @@ export function ProfileInfoForm({ user, onUpdate }: ProfileInfoFormProps) {
                         <div className="absolute inset-1 flex items-center justify-center bg-primary/60 opacity-0 group-hover:opacity-100 transition-all duration-300 cursor-pointer rounded-sm backdrop-blur-sm">
                             <label htmlFor="image-upload" className="cursor-pointer p-3 bg-background/20 rounded-sm text-white hover:scale-110 transition-transform border border-white/20">
                                 {isUploading ? (
-                                    <Loader2 className="h-6 w-6 animate-spin" />
+                                    <Loader2 className="size-6 animate-spin" />
                                 ) : (
-                                    <Upload className="h-6 w-6" />
+                                    <Upload className="size-6" />
                                 )}
                             </label>
                             <input
@@ -145,7 +145,7 @@ export function ProfileInfoForm({ user, onUpdate }: ProfileInfoFormProps) {
                             />
 
                             <div className="pt-8 border-t border-dashed border-border mt-8">
-                                <h4 className="text-[11px] font-bold uppercase tracking-[0.2em] text-foreground mb-8">Bảo mật & Mật khẩu</h4>
+                                <h4 className="text-[11px] font-semibold uppercase tracking-[0.2em] text-foreground mb-8">Bảo mật & Mật khẩu</h4>
                                 <div className="space-y-6">
                                      <FormField
                                         label="MẬT KHẨU HIỆN TẠI"
@@ -177,7 +177,7 @@ export function ProfileInfoForm({ user, onUpdate }: ProfileInfoFormProps) {
 
                         <div className="flex justify-start pt-6">
                             <Button type="submit" disabled={isSaving} className="w-full sm:w-auto rounded-sm h-12 px-10 shadow-lg shadow-primary/10 text-[11px] font-bold uppercase tracking-widest transition-all">
-                                {isSaving && <Loader2 className="mr-3 h-4 w-4 animate-spin" />}
+                                {isSaving && <Loader2 className="mr-3 size-4 animate-spin" />}
                                 Lưu thay đổi
                             </Button>
                         </div>

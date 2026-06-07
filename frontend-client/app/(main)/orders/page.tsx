@@ -39,22 +39,19 @@ const TAB_STATUS_MAP: Record<OrderTab, SubOrderStatus[]> = {
 
 function OrdersPageContent() {
     const { data: session, status: authStatus } = useSession();
-    const router = useRouter();
+    const { push } = useRouter();
     const searchParams = useSearchParams();
+    const get = searchParams.get.bind(searchParams);
 
     const { data: ordersData, isLoading: loading } = useGetOrdersQuery({ page: 0, size: 20 });
     const orders = ordersData?.content || [];
-    const [activeTab, setActiveTab] = useState<OrderTab>((searchParams.get('tab') as OrderTab) || 'all');
+    const [activeTab, setActiveTab] = useState<OrderTab>((get('tab') as OrderTab) || 'all');
 
-    const [reviewDialogOpen, setReviewDialogOpen] = useState(false);
-    const [reviewProductId, setReviewProductId] = useState<number | null>(null);
-    const [reviewOrderId, setReviewOrderId] = useState<number | null>(null);
+    const [reviewDialog, setReviewDialog] = useState({ open: false, productId: null as number | null, orderId: null as number | null });
     const [refreshCounter, setRefreshCounter] = useState(0);
 
     const handleReviewOrderItem = (productId: number, orderId: number) => {
-        setReviewProductId(productId);
-        setReviewOrderId(orderId);
-        setReviewDialogOpen(true);
+        setReviewDialog({ open: true, productId, orderId });
     };
 
     const handleReviewSuccess = () => {
@@ -63,9 +60,9 @@ function OrdersPageContent() {
 
     useEffect(() => {
         if (authStatus === 'unauthenticated') {
-            router.push('/auth/sign-in');
+            push('/auth/sign-in');
         }
-    }, [authStatus, router]);
+    }, [authStatus, push]);
 
     const filteredOrders = orders.filter((order) => {
         if (activeTab === 'all') return true;
@@ -75,14 +72,14 @@ function OrdersPageContent() {
 
     const handleTabChange = (tab: string) => {
         setActiveTab(tab as OrderTab);
-        router.push(`/orders?tab=${tab}`, { scroll: false });
+        push(`/orders?tab=${tab}`, { scroll: false });
     };
 
     if (authStatus === 'loading' || (loading && orders.length === 0)) {
         return (
-            <div className="min-h-screen bg-background flex flex-col items-center justify-center space-y-8">
-                <div className="w-12 h-12 border-2 border-primary/20 border-t-primary rounded-full animate-spin" />
-                <p className="font-labels italic text-foreground/40 animate-pulse">Đang truy xuất danh sách đơn hàng...</p>
+            <div className="min-h-screen bg-background flex flex-col items-center justify-center gap-y-8">
+                <div className="size-12 border-2 border-primary/20 border-t-primary rounded-full animate-spin" />
+                <p className="font-labels italic text-foreground/40 animate-pulse">Đang truy xuất danh sách đơn hàng…</p>
             </div>
         );
     }
@@ -102,7 +99,7 @@ function OrdersPageContent() {
 
             <div className="container max-w-[1600px] mx-auto px-12 py-20">
                 <div className="mb-20 space-y-6">
-                    <h1 className="font-labels font-bold text-6xl uppercase tracking-tighter text-foreground">
+                    <h1 className="font-labels font-semibold text-6xl uppercase tracking-tighter text-foreground">
                         Đơn hàng của bạn
                     </h1>
                     <div className="flex items-center gap-4">
@@ -128,10 +125,10 @@ function OrdersPageContent() {
 
                 {filteredOrders.length === 0 ? (
                     <div className="bg-white p-32 text-center rounded-[4px] border border-foreground/5 shadow-sm">
-                        <div className="bg-primary/5 w-24 h-24 rounded-full flex items-center justify-center mx-auto mb-10">
-                            <Package className="h-10 w-10 text-primary opacity-30" />
+                        <div className="bg-primary/5 size-24 rounded-full flex items-center justify-center mx-auto mb-10">
+                            <Package className="size-10 text-primary opacity-30" />
                         </div>
-                        <h3 className="text-xl font-bold uppercase tracking-widest text-foreground font-labels">Không tìm thấy đơn hàng</h3>
+                        <h3 className="text-xl font-semibold uppercase tracking-widest text-foreground font-labels">Không tìm thấy đơn hàng</h3>
                         <p className="text-[10px] text-foreground/40 mt-4 font-bold uppercase tracking-widest font-labels">
                             Hiện không có dữ liệu cho trạng thái này trong hồ sơ của bạn.
                         </p>
@@ -147,12 +144,12 @@ function OrdersPageContent() {
                     </div>
                 )}
                 
-                {reviewProductId && reviewOrderId && (
+                {reviewDialog.productId && reviewDialog.orderId && (
                     <ReviewDialog
-                        open={reviewDialogOpen}
-                        onOpenChange={setReviewDialogOpen}
-                        productId={reviewProductId}
-                        orderId={reviewOrderId}
+                        open={reviewDialog.open}
+                        onOpenChange={(open) => setReviewDialog(prev => ({ ...prev, open }))}
+                        productId={reviewDialog.productId}
+                        orderId={reviewDialog.orderId}
                         onSuccess={handleReviewSuccess}
                     />
                 )}
@@ -170,6 +167,11 @@ export default function OrdersPage() {
 }
 
 function OrderCard({ order, onReview, refreshTrigger }: { order: OrderGroupDTO, onReview: (productId: number, orderId: number) => void, refreshTrigger?: number }) {
+    const [orderDate, setOrderDate] = useState("");
+    useEffect(() => {
+        setOrderDate(format(new Date(order.createdAt), 'dd.MM.yyyy'));
+    }, [order.createdAt]);
+
     return (
         <div className="bg-white overflow-hidden border border-foreground/10 rounded-[4px] shadow-sm transition-all hover:border-foreground/20">
             {order.subOrders.map((subOrder) => (
@@ -183,7 +185,7 @@ function OrderCard({ order, onReview, refreshTrigger }: { order: OrderGroupDTO, 
                         </div>
                         {subOrder.ghnOrderCode && (
                             <div className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-foreground/30 font-labels">
-                                <Truck className="h-4 w-4" />
+                                <Truck className="size-4" />
                                 <span>MÃ VẬN ĐƠN: {subOrder.ghnOrderCode}</span>
                             </div>
                         )}
@@ -192,18 +194,19 @@ function OrderCard({ order, onReview, refreshTrigger }: { order: OrderGroupDTO, 
                     <div className="p-8 space-y-10">
                         {subOrder.items.map((item) => (
                             <div key={item.id} className="flex gap-10 items-center">
-                                <div className="h-24 w-24 bg-secondary/5 rounded-sm border border-foreground/5 overflow-hidden flex-shrink-0 relative group">
+                                <div className="size-24 bg-secondary/5 rounded-sm border border-foreground/5 overflow-hidden flex-shrink-0 relative group">
                                     {item.imageUrl ? (
                                         <Image
                                             src={imageUrl.product(item.imageUrl)}
                                             alt={item.productName}
                                             fill
+                                            sizes="40px"
                                             className="object-cover group-hover:scale-105 transition-transform duration-500"
                                             unoptimized
                                         />
                                     ) : (
                                         <div className="w-full h-full flex items-center justify-center text-foreground/20">
-                                            <Package className="h-8 w-8" />
+                                            <Package className="size-8" />
                                         </div>
                                     )}
                                 </div>
@@ -233,7 +236,7 @@ function OrderCard({ order, onReview, refreshTrigger }: { order: OrderGroupDTO, 
 
                     <div className="px-8 py-6 border-t border-foreground/5 bg-secondary/3 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-8">
                         <div className="text-[10px] font-bold uppercase tracking-[0.3em] text-foreground/30 font-labels">
-                            HÓA ĐƠN: {format(new Date(order.createdAt), 'dd.MM.yyyy')}
+                            HÓA ĐƠN: {orderDate}
                         </div>
                         <div className="flex items-center justify-between w-full sm:w-auto gap-16">
                             <div className="text-right">
@@ -243,7 +246,7 @@ function OrderCard({ order, onReview, refreshTrigger }: { order: OrderGroupDTO, 
                             <Button variant="outline" size="sm" asChild className="h-12 px-8 text-[10px] font-bold uppercase tracking-widest border-foreground/10 shadow-sm hover:bg-foreground hover:text-white transition-all rounded-sm font-labels">
                                 <Link href={`/orders/${order.id}?subOrder=${subOrder.id}`}>
                                     XEM CHI TIẾT
-                                    <ChevronRight className="h-4 w-4 ml-3" />
+                                    <ChevronRight className="size-4 ml-3" />
                                 </Link>
                             </Button>
                         </div>

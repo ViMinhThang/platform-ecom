@@ -13,11 +13,11 @@ export default function OrderDetailPage() {
     const { data: currentOrder, isLoading } = useGetOrderDetailsQuery(orderId);
 
     if (isLoading) {
-        return <div className="p-8 text-center">Loading order details...</div>;
+        return <div className="p-8 text-center">Đang tải chi tiết đơn hàng…</div>;
     }
 
     if (!currentOrder) {
-        return <div className="p-8 text-center">Order not found</div>;
+        return <div className="p-8 text-center">Không tìm thấy đơn hàng</div>;
     }
 
     return (

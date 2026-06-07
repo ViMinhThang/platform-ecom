@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useReducer } from "react";
 import { AlertModal } from "@/components/admin/alert-modal";
 import { Button } from "@/components/ui/button";
 import {
@@ -41,25 +41,22 @@ interface CellActionProps {
 }
 
 export const CellAction: React.FC<CellActionProps> = ({ data }) => {
-  const router = useRouter();
+  const { push } = useRouter();
   const [deleteProduct] = useDeleteProductMutation();
-  const [loading, setLoading] = useState(false);
-  const [deleteOpen, setDeleteOpen] = useState(false);
-  // ... existing states ...
-  const [updateProductOpen, setUpdateProductOpen] = useState(false);
-  const [updateOptionsOpen, setUpdateOptionsOpen] = useState(false);
-  const [updateVariantsOpen, setUpdateVariantsOpen] = useState(false);
-  const [updateImagesOpen, setUpdateImagesOpen] = useState(false);
+  const [dialogs, setDialogs] = useReducer(
+    (prev: any, next: any) => ({ ...prev, ...next }),
+    { loading: false, deleteOpen: false, updateProductOpen: false, updateOptionsOpen: false, updateVariantsOpen: false, updateImagesOpen: false }
+  );
 
   const onConfirm = async () => {
     try {
-      setLoading(true);
+      setDialogs({ loading: true });
       await deleteProduct(data.id).unwrap();
-      setDeleteOpen(false);
+      setDialogs({ deleteOpen: false });
     } catch (error) {
       toast.error("Không thể xóa sản phẩm");
     } finally {
-      setLoading(false);
+      setDialogs({ loading: false });
     }
   };
 
@@ -67,69 +64,69 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
     <ProductVariantProvider productId={data.id}>
       <ProductOptionProvider productId={data.id}>
         <AlertModal
-          isOpen={deleteOpen}
-          onClose={() => setDeleteOpen(false)}
+          isOpen={dialogs.deleteOpen}
+          onClose={() => setDialogs({ deleteOpen: false })}
           onConfirm={onConfirm}
-          loading={loading}
+          loading={dialogs.loading}
         />
 
         <ProductDialog
-          open={updateProductOpen}
-          onOpenChange={setUpdateProductOpen}
+          open={dialogs.updateProductOpen}
+          onOpenChange={(v) => setDialogs({ updateProductOpen: v })}
           productId={data.id}
         />
 
         <BulkProductOptionDialog
           productId={data.id}
-          open={updateOptionsOpen}
-          onOpenChange={setUpdateOptionsOpen}
+          open={dialogs.updateOptionsOpen}
+          onOpenChange={(v) => setDialogs({ updateOptionsOpen: v })}
         />
         <ProductImageDialog
           productId={data.id}
-          open={updateImagesOpen}
-          onOpenChange={setUpdateImagesOpen}
+          open={dialogs.updateImagesOpen}
+          onOpenChange={(v) => setDialogs({ updateImagesOpen: v })}
         ></ProductImageDialog>
         <ProductVariantDialog
-          open={updateVariantsOpen}
-          onOpenChange={setUpdateVariantsOpen}
+          open={dialogs.updateVariantsOpen}
+          onOpenChange={(v) => setDialogs({ updateVariantsOpen: v })}
           productId={data.id}
           onSave={function (variants: VariantFormValues[]): Promise<void> {
-            throw new Error("Function not implemented.");
+            throw new Error("Chức năng chưa được triển khai.");
           }}
         />
         <DropdownMenu modal={false}>
           <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
+            <Button variant="ghost" className="size-8 p-0">
               <span className="sr-only">Mở menu</span>
-              <IconDotsVertical className="h-4 w-4" />
+              <IconDotsVertical className="size-4" />
             </Button>
           </DropdownMenuTrigger>
 
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Hành động</DropdownMenuLabel>
 
-            <DropdownMenuItem onClick={() => setUpdateProductOpen(true)}>
-              <IconEdit className="mr-2 h-4 w-4" /> Cập nhật sản phẩm
+            <DropdownMenuItem onClick={() => setDialogs({ updateProductOpen: true })}>
+              <IconEdit className="mr-2 size-4" /> Cập nhật sản phẩm
             </DropdownMenuItem>
 
-            <DropdownMenuItem onClick={() => router.push(`/admin/dashboard/product/${data.id}/description`)}>
-              <IconFileDescription className="mr-2 h-4 w-4" /> Chỉnh sửa mô tả
+            <DropdownMenuItem onClick={() => push(`/admin/dashboard/product/${data.id}/description`)}>
+              <IconFileDescription className="mr-2 size-4" /> Chỉnh sửa mô tả
             </DropdownMenuItem>
 
-            <DropdownMenuItem onClick={() => setUpdateOptionsOpen(true)}>
-              <IconTools className="mr-2 h-4 w-4" /> Cập nhật tùy chọn
+            <DropdownMenuItem onClick={() => setDialogs({ updateOptionsOpen: true })}>
+              <IconTools className="mr-2 size-4" /> Cập nhật tùy chọn
             </DropdownMenuItem>
 
-            <DropdownMenuItem onClick={() => setUpdateVariantsOpen(true)}>
-              <IconTools className="mr-2 h-4 w-4" /> Cập nhật biến thể
+            <DropdownMenuItem onClick={() => setDialogs({ updateVariantsOpen: true })}>
+              <IconTools className="mr-2 size-4" /> Cập nhật biến thể
             </DropdownMenuItem>
 
-            <DropdownMenuItem onClick={() => setUpdateImagesOpen(true)}>
-              <IconPhoto className="mr-2 h-4 w-4" /> Cập nhật hình ảnh
+            <DropdownMenuItem onClick={() => setDialogs({ updateImagesOpen: true })}>
+              <IconPhoto className="mr-2 size-4" /> Cập nhật hình ảnh
             </DropdownMenuItem>
 
-            <DropdownMenuItem onClick={() => setDeleteOpen(true)}>
-              <IconTrash className="mr-2 h-4 w-4" /> Xóa
+            <DropdownMenuItem onClick={() => setDialogs({ deleteOpen: true })}>
+              <IconTrash className="mr-2 size-4" /> Xóa
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

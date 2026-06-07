@@ -23,7 +23,7 @@ export function SellerGroup({ group }: SellerGroupProps) {
                         <span className="text-foreground/40">Người bán:</span>
                         <h3 className="text-foreground uppercase tracking-widest transition-all">
                             {isLoading ? (
-                                <span className="animate-pulse opacity-20">AUTH_RECORD_PENDING</span>
+                                <span className="animate-pulse opacity-20">ĐANG_XÁC_THỰC</span>
                             ) : (
                                 sellerName
                             )}
@@ -31,8 +31,8 @@ export function SellerGroup({ group }: SellerGroupProps) {
                     </div>
                 </div>
                 <div className="flex items-center gap-3">
-                    <span className="h-1.5 w-1.5 rounded-full bg-primary animate-pulse shadow-[0_0_10px_rgba(255,0,0,0.5)]" />
-                    <span className="text-[9px] font-bold text-primary tracking-[0.3em] uppercase font-labels">Registry Verified</span>
+                    <span className="size-1.5 rounded-full bg-primary animate-pulse shadow-[0_0_10px_rgba(255,0,0,0.5)]" />
+                    <span className="text-[9px] font-bold text-primary tracking-[0.3em] uppercase font-labels">Đã xác minh</span>
                 </div>
             </div>
 

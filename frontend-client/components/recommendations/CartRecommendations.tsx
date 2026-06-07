@@ -35,7 +35,7 @@ export const CartRecommendations = () => {
             <div className="flex items-center gap-4 mb-12">
                 <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-foreground/40 font-labels">VẬT PHẨM BỔ SUNG</span>
                 <div className="h-px bg-foreground/10 flex-1" />
-                <h2 className="text-[10px] font-bold uppercase tracking-[0.3em] text-foreground font-labels">BẠN CÓ THỂ MUỐN MUA KÈM</h2>
+                <h2 className="text-[10px] font-semibold uppercase tracking-[0.3em] text-foreground font-labels">BẠN CÓ THỂ MUỐN MUA KÈM</h2>
             </div>
 
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">

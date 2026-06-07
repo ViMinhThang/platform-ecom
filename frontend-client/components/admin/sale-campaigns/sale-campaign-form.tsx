@@ -41,9 +41,9 @@ const saleCampaignSchema = z
         discountTiers: z
             .array(
                 z.object({
-                    minPrice: z.number().min(0),
-                    maxPrice: z.number().min(0),
-                    discountPercent: z.number().min(1).max(99),
+                    minPrice: z.number().min(0, 'Giá tối thiểu phải >= 0'),
+                    maxPrice: z.number().min(0, 'Giá tối đa phải >= 0'),
+                    discountPercent: z.number().min(1, 'Phần trăm giảm phải >= 1').max(99, 'Phần trăm giảm phải <= 99'),
                     sortOrder: z.number().optional(),
                 })
             )
@@ -124,7 +124,7 @@ export function SaleCampaignForm({ campaign, onSubmit, loading }: SaleCampaignFo
                     <Card className="shadow-sm border-muted-foreground/10">
                         <CardHeader>
                             <div className="flex items-center gap-2 text-primary">
-                                <InfoIcon className="h-5 w-5" />
+                                <InfoIcon className="size-5" />
                                 <CardTitle className="text-xl">Thông tin cơ bản</CardTitle>
                             </div>
                             <CardDescription>
@@ -140,7 +140,7 @@ export function SaleCampaignForm({ campaign, onSubmit, loading }: SaleCampaignFo
                                         <FormLabel>Tên chiến dịch</FormLabel>
                                         <FormControl>
                                             <Input
-                                                placeholder="Ví dụ: Holiday Sale 2026, Tech Week..."
+                                                placeholder="Ví dụ: Đại tiệc lễ hội 2026, Tuần lễ công nghệ…"
                                                 {...field}
                                             />
                                         </FormControl>
@@ -157,7 +157,7 @@ export function SaleCampaignForm({ campaign, onSubmit, loading }: SaleCampaignFo
                                         <FormLabel>Mô tả</FormLabel>
                                         <FormControl>
                                             <Textarea
-                                                placeholder="Nhập mô tả ngắn gọn về chương trình..."
+                                                placeholder="Nhập mô tả ngắn gọn về chương trình…"
                                                 className="min-h-[100px] resize-none"
                                                 {...field}
                                             />
@@ -173,7 +173,7 @@ export function SaleCampaignForm({ campaign, onSubmit, loading }: SaleCampaignFo
                     <Card className="shadow-sm border-muted-foreground/10">
                         <CardHeader>
                             <div className="flex items-center gap-2 text-primary">
-                                <TagsIcon className="h-5 w-5" />
+                                <TagsIcon className="size-5" />
                                 <CardTitle className="text-xl">Danh mục sản phẩm</CardTitle>
                             </div>
                             <CardDescription>
@@ -203,7 +203,7 @@ export function SaleCampaignForm({ campaign, onSubmit, loading }: SaleCampaignFo
                     <Card className="shadow-sm border-muted-foreground/10">
                         <CardHeader>
                             <div className="flex items-center gap-2 text-primary">
-                                <PercentIcon className="h-5 w-5" />
+                                <PercentIcon className="size-5" />
                                 <CardTitle className="text-xl">Khung giá giảm</CardTitle>
                             </div>
                             <CardDescription>
@@ -234,8 +234,8 @@ export function SaleCampaignForm({ campaign, onSubmit, loading }: SaleCampaignFo
                     <Card className="shadow-sm border-muted-foreground/10">
                         <CardHeader>
                             <div className="flex items-center gap-2 text-primary">
-                                <ImageIcon className="h-5 w-5" />
-                                <CardTitle className="text-xl">Banner</CardTitle>
+                                <ImageIcon className="size-5" />
+                                <CardTitle className="text-xl">Ảnh bìa</CardTitle>
                             </div>
                         </CardHeader>
                         <CardContent className="space-y-4">
@@ -258,7 +258,7 @@ export function SaleCampaignForm({ campaign, onSubmit, loading }: SaleCampaignFo
                                                 setBannerFiles([]);
                                             }}
                                         >
-                                            <XIcon className="h-4 w-4 mr-2" />
+                                            <XIcon className="size-4 mr-2" />
                                             Xóa
                                         </Button>
                                     </div>
@@ -285,7 +285,7 @@ export function SaleCampaignForm({ campaign, onSubmit, loading }: SaleCampaignFo
                     <Card className="shadow-sm border-muted-foreground/10">
                         <CardHeader>
                             <div className="flex items-center gap-2 text-primary">
-                                <CalendarIcon className="h-5 w-5" />
+                                <CalendarIcon className="size-5" />
                                 <CardTitle className="text-xl">Lịch trình</CardTitle>
                             </div>
                         </CardHeader>
@@ -329,8 +329,8 @@ export function SaleCampaignForm({ campaign, onSubmit, loading }: SaleCampaignFo
                     >
                         {loading ? (
                             <div className="flex items-center gap-2">
-                                <span className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
-                                Đang lưu...
+                                <span className="size-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
+                                Đang lưu…
                             </div>
                         ) : isEditing ? (
                             'Cập nhật chiến dịch'
@@ -341,8 +341,8 @@ export function SaleCampaignForm({ campaign, onSubmit, loading }: SaleCampaignFo
 
                     {/* Info Box */}
                     <div className="p-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg">
-                        <h4 className="flex items-center gap-2 text-sm font-bold text-blue-700 dark:text-blue-400 mb-2">
-                            <InfoIcon className="h-4 w-4" />
+                        <h4 className="flex items-center gap-2 text-sm font-semibold text-blue-700 dark:text-blue-400 mb-2">
+                            <InfoIcon className="size-4" />
                             Lưu ý
                         </h4>
                         <ul className="text-xs text-blue-600 dark:text-blue-300 space-y-1 list-disc pl-4">

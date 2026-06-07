@@ -13,13 +13,13 @@ import RenderResults from './render-result';
 import useThemeSwitching from './use-theme-switching';
 
 export default function KBar({ children }: { children: React.ReactNode }) {
-  const router = useRouter();
+  const { push } = useRouter();
 
   // These action are for the navigation
   const actions = useMemo(() => {
     // Define navigateTo inside the useMemo callback to avoid dependency array issues
     const navigateTo = (url: string) => {
-      router.push(url);
+      push(url);
     };
 
     return navItems.flatMap((navItem) => {
@@ -31,8 +31,8 @@ export default function KBar({ children }: { children: React.ReactNode }) {
             name: navItem.title,
             shortcut: navItem.shortcut,
             keywords: navItem.title.toLowerCase(),
-            section: 'Navigation',
-            subtitle: `Go to ${navItem.title}`,
+            section: 'Điều hướng',
+            subtitle: `Đi tới ${navItem.title}`,
             perform: () => navItem.url && navigateTo(navItem.url)
           }
           : null;
@@ -45,14 +45,14 @@ export default function KBar({ children }: { children: React.ReactNode }) {
           shortcut: childItem.shortcut,
           keywords: childItem.title.toLowerCase(),
           section: navItem.title,
-          subtitle: `Go to ${childItem.title}`,
+          subtitle: `Đi tới ${childItem.title}`,
           perform: () => childItem.url && navigateTo(childItem.url)
         })) ?? [];
 
       // Return only valid actions (ignoring null base actions for containers)
       return baseAction ? [baseAction, ...childActions] : childActions;
     });
-  }, [router]);
+  }, [push]);
 
   return (
     <KBarProvider

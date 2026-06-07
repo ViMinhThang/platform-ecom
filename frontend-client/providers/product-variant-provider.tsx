@@ -2,9 +2,10 @@
 
 import {
   createContext,
-  useContext,
+  use,
   ReactNode,
   useEffect,
+  useCallback,
 } from "react";
 import { toast } from "sonner";
 import { VariantFormValues } from "@/types/product/product-variant";
@@ -57,11 +58,14 @@ export const ProductVariantProvider: React.FC<ProductVariantProviderProps> = ({
   const [deleteVariant] = useDeleteVariantMutation();
 
   // Sync fetched variants to local Redux state
-  useEffect(() => {
-    if (fetchedVariants) {
-      dispatch(setItems(fetchedVariants as any));
-    }
+  const onVariantsLoaded = useCallback(() => {
+    if (!fetchedVariants) return;
+    dispatch(setItems(fetchedVariants as any));
   }, [fetchedVariants, dispatch]);
+
+  useEffect(() => {
+    onVariantsLoaded();
+  }, [onVariantsLoaded]);
 
   // Clear variants when closing or switching products
   useEffect(() => {
@@ -80,13 +84,13 @@ export const ProductVariantProvider: React.FC<ProductVariantProviderProps> = ({
     try {
       if (typeof variantId === "number") {
         await deleteVariant({ productId, variantId }).unwrap();
-        toast.success("Variant deleted successfully");
+        toast.success("Đã xóa biến thể");
       } else {
         dispatch(removeVariantLocally(variantId));
       }
     } catch (error) {
       console.error("Error deleting variant:", error);
-      toast.error("Failed to delete variant");
+      toast.error("Không thể xóa biến thể");
     }
   };
 
@@ -110,13 +114,13 @@ export const ProductVariantProvider: React.FC<ProductVariantProviderProps> = ({
           variantId: variant.id,
           variantData: variant,
         }).unwrap();
-        toast.success("Variant updated successfully");
+        toast.success("Đã cập nhật biến thể");
       } else if (variant.tempId) {
         result = await createVariant({
           productId,
           variantData: variant,
         }).unwrap();
-        toast.success("Variant created successfully");
+        toast.success("Đã tạo biến thể");
       } else {
         return null;
       }
@@ -124,7 +128,7 @@ export const ProductVariantProvider: React.FC<ProductVariantProviderProps> = ({
       return result;
     } catch (error: unknown) {
       console.error("Error saving variant:", error);
-      toast.error("Failed to save variant");
+      toast.error("Không thể lưu biến thể");
       return null;
     }
   };
@@ -148,10 +152,10 @@ export const ProductVariantProvider: React.FC<ProductVariantProviderProps> = ({
 };
 
 export const useProductVariants = () => {
-  const context = useContext(ProductVariantContext);
+  const context = use(ProductVariantContext);
   if (!context)
     throw new Error(
-      "useProductVariants must be used within a ProductVariantProvider"
+      "useProductVariants phải được dùng bên trong ProductVariantProvider"
     );
   return context;
 };

@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { Suspense, useEffect, useState, useReducer } from 'react';
 import { useSession } from 'next-auth/react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { voucherService } from '@/lib/services/voucher-service';
@@ -26,38 +26,39 @@ interface VoucherListingClientProps {
     };
 }
 
-export function VoucherListingClient({ searchParams }: VoucherListingClientProps) {
+function VoucherListingClientContent({ searchParams }: VoucherListingClientProps) {
     const { data: session } = useSession();
-    const router = useRouter();
+    const { push } = useRouter();
     const urlSearchParams = useSearchParams();
+    const get = urlSearchParams.get.bind(urlSearchParams);
+    const toString = urlSearchParams.toString.bind(urlSearchParams);
 
-    const [vouchers, setVouchers] = useState<Voucher[]>([]);
-    const [totalItems, setTotalItems] = useState(0);
-    const [loading, setLoading] = useState(true);
-
+    const [fetchState, dispatchFetch] = useReducer(
+        (prev: any, next: any) => ({ ...prev, ...next }),
+        { vouchers: [] as Voucher[], totalItems: 0, loading: true }
+    );
     const [page, setPage] = useState(searchParams?.page ?? 0);
     const [perPage, setPerPage] = useState(searchParams?.perPage ?? 10);
 
-    const currentStatus = urlSearchParams.get('status') || '';
-    const currentCategory = urlSearchParams.get('category') || '';
+    const currentStatus = get('status') || '';
+    const currentCategory = get('category') || '';
 
     const fetchVouchers = async () => {
         if (!session?.accessToken) return;
 
         try {
-            setLoading(true);
+            dispatchFetch({ loading: true });
             const response = await voucherService.getAll({
                 page,
                 size: perPage,
                 status: currentStatus || undefined,
                 category: currentCategory || undefined,
             });
-            setVouchers(response.content);
-            setTotalItems(response.totalElements);
+            dispatchFetch({ vouchers: response.content, totalItems: response.totalElements });
         } catch (error) {
             console.error('Failed to fetch vouchers:', error);
         } finally {
-            setLoading(false);
+            dispatchFetch({ loading: false });
         }
     };
 
@@ -66,28 +67,28 @@ export function VoucherListingClient({ searchParams }: VoucherListingClientProps
     }, [session, page, perPage, currentStatus, currentCategory]);
 
     const updateFilter = (key: string, value: string) => {
-        const params = new URLSearchParams(urlSearchParams.toString());
+        const params = new URLSearchParams(toString());
         if (value && value !== 'all') {
             params.set(key, value);
         } else {
             params.delete(key);
         }
         params.set('page', '0');
-        router.push(`?${params.toString()}`);
+        push(`?${params.toString()}`);
     };
 
     const resetFilters = () => {
-        router.push('/admin/dashboard/vouchers');
+        push('/admin/dashboard/vouchers');
     };
 
     const hasFilters = currentStatus || currentCategory;
 
-    if (loading && vouchers.length === 0) {
-        return <div>Đang tải voucher...</div>;
+    if (fetchState.loading && fetchState.vouchers.length === 0) {
+        return <div>Đang tải mã giảm giá…</div>;
     }
 
     return (
-        <div className="flex flex-1 flex-col space-y-4">
+        <div className="flex flex-1 flex-col gap-y-4">
             <div className="flex flex-wrap items-center gap-4">
                 <Select value={currentStatus || 'all'} onValueChange={(v) => updateFilter('status', v)}>
                     <SelectTrigger className="w-[180px]">
@@ -116,15 +117,15 @@ export function VoucherListingClient({ searchParams }: VoucherListingClientProps
                 {hasFilters && (
                     <Button variant="ghost" onClick={resetFilters} className="h-8 px-2 lg:px-3">
                         Đặt lại
-                        <X className="ml-2 h-4 w-4" />
+                        <X className="ml-2 size-4" />
                     </Button>
                 )}
             </div>
 
             <VoucherTable
-                key={vouchers.length} // Force re-render when data changes
-                data={vouchers}
-                totalItems={totalItems}
+                key={fetchState.vouchers.length}
+                data={fetchState.vouchers}
+                totalItems={fetchState.totalItems}
                 columns={columns}
                 onPageChange={setPage}
                 onPerPageChange={setPerPage}
@@ -133,5 +134,13 @@ export function VoucherListingClient({ searchParams }: VoucherListingClientProps
                 onRefresh={fetchVouchers}
             />
         </div>
+    );
+}
+
+export function VoucherListingClient(props: VoucherListingClientProps) {
+    return (
+        <Suspense fallback={<div className="h-40 animate-pulse bg-secondary/10 rounded-sm" />}>
+            <VoucherListingClientContent {...props} />
+        </Suspense>
     );
 }

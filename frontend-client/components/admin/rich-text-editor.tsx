@@ -81,10 +81,10 @@ const MenuBar = ({ editor, productId }: { editor: any, productId: number }) => {
                         src: fullUrl,
                         'data-image-id': uploaded.id
                     }).run();
-                    toast.success('Image uploaded');
+                    toast.success('Đã tải ảnh lên');
                 } catch (error) {
                     console.error('Upload failed:', error);
-                    toast.error('Failed to upload image');
+                    toast.error('Không thể tải ảnh lên');
                 }
             }
         };
@@ -224,7 +224,7 @@ export const RichTextEditor = ({ value, onChange, className, productId }: RichTe
                 },
             }),
             Placeholder.configure({
-                placeholder: 'Write something...'
+                placeholder: 'Nhập nội dung...'
             }),
         ],
         immediatelyRender: false,

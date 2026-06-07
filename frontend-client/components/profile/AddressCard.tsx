@@ -30,8 +30,8 @@ export function AddressCard({ address, onEdit, onDelete, isDeleting }: AddressCa
         <div className="relative bg-background border border-border p-8 py-10 group transition-all hover:shadow-lg h-full rounded-sm shadow-md">
             <div className="pb-6 border-b border-border mb-6 flex justify-between items-start">
                 <div className="flex items-center gap-3">
-                    <MapPin className="h-4 w-4 text-primary" />
-                    <h4 className="font-bold text-[11px] uppercase tracking-[0.2em] text-foreground">
+                    <MapPin className="size-4 text-primary" />
+                    <h4 className="font-semibold text-[11px] uppercase tracking-[0.2em] text-foreground">
                         {address.buildingName}
                     </h4>
                 </div>
@@ -56,7 +56,7 @@ export function AddressCard({ address, onEdit, onDelete, isDeleting }: AddressCa
                     className="flex-1 py-3 text-[10px] font-bold uppercase tracking-widest hover:bg-primary/5 text-foreground border-r border-border transition-all flex items-center justify-center gap-3"
                     onClick={() => onEdit(address)}
                 >
-                    <Pencil className="h-3.5 w-3.5 text-primary opacity-50" /> CHỈNH SỬA
+                    <Pencil className="size-3.5 text-primary opacity-50" /> CHỈNH SỬA
                 </button>
                 <button
                     className="flex-1 py-3 text-[10px] font-bold uppercase tracking-widest hover:bg-red-50 text-red-500 transition-all flex items-center justify-center gap-3"
@@ -64,10 +64,10 @@ export function AddressCard({ address, onEdit, onDelete, isDeleting }: AddressCa
                     disabled={isDeleting}
                 >
                     {isDeleting ? (
-                        <span className="h-3.5 w-3.5 animate-spin rounded-full border-2 border-current border-t-transparent" />
+                        <span className="size-3.5 animate-spin rounded-full border-2 border-current border-t-transparent" />
                     ) : (
                         <>
-                            <Trash2 className="h-3.5 w-3.5 opacity-50" /> XÓA
+                            <Trash2 className="size-3.5 opacity-50" /> XÓA
                         </>
                     )}
                 </button>

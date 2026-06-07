@@ -48,21 +48,21 @@ import type { NavItem } from "@/types/admin";
 import { OrgSwitcher } from "../org-switcher";
 import { useSession, signOut } from "next-auth/react";
 export const company = {
-  name: "Acme Inc",
+  name: "ACME Việt Nam",
   logo: IconPhotoUp,
-  plan: "Enterprise",
+  plan: "Doanh nghiệp",
 };
 
 const tenants = [
-  { id: "1", name: "Acme Inc" },
-  { id: "2", name: "Beta Corp" },
-  { id: "3", name: "Gamma Ltd" },
+  { id: "1", name: "ACME Việt Nam" },
+  { id: "2", name: "Chi nhánh Beta" },
+  { id: "3", name: "Chi nhánh Gamma" },
 ];
 
 export default function AppSidebar() {
   const pathname = usePathname();
   const { isOpen } = useMediaQuery();
-  const router = useRouter();
+  const { push } = useRouter();
   const handleSwitchTenant = (_tenantId: string) => {
   };
   const { data: session } = useSession();
@@ -155,7 +155,7 @@ export default function AppSidebar() {
                 >
                   {user && (
                     <UserAvatarProfile
-                      className="h-8 w-8 rounded-lg"
+                      className="size-8 rounded-lg"
                       showInfo
                       user={user}
                     />
@@ -173,7 +173,7 @@ export default function AppSidebar() {
                   <div className="px-1 py-1.5">
                     {user && (
                       <UserAvatarProfile
-                        className="h-8 w-8 rounded-lg"
+                        className="size-8 rounded-lg"
                         showInfo
                         user={user}
                       />
@@ -184,17 +184,17 @@ export default function AppSidebar() {
 
                 <DropdownMenuGroup>
                   <DropdownMenuItem
-                    onClick={() => router.push("/admin/dashboard/profile")}
+                    onClick={() => push("/admin/dashboard/profile")}
                   >
-                    <IconUserCircle className="mr-2 h-4 w-4" />
+                    <IconUserCircle className="mr-2 size-4" />
                     Hồ sơ
                   </DropdownMenuItem>
                   <DropdownMenuItem>
-                    <IconCreditCard className="mr-2 h-4 w-4" />
+                    <IconCreditCard className="mr-2 size-4" />
                     Thanh toán
                   </DropdownMenuItem>
                   <DropdownMenuItem>
-                    <IconBell className="mr-2 h-4 w-4" />
+                    <IconBell className="mr-2 size-4" />
                     Thông báo
                   </DropdownMenuItem>
                 </DropdownMenuGroup>
@@ -202,7 +202,7 @@ export default function AppSidebar() {
                 <DropdownMenuItem
                   onClick={() => signOut({ callbackUrl: "/auth/sign-in" })}
                 >
-                  <IconLogout className="mr-2 h-4 w-4" />
+                  <IconLogout className="mr-2 size-4" />
                   Đăng xuất
                 </DropdownMenuItem>
               </DropdownMenuContent>

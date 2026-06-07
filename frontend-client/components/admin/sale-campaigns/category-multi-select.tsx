@@ -60,7 +60,7 @@ export function CategoryMultiSelect({ selectedIds, onChange, disabled }: Categor
                 <Label className="text-base font-semibold">Danh mục áp dụng</Label>
                 <div className="grid grid-cols-2 gap-2">
                     {[1, 2, 3, 4].map(i => (
-                        <Skeleton key={i} className="h-12 rounded-lg" />
+                        <Skeleton key={`skeleton-${i}`} className="h-12 rounded-lg" />
                     ))}
                 </div>
             </div>
@@ -85,17 +85,17 @@ export function CategoryMultiSelect({ selectedIds, onChange, disabled }: Categor
                             variant="secondary"
                             className="pl-2 pr-1 py-1 gap-1"
                         >
-                            <TagIcon className="h-3 w-3" />
+                            <TagIcon className="size-3" />
                             {category.name}
                             <Button
                                 type="button"
                                 variant="ghost"
                                 size="icon"
-                                className="h-4 w-4 ml-1 hover:bg-destructive/20"
+                                className="size-4 ml-1 hover:bg-destructive/20"
                                 onClick={() => removeCategory(category.id)}
                                 disabled={disabled}
                             >
-                                <XIcon className="h-3 w-3" />
+                                <XIcon className="size-3" />
                             </Button>
                         </Badge>
                     ))}
@@ -132,11 +132,11 @@ export function CategoryMultiSelect({ selectedIds, onChange, disabled }: Categor
                                                 alt={category.name}
                                                 width={32}
                                                 height={32}
-                                                className="w-8 h-8 rounded object-cover"
+                                                className="size-8 rounded object-cover"
                                             />
                                         ) : (
-                                            <div className="w-8 h-8 rounded bg-muted flex items-center justify-center">
-                                                <ImageIcon className="h-4 w-4 text-muted-foreground" />
+                                            <div className="size-8 rounded bg-muted flex items-center justify-center">
+                                                <ImageIcon className="size-4 text-muted-foreground" />
                                             </div>
                                         )}
                                         <span className="text-sm font-medium truncate flex-1">

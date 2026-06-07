@@ -1,5 +1,6 @@
 import { Badge } from '@/components/ui/badge';
 import { getOrderStatusColor } from '@/lib/utils/orderStatus';
+import { getOrderStatusLabel } from '@/lib/utils/order-labels';
 import { cn } from '@/lib/utils';
 
 interface StatusBadgeProps {
@@ -25,7 +26,7 @@ export function StatusBadge({ status, variant = 'default', className }: StatusBa
                 className
             )}
         >
-            {status}
+            {getOrderStatusLabel(status.toUpperCase())}
         </Badge>
     );
 }

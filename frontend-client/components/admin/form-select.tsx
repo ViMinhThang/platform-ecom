@@ -37,7 +37,7 @@ export function FormSelect<
   description,
   required,
   options,
-  placeholder = "Select an option",
+  placeholder = "Chọn một tùy chọn",
   disabled,
   className,
 }: FormSelectProps<TFieldValues, TName>) {

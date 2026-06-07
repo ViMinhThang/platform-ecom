@@ -29,10 +29,11 @@ import {
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { useUpdateSubOrderStatusMutation } from '@/lib/store/admin';
+import { getOrderStatusLabel } from '@/lib/utils/order-labels';
 import { toast } from 'sonner';
 
 const formSchema = z.object({
-    status: z.string().min(1, 'Status is required'),
+    status: z.string().min(1, 'Vui lòng chọn trạng thái'),
     notes: z.string().optional(),
 });
 
@@ -128,7 +129,7 @@ export const UpdateStatusDialog: React.FC<UpdateStatusDialogProps> = ({
                                     <SelectContent>
                                         {statuses.map((status) => (
                                             <SelectItem key={status} value={status}>
-                                                {status}
+                                                {getOrderStatusLabel(status)}
                                             </SelectItem>
                                         ))}
                                     </SelectContent>

@@ -15,7 +15,7 @@ export function OrderList() {
     if (loading && orders.length === 0) {
         return (
             <div className="flex justify-center py-12">
-                <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+                <Loader2 className="size-8 animate-spin text-muted-foreground" />
             </div>
         );
     }
@@ -23,8 +23,8 @@ export function OrderList() {
     if (orders.length === 0) {
         return (
             <div className="text-center py-12 border rounded-lg bg-zinc-50">
-                <h3 className="text-lg font-medium">No orders yet</h3>
-                <p className="text-muted-foreground mt-1">When you place an order, it will appear here.</p>
+                <h3 className="text-lg font-medium">Chưa có đơn hàng</h3>
+                <p className="text-muted-foreground mt-1">Khi bạn đặt hàng, đơn hàng sẽ xuất hiện tại đây.</p>
             </div>
         );
     }

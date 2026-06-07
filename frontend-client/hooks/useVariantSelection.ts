@@ -29,7 +29,7 @@ export function useVariantSelection({
     }, [options]);
 
     const sortedOptions = useMemo(
-        () => [...uniqueOptions].sort((a, b) => a.sortOrder - b.sortOrder),
+        () => uniqueOptions.toSorted((a, b) => a.sortOrder - b.sortOrder),
         [uniqueOptions]
     );
 
@@ -123,7 +123,7 @@ export function useVariantSelection({
             const option = sortedOptions.find((opt) => opt.id === optionId);
             if (!option) return null;
 
-            const sortedValues = [...option.values].sort(
+            const sortedValues = option.values.toSorted(
                 (a, b) => a.sortOrder - b.sortOrder
             );
 
@@ -221,7 +221,7 @@ export function useVariantSelection({
                 // Use the specialized helper directly or logic similar to getFirstAvailableValue
                 // but we need to pass the accumulating selections
                 const optionId = option.id;
-                const sortedValues = [...option.values].sort((a, b) => a.sortOrder - b.sortOrder);
+                const sortedValues = option.values.toSorted((a, b) => a.sortOrder - b.sortOrder);
 
                 let foundValueId: number | null = null;
 

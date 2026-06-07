@@ -24,14 +24,14 @@ export function VariantSelector({
 
   return (
     <div className="space-y-6">
-      {sortedOptions.map((option, index) => (
-        <div key={`option-${option.id}-${index}`}>
-          <h4 className="text-[10px] font-bold mb-3 uppercase tracking-widest text-muted-foreground">
+      {sortedOptions.map((option) => (
+        <div key={option.id}>
+          <h4 className="text-[10px] font-semibold mb-3 uppercase tracking-widest text-muted-foreground">
             {option.displayName}
           </h4>
           <div className="flex flex-wrap gap-2">
-            {[...option.values]
-              .sort((a, b) => a.sortOrder - b.sortOrder)
+            {option.values
+              .toSorted((a, b) => a.sortOrder - b.sortOrder)
               .map((value) => {
                 const isSelected = selectedValues[option.id] === value.id;
                 const available = isValueAvailable(option.id, value.id);

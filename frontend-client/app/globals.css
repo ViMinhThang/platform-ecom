@@ -95,7 +95,7 @@
   --foreground: #4e2120;             /* on-surface: warm brown */
   --on-surface-variant: #7a5655;     /* Secondary text */
 
-  /* ── Primary: Editorial Orange ── */
+  /* ── Chính: Cam biên tập ── */
   --primary: #ab2d00;
   --primary-foreground: #ffffff;
   --primary-container: #ff7851;      /* Gradient endpoint */
@@ -107,7 +107,7 @@
   --secondary-container: #d4e3ff;
   --on-secondary-container: #001c38;
 
-  /* ── Tertiary: Flash Sale Accent ── */
+  /* ── Phụ: Điểm nhấn khuyến mãi nhanh ── */
   --tertiary: #833e9a;
   --tertiary-container: #ffd6ff;
 

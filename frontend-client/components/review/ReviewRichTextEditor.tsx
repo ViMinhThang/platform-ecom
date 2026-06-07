@@ -36,8 +36,8 @@ const MenuBar = ({ editor }: { editor: any }) => {
                 size='icon'
                 type="button"
                 onClick={() => editor.chain().focus().toggleBold().run()}
-                className={cn('h-8 w-8', editor.isActive('bold') && 'bg-accent')}
-                title="Bold"
+                className={cn('size-8', editor.isActive('bold') && 'bg-accent')}
+                title="In đậm"
             >
                 <IconBold size={16} />
             </Button>
@@ -46,8 +46,8 @@ const MenuBar = ({ editor }: { editor: any }) => {
                 size='icon'
                 type="button"
                 onClick={() => editor.chain().focus().toggleItalic().run()}
-                className={cn('h-8 w-8', editor.isActive('italic') && 'bg-accent')}
-                title="Italic"
+                className={cn('size-8', editor.isActive('italic') && 'bg-accent')}
+                title="In nghiêng"
             >
                 <IconItalic size={16} />
             </Button>
@@ -56,8 +56,8 @@ const MenuBar = ({ editor }: { editor: any }) => {
                 size='icon'
                 type="button"
                 onClick={() => editor.chain().focus().toggleStrike().run()}
-                className={cn('h-8 w-8', editor.isActive('strike') && 'bg-accent')}
-                title="Strikethrough"
+                className={cn('size-8', editor.isActive('strike') && 'bg-accent')}
+                title="Gạch ngang"
             >
                 <IconStrikethrough size={16} />
             </Button>
@@ -69,8 +69,8 @@ const MenuBar = ({ editor }: { editor: any }) => {
                 size='icon'
                 type="button"
                 onClick={() => editor.chain().focus().toggleBulletList().run()}
-                className={cn('h-8 w-8', editor.isActive('bulletList') && 'bg-accent')}
-                title="Bullet List"
+                className={cn('size-8', editor.isActive('bulletList') && 'bg-accent')}
+                title="Danh sách gạch đầu dòng"
             >
                 <IconList size={16} />
             </Button>
@@ -79,8 +79,8 @@ const MenuBar = ({ editor }: { editor: any }) => {
                 size='icon'
                 type="button"
                 onClick={() => editor.chain().focus().toggleOrderedList().run()}
-                className={cn('h-8 w-8', editor.isActive('orderedList') && 'bg-accent')}
-                title="Ordered List"
+                className={cn('size-8', editor.isActive('orderedList') && 'bg-accent')}
+                title="Danh sách đánh số"
             >
                 <IconListNumbers size={16} />
             </Button>
@@ -89,8 +89,8 @@ const MenuBar = ({ editor }: { editor: any }) => {
                 size='icon'
                 type="button"
                 onClick={() => editor.chain().focus().toggleBlockquote().run()}
-                className={cn('h-8 w-8', editor.isActive('blockquote') && 'bg-accent')}
-                title="Blockquote"
+                className={cn('size-8', editor.isActive('blockquote') && 'bg-accent')}
+                title="Trích dẫn"
             >
                 <IconQuote size={16} />
             </Button>
@@ -102,8 +102,8 @@ const MenuBar = ({ editor }: { editor: any }) => {
                 size='icon'
                 type="button"
                 onClick={() => editor.chain().focus().undo().run()}
-                className='h-8 w-8'
-                title="Undo"
+                className='size-8'
+                title="Hoàn tác"
             >
                 <IconArrowBackUp size={16} />
             </Button>
@@ -112,8 +112,8 @@ const MenuBar = ({ editor }: { editor: any }) => {
                 size='icon'
                 type="button"
                 onClick={() => editor.chain().focus().redo().run()}
-                className='h-8 w-8'
-                title="Redo"
+                className='size-8'
+                title="Làm lại"
             >
                 <IconArrowForwardUp size={16} />
             </Button>
@@ -126,7 +126,7 @@ export const ReviewRichTextEditor = ({ value, onChange, placeholder, className }
         extensions: [
             StarterKit,
             Placeholder.configure({
-                placeholder: placeholder || 'Write your review...',
+                placeholder: placeholder || 'Viết đánh giá của bạn...',
             }),
         ],
         immediatelyRender: false,

@@ -2,7 +2,13 @@
 
 import * as React from 'react';
 import { TrendingUp } from 'lucide-react';
-import { Area, AreaChart, CartesianGrid, XAxis, YAxis } from 'recharts';
+import dynamic from 'next/dynamic';
+
+const AreaChart = dynamic(() => import('recharts').then(m => ({ default: m.AreaChart })), { ssr: false }) as React.ComponentType<any>;
+const Area = dynamic(() => import('recharts').then(m => ({ default: m.Area })), { ssr: false }) as React.ComponentType<any>;
+const CartesianGrid = dynamic(() => import('recharts').then(m => ({ default: m.CartesianGrid })), { ssr: false }) as React.ComponentType<any>;
+const XAxis = dynamic(() => import('recharts').then(m => ({ default: m.XAxis })), { ssr: false }) as React.ComponentType<any>;
+const YAxis = dynamic(() => import('recharts').then(m => ({ default: m.YAxis })), { ssr: false }) as React.ComponentType<any>;
 
 import {
   Card,
@@ -166,7 +172,7 @@ export function AreaGraph({ data }: AreaGraphProps) {
           <div className='grid gap-2'>
             <div className='flex items-center gap-2 leading-none font-medium'>
               Tỷ lệ hoàn thành {completionRate}%{' '}
-              <TrendingUp className='h-4 w-4 text-emerald-600' />
+              <TrendingUp className='size-4 text-emerald-600' />
             </div>
             <div className='text-muted-foreground flex items-center gap-2 leading-none'>
               {totalOrders.toLocaleString()} đơn hàng trong năm

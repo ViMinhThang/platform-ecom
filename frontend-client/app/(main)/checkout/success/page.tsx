@@ -14,8 +14,9 @@ import { Suspense } from "react";
 
 function CheckoutSuccessContent() {
     const searchParams = useSearchParams();
+    const get = searchParams.get.bind(searchParams);
     const dispatch = useAppDispatch();
-    const orderIdParam = searchParams.get("orderId");
+    const orderIdParam = get("orderId");
     const orderId = orderIdParam ? Number(orderIdParam) : undefined;
 
     const { data: currentOrder, isLoading: loading } = useGetOrderByIdQuery(orderId!, { skip: !orderId });
@@ -27,7 +28,7 @@ function CheckoutSuccessContent() {
     if (loading || !orderId) {
         return (
             <div className="container py-20 flex justify-center">
-                <Loader2 className="h-8 w-8 animate-spin text-primary" />
+                <Loader2 className="size-8 animate-spin text-primary" />
             </div>
         );
     }
@@ -38,13 +39,13 @@ function CheckoutSuccessContent() {
                 {/* Success Icon */}
                 <div className="flex justify-center">
                     <div className="p-6 rounded-sm bg-primary/10 shadow-inner border border-primary/20">
-                        <CheckCircle2 className="h-12 w-12 text-primary" />
+                        <CheckCircle2 className="size-12 text-primary" />
                     </div>
                 </div>
 
                 {/* Title */}
                 <div className="space-y-3">
-                    <h1 className="text-3xl font-bold uppercase tracking-widest text-foreground">Thanh toán <span className="text-primary italic">thành công</span></h1>
+                    <h1 className="text-3xl font-semibold uppercase tracking-widest text-foreground">Thanh toán <span className="text-primary italic">thành công</span></h1>
                     <p className="text-[10px] text-muted-foreground uppercase font-bold tracking-[0.2em] opacity-60">
                         Cảm ơn bạn đã mua hàng. Đơn hàng của bạn đã được xác nhận.
                     </p>
@@ -53,10 +54,10 @@ function CheckoutSuccessContent() {
                 {/* Order Details */}
                 {currentOrder && (
                     <div className="bg-background border border-border rounded-sm p-8 text-left space-y-6 shadow-lg relative overflow-hidden">
-                        <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-bl-full -mr-16 -mt-16" />
+                        <div className="absolute top-0 right-0 size-32 bg-primary/5 rounded-bl-full -mr-16 -mt-16" />
                         
                         <div className="flex items-center gap-2 text-[9px] font-bold text-muted-foreground uppercase tracking-[0.2em]">
-                            <Package className="h-3 w-3" />
+                            <Package className="size-3" />
                             Chi tiết đơn hàng
                         </div>
 
@@ -102,7 +103,7 @@ function CheckoutSuccessContent() {
                     <Button asChild className="rounded-sm h-12 px-8 font-bold text-[11px] uppercase tracking-widest shadow-lg shadow-primary/10">
                         <Link href="/orders">
                             Xem đơn hàng
-                            <ArrowRight className="ml-2 h-4 w-4" />
+                            <ArrowRight className="ml-2 size-4" />
                         </Link>
                     </Button>
                     <Button variant="outline" className="rounded-sm h-12 px-8 font-bold text-[11px] uppercase tracking-widest border-border hover:bg-muted/30" asChild>
@@ -118,7 +119,7 @@ function CheckoutSuccessContent() {
 
 export default function CheckoutSuccessPage() {
     return (
-        <Suspense fallback={<div>Loading...</div>}>
+        <Suspense fallback={<div>Đang tải…</div>}>
             <CheckoutSuccessContent />
         </Suspense>
     );

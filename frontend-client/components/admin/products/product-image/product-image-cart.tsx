@@ -40,6 +40,7 @@ export const ProductImageCard: React.FC<ProductImageCardProps> = ({
           src={`http://localhost:8080/uploads/${image.imageUrl}`}
           alt="Hình ảnh sản phẩm"
           fill
+          sizes="350px"
           className="object-cover w-full h-full"
         />
         <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 flex items-center justify-center gap-2 transition-opacity">
@@ -49,12 +50,12 @@ export const ProductImageCard: React.FC<ProductImageCardProps> = ({
               variant="destructive"
               onClick={() => onDelete && onDelete(image.id)}
             >
-              <IconTrash className="h-5 w-5" />
+              <IconTrash className="size-5" />
             </Button>
           )}
           {type && type === "Select" && (
             <Button size="icon" onClick={handleSelect}>
-              <IconCheck className="h-5 w-5" />
+              <IconCheck className="size-5" />
             </Button>
           )}
         </div>

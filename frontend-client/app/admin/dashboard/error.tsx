@@ -10,9 +10,9 @@ export default function DashboardError({
   reset: () => void;
 }) {
   return (
-    <div className="flex flex-col items-center justify-center h-[60vh] space-y-4">
+    <div className="flex flex-col items-center justify-center h-[60vh] gap-y-4">
       <div className="text-center">
-        <h2 className="text-2xl font-bold text-destructive">Đã xảy ra lỗi</h2>
+        <h2 className="text-2xl font-semibold text-destructive">Đã xảy ra lỗi</h2>
         <p className="text-muted-foreground mt-2">
           {error.message || 'Không thể tải trang. Vui lòng thử lại.'}
         </p>

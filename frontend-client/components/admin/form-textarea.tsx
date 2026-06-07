@@ -1,6 +1,8 @@
 'use client';
 
 import { FieldPath, FieldValues } from 'react-hook-form';
+
+const EMPTY_CONFIG: Record<string, unknown> = {};
 import {
   FormControl,
   FormDescription,
@@ -30,7 +32,7 @@ function FormTextarea<
   description,
   required,
   placeholder,
-  config = {},
+  config = EMPTY_CONFIG,
   disabled,
   className
 }: FormTextareaProps<TFieldValues, TName>) {

@@ -10,8 +10,8 @@ export const CampaignBanners = () => {
             <div className="grid grid-cols-1 md:grid-cols-12 gap-6 h-auto md:h-[400px]">
                 {/* THE BLUE ERA */}
                 <div className="md:col-span-8 bg-[#d4e3ff] rounded-xl overflow-hidden flex flex-col md:flex-row shadow-sm">
-                    <div className="flex-1 p-10 md:p-16 flex flex-col justify-center space-y-6">
-                        <h2 className="font-header text-4xl md:text-5xl font-bold text-[#001c38] tracking-tight">
+                    <div className="flex-1 p-10 md:p-16 flex flex-col justify-center gap-y-6">
+                        <h2 className="font-header text-4xl md:text-5xl font-semibold text-[#001c38] tracking-tight">
                             Kỷ nguyên Xanh
                         </h2>
                         <p className="text-[#001c38]/60 text-sm md:text-base font-medium max-w-xs leading-relaxed">
@@ -29,25 +29,27 @@ export const CampaignBanners = () => {
                     <div className="flex-1 relative min-h-[300px] md:min-h-full">
                         <Image
                             src="/banner-grid-1.avif"
-                            alt="The Blue Era"
+                            alt="Kỷ nguyên Xanh"
                             fill
+                            sizes="100vw"
                             className="object-cover"
                         />
                     </div>
                 </div>
 
-                {/* FLASH SALE */}
+                {/* Khuyến mãi nhanh */}
                 <div className="md:col-span-4 bg-[#e8d5f3] rounded-xl overflow-hidden relative shadow-sm group">
                     <Image
                         src="/banner-3.png"
-                        alt="Flash Sale"
+                        alt="Săn ưu đãi chớp nhoáng"
                         fill
+                        sizes="100vw"
                         className="object-cover opacity-80 transition-transform duration-700"
                     />
                     <div className="absolute inset-0 bg-linear-to-t from-purple-900/40 via-transparent to-transparent" />
-                    <div className="absolute inset-0 p-10 md:p-12 flex flex-col justify-end space-y-4">
+                    <div className="absolute inset-0 p-10 md:p-12 flex flex-col justify-end gap-y-4">
                         <div className="space-y-1">
-                            <h3 className="font-header text-2xl md:text-3xl font-bold text-white tracking-tight">
+                            <h3 className="font-header text-2xl md:text-3xl font-semibold text-white tracking-tight">
                                 Săn ưu đãi Chớp nhoáng
                             </h3>
                             <p className="text-white/80 text-[11px] md:text-xs font-medium max-w-[200px]">

@@ -2,7 +2,7 @@ import * as z from "zod";
 
 export const CategoryFormSchema = z.object({
   id: z.number().optional(),
-  name: z.string().min(2),
+  name: z.string().min(2, "Tên danh mục phải có ít nhất 2 ký tự"),
   imageUrl: z.string().optional(),
 });
 

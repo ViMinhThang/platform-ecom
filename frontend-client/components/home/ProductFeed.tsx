@@ -19,7 +19,6 @@ export function ProductFeed() {
     const [personalizedProducts, setPersonalizedProducts] = useState<ProductRecommendation[]>([]);
     const [recLoading, setRecLoading] = useState(false);
     const [isMounted, setIsMounted] = useState(false);
-    const [hasPersonalizedResult, setHasPersonalizedResult] = useState(false);
 
     const { data: productsData, isLoading: productsLoading } = useGetProductsQuery({
         sortBy: "createdAt",
@@ -41,7 +40,6 @@ export function ProductFeed() {
             const userId = Number(session?.user?.id);
             if (!userId || Number.isNaN(userId)) {
                 setPersonalizedProducts([]);
-                setHasPersonalizedResult(false);
                 return;
             }
 
@@ -49,10 +47,8 @@ export function ProductFeed() {
             try {
                 const data = await getPersonalizedFeed(userId, 8, 0);
                 setPersonalizedProducts(data);
-                setHasPersonalizedResult(data.length > 0);
             } catch {
                 setPersonalizedProducts([]);
-                setHasPersonalizedResult(false);
             } finally {
                 setRecLoading(false);
             }
@@ -62,7 +58,7 @@ export function ProductFeed() {
     }, [activeTab, session?.user?.id]);
 
     const usePersonalizedResults =
-        activeTab === "personalized" && hasPersonalizedResult && personalizedProducts.length > 0;
+        activeTab === "personalized" && personalizedProducts.length > 0;
     const showFallbackNotice =
         activeTab === "personalized" && !recLoading && !usePersonalizedResults;
 
@@ -79,7 +75,7 @@ export function ProductFeed() {
             <section className="max-w-[1600px] w-full mx-auto px-6 md:px-12">
                 <div className="flex items-center justify-between mb-10">
                     <div className="space-y-1">
-                        <h2 className="font-header text-xl md:text-2xl font-bold text-foreground">
+                        <h2 className="font-header text-xl md:text-2xl font-semibold text-foreground">
                             Recommendations
                         </h2>
                         <p className="text-[13px] font-medium text-foreground/40 italic">
@@ -166,7 +162,7 @@ export function ProductFeed() {
 
                 <div className="flex justify-center mt-16">
                     <Button variant="outline" size="lg" asChild>
-                        <Link href="/products">Browse all products</Link>
+                        <Link href="/products">Xem tất cả sản phẩm</Link>
                     </Button>
                 </div>
             </section>

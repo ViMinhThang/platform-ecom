@@ -2,7 +2,11 @@
 
 import * as React from 'react';
 import { IconTrendingUp } from '@tabler/icons-react';
-import { Label, Pie, PieChart } from 'recharts';
+import dynamic from 'next/dynamic';
+
+const PieChart = dynamic(() => import('recharts').then(m => ({ default: m.PieChart })), { ssr: false }) as React.ComponentType<any>;
+const Pie = dynamic(() => import('recharts').then(m => ({ default: m.Pie })), { ssr: false }) as React.ComponentType<any>;
+const Label = dynamic(() => import('recharts').then(m => ({ default: m.Label })), { ssr: false }) as React.ComponentType<any>;
 
 import {
   Card,
@@ -61,7 +65,7 @@ export function PieGraph() {
   return (
     <Card className='@container/card'>
       <CardHeader>
-        <CardTitle>Biểu đồ tròn - Donut với văn bản</CardTitle>
+        <CardTitle>Biểu đồ vòng với văn bản</CardTitle>
         <CardDescription>
           <span className='hidden @[540px]/card:block'>
             Tổng số khách truy cập theo trình duyệt trong 6 tháng qua
@@ -116,7 +120,7 @@ export function PieGraph() {
               stroke='var(--background)'
             >
               <Label
-                content={({ viewBox }) => {
+                content={({ viewBox }: { viewBox: { cx?: number; cy?: number } }) => {
                   if (viewBox && 'cx' in viewBox && 'cy' in viewBox) {
                     return (
                       <text
@@ -152,7 +156,7 @@ export function PieGraph() {
         <div className='flex items-center gap-2 leading-none font-medium'>
           Chrome dẫn đầu với{' '}
           {((chartData[0].visitors / totalVisitors) * 100).toFixed(1)}%{' '}
-          <IconTrendingUp className='h-4 w-4' />
+          <IconTrendingUp className='size-4' />
         </div>
         <div className='text-muted-foreground leading-none'>
           Dựa trên dữ liệu từ tháng 1 - tháng 6 năm 2026

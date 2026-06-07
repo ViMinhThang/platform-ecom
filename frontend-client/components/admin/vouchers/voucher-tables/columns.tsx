@@ -3,6 +3,8 @@
 import { ColumnDef } from '@tanstack/react-table';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Badge } from '@/components/ui/badge';
+
+const VND_FORMATTER = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' });
 import {
     Voucher,
     VoucherStatus,
@@ -13,6 +15,7 @@ import {
 } from '@/types/voucher';
 import { format } from 'date-fns';
 import { vi } from 'date-fns/locale';
+import { useState, useEffect } from 'react';
 import { CellAction } from './cell-action';
 
 const statusColors: Record<VoucherStatus, string> = {
@@ -22,6 +25,26 @@ const statusColors: Record<VoucherStatus, string> = {
     EXPIRED: 'bg-yellow-500',
     CANCELLED: 'bg-red-500',
 };
+
+function ScheduleCell({ startTime, endTime }: { startTime: string; endTime: string }) {
+    const [startDate, setStartDate] = useState("");
+    const [endDate, setEndDate] = useState("");
+    useEffect(() => {
+        try {
+            setStartDate(format(new Date(startTime), 'dd/MM/yyyy HH:mm', { locale: vi }));
+            setEndDate(format(new Date(endTime), 'dd/MM/yyyy HH:mm', { locale: vi }));
+        } catch (e) {
+            // fallback stays empty
+        }
+    }, [startTime, endTime]);
+    if (!startDate) return <span className="text-red-500">Lỗi ngày tháng</span>;
+    return (
+        <div className="text-xs">
+            <div>{startDate}</div>
+            <div className="text-muted-foreground">→ {endDate}</div>
+        </div>
+    );
+}
 
 export const columns: ColumnDef<Voucher>[] = [
     {
@@ -45,7 +68,7 @@ export const columns: ColumnDef<Voucher>[] = [
     },
     {
         accessorKey: 'name',
-        header: 'Tên voucher',
+        header: 'Tên mã giảm giá',
         cell: ({ row }) => (
             <div className="flex flex-col">
                 <span className="font-medium">{row.original.name}</span>
@@ -78,7 +101,7 @@ export const columns: ColumnDef<Voucher>[] = [
             const { type, discountValue } = row.original;
             return type === 'PERCENTAGE'
                 ? `${discountValue}%`
-                : new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(discountValue);
+                : VND_FORMATTER.format(discountValue);
         },
     },
     {
@@ -98,20 +121,7 @@ export const columns: ColumnDef<Voucher>[] = [
     {
         accessorKey: 'startTime',
         header: 'Thời gian',
-        cell: ({ row }) => {
-            try {
-                return (
-                    <div className="text-xs">
-                        <div>{format(new Date(row.original.startTime), 'dd/MM/yyyy HH:mm', { locale: vi })}</div>
-                        <div className="text-muted-foreground">
-                            → {format(new Date(row.original.endTime), 'dd/MM/yyyy HH:mm', { locale: vi })}
-                        </div>
-                    </div>
-                );
-            } catch (e) {
-                return <span className="text-red-500">Lỗi ngày tháng</span>;
-            }
-        },
+        cell: ({ row }) => <ScheduleCell startTime={row.original.startTime} endTime={row.original.endTime} />,
     },
     {
         id: 'actions',

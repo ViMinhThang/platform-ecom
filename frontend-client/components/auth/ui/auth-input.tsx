@@ -10,8 +10,7 @@ export interface AuthInputProps extends React.InputHTMLAttributes<HTMLInputEleme
     icon?: React.ReactNode;
 }
 
-export const AuthInput = React.forwardRef<HTMLInputElement, AuthInputProps>(
-    ({ className, type, label, error, icon, ...props }, ref) => {
+export function AuthInput({ className, type, label, error, icon, ref, ...props }: AuthInputProps & { ref?: React.Ref<HTMLInputElement> }) {
         const [showPassword, setShowPassword] = React.useState(false);
         const isPassword = type === "password";
         const inputType = isPassword && showPassword ? "text" : type;
@@ -54,9 +53,9 @@ export const AuthInput = React.forwardRef<HTMLInputElement, AuthInputProps>(
                             tabIndex={-1}
                         >
                             {showPassword ? (
-                                <EyeOff className="h-4 w-4" />
+                                <EyeOff className="size-4" />
                             ) : (
-                                <Eye className="h-4 w-4" />
+                                <Eye className="size-4" />
                             )}
                         </button>
                     )}
@@ -67,6 +66,6 @@ export const AuthInput = React.forwardRef<HTMLInputElement, AuthInputProps>(
             </div>
         );
     }
-);
+
 
 AuthInput.displayName = "AuthInput";

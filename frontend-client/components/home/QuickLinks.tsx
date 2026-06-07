@@ -22,8 +22,8 @@ export const QuickLinks = () => {
             <div className="w-full bg-[#1c1917] py-6">
                 <div className="container mx-auto px-6 flex items-center gap-12 overflow-x-auto scrollbar-hide py-1">
                     {[1, 2, 3, 4, 5].map((i) => (
-                        <div key={i} className="flex items-center gap-3 animate-pulse">
-                            <div className="h-4 w-4 bg-white/10 rounded-full" />
+                        <div key={"skeleton-" + i} className="flex items-center gap-3 animate-pulse">
+                            <div className="size-4 bg-white/10 rounded-full" />
                             <div className="h-2 w-16 bg-white/10 rounded-sm" />
                         </div>
                     ))}
@@ -44,7 +44,7 @@ export const QuickLinks = () => {
                                 href={`/category/${cat.slug}`}
                                 className="flex items-center gap-3 group whitespace-nowrap"
                             >
-                                <Icon className="h-4 w-4 text-white/40 group-hover:text-white transition-colors" />
+                                <Icon className="size-4 text-white/40 group-hover:text-white transition-colors" />
                                 <span className="text-[10px] font-bold uppercase tracking-[0.2em] transition-colors group-hover:text-white">
                                     {cat.name}
                                 </span>

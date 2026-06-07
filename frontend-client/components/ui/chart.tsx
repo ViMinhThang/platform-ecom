@@ -1,7 +1,21 @@
 'use client';
 
 import * as React from 'react';
-import * as RechartsPrimitive from 'recharts';
+import dynamic from 'next/dynamic';
+import type * as RechartsPrimitive from 'recharts';
+
+const RcResponsiveContainer = dynamic(
+  () => import('recharts').then(m => ({ default: m.ResponsiveContainer })),
+  { ssr: false }
+);
+const RcTooltip = dynamic(
+  () => import('recharts').then(m => ({ default: m.Tooltip })),
+  { ssr: false }
+);
+const RcLegend = dynamic(
+  () => import('recharts').then(m => ({ default: m.Legend })),
+  { ssr: false }
+);
 
 import { cn } from '@/lib/utils';
 
@@ -25,10 +39,10 @@ type ChartContextProps = {
 const ChartContext = React.createContext<ChartContextProps | null>(null);
 
 function useChart() {
-  const context = React.useContext(ChartContext);
+  const context = React.use(ChartContext);
 
   if (!context) {
-    throw new Error('useChart must be used within a <ChartContainer />');
+    throw new Error('useChart phải được dùng bên trong <ChartContainer />');
   }
 
   return context;
@@ -62,9 +76,9 @@ function ChartContainer({
       >
         <ChartStyle id={chartId} config={config} />
         {/* adding debounce will fix chart laggy behavior while animating */}
-        <RechartsPrimitive.ResponsiveContainer debounce={2000}>
+        <RcResponsiveContainer debounce={2000}>
           {children}
-        </RechartsPrimitive.ResponsiveContainer>
+        </RcResponsiveContainer>
       </div>
     </ChartContext.Provider>
   );
@@ -103,7 +117,7 @@ ${colorConfig
   );
 };
 
-const ChartTooltip = RechartsPrimitive.Tooltip;
+const ChartTooltip = RcTooltip;
 
 interface PayloadItem {
   dataKey?: string | number;
@@ -228,7 +242,7 @@ function ChartTooltipContent({
                         className={cn(
                           'shrink-0 rounded-[2px] border-(--color-border) bg-(--color-bg)',
                           {
-                            'h-2.5 w-2.5': indicator === 'dot',
+                            'size-2.5': indicator === 'dot',
                             'w-1': indicator === 'line',
                             'w-0 border-[1.5px] border-dashed bg-transparent':
                               indicator === 'dashed',
@@ -272,7 +286,7 @@ function ChartTooltipContent({
   );
 }
 
-const ChartLegend = RechartsPrimitive.Legend;
+const ChartLegend = RcLegend;
 
 function ChartLegendContent({
   className,
@@ -316,7 +330,7 @@ function ChartLegendContent({
               <itemConfig.icon />
             ) : (
               <div
-                className='h-2 w-2 shrink-0 rounded-[2px]'
+                className='size-2 shrink-0 rounded-[2px]'
                 style={{
                   backgroundColor: item.color
                 }}

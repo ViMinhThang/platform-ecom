@@ -35,10 +35,10 @@ interface CustomUser {
 export const authOptions: AuthOptions = {
     providers: [
         CredentialsProvider({
-            name: "Credentials",
+            name: "Thông tin đăng nhập",
             credentials: {
                 email: { label: "Email", type: "text" },
-                password: { label: "Password", type: "password" },
+                password: { label: "Mật khẩu", type: "password" },
             },
             async authorize(credentials) {
                 try {
@@ -52,15 +52,15 @@ export const authOptions: AuthOptions = {
                     });
 
                     if (!res.ok) {
-                        const error = await res.json().catch(() => ({ message: "Invalid credentials" }));
-                        throw new Error(error?.message || "Invalid email or password");
+                        const error = await res.json().catch(() => ({ message: "Thông tin đăng nhập không hợp lệ" }));
+                        throw new Error(error?.message || "Email hoặc mật khẩu không hợp lệ");
                     }
 
                     const apiResponse: AuthResponse = await res.json();
                     logger.info("Authentication response:", { data: apiResponse.data });
 
                     if (!apiResponse.data?.response?.userId) {
-                        throw new Error("Invalid response from authentication server");
+                        throw new Error("Phản hồi từ máy chủ xác thực không hợp lệ");
                     }
 
                     const { data } = apiResponse;
@@ -77,7 +77,7 @@ export const authOptions: AuthOptions = {
                     return user;
                 } catch (error) {
                     logger.error("Authorization failed:", error);
-                    throw error instanceof Error ? error : new Error("Authorization failed");
+                    throw error instanceof Error ? error : new Error("Xác thực thất bại");
                 }
             },
         }),

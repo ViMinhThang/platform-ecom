@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { use } from "react";
 import { useGetProductBySlugQuery } from "@/lib/store/api/clientApi";
 import { notFound } from "next/navigation";
@@ -47,22 +47,27 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
 
     useEffect(() => {
         if (!api) return;
-        api.on("select", () => {
+        const onSelect = () => {
             setCurrentImageIndex(api.selectedScrollSnap());
-        });
+        };
+        api.on("select", onSelect);
+        return () => api.off("select", onSelect);
     }, [api]);
 
-    useEffect(() => {
-        if (product) {
-            trackProductView(product.id, undefined, product.cate.id, product.userId);
-        }
+    const onProductLoaded = useCallback(() => {
+        if (!product) return;
+        trackProductView(product.id, undefined, product.cate.id, product.userId);
     }, [product, trackProductView]);
+
+    useEffect(() => {
+        onProductLoaded();
+    }, [onProductLoaded]);
 
     if (isLoading) {
         return (
-            <div className="min-h-screen bg-background flex flex-col items-center justify-center space-y-6">
-                <div className="w-10 h-10 border-2 border-primary/20 border-t-primary rounded-full animate-spin" />
-                <p className="text-sm text-foreground/50 animate-pulse">Đang tải sản phẩm...</p>
+            <div className="min-h-screen bg-background flex flex-col items-center justify-center gap-y-6">
+                <div className="size-10 border-2 border-primary/20 border-t-primary rounded-full animate-spin" />
+                <p className="text-sm text-foreground/50 animate-pulse">Đang tải sản phẩm…</p>
             </div>
         );
     }
@@ -106,14 +111,14 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
                                 </span>
                             </div>
 
-                            <h1 className="font-header text-4xl md:text-6xl font-extrabold leading-[0.95] tracking-tighter text-foreground">
+                            <h1 className="font-header text-4xl md:text-6xl font-semibold leading-[0.95] tracking-tighter text-foreground">
                                 {product.name}
                             </h1>
 
                             <div className="flex items-center gap-4 text-xs font-bold">
                                 <div className="flex items-center gap-1 text-primary">
                                     {[1, 2, 3, 4, 5].map((s) => (
-                                        <Star key={s} className="w-3.5 h-3.5 fill-current" />
+                                        <Star key={s} className="size-3.5 fill-current" />
                                     ))}
                                 </div>
                                 <span className="text-foreground/40">{product.totalReviews || 120} đánh giá</span>
@@ -135,10 +140,11 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-32">
                     <div className="lg:col-span-2 bg-surface-container rounded-3xl p-10 md:p-16 space-y-10">
                         <div className="space-y-6">
-                            <h2 className="font-header text-3xl md:text-4xl font-bold tracking-tight">
+                            <h2 className="font-header text-3xl md:text-4xl font-semibold tracking-tight">
                                 Thiết kế cho Không gian Tinh tế
                             </h2>
                             <div className="prose prose-zinc max-w-none text-foreground/70 leading-relaxed text-sm md:text-base selection:bg-primary/10">
+                                // eslint-disable-next-line react/no-danger
                                 <div dangerouslySetInnerHTML={{ __html: product.description || "" }} />
                             </div>
                         </div>
@@ -148,18 +154,18 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
 
                     <div className="bg-primary rounded-3xl p-10 md:p-14 flex flex-col justify-between text-white relative overflow-hidden group">
                         <div className="relative z-10 space-y-8">
-                            <div className="w-12 h-12 bg-white/20 backdrop-blur-md rounded-2xl flex items-center justify-center">
-                                <ShieldCheck className="w-6 h-6 text-white" />
+                            <div className="size-12 bg-white/20 backdrop-blur-md rounded-2xl flex items-center justify-center">
+                                <ShieldCheck className="size-6 text-white" />
                             </div>
                             <div className="space-y-4">
-                                <h3 className="font-header text-2xl md:text-3xl font-bold leading-tight">Cam kết Bền vững</h3>
+                                <h3 className="font-header text-2xl md:text-3xl font-semibold leading-tight">Cam kết Bền vững</h3>
                                 <p className="text-white/70 text-sm md:text-base leading-relaxed">
                                     Với mỗi sản phẩm thủ công, chúng tôi trích 5% lợi nhuận để hỗ trợ cộng đồng nghệ nhân địa phương và bảo vệ môi trường.
                                 </p>
                             </div>
                         </div>
                         <div className="absolute right-[-20%] bottom-[-10%] opacity-10 group-hover:scale-110 transition-transform duration-1000">
-                             <ShieldCheck className="w-64 h-64" />
+                             <ShieldCheck className="size-64" />
                         </div>
                     </div>
                 </div>
@@ -168,7 +174,7 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
                 <div className="mb-32">
                     <div className="flex items-end justify-between mb-12">
                         <div className="space-y-1">
-                            <h2 className="font-header text-3xl md:text-4xl font-bold tracking-tight">Tiếng nói Cộng đồng</h2>
+                            <h2 className="font-header text-3xl md:text-4xl font-semibold tracking-tight">Tiếng nói Cộng đồng</h2>
                             <p className="text-[13px] font-medium text-foreground/40 italic">120 người đã chia sẻ trải nghiệm</p>
                         </div>
                     </div>
@@ -181,7 +187,7 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
                 {/* RELATED: Complete the Curation */}
                 <div className="space-y-12">
                     <div className="space-y-1">
-                        <h2 className="font-header text-3xl md:text-4xl font-bold tracking-tight">Hoàn thiện Bộ sưu tập</h2>
+                        <h2 className="font-header text-3xl md:text-4xl font-semibold tracking-tight">Hoàn thiện Bộ sưu tập</h2>
                         <p className="text-[13px] font-medium text-foreground/40 italic">Những gợi ý phối hợp dành riêng cho bạn</p>
                     </div>
                     <RelatedProducts productId={product.id} />

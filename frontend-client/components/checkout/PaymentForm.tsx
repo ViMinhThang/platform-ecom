@@ -18,7 +18,7 @@ export function PaymentForm() {
     const checkoutSession = checkout.checkoutSession;
     const [message, setMessage] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState(false);
-    const router = useRouter();
+    const { push } = useRouter();
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -52,13 +52,13 @@ export function PaymentForm() {
             if (paymentIntent && paymentIntent.status === "succeeded") {
                 try {
                     const order = await confirmPaymentAndCreateOrder(paymentIntent.id);
-                    router.push(`/checkout/success?orderId=${order.id}`);
+                    push(`/checkout/success?orderId=${order.id}`);
                 } catch (orderError: any) {
                     setMessage(orderError.message || "Thanh toán thành công nhưng tạo đơn hàng thất bại. Vui lòng liên hệ hỗ trợ.");
                     setIsLoading(false);
                 }
             } else if (paymentIntent && paymentIntent.status === "processing") {
-                setMessage("Thanh toán đang được xử lý. Vui lòng đợi...");
+                setMessage("Thanh toán đang được xử lý. Vui lòng đợi…");
                 setIsLoading(false);
             } else {
                 setMessage("Thanh toán chưa hoàn tất. Vui lòng thử lại.");
@@ -76,7 +76,7 @@ export function PaymentForm() {
             <div className="space-y-8">
                 <div className="flex items-center gap-3 border-b border-border pb-6">
                     <div className="bg-primary/10 p-2 rounded-sm text-primary">
-                        <CheckCircle2 className="h-5 w-5" />
+                        <CheckCircle2 className="size-5" />
                     </div>
                     <p className="text-[11px] font-bold text-foreground uppercase tracking-[0.2em]">Thông tin thẻ tín dụng / Ghi nợ</p>
                 </div>
@@ -88,7 +88,7 @@ export function PaymentForm() {
 
             {message && (
                 <Alert variant={message.includes("succeeded") ? "default" : "destructive"} className="rounded-sm border border-border">
-                    {message.includes("succeeded") ? <CheckCircle2 className="h-4 w-4" /> : <AlertCircle className="h-4 w-4" />}
+                    {message.includes("succeeded") ? <CheckCircle2 className="size-4" /> : <AlertCircle className="size-4" />}
                     <AlertTitle className="text-[10px] font-bold uppercase tracking-widest">{message.includes("succeeded") ? "Thành công" : "Thông báo lỗi"}</AlertTitle>
                     <AlertDescription className="text-muted-foreground text-xs font-medium">{message}</AlertDescription>
                 </Alert>
@@ -103,8 +103,8 @@ export function PaymentForm() {
                 >
                     {isLoading ? (
                         <>
-                            <Loader2 className="mr-3 h-5 w-5 animate-spin" />
-                            Đang xử lý thanh toán...
+                            <Loader2 className="mr-3 size-5 animate-spin" />
+                            Đang xử lý thanh toán…
                         </>
                     ) : (
                         `Xác nhận & Thanh toán`

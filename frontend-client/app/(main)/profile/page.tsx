@@ -14,18 +14,19 @@ import { Suspense } from 'react';
 
 function ProfilePageContent() {
     const { data: session, status } = useSession();
-    const router = useRouter();
+    const { push } = useRouter();
     const searchParams = useSearchParams();
-    const currentTab = searchParams.get('tab') || 'profile';
+    const get = searchParams.get.bind(searchParams);
+    const currentTab = get('tab') || 'profile';
 
     const { data: user, isLoading: authLoading, refetch: refetchUser } = useGetUserProfileQuery();
     const { data: addresses = [], refetch: refetchAddresses } = useGetAddressesQuery();
 
     useEffect(() => {
         if (status === 'unauthenticated') {
-            router.push('/auth/sign-in');
+            push('/auth/sign-in');
         }
-    }, [status, router]);
+    }, [status, push]);
 
     const handleProfileUpdate = () => {
         refetchUser();
@@ -37,9 +38,9 @@ function ProfilePageContent() {
 
     if (status === 'loading' || authLoading) {
         return (
-            <div className="flex h-[400px] items-center justify-center space-y-8">
-                <div className="w-10 h-10 border-2 border-primary/20 border-t-primary rounded-full animate-spin" />
-                <p className="font-labels italic text-foreground/40 animate-pulse ml-4">Đang truy xuất hồ sơ hồ sơ...</p>
+            <div className="flex h-[400px] items-center justify-center gap-y-8">
+                <div className="size-10 border-2 border-primary/20 border-t-primary rounded-full animate-spin" />
+                <p className="font-labels italic text-foreground/40 animate-pulse ml-4">Đang truy xuất hồ sơ…</p>
             </div>
         );
     }
@@ -58,14 +59,14 @@ function ProfilePageContent() {
                     <div className="space-y-16">
                         <div className="pb-12 border-b border-foreground/5 flex flex-col sm:flex-row justify-between items-start sm:items-end gap-6">
                             <div className="space-y-3">
-                                <h2 className="text-4xl font-bold uppercase tracking-tighter text-foreground font-labels">
+                                <h2 className="text-4xl font-semibold uppercase tracking-tighter text-foreground font-labels">
                                     Sổ địa chỉ
                                 </h2>
                                 <p className="text-[10px] font-bold text-foreground/40 uppercase tracking-[0.3em] font-labels">
                                     QUẢN LÝ ĐỊA CHỈ GIAO HÀNG TẬN NƠI
                                 </p>
                             </div>
-                            <div className="hidden sm:block text-[9px] font-bold bg-primary/5 text-primary px-4 py-1.5 rounded-[2px] border border-primary/10 tracking-[0.3em] font-labels">REGISTRY_ADDRESS_v2</div>
+                            <div className="hidden sm:block text-[9px] font-bold bg-primary/5 text-primary px-4 py-1.5 rounded-[2px] border border-primary/10 tracking-[0.3em] font-labels">SỔ_ĐỊA_CHỈ_v2</div>
                         </div>
                         <AddressManager
                             addresses={addresses}
@@ -79,7 +80,7 @@ function ProfilePageContent() {
                     <div className="space-y-16">
                         <div className="pb-12 border-b border-foreground/5 flex flex-col sm:flex-row justify-between items-start sm:items-end gap-6">
                             <div className="space-y-3">
-                                <h2 className="text-4xl font-bold uppercase tracking-tighter text-foreground font-labels">
+                                <h2 className="text-4xl font-semibold uppercase tracking-tighter text-foreground font-labels">
                                     Thông tin tài khoản
                                 </h2>
                                 <p className="text-[10px] font-bold text-foreground/40 uppercase tracking-[0.3em] font-labels">
@@ -90,12 +91,12 @@ function ProfilePageContent() {
                                 {hasSellerRole && (
                                     <Link href="/admin/dashboard">
                                         <Button variant="outline" size="sm" className="gap-3 h-11 px-6 text-[10px] font-bold uppercase tracking-widest border-primary/20 text-primary hover:bg-primary/5 rounded-[2px] font-labels">
-                                            <LayoutDashboard className="h-4 w-4" />
+                                            <LayoutDashboard className="size-4" />
                                             QUẢN LÝ CỬA HÀNG
                                         </Button>
                                     </Link>
                                 )}
-                                <div className="hidden sm:block text-[9px] font-bold bg-primary/5 text-primary px-4 py-1.5 rounded-[2px] border border-primary/10 tracking-[0.3em] font-labels">REGISTRY_PROFILE_v3</div>
+                                <div className="hidden sm:block text-[9px] font-bold bg-primary/5 text-primary px-4 py-1.5 rounded-[2px] border border-primary/10 tracking-[0.3em] font-labels">HỒ_SƠ_v3</div>
                             </div>
                         </div>
                         <ProfileInfoForm user={user} onUpdate={handleProfileUpdate} />
@@ -107,9 +108,9 @@ function ProfilePageContent() {
     return (
         <ProfileLayout>
             <div className="mb-12 lg:hidden">
-                <h1 className="text-3xl font-bold uppercase tracking-tighter text-foreground font-labels">
+                <h1 className="text-3xl font-semibold uppercase tracking-tighter text-foreground font-labels">
                     {currentTab === 'profile' && 'THÔNG TIN TÀI KHOẢN'}
-                    {currentTab === 'addresses' && 'SỔ ĐIẠ CHỈ'}
+                    {currentTab === 'addresses' && 'SỔ ĐỊA CHỈ'}
                 </h1>
             </div>
             {renderContent()}

@@ -34,7 +34,7 @@ export const CuratedCollections = () => {
     return (
         <section className="max-w-[1600px] w-full mx-auto px-6 md:px-12 py-12">
             <div className="flex items-center justify-between mb-8">
-                <h2 className="font-header text-xl md:text-2xl font-bold text-foreground">
+                <h2 className="font-header text-xl md:text-2xl font-semibold text-foreground">
                     Khám phá Danh mục
                 </h2>
                 <Link href="/products" className="text-[13px] font-bold text-foreground/40 hover:text-primary transition-colors flex items-center gap-1">
@@ -54,6 +54,7 @@ export const CuratedCollections = () => {
                             src={cat.imageUrl ? imageUrl.category(cat.imageUrl) : (CATEGORY_IMAGES[cat.slug] || "/banner-grid-1.avif")}
                             alt={cat.name}
                             fill
+                            sizes="(max-width: 768px) 50vw, 16vw"
                             className="object-cover transition-transform duration-700 opacity-80"
                         />
                         <div className="absolute inset-0 bg-black/10 transition-colors" />

@@ -6,6 +6,7 @@ import { Card } from "@/components/ui/card";
 import { Package, Truck, CheckCircle, AlertCircle } from "lucide-react";
 import { ReviewAction } from "./ReviewAction";
 import { formatCurrency } from "@/lib/utils/formatCurrency";
+import Image from "next/image";
 import { imageUrl } from "@/lib/utils/imageUrl";
 
 interface SubOrderCardProps {
@@ -17,10 +18,10 @@ interface SubOrderCardProps {
 export function SubOrderCard({ subOrder, orderId, onReview }: SubOrderCardProps) {
     const getStatusIcon = (status: SubOrderStatus) => {
         switch (status) {
-            case SubOrderStatus.DELIVERED: return <CheckCircle className="h-5 w-5 text-primary" />;
-            case SubOrderStatus.SHIPPED: return <Truck className="h-5 w-5 text-blue-500" />;
-            case SubOrderStatus.CANCELLED: return <AlertCircle className="h-5 w-5 text-red-500" />;
-            default: return <Package className="h-5 w-5 text-muted-foreground opacity-50" />;
+            case SubOrderStatus.DELIVERED: return <CheckCircle className="size-5 text-primary" />;
+            case SubOrderStatus.SHIPPED: return <Truck className="size-5 text-blue-500" />;
+            case SubOrderStatus.CANCELLED: return <AlertCircle className="size-5 text-red-500" />;
+            default: return <Package className="size-5 text-muted-foreground opacity-50" />;
         }
     };
 
@@ -51,11 +52,11 @@ export function SubOrderCard({ subOrder, orderId, onReview }: SubOrderCardProps)
                 <div className="space-y-8">
                     {subOrder.items.map((item) => (
                         <div key={item.id} className="flex gap-6 group">
-                            <div className="relative h-20 w-20 flex-shrink-0 overflow-hidden rounded-sm border border-border bg-muted/30 shadow-inner group-hover:shadow-md transition-shadow p-2">
-                                <img src={imageUrl.product(item.imageUrl)} alt={item.productName} className="object-contain w-full h-full" />
+                            <div className="relative size-20 flex-shrink-0 overflow-hidden rounded-sm border border-border bg-muted/30 shadow-inner group-hover:shadow-md transition-shadow p-2">
+                                <Image src={imageUrl.product(item.imageUrl)} alt={item.productName} fill className="object-contain" unoptimized />
                             </div>
                             <div className="flex-1 space-y-1">
-                                <h4 className="font-bold text-sm uppercase tracking-widest text-foreground">{item.productName}</h4>
+                                <h4 className="font-semibold text-sm uppercase tracking-widest text-foreground">{item.productName}</h4>
                                 {item.variantName && <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest opacity-60 italic">{item.variantName}</p>}
                                 <div className="flex justify-between items-center mt-3">
                                     <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest opacity-50">Số lượng: <span className="text-foreground">{item.quantity}</span></span>

@@ -35,7 +35,7 @@ const formSchema = z.object({
 type RegisterFormValue = z.infer<typeof formSchema>;
 
 export function RegisterForm({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) {
-    const router = useRouter();
+    const { push } = useRouter();
     const [loading, setLoading] = React.useState(false);
 
     const form = useForm<RegisterFormValue>({
@@ -61,7 +61,7 @@ export function RegisterForm({ className, ...props }: React.HTMLAttributes<HTMLD
             });
 
             toast.success("Đăng ký thành công! Vui lòng đăng nhập.");
-            router.push("/auth/sign-in");
+            push("/auth/sign-in");
         } catch (error: unknown) {
             logger.error("Registration failed:", error);
             toast.error((error as Error).message || "Có lỗi xảy ra trong quá trình đăng ký");
@@ -86,7 +86,7 @@ export function RegisterForm({ className, ...props }: React.HTMLAttributes<HTMLD
                                         autoCapitalize="none"
                                         autoCorrect="off"
                                         disabled={loading}
-                                        icon={<User className="h-4 w-4" />}
+                                        icon={<User className="size-4" />}
                                         error={fieldState.error?.message}
                                         {...field}
                                     />
@@ -109,7 +109,7 @@ export function RegisterForm({ className, ...props }: React.HTMLAttributes<HTMLD
                                         autoComplete="email"
                                         autoCorrect="off"
                                         disabled={loading}
-                                        icon={<Mail className="h-4 w-4" />}
+                                        icon={<Mail className="size-4" />}
                                         error={fieldState.error?.message}
                                         {...field}
                                     />
@@ -132,7 +132,7 @@ export function RegisterForm({ className, ...props }: React.HTMLAttributes<HTMLD
                                             autoCapitalize="none"
                                             autoComplete="new-password"
                                             disabled={loading}
-                                            icon={<Lock className="h-4 w-4" />}
+                                            icon={<Lock className="size-4" />}
                                             {...field}
                                         />
                                         <PasswordStrength password={password} />
@@ -160,7 +160,7 @@ export function RegisterForm({ className, ...props }: React.HTMLAttributes<HTMLD
                                         autoCapitalize="none"
                                         autoComplete="new-password"
                                         disabled={loading}
-                                        icon={<Lock className="h-4 w-4" />}
+                                        icon={<Lock className="size-4" />}
                                         error={fieldState.error?.message}
                                         {...field}
                                     />
@@ -179,7 +179,7 @@ export function RegisterForm({ className, ...props }: React.HTMLAttributes<HTMLD
                 Đã có tài khoản?{" "}
                 <button
                     type="button"
-                    onClick={() => router.push("/auth/sign-in")}
+                    onClick={() => push("/auth/sign-in")}
                     className="font-semibold text-primary hover:underline"
                 >
                     Đăng nhập

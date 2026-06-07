@@ -2,6 +2,8 @@
 
 import { FieldPath, FieldValues } from 'react-hook-form';
 import { format } from 'date-fns';
+
+const EMPTY_CONFIG: Record<string, unknown> = {};
 import { CalendarIcon } from 'lucide-react';
 import {
   FormControl,
@@ -36,7 +38,7 @@ function FormDatePicker<
   label,
   description,
   required,
-  config = {},
+  config = EMPTY_CONFIG,
   disabled,
   className
 }: FormDatePickerProps<TFieldValues, TName>) {
@@ -74,7 +76,7 @@ function FormDatePicker<
                   ) : (
                     <span>{placeholder}</span>
                   )}
-                  <CalendarIcon className='ml-auto h-4 w-4 opacity-50' />
+                  <CalendarIcon className='ml-auto size-4 opacity-50' />
                 </Button>
               </FormControl>
             </PopoverTrigger>

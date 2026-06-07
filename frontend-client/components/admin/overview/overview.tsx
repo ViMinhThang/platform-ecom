@@ -3,6 +3,12 @@
 import * as React from 'react';
 import PageContainer from '@/components/admin/layout/page-container';
 import { Button } from '@/components/ui/button';
+
+const VND_FORMATTER = new Intl.NumberFormat('vi-VN', {
+  style: 'currency',
+  currency: 'VND',
+  maximumFractionDigits: 0
+});
 import {
   Card,
   CardDescription,
@@ -36,11 +42,7 @@ export default function OverViewPage() {
 
   const formatCurrency = (value: string | number) => {
     const num = typeof value === 'string' ? parseFloat(value) : value;
-    return new Intl.NumberFormat('vi-VN', {
-      style: 'currency',
-      currency: 'VND',
-      maximumFractionDigits: 0
-    }).format(num);
+    return VND_FORMATTER.format(num);
   };
 
   const barChartData = revenueData?.map(item => ({
@@ -72,7 +74,7 @@ export default function OverViewPage() {
       <div className='flex flex-1 flex-col gap-6'>
         <div className='flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between'>
           <div>
-            <h2 className='text-2xl font-bold tracking-tight text-foreground'>
+            <h2 className='text-2xl font-semibold tracking-tight text-foreground'>
               Chào mừng trở lại 👋
             </h2>
             <p className='text-sm text-muted-foreground mt-1'>

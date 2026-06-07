@@ -21,8 +21,8 @@ import { Star, Loader2 } from 'lucide-react';
 import { toast } from 'sonner';
 
 const reviewSchema = z.object({
-    rating: z.number().min(1, 'Please select a rating').max(5),
-    comment: z.string().min(10, 'Review must be at least 10 characters'),
+    rating: z.number().min(1, 'Vui lòng chọn số sao đánh giá').max(5),
+    comment: z.string().min(10, 'Đánh giá phải có ít nhất 10 ký tự'),
 });
 
 type ReviewFormValues = z.infer<typeof reviewSchema>;
@@ -104,7 +104,7 @@ export function ReviewDialog({
                                     className="focus:outline-none transition-transform hover:scale-110"
                                 >
                                     <Star
-                                        className={`h-8 w-8 ${star <= (hoveredRating || selectedRating)
+                                        className={`size-8 ${star <= (hoveredRating || selectedRating)
                                             ? 'fill-primary text-primary'
                                             : 'text-gray-300'
                                             }`}
@@ -147,7 +147,7 @@ export function ReviewDialog({
                             Hủy
                         </Button>
                         <Button type="submit" disabled={isSubmitting}>
-                            {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                            {isSubmitting && <Loader2 className="mr-2 size-4 animate-spin" />}
                             Gửi đánh giá
                         </Button>
                     </DialogFooter>

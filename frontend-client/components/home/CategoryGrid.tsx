@@ -20,8 +20,8 @@ export function CategoryGrid() {
         <div className="container mx-auto px-4 mt-8 mb-8">
             <div className="bg-background border border-border rounded-sm overflow-hidden shadow-md">
                 <div className="px-6 py-4 border-b border-border flex items-center justify-between bg-muted/30 font-header">
-                    <h3 className="text-[11px] font-bold uppercase tracking-[0.2em] text-foreground">DANH MỤC</h3>
-                    <span className="text-[9px] font-bold opacity-30 text-primary">COLLECTION_V4</span>
+                    <h3 className="text-[11px] font-semibold uppercase tracking-[0.2em] text-foreground">DANH MỤC</h3>
+                    <span className="text-[9px] font-bold opacity-30 text-primary">BỘ_SƯU_TẬP_V4</span>
                 </div>
                 <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-10">
                     {categories.slice(0, 20).map((category) => (
@@ -30,12 +30,13 @@ export function CategoryGrid() {
                             href={`/category/${category.slug}`}
                             className="group flex flex-col items-center p-6 border-r border-b border-border hover:bg-muted/50 transition-all duration-300"
                         >
-                            <div className="relative w-16 h-16 mb-4 grayscale group-hover:grayscale-0 transition-all duration-500">
+                            <div className="relative size-16 mb-4 grayscale group-hover:grayscale-0 transition-all duration-500">
                                 {category.imageUrl ? (
                                     <Image
                                         src={imageUrl.category(category.imageUrl)}
                                         alt={category.name}
                                         fill
+                                        sizes="(max-width: 768px) 50vw, 10vw"
                                         className="object-contain"
                                     />
                                 ) : (

@@ -77,8 +77,8 @@ export const SingleActiveCampaign = () => {
                 <div className="bg-signature-gradient text-white overflow-hidden py-3 flex relative">
                     <div className="animate-marquee whitespace-nowrap flex gap-16 items-center font-labels font-bold uppercase tracking-widest text-xs">
                         {[...Array(12)].map((_, i) => (
-                            <span key={i} className="flex items-center gap-6">
-                                <Zap className="w-3 h-3 fill-current" />
+                            <span key={"marquee-" + i} className="flex items-center gap-6">
+                                <Zap className="size-3 fill-current" />
                                 {formatCampaignName(campaign.name)}
                                 <span className="text-white/30">///</span>
                             </span>
@@ -96,12 +96,12 @@ export const SingleActiveCampaign = () => {
 
                         <div className="relative z-10 space-y-6">
                             <div className="inline-flex items-center gap-3 px-4 py-1.5 bg-surface-container-lowest rounded-lg shadow-sm">
-                                <span className="w-2 h-2 bg-primary rounded-sm animate-pulse" />
-                                <span className="text-xs font-bold uppercase tracking-widest text-primary">Flash Sale</span>
+                                <span className="size-2 bg-primary rounded-sm animate-pulse" />
+                                <span className="text-xs font-bold uppercase tracking-widest text-primary">Siêu giảm giá</span>
                             </div>
 
                             <div className="space-y-3">
-                                <h2 className="text-3xl md:text-5xl font-bold uppercase leading-[0.9] tracking-tighter text-foreground font-labels">
+                                <h2 className="text-3xl md:text-5xl font-semibold uppercase leading-[0.9] tracking-tighter text-foreground font-labels">
                                     {formatCampaignName(campaign.name)}
                                 </h2>
                                 {campaign.description && (
@@ -154,7 +154,7 @@ export const SingleActiveCampaign = () => {
                                     href="/sale-campaigns"
                                     className="group flex items-center gap-3 text-xs font-bold text-primary hover:opacity-70 transition-all"
                                 >
-                                    Xem tất cả <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+                                    Xem tất cả <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
                                 </Link>
                             </div>
                         </div>
@@ -181,6 +181,7 @@ export const SingleActiveCampaign = () => {
                                                 src={imageUrl.product(item.imageUrl)}
                                                 alt={item.productName}
                                                 fill
+                                                sizes="(max-width: 768px) 50vw, 33vw"
                                                 className="object-contain p-4"
                                                 unoptimized
                                             />
@@ -190,7 +191,7 @@ export const SingleActiveCampaign = () => {
                                     <div className="space-y-4">
                                         <div className="h-px w-8 bg-primary/20 transition-all duration-700" />
                                         <div className="space-y-2">
-                                            <h3 className="font-labels font-bold text-sm line-clamp-2 min-h-[2.5em] text-foreground leading-relaxed">
+                                            <h3 className="font-labels font-semibold text-sm line-clamp-2 min-h-[2.5em] text-foreground leading-relaxed">
                                                 {item.productName}
                                             </h3>
                                             <div className="flex flex-col gap-1">

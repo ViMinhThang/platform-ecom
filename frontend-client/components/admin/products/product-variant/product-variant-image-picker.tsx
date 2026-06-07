@@ -30,16 +30,20 @@ export const VariantImagePicker: React.FC<VariantImagePickerProps> = ({
       <div
         className="relative h-full cursor-pointer border rounded-md overflow-hidden"
         onClick={() => setOpen(true)}
+        onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') setOpen(true); }}
+        role="button"
+        tabIndex={0}
       >
         {value ? (
           <Image
             src={`http://localhost:8080/uploads/${value}`}
-            alt="Variant Image"
+            alt="Hình ảnh biến thể"
             fill
+            sizes="40px"
             className="object-cover"
           />
         ) : (
-          <div className="flex items-center justify-center w-full h-full text-gray-400">
+          <div className="flex items-center justify-center w-full h-full text-zinc-400">
             Chọn hình ảnh
           </div>
         )}
@@ -52,7 +56,7 @@ export const VariantImagePicker: React.FC<VariantImagePickerProps> = ({
           </DialogHeader>
 
           {isLoading ? (
-            <div>Đang tải hình ảnh...</div>
+            <div>Đang tải hình ảnh…</div>
           ) : (
             <div className="grid grid-cols-2 gap-2">
               {images.map((img) => (

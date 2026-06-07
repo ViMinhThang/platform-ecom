@@ -23,8 +23,8 @@ export function getInventoryColumns({
                     variant="ghost"
                     onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
                 >
-                    Variant ID
-                    <ArrowUpDown className="ml-2 h-4 w-4" />
+                    ID biến thể
+                    <ArrowUpDown className="ml-2 size-4" />
                 </Button>
             ),
             cell: ({ row }) => (
@@ -47,8 +47,8 @@ export function getInventoryColumns({
                     variant="ghost"
                     onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
                 >
-                    Available
-                    <ArrowUpDown className="ml-2 h-4 w-4" />
+                    Khả dụng
+                    <ArrowUpDown className="ml-2 size-4" />
                 </Button>
             ),
             cell: ({ row }) => {
@@ -59,14 +59,14 @@ export function getInventoryColumns({
                         <span className={`font-semibold ${isLow ? 'text-red-600' : 'text-green-600'}`}>
                             {available}
                         </span>
-                        {isLow && <AlertTriangle className="h-4 w-4 text-amber-500" />}
+                        {isLow && <AlertTriangle className="size-4 text-amber-500" />}
                     </div>
                 );
             },
         },
         {
             accessorKey: 'reservedStock',
-            header: 'Reserved',
+            header: 'Đã giữ',
             cell: ({ row }) => (
                 <Badge variant="secondary" className="font-mono">
                     {row.getValue('reservedStock')}
@@ -75,14 +75,14 @@ export function getInventoryColumns({
         },
         {
             accessorKey: 'totalStock',
-            header: 'Total',
+            header: 'Tổng',
             cell: ({ row }) => (
                 <span className="font-semibold">{row.getValue('totalStock')}</span>
             ),
         },
         {
             accessorKey: 'lowStockThreshold',
-            header: 'Threshold',
+            header: 'Ngưỡng',
             cell: ({ row }) => (
                 <span className="text-muted-foreground">
                     {row.getValue('lowStockThreshold')}
@@ -91,19 +91,19 @@ export function getInventoryColumns({
         },
         {
             accessorKey: 'trackInventory',
-            header: 'Tracking',
+            header: 'Theo dõi',
             cell: ({ row }) => {
                 const tracked = row.getValue('trackInventory') as boolean;
                 return (
                     <Badge variant={tracked ? 'default' : 'outline'}>
-                        {tracked ? 'Active' : 'Disabled'}
+                        {tracked ? 'Đang bật' : 'Đã tắt'}
                     </Badge>
                 );
             },
         },
         {
             id: 'actions',
-            header: 'Actions',
+            header: 'Hành động',
             cell: ({ row }) => (
                 <div className="flex gap-2">
                     <Button
@@ -111,7 +111,7 @@ export function getInventoryColumns({
                         size="sm"
                         onClick={() => onEdit(row.original)}
                     >
-                        <Edit className="h-4 w-4" />
+                        <Edit className="size-4" />
                     </Button>
                     <Button
                         variant="ghost"
@@ -119,7 +119,7 @@ export function getInventoryColumns({
                         className="text-destructive hover:text-destructive"
                         onClick={() => onDelete(row.original)}
                     >
-                        <Trash2 className="h-4 w-4" />
+                        <Trash2 className="size-4" />
                     </Button>
                 </div>
             ),

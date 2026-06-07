@@ -36,7 +36,7 @@ export function DataTableSkeleton({
   );
 
   return (
-    <div className={cn('flex flex-1 flex-col space-y-4', className)} {...props}>
+    <div className={cn('flex flex-1 flex-col gap-y-4', className)} {...props}>
       <div className='flex w-full items-center justify-between gap-2 overflow-auto p-1'>
         <div className='flex flex-1 items-center gap-2'>
           {filterCount > 0

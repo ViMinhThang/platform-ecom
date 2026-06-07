@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { ReviewDialog } from "@/components/profile/ReviewDialog";
 import { useOrderDetail } from "@/hooks/useOrders";
 import { SubOrderCard } from "@/components/orders/SubOrderCard";
@@ -25,6 +25,12 @@ function OrderDetailPageContent({ params }: OrderDetailPageProps) {
     const [reviewDialogOpen, setReviewDialogOpen] = useState(false);
     const [reviewProductId, setReviewProductId] = useState<number | null>(null);
     const [refreshCounter, setRefreshCounter] = useState(0);
+    const [createdDate, setCreatedDate] = useState("");
+    useEffect(() => {
+        if (currentOrder?.createdAt) {
+            setCreatedDate(format(new Date(currentOrder.createdAt), "dd.MM.yyyy 'LÚC' HH:mm"));
+        }
+    }, [currentOrder?.createdAt]);
 
     const shippingAddress = addresses?.find(addr => addr.addressId === currentOrder?.shippingAddressId);
 
@@ -39,9 +45,9 @@ function OrderDetailPageContent({ params }: OrderDetailPageProps) {
 
     if (loading) {
         return (
-            <div className="min-h-screen bg-background flex flex-col items-center justify-center space-y-8">
-                <div className="w-12 h-12 border-2 border-primary/20 border-t-primary rounded-full animate-spin" />
-                <p className="font-labels italic text-foreground/40 animate-pulse">Đang truy xuất hồ sơ đơn hàng...</p>
+            <div className="min-h-screen bg-background flex flex-col items-center justify-center gap-y-8">
+                <div className="size-12 border-2 border-primary/20 border-t-primary rounded-full animate-spin" />
+                <p className="font-labels italic text-foreground/40 animate-pulse">Đang truy xuất hồ sơ đơn hàng…</p>
             </div>
         );
     }
@@ -78,7 +84,7 @@ function OrderDetailPageContent({ params }: OrderDetailPageProps) {
                 <div className="mb-20">
                     <Button variant="ghost" size="sm" asChild className="pl-0 hover:bg-transparent group mb-12">
                         <Link href="/orders" className="flex items-center gap-3 text-[11px] font-bold uppercase tracking-[0.3em] text-foreground/40 hover:text-primary transition-all font-labels">
-                            <ChevronLeft className="h-4 w-4 transition-transform group-hover:-translate-x-1" />
+                            <ChevronLeft className="size-4 transition-transform group-hover:-translate-x-1" />
                             QUAY LẠI DANH SÁCH
                         </Link>
                     </Button>
@@ -86,7 +92,7 @@ function OrderDetailPageContent({ params }: OrderDetailPageProps) {
                     <div className="flex flex-col lg:flex-row justify-between items-start gap-12 border-b border-foreground/10 pb-12">
                         <div className="space-y-6">
                             <div className="flex items-center gap-6">
-                                <h1 className="font-labels text-6xl font-bold uppercase tracking-tighter text-foreground">
+                                <h1 className="font-labels text-6xl font-semibold uppercase tracking-tighter text-foreground">
                                     Hóa đơn #{currentOrder.groupNumber}
                                 </h1>
                                 <div className="px-6 py-2 bg-primary text-white text-[10px] font-bold uppercase tracking-[0.2em] rounded-[2px] font-labels">
@@ -94,7 +100,7 @@ function OrderDetailPageContent({ params }: OrderDetailPageProps) {
                                 </div>
                             </div>
                             <p className="text-[10px] font-bold text-foreground/30 uppercase tracking-[0.4em] font-labels">
-                                KHỞI TẠO NGÀY {format(new Date(currentOrder.createdAt), "dd.MM.yyyy 'LÚC' HH:mm")}
+                                KHỞI TẠO NGÀY {createdDate}
                             </p>
                         </div>
                         <div className="text-left lg:text-right space-y-4">
@@ -110,8 +116,8 @@ function OrderDetailPageContent({ params }: OrderDetailPageProps) {
                         {currentOrder.subOrders.some(so => so.ghnOrderCode) && (
                             <section className="bg-white p-12 rounded-[4px] border border-foreground/10 shadow-sm space-y-12">
                                 <div className="flex items-center gap-4 pb-8 border-b border-foreground/5">
-                                    <Truck className="h-5 w-5 text-primary" />
-                                    <h2 className="text-[11px] font-bold uppercase tracking-[0.3em] text-foreground font-labels">HÀNH TRÌNH VẬN CHUYỂN</h2>
+                                    <Truck className="size-5 text-primary" />
+                                    <h2 className="text-[11px] font-semibold uppercase tracking-[0.3em] text-foreground font-labels">HÀNH TRÌNH VẬN CHUYỂN</h2>
                                 </div>
                                 <TrackingTimeline
                                     ghnOrderCode={currentOrder.subOrders.find(so => so.ghnOrderCode)?.ghnOrderCode || ''}
@@ -122,7 +128,7 @@ function OrderDetailPageContent({ params }: OrderDetailPageProps) {
                         {/* SUB-ORDERS LIST */}
                         <div className="space-y-12">
                             <div className="flex items-center gap-6">
-                                <h2 className="text-[11px] font-bold uppercase tracking-[0.4em] text-foreground/40 font-labels italic shrink-0">DANH SÁCH KIỆN HÀNG</h2>
+                                <h2 className="text-[11px] font-semibold uppercase tracking-[0.4em] text-foreground/40 font-labels italic shrink-0">DANH SÁCH KIỆN HÀNG</h2>
                                 <div className="h-px bg-foreground/5 flex-1" />
                             </div>
                             
@@ -144,8 +150,8 @@ function OrderDetailPageContent({ params }: OrderDetailPageProps) {
                         {/* PAYMENT INFO */}
                         <div className="bg-white p-10 rounded-[4px] border border-foreground/10 shadow-sm space-y-10">
                             <div className="flex items-center gap-4 pb-6 border-b border-foreground/5">
-                                <FileText className="h-5 w-5 text-primary/40" />
-                                <h3 className="text-[10px] font-bold uppercase tracking-[0.3em] text-foreground font-labels">THANH TOÁN</h3>
+                                <FileText className="size-5 text-primary/40" />
+                                <h3 className="text-[10px] font-semibold uppercase tracking-[0.3em] text-foreground font-labels">THANH TOÁN</h3>
                             </div>
                             <div className="space-y-6 text-[11px] font-bold uppercase tracking-widest font-labels">
                                 <div className="flex justify-between items-center text-foreground/40">
@@ -164,8 +170,8 @@ function OrderDetailPageContent({ params }: OrderDetailPageProps) {
                         {/* SHIPPING LOCATION */}
                         <div className="bg-white p-10 rounded-[4px] border border-foreground/10 shadow-sm space-y-10">
                             <div className="flex items-center gap-4 pb-6 border-b border-foreground/5">
-                                <MapPin className="h-5 w-5 text-primary/40" />
-                                <h3 className="text-[10px] font-bold uppercase tracking-[0.3em] text-foreground font-labels">ĐỊA CHỈ NHẬN HÀNG</h3>
+                                <MapPin className="size-5 text-primary/40" />
+                                <h3 className="text-[10px] font-semibold uppercase tracking-[0.3em] text-foreground font-labels">ĐỊA CHỈ NHẬN HÀNG</h3>
                             </div>
                             <div className="text-[11px] font-bold uppercase tracking-widest text-foreground/50 leading-loose font-labels">
                                 {shippingAddress ? (
@@ -183,8 +189,8 @@ function OrderDetailPageContent({ params }: OrderDetailPageProps) {
                         {/* TRANSACTION SUMMARY */}
                         <div className="bg-white p-10 rounded-[4px] border border-foreground/10 shadow-lg space-y-10 ring-1 ring-primary/5">
                             <div className="flex items-center gap-4 pb-6 border-b border-foreground/5">
-                                <ReceiptText className="h-5 w-5 text-primary" />
-                                <h3 className="text-[10px] font-bold uppercase tracking-[0.3em] text-foreground font-labels">TÓM TẮT GIAO DỊCH</h3>
+                                <ReceiptText className="size-5 text-primary" />
+                                <h3 className="text-[10px] font-semibold uppercase tracking-[0.3em] text-foreground font-labels">TÓM TẮT GIAO DỊCH</h3>
                             </div>
                             <div className="space-y-6 text-[10px] font-bold uppercase tracking-widest font-labels">
                                 <div className="flex justify-between items-center text-foreground/40">

@@ -39,7 +39,7 @@ export function ReviewList({ productId }: ReviewListProps) {
     return (
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
         {[1, 2, 3].map((i) => (
-          <div key={i} className="h-64 bg-surface-container animate-pulse rounded-3xl" />
+          <div key={"skeleton-" + i} className="h-64 bg-surface-container animate-pulse rounded-3xl" />
         ))}
       </div>
     );
@@ -96,7 +96,7 @@ function ReviewCard({ review }: { review: Review }) {
       <div className="space-y-6">
         <div className="flex items-center gap-1 text-[#ab2d00]">
            {[1, 2, 3, 4, 5].map((s) => (
-              <Star key={s} className={`w-3 h-3 ${s <= review.rating ? "fill-current" : "text-foreground/10"}`} />
+              <Star key={s} className={`size-3 ${s <= review.rating ? "fill-current" : "text-foreground/10"}`} />
            ))}
         </div>
         
@@ -107,11 +107,11 @@ function ReviewCard({ review }: { review: Review }) {
 
       <div className="pt-8 mt-4 border-t border-foreground/5">
         <div className="flex items-center gap-4">
-           <div className={`w-10 h-10 ${bgColor} text-white rounded-full flex items-center justify-center text-[10px] font-bold uppercase`}>
+           <div className={`size-10 ${bgColor} text-white rounded-full flex items-center justify-center text-[10px] font-bold uppercase`}>
               {reviewerName.substring(0, 2)}
            </div>
            <div>
-              <h4 className="text-sm font-bold text-foreground">{reviewerName}</h4>
+              <h4 className="text-sm font-semibold text-foreground">{reviewerName}</h4>
               <p className="text-[10px] font-bold text-[#ab2d00] uppercase tracking-wide">Người mua đã xác minh</p>
            </div>
         </div>

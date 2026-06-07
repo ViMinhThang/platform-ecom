@@ -1,5 +1,5 @@
 export const statusOptions = [
-    { label: "Draft", value: "DRAFT" },
-    { label: "Active", value: "ACTIVE" },
-    { label: "Out of Stock", value: "OUT_OF_STOCK" },
+    { label: "Nháp", value: "DRAFT" },
+    { label: "Đang hoạt động", value: "ACTIVE" },
+    { label: "Hết hàng", value: "OUT_OF_STOCK" },
   ];

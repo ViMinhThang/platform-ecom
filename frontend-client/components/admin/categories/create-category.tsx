@@ -14,7 +14,7 @@ export const CreateCategoryButton: React.FC<CreateCategoryButtonProps> = ({ toke
   return (
     <>
       <Button onClick={() => setOpen(true)}>
-        <IconPlus className="mr-2 h-4 w-4" /> Thêm mới
+        <IconPlus className="mr-2 size-4" /> Thêm mới
       </Button>
       <CategoryDialog
         open={open}

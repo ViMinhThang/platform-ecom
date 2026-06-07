@@ -22,6 +22,7 @@ export const ProductGallery = ({
                 <div className="aspect-square md:aspect-[4/5] relative bg-surface-container rounded-3xl overflow-hidden group cursor-crosshair shadow-sm">
                     <Image
                         fill
+                        sizes="(max-width: 768px) 100vw, 50vw"
                         src={imageUrl.product(
                             product.images && product.images.length > 0
                                 ? product.images[currentImageIndex]?.imageUrl || product.images[0].imageUrl
@@ -47,7 +48,7 @@ export const ProductGallery = ({
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
                     {product.images.map((image, index) => (
                         <button
-                            key={index}
+                            key={image.id}
                             className={`relative aspect-square overflow-hidden rounded-2xl transition-all duration-500 bg-surface-container ${currentImageIndex === index
                                     ? "ring-2 ring-primary ring-offset-4 ring-offset-background opacity-100 scale-[0.98]"
                                     : "opacity-60 hover:opacity-100 hover:scale-[1.02]"
@@ -56,6 +57,7 @@ export const ProductGallery = ({
                         >
                             <Image
                                 fill
+                                sizes="(max-width: 768px) 50vw, 25vw"
                                 src={imageUrl.product(image.imageUrl)}
                                 alt={`${product.name} thumbnail ${index + 1}`}
                                 className="object-cover"

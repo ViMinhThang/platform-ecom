@@ -94,14 +94,14 @@ export const useProductForm = ({
           ? await updateProduct({ id: productId!, data: payload as any }).unwrap()
           : await createProduct(payload as any).unwrap();
 
-        toast.success(`Product ${isUpdate ? "updated" : "created"} successfully!`);
+        toast.success(isUpdate ? "Cập nhật sản phẩm thành công!" : "Tạo sản phẩm thành công!");
         onOpenChange?.(false);
       } catch (error) {
         logger.error("Product form submission failed", error as Error, {
           isUpdate,
           productId,
         });
-        toast.error(`Failed to ${isUpdate ? "update" : "create"} product`);
+        toast.error(isUpdate ? "Không thể cập nhật sản phẩm" : "Không thể tạo sản phẩm");
       }
     },
     [productId, createProduct, updateProduct, onOpenChange]

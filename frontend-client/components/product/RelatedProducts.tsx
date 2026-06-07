@@ -36,13 +36,13 @@ export const RelatedProducts = ({ productId }: RelatedProductsProps) => {
             <div className="flex items-center gap-4 mb-20">
                 <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-foreground/40 font-labels">BỘ SƯU TẬP TƯƠNG TỰ</span>
                 <div className="h-px bg-foreground/10 flex-1" />
-                <h2 className="text-[10px] font-bold uppercase tracking-[0.3em] text-foreground font-labels">CÁC VẬT PHẨM LIÊN QUAN</h2>
+                <h2 className="text-[10px] font-semibold uppercase tracking-[0.3em] text-foreground font-labels">CÁC VẬT PHẨM LIÊN QUAN</h2>
             </div>
 
             <div className="grid grid-cols-2 lg:grid-cols-6 gap-8">
                 {loading ? (
                     [...Array(6)].map((_, i) => (
-                        <div key={i} className="space-y-4 animate-pulse">
+                        <div key={"skeleton-" + i} className="space-y-4 animate-pulse">
                             <div className="aspect-[4/5] bg-secondary/50 rounded-sm" />
                             <div className="h-2 bg-secondary/50 w-1/4" />
                             <div className="h-4 bg-secondary/50 w-3/4" />

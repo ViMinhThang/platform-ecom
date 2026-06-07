@@ -48,15 +48,15 @@ export function DataTablePagination<TData>({
         {table.getFilteredSelectedRowModel().rows.length > 0 ? (
           <>
             <span className="font-medium">{table.getFilteredSelectedRowModel().rows.length}</span>
-            <span> selected of </span>
+            <span> đã chọn trong </span>
             <span className="font-medium">{table.getFilteredRowModel().rows.length}</span>
-            <span> rows</span>
+            <span> hàng</span>
           </>
         ) : (
           <>
-            <span>Total </span>
+            <span>Tổng </span>
             <span className="font-medium">{table.getFilteredRowModel().rows.length}</span>
-            <span> rows</span>
+            <span> hàng</span>
           </>
         )}
       </div>
@@ -87,42 +87,42 @@ export function DataTablePagination<TData>({
             <Button
               variant="ghost"
               size="icon"
-              className="h-8 w-8"
+              className="size-8"
               onClick={() => handlePageChange(0)}
               disabled={!table.getCanPreviousPage()}
             >
               <span className="sr-only">Đến trang đầu</span>
-              <DoubleArrowLeftIcon className="h-4 w-4" />
+              <DoubleArrowLeftIcon className="size-4" />
             </Button>
             <Button
               variant="ghost"
               size="icon"
-              className="h-8 w-8"
+              className="size-8"
               onClick={() => handlePageChange((old: number) => old - 1)}
               disabled={!table.getCanPreviousPage()}
             >
               <span className="sr-only">Trang trước</span>
-              <ChevronLeftIcon className="h-4 w-4" />
+              <ChevronLeftIcon className="size-4" />
             </Button>
             <Button
               variant="ghost"
               size="icon"
-              className="h-8 w-8"
+              className="size-8"
               onClick={() => handlePageChange((old: number) => old + 1)}
               disabled={!table.getCanNextPage()}
             >
               <span className="sr-only">Trang sau</span>
-              <ChevronRightIcon className="h-4 w-4" />
+              <ChevronRightIcon className="size-4" />
             </Button>
             <Button
               variant="ghost"
               size="icon"
-              className="h-8 w-8"
+              className="size-8"
               onClick={() => handlePageChange(table.getPageCount() - 1)}
               disabled={!table.getCanNextPage()}
             >
               <span className="sr-only">Đến trang cuối</span>
-              <DoubleArrowRightIcon className="h-4 w-4" />
+              <DoubleArrowRightIcon className="size-4" />
             </Button>
           </div>
         </div>

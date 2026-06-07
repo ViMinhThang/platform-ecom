@@ -6,12 +6,32 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { UserBasicInfoFields } from "./user-basic-info-fields";
 import { UserRolesField } from "./user-roles-field";
 import { UserAddressesField } from "./user-addresses-field";
+import { ADMIN_CREATED_USER_DEFAULT_PASSWORD } from "@/constants/user-form.constants";
+import { KeyRound } from "lucide-react";
 
 interface UserFormFieldsProps {
   control: Control<UserFormValues>;
   loading: boolean;
   userId: number | null | undefined;
 }
+
+const DefaultPasswordNotice: React.FC = () => (
+  <div className="p-4 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg">
+    <h4 className="flex items-center gap-2 text-sm font-semibold text-amber-700 dark:text-amber-400 mb-2">
+      <KeyRound className="size-4" />
+      Mật khẩu mặc định
+    </h4>
+    <p className="text-sm text-amber-600 dark:text-amber-300 mb-3">
+      Tài khoản mới sẽ được tạo với mật khẩu mặc định bên dưới. Hãy thông báo cho người dùng và khuyến khích họ đổi mật khẩu sau khi đăng nhập lần đầu.
+    </p>
+    <div className="flex items-center gap-2">
+      <span className="text-sm text-muted-foreground">Mật khẩu:</span>
+      <code className="px-3 py-1.5 bg-background border rounded-md font-mono text-sm font-semibold tracking-wide">
+        {ADMIN_CREATED_USER_DEFAULT_PASSWORD}
+      </code>
+    </div>
+  </div>
+);
 
 /**
  * User Form Fields Container with Tabs
@@ -22,6 +42,8 @@ export const UserFormFields: React.FC<UserFormFieldsProps> = ({
   loading,
   userId,
 }) => {
+  const isCreating = !userId;
+
   return (
     <Tabs defaultValue="profile" className="w-full">
       <TabsList className="grid w-full grid-cols-3">
@@ -32,6 +54,7 @@ export const UserFormFields: React.FC<UserFormFieldsProps> = ({
 
       <TabsContent value="profile" className="space-y-4 mt-4">
         <UserBasicInfoFields control={control} loading={loading} />
+        {isCreating && <DefaultPasswordNotice />}
         <UserRolesField control={control} loading={loading} />
       </TabsContent>
 
@@ -44,9 +67,13 @@ export const UserFormFields: React.FC<UserFormFieldsProps> = ({
       </TabsContent>
 
       <TabsContent value="security" className="mt-4">
-        <div className="text-center text-muted-foreground py-8">
-          <p>Quản lý mật khẩu sẽ sớm có...</p>
-        </div>
+        {isCreating ? (
+          <DefaultPasswordNotice />
+        ) : (
+          <div className="text-center text-muted-foreground py-8">
+            <p>Quản lý mật khẩu sẽ sớm có...</p>
+          </div>
+        )}
       </TabsContent>
     </Tabs>
   );

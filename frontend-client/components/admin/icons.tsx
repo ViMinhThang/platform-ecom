@@ -35,6 +35,7 @@ import {
   IconBolt,
   IconTicket,
   IconStar,
+  IconHome,
   type IconProps as TablerIconProps,
 } from '@tabler/icons-react';
 
@@ -77,6 +78,7 @@ const _Icons = {
   flashSale: IconBolt,
   voucher: IconTicket,
   star: IconStar,
+  home: IconHome,
 } as const;
 
 export type IconName = keyof typeof _Icons;

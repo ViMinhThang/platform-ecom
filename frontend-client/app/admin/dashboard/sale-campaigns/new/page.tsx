@@ -12,7 +12,7 @@ import { toast } from 'sonner';
 import { CreateSaleCampaignRequest } from '@/types/sale-campaign';
 
 export default function NewSaleCampaignPage() {
-    const router = useRouter();
+    const { push } = useRouter();
     const [loading, setLoading] = useState(false);
 
     const handleSubmit = async (
@@ -28,7 +28,7 @@ export default function NewSaleCampaignPage() {
             }
 
             toast.success('Tạo chiến dịch thành công');
-            router.push(`/admin/dashboard/sale-campaigns/${campaign.id}`);
+            push(`/admin/dashboard/sale-campaigns/${campaign.id}`);
         } catch (error) {
             console.error('Failed to create campaign:', error);
             toast.error('Tạo chiến dịch thất bại');

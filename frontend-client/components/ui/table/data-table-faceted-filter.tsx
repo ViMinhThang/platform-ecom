@@ -82,9 +82,10 @@ export function DataTableFacetedFilter<TData, TValue>({
           {selectedValues?.size > 0 ? (
             <div
               role='button'
-              aria-label={`Clear ${title} filter`}
+              aria-label={`Xóa bộ lọc ${title}`}
               tabIndex={0}
               onClick={onReset}
+              onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') onReset(e as unknown as React.MouseEvent); }}
               className='focus-visible:ring-ring rounded-sm opacity-70 transition-opacity hover:opacity-100 focus-visible:ring-1 focus-visible:outline-none'
             >
               <XCircle />
@@ -111,12 +112,11 @@ export function DataTableFacetedFilter<TData, TValue>({
                     variant='secondary'
                     className='rounded-sm px-1 font-normal'
                   >
-                    {selectedValues.size} selected
+                    Đã chọn {selectedValues.size}
                   </Badge>
                 ) : (
                   options
-                    .filter((option) => selectedValues.has(option.value))
-                    .map((option) => (
+                    .map((option) => selectedValues.has(option.value) ? (
                       <Badge
                         variant='secondary'
                         key={option.value}
@@ -124,7 +124,7 @@ export function DataTableFacetedFilter<TData, TValue>({
                       >
                         {option.label}
                       </Badge>
-                    ))
+                    ) : null)
                 )}
               </div>
             </>
@@ -135,7 +135,7 @@ export function DataTableFacetedFilter<TData, TValue>({
         <Command>
           <CommandInput placeholder={title} />
           <CommandList className='max-h-full'>
-            <CommandEmpty>No results found.</CommandEmpty>
+            <CommandEmpty>Không tìm thấy kết quả.</CommandEmpty>
             <CommandGroup className='max-h-[18.75rem] overflow-x-hidden overflow-y-auto'>
               {options.map((option) => {
                 const isSelected = selectedValues.has(option.value);
@@ -174,7 +174,7 @@ export function DataTableFacetedFilter<TData, TValue>({
                     onSelect={() => onReset()}
                     className='justify-center text-center'
                   >
-                    Clear filters
+                    Xóa bộ lọc
                   </CommandItem>
                 </CommandGroup>
               </>

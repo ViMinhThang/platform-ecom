@@ -8,18 +8,19 @@ import { useRouter } from "next/navigation";
 import { useState, useEffect, useRef } from "react";
 
 const MAX_HISTORY = 5;
+const SEARCH_HISTORY_KEY = 'acme_search_history_v1';
 
 export const SearchHeader = () => {
     const { data: cart } = useGetCartQuery();
     const cartItemCount = cart?.items?.reduce((total, item) => total + item.quantity, 0) || 0;
-    const router = useRouter();
+    const { push } = useRouter();
     const [searchTerm, setSearchTerm] = useState("");
     const [history, setHistory] = useState<string[]>([]);
     const [showHistory, setShowHistory] = useState(false);
     const historyRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
-        const saved = localStorage.getItem("acme_search_history");
+        const saved = localStorage.getItem(SEARCH_HISTORY_KEY);
         if (saved) setHistory(JSON.parse(saved));
     }, []);
 
@@ -38,14 +39,14 @@ export const SearchHeader = () => {
         if (!normalized) return;
         const newHistory = [normalized, ...history.filter(h => h !== normalized)].slice(0, MAX_HISTORY);
         setHistory(newHistory);
-        localStorage.setItem("acme_search_history", JSON.stringify(newHistory));
+        localStorage.setItem(SEARCH_HISTORY_KEY, JSON.stringify(newHistory));
     };
 
     const handleSearch = (e: React.KeyboardEvent) => {
         if (e.key === "Enter" && searchTerm.trim()) {
             saveSearch(searchTerm);
             setShowHistory(false);
-            router.push(`/products?q=${encodeURIComponent(searchTerm.trim())}`);
+            push(`/products?q=${encodeURIComponent(searchTerm.trim())}`);
         }
     };
 
@@ -53,20 +54,20 @@ export const SearchHeader = () => {
         setSearchTerm(term);
         saveSearch(term);
         setShowHistory(false);
-        router.push(`/products?q=${encodeURIComponent(term)}`);
+        push(`/products?q=${encodeURIComponent(term)}`);
     };
 
     const clearHistory = (e: React.MouseEvent) => {
         e.stopPropagation();
         setHistory([]);
-        localStorage.removeItem("acme_search_history");
+        localStorage.removeItem(SEARCH_HISTORY_KEY);
     };
 
     const removeHistoryItem = (e: React.MouseEvent, term: string) => {
         e.stopPropagation();
         const newHistory = history.filter(h => h !== term);
         setHistory(newHistory);
-        localStorage.setItem("acme_search_history", JSON.stringify(newHistory));
+        localStorage.setItem(SEARCH_HISTORY_KEY, JSON.stringify(newHistory));
     };
 
     return (
@@ -75,10 +76,10 @@ export const SearchHeader = () => {
                 {/* LOGO */}
                 <Link href="/" className="shrink-0 flex items-center gap-1.5">
                     <span className="font-labels text-lg font-extrabold tracking-tighter text-foreground">
-                        Editorial
+                        ACME
                     </span>
                     <span className="font-labels text-lg font-extrabold tracking-tighter text-primary">
-                        Market
+                        Việt Nam
                     </span>
                 </Link>
 
@@ -113,13 +114,13 @@ export const SearchHeader = () => {
                                 onFocus={() => setShowHistory(true)}
                                 className="bg-transparent border-none outline-none text-[13px] font-medium w-full placeholder:text-foreground/30 focus:ring-0"
                             />
-                            <Search className="h-4 w-4 text-foreground/30 shrink-0" />
+                            <Search className="size-4 text-foreground/30 shrink-0" />
                         </div>
                     </div>
 
                     <div className="flex items-center gap-1 shrink-0">
                         <Link href="/cart" className="relative p-2 hover:opacity-70 transition-all group">
-                            <ShoppingCart className="h-[22px] w-[22px] text-foreground" />
+                            <ShoppingCart className="size-[22px] text-foreground" />
                             {cartItemCount > 0 && (
                                 <span className="absolute -top-0.5 -right-0.5 bg-primary text-white text-[8px] font-bold h-[16px] min-w-[16px] px-1 rounded-full flex items-center justify-center shadow-sm">
                                     {cartItemCount}

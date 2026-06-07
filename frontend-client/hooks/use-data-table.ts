@@ -143,7 +143,7 @@ export function useDataTable<TData>(props: UseDataTableProps<TData>) {
 
   const columnIds = React.useMemo(() => {
     return new Set(
-      columns.map((column) => column.id).filter(Boolean) as string[]
+      columns.flatMap((column) => column.id ? [column.id] : [])
     );
   }, [columns]);
 

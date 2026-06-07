@@ -54,7 +54,7 @@ export function ProductCard({
         {hasSale && (
             <div className="absolute top-4 left-4 z-10">
                 <span className="text-[10px] font-bold px-3 py-1 bg-primary text-white rounded-sm">
-                    New Arrival
+                    Hàng mới
                 </span>
             </div>
         )}
@@ -63,13 +63,14 @@ export function ProductCard({
           src={imageUrl.product(displayImage)}
           alt={name}
           fill
+          sizes="(max-width: 768px) 50vw, 33vw"
           className="object-contain p-8 transition-transform duration-700"
         />
       </Link>
 
       <div className="flex items-start justify-between gap-4 px-1">
         <div className="flex-1 min-w-0 space-y-1">
-            <h3 className="font-bold text-sm text-foreground tracking-tight truncate">
+            <h3 className="font-semibold text-sm text-foreground tracking-tight truncate">
               {name}
             </h3>
             <p className="text-[11px] font-medium text-foreground/40 line-clamp-1">
@@ -82,9 +83,9 @@ export function ProductCard({
             </div>
         </div>
 
-        {/* Add to Cart Button */}
-        <button className="h-9 w-9 bg-primary/10 rounded-lg flex items-center justify-center text-primary hover:bg-primary hover:text-white transition-all shadow-sm">
-            <ShoppingCart className="h-4 w-4" />
+        {/* Nút thêm vào giỏ hàng */}
+        <button className="size-9 bg-primary/10 rounded-lg flex items-center justify-center text-primary hover:bg-primary hover:text-white transition-all shadow-sm">
+            <ShoppingCart className="size-4" />
         </button>
       </div>
     </div>

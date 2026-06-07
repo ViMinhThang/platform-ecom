@@ -47,7 +47,7 @@ export const ProductSpecifications = ({ product }: ProductSpecificationsProps) =
         <div className="grid grid-cols-2 gap-x-12 gap-y-10 pt-10 border-t border-foreground/5 w-full">
             {specEntries.slice(0, 4).map(([key, value]) => (
                 <div key={key} className="space-y-2">
-                    <h4 className="text-[11px] font-bold uppercase tracking-widest text-foreground/40">
+                    <h4 className="text-[11px] font-semibold uppercase tracking-widest text-foreground/40">
                         {TRANSLATIONS[key.toLowerCase()] || key.replace(/_/g, " ")}
                     </h4>
                     <p className="text-sm font-bold text-foreground">

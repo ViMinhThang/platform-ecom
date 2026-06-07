@@ -1,6 +1,8 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
+
+const VIETNAM_NUMBER_FORMAT = new Intl.NumberFormat('vi-VN');
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent } from '@/components/ui/card';
@@ -36,7 +38,7 @@ export function DiscountTierEditor({ tiers, onChange, disabled }: DiscountTierEd
     };
 
     const formatCurrency = (value: number) => {
-        return new Intl.NumberFormat('vi-VN').format(value) + ' ₫';
+        return VIETNAM_NUMBER_FORMAT.format(value) + ' ₫';
     };
 
     return (
@@ -55,7 +57,7 @@ export function DiscountTierEditor({ tiers, onChange, disabled }: DiscountTierEd
                     onClick={addTier}
                     disabled={disabled}
                 >
-                    <PlusIcon className="h-4 w-4 mr-2" />
+                    <PlusIcon className="size-4 mr-2" />
                     Thêm khung
                 </Button>
             </div>
@@ -63,7 +65,7 @@ export function DiscountTierEditor({ tiers, onChange, disabled }: DiscountTierEd
             {tiers.length === 0 ? (
                 <Card className="border-dashed">
                     <CardContent className="py-8 text-center text-muted-foreground">
-                        <PercentIcon className="h-10 w-10 mx-auto mb-3 opacity-50" />
+                        <PercentIcon className="size-10 mx-auto mb-3 opacity-50" />
                         <p className="text-sm">Chưa có khung giá giảm nào</p>
                         <p className="text-xs">Nhấn "Thêm khung" để bắt đầu</p>
                     </CardContent>
@@ -71,7 +73,7 @@ export function DiscountTierEditor({ tiers, onChange, disabled }: DiscountTierEd
             ) : (
                 <div className="space-y-3">
                     {tiers.map((tier, index) => (
-                        <Card key={index} className="relative overflow-hidden">
+                        <Card key={"tier-" + (tier.id ?? index)} className="relative overflow-hidden">
                             <div className="absolute left-0 top-0 bottom-0 w-1 bg-primary" />
                             <CardContent className="py-3 pl-5">
                                 <div className="flex items-end gap-4">
@@ -132,11 +134,11 @@ export function DiscountTierEditor({ tiers, onChange, disabled }: DiscountTierEd
                                         type="button"
                                         variant="ghost"
                                         size="icon"
-                                        className="h-9 w-9 text-destructive hover:text-destructive hover:bg-destructive/10"
+                                        className="size-9 text-destructive hover:text-destructive hover:bg-destructive/10"
                                         onClick={() => removeTier(index)}
                                         disabled={disabled}
                                     >
-                                        <TrashIcon className="h-4 w-4" />
+                                        <TrashIcon className="size-4" />
                                     </Button>
                                 </div>
                                 {(tier.minPrice != null && tier.minPrice > 0 && tier.maxPrice != null && tier.maxPrice > 0) && (

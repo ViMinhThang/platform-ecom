@@ -27,9 +27,9 @@ export function useBuyAgain() {
             //   quantity: item.quantity
             // })));
 
-            toast.success(`Added ${items.length} item${items.length > 1 ? 's' : ''} to cart`);
+            toast.success(`Đã thêm ${items.length} sản phẩm vào giỏ hàng`);
         } catch (error: any) {
-            toast.error(error.message || 'Failed to add items to cart');
+            toast.error(error.message || 'Không thể thêm sản phẩm vào giỏ hàng');
             throw error;
         }
     };

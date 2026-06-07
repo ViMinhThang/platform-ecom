@@ -14,8 +14,9 @@ import { Suspense } from 'react';
 
 function SaleCampaignsContent() {
     const searchParams = useSearchParams();
-    const page = Number(searchParams.get('page')) || 0;
-    const perPage = Number(searchParams.get('perPage')) || 10;
+    const get = searchParams.get.bind(searchParams);
+    const page = Number(get('page')) || 0;
+    const perPage = Number(get('perPage')) || 10;
 
     return <SaleCampaignListingClient searchParams={{ page, perPage }} />;
 }
@@ -23,7 +24,7 @@ function SaleCampaignsContent() {
 export default function Page() {
     return (
         <PageContainer scrollable={false}>
-            <div className="flex flex-1 flex-col space-y-4">
+            <div className="flex flex-1 flex-col gap-y-4">
                 <div className="flex items-start justify-between">
                     <Heading
                         title="Chiến dịch khuyến mãi"
@@ -33,7 +34,7 @@ export default function Page() {
                         href="/admin/dashboard/sale-campaigns/new"
                         className={cn(buttonVariants(), 'gap-2')}
                     >
-                        <IconPlus className="h-4 w-4" />
+                        <IconPlus className="size-4" />
                         Tạo chiến dịch
                     </Link>
                 </div>

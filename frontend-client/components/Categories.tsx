@@ -14,9 +14,9 @@ function CategoryItem({ category }: CategoryItemProps) {
   return (
     <Link
       href={`/category/${category.slug}`}
-      className="group relative flex flex-col items-center p-6 bg-white rounded-none border border-slate-100"
+      className="group relative flex flex-col items-center p-6 bg-white rounded-none border border-zinc-100"
     >
-      <div className="relative w-28 h-28 mb-6 rounded-full bg-slate-50 flex items-center justify-center border border-slate-100">
+      <div className="relative size-28 mb-6 rounded-full bg-zinc-50 flex items-center justify-center border border-zinc-100">
         {category.imageUrl ? (
           <Image
             src={imageUrl.category(category.imageUrl)}
@@ -26,13 +26,13 @@ function CategoryItem({ category }: CategoryItemProps) {
             className="object-contain p-2"
           />
         ) : (
-          <div className="text-slate-300 font-bold uppercase tracking-widest text-xs">
+          <div className="text-zinc-300 font-bold uppercase tracking-widest text-xs">
             {category.name.substring(0, 2)}
           </div>
         )}
       </div>
 
-      <span className="text-[14px] font-bold text-slate-800 text-center leading-tight uppercase tracking-tight">
+      <span className="text-[14px] font-bold text-zinc-800 text-center leading-tight uppercase tracking-tight">
         {category.name}
       </span>
     </Link>

@@ -3,6 +3,8 @@
 import { Store, MessageCircle, ShoppingBag, Calendar, MapPin, Star } from "lucide-react";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
+
+const VI_NUMBER_FORMAT = new Intl.NumberFormat("vi-VN");
 import { SellerInfo } from "@/lib/services/user-service";
 import { imageUrl } from "@/lib/utils/imageUrl";
 import { formatOrderDate } from "@/lib/utils/dateUtils";
@@ -19,12 +21,13 @@ export function SellerHero({ seller, totalProducts, totalSold = 0, createdAt }: 
         <div className="bg-white border shadow-sm p-8 md:p-12 mb-12">
             <div className="flex flex-col md:flex-row gap-12 items-center md:items-start text-center md:text-left">
                 {/* Profile Avatar */}
-                <div className="relative w-32 h-32 md:w-40 md:h-40 rounded-full overflow-hidden border-4 border-zinc-100 shadow-inner flex-shrink-0">
+                <div className="relative size-32 md:size-40 rounded-full overflow-hidden border-4 border-zinc-100 shadow-inner flex-shrink-0">
                     {seller.imageUrl ? (
                         <Image
                             src={imageUrl.avatar(seller.imageUrl)}
                             alt={seller.username}
                             fill
+                            sizes="80px"
                             className="object-cover"
                         />
                     ) : (
@@ -38,7 +41,7 @@ export function SellerHero({ seller, totalProducts, totalSold = 0, createdAt }: 
                 <div className="flex-1 space-y-6">
                     <div>
                         <div className="flex flex-col md:flex-row md:items-center gap-4 mb-2">
-                            <h1 className="text-3xl md:text-4xl font-bold font-header tracking-tight text-zinc-900">
+                            <h1 className="text-3xl md:text-4xl font-semibold font-header tracking-tight text-zinc-900">
                                 {seller.username}
                             </h1>
                             <div className="flex items-center gap-2 justify-center md:justify-start">
@@ -49,12 +52,12 @@ export function SellerHero({ seller, totalProducts, totalSold = 0, createdAt }: 
                         </div>
                         <div className="flex flex-wrap items-center gap-4 text-sm text-zinc-500 font-medium justify-center md:justify-start">
                             <div className="flex items-center gap-1.5">
-                                <MapPin className="w-4 h-4" />
+                                <MapPin className="size-4" />
                                 <span>Thành phố Hồ Chí Minh</span>
                             </div>
                             <div className="h-4 w-px bg-zinc-200 hidden sm:block" />
                             <div className="flex items-center gap-1.5">
-                                <Calendar className="w-4 h-4" />
+                                <Calendar className="size-4" />
                                 <span>Tham gia {formatOrderDate(createdAt)}</span>
                             </div>
                         </div>
@@ -68,7 +71,7 @@ export function SellerHero({ seller, totalProducts, totalSold = 0, createdAt }: 
                                 <span className="font-bold text-lg font-header">4.9</span>
                                 <div className="flex">
                                     {[1, 2, 3, 4, 5].map((i) => (
-                                        <Star key={i} className="w-3 h-3 fill-primary text-primary" />
+                                        <Star key={"star-" + i} className="size-3 fill-primary text-primary" />
                                     ))}
                                 </div>
                             </div>
@@ -80,11 +83,11 @@ export function SellerHero({ seller, totalProducts, totalSold = 0, createdAt }: 
                         <div className="space-y-1">
                             <p className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest font-header">Đã bán</p>
                             <p className="font-bold text-lg font-header">
-                                {new Intl.NumberFormat("en-US").format(totalSold)}+
+                                {VI_NUMBER_FORMAT.format(totalSold)}+
                             </p>
                         </div>
                         <div className="space-y-1">
-                            <p className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest font-header">Phản hồi Chat</p>
+                            <p className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest font-header">Phản hồi trò chuyện</p>
                             <p className="font-bold text-lg font-header">98%</p>
                         </div>
                     </div>
@@ -92,11 +95,11 @@ export function SellerHero({ seller, totalProducts, totalSold = 0, createdAt }: 
                     {/* Action Buttons */}
                     <div className="flex flex-wrap gap-4 pt-2 justify-center md:justify-start">
                         <Button className="gap-2 font-bold px-8 h-12 uppercase tracking-widest text-xs">
-                            <MessageCircle className="w-4 h-4" />
-                            Chat ngay
+                            <MessageCircle className="size-4" />
+                            Trò chuyện ngay
                         </Button>
                         <Button variant="outline" className="gap-2 font-bold px-8 h-12 uppercase tracking-widest text-xs border-2">
-                            <Store className="w-4 h-4" />
+                            <Store className="size-4" />
                             Theo dõi
                         </Button>
                     </div>

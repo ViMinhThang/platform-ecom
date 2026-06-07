@@ -25,7 +25,7 @@ export default function SaleCampaignListingClient({
     const totalItems = data?.totalElements ?? 0;
 
     if (isLoading && campaigns.length === 0) {
-        return <div>Đang tải chiến dịch...</div>;
+        return <div>Đang tải chiến dịch…</div>;
     }
 
     return (

@@ -82,7 +82,7 @@ export function ReviewForm({
                             control={form.control}
                             name="rating"
                             render={({ field }) => (
-                                <FormItem className="flex flex-col items-center space-y-2">
+                                <FormItem className="flex flex-col items-center gap-y-2">
                                     <FormLabel>Đánh giá</FormLabel>
                                     <FormControl>
                                         <div className="flex gap-1">
@@ -121,7 +121,7 @@ export function ReviewForm({
                                         <ReviewRichTextEditor
                                             value={field.value || ""}
                                             onChange={field.onChange}
-                                            placeholder="Hãy cho chúng tôi biết bạn thích hoặc không thích điều gì..."
+                                            placeholder="Hãy cho chúng tôi biết bạn thích hoặc không thích điều gì…"
                                         />
                                     </FormControl>
                                     <FormMessage />
@@ -156,7 +156,7 @@ export function ReviewForm({
                                 className="w-full sm:w-auto"
                             >
                                 {isSubmitting && (
-                                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                    <Loader2 className="mr-2 size-4 animate-spin" />
                                 )}
                                 Gửi đánh giá
                             </Button>

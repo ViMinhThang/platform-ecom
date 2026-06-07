@@ -49,8 +49,8 @@ interface DashboardPageLayoutProps {
  * @example
  * ```tsx
  * <DashboardPageLayout
- *   title="Products"
- *   description="Manage your product catalog"
+ *   title="Sản phẩm"
+ *   description="Quản lý danh mục sản phẩm"
  *   action={<CreateProductButton />}
  * >
  *   <ProductTable {...tableProps} />
@@ -68,7 +68,7 @@ export function DashboardPageLayout({
 }: DashboardPageLayoutProps) {
     return (
         <PageContainer scrollable={scrollable}>
-            <div className="flex flex-1 flex-col space-y-4">
+            <div className="flex flex-1 flex-col gap-y-4">
                 {showBreadcrumbs && <Breadcrumbs />}
 
                 <div className="flex items-start justify-between">

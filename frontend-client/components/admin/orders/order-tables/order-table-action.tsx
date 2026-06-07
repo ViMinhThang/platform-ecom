@@ -19,28 +19,28 @@ interface OrderTableActionProps {
 }
 
 export const OrderTableAction: React.FC<OrderTableActionProps> = ({ data }) => {
-    const router = useRouter();
+    const { push } = useRouter();
 
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="h-8 w-8 p-0">
+                <Button variant="ghost" className="size-8 p-0">
                     <span className="sr-only">Mở menu</span>
-                    <MoreHorizontal className="h-4 w-4" />
+                    <MoreHorizontal className="size-4" />
                 </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
                 <DropdownMenuLabel>Hành động</DropdownMenuLabel>
                 <DropdownMenuItem
-                    onClick={() => router.push(`/admin/dashboard/orders/${data.id}`)}
+                    onClick={() => push(`/admin/dashboard/orders/${data.id}`)}
                 >
-                    <Eye className="mr-2 h-4 w-4" /> Xem chi tiết
+                    <Eye className="mr-2 size-4" /> Xem chi tiết
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem
-                    onClick={() => router.push(`/admin/dashboard/orders/${data.id}`)}
+                    onClick={() => push(`/admin/dashboard/orders/${data.id}`)}
                 >
-                    <Edit className="mr-2 h-4 w-4" /> Cập nhật trạng thái
+                    <Edit className="mr-2 size-4" /> Cập nhật trạng thái
                 </DropdownMenuItem>
             </DropdownMenuContent>
         </DropdownMenu>

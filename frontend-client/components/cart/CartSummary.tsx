@@ -13,14 +13,14 @@ interface CartSummaryProps {
 }
 
 export function CartSummary({ cart }: CartSummaryProps) {
-    const router = useRouter();
+    const { push } = useRouter();
     const { discountResult, appliedVoucherCodes, setAppliedVoucherCodes } = usePromotion(cart);
 
     const finalTotal = discountResult ? discountResult.finalTotal : cart.totalAmount;
 
     return (
         <div className="space-y-8">
-            <h2 className="text-2xl font-bold font-headline mb-8 border-b border-border pb-4">Tóm tắt Đơn hàng</h2>
+            <h2 className="text-2xl font-semibold font-headline mb-8 border-b border-border pb-4">Tóm tắt Đơn hàng</h2>
             
             <div className="flex flex-col gap-4 mb-8">
                 <div className="flex justify-between items-center text-on-surface-variant">
@@ -54,16 +54,16 @@ export function CartSummary({ cart }: CartSummaryProps) {
 
             <Button
                 className="w-full bg-signature-gradient text-white py-8 rounded-full font-bold text-lg shadow-lg shadow-primary/20 hover:scale-[0.98] active:scale-95 transition-all duration-300 flex items-center justify-center gap-3 border-none"
-                onClick={() => router.push("/checkout")}
+                onClick={() => push("/checkout")}
             >
                 <span>Tiến hành Thanh toán</span>
-                <ChevronRight className="h-5 w-5" strokeWidth={3} />
+                <ChevronRight className="size-5" strokeWidth={3} />
             </Button>
 
             <div className="mt-8 flex flex-col gap-4">
                 <p className="text-[10px] text-center text-on-surface-variant uppercase tracking-widest font-bold">Thanh toán Bảo mật bởi</p>
                 <div className="flex justify-center gap-6 opacity-40 grayscale contrast-125">
-                    <ShieldCheck className="h-6 w-6" />
+                    <ShieldCheck className="size-6" />
                     <div className="w-8 h-4 bg-foreground/20 rounded-sm" />
                     <div className="w-8 h-4 bg-foreground/30 rounded-sm" />
                 </div>

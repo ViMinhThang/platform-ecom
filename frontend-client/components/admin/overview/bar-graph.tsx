@@ -2,7 +2,12 @@
 
 import * as React from 'react';
 import { TrendingUp } from 'lucide-react';
-import { Bar, BarChart, XAxis, YAxis } from 'recharts';
+import dynamic from 'next/dynamic';
+
+const BarChart = dynamic(() => import('recharts').then(m => ({ default: m.BarChart })), { ssr: false }) as React.ComponentType<any>;
+const Bar = dynamic(() => import('recharts').then(m => ({ default: m.Bar })), { ssr: false }) as React.ComponentType<any>;
+const XAxis = dynamic(() => import('recharts').then(m => ({ default: m.XAxis })), { ssr: false }) as React.ComponentType<any>;
+const YAxis = dynamic(() => import('recharts').then(m => ({ default: m.YAxis })), { ssr: false }) as React.ComponentType<any>;
 
 import {
   Card,
@@ -52,7 +57,7 @@ export function BarGraph({ data }: BarGraphProps) {
 
   return (
     <Card className='@container/card !pt-3'>
-      <CardHeader className='flex flex-col items-stretch space-y-0 border-b !p-0 sm:flex-row'>
+      <CardHeader className='flex flex-col items-stretch gap-y-0 border-b !p-0 sm:flex-row'>
         <div className='flex flex-1 flex-col justify-center gap-1 px-6 !py-0'>
           <CardTitle>Doanh thu theo tháng</CardTitle>
           <CardDescription>
@@ -122,11 +127,11 @@ export function BarGraph({ data }: BarGraphProps) {
               tickMargin={8}
               width={60}
               tick={{ fontSize: 11 }}
-              tickFormatter={(value) => 
-                value >= 1000000 
-                  ? `${(value / 1000000).toFixed(1)}M` 
-                  : value >= 1000 
-                    ? `${(value / 1000).toFixed(0)}K` 
+              tickFormatter={(value: number) =>
+                value >= 1000000
+                  ? `${(value / 1000000).toFixed(1)}M`
+                  : value >= 1000
+                    ? `${(value / 1000).toFixed(0)}K`
                     : value.toString()
               }
             />

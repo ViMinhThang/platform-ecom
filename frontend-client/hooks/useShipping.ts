@@ -36,7 +36,7 @@ export function useShipping() {
             }
 
             // Sort services to prefer "Chuan"
-            const sortedServices = [...services].sort((a, b) => {
+            const sortedServices = services.toSorted((a, b) => {
                 if (a.short_name === "Chuan") return -1;
                 if (b.short_name === "Chuan") return 1;
                 return 0;
@@ -91,11 +91,11 @@ export function useShipping() {
                 setShippingFee(feeData.total);
             } else {
                 logger.error("All shipping services failed", lastError);
-                throw lastError || new Error("No suitable shipping service found");
+                throw lastError || new Error("Không tìm thấy dịch vụ vận chuyển phù hợp");
             }
         } catch (error) {
             logger.error("Failed to calculate shipping:", error);
-            toast.error("Failed to calculate shipping fee");
+            toast.error("Không thể tính phí vận chuyển");
         } finally {
             setLoading(false);
         }

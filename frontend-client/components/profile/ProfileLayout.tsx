@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import { Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import { User, MapPin, LogOut } from 'lucide-react';
@@ -24,9 +25,10 @@ const sidebarItems = [
     },
 ];
 
-export function ProfileLayout({ children }: ProfileLayoutProps) {
+function ProfileLayoutContent({ children }: ProfileLayoutProps) {
     const searchParams = useSearchParams();
-    const currentTab = searchParams.get('tab') || 'profile';
+    const get = searchParams.get.bind(searchParams);
+    const currentTab = get('tab') || 'profile';
 
     return (
         <div className="bg-background min-h-screen font-labels antialiased">
@@ -42,7 +44,7 @@ export function ProfileLayout({ children }: ProfileLayoutProps) {
             </div>
 
             <div className="container max-w-[1600px] py-20 mx-auto px-12">
-                <div className="flex flex-col space-y-12 lg:flex-row lg:space-y-0 gap-16 items-start">
+                <div className="flex flex-col gap-y-12 lg:flex-row lg:gap-y-0 gap-16 items-start">
                     {/* SIDEBAR: WHITE CARD LIST */}
                     <aside className="lg:w-80 shrink-0 sticky top-40">
                         <nav className="bg-white border border-foreground/10 p-2 rounded-[4px] shadow-sm overflow-hidden">
@@ -68,7 +70,7 @@ export function ProfileLayout({ children }: ProfileLayoutProps) {
                                                     : "text-foreground/40 hover:bg-muted/30 border-transparent hover:text-foreground/60"
                                             )}
                                         >
-                                            <item.icon className={cn("h-4 w-4", isActive ? "text-primary" : "text-foreground/20")} />
+                                            <item.icon className={cn("size-4", isActive ? "text-primary" : "text-foreground/20")} />
                                             {item.title}
                                         </Link>
                                     );
@@ -81,7 +83,7 @@ export function ProfileLayout({ children }: ProfileLayoutProps) {
                                     className="justify-start gap-4 w-full rounded-sm p-5 h-auto text-red-500 hover:text-red-600 hover:bg-red-50/50 text-[11px] font-bold uppercase tracking-widest transition-all border border-transparent hover:border-red-100/20 font-labels"
                                     onClick={() => signOut({ callbackUrl: '/' })}
                                 >
-                                    <LogOut className="h-4 w-4" />
+                                    <LogOut className="size-4" />
                                     ĐĂNG XUẤT
                                 </Button>
                             </div>
@@ -97,5 +99,13 @@ export function ProfileLayout({ children }: ProfileLayoutProps) {
                 </div>
             </div>
         </div>
+    );
+}
+
+export function ProfileLayout(props: ProfileLayoutProps) {
+    return (
+        <Suspense fallback={<div className="min-h-screen animate-pulse bg-secondary/10" />}>
+            <ProfileLayoutContent {...props} />
+        </Suspense>
     );
 }

@@ -17,17 +17,17 @@ import { FormSelect, type FormOption } from '@/components/admin/form-select';
 import { FormTextarea } from '@/components/admin/form-textarea';
 
 const voucherSchema = z.object({
-    name: z.string().min(1, 'Tên voucher là bắt buộc'),
+    name: z.string().min(1, 'Tên mã giảm giá là bắt buộc'),
     code: z.string().optional(),
     description: z.string().optional(),
     type: z.enum(['PERCENTAGE', 'FIXED_AMOUNT'] as const),
     category: z.enum(['PRODUCT', 'SHIPPING'] as const),
     applyMode: z.enum(['AUTO', 'CODE_REQUIRED'] as const),
     discountValue: z.number().min(0, 'Giá trị giảm phải >= 0'),
-    minOrderAmount: z.number().min(0).optional(),
-    maxDiscountAmount: z.number().min(0).optional(),
-    usageLimit: z.number().min(0).optional(),
-    usageLimitPerUser: z.number().min(0).optional(),
+    minOrderAmount: z.number().min(0, 'Đơn tối thiểu phải >= 0').optional(),
+    maxDiscountAmount: z.number().min(0, 'Giảm tối đa phải >= 0').optional(),
+    usageLimit: z.number().min(0, 'Số lần sử dụng tối đa phải >= 0').optional(),
+    usageLimitPerUser: z.number().min(0, 'Số lần sử dụng mỗi người phải >= 0').optional(),
     startTime: z.string().min(1, 'Thời gian bắt đầu là bắt buộc'),
     endTime: z.string().min(1, 'Thời gian kết thúc là bắt buộc'),
 }).refine((data) => {
@@ -110,7 +110,7 @@ export function VoucherForm({ voucher, onSubmit, loading }: VoucherFormProps) {
                         <FormInput
                             control={form.control}
                             name="name"
-                            label="Tên voucher"
+                            label="Tên mã giảm giá"
                             placeholder="VD: Giảm 20% đơn đầu tiên"
                             required
                         />
@@ -119,7 +119,7 @@ export function VoucherForm({ voucher, onSubmit, loading }: VoucherFormProps) {
                             <FormInput
                                 control={form.control}
                                 name="code"
-                                label="Mã voucher"
+                                label="Mã giảm giá"
                                 placeholder="VD: WELCOME20"
                                 description="Để trống sẽ tự động tạo mã"
                             />
@@ -129,7 +129,7 @@ export function VoucherForm({ voucher, onSubmit, loading }: VoucherFormProps) {
                             control={form.control}
                             name="description"
                             label="Mô tả"
-                            placeholder="Mô tả voucher..."
+                            placeholder="Mô tả mã giảm giá..."
                         />
                     </CardContent>
                 </Card>
@@ -241,7 +241,7 @@ export function VoucherForm({ voucher, onSubmit, loading }: VoucherFormProps) {
 
             <div className="flex justify-end gap-4">
                 <Button type="submit" disabled={loading}>
-                    {loading ? 'Đang lưu...' : voucher ? 'Cập nhật' : 'Tạo voucher'}
+                    {loading ? 'Đang lưu...' : voucher ? 'Cập nhật' : 'Tạo mã giảm giá'}
                 </Button>
             </div>
         </Form>

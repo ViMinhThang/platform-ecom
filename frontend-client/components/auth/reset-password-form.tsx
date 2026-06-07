@@ -32,10 +32,11 @@ const formSchema = z.object({
 
 type FormValue = z.infer<typeof formSchema>;
 
-export function ResetPasswordForm({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) {
-    const router = useRouter();
+function ResetPasswordFormContent({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) {
+    const { push } = useRouter();
     const searchParams = useSearchParams();
-    const emailParam = searchParams.get("email") || "";
+    const get = searchParams.get.bind(searchParams);
+    const emailParam = get("email") || "";
     const [loading, setLoading] = React.useState(false);
     const [otp, setOtp] = React.useState("");
     const [otpError, setOtpError] = React.useState("");
@@ -83,7 +84,7 @@ export function ResetPasswordForm({ className, ...props }: React.HTMLAttributes<
             }
 
             toast.success("Mật khẩu đã được đặt lại thành công!");
-            router.push("/auth/sign-in");
+            push("/auth/sign-in");
         } catch {
             toast.error("Đã xảy ra lỗi. Vui lòng thử lại.");
         } finally {
@@ -113,7 +114,7 @@ export function ResetPasswordForm({ className, ...props }: React.HTMLAttributes<
                                         autoCapitalize="none"
                                         autoComplete="email"
                                         disabled={loading}
-                                        icon={<Mail className="h-4 w-4" />}
+                                        icon={<Mail className="size-4" />}
                                         error={fieldState.error?.message}
                                         {...field}
                                     />
@@ -124,9 +125,9 @@ export function ResetPasswordForm({ className, ...props }: React.HTMLAttributes<
                     />
 
                     <div className="space-y-2">
-                        <label className="block text-sm font-medium text-foreground/80">
+                        <p className="block text-sm font-medium text-foreground/80">
                             Mã xác thực
-                        </label>
+                        </p>
                         <OtpInput
                             value={otp}
                             onChange={(value) => {
@@ -152,7 +153,7 @@ export function ResetPasswordForm({ className, ...props }: React.HTMLAttributes<
                                             autoCapitalize="none"
                                             autoComplete="new-password"
                                             disabled={loading}
-                                            icon={<Lock className="h-4 w-4" />}
+                                            icon={<Lock className="size-4" />}
                                             {...field}
                                         />
                                         <PasswordStrength password={newPassword} />
@@ -180,7 +181,7 @@ export function ResetPasswordForm({ className, ...props }: React.HTMLAttributes<
                                         autoCapitalize="none"
                                         autoComplete="new-password"
                                         disabled={loading}
-                                        icon={<Lock className="h-4 w-4" />}
+                                        icon={<Lock className="size-4" />}
                                         error={fieldState.error?.message}
                                         {...field}
                                     />
@@ -199,12 +200,20 @@ export function ResetPasswordForm({ className, ...props }: React.HTMLAttributes<
                 Chưa nhận được mã?{" "}
                 <button
                     type="button"
-                    onClick={() => router.push("/auth/forgot-password")}
+                    onClick={() => push("/auth/forgot-password")}
                     className="font-semibold text-primary hover:underline"
                 >
                     Gửi lại mã xác thực
                 </button>
             </p>
         </div>
+    );
+}
+
+export function ResetPasswordForm(props: React.HTMLAttributes<HTMLDivElement>) {
+    return (
+        <React.Suspense fallback={<div className="h-64 animate-pulse bg-secondary/10 rounded-sm" />}>
+            <ResetPasswordFormContent {...props} />
+        </React.Suspense>
     );
 }

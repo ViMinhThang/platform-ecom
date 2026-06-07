@@ -15,6 +15,7 @@ export function SellerCard({ id, name, image }: SellerCardProps) {
                     src={imageUrl.avatar(image)}
                     alt={name}
                     fill
+                    sizes="80px"
                     className="object-cover transition-transform"
                 />
             </div>

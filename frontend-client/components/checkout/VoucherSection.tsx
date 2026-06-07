@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import type { Dispatch, SetStateAction } from 'react';
 import { useGetAutoApplyVouchersQuery, useValidateVoucherMutation, useGetUserProfileQuery } from '@/lib/store/api/clientApi';
+
+const EMPTY_VOUCHER_CODES: string[] = [];
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
@@ -20,7 +22,7 @@ interface VoucherSectionProps {
 
 export function VoucherSection({
     discountResult,
-    appliedVoucherCodes = [],
+    appliedVoucherCodes = EMPTY_VOUCHER_CODES,
     onAppliedVoucherCodesChange,
 }: VoucherSectionProps) {
     const { data: availableVouchers = [] } = useGetAutoApplyVouchersQuery();
@@ -31,9 +33,9 @@ export function VoucherSection({
     return (
         <div className="mb-6 space-y-4">
             <div className="flex items-center justify-between">
-                <h3 className="text-[11px] font-bold uppercase tracking-[0.2em] flex items-center gap-2 text-foreground">
-                    <TicketPercent className="h-4 w-4 text-primary" />
-                    Vouchers
+                <h3 className="text-[11px] font-semibold uppercase tracking-[0.2em] flex items-center gap-2 text-foreground">
+                    <TicketPercent className="size-4 text-primary" />
+                    Mã giảm giá
                 </h3>
                 <VoucherManagerSheet
                     availableVouchers={availableVouchers}
@@ -47,12 +49,12 @@ export function VoucherSection({
                 <div className="bg-muted/30 border border-border p-4 rounded-sm space-y-3">
                     {appliedVoucherCodes.map(code => {
                         const voucher = availableVouchers.find(v => (v.code === code || `ID:${v.id}` === code));
-                        const displayCode = voucher ? (voucher.code || 'AUTO APPLY') : code;
+                        const displayCode = voucher ? (voucher.code || 'TỰ ĐỘNG') : code;
                         return (
                             <div key={code} className="flex items-center justify-between text-[10px] font-bold uppercase tracking-widest">
                                 <span className="text-foreground">{displayCode}</span>
                                 <Badge variant="secondary" className="bg-primary/10 text-primary border-none rounded-sm text-[8px] tracking-[0.1em]">
-                                    APPLIED
+                                    ĐÃ ÁP DỤNG
                                 </Badge>
                             </div>
                         );
@@ -65,7 +67,7 @@ export function VoucherSection({
                     )}
                 </div>
             ) : (
-                <div className="text-[10px] text-muted-foreground font-bold uppercase tracking-widest opacity-50 italic">Chưa áp dụng voucher</div>
+                <div className="text-[10px] text-muted-foreground font-bold uppercase tracking-widest opacity-50 italic">Chưa áp dụng mã giảm giá</div>
             )}
         </div>
     );
@@ -91,17 +93,17 @@ function VoucherManagerSheet({ availableVouchers, discountResult, appliedCodes, 
     const handleAddVoucher = async () => {
         if (!inputCode) return;
         if (!user) {
-            toast.error("Please login to apply vouchers");
+            toast.error("Vui lòng đăng nhập để áp dụng mã giảm giá");
             return;
         }
 
         try {
             await validateVoucher({ code: inputCode, userId: Number(user.userId) }).unwrap();
-            toast.success("Voucher added!");
+            toast.success("Đã thêm mã giảm giá!");
             setAppliedCodes(prev => (prev.includes(inputCode) ? prev : [...prev, inputCode]));
             setInputCode('');
         } catch (err) {
-            toast.error((err as Error).message || "Invalid voucher");
+            toast.error((err as Error).message || "Mã giảm giá không hợp lệ");
         }
     };
 
@@ -136,17 +138,17 @@ function VoucherManagerSheet({ availableVouchers, discountResult, appliedCodes, 
         <Sheet open={isOpen} onOpenChange={setIsOpen}>
             <SheetTrigger asChild>
                 <Button variant="outline" size="sm" className="text-xs font-bold uppercase tracking-wider h-8">
-                    Select / Add
+                    Chọn / Thêm
                 </Button>
             </SheetTrigger>
             <SheetContent className="w-full sm:max-w-md flex flex-col h-full p-0 gap-0">
                 <SheetHeader className="p-6 border-b border-border">
-                    <SheetTitle className="text-base font-bold uppercase tracking-[0.2em] text-foreground">Vouchers</SheetTitle>
+                    <SheetTitle className="text-base font-bold uppercase tracking-[0.2em] text-foreground">Mã giảm giá</SheetTitle>
                 </SheetHeader>
                 
                 <div className="flex-1 overflow-y-auto p-6 space-y-8">
                     <div className="space-y-3">
-                        <Label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Nhập mã voucher</Label>
+                        <Label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Nhập mã giảm giá</Label>
                         <div className="flex gap-2">
                             <Input 
                                 value={inputCode}
@@ -155,15 +157,15 @@ function VoucherManagerSheet({ availableVouchers, discountResult, appliedCodes, 
                                 className="font-bold uppercase tracking-widest h-12"
                             />
                             <Button onClick={handleAddVoucher} disabled={checkingCode || !inputCode} className="h-12 px-6">
-                                {checkingCode ? <Loader2 className="h-4 w-4 animate-spin" /> : 'THÊM'}
+                                {checkingCode ? <Loader2 className="size-4 animate-spin" /> : 'THÊM'}
                             </Button>
                         </div>
                     </div>
 
                     <div className="space-y-4">
                         <div className="flex items-center gap-2">
-                            <Label className="text-sm font-black uppercase tracking-wider">Product Discounts</Label>
-                            <Badge variant="outline" className="text-[10px]">Select 1</Badge>
+                            <Label className="text-sm font-black uppercase tracking-wider">Giảm giá sản phẩm</Label>
+                            <Badge variant="outline" className="text-[10px]">Chọn 1</Badge>
                         </div>
                         
                         {productVouchers.length > 0 ? (
@@ -172,22 +174,22 @@ function VoucherManagerSheet({ availableVouchers, discountResult, appliedCodes, 
                                 onValueChange={(val) => handleSelection('PRODUCT', val)}
                                 className="gap-3"
                             >
-                                <div className="flex items-center space-x-2 border p-3 rounded-sm">
+                                <div className="flex items-center gap-x-2 border p-3 rounded-sm">
                                     <RadioGroupItem value="NONE" id="prod-none" />
-                                    <Label htmlFor="prod-none" className="text-sm cursor-pointer flex-1 text-zinc-500">None</Label>
+                                    <Label htmlFor="prod-none" className="text-sm cursor-pointer flex-1 text-zinc-500">Không sử dụng</Label>
                                 </div>
                                 {productVouchers.map(v => (
                                     <VoucherItem key={v.id} voucher={v} appliedCodes={appliedCodes} discountResult={discountResult} />
                                 ))}
                             </RadioGroup>
                         ) : (
-                            <p className="text-xs text-zinc-400 italic">No product vouchers available</p>
+                            <p className="text-xs text-zinc-400 italic">Không có mã giảm giá sản phẩm</p>
                         )}
                     </div>
 
                     <div className="space-y-4">
                         <div className="flex items-center gap-2">
-                            <Label className="text-[11px] font-bold uppercase tracking-widest">Voucher Vận Chuyển</Label>
+                            <Label className="text-[11px] font-bold uppercase tracking-widest">Mã giảm giá vận chuyển</Label>
                             <Badge variant="outline" className="text-[8px] font-bold uppercase tracking-widest border-primary/20 text-primary">Chọn 1</Badge>
                         </div>
                         
@@ -197,7 +199,7 @@ function VoucherManagerSheet({ availableVouchers, discountResult, appliedCodes, 
                                 onValueChange={(val) => handleSelection('SHIPPING', val)}
                                 className="gap-4"
                             >
-                                <div className="flex items-center space-x-3 border border-border p-4 rounded-sm hover:bg-muted/30 transition-colors">
+                                <div className="flex items-center gap-x-3 border border-border p-4 rounded-sm hover:bg-muted/30 transition-colors">
                                     <RadioGroupItem value="NONE" id="ship-none" />
                                     <Label htmlFor="ship-none" className="text-[10px] font-bold uppercase tracking-widest cursor-pointer flex-1 text-muted-foreground">Không sử dụng</Label>
                                 </div>
@@ -206,7 +208,7 @@ function VoucherManagerSheet({ availableVouchers, discountResult, appliedCodes, 
                                 ))}
                             </RadioGroup>
                         ) : (
-                            <p className="text-[10px] text-muted-foreground font-bold uppercase tracking-widest opacity-50 italic">Không có voucher vận chuyển</p>
+                            <p className="text-[10px] text-muted-foreground font-bold uppercase tracking-widest opacity-50 italic">Không có mã giảm giá vận chuyển</p>
                         )}
                     </div>
                 </div>
@@ -241,14 +243,14 @@ function VoucherItem({ voucher, appliedCodes, discountResult }: VoucherItemProps
     return (
         <Label 
             htmlFor={voucherIdentifier} 
-            className={`flex items-start space-x-4 border p-4 rounded-sm cursor-pointer transition-all duration-300 relative overflow-hidden group ${isApplied ? 'border-primary bg-primary/[0.03]' : 'border-border hover:bg-muted/30'}`}
+            className={`flex items-start gap-x-4 border p-4 rounded-sm cursor-pointer transition-all duration-300 relative overflow-hidden group ${isApplied ? 'border-primary bg-primary/[0.03]' : 'border-border hover:bg-muted/30'}`}
         >
             <RadioGroupItem value={voucherIdentifier} id={voucherIdentifier} className="mt-1" />
             <div className="flex-1 space-y-2">
                 <div className="flex justify-between items-center">
                     <span className="font-bold text-[13px] tracking-widest uppercase flex items-center gap-2 text-foreground">
                         {voucher.code || 'MÃ TỰ ĐỘNG'}
-                        {isActuallyApplied && <Check className="h-4 w-4 text-primary" />}
+                        {isActuallyApplied && <Check className="size-4 text-primary" />}
                     </span>
                     <div className="flex flex-col items-end gap-1.5">
                         <Badge className={`${isActuallyApplied ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground'} text-[9px] font-bold tracking-widest uppercase rounded-sm border-none`}>
@@ -264,7 +266,7 @@ function VoucherItem({ voucher, appliedCodes, discountResult }: VoucherItemProps
                 {voucher.minOrderAmount > 0 && (
                     <div className="text-[9px] font-bold uppercase tracking-widest text-primary flex items-center gap-1.5 pt-1">
                         <div className="bg-primary/10 p-1 rounded-sm">
-                            <AlertCircle className="h-3 w-3" />
+                            <AlertCircle className="size-3" />
                         </div>
                         Đơn tối thiểu {formatCurrency(voucher.minOrderAmount)}
                     </div>

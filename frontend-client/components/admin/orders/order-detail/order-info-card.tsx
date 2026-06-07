@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { Badge } from '@/components/ui/badge';
 import { formatCurrency } from '@/lib/utils';
+import { getPaymentStatusLabel } from '@/lib/utils/order-labels';
 import { User, CreditCard, MapPin } from 'lucide-react';
 
 interface OrderInfoCardProps {
@@ -18,11 +19,11 @@ export const OrderInfoCard: React.FC<OrderInfoCardProps> = ({ order }) => {
                 <CardTitle>Tổng quan đơn hàng</CardTitle>
             </CardHeader>
             <CardContent className="space-y-6">
-                {/* Payment Status */}
+                {/* Trạng thái thanh toán */}
                 <div className="flex justify-between items-center">
                     <span className="text-sm font-medium">Trạng thái thanh toán</span>
                     <Badge variant={order.paymentStatus === 'COMPLETED' ? 'default' : 'secondary'}>
-                        {order.paymentStatus}
+                        {getPaymentStatusLabel(order.paymentStatus)}
                     </Badge>
                 </div>
 
@@ -31,7 +32,7 @@ export const OrderInfoCard: React.FC<OrderInfoCardProps> = ({ order }) => {
                 {/* Customer Info */}
                 <div className="space-y-2">
                     <div className="flex items-center gap-2 text-sm font-medium">
-                        <User className="h-4 w-4" /> Khách hàng
+                        <User className="size-4" /> Khách hàng
                     </div>
                     <div className="text-sm text-muted-foreground pl-6">
                         <p>{order.userName}</p>
@@ -44,7 +45,7 @@ export const OrderInfoCard: React.FC<OrderInfoCardProps> = ({ order }) => {
                 {/* Shipping Address */}
                 <div className="space-y-2">
                     <div className="flex items-center gap-2 text-sm font-medium">
-                        <MapPin className="h-4 w-4" /> Địa chỉ giao hàng
+                        <MapPin className="size-4" /> Địa chỉ giao hàng
                     </div>
                     <div className="text-sm text-muted-foreground pl-6">
                         <p>{order.shippingAddress.street}</p>
@@ -60,7 +61,7 @@ export const OrderInfoCard: React.FC<OrderInfoCardProps> = ({ order }) => {
                 {/* Financials */}
                 <div className="space-y-2">
                     <div className="flex items-center gap-2 text-sm font-medium">
-                        <CreditCard className="h-4 w-4" /> Chi tiết thanh toán
+                        <CreditCard className="size-4" /> Chi tiết thanh toán
                     </div>
                     <div className="space-y-1 pt-2">
                         <div className="flex justify-between text-sm">

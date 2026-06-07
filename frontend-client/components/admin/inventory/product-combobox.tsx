@@ -58,19 +58,18 @@ export function ProductCombobox({ value, onChange, disabled }: ProductComboboxPr
             <PopoverTrigger asChild>
                 <Button
                     variant="outline"
-                    role="combobox"
                     aria-expanded={open}
                     className="w-full justify-between"
                     disabled={disabled}
                 >
                     {loading ? (
-                        <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Đang tải...</>
+                        <><Loader2 className="mr-2 size-4 animate-spin" /> Đang tải…</>
                     ) : value ? (
                         <span className="truncate">{value.name}</span>
                     ) : (
                         "Chọn sản phẩm..."
                     )}
-                    <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                    <ChevronsUpDown className="ml-2 size-4 shrink-0 opacity-50" />
                 </Button>
             </PopoverTrigger>
             <PopoverContent className="w-[350px] p-0">
@@ -95,7 +94,7 @@ export function ProductCombobox({ value, onChange, disabled }: ProductComboboxPr
                                 >
                                     <Check
                                         className={cn(
-                                            "mr-2 h-4 w-4",
+                                            "mr-2 size-4",
                                             value?.id === product.id ? "opacity-100" : "opacity-0"
                                         )}
                                     />

@@ -7,12 +7,14 @@ import { Pagination } from "@/components/common/Pagination";
 import { Suspense } from "react";
 
 function ProductsPageContent() {
-  const router = useRouter();
+  const { push } = useRouter();
   const searchParams = useSearchParams();
+  const get = searchParams.get.bind(searchParams);
+  const toString = searchParams.toString.bind(searchParams);
   
-  const page = Number(searchParams.get("page")) || 0;
-  const category = searchParams.get("category") || undefined;
-  const search = searchParams.get("search") || undefined;
+  const page = Number(get("page")) || 0;
+  const category = get("category") || undefined;
+  const search = get("search") || undefined;
 
   const { data, isLoading, isError, error } = useGetProductsQuery({
     page,
@@ -28,16 +30,16 @@ function ProductsPageContent() {
   } : { pageNumber: 0, totalPages: 0 };
 
   const handlePageChange = (newPage: number) => {
-    const params = new URLSearchParams(searchParams.toString());
+    const params = new URLSearchParams(toString());
     params.set("page", newPage.toString());
-    router.push(`${window.location.pathname}?${params.toString()}`);
+    push(`${window.location.pathname}?${params.toString()}`);
   };
 
   return (
     <div className="bg-surface-container-low min-h-screen">
       <div className="max-w-[1600px] mx-auto py-16 md:py-24 px-6 md:px-12">
         <div className="mb-12 space-y-3">
-          <h1 className="font-labels font-bold text-3xl md:text-4xl tracking-tight text-foreground">
+          <h1 className="font-labels font-semibold text-3xl md:text-4xl tracking-tight text-foreground">
             {category ? `${category}` : search ? `Tìm kiếm: ${search}` : "Tất cả sản phẩm"}
           </h1>
           <div className="flex items-center gap-4">

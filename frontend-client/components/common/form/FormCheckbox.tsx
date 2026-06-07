@@ -33,7 +33,7 @@ export function FormCheckbox<T extends FieldValues>({
 }: FormCheckboxProps<T>) {
     return (
         <div className="space-y-2">
-            <div className="flex items-center space-x-2">
+            <div className="flex items-center gap-x-2">
                 <Controller
                     control={control}
                     name={name}

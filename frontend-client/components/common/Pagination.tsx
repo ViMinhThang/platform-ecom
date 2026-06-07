@@ -38,18 +38,18 @@ export function Pagination({
     const isLastPage = currentPage === totalPages - 1;
 
     return (
-        <div className={cn("flex justify-center items-center space-x-2 pt-4", className)}>
+        <div className={cn("flex justify-center items-center gap-x-2 pt-4", className)}>
             <Button
                 variant="outline"
                 size="sm"
                 onClick={() => onPageChange(currentPage - 1)}
                 disabled={isFirstPage || disabled}
             >
-                <ChevronLeft className="h-4 w-4" />
+                <ChevronLeft className="size-4" />
             </Button>
 
             <span className="text-sm text-muted-foreground">
-                Page {currentPage + 1} of {totalPages}
+                Trang {currentPage + 1} / {totalPages}
             </span>
 
             <Button
@@ -58,7 +58,7 @@ export function Pagination({
                 onClick={() => onPageChange(currentPage + 1)}
                 disabled={isLastPage || disabled}
             >
-                <ChevronRight className="h-4 w-4" />
+                <ChevronRight className="size-4" />
             </Button>
         </div>
     );

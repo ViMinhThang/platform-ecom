@@ -13,12 +13,12 @@ import { UserAvatarProfile } from '@/components/user-avatar-profile';
 import { useRouter } from 'next/navigation';
 export function UserNav() {
   // const { user } = useUser();
-  const router = useRouter();
+  const { push } = useRouter();
   // if (user) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant='ghost' className='relative h-8 w-8 rounded-full'>
+        <Button variant='ghost' className='relative size-8 rounded-full'>
           {/* <UserAvatarProfile user={user} /> */}
         </Button>
       </DropdownMenuTrigger>
@@ -29,7 +29,7 @@ export function UserNav() {
         forceMount
       >
         <DropdownMenuLabel className='font-normal'>
-          <div className='flex flex-col space-y-1'>
+          <div className='flex flex-col gap-y-1'>
             <p className='text-sm leading-none font-medium'>
               {"1231232"}
             </p>
@@ -40,7 +40,7 @@ export function UserNav() {
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          <DropdownMenuItem onClick={() => router.push('/admin/dashboard/profile')}>
+          <DropdownMenuItem onClick={() => push('/admin/dashboard/profile')}>
             Hồ sơ
           </DropdownMenuItem>
           <DropdownMenuItem>Thanh toán</DropdownMenuItem>

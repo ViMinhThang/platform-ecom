@@ -58,7 +58,7 @@ apiClient.interceptors.response.use(
             const message = (error.response.data as any)?.message || error.message;
             return Promise.reject(new ApiError(message, error.response.status, error.response.data));
         } else if (error.request) {
-            return Promise.reject(new NetworkError('No response from server'));
+            return Promise.reject(new NetworkError('Máy chủ không phản hồi'));
         } else {
             return Promise.reject(new NetworkError(error.message));
         }

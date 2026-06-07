@@ -15,21 +15,21 @@ export async function CategorySidebar() {
 
   return (
     <aside className="w-full h-full bg-background border rounded-lg p-4">
-      <h3 className="font-semibold mb-4 px-2">Categories</h3>
-      <nav className="flex flex-col space-y-1">
+      <h3 className="font-semibold mb-4 px-2">Danh mục</h3>
+      <nav className="flex flex-col gap-y-1">
         {categories.length > 0 ? (
           categories.map((category) => (
             <Link
               key={category.id}
               href={`/category/${category.slug}`}
-              className="flex items-center justify-between px-2 py-2 text-sm text-muted-foreground hover:bg-zinc-100 hover:text-foreground rounded-md transition-colors"
+              className="flex items-center justify-between p-2 text-sm text-muted-foreground hover:bg-zinc-100 hover:text-foreground rounded-md transition-colors"
             >
               {category.name}
-              <ChevronRight className="h-4 w-4 opacity-50" />
+              <ChevronRight className="size-4 opacity-50" />
             </Link>
           ))
         ) : (
-          <p className="text-sm text-muted-foreground px-2">No categories available</p>
+          <p className="text-sm text-muted-foreground px-2">Chưa có danh mục nào</p>
         )}
       </nav>
     </aside>

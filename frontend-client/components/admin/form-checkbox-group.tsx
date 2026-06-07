@@ -59,7 +59,7 @@ function FormCheckboxGroup<
           {description && <FormDescription>{description}</FormDescription>}
           <div className={`grid gap-4 ${gridCols[columns]}`}>
             {options.map((option, index) => (
-              <div key={option.value || `option-${index}`} className='flex items-center space-x-2'>
+              <div key={option.value || `option-${index}`} className='flex items-center gap-x-2'>
                 <FormControl>
                   <Checkbox
                     id={`${name}-${option.value || index}`}
@@ -90,9 +90,8 @@ function FormCheckboxGroup<
           </div>
           {showBadges && field.value && field.value.length > 0 && (
             <div className='mt-2 flex flex-wrap gap-2'>
-              {field.value
-                .filter((value: string) => value != null) // Filter out null/undefined
-                .map((value: string, index: number) => {
+              {(field.value as string[]).map((value: string, index: number) => {
+                  if (value == null) return null;
                   const option = options.find((opt) => opt.value === value);
                   return (
                     <Badge key={value || `badge-${index}`} variant='secondary'>

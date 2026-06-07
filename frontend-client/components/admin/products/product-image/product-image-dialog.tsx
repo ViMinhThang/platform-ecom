@@ -38,21 +38,18 @@ export const ProductImageDialog: React.FC<ProductImageDialogProps> = ({
         <div className="space-y-4">
           {/* Upload Button */}
           <div className="flex justify-between items-center">
-            <label htmlFor="file-upload">
-              <Button asChild disabled={uploading}>
-                <div className="flex items-center gap-2 cursor-pointer">
-                  <IconUpload size={18} /> Tải lên hình ảnh
-                </div>
-              </Button>
-            </label>
-            <input
-              id="file-upload"
-              type="file"
-              accept="image/*"
-              multiple
-              className="hidden"
-              onChange={handleFileChange}
-            />
+            <Button asChild disabled={uploading}>
+              <label className="flex items-center gap-2 cursor-pointer">
+                <IconUpload size={18} /> Tải lên hình ảnh
+                <input
+                  type="file"
+                  accept="image/*"
+                  multiple
+                  className="hidden"
+                  onChange={handleFileChange}
+                />
+              </label>
+            </Button>
           </div>
 
           {/* Image Listing */}

@@ -14,7 +14,7 @@ export interface APIResponse<T> {
  */
 export function unwrapApiResponse<T>(response: APIResponse<T>): T {
     if (!response.success) {
-        throw new Error(response.message || 'Operation failed');
+        throw new Error(response.message || 'Thao tác thất bại');
     }
     return response.data;
 }

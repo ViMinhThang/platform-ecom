@@ -3,7 +3,7 @@
 import {
   ReactNode,
   createContext,
-  useContext,
+  use,
   useEffect,
   useState
 } from 'react';
@@ -38,11 +38,11 @@ export function ActiveThemeProvider({
   useEffect(() => {
     setThemeCookie(activeTheme);
 
-    Array.from(document.body.classList)
-      .filter((className) => className.startsWith('theme-'))
-      .forEach((className) => {
+    Array.from(document.body.classList).forEach((className) => {
+      if (className.startsWith('theme-')) {
         document.body.classList.remove(className);
-      });
+      }
+    });
     document.body.classList.add(`theme-${activeTheme}`);
     if (activeTheme.endsWith('-scaled')) {
       document.body.classList.add('theme-scaled');
@@ -57,7 +57,7 @@ export function ActiveThemeProvider({
 }
 
 export function useThemeConfig() {
-  const context = useContext(ThemeContext);
+  const context = use(ThemeContext);
   if (context === undefined) {
     throw new Error(
       'useThemeConfig must be used within an ActiveThemeProvider'

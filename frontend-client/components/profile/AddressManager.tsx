@@ -84,9 +84,9 @@ export function AddressManager({ addresses, onUpdate }: AddressManagerProps) {
     return (
         <div className="space-y-6">
             <div className="items-center justify-between mb-8 hidden">
-                <h3 className="text-xl font-bold uppercase tracking-tighter text-foreground">Địa chỉ của tôi <span className="text-primary italic">({addresses.length}/5)</span></h3>
+                <h3 className="text-xl font-semibold uppercase tracking-tighter text-foreground">Địa chỉ của tôi <span className="text-primary italic">({addresses.length}/5)</span></h3>
                 <Button onClick={handleAddClick} disabled={addresses.length >= 5} className="rounded-sm shadow-md transition-all hover:shadow-lg">
-                    <Plus className="mr-2 h-4 w-4" /> Thêm địa chỉ mới
+                    <Plus className="mr-2 size-4" /> Thêm địa chỉ mới
                 </Button>
             </div>
 
@@ -97,8 +97,8 @@ export function AddressManager({ addresses, onUpdate }: AddressManagerProps) {
                     disabled={addresses.length >= 5}
                     className="flex flex-col items-center justify-center h-full min-h-[220px] border-2 border-dashed border-border hover:border-primary hover:bg-primary/5 transition-all group disabled:opacity-50 disabled:cursor-not-allowed rounded-sm bg-background shadow-sm hover:shadow-md"
                 >
-                    <div className="h-12 w-12 bg-primary/10 group-hover:bg-primary group-hover:text-primary-foreground text-primary flex items-center justify-center transition-all mb-6 rounded-sm shadow-sm">
-                        <Plus className="h-7 w-7" />
+                    <div className="size-12 bg-primary/10 group-hover:bg-primary group-hover:text-primary-foreground text-primary flex items-center justify-center transition-all mb-6 rounded-sm shadow-sm">
+                        <Plus className="size-7" />
                     </div>
                     <span className="font-bold uppercase tracking-[0.2em] text-[10px] text-foreground">Thêm địa chỉ giao hàng</span>
                     <span className="text-[9px] font-bold text-muted-foreground uppercase mt-2 opacity-50 tracking-widest">{addresses.length}/5 Slots used</span>
@@ -116,7 +116,7 @@ export function AddressManager({ addresses, onUpdate }: AddressManagerProps) {
 
                 {addresses.length === 0 && (
                     <div className="col-span-full py-20 flex flex-col items-center justify-center text-center bg-muted/5 rounded-sm border border-dashed border-border mt-6">
-                        <MapPin className="h-10 w-10 text-primary opacity-20 mb-4" />
+                        <MapPin className="size-10 text-primary opacity-20 mb-4" />
                         <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest opacity-60 italic">CHƯA CÓ ĐỊA CHỈ NÀO ĐƯỢC LƯU.</p>
                     </div>
                 )}
@@ -162,8 +162,8 @@ export function AddressManager({ addresses, onUpdate }: AddressManagerProps) {
                         >
                             {isDeleting !== null ? (
                                 <>
-                                    <span className="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
-                                    Đang xóa...
+                                    <span className="mr-2 size-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
+                                    Đang xóa…
                                 </>
                             ) : (
                                 'Xóa'

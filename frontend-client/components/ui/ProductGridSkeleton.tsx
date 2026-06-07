@@ -11,7 +11,7 @@ export function ProductGridSkeleton({ count = 10, className = "" }: ProductGridS
       {Array.from({ length: count }).map((_, i) => (
         <Card key={i} className="p-0 border border-border rounded-sm h-full flex flex-col animate-pulse bg-background shadow-sm">
           <CardContent className="p-0 aspect-square bg-muted/30 border-b border-border" />
-          <CardFooter className="flex flex-col items-start p-4 space-y-4 grow">
+          <CardFooter className="flex flex-col items-start p-4 gap-y-4 grow">
             <div className="h-4 bg-muted/40 w-full rounded-sm" />
             <div className="h-6 bg-muted/40 w-2/3 mt-auto rounded-sm" />
             <div className="flex justify-between w-full pt-4 border-t">

@@ -55,7 +55,7 @@ export const ProductFormFields: React.FC<ProductFormFieldsProps> = ({ control, c
       <JsonKeyValueEditor
         control={control}
         name="metadata"
-        label="Dữ liệu Meta"
+        label="Siêu dữ liệu"
       />
     </div>
   </div>

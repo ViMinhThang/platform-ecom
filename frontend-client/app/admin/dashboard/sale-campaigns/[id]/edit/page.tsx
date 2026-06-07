@@ -15,7 +15,7 @@ import Link from 'next/link';
 
 export default function EditSaleCampaignPage() {
     const params = useParams();
-    const router = useRouter();
+    const { push } = useRouter();
     const campaignId = Number(params.id);
 
     const [campaign, setCampaign] = useState<SaleCampaign | null>(null);
@@ -38,7 +38,7 @@ export default function EditSaleCampaignPage() {
     }, [campaignId]);
 
     if (loading) {
-        return <div className="p-8 text-center">Đang tải...</div>;
+        return <div className="p-8 text-center">Đang tải…</div>;
     }
 
     if (!campaign) {
@@ -48,7 +48,7 @@ export default function EditSaleCampaignPage() {
     if (campaign.status === 'ACTIVE') {
         return (
             <PageContainer scrollable={false}>
-                <div className="flex flex-col h-full items-center justify-center space-y-4">
+                <div className="flex flex-col h-full items-center justify-center gap-y-4">
                     <p className="text-destructive font-medium">
                         Không thể chỉnh sửa chiến dịch đang hoạt động
                     </p>
@@ -87,7 +87,7 @@ export default function EditSaleCampaignPage() {
             }
 
             toast.success('Cập nhật thành công');
-            router.push(`/admin/dashboard/sale-campaigns/${campaignId}`);
+            push(`/admin/dashboard/sale-campaigns/${campaignId}`);
         } catch (error) {
             console.error('Failed to update campaign:', error);
             toast.error('Cập nhật thất bại');

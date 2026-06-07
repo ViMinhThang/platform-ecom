@@ -2,7 +2,12 @@
 
 import * as React from 'react';
 import { TrendingUp } from 'lucide-react';
-import { Line, LineChart, XAxis, YAxis } from 'recharts';
+import dynamic from 'next/dynamic';
+
+const LineChart = dynamic(() => import('recharts').then(m => ({ default: m.LineChart })), { ssr: false }) as React.ComponentType<any>;
+const Line = dynamic(() => import('recharts').then(m => ({ default: m.Line })), { ssr: false }) as React.ComponentType<any>;
+const XAxis = dynamic(() => import('recharts').then(m => ({ default: m.XAxis })), { ssr: false }) as React.ComponentType<any>;
+const YAxis = dynamic(() => import('recharts').then(m => ({ default: m.YAxis })), { ssr: false }) as React.ComponentType<any>;
 
 import {
   Card,
@@ -62,7 +67,7 @@ export function TrendChart({ data }: TrendChartProps) {
             <CardDescription>Doanh thu và đơn hàng theo tháng</CardDescription>
           </div>
           <div className='flex items-center gap-1 text-xs text-emerald-600 font-medium'>
-            <TrendingUp className='h-3 w-3' />
+            <TrendingUp className='size-3' />
             {revenueGrowth}%
           </div>
         </div>
@@ -94,11 +99,11 @@ export function TrendChart({ data }: TrendChartProps) {
               tick={{ fontSize: 11 }}
               tickMargin={8}
               width={60}
-              tickFormatter={(value) => 
-                value >= 1000000 
-                  ? `${(value / 1000000).toFixed(1)}M` 
-                  : value >= 1000 
-                    ? `${(value / 1000).toFixed(0)}K` 
+              tickFormatter={(value: number) =>
+                value >= 1000000
+                  ? `${(value / 1000000).toFixed(1)}M`
+                  : value >= 1000
+                    ? `${(value / 1000).toFixed(0)}K`
                     : value.toString()
               }
             />
@@ -127,7 +132,7 @@ export function TrendChart({ data }: TrendChartProps) {
         </ChartContainer>
         <div className='flex items-center justify-center gap-6 mt-4'>
           <div className='flex items-center gap-2'>
-            <div className='h-2 w-2 rounded-full bg-primary' />
+            <div className='size-2 rounded-full bg-primary' />
             <span className='text-xs text-muted-foreground'>Doanh thu</span>
           </div>
           <div className='flex items-center gap-2'>

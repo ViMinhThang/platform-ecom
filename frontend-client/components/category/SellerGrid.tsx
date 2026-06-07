@@ -33,10 +33,10 @@ export function SellerGrid({ categorySlug }: SellerGridProps) {
     if (loading) {
         return (
             <div className="mb-12">
-                <h2 className="text-2xl font-bold mb-6">Top Sellers</h2>
+                <h2 className="text-2xl font-semibold mb-6">Người bán hàng đầu</h2>
                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
                     {[...Array(6)].map((_, i) => (
-                        <div key={i} className="space-y-2 animate-pulse">
+                        <div key={"skeleton-" + i} className="space-y-2 animate-pulse">
                             <div className="aspect-square w-full bg-muted rounded" />
                             <div className="h-4 w-3/4 mx-auto bg-muted rounded" />
                         </div>
@@ -52,14 +52,14 @@ export function SellerGrid({ categorySlug }: SellerGridProps) {
 
     return (
         <div className="mb-12">
-            <h2 className="text-2xl font-bold mb-6">Top Sellers</h2>
+            <h2 className="text-2xl font-semibold mb-6">Người bán hàng đầu</h2>
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
                 {sellers.map((seller) => (
                     <SellerCard
                         key={seller.sellerId}
                         id={seller.sellerId.toString()}
                         name={seller.sellerName}
-                        image={seller.imageUrl || "https://placehold.co/400x400/png?text=Seller"}
+                        image={seller.imageUrl || "https://placehold.co/400x400/png?text=Nguoi%20ban"}
                     />
                 ))}
             </div>

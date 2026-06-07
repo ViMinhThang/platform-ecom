@@ -56,7 +56,7 @@ export function CartItem({ item }: CartItemProps) {
                 <div className="flex justify-between items-start">
                     <div>
                         <span className="text-xs font-bold uppercase tracking-widest text-primary mb-1 block">SỰ LỰA CHỌN MỚI</span>
-                        <h3 className="text-xl font-bold font-headline leading-tight">{item.productName}</h3>
+                        <h3 className="text-xl font-semibold font-headline leading-tight">{item.productName}</h3>
                         <p className="text-sm text-on-surface-variant">
                             {item.variantName && <span>Loại: {item.variantName}</span>}
                             {item.variantName && <span className="mx-2">|</span>}
@@ -67,14 +67,14 @@ export function CartItem({ item }: CartItemProps) {
                 </div>
 
                 <div className="flex items-center justify-between mt-auto">
-                    {/* Quantity Controls: Editorial Style */}
+                    {/* Điều khiển số lượng */}
                     <div className="flex items-center bg-surface-container-low rounded-xl px-2 py-1 border border-border">
                         <button 
                             className="p-1 hover:text-primary transition-colors disabled:opacity-20"
                             onClick={() => handleQuantityChange(item.quantity - 1)}
                             disabled={item.quantity <= 1 || updating}
                         >
-                            <Minus className="h-4 w-4" strokeWidth={3} />
+                            <Minus className="size-4" strokeWidth={3} />
                         </button>
                         <span className="px-4 font-bold text-on-surface text-sm">{item.quantity}</span>
                         <button 
@@ -82,7 +82,7 @@ export function CartItem({ item }: CartItemProps) {
                             onClick={() => handleQuantityChange(item.quantity + 1)}
                             disabled={updating}
                         >
-                            <Plus className="h-4 w-4" strokeWidth={3} />
+                            <Plus className="size-4" strokeWidth={3} />
                         </button>
                     </div>
 
@@ -91,7 +91,7 @@ export function CartItem({ item }: CartItemProps) {
                         onClick={handleRemove}
                         disabled={updating}
                     >
-                        <X className="h-4 w-4 text-on-surface-variant/40 group-hover:text-destructive transition-colors" strokeWidth={3} />
+                        <X className="size-4 text-on-surface-variant/40 group-hover:text-destructive transition-colors" strokeWidth={3} />
                         <span>Gỡ bỏ</span>
                     </button>
                 </div>

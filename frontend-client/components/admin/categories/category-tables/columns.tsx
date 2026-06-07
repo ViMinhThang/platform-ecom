@@ -10,16 +10,17 @@ import Image from "next/image";
 export const columns: ColumnDef<Category>[] = [
   {
     id: "image",
-    header: "IMAGE",
+    header: "Hình ảnh",
     cell: ({ row }) => {
       const ProductRow = row.original;
       const imageUrl = ProductRow.imageUrl || "/placeholder.png";
       return (
-        <div className="relative w-16 h-16">
+        <div className="relative size-16">
           <Image
             src={`http://localhost:8080/uploads/${imageUrl}`}
             alt={ProductRow.name}
             fill
+            sizes="40px"
             className="object-cover rounded-md border"
           />
         </div>
@@ -30,12 +31,12 @@ export const columns: ColumnDef<Category>[] = [
     id: "name",
     accessorKey: "name",
     header: ({ column }: { column: Column<Category, unknown> }) => (
-      <DataTableColumnHeader column={column} title="Name" />
+      <DataTableColumnHeader column={column} title="Tên" />
     ),
     cell: ({ cell }) => <div>{cell.getValue<Category["name"]>()}</div>,
     meta: {
-      label: "Name",
-      placeholder: "Search category...",
+      label: "Tên",
+      placeholder: "Tìm danh mục...",
       variant: "text",
       icon: Text,
     },
@@ -43,11 +44,11 @@ export const columns: ColumnDef<Category>[] = [
   },
   {
     accessorKey: "createdAt",
-    header: "created at",
+    header: "Ngày tạo",
   },
   {
     accessorKey: "updatedAt",
-    header: "updated at",
+    header: "Ngày cập nhật",
   },
   {
     id: "actions",

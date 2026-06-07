@@ -27,12 +27,12 @@ export function StarRating({
 
     return (
       <span
-        key={index}
+        key={"star-" + index}
         className="relative inline-block"
         style={{ width: "1em", height: "1em" }}
       >
         {/* Empty star background */}
-        <span className="absolute inset-0 text-gray-300">☆</span>
+        <span className="absolute inset-0 text-zinc-300">☆</span>
         {/* Filled star overlay */}
         <span
           className="absolute inset-0 overflow-hidden text-primary"
@@ -48,7 +48,7 @@ export function StarRating({
     <div className={cn("flex items-center gap-1", className)}>
       <div
         className={cn("flex", sizeClasses[size])}
-        aria-label={`Rating: ${rating} out of 5 stars`}
+        aria-label={`Đánh giá: ${rating} trên 5 sao`}
       >
         {stars}
       </div>

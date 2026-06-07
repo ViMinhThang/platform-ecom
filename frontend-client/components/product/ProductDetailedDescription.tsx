@@ -32,7 +32,7 @@ export const ProductDetailedDescription = ({ product }: ProductDetailedDescripti
 
     return (
         <section className="space-y-8">
-            <h2 className="text-[11px] font-bold flex items-center gap-3 uppercase tracking-[0.2em] text-foreground">
+            <h2 className="text-[11px] font-semibold flex items-center gap-3 uppercase tracking-[0.2em] text-foreground">
                 <span className="bg-primary/10 text-primary px-2 py-0.5 text-[9px]">02</span>
                 MÔ TẢ CHI TIẾT
             </h2>
@@ -63,9 +63,9 @@ export const ProductDetailedDescription = ({ product }: ProductDetailedDescripti
                         className="rounded-sm border border-border bg-background font-bold uppercase tracking-widest px-10 hover:border-primary hover:text-primary transition-all h-11 text-[9px] shadow-sm"
                     >
                         {isExpanded ? (
-                            <> THU GỌN <ChevronUp className="ml-2 w-3 h-3" /> </>
+                            <> THU GỌN <ChevronUp className="ml-2 size-3" /> </>
                         ) : (
-                            <> XEM THÊM <ChevronDown className="ml-2 w-3 h-3" /> </>
+                            <> XEM THÊM <ChevronDown className="ml-2 size-3" /> </>
                         )}
                     </Button>
                 </div>

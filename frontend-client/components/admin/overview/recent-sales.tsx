@@ -58,8 +58,16 @@ function getStatusLabel(status: string): string {
     case 'PARTIALLY_REFUNDED':
       return 'Hoàn tiền một phần';
     default:
-      return status;
+      return 'Không xác định';
   }
+}
+
+function OrderDate({ createdAt }: { createdAt: string }) {
+    const [displayDate, setDisplayDate] = React.useState("");
+    React.useEffect(() => {
+        setDisplayDate(format(new Date(createdAt), 'dd/MM HH:mm', { locale: vi }));
+    }, [createdAt]);
+    return <>{displayDate}</>;
 }
 
 export function RecentSales({ data }: RecentSalesProps) {
@@ -76,7 +84,7 @@ export function RecentSales({ data }: RecentSalesProps) {
               key={order.id} 
               className='flex items-center gap-3 rounded-lg p-2 -mx-2 transition-colors hover:bg-muted/50'
             >
-              <Avatar className='h-9 w-9 ring-2 ring-primary/10'>
+              <Avatar className='size-9 ring-2 ring-primary/10'>
                 <AvatarFallback className='bg-primary/10 text-primary text-xs font-medium'>
                   {order.customerName.slice(0, 2).toUpperCase()}
                 </AvatarFallback>
@@ -89,7 +97,7 @@ export function RecentSales({ data }: RecentSalesProps) {
                   </span>
                   <span>•</span>
                   <span>
-                    {format(new Date(order.createdAt), 'dd/MM HH:mm', { locale: vi })}
+                    <OrderDate createdAt={order.createdAt} />
                   </span>
                 </div>
               </div>

@@ -1,7 +1,12 @@
 'use client';
 
 import * as React from 'react';
-import { Bar, BarChart, XAxis, YAxis } from 'recharts';
+import dynamic from 'next/dynamic';
+
+const BarChart = dynamic(() => import('recharts').then(m => ({ default: m.BarChart })), { ssr: false }) as React.ComponentType<any>;
+const Bar = dynamic(() => import('recharts').then(m => ({ default: m.Bar })), { ssr: false }) as React.ComponentType<any>;
+const XAxis = dynamic(() => import('recharts').then(m => ({ default: m.XAxis })), { ssr: false }) as React.ComponentType<any>;
+const YAxis = dynamic(() => import('recharts').then(m => ({ default: m.YAxis })), { ssr: false }) as React.ComponentType<any>;
 
 import {
   Card,
@@ -39,7 +44,7 @@ export function CategoryChart() {
   return (
     <Card className='@container/card'>
       <CardHeader>
-        <CardTitle className='text-base font-semibold'>Top Danh mục</CardTitle>
+        <CardTitle className='text-base font-semibold'>Danh mục hàng đầu</CardTitle>
         <CardDescription>
           Danh mục bán chạy nhất theo doanh số
         </CardDescription>
@@ -62,7 +67,7 @@ export function CategoryChart() {
               dataKey='sales'
               tickLine={false}
               axisLine={false}
-              tickFormatter={(value) => `${value}`}
+              tickFormatter={(value: string) => `${value}`}
             />
             <YAxis
               type='category'

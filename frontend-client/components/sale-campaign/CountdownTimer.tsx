@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 
 interface CountdownTimerProps {
     endTime: string | Date;
@@ -33,8 +33,8 @@ export function CountdownTimer({ endTime, onEnd, variant = 'banner' }: Countdown
         };
     }, [endTime]);
 
-    const [timeLeft, setTimeLeft] = useState<TimeLeft>(calculateTimeLeft());
-    const [isEnded, setIsEnded] = useState(false);
+    const [timeLeft, setTimeLeft] = useState<TimeLeft>(() => calculateTimeLeft());
+    const isEnded = useRef(false);
 
     useEffect(() => {
         const timer = setInterval(() => {
@@ -46,15 +46,15 @@ export function CountdownTimer({ endTime, onEnd, variant = 'banner' }: Countdown
                 newTimeLeft.hours === 0 &&
                 newTimeLeft.minutes === 0 &&
                 newTimeLeft.seconds === 0 &&
-                !isEnded
+                !isEnded.current
             ) {
-                setIsEnded(true);
+                isEnded.current = true;
                 onEnd?.();
             }
         }, 1000);
 
         return () => clearInterval(timer);
-    }, [calculateTimeLeft, isEnded, onEnd]);
+    }, [calculateTimeLeft, onEnd]);
 
     const formatNumber = (num: number) => num.toString().padStart(2, '0');
 
@@ -98,20 +98,20 @@ export function CountdownTimer({ endTime, onEnd, variant = 'banner' }: Countdown
             {timeLeft.days > 0 && (
                 <div className="bg-white/10 backdrop-blur-sm border-2 border-white/20 px-4 py-3 text-center min-w-[70px]">
                     <div className="text-3xl font-black text-white">{formatNumber(timeLeft.days)}</div>
-                    <div className="text-[10px] uppercase tracking-widest text-white/70">Days</div>
+                    <div className="text-[10px] uppercase tracking-widest text-white/70">Ngày</div>
                 </div>
             )}
             <div className="bg-white/10 backdrop-blur-sm border-2 border-white/20 px-4 py-3 text-center min-w-[70px]">
                 <div className="text-3xl font-black text-white">{formatNumber(timeLeft.hours)}</div>
-                <div className="text-[10px] uppercase tracking-widest text-white/70">Hours</div>
+                <div className="text-[10px] uppercase tracking-widest text-white/70">Giờ</div>
             </div>
             <div className="bg-white/10 backdrop-blur-sm border-2 border-white/20 px-4 py-3 text-center min-w-[70px]">
                 <div className="text-3xl font-black text-white">{formatNumber(timeLeft.minutes)}</div>
-                <div className="text-[10px] uppercase tracking-widest text-white/70">Minutes</div>
+                <div className="text-[10px] uppercase tracking-widest text-white/70">Phút</div>
             </div>
             <div className="bg-primary border-2 border-primary px-4 py-3 text-center min-w-[70px]">
                 <div className="text-3xl font-black text-white">{formatNumber(timeLeft.seconds)}</div>
-                <div className="text-[10px] uppercase tracking-widest text-white/90">Seconds</div>
+                <div className="text-[10px] uppercase tracking-widest text-white/90">Giây</div>
             </div>
         </div>
     );

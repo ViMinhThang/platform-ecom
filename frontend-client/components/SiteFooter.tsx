@@ -10,10 +10,10 @@ export function SiteFooter() {
           <div className="space-y-6">
             <Link href="/" className="flex items-center gap-1.5">
                 <span className="font-labels text-lg font-extrabold tracking-tighter text-foreground">
-                    Editorial
+                    ACME
                 </span>
                 <span className="font-labels text-lg font-extrabold tracking-tighter text-primary">
-                    Market
+                    Việt Nam
                 </span>
             </Link>
             <p className="text-[13px] font-medium text-foreground/60 leading-relaxed max-w-[240px]">
@@ -24,7 +24,7 @@ export function SiteFooter() {
 
           {/* Links 1 */}
           <div className="space-y-6">
-            <h4 className="text-[11px] font-bold uppercase tracking-widest text-foreground">Thị trường</h4>
+            <h4 className="text-[11px] font-semibold uppercase tracking-widest text-foreground">Thị trường</h4>
             <ul className="space-y-3">
               {[
                 { label: "Về chúng tôi", href: "/about" },
@@ -41,7 +41,7 @@ export function SiteFooter() {
 
           {/* Links 2 */}
           <div className="space-y-6">
-            <h4 className="text-[11px] font-bold uppercase tracking-widest text-foreground">Hỗ trợ</h4>
+            <h4 className="text-[11px] font-semibold uppercase tracking-widest text-foreground">Hỗ trợ</h4>
             <ul className="space-y-3">
               {[
                 { label: "Chính sách vận chuyển", href: "/shipping" },
@@ -58,7 +58,7 @@ export function SiteFooter() {
 
           {/* Newsletter */}
           <div className="space-y-6">
-            <h4 className="text-[11px] font-bold uppercase tracking-widest text-foreground">Tham gia Bản tin</h4>
+            <h4 className="text-[11px] font-semibold uppercase tracking-widest text-foreground">Tham gia Bản tin</h4>
             <p className="text-[13px] font-medium text-foreground/50">Nhận những xu hướng mới nhất và các đợt phát hành độc quyền trực tiếp vào hộp thư của bạn.</p>
             <div className="flex items-center gap-0">
                 <input 
@@ -67,7 +67,7 @@ export function SiteFooter() {
                     className="flex-1 bg-white/50 border-none outline-none px-5 py-2.5 text-xs font-medium rounded-l-md placeholder:text-foreground/30 focus:bg-white transition-all shadow-none ring-0"
                 />
                 <button className="bg-primary text-white p-2.5 rounded-r-md hover:brightness-110 transition-all shadow-sm">
-                    <Send className="h-4 w-4" />
+                    <Send className="size-4" />
                 </button>
             </div>
           </div>
@@ -76,7 +76,7 @@ export function SiteFooter() {
         {/* Bottom Bar */}
         <div className="pt-10 border-t border-foreground/5 flex flex-col md:flex-row items-center justify-between gap-6">
           <p className="text-[11px] font-medium text-foreground/30">
-            © 2024 The Editorial Marketplace. Bảo lưu mọi quyền.
+            © 2024 Sàn thương mại ACME. Bảo lưu mọi quyền.
           </p>
           <div className="flex items-center gap-8">
             <Link href="/privacy" className="text-[11px] font-medium text-foreground/30 hover:text-primary transition-colors">Bảo mật</Link>

@@ -36,14 +36,14 @@ export function AuthBrandPanel({
             />
 
             <Link href="/" className="relative z-10 flex items-center gap-3 group">
-                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/10 backdrop-blur-sm group-hover:bg-white/20 transition-colors">
-                    <ShoppingBag className="h-5 w-5" />
+                <div className="flex size-10 items-center justify-center rounded-xl bg-white/10 backdrop-blur-sm group-hover:bg-white/20 transition-colors">
+                    <ShoppingBag className="size-5" />
                 </div>
                 <span className="text-xl font-bold tracking-tight">ACME</span>
             </Link>
 
             <div className="relative z-10 space-y-6">
-                <h1 className="text-4xl font-bold leading-tight tracking-tight">
+                <h1 className="text-4xl font-semibold leading-tight tracking-tight">
                     {title}
                 </h1>
                 <p className="text-base text-white/80 leading-relaxed max-w-md">
@@ -52,11 +52,11 @@ export function AuthBrandPanel({
 
                 <div className="flex flex-wrap gap-4 pt-4">
                     <div className="flex items-center gap-2 text-sm text-white/70">
-                        <Shield className="h-4 w-4" />
+                        <Shield className="size-4" />
                         <span>Bảo mật cao</span>
                     </div>
                     <div className="flex items-center gap-2 text-sm text-white/70">
-                        <Zap className="h-4 w-4" />
+                        <Zap className="size-4" />
                         <span>Giao hàng nhanh</span>
                     </div>
                 </div>

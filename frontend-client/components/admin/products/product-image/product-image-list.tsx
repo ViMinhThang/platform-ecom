@@ -15,7 +15,7 @@ export const ProductImageList: React.FC<ProductImageListProps> = ({
   if (!images.length) {
     return (
       <div className="text-sm text-muted-foreground text-center py-6">
-        No images uploaded yet.
+        Chưa có hình ảnh nào được tải lên.
       </div>
     );
   }

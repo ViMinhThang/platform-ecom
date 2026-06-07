@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useMemo, useState, useReducer } from 'react';
 import {
     useAdjustStockMutation,
     useUpdateInventorySettingsMutation
@@ -37,34 +37,33 @@ export function StockAdjustmentDialog({
     const [updateInventorySettings, { isLoading: isSavingSettings }] =
         useUpdateInventorySettingsMutation();
 
-    const [adjustmentType, setAdjustmentType] = useState<'add' | 'subtract'>('add');
-    const [quantity, setQuantity] = useState(0);
-    const [reason, setReason] = useState('');
-    const [lowStockThreshold, setLowStockThreshold] = useState(
-        inventory?.lowStockThreshold ?? 0
-    );
-    const [reorderPoint, setReorderPoint] = useState(inventory?.reorderPoint ?? 0);
-    const [reorderQuantity, setReorderQuantity] = useState(
-        inventory?.reorderQuantity ?? 0
-    );
-    const [trackInventory, setTrackInventory] = useState(
-        inventory?.trackInventory ?? true
+    const [form, setForm] = useReducer(
+        (prev: any, next: any) => ({ ...prev, ...next }),
+        {
+            adjustmentType: 'add' as 'add' | 'subtract',
+            quantity: 0,
+            reason: '',
+            lowStockThreshold: inventory?.lowStockThreshold ?? 0,
+            reorderPoint: inventory?.reorderPoint ?? 0,
+            reorderQuantity: inventory?.reorderQuantity ?? 0,
+            trackInventory: inventory?.trackInventory ?? true,
+        }
     );
 
-    const hasStockAdjustment = quantity > 0;
+    const hasStockAdjustment = form.quantity > 0;
     const hasSettingsChanges = Boolean(
         inventory &&
-            (lowStockThreshold !== inventory.lowStockThreshold ||
-                reorderPoint !== inventory.reorderPoint ||
-                reorderQuantity !== inventory.reorderQuantity ||
-                trackInventory !== inventory.trackInventory)
+            (form.lowStockThreshold !== inventory.lowStockThreshold ||
+                form.reorderPoint !== inventory.reorderPoint ||
+                form.reorderQuantity !== inventory.reorderQuantity ||
+                form.trackInventory !== inventory.trackInventory)
     );
     const isSaving = isAdjusting || isSavingSettings;
 
     const newStock = inventory
-        ? adjustmentType === 'add'
-            ? inventory.totalStock + quantity
-            : inventory.totalStock - quantity
+        ? form.adjustmentType === 'add'
+            ? inventory.totalStock + form.quantity
+            : inventory.totalStock - form.quantity
         : 0;
 
     const dialogDescription = useMemo(() => {
@@ -78,14 +77,16 @@ export function StockAdjustmentDialog({
     }, [inventory]);
 
     const resetForm = () => {
-        setAdjustmentType('add');
-        setQuantity(0);
-        setReason('');
         if (inventory) {
-            setLowStockThreshold(inventory.lowStockThreshold);
-            setReorderPoint(inventory.reorderPoint);
-            setReorderQuantity(inventory.reorderQuantity);
-            setTrackInventory(inventory.trackInventory);
+            setForm({
+                adjustmentType: 'add',
+                quantity: 0,
+                reason: '',
+                lowStockThreshold: inventory.lowStockThreshold,
+                reorderPoint: inventory.reorderPoint,
+                reorderQuantity: inventory.reorderQuantity,
+                trackInventory: inventory.trackInventory,
+            });
         }
     };
 
@@ -104,29 +105,29 @@ export function StockAdjustmentDialog({
                 await updateInventorySettings({
                     variantId: inventory.variantId,
                     request: {
-                        ...(lowStockThreshold !== inventory.lowStockThreshold
-                            ? { lowStockThreshold }
+                        ...(form.lowStockThreshold !== inventory.lowStockThreshold
+                            ? { lowStockThreshold: form.lowStockThreshold }
                             : {}),
-                        ...(reorderPoint !== inventory.reorderPoint
-                            ? { reorderPoint }
+                        ...(form.reorderPoint !== inventory.reorderPoint
+                            ? { reorderPoint: form.reorderPoint }
                             : {}),
-                        ...(reorderQuantity !== inventory.reorderQuantity
-                            ? { reorderQuantity }
+                        ...(form.reorderQuantity !== inventory.reorderQuantity
+                            ? { reorderQuantity: form.reorderQuantity }
                             : {}),
-                        ...(trackInventory !== inventory.trackInventory
-                            ? { trackInventory }
+                        ...(form.trackInventory !== inventory.trackInventory
+                            ? { trackInventory: form.trackInventory }
                             : {}),
                     },
                 }).unwrap();
             }
 
             if (hasStockAdjustment) {
-                const adjustment = adjustmentType === 'add' ? quantity : -quantity;
+                const adjustment = form.adjustmentType === 'add' ? form.quantity : -form.quantity;
                 await adjustStock({
                     variantId: inventory.variantId,
                     request: {
                         adjustment,
-                        reason: reason || `Manual ${adjustmentType}`,
+                        reason: form.reason || `Manual ${form.adjustmentType}`,
                         referenceType: 'MANUAL',
                     },
                 }).unwrap();
@@ -134,7 +135,7 @@ export function StockAdjustmentDialog({
 
             toast.success('Đã cập nhật kho hàng', {
                 description: hasStockAdjustment
-                    ? `Đã ${adjustmentType === 'add' ? 'thêm' : 'trừ'} ${quantity} đơn vị và lưu cài đặt.`
+                    ? `Đã ${form.adjustmentType === 'add' ? 'thêm' : 'trừ'} ${form.quantity} đơn vị và lưu cài đặt.`
                     : 'Đã lưu cài đặt kho hàng.',
             });
 
@@ -170,10 +171,10 @@ export function StockAdjustmentDialog({
                             <p className="text-sm text-muted-foreground">Thay đổi</p>
                             <p
                                 className={`text-2xl font-bold ${
-                                    adjustmentType === 'add' ? 'text-green-600' : 'text-red-600'
+                                    form.adjustmentType === 'add' ? 'text-green-600' : 'text-red-600'
                                 }`}
                             >
-                                {hasStockAdjustment ? `${adjustmentType === 'add' ? '+' : '-'}${quantity}` : '0'}
+                                {hasStockAdjustment ? `${form.adjustmentType === 'add' ? '+' : '-'}${form.quantity}` : '0'}
                             </p>
                         </div>
                         <div className="text-center">
@@ -203,9 +204,9 @@ export function StockAdjustmentDialog({
                                     id="lowStockThreshold"
                                     type="number"
                                     min={0}
-                                    value={lowStockThreshold}
+                                    value={form.lowStockThreshold}
                                     onChange={(e) =>
-                                        setLowStockThreshold(Math.max(0, parseInt(e.target.value) || 0))
+                                        setForm({ lowStockThreshold: Math.max(0, parseInt(e.target.value) || 0) })
                                     }
                                 />
                             </div>
@@ -216,9 +217,9 @@ export function StockAdjustmentDialog({
                                     id="reorderPoint"
                                     type="number"
                                     min={0}
-                                    value={reorderPoint}
+                                    value={form.reorderPoint}
                                     onChange={(e) =>
-                                        setReorderPoint(Math.max(0, parseInt(e.target.value) || 0))
+                                        setForm({ reorderPoint: Math.max(0, parseInt(e.target.value) || 0) })
                                     }
                                 />
                             </div>
@@ -229,9 +230,9 @@ export function StockAdjustmentDialog({
                                     id="reorderQuantity"
                                     type="number"
                                     min={0}
-                                    value={reorderQuantity}
+                                    value={form.reorderQuantity}
                                     onChange={(e) =>
-                                        setReorderQuantity(Math.max(0, parseInt(e.target.value) || 0))
+                                        setForm({ reorderQuantity: Math.max(0, parseInt(e.target.value) || 0) })
                                     }
                                 />
                             </div>
@@ -245,8 +246,8 @@ export function StockAdjustmentDialog({
                                 </div>
                                 <Switch
                                     id="trackInventory"
-                                    checked={trackInventory}
-                                    onCheckedChange={setTrackInventory}
+                                    checked={form.trackInventory}
+                                    onCheckedChange={(v) => setForm({ trackInventory: v })}
                                 />
                             </div>
                         </div>
@@ -265,20 +266,20 @@ export function StockAdjustmentDialog({
                             <div className="flex gap-2">
                                 <Button
                                     type="button"
-                                    variant={adjustmentType === 'add' ? 'default' : 'outline'}
+                                    variant={form.adjustmentType === 'add' ? 'default' : 'outline'}
                                     className="flex-1"
-                                    onClick={() => setAdjustmentType('add')}
+                                    onClick={() => setForm({ adjustmentType: 'add' })}
                                 >
-                                    <Plus className="mr-2 h-4 w-4" />
+                                    <Plus className="mr-2 size-4" />
                                     Thêm tồn kho
                                 </Button>
                                 <Button
                                     type="button"
-                                    variant={adjustmentType === 'subtract' ? 'destructive' : 'outline'}
+                                    variant={form.adjustmentType === 'subtract' ? 'destructive' : 'outline'}
                                     className="flex-1"
-                                    onClick={() => setAdjustmentType('subtract')}
+                                    onClick={() => setForm({ adjustmentType: 'subtract' })}
                                 >
-                                    <Minus className="mr-2 h-4 w-4" />
+                                    <Minus className="mr-2 size-4" />
                                     Giảm tồn kho
                                 </Button>
                             </div>
@@ -290,8 +291,8 @@ export function StockAdjustmentDialog({
                                 id="quantity"
                                 type="number"
                                 min={0}
-                                value={quantity}
-                                onChange={(e) => setQuantity(Math.max(0, parseInt(e.target.value) || 0))}
+                                value={form.quantity}
+                                onChange={(e) => setForm({ quantity: Math.max(0, parseInt(e.target.value) || 0) })}
                                 placeholder="Nhập số lượng"
                             />
                         </div>
@@ -300,8 +301,8 @@ export function StockAdjustmentDialog({
                             <Label htmlFor="reason">Lý do (tùy chọn)</Label>
                             <Textarea
                                 id="reason"
-                                value={reason}
-                                onChange={(e) => setReason(e.target.value)}
+                                value={form.reason}
+                                onChange={(e) => setForm({ reason: e.target.value })}
                                 placeholder="Ví dụ: Nhận hàng, Hàng hỏng, v.v."
                                 rows={2}
                             />
@@ -320,7 +321,7 @@ export function StockAdjustmentDialog({
                         Hủy
                     </Button>
                     <Button onClick={handleSubmit} disabled={saveDisabled}>
-                        {isSaving && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                        {isSaving && <Loader2 className="mr-2 size-4 animate-spin" />}
                         Lưu thay đổi
                     </Button>
                 </DialogFooter>

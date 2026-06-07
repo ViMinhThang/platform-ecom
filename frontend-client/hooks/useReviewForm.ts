@@ -72,7 +72,7 @@ export function useReviewForm({
                 onSuccess();
             }
         } catch (error: unknown) {
-            const message = getApiErrorMessage(error, "Failed to submit review");
+            const message = getApiErrorMessage(error, "Không thể gửi đánh giá");
             toast.error(message);
         }
     };

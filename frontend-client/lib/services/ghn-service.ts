@@ -96,7 +96,7 @@ export async function calculateShippingFee(params: GHNFeeRequest, shopId: number
         if (axios.isAxiosError(error) && error.response) {
             // The original code threw errorData.message
             const errorData = error.response.data as any;
-            throw handleError(new Error(errorData.message || 'Failed to calculate shipping fee'));
+            throw handleError(new Error(errorData.message || 'Không thể tính phí vận chuyển'));
         }
         throw handleError(error);
     }

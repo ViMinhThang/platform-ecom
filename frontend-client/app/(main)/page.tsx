@@ -2,6 +2,7 @@ import { HomeBanner } from "@/components/home/HomeBanner";
 import { ProductFeed } from "@/components/home/ProductFeed";
 import { CuratedCollections } from "@/components/home/CuratedCollections";
 import { CampaignBanners } from "@/components/home/CampaignBanners";
+import { SingleActiveCampaign } from "@/components/home/SingleActiveCampaign";
 
 export default function Home() {
   return (
@@ -9,6 +10,8 @@ export default function Home() {
       <HomeBanner />
 
       <CuratedCollections />
+
+      <SingleActiveCampaign />
 
       <CampaignBanners />
 

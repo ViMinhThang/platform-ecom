@@ -17,28 +17,28 @@ export function InventoryStats({ items, lowStockCount, loading }: InventoryStats
 
     const stats = [
         {
-            title: 'Total Items',
+            title: 'Tổng mục',
             value: items.length,
             icon: Package,
             color: 'text-blue-600',
             bgColor: 'bg-blue-100 dark:bg-blue-900',
         },
         {
-            title: 'Total Stock',
+            title: 'Tổng tồn kho',
             value: totalStock.toLocaleString(),
             icon: BarChart3,
             color: 'text-green-600',
             bgColor: 'bg-green-100 dark:bg-green-900',
         },
         {
-            title: 'Reserved',
+            title: 'Đã giữ',
             value: totalReserved.toLocaleString(),
             icon: Clock,
             color: 'text-purple-600',
             bgColor: 'bg-purple-100 dark:bg-purple-900',
         },
         {
-            title: 'Low Stock',
+            title: 'Sắp hết hàng',
             value: lowStockCount,
             icon: AlertTriangle,
             color: lowStockCount > 0 ? 'text-amber-600' : 'text-green-600',
@@ -50,12 +50,12 @@ export function InventoryStats({ items, lowStockCount, loading }: InventoryStats
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
             {stats.map((stat) => (
                 <Card key={stat.title}>
-                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                    <CardHeader className="flex flex-row items-center justify-between gap-y-0 pb-2">
                         <CardTitle className="text-sm font-medium text-muted-foreground">
                             {stat.title}
                         </CardTitle>
                         <div className={`rounded-lg p-2 ${stat.bgColor}`}>
-                            <stat.icon className={`h-4 w-4 ${stat.color}`} />
+                            <stat.icon className={`size-4 ${stat.color}`} />
                         </div>
                     </CardHeader>
                     <CardContent>

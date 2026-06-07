@@ -51,14 +51,14 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
                     <Card className="max-w-lg w-full">
                         <CardHeader>
                             <div className="flex items-center gap-2">
-                                <AlertCircle className="h-6 w-6 text-destructive" />
-                                <CardTitle>Something went wrong</CardTitle>
+                                <AlertCircle className="size-6 text-destructive" />
+                                <CardTitle>Đã xảy ra lỗi</CardTitle>
                             </div>
                         </CardHeader>
                         <CardContent className="space-y-4">
                             <p className="text-muted-foreground">
-                                We're sorry, but something unexpected happened. The error has been logged
-                                and we'll look into it.
+                                Xin lỗi, đã xảy ra sự cố ngoài dự kiến. Lỗi đã được ghi nhận
+                                và chúng tôi sẽ kiểm tra.
                             </p>
                             {process.env.NODE_ENV === 'development' && this.state.error && (
                                 <div className="p-4 bg-muted rounded-md">
@@ -69,13 +69,13 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
                             )}
                             <div className="flex gap-2">
                                 <Button onClick={this.handleReset}>
-                                    Try Again
+                                    Thử lại
                                 </Button>
                                 <Button
                                     variant="outline"
                                     onClick={() => window.location.href = '/'}
                                 >
-                                    Go Home
+                                    Về trang chủ
                                 </Button>
                             </div>
                         </CardContent>

@@ -23,6 +23,7 @@ export const RichTextPreview = ({ content, className }: RichTextPreviewProps) =>
                 '[&_blockquote]:border-l-4 [&_blockquote]:border-primary/40 [&_blockquote]:pl-4 [&_blockquote]:italic [&_blockquote]:my-6',
                 className
             )}
+            // eslint-disable-next-line react/no-danger
             dangerouslySetInnerHTML={{ __html: content }}
         />
     );

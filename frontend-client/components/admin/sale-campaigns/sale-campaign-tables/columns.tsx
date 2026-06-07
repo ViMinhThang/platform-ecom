@@ -8,6 +8,7 @@ import { SaleCampaign } from '@/types/sale-campaign';
 import Image from 'next/image';
 import { format } from 'date-fns';
 import { vi } from 'date-fns/locale';
+import { useState, useEffect } from 'react';
 import { CellAction } from './cell-action';
 
 const statusConfig: Record<string, { label: string; variant: 'default' | 'secondary' | 'destructive' | 'outline' }> = {
@@ -15,13 +16,29 @@ const statusConfig: Record<string, { label: string; variant: 'default' | 'second
     SCHEDULED: { label: 'Đã lên lịch', variant: 'outline' },
     ACTIVE: { label: 'Đang hoạt động', variant: 'default' },
     ENDED: { label: 'Đã kết thúc', variant: 'secondary' },
+    COMPLETED: { label: 'Đã hoàn tất', variant: 'secondary' },
     CANCELLED: { label: 'Đã hủy', variant: 'destructive' },
 };
+
+function ScheduleCell({ campaign }: { campaign: SaleCampaign }) {
+    const [startDate, setStartDate] = useState("");
+    const [endDate, setEndDate] = useState("");
+    useEffect(() => {
+        setStartDate(format(new Date(campaign.startTime), 'dd/MM/yyyy HH:mm', { locale: vi }));
+        setEndDate(format(new Date(campaign.endTime), 'dd/MM/yyyy HH:mm', { locale: vi }));
+    }, [campaign.startTime, campaign.endTime]);
+    return (
+        <div className="text-sm text-muted-foreground">
+            <div>{startDate}</div>
+            <div>→ {endDate}</div>
+        </div>
+    );
+}
 
 export const columns: ColumnDef<SaleCampaign>[] = [
     {
         id: 'banner',
-        header: 'Banner',
+        header: 'Ảnh bìa',
         cell: ({ row }) => {
             const campaign = row.original;
             const imageUrl = campaign.bannerUrl || '/placeholder.png';
@@ -31,6 +48,7 @@ export const columns: ColumnDef<SaleCampaign>[] = [
                         src={imageUrl.startsWith('http') ? imageUrl : `http://localhost:8080/uploads/${imageUrl}`}
                         alt={campaign.name}
                         fill
+                        sizes="40px"
                         className="object-cover rounded-md border"
                     />
                 </div>
@@ -60,7 +78,7 @@ export const columns: ColumnDef<SaleCampaign>[] = [
         header: 'Trạng thái',
         cell: ({ row }) => {
             const status = row.original.status;
-            const config = statusConfig[status] || { label: status, variant: 'secondary' as const };
+            const config = statusConfig[status] || { label: 'Không xác định', variant: 'secondary' as const };
             return <Badge variant={config.variant}>{config.label}</Badge>;
         },
     },
@@ -88,15 +106,7 @@ export const columns: ColumnDef<SaleCampaign>[] = [
     {
         id: 'schedule',
         header: 'Thời gian',
-        cell: ({ row }) => {
-            const campaign = row.original;
-            return (
-                <div className="text-sm text-muted-foreground">
-                    <div>{format(new Date(campaign.startTime), 'dd/MM/yyyy HH:mm', { locale: vi })}</div>
-                    <div>→ {format(new Date(campaign.endTime), 'dd/MM/yyyy HH:mm', { locale: vi })}</div>
-                </div>
-            );
-        },
+        cell: ({ row }) => <ScheduleCell campaign={row.original} />,
     },
     {
         id: 'items',

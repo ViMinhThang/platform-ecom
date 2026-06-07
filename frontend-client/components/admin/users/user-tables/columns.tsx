@@ -15,11 +15,12 @@ export const columns: ColumnDef<UserRow>[] = [
       const userRow = row.original;
       const imageUrl = userRow.imageUrl || "/placeholder.png";
       return (
-        <div className="relative w-16 h-16">
+        <div className="relative size-16">
           <Image
             src={`http://localhost:8080/uploads/${imageUrl}`}
             alt={userRow.username}
             fill
+            sizes="40px"
             className="object-cover rounded-md border"
           />
         </div>

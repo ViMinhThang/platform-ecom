@@ -38,7 +38,7 @@ interface CellActionProps {
 }
 
 export function CellAction({ data }: CellActionProps) {
-    const router = useRouter();
+    const { push, refresh } = useRouter();
     const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
     const [activateDialogOpen, setActivateDialogOpen] = useState(false);
     const [loading, setLoading] = useState(false);
@@ -52,7 +52,7 @@ export function CellAction({ data }: CellActionProps) {
             setLoading(true);
             await deleteCampaign(data.id).unwrap();
             toast.success('Đã xóa chiến dịch');
-            router.refresh();
+            refresh();
         } catch (error) {
             toast.error('Xóa thất bại');
         } finally {
@@ -66,7 +66,7 @@ export function CellAction({ data }: CellActionProps) {
             setLoading(true);
             await activateCampaign(data.id).unwrap();
             toast.success('Đã kích hoạt chiến dịch');
-            router.refresh();
+            refresh();
         } catch (error) {
             toast.error('Kích hoạt thất bại');
         } finally {
@@ -80,7 +80,7 @@ export function CellAction({ data }: CellActionProps) {
             setLoading(true);
             await cancelCampaign(data.id).unwrap();
             toast.success('Đã hủy chiến dịch');
-            router.refresh();
+            refresh();
         } catch (error) {
             toast.error('Hủy thất bại');
         } finally {
@@ -97,37 +97,37 @@ export function CellAction({ data }: CellActionProps) {
         <>
             <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" className="h-8 w-8 p-0">
+                    <Button variant="ghost" className="size-8 p-0">
                         <span className="sr-only">Mở menu</span>
-                        <MoreHorizontal className="h-4 w-4" />
+                        <MoreHorizontal className="size-4" />
                     </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
                     <DropdownMenuLabel>Hành động</DropdownMenuLabel>
                     <DropdownMenuItem
-                        onClick={() => router.push(`/admin/dashboard/sale-campaigns/${data.id}`)}
+                        onClick={() => push(`/admin/dashboard/sale-campaigns/${data.id}`)}
                     >
-                        <Eye className="mr-2 h-4 w-4" />
+                        <Eye className="mr-2 size-4" />
                         Xem chi tiết
                     </DropdownMenuItem>
                     {canEdit && (
                         <DropdownMenuItem
-                            onClick={() => router.push(`/admin/dashboard/sale-campaigns/${data.id}/edit`)}
+                            onClick={() => push(`/admin/dashboard/sale-campaigns/${data.id}/edit`)}
                         >
-                            <Pencil className="mr-2 h-4 w-4" />
+                            <Pencil className="mr-2 size-4" />
                             Chỉnh sửa
                         </DropdownMenuItem>
                     )}
                     <DropdownMenuSeparator />
                     {canActivate && (
                         <DropdownMenuItem onClick={() => setActivateDialogOpen(true)}>
-                            <Play className="mr-2 h-4 w-4" />
+                            <Play className="mr-2 size-4" />
                             Kích hoạt
                         </DropdownMenuItem>
                     )}
                     {canCancel && (
                         <DropdownMenuItem onClick={handleCancel} className="text-orange-600" disabled={isCancelling}>
-                            <XCircle className="mr-2 h-4 w-4" />
+                            <XCircle className="mr-2 size-4" />
                             Hủy chiến dịch
                         </DropdownMenuItem>
                     )}
@@ -136,7 +136,7 @@ export function CellAction({ data }: CellActionProps) {
                             onClick={() => setDeleteDialogOpen(true)}
                             className="text-destructive"
                         >
-                            <Trash2 className="mr-2 h-4 w-4" />
+                            <Trash2 className="mr-2 size-4" />
                             Xóa
                         </DropdownMenuItem>
                     )}
@@ -155,7 +155,7 @@ export function CellAction({ data }: CellActionProps) {
                     <AlertDialogFooter>
                         <AlertDialogCancel disabled={loading}>Hủy</AlertDialogCancel>
                         <AlertDialogAction onClick={handleDelete} disabled={loading || isDeleting}>
-                            {loading || isDeleting ? 'Đang xóa...' : 'Xóa'}
+                            {loading || isDeleting ? 'Đang xóa…' : 'Xóa'}
                         </AlertDialogAction>
                     </AlertDialogFooter>
                 </AlertDialogContent>
@@ -173,7 +173,7 @@ export function CellAction({ data }: CellActionProps) {
                     <AlertDialogFooter>
                         <AlertDialogCancel disabled={loading || isActivating}>Hủy</AlertDialogCancel>
                         <AlertDialogAction onClick={handleActivate} disabled={loading || isActivating}>
-                            {loading || isActivating ? 'Đang kích hoạt...' : 'Kích hoạt'}
+                            {loading || isActivating ? 'Đang kích hoạt…' : 'Kích hoạt'}
                         </AlertDialogAction>
                     </AlertDialogFooter>
                 </AlertDialogContent>

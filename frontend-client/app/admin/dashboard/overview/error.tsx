@@ -6,10 +6,10 @@ import { IconAlertCircle } from '@tabler/icons-react';
 export default function OverviewError({ error }: { error: Error }) {
   return (
     <Alert variant='destructive'>
-      <IconAlertCircle className='h-4 w-4' />
-      <AlertTitle>Error</AlertTitle>
+      <IconAlertCircle className='size-4' />
+      <AlertTitle>Lỗi</AlertTitle>
       <AlertDescription>
-        Failed to load statistics: {error.message}
+        Không thể tải số liệu thống kê: {error.message}
       </AlertDescription>
     </Alert>
   );

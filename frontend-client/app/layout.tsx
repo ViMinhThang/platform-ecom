@@ -19,7 +19,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "ACME Store | Nâng Tầm Phong Cách",
+  title: "ACME Việt Nam | Nâng Tầm Phong Cách",
   description: "Khám phá xu hướng mới nhất về thời trang, công nghệ và đồ gia dụng tinh xảo.",
 };
 

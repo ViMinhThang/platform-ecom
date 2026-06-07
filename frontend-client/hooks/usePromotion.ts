@@ -17,8 +17,10 @@ export function usePromotion(cart: CartDTO | null, shippingFee: number = 0) {
             const productVouchers = availableVouchers.filter(v => v.category === 'PRODUCT');
             const shippingVouchers = availableVouchers.filter(v => v.category === 'SHIPPING');
 
-            const bestProduct = productVouchers.sort((a, b) => b.discountValue - a.discountValue)[0];
-            const bestShipping = shippingVouchers.sort((a, b) => b.discountValue - a.discountValue)[0];
+            const maxProductDiscount = Math.max(...productVouchers.map(v => v.discountValue), -Infinity);
+            const maxShippingDiscount = Math.max(...shippingVouchers.map(v => v.discountValue), -Infinity);
+            const bestProduct = productVouchers.find(v => v.discountValue === maxProductDiscount) ?? null;
+            const bestShipping = shippingVouchers.find(v => v.discountValue === maxShippingDiscount) ?? null;
 
             const codes: string[] = [];
             if (bestProduct) codes.push(bestProduct.code || `ID:${bestProduct.id}`);

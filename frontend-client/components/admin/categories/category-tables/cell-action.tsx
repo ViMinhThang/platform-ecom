@@ -48,19 +48,19 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
       />
       <DropdownMenu modal={false}>
         <DropdownMenuTrigger asChild>
-          <Button variant="ghost" className="h-8 w-8 p-0">
+          <Button variant="ghost" className="size-8 p-0">
             <span className="sr-only">Mở menu</span>
-            <IconDotsVertical className="h-4 w-4" />
+            <IconDotsVertical className="size-4" />
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>Hành động</DropdownMenuLabel>
 
           <DropdownMenuItem onClick={() => setCloseUpdateCategory(true)}>
-            <IconEdit className="mr-2 h-4 w-4" /> Cập nhật
+            <IconEdit className="mr-2 size-4" /> Cập nhật
           </DropdownMenuItem>
           <DropdownMenuItem onClick={() => setOpen(true)}>
-            <IconTrash className="mr-2 h-4 w-4" /> Xóa
+            <IconTrash className="mr-2 size-4" /> Xóa
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>

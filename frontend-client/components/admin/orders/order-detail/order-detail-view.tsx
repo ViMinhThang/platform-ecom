@@ -1,5 +1,6 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import { AdminOrderGroup } from '@/types/order/order';
 import { Heading } from '@/components/ui/heading';
 import { Separator } from '@/components/ui/separator';
@@ -15,17 +16,21 @@ interface OrderDetailViewProps {
 
 export const OrderDetailView: React.FC<OrderDetailViewProps> = ({ order }) => {
     const router = useRouter();
+    const [displayDate, setDisplayDate] = useState("");
+    useEffect(() => {
+        setDisplayDate(new Date(order.createdAt).toLocaleDateString('vi-VN'));
+    }, [order.createdAt]);
 
     return (
         <div className="space-y-6">
             <div className="flex items-center justify-between">
                 <div className="flex items-center gap-4">
                     <Button variant="outline" size="icon" onClick={() => router.back()}>
-                        <ArrowLeft className="h-4 w-4" />
+                        <ArrowLeft className="size-4" />
                     </Button>
                     <Heading
                         title={`Đơn hàng ${order.groupNumber}`}
-                        description={`Đặt ngày ${new Date(order.createdAt).toLocaleDateString('vi-VN')}`}
+                        description={`Đặt ngày ${displayDate}`}
                     />
                 </div>
                 <div className="flex gap-2">

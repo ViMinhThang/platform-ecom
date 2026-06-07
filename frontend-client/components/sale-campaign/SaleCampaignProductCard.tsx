@@ -47,7 +47,7 @@ export function SaleCampaignProductCard({ item }: SaleCampaignProductCardProps) 
             <div className="relative">
                 {/* Link covering the image area */}
                 <Link href={`/products/${item.productSlug}`} className="absolute inset-0 z-10">
-                    <span className="sr-only">View {item.productName}</span>
+                    <span className="sr-only">Xem {item.productName}</span>
                 </Link>
 
                 <CardContent className="p-0 relative aspect-square bg-muted/30 overflow-hidden border-b border-border">
@@ -58,11 +58,11 @@ export function SaleCampaignProductCard({ item }: SaleCampaignProductCardProps) 
 
                     {/* Sale Badge */}
                     <Badge className="absolute top-0 right-0 z-10 bg-foreground/10 backdrop-blur-sm text-foreground rounded-sm px-2 py-1 text-[8px] font-bold tracking-widest flex items-center gap-1 pointer-events-none">
-                        <Zap className="h-3 w-3 fill-primary text-primary" />
-                        SALE
+                        <Zap className="size-3 fill-primary text-primary" />
+                        GIẢM GIÁ
                     </Badge>
 
-                    {/* Out of stock overlay */}
+                    {/* Lớp phủ hết hàng */}
                     {!item.isAvailable && (
                         <div className="absolute inset-0 bg-background/80 z-20 flex items-center justify-center pointer-events-none">
                             <span className="text-[10px] font-bold px-4 py-2 border border-border bg-background text-foreground uppercase tracking-widest shadow-sm">
@@ -75,25 +75,26 @@ export function SaleCampaignProductCard({ item }: SaleCampaignProductCardProps) 
                         src={imageUrl.product(item.imageUrl)}
                         alt={item.productName}
                         fill
+                        sizes="(max-width: 768px) 50vw, 33vw"
                         className="object-cover group-hover:scale-105 transition-transform duration-700"
                     />
                 </CardContent>
 
-                {/* Add to Cart Button - Positioned absolutely but structurally outside the Link */}
+                {/* Nút thêm vào giỏ hàng */}
                 {item.isAvailable && (
                     <div className="absolute bottom-2 right-2 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                         <Button
                             size="icon"
                             variant="default"
-                            className="rounded-full h-10 w-10 bg-primary hover:bg-primary/90 text-white shadow-lg"
+                            className="rounded-full size-10 bg-primary hover:bg-primary/90 text-white shadow-lg"
                             onClick={handleAddToCart}
                             disabled={isAdding}
                             aria-label="Thêm vào giỏ hàng"
                         >
                             {isAdding ? (
-                                <Loader2 className="h-4 w-4 animate-spin" />
+                                <Loader2 className="size-4 animate-spin" />
                             ) : (
-                                <ShoppingCart className="h-4 w-4" />
+                                <ShoppingCart className="size-4" />
                             )}
                         </Button>
                     </div>
@@ -101,8 +102,8 @@ export function SaleCampaignProductCard({ item }: SaleCampaignProductCardProps) 
             </div>
 
             <Link href={`/products/${item.productSlug}`} className="grow flex flex-col">
-                <CardFooter className="flex flex-col items-start p-4 space-y-3 grow bg-background transition-colors">
-                    <h3 className="font-bold text-[10px] uppercase tracking-widest leading-tight line-clamp-2 text-foreground transition-colors h-8 w-full">
+                <CardFooter className="flex flex-col items-start p-4 gap-y-3 grow bg-background transition-colors">
+                    <h3 className="font-semibold text-[10px] uppercase tracking-widest leading-tight line-clamp-2 text-foreground transition-colors h-8 w-full">
                         {item.productName}
                     </h3>
 

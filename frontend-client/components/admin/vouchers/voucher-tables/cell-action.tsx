@@ -23,22 +23,22 @@ interface CellActionProps {
 }
 
 export function CellAction({ data }: CellActionProps) {
-    const router = useRouter();
+    const { push, refresh } = useRouter();
     const [loading, setLoading] = useState(false);
     const [deleteOpen, setDeleteOpen] = useState(false);
 
     const onEdit = () => {
-        router.push(`/admin/dashboard/vouchers/${data.id}`);
+        push(`/admin/dashboard/vouchers/${data.id}`);
     };
 
     const onDelete = async () => {
         try {
             setLoading(true);
             await voucherService.delete(data.id);
-            toast.success('Đã xóa voucher');
-            router.refresh();
+            toast.success('Đã xóa mã giảm giá');
+            refresh();
         } catch (error) {
-            toast.error('Có lỗi xảy ra khi xóa voucher');
+            toast.error('Có lỗi xảy ra khi xóa mã giảm giá');
         } finally {
             setLoading(false);
             setDeleteOpen(false);
@@ -49,10 +49,10 @@ export function CellAction({ data }: CellActionProps) {
         try {
             setLoading(true);
             await voucherService.activate(data.id);
-            toast.success('Đã kích hoạt voucher');
-            router.refresh();
+            toast.success('Đã kích hoạt mã giảm giá');
+            refresh();
         } catch (error) {
-            toast.error('Có lỗi xảy ra khi kích hoạt voucher');
+            toast.error('Có lỗi xảy ra khi kích hoạt mã giảm giá');
         } finally {
             setLoading(false);
         }
@@ -62,10 +62,10 @@ export function CellAction({ data }: CellActionProps) {
         try {
             setLoading(true);
             await voucherService.cancel(data.id);
-            toast.success('Đã hủy voucher');
-            router.refresh();
+            toast.success('Đã hủy mã giảm giá');
+            refresh();
         } catch (error) {
-            toast.error('Có lỗi xảy ra khi hủy voucher');
+            toast.error('Có lỗi xảy ra khi hủy mã giảm giá');
         } finally {
             setLoading(false);
         }
@@ -84,26 +84,26 @@ export function CellAction({ data }: CellActionProps) {
             />
             <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" className="h-8 w-8 p-0">
+                    <Button variant="ghost" className="size-8 p-0">
                         <span className="sr-only">Mở menu</span>
-                        <MoreHorizontal className="h-4 w-4" />
+                        <MoreHorizontal className="size-4" />
                     </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
                     <DropdownMenuLabel>Hành động</DropdownMenuLabel>
                     <DropdownMenuItem onClick={onEdit}>
-                        <Edit className="mr-2 h-4 w-4" />
+                        <Edit className="mr-2 size-4" />
                         Chỉnh sửa
                     </DropdownMenuItem>
                     {canActivate && (
                         <DropdownMenuItem onClick={onActivate} disabled={loading}>
-                            <Play className="mr-2 h-4 w-4" />
+                            <Play className="mr-2 size-4" />
                             Kích hoạt
                         </DropdownMenuItem>
                     )}
                     {canCancel && (
                         <DropdownMenuItem onClick={onCancel} disabled={loading}>
-                            <XCircle className="mr-2 h-4 w-4" />
+                            <XCircle className="mr-2 size-4" />
                             Hủy
                         </DropdownMenuItem>
                     )}
@@ -112,7 +112,7 @@ export function CellAction({ data }: CellActionProps) {
                         onClick={() => setDeleteOpen(true)}
                         className="text-red-600"
                     >
-                        <Trash className="mr-2 h-4 w-4" />
+                        <Trash className="mr-2 size-4" />
                         Xóa
                     </DropdownMenuItem>
                 </DropdownMenuContent>

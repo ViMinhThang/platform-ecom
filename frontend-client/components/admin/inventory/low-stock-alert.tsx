@@ -16,7 +16,7 @@ export function LowStockAlert({ items, onAdjust }: LowStockAlertProps) {
         return (
             <Card>
                 <CardHeader className="flex flex-row items-center gap-2 pb-2">
-                    <Package className="h-5 w-5 text-green-600" />
+                    <Package className="size-5 text-green-600" />
                     <CardTitle className="text-base">Tình trạng kho</CardTitle>
                 </CardHeader>
                 <CardContent>
@@ -31,7 +31,7 @@ export function LowStockAlert({ items, onAdjust }: LowStockAlertProps) {
     return (
         <Card className="border-amber-200 bg-amber-50/50 dark:bg-amber-950/20">
             <CardHeader className="flex flex-row items-center gap-2 pb-2">
-                <AlertTriangle className="h-5 w-5 text-amber-600" />
+                <AlertTriangle className="size-5 text-amber-600" />
                 <CardTitle className="text-base text-amber-800 dark:text-amber-200">
                     Cảnh báo tồn kho thấp ({items.length})
                 </CardTitle>
@@ -40,11 +40,11 @@ export function LowStockAlert({ items, onAdjust }: LowStockAlertProps) {
                 {items.slice(0, 5).map((item) => (
                     <div
                         key={item.variantId}
-                        className="flex items-center justify-between rounded-lg bg-white p-3 shadow-sm dark:bg-gray-800"
+                        className="flex items-center justify-between rounded-lg bg-white p-3 shadow-sm dark:bg-zinc-800"
                     >
                         <div className="flex items-center gap-3">
-                            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-amber-100 dark:bg-amber-900">
-                                <TrendingDown className="h-5 w-5 text-amber-600" />
+                            <div className="flex size-10 items-center justify-center rounded-lg bg-amber-100 dark:bg-amber-900">
+                                <TrendingDown className="size-5 text-amber-600" />
                             </div>
                             <div>
                                 <p className="font-medium">
@@ -69,14 +69,14 @@ export function LowStockAlert({ items, onAdjust }: LowStockAlertProps) {
                                 size="sm"
                                 onClick={() => onAdjust(item)}
                             >
-                                <Edit className="h-4 w-4" />
+                                <Edit className="size-4" />
                             </Button>
                         </div>
                     </div>
                 ))}
                 {items.length > 5 && (
                     <p className="text-sm text-muted-foreground text-center">
-                        Và {items.length - 5} mục khác...
+                        Và {items.length - 5} mục khác…
                     </p>
                 )}
             </CardContent>

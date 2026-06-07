@@ -12,9 +12,9 @@ export const CreateUserButton: React.FC = () => {
     <>
       <Button
         onClick={() => setOpen(true)}
-        className="bg-black text-xs md:text-sm"
+        className="bg-gray-950 text-xs md:text-sm"
       >
-        <IconPlus className="mr-2 h-4 w-4" /> Add User
+        <IconPlus className="mr-2 size-4" /> Thêm người dùng
       </Button>
       <UserDialog
         open={open}

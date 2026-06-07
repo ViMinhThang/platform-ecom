@@ -1,6 +1,6 @@
 "use client";
 
-import { use, useEffect, useState, useRef, useCallback } from "react";
+import { Suspense, use, useEffect, useState, useRef, useCallback, useReducer } from "react";
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import { ProductCard } from "@/components/ProductCard";
 import { FilterPanel } from "@/components/category/FilterPanel";
@@ -27,15 +27,24 @@ interface SellerStorePageClientProps {
     sellerId: string;
 }
 
-export function SellerStorePageClient({ sellerId }: SellerStorePageClientProps) {
-    const router = useRouter();
+interface FetchState {
+    products: ProductRow[];
+    seller: SellerInfo | null;
+    loading: boolean;
+    error: string | null;
+}
+
+function SellerStorePageClientContent({ sellerId }: SellerStorePageClientProps) {
+    const { push } = useRouter();
     const pathname = usePathname();
     const searchParams = useSearchParams();
+    const get = searchParams.get.bind(searchParams);
+    const toString = searchParams.toString.bind(searchParams);
 
-    const [products, setProducts] = useState<ProductRow[]>([]);
-    const [seller, setSeller] = useState<SellerInfo | null>(null);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState<string | null>(null);
+    const [fetchState, dispatchFetch] = useReducer(
+        (prev: FetchState, next: Partial<FetchState>) => ({ ...prev, ...next }),
+        { products: [] as ProductRow[], seller: null as SellerInfo | null, loading: true, error: null as string | null } as FetchState
+    );
     const [pagination, setPagination] = useState({
         pageNumber: 0,
         pageSize: 12,
@@ -49,13 +58,13 @@ export function SellerStorePageClient({ sellerId }: SellerStorePageClientProps) 
     const abortControllerRef = useRef<AbortController | null>(null);
 
     // Extract all filter params from URL
-    const page = Number(searchParams.get("page")) || 0;
-    const sortBy = searchParams.get("sortBy") || "createdAt";
-    const sortOrder = (searchParams.get("sortOrder") || "desc") as "asc" | "desc";
-    const category = searchParams.get("category") || undefined;
-    const minPrice = searchParams.get("minPrice") ? Number(searchParams.get("minPrice")) : undefined;
-    const maxPrice = searchParams.get("maxPrice") ? Number(searchParams.get("maxPrice")) : undefined;
-    const minRating = searchParams.get("minRating") ? Number(searchParams.get("minRating")) : undefined;
+    const page = Number(get("page")) || 0;
+    const sortBy = get("sortBy") || "createdAt";
+    const sortOrder = (get("sortOrder") || "desc") as "asc" | "desc";
+    const category = get("category") || undefined;
+    const minPrice = get("minPrice") ? Number(get("minPrice")) : undefined;
+    const maxPrice = get("maxPrice") ? Number(get("maxPrice")) : undefined;
+    const minRating = get("minRating") ? Number(get("minRating")) : undefined;
 
     const fetchData = useCallback(async () => {
         if (abortControllerRef.current) {
@@ -64,12 +73,11 @@ export function SellerStorePageClient({ sellerId }: SellerStorePageClientProps) 
         const controller = new AbortController();
         abortControllerRef.current = controller;
 
-        setLoading(true);
+        dispatchFetch({ loading: true });
         try {
-            // Fetch seller info only once
-            if (!seller) {
+            if (!fetchState.seller) {
                 const sellerData = await getSellerInfo(Number(sellerId));
-                setSeller(sellerData);
+                dispatchFetch({ seller: sellerData });
             }
 
             // Fetch seller products
@@ -87,7 +95,7 @@ export function SellerStorePageClient({ sellerId }: SellerStorePageClientProps) 
 
             if (controller.signal.aborted) return;
 
-            setProducts(productData.content);
+            dispatchFetch({ products: productData.content });
             setPagination({
                 pageNumber: productData.pageNumber,
                 pageSize: productData.pageSize,
@@ -98,33 +106,33 @@ export function SellerStorePageClient({ sellerId }: SellerStorePageClientProps) 
         } catch (err: any) {
             if (err.name !== 'AbortError') {
                 console.error("Failed to fetch seller store data:", err);
-                setError("Có lỗi xảy ra khi tải dữ liệu cửa hàng.");
+                dispatchFetch({ error: "Có lỗi xảy ra khi tải dữ liệu cửa hàng." });
             }
         } finally {
             if (!controller.signal.aborted) {
-                setLoading(false);
+                dispatchFetch({ loading: false });
             }
         }
-    }, [sellerId, page, sortBy, sortOrder, category, minPrice, maxPrice, minRating, seller]);
+    }, [sellerId, page, sortBy, sortOrder, category, minPrice, maxPrice, minRating, fetchState.seller]);
 
     useEffect(() => {
         fetchData();
     }, [fetchData]);
 
     const handleClearFilters = () => {
-        router.push(pathname);
+        push(pathname);
     };
 
     const handlePageChange = (newPage: number) => {
-        const params = new URLSearchParams(searchParams.toString());
+        const params = new URLSearchParams(toString());
         params.set("page", newPage.toString());
-        router.push(`${pathname}?${params.toString()}`);
+        push(`${pathname}?${params.toString()}`);
     };
 
-    if (error) {
+    if (fetchState.error) {
         return (
             <div className="container mx-auto py-24 text-center">
-                <p className="text-destructive font-bold">{error}</p>
+                <p className="text-destructive font-bold">{fetchState.error}</p>
                 <Button onClick={() => window.location.reload()} variant="outline" className="mt-4">
                     Thử lại
                 </Button>
@@ -137,15 +145,15 @@ export function SellerStorePageClient({ sellerId }: SellerStorePageClientProps) 
             <div className="container mx-auto py-6 px-4 md:px-6">
                 <Breadcrumbs 
                     items={[
-                        { label: "Sellers", href: "/sellers" },
-                        { label: seller?.username || "Store" }
+                        { label: "Người bán", href: "/sellers" },
+                        { label: fetchState.seller?.username || "Cửa hàng" }
                     ]} 
                     className="mb-6"
                 />
 
-                {seller && (
+                {fetchState.seller && (
                     <SellerHero
-                        seller={seller}
+                        seller={fetchState.seller}
                         totalProducts={pagination.totalElements}
                         totalSold={1500}
                         createdAt="2023-01-15T00:00:00Z"
@@ -167,13 +175,13 @@ export function SellerStorePageClient({ sellerId }: SellerStorePageClientProps) 
                                 <Sheet>
                                     <SheetTrigger asChild>
                                         <Button variant="outline" size="sm" className="rounded-none border-2 border-black font-bold uppercase tracking-wider h-9 bg-white">
-                                            <SlidersHorizontal className="mr-2 h-4 w-4" />
+                                            <SlidersHorizontal className="mr-2 size-4" />
                                             Bộ lọc
                                         </Button>
                                     </SheetTrigger>
                                     <SheetContent side="left" className="w-[300px]">
                                         <SheetHeader>
-                                            <SheetTitle className="text-left font-black uppercase italic tracking-tighter text-2xl">Bộ lọc</SheetTitle>
+                                            <SheetTitle className="text-left font-semibold uppercase italic tracking-tighter text-2xl">Bộ lọc</SheetTitle>
                                         </SheetHeader>
                                         <div className="mt-8">
                                             <FilterPanel />
@@ -186,12 +194,12 @@ export function SellerStorePageClient({ sellerId }: SellerStorePageClientProps) 
                             </div>
                         </div>
 
-                        {loading ? (
+                        {fetchState.loading ? (
                             <ProductGridSkeleton count={8} className="lg:grid-cols-4" />
-                        ) : products.length > 0 ? (
+                        ) : fetchState.products.length > 0 ? (
                             <>
                                 <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-                                    {products.map((product) => (
+                                    {fetchState.products.map((product) => (
                                         <ProductCard
                                             key={product.id}
                                             id={product.id.toString()}
@@ -200,9 +208,6 @@ export function SellerStorePageClient({ sellerId }: SellerStorePageClientProps) 
                                             price={product.minPrice || 0}
                                             image={product.imageUrl || ""}
                                             category={product.category.name}
-                                            isNew={false}
-                                            rating={product.averageRating}
-                                            soldCount={product.totalSold}
                                             firstVariant={product.firstVariant}
                                         />
                                     ))}
@@ -218,14 +223,14 @@ export function SellerStorePageClient({ sellerId }: SellerStorePageClientProps) 
                             </>
                         ) : (
                             <div className="text-center py-24 bg-white border-2 border-dashed border-zinc-200">
-                                <ShoppingBag className="w-12 h-12 text-zinc-300 mx-auto mb-4" />
-                                <h3 className="text-xl font-black uppercase italic tracking-tighter mb-2">
+                                <ShoppingBag className="size-12 text-zinc-300 mx-auto mb-4" />
+                                <h3 className="text-xl font-semibold uppercase italic tracking-tighter mb-2">
                                     Không tìm thấy sản phẩm
                                 </h3>
                                 <p className="text-muted-foreground mb-6 font-medium italic">
                                     Cửa hàng hiện chưa có sản phẩm nào phù hợp với bộ lọc.
                                 </p>
-                                <Button onClick={handleClearFilters} variant="default" className="rounded-none bg-black text-white hover:bg-zinc-800 uppercase font-bold tracking-widest">
+                                <Button onClick={handleClearFilters} variant="default" className="rounded-none bg-gray-950 text-white hover:bg-zinc-800 uppercase font-bold tracking-widest">
                                     Xóa tất cả bộ lọc
                                 </Button>
                             </div>
@@ -234,5 +239,13 @@ export function SellerStorePageClient({ sellerId }: SellerStorePageClientProps) 
                 </div>
             </div>
         </div>
+    );
+}
+
+export function SellerStorePageClient(props: SellerStorePageClientProps) {
+    return (
+        <Suspense fallback={<div className="min-h-screen animate-pulse bg-secondary/10" />}>
+            <SellerStorePageClientContent {...props} />
+        </Suspense>
     );
 }

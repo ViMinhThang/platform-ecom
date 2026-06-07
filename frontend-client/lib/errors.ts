@@ -50,7 +50,7 @@ export class ValidationError extends ApplicationError {
  * Authentication errors
  */
 export class AuthenticationError extends ApplicationError {
-    constructor(message: string = 'Authentication required') {
+    constructor(message: string = 'Cần đăng nhập để tiếp tục') {
         super(message, 'AUTH_ERROR', 401);
     }
 }
@@ -59,7 +59,7 @@ export class AuthenticationError extends ApplicationError {
  * Authorization errors
  */
 export class AuthorizationError extends ApplicationError {
-    constructor(message: string = 'Insufficient permissions') {
+    constructor(message: string = 'Bạn không có đủ quyền để thực hiện thao tác này') {
         super(message, 'AUTHORIZATION_ERROR', 403);
     }
 }
@@ -70,8 +70,8 @@ export class AuthorizationError extends ApplicationError {
 export class NotFoundError extends ApplicationError {
     constructor(resource: string, identifier?: string | number) {
         const message = identifier
-            ? `${resource} with identifier ${identifier} not found`
-            : `${resource} not found`;
+            ? `Không tìm thấy ${resource} với mã định danh ${identifier}`
+            : `Không tìm thấy ${resource}`;
         super(message, 'NOT_FOUND_ERROR', 404);
     }
 }
@@ -80,7 +80,7 @@ export class NotFoundError extends ApplicationError {
  * Network errors
  */
 export class NetworkError extends ApplicationError {
-    constructor(message: string = 'Network request failed') {
+    constructor(message: string = 'Yêu cầu mạng không thành công') {
         super(message, 'NETWORK_ERROR');
     }
 }
@@ -110,7 +110,7 @@ export function handleError(error: unknown): ApplicationError {
 
     // Unknown error type
     logger.error('Unknown error occurred', undefined, { error });
-    return new ApplicationError('An unknown error occurred');
+    return new ApplicationError('Đã xảy ra lỗi không xác định');
 }
 
 /**
@@ -129,7 +129,7 @@ export function getErrorMessage(error: unknown): string {
         return error;
     }
 
-    return 'An unexpected error occurred';
+    return 'Đã xảy ra lỗi ngoài dự kiến';
 }
 
 /**

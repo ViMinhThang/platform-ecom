@@ -5,6 +5,7 @@ import { AdminOrderGroup } from '@/types/order/order';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Badge } from '@/components/ui/badge';
 import { formatCurrency } from '@/lib/utils';
+import { getOrderStatusLabel, getPaymentStatusLabel } from '@/lib/utils/order-labels';
 import { format } from 'date-fns';
 import { OrderTableAction } from './order-table-action';
 
@@ -54,11 +55,11 @@ export const columns: ColumnDef<AdminOrderGroup>[] = [
         cell: ({ row }) => {
             const status = row.original.paymentStatus;
             let variant: 'default' | 'secondary' | 'destructive' | 'outline' = 'outline';
-            let label = status;
+            const label = getPaymentStatusLabel(status);
 
-            if (status === 'COMPLETED') { variant = 'default'; label = 'Hoàn tất'; }
-            if (status === 'PENDING') { variant = 'secondary'; label = 'Chờ xử lý'; }
-            if (status === 'FAILED') { variant = 'destructive'; label = 'Thất bại'; }
+            if (status === 'COMPLETED' || status === 'SUCCEEDED') variant = 'default';
+            if (status === 'PENDING') variant = 'secondary';
+            if (status === 'FAILED' || status === 'CANCELLED') variant = 'destructive';
 
             return <Badge variant={variant}>{label}</Badge>;
         },
@@ -69,12 +70,12 @@ export const columns: ColumnDef<AdminOrderGroup>[] = [
         cell: ({ row }) => {
             const status = row.original.overallStatus;
             let variant: 'default' | 'secondary' | 'destructive' | 'outline' = 'outline';
-            let label = status;
+            const label = getOrderStatusLabel(status);
 
-            if (status === 'DELIVERED') { variant = 'default'; label = 'Đã giao'; }
-            if (status === 'SHIPPED') { variant = 'secondary'; label = 'Đang giao'; }
-            if (status === 'CANCELLED') { variant = 'destructive'; label = 'Đã hủy'; }
-            if (status === 'PENDING') { variant = 'outline'; label = 'Chờ xử lý'; }
+            if (status === 'DELIVERED' || status === 'COMPLETED') variant = 'default';
+            if (status === 'SHIPPED' || status === 'DELIVERING' || status === 'PROCESSING') variant = 'secondary';
+            if (status === 'CANCELLED' || status === 'DELIVERY_FAIL' || status === 'LOST' || status === 'DAMAGE') variant = 'destructive';
+            if (status === 'PENDING') variant = 'outline';
 
             return <Badge variant={variant}>{label}</Badge>;
         },

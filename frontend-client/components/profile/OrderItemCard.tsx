@@ -6,6 +6,7 @@ import { canReviewOrder } from '@/lib/utils/orderStatus';
 import { Star, Package } from 'lucide-react';
 import { imageUrl } from '@/lib/utils/imageUrl';
 import Image from 'next/image';
+import { formatCurrency } from '@/lib/utils';
 
 interface OrderItemCardProps {
     item: OrderItem;
@@ -25,7 +26,7 @@ export function OrderItemCard({ item, orderStatus, onReviewClick }: OrderItemCar
     return (
         <div className="border rounded-lg overflow-hidden hover:border-primary/50 transition-colors flex">
             {/* Product Image */}
-            <div className="shrink-0 w-[100px] h-[100px] bg-muted flex items-center justify-center">
+            <div className="shrink-0 size-[100px] bg-muted flex items-center justify-center">
                 {hasImage ? (
                     <Image
                         width={100}
@@ -36,7 +37,7 @@ export function OrderItemCard({ item, orderStatus, onReviewClick }: OrderItemCar
                         className="w-full h-full object-cover"
                     />
                 ) : (
-                    <Package className="h-8 w-8 text-muted-foreground" />
+                    <Package className="size-8 text-muted-foreground" />
                 )}
             </div>
 
@@ -49,7 +50,7 @@ export function OrderItemCard({ item, orderStatus, onReviewClick }: OrderItemCar
                     {/* Variant Name */}
                     {variant?.variantName && (
                         <p className="text-xs text-muted-foreground mt-1">
-                            Variant: <span className="text-foreground">{variant.variantName}</span>
+                            Biến thể: <span className="text-foreground">{variant.variantName}</span>
                         </p>
                     )}
                     {variant?.sku && !variant.sku.startsWith('VAR-') && (
@@ -62,9 +63,9 @@ export function OrderItemCard({ item, orderStatus, onReviewClick }: OrderItemCar
                 {/* Variant Options (Color, Size, etc.) */}
                 {variant?.optionValues && variant.optionValues.length > 0 && (
                     <div className="flex gap-1 flex-wrap">
-                        {variant.optionValues.map((opt, idx) => (
+                        {variant.optionValues.map((opt) => (
                             <span
-                                key={idx}
+                                key={opt.id}
                                 className="text-xs bg-secondary px-2 py-1 rounded"
                             >
                                 {opt.productOptionValue.displayValue}
@@ -76,10 +77,10 @@ export function OrderItemCard({ item, orderStatus, onReviewClick }: OrderItemCar
                 {/* Price & Quantity */}
                 <div className="flex justify-between items-center text-sm pt-2 border-t">
                     <span className="text-muted-foreground">
-                        Qty: {item.quantity} × ${item.orderedProductPrice.toFixed(2)}
+                        Số lượng: {item.quantity} × {formatCurrency(item.orderedProductPrice)}
                     </span>
                     <span className="font-semibold">
-                        ${itemTotal.toFixed(2)}
+                        {formatCurrency(itemTotal)}
                     </span>
                 </div>
 
@@ -91,8 +92,8 @@ export function OrderItemCard({ item, orderStatus, onReviewClick }: OrderItemCar
                         className="w-full text-xs"
                         onClick={onReviewClick}
                     >
-                        <Star className="h-3 w-3 mr-1" />
-                        Write Review
+                        <Star className="size-3 mr-1" />
+                        Viết đánh giá
                     </Button>
                 )}
             </div>

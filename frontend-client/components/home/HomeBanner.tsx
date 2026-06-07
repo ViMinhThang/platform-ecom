@@ -28,6 +28,7 @@ export const HomeBanner = () => {
                         src="/hero.avif"
                         alt="ACME - Bộ sưu tập mới"
                         fill
+                        sizes="100vw"
                         className="object-cover"
                         priority
                     />
@@ -46,7 +47,7 @@ export const HomeBanner = () => {
                             </span>
                         </div>
                         
-                        <h1 className="font-header text-5xl md:text-7xl lg:text-[100px] text-white leading-[0.9] tracking-tighter max-w-3xl font-extrabold">
+                        <h1 className="font-header text-5xl md:text-7xl lg:text-[100px] text-white leading-[0.9] tracking-tighter max-w-3xl font-semibold">
                             Bộ sưu tập <br />
                             Hè Năng động <br />
                             2024
@@ -63,7 +64,7 @@ export const HomeBanner = () => {
                                 className="inline-flex items-center gap-3 bg-primary text-white hover:brightness-110 px-10 py-4 text-[13px] font-bold rounded-full transition-all shadow-xl active:scale-95"
                             >
                                 Khám phá Bộ sưu tập
-                                <MoveRight className="h-4 w-4" />
+                                <MoveRight className="size-4" />
                             </Link>
                         </div>
                     </div>

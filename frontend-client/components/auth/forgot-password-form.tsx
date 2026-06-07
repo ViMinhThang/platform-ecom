@@ -26,7 +26,7 @@ const formSchema = z.object({
 type FormValue = z.infer<typeof formSchema>;
 
 export function ForgotPasswordForm({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) {
-    const router = useRouter();
+    const { push } = useRouter();
     const [loading, setLoading] = React.useState(false);
 
     const form = useForm<FormValue>({
@@ -59,7 +59,7 @@ export function ForgotPasswordForm({ className, ...props }: React.HTMLAttributes
             }
 
             toast.success("Mã OTP đã được gửi đến email của bạn!");
-            router.push(`/auth/reset-password?email=${encodeURIComponent(data.email)}`);
+            push(`/auth/reset-password?email=${encodeURIComponent(data.email)}`);
         } catch {
             toast.error("Đã xảy ra lỗi. Vui lòng thử lại.");
         } finally {
@@ -90,7 +90,7 @@ export function ForgotPasswordForm({ className, ...props }: React.HTMLAttributes
                                         autoComplete="email"
                                         autoCorrect="off"
                                         disabled={loading}
-                                        icon={<Mail className="h-4 w-4" />}
+                                        icon={<Mail className="size-4" />}
                                         error={fieldState.error?.message}
                                         {...field}
                                     />
@@ -109,7 +109,7 @@ export function ForgotPasswordForm({ className, ...props }: React.HTMLAttributes
                 Nhớ mật khẩu?{" "}
                 <button
                     type="button"
-                    onClick={() => router.push("/auth/sign-in")}
+                    onClick={() => push("/auth/sign-in")}
                     className="font-semibold text-primary hover:underline"
                 >
                     Quay lại đăng nhập

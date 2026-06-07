@@ -17,9 +17,9 @@ export default function CartPage() {
 
     if (loading && !cart) {
         return (
-            <div className="min-h-screen bg-background flex flex-col items-center justify-center space-y-6 px-6">
-                <div className="w-10 h-10 border-2 border-primary/20 border-t-primary rounded-full animate-spin" />
-                <p className="text-sm text-foreground/50 animate-pulse">Đang tải giỏ hàng...</p>
+            <div className="min-h-screen bg-background flex flex-col items-center justify-center gap-y-6 px-6">
+                <div className="size-10 border-2 border-primary/20 border-t-primary rounded-full animate-spin" />
+                <p className="text-sm text-foreground/50 animate-pulse">Đang tải giỏ hàng…</p>
             </div>
         );
     }
@@ -28,15 +28,15 @@ export default function CartPage() {
         return (
             <div className="min-h-screen bg-background py-32 px-6 flex items-center justify-center">
                 <div className="max-w-md w-full text-center space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-1000">
-                    <div className="relative w-20 h-20 mx-auto">
+                    <div className="relative size-20 mx-auto">
                         <ShoppingBag className="w-full h-full text-foreground/10" strokeWidth={1} />
                         <div className="absolute inset-0 flex items-center justify-center">
-                            <div className="w-2 h-2 bg-primary rounded-full animate-pulse" />
+                            <div className="size-2 bg-primary rounded-full animate-pulse" />
                         </div>
                     </div>
                     
                     <div className="space-y-3">
-                        <h1 className="font-labels text-2xl font-bold tracking-tight">Giỏ hàng trống</h1>
+                        <h1 className="font-labels text-2xl font-semibold tracking-tight">Giỏ hàng trống</h1>
                         <p className="text-sm text-foreground/50 leading-relaxed">
                             Bạn chưa thêm sản phẩm nào. Hãy khám phá những sản phẩm tuyệt vời đang chờ bạn.
                         </p>
@@ -56,9 +56,9 @@ export default function CartPage() {
         <div className="bg-surface min-h-screen pb-48">
             <div className="max-w-screen-2xl mx-auto px-6 py-12">
 
-                {/* Cart Header: Editorial Style */}
+                {/* Tiêu đề giỏ hàng */}
                 <div className="mb-12 md:mb-16 space-y-2">
-                    <h1 className="font-header text-5xl md:text-6xl font-black tracking-tight text-foreground">
+                    <h1 className="font-header text-5xl md:text-6xl font-semibold tracking-tight text-foreground">
                         Giỏ hàng
                     </h1>
                     <p className="text-on-surface-variant font-medium">
@@ -78,7 +78,7 @@ export default function CartPage() {
                         {/* Free Shipping Trust Banner */}
                         <div className="mt-8 flex items-center justify-between p-6 bg-surface-container rounded-xl">
                             <div className="flex items-center gap-4">
-                                <ShoppingBag className="w-5 h-5 text-primary" />
+                                <ShoppingBag className="size-5 text-primary" />
                                 <p className="text-sm font-medium">Bạn đủ điều kiện nhận <span className="font-bold">Giao hàng Hỏa tốc Miễn phí</span></p>
                             </div>
                             <Link href="/" className="text-sm font-bold text-primary underline decoration-2 underline-offset-4">

@@ -22,8 +22,8 @@ function OptionsContent() {
   const [tempOptions, setTempOptions] = useState<ProductOption[]>([]);
 
   const handleAddOption = () => {
-    setTempOptions([
-      ...tempOptions,
+    setTempOptions(prev => [
+      ...prev,
       {
         name: "",
         displayName: "",
@@ -69,7 +69,7 @@ function OptionsContent() {
 
       {tempOptions.map((option, index) => (
         <ProductOptionCard
-          key={`temp-${index}`}
+          key={"temp-option-" + index}
           option={option}
           onSave={(data) => handleSave(data, true, index)}
           onDelete={() => handleDelete(undefined, true, index)}
@@ -77,10 +77,13 @@ function OptionsContent() {
       ))}
 
       <div
-        className="flex items-center justify-center w-96 h-96 border-2 border-dashed rounded-lg cursor-pointer hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors"
+        className="flex items-center justify-center size-96 border-2 border-dashed rounded-lg cursor-pointer hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors"
         onClick={handleAddOption}
+        onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') handleAddOption(); }}
+        role="button"
+        tabIndex={0}
       >
-        <Plus className="w-12 h-12 text-gray-400" />
+        <Plus className="size-12 text-zinc-400" />
       </div>
     </div>
   );

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useRef } from "react";
+import { Suspense, useEffect, useState, useRef } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { columns } from "../product-tables/columns";
 import { ProductTable } from "../product-tables";
@@ -15,17 +15,18 @@ interface ProductListingClientProps {
   };
 }
 
-export const ProductListingClient: React.FC<ProductListingClientProps> = ({
+const ProductListingClientContent: React.FC<ProductListingClientProps> = ({
   searchParams,
 }) => {
   const router = useRouter();
   const urlSearchParams = useSearchParams();
+  const get = urlSearchParams.get.bind(urlSearchParams);
 
   const initialPage = Number(
-    searchParams?.page ?? urlSearchParams.get("page") ?? 0
+    searchParams?.page ?? get("page") ?? 0
   );
   const initialPerPage = Number(
-    searchParams?.perPage ?? urlSearchParams.get("perPage") ?? 10
+    searchParams?.perPage ?? get("perPage") ?? 10
   );
 
   const [page, setPage] = useState(initialPage);
@@ -53,10 +54,10 @@ export const ProductListingClient: React.FC<ProductListingClientProps> = ({
     if (searchParams?.name) params.set("name", searchParams.name);
     if (searchParams?.category) params.set("category", searchParams.category);
 
-    router.replace(`/admin/dashboard/product?${params.toString()}`);
+    window.history.replaceState(null, '', `/admin/dashboard/product?${params.toString()}`);
   }, [page, perPage, searchParams, router]);
 
-  if (isLoading && products.length === 0) return <div>Đang tải sản phẩm...</div>;
+  if (isLoading && products.length === 0) return <div>Đang tải sản phẩm…</div>;
 
   return (
     <ProductTable
@@ -68,5 +69,13 @@ export const ProductListingClient: React.FC<ProductListingClientProps> = ({
       currentPage={page}
       pageSize={perPage}
     />
+  );
+};
+
+export const ProductListingClient: React.FC<ProductListingClientProps> = (props) => {
+  return (
+    <Suspense fallback={<div className="h-40 animate-pulse bg-secondary/10 rounded-sm" />}>
+      <ProductListingClientContent {...props} />
+    </Suspense>
   );
 };

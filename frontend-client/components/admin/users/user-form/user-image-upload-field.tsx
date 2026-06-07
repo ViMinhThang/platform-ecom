@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import { useUploadAvatarMutation } from "@/lib/store/admin";
 import { toast } from "sonner";
 import { Upload, Loader2 } from "lucide-react";
@@ -47,7 +48,7 @@ export const UserImageUploadField: React.FC<UserImageUploadFieldProps> = ({
         : null;
 
     return (
-        <div className="flex flex-col items-center space-y-3">
+        <div className="flex flex-col items-center gap-y-3">
             <input
                 type="file"
                 id="user-image-upload"
@@ -60,7 +61,7 @@ export const UserImageUploadField: React.FC<UserImageUploadFieldProps> = ({
             <label
                 htmlFor="user-image-upload"
                 className={`
-                    relative w-32 h-32 rounded-full border-2 border-dashed 
+                    relative size-32 rounded-full border-2 border-dashed
                     flex items-center justify-center cursor-pointer
                     transition-all duration-200
                     ${!userId ? 'opacity-50 cursor-not-allowed' : 'hover:border-primary hover:bg-muted/50'}
@@ -68,23 +69,25 @@ export const UserImageUploadField: React.FC<UserImageUploadFieldProps> = ({
                 `}
             >
                 {isUploading ? (
-                    <Loader2 className="w-8 h-8 animate-spin text-muted-foreground" />
+                    <Loader2 className="size-8 animate-spin text-muted-foreground" />
                 ) : displayImageUrl ? (
-                    <img
+                    <Image
                         src={displayImageUrl}
                         alt="Hồ sơ người dùng"
-                        className="w-full h-full rounded-full object-cover"
+                        fill
+                        sizes="128px"
+                        className="rounded-full object-cover"
                     />
                 ) : (
                     <div className="flex flex-col items-center gap-2 text-muted-foreground">
-                        <Upload className="w-8 h-8" />
-                        <span className="text-xs">Upload</span>
+                        <Upload className="size-8" />
+                        <span className="text-xs">Tải lên</span>
                     </div>
                 )}
 
                 {displayImageUrl && !isUploading && userId && (
                     <div className="absolute inset-0 bg-black/50 rounded-full opacity-0 hover:opacity-100 transition-opacity flex items-center justify-center">
-                        <Upload className="w-6 h-6 text-white" />
+                        <Upload className="size-6 text-white" />
                     </div>
                 )}
             </label>

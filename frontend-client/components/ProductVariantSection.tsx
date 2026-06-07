@@ -71,7 +71,7 @@ export function ProductVariantSection({
 
       {/* Highlights List */}
       <div className="space-y-4">
-        <h4 className="text-[11px] font-bold uppercase tracking-widest text-foreground/40">Chi tiết & Tiện ích</h4>
+        <h4 className="text-[11px] font-semibold uppercase tracking-widest text-foreground/40">Chi tiết & Tiện ích</h4>
         <ul className="space-y-3">
           {[
             "Dung tích 1.5L, phù hợp cho gia đình",
@@ -80,7 +80,7 @@ export function ProductVariantSection({
             "Kiểu dáng thủ công độc bản"
           ].map((item) => (
             <li key={item} className="flex items-center gap-3 text-sm font-medium text-foreground/70">
-              <CheckCircle2 className="h-4 w-4 text-primary" />
+              <CheckCircle2 className="size-4 text-primary" />
               {item}
             </li>
           ))}
@@ -93,18 +93,18 @@ export function ProductVariantSection({
             <span className="text-[11px] font-bold uppercase tracking-widest text-foreground/40">Số lượng</span>
             <div className="flex items-center bg-surface-container rounded-xl overflow-hidden">
                 <button
-                    className="h-9 w-9 flex items-center justify-center hover:bg-surface-container-high transition-colors"
+                    className="size-9 flex items-center justify-center hover:bg-surface-container-high transition-colors"
                     onClick={() => setQuantity(Math.max(1, quantity - 1))}
                     disabled={quantity <= 1}
                 >
-                    <Minus className="h-3 w-3" />
+                    <Minus className="size-3" />
                 </button>
                 <div className="w-8 text-center text-xs font-bold">{quantity}</div>
                 <button
-                    className="h-9 w-9 flex items-center justify-center hover:bg-surface-container-high transition-colors"
-                    onClick={() => setQuantity(quantity + 1)}
+                    className="size-9 flex items-center justify-center hover:bg-surface-container-high transition-colors"
+                    onClick={() => setQuantity(prev => prev + 1)}
                 >
-                    <Plus className="h-3 w-3" />
+                    <Plus className="size-3" />
                 </button>
             </div>
         </div>
@@ -130,14 +130,14 @@ export function ProductVariantSection({
 
         {/* Shipping Trust Signal */}
         <div className="mt-8 p-6 bg-surface-container rounded-xl flex items-start gap-4">
-            <div className="h-10 w-10 bg-primary/10 rounded-lg flex items-center justify-center shrink-0">
-                <Truck className="h-5 w-5 text-primary" />
+            <div className="size-10 bg-primary/10 rounded-lg flex items-center justify-center shrink-0">
+                <Truck className="size-5 text-primary" />
             </div>
             <div className="space-y-1">
                 <p className="text-xs font-bold text-foreground">Giao hàng toàn cầu miễn phí</p>
                 <p className="text-[11px] font-medium text-foreground/40">Giao hàng dự kiến trong 5-7 ngày làm việc</p>
             </div>
-            <Info className="h-4 w-4 text-foreground/20 ml-auto" />
+            <Info className="size-4 text-foreground/20 ml-auto" />
         </div>
       </div>
     </div>
