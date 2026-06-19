@@ -3,6 +3,7 @@ package com.ecom.promotion.dto;
 import lombok.*;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 /**
  * Request DTO for calculating discounts on cart items
@@ -13,8 +14,8 @@ import java.math.BigDecimal;
 @Builder
 public class CalculateDiscountRequest {
     private Long orderId; // Required for apply, null for calculate
-    private java.util.List<CartItemDTO> items;
+    private List<CartItemDTO> items;
     private BigDecimal shippingFee;
-    private java.util.List<String> voucherCodes; // Optional user-entered codes
+    private List<String> voucherCodes; // Optional user-entered codes
     private Long userId;
 }

@@ -5,273 +5,243 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c48beeac-7758-42e4-81dd-f068fbcd38be" name="Changes" comment="update spring cloud stream dependency">
+      <change beforePath="$PROJECT_DIR$/.agents/.shared/ui-ux-pro-max/data/charts.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/.shared/ui-ux-pro-max/data/colors.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/.shared/ui-ux-pro-max/data/icons.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/.shared/ui-ux-pro-max/data/landing.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/.shared/ui-ux-pro-max/data/products.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/.shared/ui-ux-pro-max/data/prompts.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/.shared/ui-ux-pro-max/data/react-performance.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/.shared/ui-ux-pro-max/data/stacks/flutter.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/.shared/ui-ux-pro-max/data/stacks/html-tailwind.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/.shared/ui-ux-pro-max/data/stacks/jetpack-compose.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/.shared/ui-ux-pro-max/data/stacks/nextjs.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/.shared/ui-ux-pro-max/data/stacks/nuxt-ui.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/.shared/ui-ux-pro-max/data/stacks/nuxtjs.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/.shared/ui-ux-pro-max/data/stacks/react-native.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/.shared/ui-ux-pro-max/data/stacks/react.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/.shared/ui-ux-pro-max/data/stacks/shadcn.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/.shared/ui-ux-pro-max/data/stacks/svelte.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/.shared/ui-ux-pro-max/data/stacks/swiftui.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/.shared/ui-ux-pro-max/data/stacks/vue.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/.shared/ui-ux-pro-max/data/styles.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/.shared/ui-ux-pro-max/data/typography.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/.shared/ui-ux-pro-max/data/ui-reasoning.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/.shared/ui-ux-pro-max/data/ux-guidelines.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/.shared/ui-ux-pro-max/data/web-interface.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/.shared/ui-ux-pro-max/scripts/core.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/.shared/ui-ux-pro-max/scripts/design_system.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/.shared/ui-ux-pro-max/scripts/search.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/ARCHITECTURE.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/agents/backend-specialist.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/agents/code-archaeologist.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/agents/database-architect.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/agents/debugger.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/agents/devops-engineer.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/agents/documentation-writer.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/agents/explorer-agent.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/agents/frontend-specialist.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/agents/game-developer.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/agents/mobile-developer.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/agents/orchestrator.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/agents/penetration-tester.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/agents/performance-optimizer.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/agents/product-manager.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/agents/product-owner.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/agents/project-planner.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/agents/qa-automation-engineer.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/agents/security-auditor.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/agents/seo-specialist.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/agents/test-engineer.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/mcp_config.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/rules/GEMINI.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/scripts/auto_preview.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/scripts/checklist.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/scripts/session_manager.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/scripts/verify_all.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/skills/api-patterns/SKILL.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/skills/api-patterns/api-style.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/skills/api-patterns/auth.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/skills/api-patterns/documentation.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/skills/api-patterns/graphql.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/skills/api-patterns/rate-limiting.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/skills/api-patterns/response.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/skills/api-patterns/rest.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/skills/api-patterns/scripts/api_validator.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/skills/api-patterns/security-testing.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/skills/api-patterns/trpc.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/skills/api-patterns/versioning.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/skills/app-builder/SKILL.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/skills/app-builder/agent-coordination.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/skills/app-builder/feature-building.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/skills/app-builder/project-detection.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/skills/app-builder/scaffolding.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/skills/app-builder/tech-stack.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/skills/app-builder/templates/SKILL.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/skills/app-builder/templates/astro-static/TEMPLATE.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/skills/app-builder/templates/chrome-extension/TEMPLATE.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/skills/app-builder/templates/cli-tool/TEMPLATE.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/skills/app-builder/templates/electron-desktop/TEMPLATE.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/skills/app-builder/templates/express-api/TEMPLATE.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/skills/app-builder/templates/flutter-app/TEMPLATE.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/skills/app-builder/templates/monorepo-turborepo/TEMPLATE.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/skills/app-builder/templates/nextjs-fullstack/TEMPLATE.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/skills/app-builder/templates/nextjs-saas/TEMPLATE.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/skills/app-builder/templates/nextjs-static/TEMPLATE.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/skills/app-builder/templates/nuxt-app/TEMPLATE.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/skills/app-builder/templates/python-fastapi/TEMPLATE.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/skills/app-builder/templates/react-native-app/TEMPLATE.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/skills/architecture/SKILL.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/skills/architecture/context-discovery.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/skills/architecture/examples.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/skills/architecture/pattern-selection.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/skills/architecture/patterns-reference.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/skills/architecture/trade-off-analysis.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/skills/bash-linux/SKILL.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/skills/behavioral-modes/SKILL.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/skills/brainstorming/SKILL.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/skills/brainstorming/dynamic-questioning.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/skills/clean-code/SKILL.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/skills/code-review-checklist/SKILL.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/skills/database-design/SKILL.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/skills/database-design/database-selection.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/skills/database-design/indexing.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/skills/database-design/migrations.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/skills/database-design/optimization.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/skills/database-design/orm-selection.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/skills/database-design/schema-design.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/skills/database-design/scripts/schema_validator.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/skills/deployment-procedures/SKILL.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/skills/doc.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/skills/documentation-templates/SKILL.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/skills/frontend-design/SKILL.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/skills/frontend-design/animation-guide.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/skills/frontend-design/color-system.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/skills/frontend-design/decision-trees.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/skills/frontend-design/motion-graphics.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/skills/frontend-design/scripts/accessibility_checker.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/skills/frontend-design/scripts/ux_audit.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/skills/frontend-design/typography-system.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/skills/frontend-design/ux-psychology.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/skills/frontend-design/visual-effects.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/skills/game-development/2d-games/SKILL.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/skills/game-development/3d-games/SKILL.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/skills/game-development/SKILL.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/skills/game-development/game-art/SKILL.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/skills/game-development/game-audio/SKILL.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/skills/game-development/game-design/SKILL.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/skills/game-development/mobile-games/SKILL.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/skills/game-development/multiplayer/SKILL.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/skills/game-development/pc-games/SKILL.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/skills/game-development/vr-ar/SKILL.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/skills/game-development/web-games/SKILL.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/skills/geo-fundamentals/SKILL.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/skills/geo-fundamentals/scripts/geo_checker.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/skills/i18n-localization/SKILL.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/skills/i18n-localization/scripts/i18n_checker.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/skills/intelligent-routing/SKILL.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/skills/lint-and-validate/SKILL.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/skills/lint-and-validate/scripts/lint_runner.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/skills/lint-and-validate/scripts/type_coverage.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/skills/mcp-builder/SKILL.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/skills/mobile-design/SKILL.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/skills/mobile-design/decision-trees.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/skills/mobile-design/mobile-backend.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/skills/mobile-design/mobile-color-system.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/skills/mobile-design/mobile-debugging.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/skills/mobile-design/mobile-design-thinking.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/skills/mobile-design/mobile-navigation.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/skills/mobile-design/mobile-performance.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/skills/mobile-design/mobile-testing.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/skills/mobile-design/mobile-typography.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/skills/mobile-design/platform-android.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/skills/mobile-design/platform-ios.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/skills/mobile-design/scripts/mobile_audit.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/skills/mobile-design/touch-psychology.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/skills/nextjs-react-expert/1-async-eliminating-waterfalls.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/skills/nextjs-react-expert/2-bundle-bundle-size-optimization.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/skills/nextjs-react-expert/3-server-server-side-performance.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/skills/nextjs-react-expert/4-client-client-side-data-fetching.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/skills/nextjs-react-expert/5-rerender-re-render-optimization.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/skills/nextjs-react-expert/6-rendering-rendering-performance.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/skills/nextjs-react-expert/7-js-javascript-performance.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/skills/nextjs-react-expert/8-advanced-advanced-patterns.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/skills/nextjs-react-expert/SKILL.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/skills/nextjs-react-expert/scripts/convert_rules.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/skills/nextjs-react-expert/scripts/react_performance_checker.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/skills/nodejs-best-practices/SKILL.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/skills/parallel-agents/SKILL.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/skills/performance-profiling/SKILL.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/skills/performance-profiling/scripts/lighthouse_audit.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/skills/plan-writing/SKILL.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/skills/powershell-windows/SKILL.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/skills/python-patterns/SKILL.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/skills/red-team-tactics/SKILL.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/skills/rust-pro/SKILL.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/skills/seo-fundamentals/SKILL.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/skills/seo-fundamentals/scripts/seo_checker.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/skills/server-management/SKILL.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/skills/systematic-debugging/SKILL.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/skills/tailwind-patterns/SKILL.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/skills/tdd-workflow/SKILL.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/skills/testing-patterns/SKILL.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/skills/testing-patterns/scripts/test_runner.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/skills/vulnerability-scanner/SKILL.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/skills/vulnerability-scanner/checklists.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/skills/vulnerability-scanner/scripts/security_scan.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/skills/web-design-guidelines/SKILL.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/skills/webapp-testing/SKILL.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/skills/webapp-testing/scripts/playwright_runner.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/workflows/brainstorm.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/workflows/create.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/workflows/debug.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/workflows/deploy.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/workflows/enhance.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/workflows/orchestrate.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/workflows/plan.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/workflows/preview.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/workflows/status.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/workflows/test.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.agents/workflows/ui-ux-pro-max.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.claude/settings.local.json" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/app/(auth)/auth/forgot-password/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/app/(auth)/auth/forgot-password/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/app/(auth)/auth/register/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/app/(auth)/auth/register/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/app/(auth)/auth/reset-password/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/app/(auth)/auth/reset-password/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/app/(auth)/auth/sign-in/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/app/(auth)/auth/sign-in/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/app/(main)/cart/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/app/(main)/cart/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend-client/app/(main)/category/[slug]/CategoryPageClient.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/app/(main)/category/[slug]/CategoryPageClient.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/app/(main)/category/[slug]/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/app/(main)/category/[slug]/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/app/(main)/checkout/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/app/(main)/checkout/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/app/(main)/checkout/success/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/app/(main)/checkout/success/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/app/(main)/orders/[id]/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/app/(main)/orders/[id]/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/app/(main)/orders/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/app/(main)/orders/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/app/(main)/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/app/(main)/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/app/(main)/products/[slug]/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/app/(main)/products/[slug]/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/app/(main)/products/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/app/(main)/products/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/app/(main)/profile/orders/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/app/(main)/profile/orders/page.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend-client/app/(main)/profile/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/app/(main)/profile/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/app/(main)/sale-campaigns/[slug]/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/app/(main)/sale-campaigns/[slug]/page.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend-client/app/(main)/sale-campaigns/[slug]/sale-campaign-detail-client.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/app/(main)/sale-campaigns/[slug]/sale-campaign-detail-client.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/app/(main)/sale-campaigns/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/app/(main)/sale-campaigns/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/app/(main)/sale-campaigns/sale-campaign-page-client.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/app/(main)/sale-campaigns/sale-campaign-page-client.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/app/(main)/seller/[sellerId]/SellerStorePageClient.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/app/(main)/seller/[sellerId]/SellerStorePageClient.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/app/(main)/seller/[sellerId]/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/app/(main)/seller/[sellerId]/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/app/admin/dashboard/category/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/app/admin/dashboard/category/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/app/admin/dashboard/error.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/app/admin/dashboard/error.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/app/admin/dashboard/inventory/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/app/admin/dashboard/inventory/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/app/admin/dashboard/orders/[orderId]/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/app/admin/dashboard/orders/[orderId]/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/app/admin/dashboard/overview/error.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/app/admin/dashboard/overview/error.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/app/admin/dashboard/product/[id]/description/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/app/admin/dashboard/product/[id]/description/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/app/admin/dashboard/product/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/app/admin/dashboard/product/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/app/admin/dashboard/reviews/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/app/admin/dashboard/reviews/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/app/admin/dashboard/sale-campaigns/[id]/edit/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/app/admin/dashboard/sale-campaigns/[id]/edit/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/app/admin/dashboard/sale-campaigns/[id]/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/app/admin/dashboard/sale-campaigns/[id]/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/app/admin/dashboard/sale-campaigns/new/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/app/admin/dashboard/sale-campaigns/new/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/app/admin/dashboard/sale-campaigns/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/app/admin/dashboard/sale-campaigns/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/app/admin/dashboard/user/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/app/admin/dashboard/user/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/app/admin/dashboard/vouchers/[id]/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/app/admin/dashboard/vouchers/[id]/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/app/admin/dashboard/vouchers/new/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/app/admin/dashboard/vouchers/new/page.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend-client/app/admin/dashboard/vouchers/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/app/admin/dashboard/vouchers/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/app/admin/not-found.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/app/admin/not-found.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/app/globals.css" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/app/globals.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/app/layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/app/layout.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/BannerGrid.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/BannerGrid.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/Categories.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/Categories.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/CategorySidebar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/CategorySidebar.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/FeaturedProducts.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/FeaturedProducts.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/Hero.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/Hero.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/Newsletter.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/Newsletter.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/ProductCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/ProductCard.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/ProductVariantSection.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/ProductVariantSection.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/ReviewForm.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/ReviewForm.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend-client/components/ReviewList.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/ReviewList.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/RichTextPreview.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/RichTextPreview.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/SiteFooter.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/SiteFooter.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/UserNav.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/UserNav.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/VariantSelector.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/VariantSelector.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/admin/active-theme.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/admin/active-theme.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/admin/alert-modal.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/admin/alert-modal.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/admin/categories/category-form/category-form-field.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/admin/categories/category-form/category-form-field.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/admin/categories/category-listing-client.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/admin/categories/category-listing-client.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/admin/categories/category-tables/cell-action.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/admin/categories/category-tables/cell-action.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/admin/categories/category-tables/columns.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/admin/categories/category-tables/columns.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/admin/categories/create-category.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/admin/categories/create-category.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/admin/file-uploader.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/admin/file-uploader.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend-client/components/admin/form-checkbox-group.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/admin/form-checkbox-group.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/admin/form-checkbox.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/admin/form-checkbox.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/admin/form-date-picker.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/admin/form-date-picker.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/admin/form-radio-group.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/admin/form-radio-group.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/admin/form-select.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/admin/form-select.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/admin/form-textarea.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/admin/form-textarea.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/admin/icons.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/admin/icons.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/admin/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/admin/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/admin/inventory/inventory-listing-client.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/admin/inventory/inventory-listing-client.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/admin/inventory/inventory-stats.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/admin/inventory/inventory-stats.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/admin/inventory/inventory-tables/columns.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/admin/inventory/inventory-tables/columns.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/admin/inventory/low-stock-alert.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/admin/inventory/low-stock-alert.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/admin/inventory/product-combobox.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/admin/inventory/product-combobox.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/admin/inventory/stock-adjustment-dialog.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/admin/inventory/stock-adjustment-dialog.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend-client/components/admin/inventory/variant-combobox.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/admin/inventory/variant-combobox.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/admin/layout/ThemeToggle/theme-toggle.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/admin/layout/ThemeToggle/theme-toggle.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend-client/components/admin/layout/app-sidebar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/admin/layout/app-sidebar.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/admin/layout/dashboard-page-layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/admin/layout/dashboard-page-layout.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/admin/layout/header.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/admin/layout/header.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/admin/layout/user-nav.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/admin/layout/user-nav.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/admin/nav-main.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/admin/nav-main.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/admin/nav-user.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/admin/nav-user.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/admin/orders/order-detail/order-detail-view.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/admin/orders/order-detail/order-detail-view.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/admin/orders/order-detail/order-info-card.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/admin/orders/order-detail/order-info-card.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/admin/orders/order-detail/sub-order-card.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/admin/orders/order-detail/sub-order-card.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend-client/components/admin/orders/order-detail/update-status-dialog.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/admin/orders/order-detail/update-status-dialog.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/admin/orders/order-tables/columns.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/admin/orders/order-tables/columns.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/admin/orders/order-tables/order-table-action.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/admin/orders/order-tables/order-table-action.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/admin/org-switcher.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/admin/org-switcher.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/admin/overview/area-graph-skeleton.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/admin/overview/area-graph-skeleton.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/admin/overview/area-graph.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/admin/overview/area-graph.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend-client/components/admin/overview/bar-graph-skeleton.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/admin/overview/bar-graph-skeleton.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/admin/overview/bar-graph.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/admin/overview/bar-graph.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/admin/overview/category-chart.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/admin/overview/category-chart.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend-client/components/admin/overview/overview.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/admin/overview/overview.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/admin/overview/pie-graph-skeleton.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/admin/overview/pie-graph-skeleton.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/admin/overview/pie-graph.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/admin/overview/pie-graph.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/admin/overview/recent-sales-skeleton.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/admin/overview/recent-sales-skeleton.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/admin/overview/recent-sales.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/admin/overview/recent-sales.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/admin/overview/trend-chart.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/admin/overview/trend-chart.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/admin/products/product-form/create-product.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/admin/products/product-form/create-product.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/admin/products/product-form/key-value-editor.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/admin/products/product-form/key-value-editor.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/admin/products/product-form/product-form-fields.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/admin/products/product-form/product-form-fields.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/admin/products/product-image/product-image-cart.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/admin/products/product-image/product-image-cart.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/admin/products/product-image/product-image-dialog.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/admin/products/product-image/product-image-dialog.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/admin/products/product-image/product-image-list.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/admin/products/product-image/product-image-list.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/admin/products/product-listing/client.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/admin/products/product-listing/client.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/admin/products/product-option/product-option.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/admin/products/product-option/product-option.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/admin/products/product-option/product-options-dialog.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/admin/products/product-option/product-options-dialog.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/admin/products/product-tables/cell-action.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/admin/products/product-tables/cell-action.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/admin/products/product-tables/columns.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/admin/products/product-tables/columns.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/admin/products/product-tables/options.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/admin/products/product-tables/options.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/admin/products/product-variant/product-variant-image-picker.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/admin/products/product-variant/product-variant-image-picker.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/admin/products/product-variant/product-variant-option.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/admin/products/product-variant/product-variant-option.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/admin/products/product-variant/variant.card.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/admin/products/product-variant/variant.card.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/admin/result-item.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/admin/result-item.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/admin/rich-text-editor.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/admin/rich-text-editor.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/admin/rich-text-preview.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/admin/rich-text-preview.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/admin/sale-campaigns/category-multi-select.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/admin/sale-campaigns/category-multi-select.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend-client/components/admin/sale-campaigns/discount-tier-editor.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/admin/sale-campaigns/discount-tier-editor.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/admin/sale-campaigns/sale-campaign-form.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/admin/sale-campaigns/sale-campaign-form.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/admin/sale-campaigns/sale-campaign-listing-client.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/admin/sale-campaigns/sale-campaign-listing-client.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/admin/sale-campaigns/sale-campaign-tables/cell-action.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/admin/sale-campaigns/sale-campaign-tables/cell-action.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/admin/sale-campaigns/sale-campaign-tables/columns.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/admin/sale-campaigns/sale-campaign-tables/columns.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/admin/search-input.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/admin/search-input.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/admin/theme-selector.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/admin/theme-selector.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/admin/use-theme-switching.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/admin/use-theme-switching.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/admin/users/create-user.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/admin/users/create-user.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/admin/users/user-form/user-addresses-field.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/admin/users/user-form/user-addresses-field.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend-client/components/admin/users/user-form/user-dialog.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/admin/users/user-form/user-dialog.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/admin/users/user-form/user-form-fields.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/admin/users/user-form/user-form-fields.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/admin/users/user-form/user-image-upload-field.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/admin/users/user-form/user-image-upload-field.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/admin/users/user-form/user-roles-field.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/admin/users/user-form/user-roles-field.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/admin/users/user-listing-client.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/admin/users/user-listing-client.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/admin/users/user-tables/cell-action.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/admin/users/user-tables/cell-action.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/admin/users/user-tables/columns.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/admin/users/user-tables/columns.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/admin/vouchers/voucher-form.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/admin/vouchers/voucher-form.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/admin/vouchers/voucher-listing-client.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/admin/vouchers/voucher-listing-client.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/admin/vouchers/voucher-tables/cell-action.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/admin/vouchers/voucher-tables/cell-action.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/admin/vouchers/voucher-tables/columns.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/admin/vouchers/voucher-tables/columns.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/auth/auth-brand-panel.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/auth/auth-brand-panel.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/auth/forgot-password-form.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/auth/forgot-password-form.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/auth/register-form.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/auth/register-form.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/auth/reset-password-form.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/auth/reset-password-form.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/auth/ui/auth-button.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/auth/ui/auth-button.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/auth/ui/auth-input.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/auth/ui/auth-input.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-client/components/auth/ui/otp-input.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/auth/ui/otp-input.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend-client/components/auth/ui/password-strength.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/auth/ui/password-strength.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/auth/user-auth-form.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/auth/user-auth-form.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/cart/CartItem.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/cart/CartItem.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/cart/CartSummary.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/cart/CartSummary.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/cart/SellerGroup.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/cart/SellerGroup.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/category/FilterPanel.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/category/FilterPanel.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/category/SellerCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/category/SellerCard.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/category/SellerGrid.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/category/SellerGrid.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/category/SortPanel.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/category/SortPanel.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend-client/components/chatbot/ChatMessage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/chatbot/ChatMessage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/chatbot/ChatWindow.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/chatbot/ChatWindow.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/chatbot/ChatbotWidget.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/chatbot/ChatbotWidget.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/checkout/AddressForm.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/checkout/AddressForm.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/checkout/PaymentForm.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/checkout/PaymentForm.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/checkout/VoucherSection.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/checkout/VoucherSection.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/common/EmptyState.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/common/EmptyState.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/common/ErrorBoundary.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/common/ErrorBoundary.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/common/LoadingSpinner.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/common/LoadingSpinner.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/common/Pagination.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/common/Pagination.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/common/StatusBadge.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/common/StatusBadge.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/common/form/FormCheckbox.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/common/form/FormCheckbox.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/common/form/FormSelect.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/common/form/FormSelect.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/header/SearchHeader.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/header/SearchHeader.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/header/TopBar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/header/TopBar.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/home/CampaignBanners.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/home/CampaignBanners.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/home/CategoryGrid.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/home/CategoryGrid.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/home/CuratedCollections.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/home/CuratedCollections.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend-client/components/home/HomeBanner.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/home/HomeBanner.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/home/ProductFeed.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/home/ProductFeed.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend-client/components/home/QuickLinks.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/home/QuickLinks.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend-client/components/home/SingleActiveCampaign.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/home/SingleActiveCampaign.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend-client/components/orders/OrderCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/orders/OrderCard.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/orders/OrderList.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/orders/OrderList.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/orders/ReviewAction.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/orders/ReviewAction.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend-client/components/orders/SubOrderCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/orders/SubOrderCard.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend-client/components/orders/TrackingTimeline.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/orders/TrackingTimeline.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/product/ProductDetailedDescription.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/product/ProductDetailedDescription.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/product/ProductGallery.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/product/ProductGallery.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/product/ProductSpecifications.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/product/ProductSpecifications.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/product/RelatedProducts.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/product/RelatedProducts.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/product/SellerHero.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/product/SellerHero.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/product/SellerInfoCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/product/SellerInfoCard.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/profile/AddressCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/profile/AddressCard.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/profile/AddressForm.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/profile/AddressForm.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/profile/AddressManager.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/profile/AddressManager.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/profile/OrderCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/profile/OrderCard.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/profile/OrderHistory.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/profile/OrderHistory.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/profile/OrderItemCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/profile/OrderItemCard.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/profile/ProfileInfoForm.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/profile/ProfileInfoForm.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/profile/ProfileLayout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/profile/ProfileLayout.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/profile/ReviewDialog.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/profile/ReviewDialog.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/recommendations/CartRecommendations.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/recommendations/CartRecommendations.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/review/ReviewImageUploader.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/review/ReviewImageUploader.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/review/ReviewRichTextEditor.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/review/ReviewRichTextEditor.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend-client/components/sale-campaign/CountdownTimer.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/sale-campaign/CountdownTimer.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/sale-campaign/SaleCampaignBanner.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/sale-campaign/SaleCampaignBanner.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/sale-campaign/SaleCampaignFilter.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/sale-campaign/SaleCampaignFilter.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/sale-campaign/SaleCampaignProductCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/sale-campaign/SaleCampaignProductCard.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/sale-campaign/SaleCampaignProducts.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/sale-campaign/SaleCampaignProducts.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/ui/Breadcrumbs.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/ui/Breadcrumbs.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/ui/Pagination.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/ui/Pagination.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/ui/ProductGridSkeleton.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/ui/ProductGridSkeleton.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend-client/components/ui/StarRating.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/ui/StarRating.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/ui/breadcrumb.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/ui/breadcrumb.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/ui/carousel.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/ui/carousel.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/ui/chart.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/ui/chart.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/ui/command.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/ui/command.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/ui/dialog.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/ui/dialog.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/ui/form.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/ui/form.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/ui/heading.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/ui/heading.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/ui/input-otp.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/ui/input-otp.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/ui/menubar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/ui/menubar.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/ui/navigation-menu.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/ui/navigation-menu.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/ui/sheet.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/ui/sheet.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/ui/sidebar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/ui/sidebar.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/ui/slider.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/ui/slider.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/ui/table/data-table-column-header.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/ui/table/data-table-column-header.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/ui/table/data-table-date-filter.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/ui/table/data-table-date-filter.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/ui/table/data-table-faceted-filter.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/ui/table/data-table-faceted-filter.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/ui/table/data-table-pagination.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/ui/table/data-table-pagination.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/ui/table/data-table-skeleton.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/ui/table/data-table-skeleton.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/ui/table/data-table-slider-filter.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/ui/table/data-table-slider-filter.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/ui/table/data-table-view-options.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/ui/table/data-table-view-options.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/ui/table/data-table.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/ui/table/data-table.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/ui/toggle-group.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/ui/toggle-group.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/config/data-table.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/config/data-table.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/constants/data.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/constants/data.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/constants/product-form.constants.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/constants/product-form.constants.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/hooks/product/use-product-form.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/hooks/product/use-product-form.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/hooks/use-data-table.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/hooks/use-data-table.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/hooks/useAddressData.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/hooks/useAddressData.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-client/components/ui/table/generic-feature-table.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/ui/table/generic-feature-table.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-client/hooks/useAnalytics.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/hooks/useAnalytics.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend-client/hooks/useBuyAgain.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/hooks/useBuyAgain.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/hooks/useImageUpload.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/hooks/useImageUpload.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/hooks/usePromotion.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/hooks/usePromotion.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/hooks/useReview.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/hooks/useReview.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/hooks/useReviewForm.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/hooks/useReviewForm.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/hooks/useShipping.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/hooks/useShipping.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/hooks/useVariantSelection.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/hooks/useVariantSelection.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/lib/api-client.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/lib/api-client.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/lib/auth-options.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/lib/auth-options.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/lib/constants.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/lib/constants.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/lib/errors.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/lib/errors.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend-client/lib/format.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/lib/format.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/lib/services/ghn-service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/lib/services/ghn-service.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/lib/store/api/clientApi.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/lib/store/api/clientApi.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/lib/utils/formatCurrency.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/lib/utils/formatCurrency.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/providers/product-option-provider.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/providers/product-option-provider.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/providers/product-variant-provider.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/providers/product-variant-provider.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/types/admin/api-response.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/types/admin/api-response.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/types/admin/category/category-form.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/types/admin/category/category-form.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/types/admin/product/product-form.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/types/admin/product/product-form.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/types/admin/user/user.form.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/types/admin/user/user.form.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/types/product/product-form.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/types/product/product-form.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/types/user/user.form.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/types/user/user.form.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/logs/order-service.log" beforeDir="false" afterPath="$PROJECT_DIR$/logs/order-service.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/logs/user-service.log" beforeDir="false" afterPath="$PROJECT_DIR$/logs/user-service.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/configserver/src/main/resources/config/chatbot-service.yml" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/configserver/src/main/resources/config/chatbot-service.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-client/lib/store/admin/analyticsApi.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/lib/store/admin/analyticsApi.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/order/src/main/java/com/ecom/order/controller/AdminAnalyticsController.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/order/src/main/java/com/ecom/order/controller/AdminAnalyticsController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/order/src/main/java/com/ecom/order/repository/SubOrderRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/order/src/main/java/com/ecom/order/repository/SubOrderRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/order/src/main/java/com/ecom/order/service/impl/AdminAnalyticsServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/order/src/main/java/com/ecom/order/service/impl/AdminAnalyticsServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/order/src/main/java/com/ecom/order/service/signature/AdminAnalyticsService.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/order/src/main/java/com/ecom/order/service/signature/AdminAnalyticsService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/promotion/src/main/java/com/ecom/promotion/dto/CalculateDiscountRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/promotion/src/main/java/com/ecom/promotion/dto/CalculateDiscountRequest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -402,27 +372,6 @@
         <option value="QuarkusRunConfigurationType" />
         <option value="SpringBootApplicationConfigurationType" />
       </set>
-    </option>
-    <option name="configurationStatuses">
-      <map>
-        <entry key="Application">
-          <value>
-            <map>
-              <entry key="analytics-server" value="STOPPED" />
-              <entry key="chatbot-service" value="STOPPED" />
-              <entry key="config-server" value="STOPPED" />
-              <entry key="gateway" value="STOPPED" />
-              <entry key="inventory-service" value="STOPPED" />
-              <entry key="notification-service" value="STOPPED" />
-              <entry key="order-service" value="STOPPED" />
-              <entry key="product-service" value="STOPPED" />
-              <entry key="promotion-service" value="STOPPED" />
-              <entry key="review-service" value="STOPPED" />
-              <entry key="user-service" value="STOPPED" />
-            </map>
-          </value>
-        </entry>
-      </map>
     </option>
   </component>
   <component name="RunManager" selected="Python.main (1)">

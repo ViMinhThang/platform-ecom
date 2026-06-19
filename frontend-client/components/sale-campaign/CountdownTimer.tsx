@@ -15,6 +15,8 @@ interface TimeLeft {
     seconds: number;
 }
 
+const formatNumber = (num: number) => num.toString().padStart(2, '0');
+
 export function CountdownTimer({ endTime, onEnd, variant = 'banner' }: CountdownTimerProps) {
     const calculateTimeLeft = useCallback((): TimeLeft => {
         const end = new Date(endTime).getTime();
@@ -55,8 +57,6 @@ export function CountdownTimer({ endTime, onEnd, variant = 'banner' }: Countdown
 
         return () => clearInterval(timer);
     }, [calculateTimeLeft, onEnd]);
-
-    const formatNumber = (num: number) => num.toString().padStart(2, '0');
 
     if (variant === 'inline') {
         return (

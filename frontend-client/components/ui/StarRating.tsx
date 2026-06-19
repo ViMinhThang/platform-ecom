@@ -2,6 +2,12 @@
 
 import { cn } from "@/lib/utils";
 
+const SIZE_CLASSES = {
+  sm: "text-sm",
+  md: "text-base",
+  lg: "text-xl",
+};
+
 interface StarRatingProps {
   rating: number; // 0-5, supports decimals
   size?: "sm" | "md" | "lg";
@@ -15,12 +21,6 @@ export function StarRating({
   showRating = false,
   className,
 }: StarRatingProps) {
-  const sizeClasses = {
-    sm: "text-sm",
-    md: "text-base",
-    lg: "text-xl",
-  };
-
   const stars = Array.from({ length: 5 }, (_, index) => {
     const starValue = index + 1;
     const fillPercentage = Math.min(Math.max(rating - index, 0), 1) * 100;
@@ -47,7 +47,7 @@ export function StarRating({
   return (
     <div className={cn("flex items-center gap-1", className)}>
       <div
-        className={cn("flex", sizeClasses[size])}
+        className={cn("flex", SIZE_CLASSES[size])}
         aria-label={`Đánh giá: ${rating} trên 5 sao`}
       >
         {stars}

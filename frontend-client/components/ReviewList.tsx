@@ -4,17 +4,8 @@ import { useState } from "react";
 import { useGetProductReviewsQuery } from "@/lib/store/api/clientApi";
 import type { Review } from "@/types/review";
 import { Star } from "lucide-react";
-import { StarRating } from "./ui/StarRating";
-import { Button } from "./ui/button";
-import { User } from "lucide-react";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "./ui/select";
-import { RichTextPreview } from "./RichTextPreview";
+
+const REVIEW_CARD_COLORS = ["bg-primary", "bg-blue-500", "bg-purple-500", "bg-green-500", "bg-orange-500"];
 
 interface ReviewListProps {
   productId: number;
@@ -37,9 +28,9 @@ export function ReviewList({ productId }: ReviewListProps) {
 
   if (loading && reviews.length === 0) {
     return (
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div className="flex flex-col gap-6">
         {[1, 2, 3].map((i) => (
-          <div key={"skeleton-" + i} className="h-64 bg-surface-container animate-pulse rounded-3xl" />
+          <div key={"skeleton-" + i} className="h-40 animate-pulse rounded-sm border border-foreground/10 bg-white" />
         ))}
       </div>
     );
@@ -54,7 +45,7 @@ export function ReviewList({ productId }: ReviewListProps) {
           <p className="font-header italic text-foreground/30 text-lg font-medium">Chưa có đánh giá nào được chia sẻ.</p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="flex flex-col gap-6">
           {reviews.map((review) => (
             <ReviewCard key={review.id} review={review} />
           ))}
@@ -88,11 +79,10 @@ export function ReviewList({ productId }: ReviewListProps) {
 
 function ReviewCard({ review }: { review: Review }) {
   const reviewerName = review.email.split("@")[0].charAt(0).toUpperCase() + review.email.split("@")[0].slice(1);
-  const colors = ["bg-primary", "bg-blue-500", "bg-purple-500", "bg-green-500", "bg-orange-500"];
-  const bgColor = colors[reviewerName.length % colors.length];
+  const bgColor = REVIEW_CARD_COLORS[reviewerName.length % REVIEW_CARD_COLORS.length];
 
   return (
-    <div className="bg-white p-10 rounded-3xl shadow-sm border border-foreground/5 flex flex-col justify-between hover:shadow-md transition-shadow duration-500">
+    <div className="flex flex-col justify-between rounded-sm border border-foreground/10 bg-white p-8 shadow-sm transition-shadow duration-300 hover:shadow-md">
       <div className="space-y-6">
         <div className="flex items-center gap-1 text-[#ab2d00]">
            {[1, 2, 3, 4, 5].map((s) => (
@@ -101,7 +91,7 @@ function ReviewCard({ review }: { review: Review }) {
         </div>
         
         <div className="text-sm md:text-base text-foreground/80 font-medium leading-relaxed italic">
-           "{review.comment?.replace(/<[^>]*>?/gm, '') || ""}"
+           &ldquo;{review.comment?.replace(/<[^>]*>?/gm, '') || ""}&rdquo;
         </div>
       </div>
 

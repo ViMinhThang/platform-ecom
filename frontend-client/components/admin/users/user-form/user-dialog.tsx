@@ -121,6 +121,10 @@ const UserSummarySidebar: React.FC<{
   );
 };
 
+const handleFormError = (errors: unknown) => {
+  console.warn("Form validation errors", errors);
+};
+
 export const UserDialog: React.FC<UserDialogProps> = ({
   userId,
   open,
@@ -169,10 +173,6 @@ export const UserDialog: React.FC<UserDialogProps> = ({
       toast.error(`Không thể ${isEditing ? "cập nhật" : "tạo"} người dùng`);
     }
   });
-
-  const handleFormError = (errors: unknown) => {
-    console.warn("Form validation errors", errors);
-  };
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>

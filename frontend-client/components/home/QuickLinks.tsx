@@ -4,18 +4,18 @@ import Link from "next/link";
 import { useGetCategoriesQuery } from "@/lib/store/api/clientApi";
 import { Laptop, Shirt, BookText, Home, GraduationCap, Package } from "lucide-react";
 
+function getIcon(slug: string) {
+    const lowerSlug = slug.toLowerCase();
+    if (lowerSlug.includes('electronic')) return Laptop;
+    if (lowerSlug.includes('apparel') || lowerSlug.includes('thoi-trang')) return Shirt;
+    if (lowerSlug.includes('literature') || lowerSlug.includes('sach')) return BookText;
+    if (lowerSlug.includes('living') || lowerSlug.includes('gia-dung')) return Home;
+    if (lowerSlug.includes('scholarship') || lowerSlug.includes('hoc-thuat')) return GraduationCap;
+    return Package;
+}
+
 export const QuickLinks = () => {
     const { data: categories, isLoading } = useGetCategoriesQuery();
-
-    const getIcon = (slug: string) => {
-        const lowerSlug = slug.toLowerCase();
-        if (lowerSlug.includes('electronic')) return Laptop;
-        if (lowerSlug.includes('apparel') || lowerSlug.includes('thoi-trang')) return Shirt;
-        if (lowerSlug.includes('literature') || lowerSlug.includes('sach')) return BookText;
-        if (lowerSlug.includes('living') || lowerSlug.includes('gia-dung')) return Home;
-        if (lowerSlug.includes('scholarship') || lowerSlug.includes('hoc-thuat')) return GraduationCap;
-        return Package;
-    };
 
     if (isLoading || !categories) {
         return (

@@ -4,6 +4,8 @@ const DATE_FORMATTER = new Intl.DateTimeFormat('vi-VN', {
   year: 'numeric',
 });
 
+const CUSTOM_DATE_FORMATTERS = new Map<string, Intl.DateTimeFormat>();
+
 export function formatDate(
   date: Date | string | number | undefined,
   opts: Intl.DateTimeFormatOptions = {}
@@ -12,12 +14,19 @@ export function formatDate(
 
   try {
     if (Object.keys(opts).length > 0) {
-      return new Intl.DateTimeFormat('vi-VN', {
+      const options = {
         month: opts.month ?? 'long',
         day: opts.day ?? 'numeric',
         year: opts.year ?? 'numeric',
         ...opts,
-      }).format(new Date(date));
+      };
+      const cacheKey = JSON.stringify(options);
+      let formatter = CUSTOM_DATE_FORMATTERS.get(cacheKey);
+      if (!formatter) {
+        formatter = new Intl.DateTimeFormat('vi-VN', options);
+        CUSTOM_DATE_FORMATTERS.set(cacheKey, formatter);
+      }
+      return formatter.format(new Date(date));
     }
     return DATE_FORMATTER.format(new Date(date));
   } catch (_err) {

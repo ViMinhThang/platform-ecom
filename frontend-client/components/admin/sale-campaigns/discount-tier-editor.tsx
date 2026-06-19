@@ -15,6 +15,10 @@ interface DiscountTierEditorProps {
     disabled?: boolean;
 }
 
+function formatCurrency(value: number) {
+    return VIETNAM_NUMBER_FORMAT.format(value) + ' \u20ab';
+}
+
 export function DiscountTierEditor({ tiers, onChange, disabled }: DiscountTierEditorProps) {
     const addTier = () => {
         const newTier: SaleCampaignDiscountTier = {
@@ -35,10 +39,6 @@ export function DiscountTierEditor({ tiers, onChange, disabled }: DiscountTierEd
     const removeTier = (index: number) => {
         const updated = tiers.filter((_, i) => i !== index);
         onChange(updated);
-    };
-
-    const formatCurrency = (value: number) => {
-        return VIETNAM_NUMBER_FORMAT.format(value) + ' ₫';
     };
 
     return (

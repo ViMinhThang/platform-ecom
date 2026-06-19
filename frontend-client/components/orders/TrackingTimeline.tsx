@@ -19,6 +19,70 @@ interface TrackingTimelineProps {
     ghnOrderCode: string;
 }
 
+function getStatusIcon(status: string, isLatest: boolean) {
+    const iconClass = isLatest
+        ? 'size-5 text-primary'
+        : 'size-5 text-muted-foreground';
+
+    switch (status.toLowerCase()) {
+        case 'delivered':
+            return <CheckCircle2 className={`${iconClass} text-green-500`} />;
+        case 'delivering':
+        case 'transporting':
+            return <Truck className={iconClass} />;
+        case 'picked':
+        case 'picking':
+            return <Package className={iconClass} />;
+        default:
+            return isLatest
+                ? <Circle className="size-5 fill-primary text-primary" />
+                : <Circle className="size-5 text-muted-foreground" />;
+    }
+}
+
+function getStatusLabel(status: string) {
+    const labels: Record<string, string> = {
+        ready_to_pick: "S\u1eb5n s\u00e0ng l\u1ea5y h\u00e0ng",
+        picking: "Nh\u00e2n vi\u00ean \u0111ang l\u1ea5y h\u00e0ng",
+        picked: "\u0110\u00e3 l\u1ea5y h\u00e0ng",
+        storing: "\u0110ang \u1edf kho GHN",
+        transporting: "\u0110ang v\u1eadn chuy\u1ec3n",
+        sorting: "\u0110ang ph\u00e2n lo\u1ea1i",
+        delivering: "\u0110ang giao h\u00e0ng",
+        delivered: "\u0110\u00e3 giao h\u00e0ng",
+        delivery_fail: "Giao h\u00e0ng th\u1ea5t b\u1ea1i",
+        waiting_to_return: "\u0110ang ch\u1edd ho\u00e0n h\u00e0ng",
+        returning: "\u0110ang ho\u00e0n h\u00e0ng",
+        returned: "\u0110\u00e3 ho\u00e0n h\u00e0ng",
+        cancel: "\u0110\u00e3 h\u1ee7y",
+    };
+    return labels[status.toLowerCase()] || status.replace(/_/g, ' ');
+}
+
+function EstimatedDeliveryDate({ leadtime }: { leadtime: string }) {
+    const [displayDate, setDisplayDate] = useState("");
+    useEffect(() => {
+        setDisplayDate(format(new Date(leadtime), 'dd/MM/yyyy', { locale: vi }));
+    }, [leadtime]);
+    return (
+        <p className="text-sm font-medium">
+            D\u1ef1 ki\u1ebfn giao h\u00e0ng: {displayDate}
+        </p>
+    );
+}
+
+function EventDate({ updatedDate }: { updatedDate: string }) {
+    const [displayDate, setDisplayDate] = useState("");
+    useEffect(() => {
+        setDisplayDate(format(new Date(updatedDate), "dd/MM/yyyy 'l\u00fac' HH:mm", { locale: vi }));
+    }, [updatedDate]);
+    return (
+        <p className="text-xs text-muted-foreground mt-1">
+            {displayDate}
+        </p>
+    );
+}
+
 export function TrackingTimeline({ ghnOrderCode }: TrackingTimelineProps) {
     const { data: trackingData, isLoading: loading, error: queryError } = useGetGhnTrackingQuery(ghnOrderCode, {
         skip: !ghnOrderCode,
@@ -52,70 +116,6 @@ export function TrackingTimeline({ ghnOrderCode }: TrackingTimelineProps) {
     }
 
     const events = tracking.data.log.slice().reverse(); // Most recent first
-
-    const getStatusIcon = (status: string, isLatest: boolean) => {
-        const iconClass = isLatest
-            ? 'size-5 text-primary'
-            : 'size-5 text-muted-foreground';
-
-        switch (status.toLowerCase()) {
-            case 'delivered':
-                return <CheckCircle2 className={`${iconClass} text-green-500`} />;
-            case 'delivering':
-            case 'transporting':
-                return <Truck className={iconClass} />;
-            case 'picked':
-            case 'picking':
-                return <Package className={iconClass} />;
-            default:
-                return isLatest
-                    ? <Circle className="size-5 fill-primary text-primary" />
-                    : <Circle className="size-5 text-muted-foreground" />;
-        }
-    };
-
-    const getStatusLabel = (status: string) => {
-        const labels: Record<string, string> = {
-            'ready_to_pick': 'Sẵn sàng lấy hàng',
-            'picking': 'Nhân viên đang lấy hàng',
-            'picked': 'Đã lấy hàng',
-            'storing': 'Đang ở kho GHN',
-            'transporting': 'Đang vận chuyển',
-            'sorting': 'Đang phân loại',
-            'delivering': 'Đang giao hàng',
-            'delivered': 'Đã giao hàng',
-            'delivery_fail': 'Giao hàng thất bại',
-            'waiting_to_return': 'Đang chờ hoàn hàng',
-            'returning': 'Đang hoàn hàng',
-            'returned': 'Đã hoàn hàng',
-            'cancel': 'Đã hủy',
-        };
-        return labels[status.toLowerCase()] || status.replace(/_/g, ' ');
-    };
-
-    function EstimatedDeliveryDate({ leadtime }: { leadtime: string }) {
-        const [displayDate, setDisplayDate] = useState("");
-        useEffect(() => {
-            setDisplayDate(format(new Date(leadtime), 'dd/MM/yyyy', { locale: vi }));
-        }, [leadtime]);
-        return (
-            <p className="text-sm font-medium">
-                Dự kiến giao hàng: {displayDate}
-            </p>
-        );
-    }
-
-    function EventDate({ updatedDate }: { updatedDate: string }) {
-        const [displayDate, setDisplayDate] = useState("");
-        useEffect(() => {
-            setDisplayDate(format(new Date(updatedDate), "dd/MM/yyyy 'lúc' HH:mm", { locale: vi }));
-        }, [updatedDate]);
-        return (
-            <p className="text-xs text-muted-foreground mt-1">
-                {displayDate}
-            </p>
-        );
-    }
 
     return (
         <div className="space-y-0">

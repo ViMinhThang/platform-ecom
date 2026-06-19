@@ -4,6 +4,8 @@ import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 
+const BAR_SKELETON_IDS = Array.from({ length: 12 }, (_, index) => `bar-skeleton-${index}`);
+
 export function BarGraphSkeleton() {
   const [heights, setHeights] = useState<number[]>([]);
   useEffect(() => {
@@ -33,7 +35,7 @@ export function BarGraphSkeleton() {
         <div className='flex aspect-auto h-[280px] w-full items-end justify-around gap-2 pt-8'>
           {heights.map((height, i) => (
             <Skeleton
-              key={i}
+              key={BAR_SKELETON_IDS[i]}
               className='w-full'
               style={{
                 height: `${height}%`

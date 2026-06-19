@@ -22,13 +22,17 @@ import { BarGraph } from './bar-graph';
 import { PieGraph } from './pie-graph';
 import { TrendChart } from './trend-chart';
 import { RecentSales } from './recent-sales';
+import { TopSellingProducts } from './top-selling-products';
+import { TopCustomers } from './top-customers';
 import { IconTrendingUp, IconTrendingDown } from '@tabler/icons-react';
 import { Badge } from '@/components/ui/badge';
 import {
   useGetDashboardOverviewQuery,
   useGetRevenueByMonthQuery,
   useGetOrdersByMonthQuery,
-  useGetRecentOrdersQuery
+  useGetRecentOrdersQuery,
+  useGetTopSellingProductsQuery,
+  useGetTopCustomersQuery
 } from '@/lib/store/admin';
 import { Skeleton } from '@/components/ui/skeleton';
 
@@ -39,6 +43,8 @@ export default function OverViewPage() {
   const { data: revenueData, isLoading: revenueLoading } = useGetRevenueByMonthQuery(currentYear);
   const { data: ordersData, isLoading: ordersLoading } = useGetOrdersByMonthQuery(currentYear);
   const { data: recentOrders, isLoading: recentOrdersLoading } = useGetRecentOrdersQuery(10);
+  const { data: topProducts, isLoading: topProductsLoading } = useGetTopSellingProductsQuery(5);
+  const { data: topCustomers, isLoading: topCustomersLoading } = useGetTopCustomersQuery(5);
 
   const formatCurrency = (value: string | number) => {
     const num = typeof value === 'string' ? parseFloat(value) : value;
@@ -142,6 +148,10 @@ export default function OverViewPage() {
               <div className='col-span-1'>
                 <PieGraph />
               </div>
+            </div>
+            <div className='grid grid-cols-1 gap-4 lg:grid-cols-2'>
+              <TopSellingProducts data={topProducts} isLoading={topProductsLoading} />
+              <TopCustomers data={topCustomers} isLoading={topCustomersLoading} />
             </div>
           </TabsContent>
         </Tabs>

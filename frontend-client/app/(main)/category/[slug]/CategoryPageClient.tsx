@@ -4,7 +4,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense, useCallback } from "react";
 import { ProductCard } from "@/components/ProductCard";
 import { SellerGrid } from "@/components/category/SellerGrid";
-import { FilterPanel } from "@/components/category/FilterPanel";
+import { SaleCampaignFilter } from "@/components/sale-campaign";
 import { ActiveFilterBar } from "@/components/category/ActiveFilterBar";
 import { SortPanel } from "@/components/category/SortPanel";
 import { useGetProductsQuery } from "@/lib/store/api/clientApi";
@@ -84,6 +84,31 @@ function CategoryContent({ slug }: CategoryPageClientProps) {
         push(window.location.pathname);
     }, [push]);
 
+    const handlePriceChange = useCallback(
+        (range: [number, number]) => {
+            const params = new URLSearchParams(toString());
+            params.set("minPrice", range[0].toString());
+            params.set("maxPrice", range[1].toString());
+            params.delete("page");
+            push(`${window.location.pathname}?${params.toString()}`, { scroll: false });
+        },
+        [push, toString]
+    );
+
+    const handleInStockChange = useCallback(
+        (checked: boolean) => {
+            const params = new URLSearchParams(toString());
+            if (checked) {
+                params.set("inStock", "true");
+            } else {
+                params.delete("inStock");
+            }
+            params.delete("page");
+            push(`${window.location.pathname}?${params.toString()}`, { scroll: false });
+        },
+        [push, toString]
+    );
+
     const handlePageChange = useCallback(
         (newPage: number) => {
             const params = new URLSearchParams(toString());
@@ -136,9 +161,15 @@ function CategoryContent({ slug }: CategoryPageClientProps) {
                 <div className="flex flex-col lg:flex-row gap-16 items-start">
                     {/* Desktop Sidebar */}
                     <aside className="hidden lg:block w-72 shrink-0 sticky top-32">
-                        <div className="p-6 border border-foreground/5 bg-white/60 backdrop-blur-sm rounded-sm shadow-sm">
-                            <FilterPanel categorySlug={categorySlug} />
-                        </div>
+                        <SaleCampaignFilter
+                            minPrice={0}
+                            maxPrice={50000000}
+                            currentPriceRange={[minPrice ?? 0, maxPrice ?? 50000000]}
+                            onPriceChange={handlePriceChange}
+                            showInStockOnly={inStock}
+                            onShowInStockOnlyChange={handleInStockChange}
+                            onClearFilters={handleClearFilters}
+                        />
                     </aside>
 
                     {/* Right Content */}
@@ -182,7 +213,15 @@ function CategoryContent({ slug }: CategoryPageClientProps) {
                                                 )}
                                             </SheetTitle>
                                         </SheetHeader>
-                                        <FilterPanel categorySlug={categorySlug} />
+                                        <SaleCampaignFilter
+                                            minPrice={0}
+                                            maxPrice={50000000}
+                                            currentPriceRange={[minPrice ?? 0, maxPrice ?? 50000000]}
+                                            onPriceChange={handlePriceChange}
+                                            showInStockOnly={inStock}
+                                            onShowInStockOnlyChange={handleInStockChange}
+                                            onClearFilters={handleClearFilters}
+                                        />
                                     </SheetContent>
                                 </Sheet>
                             </div>

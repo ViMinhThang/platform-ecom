@@ -17,6 +17,18 @@ interface ChatMessageProps {
     timestamp: Date;
 }
 
+function formatContent(text: string) {
+    return text.split('\n').map((line, i) => {
+        let formattedLine = line.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+        if (formattedLine.startsWith('* ') || formattedLine.startsWith('- ')) {
+            // eslint-disable-next-line react/no-danger
+            return <li key={"line-" + i} dangerouslySetInnerHTML={{ __html: formattedLine.substring(2) }} className="ml-6 list-disc text-foreground/70" />;
+        }
+        // eslint-disable-next-line react/no-danger
+        return <p key={"line-" + i} dangerouslySetInnerHTML={{ __html: formattedLine }} className={line ? "mb-4 leading-relaxed" : "h-4"} />;
+    });
+}
+
 export const ChatMessage: React.FC<ChatMessageProps> = ({
     role,
     content,
@@ -24,18 +36,6 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({
     showSupportInfo,
 }) => {
     const isAssistant = role === "assistant";
-
-    const formatContent = (text: string) => {
-        return text.split('\n').map((line, i) => {
-            let formattedLine = line.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-            if (formattedLine.startsWith('* ') || formattedLine.startsWith('- ')) {
-                // eslint-disable-next-line react/no-danger
-                return <li key={"line-" + i} dangerouslySetInnerHTML={{ __html: formattedLine.substring(2) }} className="ml-6 list-disc text-foreground/70" />;
-            }
-            // eslint-disable-next-line react/no-danger
-            return <p key={"line-" + i} dangerouslySetInnerHTML={{ __html: formattedLine }} className={line ? "mb-4 leading-relaxed" : "h-4"} />;
-        });
-    };
 
     return (
         <div

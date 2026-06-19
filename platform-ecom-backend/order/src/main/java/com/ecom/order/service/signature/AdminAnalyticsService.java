@@ -13,4 +13,8 @@ public interface AdminAnalyticsService {
     List<MonthlyOrdersDTO> getOrdersByMonth(Long sellerId, int year);
 
     List<RecentOrderDTO> getRecentOrders(Long sellerId, int limit);
+
+    List<TopProductDTO> getTopSellingProducts(Long sellerId, int limit);
+
+    List<TopCustomerDTO> getTopCustomers(Long sellerId, int limit);
 }

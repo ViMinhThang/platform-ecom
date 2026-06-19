@@ -6,6 +6,8 @@ import com.ecom.order.dto.DashboardOverviewDTO;
 import com.ecom.order.dto.MonthlyOrdersDTO;
 import com.ecom.order.dto.MonthlyRevenueDTO;
 import com.ecom.order.dto.RecentOrderDTO;
+import com.ecom.order.dto.TopProductDTO;
+import com.ecom.order.dto.TopCustomerDTO;
 import com.ecom.order.service.signature.AdminAnalyticsService;
 import com.ecom.common.util.ResponseBuilder;
 import lombok.RequiredArgsConstructor;
@@ -61,5 +63,21 @@ public class AdminAnalyticsController {
                 analyticsService.getRecentOrders(sellerId, limit));
     }
 
+    @GetMapping("/top-products")
+    public ResponseEntity<APIResponse<List<TopProductDTO>>> getTopProducts(
+            @RequestParam(defaultValue = "5") int limit,
+            jakarta.servlet.http.HttpServletRequest request) {
+        Long sellerId = authContext.getUserId(request);
+        return ResponseBuilder.success("Top products retrieved successfully",
+                analyticsService.getTopSellingProducts(sellerId, limit));
+    }
 
+    @GetMapping("/top-customers")
+    public ResponseEntity<APIResponse<List<TopCustomerDTO>>> getTopCustomers(
+            @RequestParam(defaultValue = "5") int limit,
+            jakarta.servlet.http.HttpServletRequest request) {
+        Long sellerId = authContext.getUserId(request);
+        return ResponseBuilder.success("Top customers retrieved successfully",
+                analyticsService.getTopCustomers(sellerId, limit));
+    }
 }

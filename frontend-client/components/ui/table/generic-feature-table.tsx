@@ -65,15 +65,9 @@ export function GenericFeatureTable<TData, TValue>({
         onPageChange(0); // Reset to first page when size changes
     };
 
-    const renderToolbar = () => {
-        if (toolbar) {
-            return typeof toolbar === 'function' ? toolbar(table) : toolbar;
-        }
-        if (showDefaultToolbar) {
-            return <DataTableToolbar table={table} />;
-        }
-        return null;
-    };
+    const toolbarContent = toolbar
+        ? typeof toolbar === 'function' ? toolbar(table) : toolbar
+        : showDefaultToolbar ? <DataTableToolbar table={table} /> : null;
 
     return (
         <DataTable
@@ -81,7 +75,7 @@ export function GenericFeatureTable<TData, TValue>({
             onPageChange={handlePaginationChange}
             onPageSizeChange={handlePageSizeChange}
         >
-            {renderToolbar()}
+            {toolbarContent}
         </DataTable>
     );
 }

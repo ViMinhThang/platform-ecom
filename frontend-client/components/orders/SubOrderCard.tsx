@@ -15,16 +15,16 @@ interface SubOrderCardProps {
     onReview?: (productId: number, orderId: number) => void;
 }
 
-export function SubOrderCard({ subOrder, orderId, onReview }: SubOrderCardProps) {
-    const getStatusIcon = (status: SubOrderStatus) => {
-        switch (status) {
-            case SubOrderStatus.DELIVERED: return <CheckCircle className="size-5 text-primary" />;
-            case SubOrderStatus.SHIPPED: return <Truck className="size-5 text-blue-500" />;
-            case SubOrderStatus.CANCELLED: return <AlertCircle className="size-5 text-red-500" />;
-            default: return <Package className="size-5 text-muted-foreground opacity-50" />;
-        }
-    };
+function getStatusIcon(status: SubOrderStatus) {
+    switch (status) {
+        case SubOrderStatus.DELIVERED: return <CheckCircle className="size-5 text-primary" />;
+        case SubOrderStatus.SHIPPED: return <Truck className="size-5 text-blue-500" />;
+        case SubOrderStatus.CANCELLED: return <AlertCircle className="size-5 text-red-500" />;
+        default: return <Package className="size-5 text-muted-foreground opacity-50" />;
+    }
+}
 
+export function SubOrderCard({ subOrder, orderId, onReview }: SubOrderCardProps) {
     return (
         <Card className="overflow-hidden mb-8 border border-border shadow-md rounded-sm bg-background transition-all hover:shadow-lg">
             <div className="bg-muted/10 px-6 py-4 border-b border-border flex justify-between items-center">

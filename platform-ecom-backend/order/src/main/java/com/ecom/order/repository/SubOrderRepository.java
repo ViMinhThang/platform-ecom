@@ -120,4 +120,18 @@ public interface SubOrderRepository extends JpaRepository<SubOrder, Long> {
     boolean existsByUserIdAndProductIdAndStatusIn(
             @Param("userId") Long userId,
             @Param("productId") Long productId);
+
+    @Query("SELECT item.productId as productId, item.productName as productName, SUM(item.quantity) as totalSold, SUM(item.totalPrice) as totalRevenue " +
+            "FROM SubOrder so JOIN so.items item " +
+            "WHERE so.sellerId = :sellerId AND so.status = 'DELIVERED' " +
+            "GROUP BY item.productId, item.productName " +
+            "ORDER BY SUM(item.quantity) DESC")
+    List<Object[]> getTopSellingProducts(@Param("sellerId") Long sellerId, Pageable pageable);
+
+    @Query("SELECT og.userId as userId, SUM(so.total) as totalSpent, COUNT(so) as orderCount " +
+            "FROM SubOrder so JOIN so.orderGroup og " +
+            "WHERE so.sellerId = :sellerId AND so.status = 'DELIVERED' " +
+            "GROUP BY og.userId " +
+            "ORDER BY SUM(so.total) DESC")
+    List<Object[]> getTopCustomersBySpending(@Param("sellerId") Long sellerId, Pageable pageable);
 }

@@ -37,6 +37,30 @@ const formSchema = z.object({
     notes: z.string().optional(),
 });
 
+const ORDER_STATUSES = [
+    'PENDING',
+    'PROCESSING',
+    'READY_TO_PICK',
+    'PICKING',
+    'PICKED',
+    'SHIPPED',
+    'STORING',
+    'TRANSPORTING',
+    'SORTING',
+    'DELIVERING',
+    'DELIVERED',
+    'DELIVERY_FAIL',
+    'WAITING_TO_RETURN',
+    'RETURNING',
+    'RETURNED',
+    'CANCELLED',
+    'REFUND_PENDING',
+    'REFUNDED',
+    'EXCEPTION',
+    'LOST',
+    'DAMAGE',
+];
+
 interface UpdateStatusDialogProps {
     groupId: number;
     subOrderId: number;
@@ -77,30 +101,6 @@ export const UpdateStatusDialog: React.FC<UpdateStatusDialogProps> = ({
         }
     };
 
-    const statuses = [
-        'PENDING',
-        'PROCESSING',
-        'READY_TO_PICK',
-        'PICKING',
-        'PICKED',
-        'SHIPPED',
-        'STORING',
-        'TRANSPORTING',
-        'SORTING',
-        'DELIVERING',
-        'DELIVERED',
-        'DELIVERY_FAIL',
-        'WAITING_TO_RETURN',
-        'RETURNING',
-        'RETURNED',
-        'CANCELLED',
-        'REFUND_PENDING',
-        'REFUNDED',
-        'EXCEPTION',
-        'LOST',
-        'DAMAGE',
-    ];
-
     return (
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
@@ -127,7 +127,7 @@ export const UpdateStatusDialog: React.FC<UpdateStatusDialogProps> = ({
                                         </SelectTrigger>
                                     </FormControl>
                                     <SelectContent>
-                                        {statuses.map((status) => (
+                                        {ORDER_STATUSES.map((status) => (
                                             <SelectItem key={status} value={status}>
                                                 {getOrderStatusLabel(status)}
                                             </SelectItem>

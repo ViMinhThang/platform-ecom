@@ -21,8 +21,10 @@ type PageProps = {
 };
 
 export default async function Page(props: PageProps) {
-    const session = await getServerSession(authOptions);
-    const searchParams = await props.searchParams;
+    const [session, searchParams] = await Promise.all([
+        getServerSession(authOptions),
+        props.searchParams,
+    ]);
 
     if (!session?.accessToken) {
         return <div>Bạn phải đăng nhập để xem mã giảm giá.</div>;

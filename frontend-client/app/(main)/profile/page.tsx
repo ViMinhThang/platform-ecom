@@ -105,6 +105,8 @@ function ProfilePageContent() {
         }
     };
 
+    const content = renderContent();
+
     return (
         <ProfileLayout>
             <div className="mb-12 lg:hidden">
@@ -113,7 +115,7 @@ function ProfilePageContent() {
                     {currentTab === 'addresses' && 'SỔ ĐỊA CHỈ'}
                 </h1>
             </div>
-            {renderContent()}
+            {content}
         </ProfileLayout>
     );
 }

@@ -59,12 +59,13 @@ const tenants = [
   { id: "3", name: "Chi nhánh Gamma" },
 ];
 
+const handleSwitchTenant = (_tenantId: string) => {
+};
+
 export default function AppSidebar() {
   const pathname = usePathname();
   const { isOpen } = useMediaQuery();
   const { push } = useRouter();
-  const handleSwitchTenant = (_tenantId: string) => {
-  };
   const { data: session } = useSession();
   const user = session?.user;
   const activeTenant = tenants[0];

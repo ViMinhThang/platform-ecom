@@ -6,18 +6,18 @@ import React from "react";
 import { MoveRight, Laptop, Shirt, BookText, Home, GraduationCap, Package } from "lucide-react";
 import { useGetCategoriesQuery } from "@/lib/store/api/clientApi";
 
+function getIcon(slug: string) {
+    const lowerSlug = slug.toLowerCase();
+    if (lowerSlug.includes('electronic')) return Laptop;
+    if (lowerSlug.includes('apparel')) return Shirt;
+    if (lowerSlug.includes('literature')) return BookText;
+    if (lowerSlug.includes('living')) return Home;
+    if (lowerSlug.includes('scholarship')) return GraduationCap;
+    return Package;
+}
+
 export const HomeBanner = () => {
     const { data: categories } = useGetCategoriesQuery();
-
-    const getIcon = (slug: string) => {
-        const lowerSlug = slug.toLowerCase();
-        if (lowerSlug.includes('electronic')) return Laptop;
-        if (lowerSlug.includes('apparel')) return Shirt;
-        if (lowerSlug.includes('literature')) return BookText;
-        if (lowerSlug.includes('living')) return Home;
-        if (lowerSlug.includes('scholarship')) return GraduationCap;
-        return Package;
-    };
 
     return (
         <section className="max-w-[1600px] w-full mx-auto px-6 md:px-12 py-8">

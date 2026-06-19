@@ -16,6 +16,15 @@ interface OrderCardProps {
     order: OrderGroupDTO;
 }
 
+function getStatusColor(status: OrderGroupStatus) {
+    switch (status) {
+        case OrderGroupStatus.COMPLETED: return "bg-green-500/10 text-green-700 border-green-500/20";
+        case OrderGroupStatus.PROCESSING: return "bg-blue-500/10 text-blue-700 border-blue-500/20";
+        case OrderGroupStatus.CANCELLED: return "bg-red-500/10 text-red-700 border-red-500/20";
+        default: return "bg-zinc-500/10 text-zinc-700 border-zinc-500/20";
+    }
+}
+
 export function OrderCard({ order }: OrderCardProps) {
     const [orderDate, setOrderDate] = useState("");
     useEffect(() => {
@@ -26,15 +35,6 @@ export function OrderCard({ order }: OrderCardProps) {
     const previewItems = order.subOrders
         .flatMap(so => so.items)
         .slice(0, 3);
-
-    const getStatusColor = (status: OrderGroupStatus) => {
-        switch (status) {
-            case OrderGroupStatus.COMPLETED: return "bg-green-500/10 text-green-700 border-green-500/20";
-            case OrderGroupStatus.PROCESSING: return "bg-blue-500/10 text-blue-700 border-blue-500/20";
-            case OrderGroupStatus.CANCELLED: return "bg-red-500/10 text-red-700 border-red-500/20";
-            default: return "bg-zinc-500/10 text-zinc-700 border-zinc-500/20";
-        }
-    };
 
     return (
         <Card className="overflow-hidden shadow-md border-none bg-white">

@@ -1,5 +1,6 @@
 package com.ecom.order.service.impl;
 
+import com.ecom.order.client.UserServiceClient;
 import com.ecom.order.dto.*;
 import com.ecom.order.entity.SubOrder;
 import com.ecom.order.entity.SubOrderStatus;
@@ -23,6 +24,7 @@ import java.util.stream.Collectors;
 public class AdminAnalyticsServiceImpl implements AdminAnalyticsService {
 
     private final SubOrderRepository subOrderRepository;
+    private final UserServiceClient userServiceClient;
 
     private static final String[] MONTH_NAMES = {
             "Tháng 1", "Tháng 2", "Tháng 3", "Tháng 4", "Tháng 5", "Tháng 6",
@@ -184,5 +186,55 @@ public class AdminAnalyticsServiceImpl implements AdminAnalyticsService {
                 .multiply(BigDecimal.valueOf(100));
 
         return growth.setScale(1, RoundingMode.HALF_UP).doubleValue();
+    }
+
+    @Override
+    public List<TopProductDTO> getTopSellingProducts(Long sellerId, int limit) {
+        List<Object[]> results = subOrderRepository.getTopSellingProducts(sellerId, PageRequest.of(0, limit));
+
+        return results.stream()
+                .map(row -> TopProductDTO.builder()
+                        .productId(row[0] != null ? ((Number) row[0]).longValue() : null)
+                        .productName((String) row[1])
+                        .totalSold(row[2] != null ? ((Number) row[2]).longValue() : 0L)
+                        .totalRevenue(row[3] != null ? new BigDecimal(row[3].toString()) : BigDecimal.ZERO)
+                        .build())
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<TopCustomerDTO> getTopCustomers(Long sellerId, int limit) {
+        List<Object[]> results = subOrderRepository.getTopCustomersBySpending(sellerId, PageRequest.of(0, limit));
+
+        return results.stream()
+                .map(row -> {
+                    Long userId = row[0] != null ? ((Number) row[0]).longValue() : null;
+                    BigDecimal totalSpent = row[1] != null ? new BigDecimal(row[1].toString()) : BigDecimal.ZERO;
+                    Long orderCount = row[2] != null ? ((Number) row[2]).longValue() : 0L;
+
+                    String username = "Customer";
+                    String email = "";
+
+                    if (userId != null) {
+                        try {
+                            UserDTO user = userServiceClient.getUserSafe(userId);
+                            if (user != null) {
+                                username = user.getName();
+                                email = user.getEmail();
+                            }
+                        } catch (Exception e) {
+                            // Fallback default
+                        }
+                    }
+
+                    return TopCustomerDTO.builder()
+                            .userId(userId)
+                            .username(username)
+                            .email(email)
+                            .totalSpent(totalSpent)
+                            .orderCount(orderCount)
+                            .build();
+                })
+                .collect(Collectors.toList());
     }
 }

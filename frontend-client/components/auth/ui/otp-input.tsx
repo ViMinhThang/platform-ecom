@@ -11,6 +11,10 @@ export interface OtpInputProps {
     disabled?: boolean;
 }
 
+const handleFocus: React.FocusEventHandler<HTMLInputElement> = (e) => {
+    e.currentTarget.select();
+};
+
 export function OtpInput({
     length = 6,
     value,
@@ -52,10 +56,6 @@ export function OtpInput({
             onChange(pastedData.padEnd(length, ""));
             inputRefs.current[Math.min(pastedData.length, length - 1)]?.focus();
         }
-    };
-
-    const handleFocus: React.FocusEventHandler<HTMLInputElement> = (e) => {
-        e.currentTarget.select();
     };
 
     return (

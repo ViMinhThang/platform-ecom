@@ -22,6 +22,13 @@ interface FormCheckboxGroupProps<
   columns?: 1 | 2 | 3 | 4;
 }
 
+const GRID_COLS = {
+  1: 'grid-cols-1',
+  2: 'grid-cols-1 md:grid-cols-2',
+  3: 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3',
+  4: 'grid-cols-2 md:grid-cols-3 lg:grid-cols-4'
+};
+
 function FormCheckboxGroup<
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
@@ -37,13 +44,6 @@ function FormCheckboxGroup<
   disabled,
   className
 }: FormCheckboxGroupProps<TFieldValues, TName>) {
-  const gridCols = {
-    1: 'grid-cols-1',
-    2: 'grid-cols-1 md:grid-cols-2',
-    3: 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3',
-    4: 'grid-cols-2 md:grid-cols-3 lg:grid-cols-4'
-  };
-
   return (
     <FormField
       control={control}
@@ -57,7 +57,7 @@ function FormCheckboxGroup<
             </FormLabel>
           )}
           {description && <FormDescription>{description}</FormDescription>}
-          <div className={`grid gap-4 ${gridCols[columns]}`}>
+          <div className={`grid gap-4 ${GRID_COLS[columns]}`}>
             {options.map((option, index) => (
               <div key={option.value || `option-${index}`} className='flex items-center gap-x-2'>
                 <FormControl>

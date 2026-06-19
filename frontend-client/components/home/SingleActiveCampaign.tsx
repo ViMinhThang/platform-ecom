@@ -9,6 +9,10 @@ import { SaleCampaign } from "@/types/sale-campaign";
 import { formatCurrency } from "@/lib/utils/formatCurrency";
 import { imageUrl } from "@/lib/utils/imageUrl";
 
+function formatCampaignName(name: string) {
+    return name.replace(/_/g, " ").toUpperCase();
+}
+
 export const SingleActiveCampaign = () => {
     const [campaign, setCampaign] = useState<SaleCampaign | null>(null);
     const [timeLeft, setTimeLeft] = useState<{ days: string; hours: string; minutes: string; seconds: string }>({
@@ -65,10 +69,6 @@ export const SingleActiveCampaign = () => {
     }, [campaign]);
 
     if (!campaign) return null;
-
-    const formatCampaignName = (name: string) => {
-        return name.replace(/_/g, " ").toUpperCase();
-    };
 
     return (
         <section className="max-w-[1600px] w-full mx-auto px-6 md:px-12 my-16">

@@ -40,6 +40,21 @@ export interface RecentOrderDTO {
     createdAt: string;
 }
 
+export interface TopProductDTO {
+    productId: number;
+    productName: string;
+    totalSold: number;
+    totalRevenue: string;
+}
+
+export interface TopCustomerDTO {
+    userId: number;
+    username: string;
+    email: string;
+    totalSpent: string;
+    orderCount: number;
+}
+
 const API_BASE = '/api/v1/admin/analytics';
 
 export const analyticsApi = baseApi.injectEndpoints({
@@ -75,6 +90,22 @@ export const analyticsApi = baseApi.injectEndpoints({
                 params: { limit },
             }),
         }),
+
+        getTopSellingProducts: builder.query<TopProductDTO[], number | void>({
+            query: (limit = 5) => ({
+                url: `${API_BASE}/top-products`,
+                method: 'GET',
+                params: limit ? { limit } : {},
+            }),
+        }),
+
+        getTopCustomers: builder.query<TopCustomerDTO[], number | void>({
+            query: (limit = 5) => ({
+                url: `${API_BASE}/top-customers`,
+                method: 'GET',
+                params: limit ? { limit } : {},
+            }),
+        }),
     }),
 });
 
@@ -83,4 +114,6 @@ export const {
     useGetRevenueByMonthQuery,
     useGetOrdersByMonthQuery,
     useGetRecentOrdersQuery,
+    useGetTopSellingProductsQuery,
+    useGetTopCustomersQuery,
 } = analyticsApi;

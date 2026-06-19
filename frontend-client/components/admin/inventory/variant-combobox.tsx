@@ -22,6 +22,15 @@ import { VariantFormValues } from "@/types/product/product-variant";
 
 const EMPTY_EXCLUDE_IDS: number[] = [];
 
+function getVariantDisplayName(variant: VariantFormValues): string {
+    if (variant.optionValues?.length > 0) {
+        return variant.optionValues
+            .flatMap(ov => (ov.productOptionValue?.displayValue || ov.productOptionValue?.value) ? [ov.productOptionValue?.displayValue || ov.productOptionValue?.value] : [])
+            .join(", ") || "M\u1eb7c \u0111\u1ecbnh";
+    }
+    return "M\u1eb7c \u0111\u1ecbnh";
+}
+
 interface VariantComboboxProps {
     productId: number | null;
     value: VariantFormValues | null;
@@ -62,15 +71,6 @@ export function VariantCombobox({ productId, value, onChange, disabled, excludeV
 
     // Filter out variants that already have inventory
     const availableVariants = variants.filter(v => !excludeVariantIds.includes(v.id!));
-
-    const getVariantDisplayName = (variant: VariantFormValues): string => {
-        if (variant.optionValues?.length > 0) {
-            return variant.optionValues
-                .flatMap(ov => (ov.productOptionValue?.displayValue || ov.productOptionValue?.value) ? [ov.productOptionValue?.displayValue || ov.productOptionValue?.value] : [])
-                .join(", ") || "Mặc định";
-        }
-        return "Mặc định";
-    };
 
     return (
         <Popover open={open} onOpenChange={setOpen}>

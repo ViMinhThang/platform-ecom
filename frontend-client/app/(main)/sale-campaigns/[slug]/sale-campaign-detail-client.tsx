@@ -47,6 +47,16 @@ interface FilterState {
     priceRange: [number, number];
 }
 
+function parseSortOption(option: SortOption): [string, string] {
+    switch (option) {
+        case 'price-asc': return ['salePrice', 'asc'];
+        case 'price-desc': return ['salePrice', 'desc'];
+        case 'discount-desc': return ['discountPercent', 'desc'];
+        case 'sold-count-desc': return ['soldCount', 'desc'];
+        default: return ['soldCount', 'desc'];
+    }
+}
+
 function SaleCampaignDetailClientContent({ saleCampaign, initialData, isMainPage = false }: SaleCampaignDetailClientProps) {
     const router = useRouter();
     const pathname = usePathname();
@@ -158,16 +168,6 @@ function SaleCampaignDetailClientContent({ saleCampaign, initialData, isMainPage
     const handleClearFilters = () => {
         dispatchFilter({ priceRange: [0, 20000000] as [number, number], showInStockOnly: false });
         setSortOption('sold-count-desc');
-    };
-
-    const parseSortOption = (option: SortOption): [string, string] => {
-        switch (option) {
-            case 'price-asc': return ['salePrice', 'asc'];
-            case 'price-desc': return ['salePrice', 'desc'];
-            case 'discount-desc': return ['discountPercent', 'desc'];
-            case 'sold-count-desc': return ['soldCount', 'desc'];
-            default: return ['soldCount', 'desc'];
-        }
     };
 
     return (
