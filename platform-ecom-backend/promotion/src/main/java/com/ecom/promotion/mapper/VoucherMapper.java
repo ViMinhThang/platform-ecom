@@ -1,9 +1,7 @@
 package com.ecom.promotion.mapper;
 
 import com.ecom.promotion.dto.VoucherDTO;
-import com.ecom.promotion.dto.VoucherScopeDTO;
 import com.ecom.promotion.entity.Voucher;
-import com.ecom.promotion.entity.VoucherScope;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -22,7 +20,7 @@ public class VoucherMapper {
                 .name(voucher.getName())
                 .description(voucher.getDescription())
                 .type(voucher.getType())
-                .category(voucher.getCategory())
+                .categoryId(voucher.getCategoryId())
                 .applyMode(voucher.getApplyMode())
                 .status(voucher.getStatus())
                 .discountValue(voucher.getDiscountValue())
@@ -34,7 +32,6 @@ public class VoucherMapper {
                 .startTime(voucher.getStartTime())
                 .endTime(voucher.getEndTime())
                 .saleCampaignId(voucher.getSaleCampaignId())
-                .scopes(toScopeDTOs(voucher.getScopes()))
                 .createdAt(voucher.getCreatedAt())
                 .updatedAt(voucher.getUpdatedAt())
                 .build();
@@ -42,17 +39,5 @@ public class VoucherMapper {
 
     public List<VoucherDTO> toDTOs(List<Voucher> vouchers) {
         return vouchers.stream().map(this::toDTO).collect(Collectors.toList());
-    }
-
-    private List<VoucherScopeDTO> toScopeDTOs(List<VoucherScope> scopes) {
-        if (scopes == null)
-            return List.of();
-        return scopes.stream()
-                .map(s -> VoucherScopeDTO.builder()
-                        .id(s.getId())
-                        .scopeType(s.getScopeType())
-                        .targetId(s.getTargetId())
-                        .build())
-                .collect(Collectors.toList());
     }
 }

@@ -1,13 +1,6 @@
 export type VoucherType = 'PERCENTAGE' | 'FIXED_AMOUNT';
-export type VoucherCategory = 'PRODUCT' | 'SHIPPING';
 export type VoucherStatus = 'DRAFT' | 'SCHEDULED' | 'ACTIVE' | 'EXPIRED' | 'CANCELLED';
 export type ApplyMode = 'AUTO' | 'CODE_REQUIRED';
-
-export interface VoucherScope {
-    id: number;
-    scopeType: 'ALL' | 'PRODUCT' | 'VARIANT' | 'CATEGORY';
-    targetId: number | null;
-}
 
 export interface Voucher {
     id: number;
@@ -15,7 +8,7 @@ export interface Voucher {
     name: string;
     description: string | null;
     type: VoucherType;
-    category: VoucherCategory;
+    categoryId?: number;
     applyMode: ApplyMode;
     status: VoucherStatus;
     discountValue: number;
@@ -26,7 +19,6 @@ export interface Voucher {
     currentUsageCount: number;
     startTime: string;
     endTime: string;
-    scopes: VoucherScope[];
     createdAt: string;
     updatedAt: string;
 }
@@ -45,7 +37,7 @@ export interface CreateVoucherRequest {
     name: string;
     description?: string;
     type: VoucherType;
-    category: VoucherCategory;
+    categoryId?: number;
     applyMode: ApplyMode;
     discountValue: number;
     minOrderAmount?: number;
@@ -59,11 +51,6 @@ export interface CreateVoucherRequest {
 export const VOUCHER_TYPE_LABELS: Record<VoucherType, string> = {
     PERCENTAGE: 'Phần trăm',
     FIXED_AMOUNT: 'Số tiền cố định',
-};
-
-export const VOUCHER_CATEGORY_LABELS: Record<VoucherCategory, string> = {
-    PRODUCT: 'Sản phẩm',
-    SHIPPING: 'Vận chuyển',
 };
 
 export const VOUCHER_STATUS_LABELS: Record<VoucherStatus, string> = {

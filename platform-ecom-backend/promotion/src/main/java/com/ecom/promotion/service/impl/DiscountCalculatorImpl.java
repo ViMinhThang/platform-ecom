@@ -8,7 +8,6 @@ import com.ecom.promotion.entity.VoucherUsage;
 import com.ecom.promotion.helper.VoucherHelper;
 import com.ecom.promotion.repository.VoucherRepository;
 import com.ecom.promotion.repository.VoucherUsageRepository;
-import com.ecom.promotion.enums.VoucherCategory;
 import com.ecom.promotion.enums.VoucherStatus;
 import com.ecom.promotion.mapper.VoucherMapper;
 import com.ecom.promotion.service.signature.DiscountCalculator;
@@ -45,30 +44,31 @@ public class DiscountCalculatorImpl implements DiscountCalculator {
         // Get all applicable vouchers
         List<Voucher> applicableVouchers = findApplicableVouchers(items, voucherCodes, userId);
 
-        // Separate by category
-        List<Voucher> productVouchers = filterByCategory(applicableVouchers, VoucherCategory.PRODUCT);
-        List<Voucher> shippingVouchers = filterByCategory(applicableVouchers, VoucherCategory.SHIPPING);
+        // Calculate discount for each applicable voucher and select the best one
+        VoucherDiscount bestDiscount = new VoucherDiscount(null, BigDecimal.ZERO);
+        for (Voucher voucher : applicableVouchers) {
+            BigDecimal discount = calculateVoucherDiscount(voucher, items, itemsTotal);
+            if (discount.compareTo(bestDiscount.discount) > 0) {
+                bestDiscount = new VoucherDiscount(voucher, discount);
+            }
+        }
 
-        // Select best from each category
-        VoucherDiscount bestProduct = selectBestProductDiscount(productVouchers, items, itemsTotal);
-        VoucherDiscount bestShipping = selectBestShippingDiscount(shippingVouchers, shippingFee);
-
-        // Build result
-        BigDecimal totalDiscount = bestProduct.discount.add(bestShipping.discount);
+        BigDecimal totalDiscount = bestDiscount.discount;
         BigDecimal finalTotal = itemsTotal.add(shippingFee).subtract(totalDiscount);
 
         DiscountResult result = DiscountResult.builder()
                 .originalTotal(itemsTotal.add(shippingFee))
-                .productDiscount(bestProduct.discount)
-                .shippingDiscount(bestShipping.discount)
+                .productDiscount(totalDiscount)
+                .shippingDiscount(BigDecimal.ZERO)
                 .totalDiscount(totalDiscount)
                 .finalTotal(finalTotal.max(BigDecimal.ZERO))
-                .appliedProductVoucher(voucherMapper.toDTO(bestProduct.voucher))
-                .appliedShippingVoucher(voucherMapper.toDTO(bestShipping.voucher))
+                .appliedProductVoucher(voucherMapper.toDTO(bestDiscount.voucher))
+                .appliedShippingVoucher(null)
                 .build();
 
-        // Add warnings for rejected vouchers
-        addStackingWarnings(result, productVouchers, shippingVouchers);
+        if (applicableVouchers.size() > 1) {
+            result.addWarning("Multiple vouchers found - only the single best voucher discount was applied");
+        }
 
         return result;
     }
@@ -84,13 +84,9 @@ public class DiscountCalculatorImpl implements DiscountCalculator {
 
         DiscountResult result = calculateDiscount(items, shippingFee, voucherCodes, userId);
 
-        // Record usage for applied vouchers
+        // Record usage for applied product voucher
         if (result.getAppliedProductVoucher() != null) {
             recordUsage(result.getAppliedProductVoucher().getId(), userId, orderId);
-        }
-
-        if (result.getAppliedShippingVoucher() != null) {
-            recordUsage(result.getAppliedShippingVoucher().getId(), userId, orderId);
         }
 
         return result;
@@ -114,52 +110,28 @@ public class DiscountCalculatorImpl implements DiscountCalculator {
             }
         }
 
-        // Filter by scope and min order amount
-        BigDecimal itemsTotal = voucherHelper.calculateItemsTotal(items);
+        // Filter by user usability limit
         return vouchers.stream()
-                .filter(v -> voucherHelper.matchesMinOrderAmount(v, itemsTotal))
-                .filter(v -> voucherHelper.matchesScope(v, items))
                 .filter(v -> voucherHelper.canUserUseVoucher(v, userId))
                 .distinct()
                 .collect(Collectors.toList());
     }
 
-    private List<Voucher> filterByCategory(List<Voucher> vouchers, VoucherCategory category) {
-        return vouchers.stream()
-                .filter(v -> v.getCategory() == category)
-                .collect(Collectors.toList());
-    }
+    private BigDecimal calculateVoucherDiscount(Voucher voucher, List<CartItemDTO> items, BigDecimal cartSubtotal) {
+        BigDecimal eligibleAmount = cartSubtotal;
 
-    private VoucherDiscount selectBestProductDiscount(List<Voucher> vouchers, List<CartItemDTO> items,
-            BigDecimal total) {
-        Voucher best = null;
-        BigDecimal bestDiscount = BigDecimal.ZERO;
-
-        for (Voucher voucher : vouchers) {
-            BigDecimal scopedTotal = voucherHelper.calculateScopedTotal(voucher, items);
-            BigDecimal discount = voucher.calculateDiscount(scopedTotal);
-            if (discount.compareTo(bestDiscount) > 0) {
-                bestDiscount = discount;
-                best = voucher;
-            }
+        if (voucher.getCategoryId() != null) {
+            eligibleAmount = items.stream()
+                    .filter(item -> voucher.getCategoryId().equals(item.getCategoryId()))
+                    .map(item -> item.getPrice().multiply(BigDecimal.valueOf(item.getQuantity())))
+                    .reduce(BigDecimal.ZERO, BigDecimal::add);
         }
 
-        return new VoucherDiscount(best, bestDiscount);
-    }
-
-    private VoucherDiscount selectBestShippingDiscount(List<Voucher> vouchers, BigDecimal shippingFee) {
-        Voucher best = null;
-        BigDecimal bestDiscount = BigDecimal.ZERO;
-
-        for (Voucher voucher : vouchers) {
-            BigDecimal discount = voucher.calculateDiscount(shippingFee);
-            if (discount.compareTo(bestDiscount) > 0) {
-                bestDiscount = discount;
-                best = voucher;
-            }
+        if (voucher.getMinOrderAmount() != null && eligibleAmount.compareTo(voucher.getMinOrderAmount()) < 0) {
+            return BigDecimal.ZERO;
         }
 
-        return new VoucherDiscount(best, bestDiscount);
+        return voucher.calculateDiscount(eligibleAmount);
     }
 
     private void recordUsage(Long voucherId, Long userId, Long orderId) {
@@ -178,16 +150,6 @@ public class DiscountCalculatorImpl implements DiscountCalculator {
         voucherRepository.save(voucher);
 
         log.info("Recorded voucher usage: voucher={}, user={}, order={}", voucherId, userId, orderId);
-    }
-
-    private void addStackingWarnings(DiscountResult result, List<Voucher> productVouchers,
-            List<Voucher> shippingVouchers) {
-        if (productVouchers.size() > 1) {
-            result.addWarning("Multiple product vouchers found - only the best discount was applied");
-        }
-        if (shippingVouchers.size() > 1) {
-            result.addWarning("Multiple shipping vouchers found - only the best discount was applied");
-        }
     }
 
     private record VoucherDiscount(Voucher voucher, BigDecimal discount) {

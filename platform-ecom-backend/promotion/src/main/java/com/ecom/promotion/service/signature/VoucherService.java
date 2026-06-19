@@ -2,7 +2,6 @@ package com.ecom.promotion.service.signature;
 
 import com.ecom.promotion.dto.VoucherDTO;
 import com.ecom.promotion.dto.request.CreateVoucherRequest;
-import com.ecom.promotion.enums.VoucherCategory;
 import com.ecom.promotion.enums.VoucherStatus;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -26,9 +25,7 @@ public interface VoucherService {
 
     Page<VoucherDTO> getVouchersByStatus(VoucherStatus status, Pageable pageable);
 
-    Page<VoucherDTO> getVouchersByCategory(VoucherCategory category, Pageable pageable);
 
-    List<VoucherDTO> getActiveAutoApplyVouchers();
 
     List<VoucherDTO> getAllActiveVouchers();
 
@@ -38,5 +35,5 @@ public interface VoucherService {
 
     void updateVoucherStatuses();
 
-    boolean validateVoucherCode(String code, Long userId);
+
 }

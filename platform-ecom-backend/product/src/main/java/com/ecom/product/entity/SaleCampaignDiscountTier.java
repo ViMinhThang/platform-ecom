@@ -49,8 +49,11 @@ public class SaleCampaignDiscountTier {
      * Calculate the sale price for a given original price
      */
     public BigDecimal calculateSalePrice(BigDecimal originalPrice) {
+        // Convert discountPercent (e.g. 15) to a multiplier (e.g. 1 - (15 / 100) = 0.85)
         BigDecimal discountMultiplier = BigDecimal.ONE.subtract(
                 BigDecimal.valueOf(discountPercent).divide(BigDecimal.valueOf(100)));
+        
+        // Multiply originalPrice by the multiplier and round to 2 decimal places (standard currency format)
         return originalPrice.multiply(discountMultiplier).setScale(2, java.math.RoundingMode.HALF_UP);
     }
 }

@@ -303,19 +303,6 @@ export const api = createApi({
             }),
             providesTags: ['Voucher'],
         }),
-        getVoucherByCode: builder.query<VoucherDTO, string>({
-            query: (code) => ({
-                url: `/api/v1/vouchers/code/${code}`,
-                method: 'GET',
-            }),
-            providesTags: ['Voucher'],
-        }),
-        validateVoucher: builder.mutation<boolean, { code: string; userId: number }>({
-            query: ({ code, userId }) => ({
-                url: `/api/v1/vouchers/validate/${code}?userId=${userId}`,
-                method: 'GET',
-            }),
-        }),
         calculateDiscount: builder.mutation<DiscountResult, CalculateDiscountRequest>({
             query: (request) => ({
                 url: '/api/v1/vouchers/calculate',
@@ -403,8 +390,6 @@ export const {
     // Promotions
     useGetAutoApplyVouchersQuery,
     useLazyGetAutoApplyVouchersQuery,
-    useGetVoucherByCodeQuery,
-    useValidateVoucherMutation,
     useCalculateDiscountMutation,
     // User
     useGetUserProfileQuery,

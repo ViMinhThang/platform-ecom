@@ -1,15 +1,8 @@
 import { CartItemDTO } from "./cart.types";
 
 export type VoucherType = 'PERCENTAGE' | 'FIXED_AMOUNT';
-export type VoucherCategory = 'PRODUCT' | 'SHIPPING';
 export type ApplyMode = 'MANUAL' | 'AUTO';
 export type VoucherStatus = 'DRAFT' | 'SCHEDULED' | 'ACTIVE' | 'EXPIRED' | 'CANCELLED';
-
-export interface VoucherScope {
-    id: number;
-    type: string;
-    scopeId: number;
-}
 
 export interface VoucherDTO {
     id: number;
@@ -17,7 +10,7 @@ export interface VoucherDTO {
     name: string;
     description?: string;
     type: VoucherType;
-    category: VoucherCategory;
+    categoryId?: number;
     applyMode: ApplyMode;
     status: VoucherStatus;
     discountValue: number;
@@ -29,7 +22,6 @@ export interface VoucherDTO {
     startTime: string;
     endTime: string;
     saleCampaignId?: number;
-    scopes: VoucherScope[];
 }
 
 export interface DiscountResult {

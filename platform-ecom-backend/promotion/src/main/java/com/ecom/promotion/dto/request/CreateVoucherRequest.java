@@ -1,7 +1,6 @@
 package com.ecom.promotion.dto.request;
 
 import com.ecom.promotion.enums.ApplyMode;
-import com.ecom.promotion.enums.VoucherCategory;
 import com.ecom.promotion.enums.VoucherType;
 import jakarta.validation.constraints.*;
 import lombok.*;
@@ -26,8 +25,7 @@ public class CreateVoucherRequest {
     @NotNull(message = "Type is required")
     private VoucherType type;
 
-    @NotNull(message = "Category is required")
-    private VoucherCategory category;
+    private Long categoryId;
 
     @NotNull(message = "Apply mode is required")
     private ApplyMode applyMode;
@@ -53,6 +51,4 @@ public class CreateVoucherRequest {
 
     @NotNull(message = "End time is required")
     private LocalDateTime endTime;
-
-    private List<ScopeRequest> scopes;
 }

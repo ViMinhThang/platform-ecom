@@ -9,7 +9,6 @@ import {
     Voucher,
     VoucherStatus,
     VOUCHER_TYPE_LABELS,
-    VOUCHER_CATEGORY_LABELS,
     VOUCHER_STATUS_LABELS,
     APPLY_MODE_LABELS,
 } from '@/types/voucher';
@@ -86,11 +85,11 @@ export const columns: ColumnDef<Voucher>[] = [
         cell: ({ row }) => VOUCHER_TYPE_LABELS[row.original.type],
     },
     {
-        accessorKey: 'category',
-        header: 'Danh mục',
+        accessorKey: 'categoryId',
+        header: 'Danh mục ID',
         cell: ({ row }) => (
             <Badge variant="outline">
-                {VOUCHER_CATEGORY_LABELS[row.original.category]}
+                {row.original.categoryId ? `ID: ${row.original.categoryId}` : 'Tất cả'}
             </Badge>
         ),
     },

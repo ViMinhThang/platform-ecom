@@ -4,7 +4,6 @@ import com.ecom.common.util.APIResponse;
 import com.ecom.common.util.ResponseBuilder;
 import com.ecom.promotion.dto.VoucherDTO;
 import com.ecom.promotion.dto.request.CreateVoucherRequest;
-import com.ecom.promotion.enums.VoucherCategory;
 import com.ecom.promotion.enums.VoucherStatus;
 import com.ecom.promotion.service.signature.VoucherService;
 import jakarta.validation.Valid;
@@ -80,15 +79,6 @@ public class AdminVoucherController {
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "20") int size) {
         Page<VoucherDTO> vouchers = voucherService.getVouchersByStatus(status, PageRequest.of(page, size));
-        return ResponseBuilder.success("Vouchers retrieved successfully", vouchers);
-    }
-
-    @GetMapping("/category/{category}")
-    public ResponseEntity<APIResponse<Page<VoucherDTO>>> getVouchersByCategory(
-            @PathVariable VoucherCategory category,
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "20") int size) {
-        Page<VoucherDTO> vouchers = voucherService.getVouchersByCategory(category, PageRequest.of(page, size));
         return ResponseBuilder.success("Vouchers retrieved successfully", vouchers);
     }
 }

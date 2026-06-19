@@ -134,6 +134,7 @@ public class CartServiceImpl implements CartService {
         item.setImageUrl(details.getImageUrl());
         item.setSellerId(details.getSellerId());
         item.setSellerName(details.getSellerName());
+        item.setPrice(details.getPrice());
 
         if (item.getVariantId() != null) {
             item.setVariantName(details.getVariantName());

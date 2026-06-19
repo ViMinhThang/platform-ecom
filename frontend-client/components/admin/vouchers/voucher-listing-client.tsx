@@ -4,7 +4,7 @@ import { Suspense, useEffect, useState, useReducer } from 'react';
 import { useSession } from 'next-auth/react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { voucherService } from '@/lib/services/voucher-service';
-import { Voucher, VOUCHER_STATUS_LABELS, VOUCHER_CATEGORY_LABELS } from '@/types/voucher';
+import { Voucher, VOUCHER_STATUS_LABELS } from '@/types/voucher';
 import { VoucherTable } from './voucher-tables';
 import { columns } from './voucher-tables/columns';
 import { Button } from '@/components/ui/button';
@@ -22,7 +22,6 @@ interface VoucherListingClientProps {
         page?: number;
         perPage?: number;
         status?: string;
-        category?: string;
     };
 }
 
@@ -41,7 +40,6 @@ function VoucherListingClientContent({ searchParams }: VoucherListingClientProps
     const [perPage, setPerPage] = useState(searchParams?.perPage ?? 10);
 
     const currentStatus = get('status') || '';
-    const currentCategory = get('category') || '';
 
     const fetchVouchers = async () => {
         if (!session?.accessToken) return;
@@ -52,7 +50,6 @@ function VoucherListingClientContent({ searchParams }: VoucherListingClientProps
                 page,
                 size: perPage,
                 status: currentStatus || undefined,
-                category: currentCategory || undefined,
             });
             dispatchFetch({ vouchers: response.content, totalItems: response.totalElements });
         } catch (error) {
@@ -64,7 +61,7 @@ function VoucherListingClientContent({ searchParams }: VoucherListingClientProps
 
     useEffect(() => {
         fetchVouchers();
-    }, [session, page, perPage, currentStatus, currentCategory]);
+    }, [session, page, perPage, currentStatus]);
 
     const updateFilter = (key: string, value: string) => {
         const params = new URLSearchParams(toString());
@@ -81,7 +78,7 @@ function VoucherListingClientContent({ searchParams }: VoucherListingClientProps
         push('/admin/dashboard/vouchers');
     };
 
-    const hasFilters = currentStatus || currentCategory;
+    const hasFilters = !!currentStatus;
 
     if (fetchState.loading && fetchState.vouchers.length === 0) {
         return <div>Đang tải mã giảm giá…</div>;
@@ -97,18 +94,6 @@ function VoucherListingClientContent({ searchParams }: VoucherListingClientProps
                     <SelectContent>
                         <SelectItem value="all">Tất cả trạng thái</SelectItem>
                         {Object.entries(VOUCHER_STATUS_LABELS).map(([value, label]) => (
-                            <SelectItem key={value} value={value}>{label}</SelectItem>
-                        ))}
-                    </SelectContent>
-                </Select>
-
-                <Select value={currentCategory || 'all'} onValueChange={(v) => updateFilter('category', v)}>
-                    <SelectTrigger className="w-[180px]">
-                        <SelectValue placeholder="Danh mục" />
-                    </SelectTrigger>
-                    <SelectContent>
-                        <SelectItem value="all">Tất cả danh mục</SelectItem>
-                        {Object.entries(VOUCHER_CATEGORY_LABELS).map(([value, label]) => (
                             <SelectItem key={value} value={value}>{label}</SelectItem>
                         ))}
                     </SelectContent>

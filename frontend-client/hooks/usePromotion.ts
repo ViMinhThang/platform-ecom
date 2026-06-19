@@ -11,20 +11,14 @@ export function usePromotion(cart: CartDTO | null, shippingFee: number = 0) {
     const [appliedVoucherCodes, setAppliedVoucherCodes] = useState<string[]>([]);
     const [isCalculating, setIsCalculating] = useState(false);
 
-    // Auto-apply best vouchers when availableVouchers load
+    // Auto-apply best voucher when availableVouchers load
     useEffect(() => {
         if (availableVouchers.length > 0 && appliedVoucherCodes.length === 0) {
-            const productVouchers = availableVouchers.filter(v => v.category === 'PRODUCT');
-            const shippingVouchers = availableVouchers.filter(v => v.category === 'SHIPPING');
-
-            const maxProductDiscount = Math.max(...productVouchers.map(v => v.discountValue), -Infinity);
-            const maxShippingDiscount = Math.max(...shippingVouchers.map(v => v.discountValue), -Infinity);
-            const bestProduct = productVouchers.find(v => v.discountValue === maxProductDiscount) ?? null;
-            const bestShipping = shippingVouchers.find(v => v.discountValue === maxShippingDiscount) ?? null;
+            const maxDiscount = Math.max(...availableVouchers.map(v => v.discountValue), -1);
+            const bestVoucher = availableVouchers.find(v => v.discountValue === maxDiscount) ?? null;
 
             const codes: string[] = [];
-            if (bestProduct) codes.push(bestProduct.code || `ID:${bestProduct.id}`);
-            if (bestShipping) codes.push(bestShipping.code || `ID:${bestShipping.id}`);
+            if (bestVoucher) codes.push(bestVoucher.code || `ID:${bestVoucher.id}`);
             
             setAppliedVoucherCodes(codes);
         }

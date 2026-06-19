@@ -9,7 +9,6 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import {
     Voucher,
     VOUCHER_TYPE_LABELS,
-    VOUCHER_CATEGORY_LABELS,
     APPLY_MODE_LABELS,
 } from '@/types/voucher';
 import { FormInput } from '@/components/admin/form-input';
@@ -21,7 +20,7 @@ const voucherSchema = z.object({
     code: z.string().optional(),
     description: z.string().optional(),
     type: z.enum(['PERCENTAGE', 'FIXED_AMOUNT'] as const),
-    category: z.enum(['PRODUCT', 'SHIPPING'] as const),
+    categoryId: z.coerce.number().optional().nullable(),
     applyMode: z.enum(['AUTO', 'CODE_REQUIRED'] as const),
     discountValue: z.number().min(0, 'Giá trị giảm phải >= 0'),
     minOrderAmount: z.number().min(0, 'Đơn tối thiểu phải >= 0').optional(),
@@ -38,7 +37,21 @@ const voucherSchema = z.object({
     path: ['endTime'],
 });
 
-type VoucherFormValues = z.infer<typeof voucherSchema>;
+interface VoucherFormValues {
+    name: string;
+    code?: string;
+    description?: string;
+    type: 'PERCENTAGE' | 'FIXED_AMOUNT';
+    categoryId?: number | null;
+    applyMode: 'AUTO' | 'CODE_REQUIRED';
+    discountValue: number;
+    minOrderAmount?: number;
+    maxDiscountAmount?: number;
+    usageLimit?: number;
+    usageLimitPerUser?: number;
+    startTime: string;
+    endTime: string;
+}
 
 interface VoucherFormProps {
     voucher?: Voucher;
@@ -48,14 +61,14 @@ interface VoucherFormProps {
 
 export function VoucherForm({ voucher, onSubmit, loading }: VoucherFormProps) {
     const form = useForm<VoucherFormValues>({
-        resolver: zodResolver(voucherSchema),
+        resolver: zodResolver(voucherSchema) as any,
         defaultValues: voucher
             ? {
                 name: voucher.name,
                 code: voucher.code || '',
                 description: voucher.description || '',
                 type: voucher.type,
-                category: voucher.category,
+                categoryId: voucher.categoryId ?? null,
                 applyMode: voucher.applyMode,
                 discountValue: voucher.discountValue,
                 minOrderAmount: voucher.minOrderAmount ?? undefined,
@@ -68,7 +81,7 @@ export function VoucherForm({ voucher, onSubmit, loading }: VoucherFormProps) {
             : {
                 name: '',
                 type: 'PERCENTAGE',
-                category: 'PRODUCT',
+                categoryId: null,
                 applyMode: 'AUTO',
                 discountValue: 0,
                 startTime: new Date().toISOString().slice(0, 16),
@@ -84,11 +97,6 @@ export function VoucherForm({ voucher, onSubmit, loading }: VoucherFormProps) {
     };
 
     const typeOptions: FormOption[] = Object.entries(VOUCHER_TYPE_LABELS).map(([value, label]) => ({
-        value,
-        label,
-    }));
-
-    const categoryOptions: FormOption[] = Object.entries(VOUCHER_CATEGORY_LABELS).map(([value, label]) => ({
         value,
         label,
     }));
@@ -148,12 +156,12 @@ export function VoucherForm({ voucher, onSubmit, loading }: VoucherFormProps) {
                             required
                         />
 
-                        <FormSelect
+                        <FormInput
                             control={form.control}
-                            name="category"
-                            label="Áp dụng cho"
-                            options={categoryOptions}
-                            required
+                            name="categoryId"
+                            label="ID Danh mục áp dụng"
+                            type="number"
+                            placeholder="Áp dụng cho tất cả nếu để trống"
                         />
 
                         <FormSelect

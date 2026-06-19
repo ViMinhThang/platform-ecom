@@ -1,7 +1,6 @@
 package com.ecom.promotion.entity;
 
 import com.ecom.promotion.enums.ApplyMode;
-import com.ecom.promotion.enums.VoucherCategory;
 import com.ecom.promotion.enums.VoucherStatus;
 import com.ecom.promotion.enums.VoucherType;
 import jakarta.persistence.*;
@@ -17,7 +16,7 @@ import java.util.List;
 @Table(name = "vouchers", indexes = {
         @Index(name = "idx_voucher_code", columnList = "code"),
         @Index(name = "idx_voucher_status", columnList = "status"),
-        @Index(name = "idx_voucher_category", columnList = "category"),
+        @Index(name = "idx_voucher_category_id", columnList = "category_id"),
         @Index(name = "idx_voucher_apply_mode", columnList = "apply_mode"),
         @Index(name = "idx_voucher_time_range", columnList = "start_time, end_time")
 })
@@ -45,9 +44,8 @@ public class Voucher {
     @Column(nullable = false, length = 20)
     private VoucherType type;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false, length = 20)
-    private VoucherCategory category;
+    @Column(name = "category_id")
+    private Long categoryId;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "apply_mode", nullable = false, length = 20)
@@ -86,11 +84,7 @@ public class Voucher {
     @Column(name = "sale_campaign_id")
     private Long saleCampaignId;
 
-    @OneToMany(mappedBy = "voucher", cascade = CascadeType.ALL, orphanRemoval = true)
-    @Builder.Default
-    @ToString.Exclude
-    @EqualsAndHashCode.Exclude
-    private List<VoucherScope> scopes = new ArrayList<>();
+
 
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
@@ -122,15 +116,7 @@ public class Voucher {
         return currentUsageCount < usageLimit;
     }
 
-    public void addScope(VoucherScope scope) {
-        scopes.add(scope);
-        scope.setVoucher(this);
-    }
 
-    public void removeScope(VoucherScope scope) {
-        scopes.remove(scope);
-        scope.setVoucher(null);
-    }
 
     public BigDecimal calculateDiscount(BigDecimal originalAmount) {
         BigDecimal discount;

@@ -5,7 +5,6 @@ import com.ecom.common.exception.ResourceNotFoundException;
 import com.ecom.promotion.dto.CartItemDTO;
 import com.ecom.promotion.dto.request.GenerateVoucherFromCampaignRequest;
 import com.ecom.promotion.entity.Voucher;
-import com.ecom.promotion.enums.ScopeType;
 import com.ecom.promotion.enums.VoucherStatus;
 import com.ecom.promotion.repository.VoucherRepository;
 import com.ecom.promotion.repository.VoucherUsageRepository;
@@ -65,56 +64,10 @@ public class VoucherHelper {
         return BigDecimal.valueOf(totalPercent / request.getItems().size());
     }
 
-    public boolean matchesMinOrderAmount(Voucher voucher, BigDecimal total) {
-        if (voucher.getMinOrderAmount() == null) {
-            return true;
-        }
-        return total.compareTo(voucher.getMinOrderAmount()) >= 0;
-    }
 
-    public boolean matchesScope(Voucher voucher, List<CartItemDTO> items) {
-        if (voucher.getScopes() == null || voucher.getScopes().isEmpty()) {
-            return true; // No scopes means applies to all
-        }
-
-        boolean hasAllScope = voucher.getScopes().stream()
-                .anyMatch(s -> s.getScopeType() == ScopeType.ALL);
-        if (hasAllScope) {
-            return true;
-        }
-
-        // Check if any cart item matches any scope
-        for (CartItemDTO item : items) {
-            for (var scope : voucher.getScopes()) {
-                if (scope.matches(item.getProductId(), item.getVariantId(), item.getCategoryId())) {
-                    return true;
-                }
-            }
-        }
-
-        return false;
-    }
 
     public BigDecimal calculateItemsTotal(List<CartItemDTO> items) {
         return items.stream()
-                .map(i -> i.getPrice().multiply(BigDecimal.valueOf(i.getQuantity())))
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
-    }
-
-    public BigDecimal calculateScopedTotal(Voucher voucher, List<CartItemDTO> items) {
-        if (voucher.getScopes() == null || voucher.getScopes().isEmpty()) {
-            return calculateItemsTotal(items);
-        }
-
-        boolean hasAllScope = voucher.getScopes().stream()
-                .anyMatch(s -> s.getScopeType() == ScopeType.ALL);
-        if (hasAllScope) {
-            return calculateItemsTotal(items);
-        }
-
-        return items.stream()
-                .filter(item -> voucher.getScopes().stream()
-                        .anyMatch(scope -> scope.matches(item.getProductId(), item.getVariantId(), item.getCategoryId())))
                 .map(i -> i.getPrice().multiply(BigDecimal.valueOf(i.getQuantity())))
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
@@ -125,7 +78,7 @@ public class VoucherHelper {
                 .name(request.getName())
                 .description(request.getDescription())
                 .type(request.getType())
-                .category(request.getCategory())
+                .categoryId(request.getCategoryId())
                 .applyMode(request.getApplyMode())
                 .status(VoucherStatus.DRAFT)
                 .discountValue(request.getDiscountValue())
@@ -137,14 +90,6 @@ public class VoucherHelper {
                 .endTime(request.getEndTime())
                 .build();
 
-        if (request.getScopes() != null) {
-            request.getScopes().forEach(scopeReq -> {
-                voucher.addScope(com.ecom.promotion.entity.VoucherScope.builder()
-                        .scopeType(scopeReq.getScopeType())
-                        .targetId(scopeReq.getTargetId())
-                        .build());
-            });
-        }
         return voucher;
     }
 
@@ -152,7 +97,7 @@ public class VoucherHelper {
         voucher.setName(request.getName());
         voucher.setDescription(request.getDescription());
         voucher.setType(request.getType());
-        voucher.setCategory(request.getCategory());
+        voucher.setCategoryId(request.getCategoryId());
         voucher.setApplyMode(request.getApplyMode());
         voucher.setDiscountValue(request.getDiscountValue());
         voucher.setMinOrderAmount(request.getMinOrderAmount());
@@ -162,14 +107,5 @@ public class VoucherHelper {
         voucher.setStartTime(request.getStartTime());
         voucher.setEndTime(request.getEndTime());
 
-        voucher.getScopes().clear();
-        if (request.getScopes() != null) {
-            request.getScopes().forEach(scopeReq -> {
-                voucher.addScope(com.ecom.promotion.entity.VoucherScope.builder()
-                        .scopeType(scopeReq.getScopeType())
-                        .targetId(scopeReq.getTargetId())
-                        .build());
-            });
-        }
     }
 }

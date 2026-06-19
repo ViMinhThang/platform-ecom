@@ -89,7 +89,7 @@ public class PublicProductController {
                 .sellerId(product.getUserId())
                 .sellerName("Seller " + product.getUserId()) // Placeholder
                 .variantName(variantName)
-                .price(variant.getPrice())
+                .price(variant.getSalePrice() != null ? variant.getSalePrice() : variant.getPrice())
                 .stockQuantity(variant.getStock())
                 .build();
 

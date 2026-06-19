@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import type { Dispatch, SetStateAction } from 'react';
-import { useGetAutoApplyVouchersQuery, useValidateVoucherMutation, useGetUserProfileQuery } from '@/lib/store/api/clientApi';
+import { useGetAutoApplyVouchersQuery, useGetUserProfileQuery } from '@/lib/store/api/clientApi';
 
 const EMPTY_VOUCHER_CODES: string[] = [];
 import { Button } from '@/components/ui/button';
@@ -81,57 +81,25 @@ interface VoucherManagerSheetProps {
 }
 
 function VoucherManagerSheet({ availableVouchers, discountResult, appliedCodes, setAppliedCodes }: VoucherManagerSheetProps) {
-    const [inputCode, setInputCode] = useState('');
     const [isOpen, setIsOpen] = useState(false);
     
     const { data: user } = useGetUserProfileQuery();
-    const [validateVoucher, { isLoading: checkingCode }] = useValidateVoucherMutation();
 
-    const productVouchers = availableVouchers.filter(v => v.category === 'PRODUCT');
-    const shippingVouchers = availableVouchers.filter(v => v.category === 'SHIPPING');
-
-    const handleAddVoucher = async () => {
-        if (!inputCode) return;
-        if (!user) {
-            toast.error("Vui lòng đăng nhập để áp dụng mã giảm giá");
-            return;
-        }
-
-        try {
-            await validateVoucher({ code: inputCode, userId: Number(user.userId) }).unwrap();
-            toast.success("Đã thêm mã giảm giá!");
-            setAppliedCodes(prev => (prev.includes(inputCode) ? prev : [...prev, inputCode]));
-            setInputCode('');
-        } catch (err) {
-            toast.error((err as Error).message || "Mã giảm giá không hợp lệ");
+    const handleSelection = (identifier: string) => {
+        if (identifier === 'NONE') {
+            setAppliedCodes([]);
+        } else {
+            setAppliedCodes([identifier]);
         }
     };
 
-    const handleSelection = (category: 'PRODUCT' | 'SHIPPING', identifier: string) => {
-        setAppliedCodes(prev => {
-            const filtered = prev.filter(c => {
-                const v = availableVouchers.find(av => (av.code === c || `ID:${av.id}` === c));
-                return v?.category !== category;
-            });
-            if (identifier !== 'NONE') {
-                filtered.push(identifier);
-            }
-            return filtered;
-        });
-    };
-
-    const getSelectedCode = (category: 'PRODUCT' | 'SHIPPING') => {
-        if (discountResult) {
-            const applied = category === 'PRODUCT' ? discountResult.appliedProductVoucher : discountResult.appliedShippingVoucher;
-            if (applied) return applied.code || `ID:${applied.id}`;
+    const getSelectedCode = () => {
+        if (discountResult && discountResult.appliedProductVoucher) {
+            const applied = discountResult.appliedProductVoucher;
+            return applied.code || `ID:${applied.id}`;
         }
 
-        const codeInState = appliedCodes.find(c => {
-            const v = availableVouchers.find(av => (av.code === c || `ID:${av.id}` === c));
-            return v?.category === category;
-        });
-
-        return codeInState || 'NONE';
+        return appliedCodes[0] || 'NONE';
     };
 
     return (
@@ -146,69 +114,30 @@ function VoucherManagerSheet({ availableVouchers, discountResult, appliedCodes, 
                     <SheetTitle className="text-base font-bold uppercase tracking-[0.2em] text-foreground">Mã giảm giá</SheetTitle>
                 </SheetHeader>
                 
-                <div className="flex-1 overflow-y-auto p-6 space-y-8">
-                    <div className="space-y-3">
-                        <Label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Nhập mã giảm giá</Label>
-                        <div className="flex gap-2">
-                            <Input 
-                                value={inputCode}
-                                onChange={(e) => setInputCode(e.target.value.toUpperCase())}
-                                placeholder="MÃ GIẢM GIÁ" 
-                                className="font-bold uppercase tracking-widest h-12"
-                            />
-                            <Button onClick={handleAddVoucher} disabled={checkingCode || !inputCode} className="h-12 px-6">
-                                {checkingCode ? <Loader2 className="size-4 animate-spin" /> : 'THÊM'}
-                            </Button>
-                        </div>
-                    </div>
+                <div className="flex-1 overflow-y-auto p-6 space-y-6">
 
                     <div className="space-y-4">
                         <div className="flex items-center gap-2">
-                            <Label className="text-sm font-black uppercase tracking-wider">Giảm giá sản phẩm</Label>
+                            <Label className="text-sm font-black uppercase tracking-wider">Mã giảm giá khả dụng</Label>
                             <Badge variant="outline" className="text-[10px]">Chọn 1</Badge>
                         </div>
                         
-                        {productVouchers.length > 0 ? (
+                        {availableVouchers.length > 0 ? (
                             <RadioGroup 
-                                value={getSelectedCode('PRODUCT')} 
-                                onValueChange={(val) => handleSelection('PRODUCT', val)}
+                                value={getSelectedCode()} 
+                                onValueChange={handleSelection}
                                 className="gap-3"
                             >
                                 <div className="flex items-center gap-x-2 border p-3 rounded-sm">
-                                    <RadioGroupItem value="NONE" id="prod-none" />
-                                    <Label htmlFor="prod-none" className="text-sm cursor-pointer flex-1 text-zinc-500">Không sử dụng</Label>
+                                    <RadioGroupItem value="NONE" id="voucher-none" />
+                                    <Label htmlFor="voucher-none" className="text-sm cursor-pointer flex-1 text-zinc-500">Không sử dụng</Label>
                                 </div>
-                                {productVouchers.map(v => (
+                                {availableVouchers.map(v => (
                                     <VoucherItem key={v.id} voucher={v} appliedCodes={appliedCodes} discountResult={discountResult} />
                                 ))}
                             </RadioGroup>
                         ) : (
-                            <p className="text-xs text-zinc-400 italic">Không có mã giảm giá sản phẩm</p>
-                        )}
-                    </div>
-
-                    <div className="space-y-4">
-                        <div className="flex items-center gap-2">
-                            <Label className="text-[11px] font-bold uppercase tracking-widest">Mã giảm giá vận chuyển</Label>
-                            <Badge variant="outline" className="text-[8px] font-bold uppercase tracking-widest border-primary/20 text-primary">Chọn 1</Badge>
-                        </div>
-                        
-                        {shippingVouchers.length > 0 ? (
-                            <RadioGroup 
-                                value={getSelectedCode('SHIPPING')} 
-                                onValueChange={(val) => handleSelection('SHIPPING', val)}
-                                className="gap-4"
-                            >
-                                <div className="flex items-center gap-x-3 border border-border p-4 rounded-sm hover:bg-muted/30 transition-colors">
-                                    <RadioGroupItem value="NONE" id="ship-none" />
-                                    <Label htmlFor="ship-none" className="text-[10px] font-bold uppercase tracking-widest cursor-pointer flex-1 text-muted-foreground">Không sử dụng</Label>
-                                </div>
-                                {shippingVouchers.map(v => (
-                                    <VoucherItem key={v.id} voucher={v} appliedCodes={appliedCodes} discountResult={discountResult} />
-                                ))}
-                            </RadioGroup>
-                        ) : (
-                            <p className="text-[10px] text-muted-foreground font-bold uppercase tracking-widest opacity-50 italic">Không có mã giảm giá vận chuyển</p>
+                            <p className="text-xs text-zinc-400 italic">Không có mã giảm giá khả dụng</p>
                         )}
                     </div>
                 </div>
@@ -232,10 +161,7 @@ interface VoucherItemProps {
 function VoucherItem({ voucher, appliedCodes, discountResult }: VoucherItemProps) {
     const voucherIdentifier = voucher.code || `ID:${voucher.id}`;
     
-    const isActuallyApplied = discountResult && (
-        (voucher.category === 'PRODUCT' && discountResult.appliedProductVoucher?.id === voucher.id) ||
-        (voucher.category === 'SHIPPING' && discountResult.appliedShippingVoucher?.id === voucher.id)
-    );
+    const isActuallyApplied = discountResult && discountResult.appliedProductVoucher?.id === voucher.id;
 
     const isSelectedInState = appliedCodes.includes(voucherIdentifier);
     const isApplied = isActuallyApplied || isSelectedInState;
@@ -275,4 +201,3 @@ function VoucherItem({ voucher, appliedCodes, discountResult }: VoucherItemProps
         </Label>
     );
 }
-

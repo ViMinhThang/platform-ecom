@@ -1,7 +1,6 @@
 package com.ecom.promotion.dto;
 
 import com.ecom.promotion.enums.ApplyMode;
-import com.ecom.promotion.enums.VoucherCategory;
 import com.ecom.promotion.enums.VoucherStatus;
 import com.ecom.promotion.enums.VoucherType;
 import lombok.*;
@@ -20,7 +19,7 @@ public class VoucherDTO {
     private String name;
     private String description;
     private VoucherType type;
-    private VoucherCategory category;
+    private Long categoryId;
     private ApplyMode applyMode;
     private VoucherStatus status;
     private BigDecimal discountValue;
@@ -32,7 +31,6 @@ public class VoucherDTO {
     private LocalDateTime startTime;
     private LocalDateTime endTime;
     private Long saleCampaignId;
-    private List<VoucherScopeDTO> scopes;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 }

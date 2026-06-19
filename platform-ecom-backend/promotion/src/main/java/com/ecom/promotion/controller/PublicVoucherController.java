@@ -45,26 +45,6 @@ public class PublicVoucherController {
         return ResponseBuilder.success("Vouchers applied successfully", result);
     }
 
-    @GetMapping("/validate/{code}")
-    public ResponseEntity<APIResponse<Boolean>> validateVoucherCode(
-            @PathVariable String code,
-            @RequestParam Long userId) {
-        boolean valid = voucherService.validateVoucherCode(code, userId);
-        return ResponseBuilder.success("Voucher validation result", valid);
-    }
-
-    @GetMapping("/code/{code}")
-    public ResponseEntity<APIResponse<VoucherDTO>> getVoucherByCode(@PathVariable String code) {
-        return voucherService.getVoucherByCode(code)
-                .map(v -> ResponseBuilder.success("Voucher retrieved", v))
-                .orElseGet(() -> ResponseBuilder.success("Voucher not found", null));
-    }
-
-    @GetMapping("/auto-apply")
-    public ResponseEntity<APIResponse<List<VoucherDTO>>> getActiveAutoApplyVouchers() {
-        List<VoucherDTO> vouchers = voucherService.getActiveAutoApplyVouchers();
-        return ResponseBuilder.success("Auto-apply vouchers retrieved", vouchers);
-    }
 
     @GetMapping("/available")
     public ResponseEntity<APIResponse<List<VoucherDTO>>> getAllAvailableVouchers() {

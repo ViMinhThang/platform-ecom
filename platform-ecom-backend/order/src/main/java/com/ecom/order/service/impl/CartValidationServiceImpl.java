@@ -57,6 +57,7 @@ public class CartValidationServiceImpl implements CartValidationService {
         item.setSellerId(details.getSellerId());
         item.setSellerName(details.getSellerName());
         item.setVariantName(details.getVariantName());
+        item.setPrice(details.getPrice());
     }
 
     private void validateStockAvailability(CartItem item, ProductDetails details) {

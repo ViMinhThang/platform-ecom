@@ -7,7 +7,6 @@ interface VoucherListingPageProps {
         page?: string;
         perPage?: string;
         status?: string;
-        category?: string;
     };
 }
 
@@ -22,7 +21,6 @@ export default function VoucherListingPage({ searchParams }: VoucherListingPageP
                 page: apiPage,
                 perPage: searchParams?.perPage ? parseInt(searchParams.perPage) : 10,
                 status: searchParams?.status,
-                category: searchParams?.category,
             }}
         />
     );

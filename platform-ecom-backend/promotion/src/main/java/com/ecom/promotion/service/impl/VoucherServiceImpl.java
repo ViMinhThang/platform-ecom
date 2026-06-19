@@ -4,7 +4,6 @@ import com.ecom.common.exception.APIException;
 import com.ecom.promotion.dto.VoucherDTO;
 import com.ecom.promotion.dto.request.CreateVoucherRequest;
 import com.ecom.promotion.entity.Voucher;
-import com.ecom.promotion.enums.VoucherCategory;
 import com.ecom.promotion.enums.VoucherStatus;
 import com.ecom.promotion.mapper.VoucherMapper;
 import com.ecom.promotion.helper.VoucherHelper;
@@ -88,17 +87,8 @@ public class VoucherServiceImpl implements VoucherService {
         return voucherRepository.findByStatus(status, pageable).map(voucherMapper::toDTO);
     }
 
-    @Override
-    @Transactional(readOnly = true)
-    public Page<VoucherDTO> getVouchersByCategory(VoucherCategory category, Pageable pageable) {
-        return voucherRepository.findByCategory(category, pageable).map(voucherMapper::toDTO);
-    }
 
-    @Override
-    @Transactional(readOnly = true)
-    public List<VoucherDTO> getActiveAutoApplyVouchers() {
-        return voucherMapper.toDTOs(voucherRepository.findActiveAutoApplyVouchers(LocalDateTime.now()));
-    }
+
 
     @Override
     @Transactional(readOnly = true)
@@ -141,14 +131,5 @@ public class VoucherServiceImpl implements VoucherService {
         // Handled by VoucherTaskService
     }
 
-    @Override
-    @Transactional(readOnly = true)
-    public boolean validateVoucherCode(String code, Long userId) {
-        Optional<Voucher> voucherOpt = voucherRepository.findByCodeAndStatus(code, VoucherStatus.ACTIVE);
-        if (voucherOpt.isEmpty())
-            return false;
 
-        Voucher voucher = voucherOpt.get();
-        return voucher.isActiveNow() && voucherHelper.canUserUseVoucher(voucher, userId);
-    }
 }

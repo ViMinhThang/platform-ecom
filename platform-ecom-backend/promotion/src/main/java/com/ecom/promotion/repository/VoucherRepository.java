@@ -1,7 +1,6 @@
 package com.ecom.promotion.repository;
 
 import com.ecom.promotion.entity.Voucher;
-import com.ecom.promotion.enums.VoucherCategory;
 import com.ecom.promotion.enums.VoucherStatus;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -22,8 +21,6 @@ public interface VoucherRepository extends JpaRepository<Voucher, Long> {
         Optional<Voucher> findByCodeAndStatus(String code, VoucherStatus status);
 
         Page<Voucher> findByStatus(VoucherStatus status, Pageable pageable);
-
-        Page<Voucher> findByCategory(VoucherCategory category, Pageable pageable);
 
         List<Voucher> findBySaleCampaignId(Long saleCampaignId);
 
@@ -49,20 +46,7 @@ public interface VoucherRepository extends JpaRepository<Voucher, Long> {
             """)
     List<Voucher> findAllActiveVouchers(@Param("now") LocalDateTime now);
 
-    /**
-     * Find active vouchers by category
-     */
-        @Query("""
-                        SELECT v FROM Voucher v
-                        WHERE v.status = 'ACTIVE'
-                        AND v.category = :category
-                        AND v.startTime <= :now
-                        AND v.endTime > :now
-                        AND (v.usageLimit IS NULL OR v.currentUsageCount < v.usageLimit)
-                        """)
-        List<Voucher> findActiveVouchersByCategory(
-                        @Param("category") VoucherCategory category,
-                        @Param("now") LocalDateTime now);
+
 
         /**
          * Find vouchers that need status updates (scheduled -> active, active ->

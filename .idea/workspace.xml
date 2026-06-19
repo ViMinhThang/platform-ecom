@@ -5,243 +5,38 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c48beeac-7758-42e4-81dd-f068fbcd38be" name="Changes" comment="update spring cloud stream dependency">
-      <change beforePath="$PROJECT_DIR$/.agents/.shared/ui-ux-pro-max/data/charts.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/.shared/ui-ux-pro-max/data/colors.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/.shared/ui-ux-pro-max/data/icons.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/.shared/ui-ux-pro-max/data/landing.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/.shared/ui-ux-pro-max/data/products.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/.shared/ui-ux-pro-max/data/prompts.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/.shared/ui-ux-pro-max/data/react-performance.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/.shared/ui-ux-pro-max/data/stacks/flutter.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/.shared/ui-ux-pro-max/data/stacks/html-tailwind.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/.shared/ui-ux-pro-max/data/stacks/jetpack-compose.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/.shared/ui-ux-pro-max/data/stacks/nextjs.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/.shared/ui-ux-pro-max/data/stacks/nuxt-ui.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/.shared/ui-ux-pro-max/data/stacks/nuxtjs.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/.shared/ui-ux-pro-max/data/stacks/react-native.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/.shared/ui-ux-pro-max/data/stacks/react.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/.shared/ui-ux-pro-max/data/stacks/shadcn.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/.shared/ui-ux-pro-max/data/stacks/svelte.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/.shared/ui-ux-pro-max/data/stacks/swiftui.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/.shared/ui-ux-pro-max/data/stacks/vue.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/.shared/ui-ux-pro-max/data/styles.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/.shared/ui-ux-pro-max/data/typography.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/.shared/ui-ux-pro-max/data/ui-reasoning.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/.shared/ui-ux-pro-max/data/ux-guidelines.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/.shared/ui-ux-pro-max/data/web-interface.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/.shared/ui-ux-pro-max/scripts/core.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/.shared/ui-ux-pro-max/scripts/design_system.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/.shared/ui-ux-pro-max/scripts/search.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/ARCHITECTURE.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/agents/backend-specialist.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/agents/code-archaeologist.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/agents/database-architect.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/agents/debugger.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/agents/devops-engineer.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/agents/documentation-writer.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/agents/explorer-agent.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/agents/frontend-specialist.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/agents/game-developer.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/agents/mobile-developer.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/agents/orchestrator.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/agents/penetration-tester.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/agents/performance-optimizer.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/agents/product-manager.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/agents/product-owner.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/agents/project-planner.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/agents/qa-automation-engineer.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/agents/security-auditor.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/agents/seo-specialist.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/agents/test-engineer.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/mcp_config.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/rules/GEMINI.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/scripts/auto_preview.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/scripts/checklist.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/scripts/session_manager.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/scripts/verify_all.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/skills/api-patterns/SKILL.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/skills/api-patterns/api-style.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/skills/api-patterns/auth.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/skills/api-patterns/documentation.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/skills/api-patterns/graphql.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/skills/api-patterns/rate-limiting.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/skills/api-patterns/response.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/skills/api-patterns/rest.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/skills/api-patterns/scripts/api_validator.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/skills/api-patterns/security-testing.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/skills/api-patterns/trpc.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/skills/api-patterns/versioning.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/skills/app-builder/SKILL.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/skills/app-builder/agent-coordination.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/skills/app-builder/feature-building.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/skills/app-builder/project-detection.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/skills/app-builder/scaffolding.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/skills/app-builder/tech-stack.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/skills/app-builder/templates/SKILL.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/skills/app-builder/templates/astro-static/TEMPLATE.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/skills/app-builder/templates/chrome-extension/TEMPLATE.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/skills/app-builder/templates/cli-tool/TEMPLATE.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/skills/app-builder/templates/electron-desktop/TEMPLATE.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/skills/app-builder/templates/express-api/TEMPLATE.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/skills/app-builder/templates/flutter-app/TEMPLATE.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/skills/app-builder/templates/monorepo-turborepo/TEMPLATE.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/skills/app-builder/templates/nextjs-fullstack/TEMPLATE.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/skills/app-builder/templates/nextjs-saas/TEMPLATE.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/skills/app-builder/templates/nextjs-static/TEMPLATE.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/skills/app-builder/templates/nuxt-app/TEMPLATE.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/skills/app-builder/templates/python-fastapi/TEMPLATE.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/skills/app-builder/templates/react-native-app/TEMPLATE.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/skills/architecture/SKILL.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/skills/architecture/context-discovery.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/skills/architecture/examples.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/skills/architecture/pattern-selection.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/skills/architecture/patterns-reference.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/skills/architecture/trade-off-analysis.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/skills/bash-linux/SKILL.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/skills/behavioral-modes/SKILL.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/skills/brainstorming/SKILL.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/skills/brainstorming/dynamic-questioning.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/skills/clean-code/SKILL.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/skills/code-review-checklist/SKILL.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/skills/database-design/SKILL.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/skills/database-design/database-selection.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/skills/database-design/indexing.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/skills/database-design/migrations.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/skills/database-design/optimization.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/skills/database-design/orm-selection.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/skills/database-design/schema-design.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/skills/database-design/scripts/schema_validator.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/skills/deployment-procedures/SKILL.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/skills/doc.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/skills/documentation-templates/SKILL.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/skills/frontend-design/SKILL.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/skills/frontend-design/animation-guide.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/skills/frontend-design/color-system.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/skills/frontend-design/decision-trees.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/skills/frontend-design/motion-graphics.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/skills/frontend-design/scripts/accessibility_checker.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/skills/frontend-design/scripts/ux_audit.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/skills/frontend-design/typography-system.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/skills/frontend-design/ux-psychology.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/skills/frontend-design/visual-effects.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/skills/game-development/2d-games/SKILL.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/skills/game-development/3d-games/SKILL.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/skills/game-development/SKILL.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/skills/game-development/game-art/SKILL.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/skills/game-development/game-audio/SKILL.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/skills/game-development/game-design/SKILL.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/skills/game-development/mobile-games/SKILL.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/skills/game-development/multiplayer/SKILL.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/skills/game-development/pc-games/SKILL.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/skills/game-development/vr-ar/SKILL.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/skills/game-development/web-games/SKILL.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/skills/geo-fundamentals/SKILL.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/skills/geo-fundamentals/scripts/geo_checker.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/skills/i18n-localization/SKILL.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/skills/i18n-localization/scripts/i18n_checker.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/skills/intelligent-routing/SKILL.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/skills/lint-and-validate/SKILL.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/skills/lint-and-validate/scripts/lint_runner.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/skills/lint-and-validate/scripts/type_coverage.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/skills/mcp-builder/SKILL.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/skills/mobile-design/SKILL.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/skills/mobile-design/decision-trees.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/skills/mobile-design/mobile-backend.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/skills/mobile-design/mobile-color-system.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/skills/mobile-design/mobile-debugging.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/skills/mobile-design/mobile-design-thinking.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/skills/mobile-design/mobile-navigation.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/skills/mobile-design/mobile-performance.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/skills/mobile-design/mobile-testing.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/skills/mobile-design/mobile-typography.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/skills/mobile-design/platform-android.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/skills/mobile-design/platform-ios.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/skills/mobile-design/scripts/mobile_audit.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/skills/mobile-design/touch-psychology.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/skills/nextjs-react-expert/1-async-eliminating-waterfalls.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/skills/nextjs-react-expert/2-bundle-bundle-size-optimization.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/skills/nextjs-react-expert/3-server-server-side-performance.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/skills/nextjs-react-expert/4-client-client-side-data-fetching.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/skills/nextjs-react-expert/5-rerender-re-render-optimization.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/skills/nextjs-react-expert/6-rendering-rendering-performance.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/skills/nextjs-react-expert/7-js-javascript-performance.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/skills/nextjs-react-expert/8-advanced-advanced-patterns.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/skills/nextjs-react-expert/SKILL.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/skills/nextjs-react-expert/scripts/convert_rules.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/skills/nextjs-react-expert/scripts/react_performance_checker.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/skills/nodejs-best-practices/SKILL.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/skills/parallel-agents/SKILL.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/skills/performance-profiling/SKILL.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/skills/performance-profiling/scripts/lighthouse_audit.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/skills/plan-writing/SKILL.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/skills/powershell-windows/SKILL.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/skills/python-patterns/SKILL.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/skills/red-team-tactics/SKILL.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/skills/rust-pro/SKILL.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/skills/seo-fundamentals/SKILL.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/skills/seo-fundamentals/scripts/seo_checker.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/skills/server-management/SKILL.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/skills/systematic-debugging/SKILL.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/skills/tailwind-patterns/SKILL.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/skills/tdd-workflow/SKILL.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/skills/testing-patterns/SKILL.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/skills/testing-patterns/scripts/test_runner.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/skills/vulnerability-scanner/SKILL.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/skills/vulnerability-scanner/checklists.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/skills/vulnerability-scanner/scripts/security_scan.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/skills/web-design-guidelines/SKILL.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/skills/webapp-testing/SKILL.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/skills/webapp-testing/scripts/playwright_runner.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/workflows/brainstorm.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/workflows/create.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/workflows/debug.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/workflows/deploy.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/workflows/enhance.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/workflows/orchestrate.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/workflows/plan.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/workflows/preview.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/workflows/status.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/workflows/test.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.agents/workflows/ui-ux-pro-max.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.claude/settings.local.json" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/app/(main)/category/[slug]/CategoryPageClient.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/app/(main)/category/[slug]/CategoryPageClient.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/app/(main)/profile/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/app/(main)/profile/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/app/(main)/sale-campaigns/[slug]/sale-campaign-detail-client.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/app/(main)/sale-campaigns/[slug]/sale-campaign-detail-client.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/app/admin/dashboard/vouchers/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/app/admin/dashboard/vouchers/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/ReviewList.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/ReviewList.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/admin/form-checkbox-group.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/admin/form-checkbox-group.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/admin/inventory/variant-combobox.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/admin/inventory/variant-combobox.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/admin/layout/app-sidebar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/admin/layout/app-sidebar.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/admin/orders/order-detail/update-status-dialog.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/admin/orders/order-detail/update-status-dialog.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/admin/overview/bar-graph-skeleton.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/admin/overview/bar-graph-skeleton.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/admin/overview/overview.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/admin/overview/overview.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/admin/sale-campaigns/discount-tier-editor.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/admin/sale-campaigns/discount-tier-editor.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/admin/users/user-form/user-dialog.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/admin/users/user-form/user-dialog.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/auth/ui/otp-input.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/auth/ui/otp-input.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/auth/ui/password-strength.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/auth/ui/password-strength.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/chatbot/ChatMessage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/chatbot/ChatMessage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/home/HomeBanner.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/home/HomeBanner.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/home/QuickLinks.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/home/QuickLinks.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/home/SingleActiveCampaign.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/home/SingleActiveCampaign.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/orders/OrderCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/orders/OrderCard.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/orders/SubOrderCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/orders/SubOrderCard.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/orders/TrackingTimeline.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/orders/TrackingTimeline.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/sale-campaign/CountdownTimer.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/sale-campaign/CountdownTimer.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/ui/StarRating.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/ui/StarRating.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/components/ui/table/generic-feature-table.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/ui/table/generic-feature-table.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/hooks/useAnalytics.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/hooks/useAnalytics.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/hooks/useBuyAgain.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/hooks/useBuyAgain.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/lib/format.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/lib/format.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-client/lib/store/admin/analyticsApi.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/lib/store/admin/analyticsApi.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/order/src/main/java/com/ecom/order/controller/AdminAnalyticsController.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/order/src/main/java/com/ecom/order/controller/AdminAnalyticsController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/order/src/main/java/com/ecom/order/repository/SubOrderRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/order/src/main/java/com/ecom/order/repository/SubOrderRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/order/src/main/java/com/ecom/order/service/impl/AdminAnalyticsServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/order/src/main/java/com/ecom/order/service/impl/AdminAnalyticsServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/order/src/main/java/com/ecom/order/service/signature/AdminAnalyticsService.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/order/src/main/java/com/ecom/order/service/signature/AdminAnalyticsService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/promotion/src/main/java/com/ecom/promotion/dto/CalculateDiscountRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/promotion/src/main/java/com/ecom/promotion/dto/CalculateDiscountRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-client/components/admin/vouchers/voucher-form.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/admin/vouchers/voucher-form.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-client/components/admin/vouchers/voucher-listing-client.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/admin/vouchers/voucher-listing-client.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-client/components/admin/vouchers/voucher-listing.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/admin/vouchers/voucher-listing.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-client/components/admin/vouchers/voucher-tables/columns.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/admin/vouchers/voucher-tables/columns.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-client/components/checkout/VoucherSection.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/components/checkout/VoucherSection.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-client/hooks/usePromotion.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/hooks/usePromotion.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-client/lib/store/api/clientApi.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/lib/store/api/clientApi.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-client/types/admin/voucher.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/types/admin/voucher.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-client/types/promotion.types.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/types/promotion.types.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-client/types/voucher.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-client/types/voucher.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/order/src/main/java/com/ecom/order/service/impl/CartServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/order/src/main/java/com/ecom/order/service/impl/CartServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/order/src/main/java/com/ecom/order/service/impl/CartValidationServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/order/src/main/java/com/ecom/order/service/impl/CartValidationServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/controller/PublicProductController.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/controller/PublicProductController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/entity/SaleCampaignDiscountTier.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/product/src/main/java/com/ecom/product/entity/SaleCampaignDiscountTier.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/promotion/src/main/java/com/ecom/promotion/controller/Admin/AdminVoucherController.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/promotion/src/main/java/com/ecom/promotion/controller/Admin/AdminVoucherController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/promotion/src/main/java/com/ecom/promotion/controller/PublicVoucherController.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/promotion/src/main/java/com/ecom/promotion/controller/PublicVoucherController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/promotion/src/main/java/com/ecom/promotion/dto/VoucherDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/promotion/src/main/java/com/ecom/promotion/dto/VoucherDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/promotion/src/main/java/com/ecom/promotion/dto/VoucherScopeDTO.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/promotion/src/main/java/com/ecom/promotion/dto/request/CreateVoucherRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/promotion/src/main/java/com/ecom/promotion/dto/request/CreateVoucherRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/promotion/src/main/java/com/ecom/promotion/dto/request/ScopeRequest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/promotion/src/main/java/com/ecom/promotion/entity/Voucher.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/promotion/src/main/java/com/ecom/promotion/entity/Voucher.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/promotion/src/main/java/com/ecom/promotion/entity/VoucherScope.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/promotion/src/main/java/com/ecom/promotion/enums/ScopeType.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/promotion/src/main/java/com/ecom/promotion/enums/VoucherCategory.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/promotion/src/main/java/com/ecom/promotion/helper/VoucherHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/promotion/src/main/java/com/ecom/promotion/helper/VoucherHelper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/promotion/src/main/java/com/ecom/promotion/mapper/VoucherMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/promotion/src/main/java/com/ecom/promotion/mapper/VoucherMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/promotion/src/main/java/com/ecom/promotion/repository/VoucherRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/promotion/src/main/java/com/ecom/promotion/repository/VoucherRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/promotion/src/main/java/com/ecom/promotion/service/impl/CampaignVoucherServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/promotion/src/main/java/com/ecom/promotion/service/impl/CampaignVoucherServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/promotion/src/main/java/com/ecom/promotion/service/impl/DiscountCalculatorImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/promotion/src/main/java/com/ecom/promotion/service/impl/DiscountCalculatorImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/promotion/src/main/java/com/ecom/promotion/service/impl/VoucherServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/promotion/src/main/java/com/ecom/promotion/service/impl/VoucherServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/platform-ecom-backend/promotion/src/main/java/com/ecom/promotion/service/signature/VoucherService.java" beforeDir="false" afterPath="$PROJECT_DIR$/platform-ecom-backend/promotion/src/main/java/com/ecom/promotion/service/signature/VoucherService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
