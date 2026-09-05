@@ -13,17 +13,20 @@ Trimmed repo: `order` + `inventory` core saga, `notification` + `analytics` stag
 - [L07](kafka/L07-outbox.md) — transactional outbox in order, no new idempotency table (existing dedup qualifies) ✅ (runtime verify needs JDK 21)
 - [L08](kafka/L08-saga-orchestration.md) — orchestrator beside choreography, correlation IDs + failure signal ✅ (runtime verify needs JDK 21)
 - [L09](kafka/L09-gateway-eureka-jwt.md) — gateway (routes + JWT + rate limit) + Eureka ✅ (runtime verify needs JDK 21)
-- L10 (next) — OpenTelemetry traces, Grafana dashboards, chaos drills.
+- [L10](kafka/L10-observability-chaos.md) — OTel traces → Jaeger, Prometheus + Grafana, chaos drills ✅ (runtime verify needs JDK 21)
+
+## Path complete
+L00 infra → L01–L04 Kafka → L05–L06 reliability → L07 outbox → L08 saga → L09 platform → L10 observability. Next ideas (unscoped): saga timeout sweeper (L08 exercise), Debezium CDC relay (L07 stretch), broker JMX lag dashboards, k6 load profile.
 - L08 — saga orchestration alongside choreography.
 - L09 — slim gateway (routing + rate limit + JWT) + Eureka. JWT is gateway-validated, `X-User-Id` forwarded; token mint is lab scaffolding, `user/` stays deleted.
 - L10 — OpenTelemetry traces, Grafana dashboards, chaos drills.
 
 ## Run
 ```powershell
-docker compose up -d                      # base: postgres + kafka + kafka-ui + eureka + gateway
-docker compose -f docker-compose.yml -f docker-compose.advanced.yml up -d  # L4/L10 only
-# Gateway: http://localhost:8080 (all service traffic, Bearer JWT from POST /labs/token)
-# Eureka: http://localhost:8761 | Kafka-UI: http://localhost:9080
+docker compose up -d                      # everything: data + Kafka + platform + observability
+docker compose -f docker-compose.yml -f docker-compose.advanced.yml up -d  # L4 3-broker overlay
+# Gateway :8080 (Bearer JWT from POST /labs/token) | Eureka :8761 | Kafka-UI :9080
+# Jaeger :16686 | Prometheus :9090 | Grafana :3000 (admin/admin, "Saga learning")
 # order :8085, inventory :8088, notification :8090, analytics :8091 (host-run)
 ```
 

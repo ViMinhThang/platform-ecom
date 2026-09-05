@@ -51,6 +51,13 @@ eureka:
       defaultZone: ${EUREKA_URI:http://localhost:8761/eureka/}
 
 management:
+  tracing:
+    sampling:
+      # L10 lab: trace everything; sample (e.g. 0.1) in prod.
+      probability: 1.0
+  otlp:
+    tracing:
+      endpoint: ${OTLP_ENDPOINT:http://localhost:4318/v1/traces}
   endpoints:
     web:
       exposure:

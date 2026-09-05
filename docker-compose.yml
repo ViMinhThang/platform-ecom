@@ -75,9 +75,71 @@ services:
       - "8080:8080"
     environment:
       EUREKA_URI: http://eureka:8761/eureka/
+      OTLP_ENDPOINT: http://host.docker.internal:4318/v1/traces
+    extra_hosts:
+      # Linux docker needs this for host.docker.internal; no-op on Desktop.
+      - "host.docker.internal:host-gateway"
     depends_on:
       - eureka
       - kafka
+    networks:
+      - backend
+    restart: unless-stopped
+
+  # L10 observability. Apps run on the host and push traces to the collector;
+  # Prometheus scrapes them; Grafana ships one lab dashboard.
+  otel-collector:
+    container_name: otel-collector
+    image: otel/opentelemetry-collector-contrib:0.110.0
+    mem_limit: 256m
+    command: ["--config=/etc/otel-collector-config.yaml"]
+    volumes:
+      - ./observability/otel-collector-config.yaml:/etc/otel-collector-config.yaml:ro
+    ports:
+      - "4317:4317"
+      - "4318:4318"
+    networks:
+      - backend
+    restart: unless-stopped
+
+  jaeger:
+    container_name: jaeger
+    image: jaegertracing/all-in-one:1.62.0
+    mem_limit: 512m
+    ports:
+      - "16686:16686"
+    environment:
+      COLLECTOR_OTLP_ENABLED: "true"
+    depends_on:
+      - otel-collector
+    networks:
+      - backend
+    restart: unless-stopped
+
+  prometheus:
+    container_name: prometheus
+    image: prom/prometheus:v3.0.0
+    mem_limit: 512m
+    command: ["--config.file=/etc/prometheus/prometheus.yml"]
+    volumes:
+      - ./observability/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    ports:
+      - "9090:9090"
+    networks:
+      - backend
+    restart: unless-stopped
+
+  grafana:
+    container_name: grafana
+    image: grafana/grafana:11.4.0
+    mem_limit: 256m
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./observability/grafana/provisioning:/etc/grafana/provisioning:ro
+      - ./observability/grafana/dashboards:/var/lib/grafana/dashboards:ro
+    depends_on:
+      - prometheus
     networks:
       - backend
     restart: unless-stopped

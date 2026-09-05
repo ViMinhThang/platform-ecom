@@ -1,0 +1,29 @@
+# L10: one job per service so the `job` label splits dashboards by service.
+# Targets are host-run bootRun apps; host.docker.internal works on Docker
+# Desktop (Win/Mac). Native Linux: add --add-host=host.docker.internal:host-gateway
+# to the docker daemon or replace with the host LAN IP.
+global:
+  # Lab frequency; 15-30s in prod.
+  scrape_interval: 5s
+
+scrape_configs:
+  - job_name: order
+    metrics_path: /actuator/prometheus
+    static_configs:
+      - targets: ["host.docker.internal:8085"]
+  - job_name: inventory
+    metrics_path: /actuator/prometheus
+    static_configs:
+      - targets: ["host.docker.internal:8088"]
+  - job_name: notification
+    metrics_path: /actuator/prometheus
+    static_configs:
+      - targets: ["host.docker.internal:8090"]
+  - job_name: analytics
+    metrics_path: /actuator/prometheus
+    static_configs:
+      - targets: ["host.docker.internal:8091"]
+  - job_name: gateway
+    metrics_path: /actuator/prometheus
+    static_configs:
+      - targets: ["host.docker.internal:8080"]
