@@ -53,6 +53,35 @@ services:
       - backend
     restart: unless-stopped
 
+  # L09 platform. Services run on the host (bootRun) and register at
+  # localhost:8761; gateway resolves lb:// names through eureka:8761.
+  eureka:
+    container_name: eureka
+    build:
+      context: ./platform-ecom-backend
+      dockerfile: ./eureka/Dockerfile
+    ports:
+      - "8761:8761"
+    networks:
+      - backend
+    restart: unless-stopped
+
+  gateway:
+    container_name: gateway
+    build:
+      context: ./platform-ecom-backend
+      dockerfile: ./gateway/Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      EUREKA_URI: http://eureka:8761/eureka/
+    depends_on:
+      - eureka
+      - kafka
+    networks:
+      - backend
+    restart: unless-stopped
+
 networks:
   backend:
     driver: bridge

@@ -73,6 +73,12 @@ resilience4j:
         ignore-exceptions:
           - jakarta.mail.AuthenticationFailedException
 
+# L09: register with Eureka; gateway routes lb://notification-service.
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: ${EUREKA_URI:http://localhost:8761/eureka/}
+
 management:
   endpoints:
     web:

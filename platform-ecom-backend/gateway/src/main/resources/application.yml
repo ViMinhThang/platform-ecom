@@ -1,0 +1,46 @@
+spring:
+  application:
+    name: gateway
+  cloud:
+    gateway:
+      routes:
+        - id: order-service
+          uri: lb://order-service
+          predicates:
+            - Path=/api/v1/order-groups/**,/api/v1/cart/**,/api/v1/sub-orders/**,/api/v1/admin/orders/**,/api/v1/admin/analytics/**
+        - id: inventory-service
+          uri: lb://inventory-service
+          predicates:
+            - Path=/api/v1/inventory/**,/api/v1/sellers/inventory/**,/api/v1/admin/inventory/**,/internal/inventory/**
+        - id: analytics-service
+          uri: lb://analytics-service
+          predicates:
+            - Path=/api/v1/analytics/**
+        - id: notification-service
+          uri: lb://notification-service
+          predicates:
+            - Path=/api/v1/notifications/**
+
+# L09: edge-auth + lab rate limit. Secret shared with nothing — the gateway
+# is the only verifier (minted by /labs/token).
+app:
+  jwt:
+    secret: ${JWT_SECRET:lab-secret-32B-minimum-change-me-00}
+    ttl-ms: 3600000
+  ratelimit:
+    max-requests: 100
+    window-ms: 10000
+
+server:
+  port: 8080
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: ${EUREKA_URI:http://localhost:8761/eureka/}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info

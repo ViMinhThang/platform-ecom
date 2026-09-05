@@ -53,6 +53,12 @@ resilience4j:
           - com.ecom.common.exception.APIException
           - com.ecom.common.exception.InsufficientStockException
 
+# L09: register with Eureka; gateway routes lb://inventory-service.
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: ${EUREKA_URI:http://localhost:8761/eureka/}
+
 management:
   endpoints:
     web:

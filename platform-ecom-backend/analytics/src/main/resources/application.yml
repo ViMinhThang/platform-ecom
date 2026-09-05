@@ -44,6 +44,12 @@ resilience4j:
         max-concurrent-calls: 10
         max-wait-duration: 0
 
+# L09: register with Eureka; gateway routes lb://analytics-service.
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: ${EUREKA_URI:http://localhost:8761/eureka/}
+
 management:
   endpoints:
     web:

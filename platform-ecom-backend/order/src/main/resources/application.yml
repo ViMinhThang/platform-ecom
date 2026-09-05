@@ -44,6 +44,12 @@ app:
     relay-interval-ms: 2000
     relay-batch-size: 50
 
+# L09: register with Eureka; gateway routes lb://order-service.
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: ${EUREKA_URI:http://localhost:8761/eureka/}
+
 management:
   endpoints:
     web:

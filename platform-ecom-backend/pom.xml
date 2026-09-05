@@ -7,7 +7,7 @@
     <version>0.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>platform-ecom-backend</name>
-    <description>Kafka learning backend: order/inventory saga + notification/analytics fan-out</description>
+    <description>Distributed-systems learning backend: saga services + slim gateway/eureka platform (L09)</description>
 
     <modules>
         <module>shared-commons</module>
@@ -15,5 +15,7 @@
         <module>inventory</module>
         <module>notification</module>
         <module>analytics</module>
+        <module>eureka</module>
+        <module>gateway</module>
     </modules>
 </project>

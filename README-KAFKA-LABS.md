@@ -12,17 +12,19 @@ Trimmed repo: `order` + `inventory` core saga, `notification` + `analytics` stag
 - [L06](kafka/L06-breakers-bulkheads.md) — breaker on mail, bulkhead on analytics ✅ (runtime verify needs JDK 21)
 - [L07](kafka/L07-outbox.md) — transactional outbox in order, no new idempotency table (existing dedup qualifies) ✅ (runtime verify needs JDK 21)
 - [L08](kafka/L08-saga-orchestration.md) — orchestrator beside choreography, correlation IDs + failure signal ✅ (runtime verify needs JDK 21)
-- L09 (next) — slim gateway (routing + rate limit + JWT) + Eureka.
+- [L09](kafka/L09-gateway-eureka-jwt.md) — gateway (routes + JWT + rate limit) + Eureka ✅ (runtime verify needs JDK 21)
+- L10 (next) — OpenTelemetry traces, Grafana dashboards, chaos drills.
 - L08 — saga orchestration alongside choreography.
 - L09 — slim gateway (routing + rate limit + JWT) + Eureka. JWT is gateway-validated, `X-User-Id` forwarded; token mint is lab scaffolding, `user/` stays deleted.
 - L10 — OpenTelemetry traces, Grafana dashboards, chaos drills.
 
 ## Run
 ```powershell
-docker compose up -d                      # base: postgres + kafka + kafka-ui
-docker compose -f docker-compose.yml -f docker-compose.advanced.yml up -d  # L4 only
-# Kafka-UI: http://localhost:9080 (cluster kafka-learning)
-# order :8085, inventory :8088, notification :8090, analytics :8091
+docker compose up -d                      # base: postgres + kafka + kafka-ui + eureka + gateway
+docker compose -f docker-compose.yml -f docker-compose.advanced.yml up -d  # L4/L10 only
+# Gateway: http://localhost:8080 (all service traffic, Bearer JWT from POST /labs/token)
+# Eureka: http://localhost:8761 | Kafka-UI: http://localhost:9080
+# order :8085, inventory :8088, notification :8090, analytics :8091 (host-run)
 ```
 
 ## Prerequisites for full verify
