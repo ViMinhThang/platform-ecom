@@ -38,6 +38,12 @@ spring:
 server:
   port: 8085
 
+# L07: outbox relay tuning.
+app:
+  outbox:
+    relay-interval-ms: 2000
+    relay-batch-size: 50
+
 management:
   endpoints:
     web:

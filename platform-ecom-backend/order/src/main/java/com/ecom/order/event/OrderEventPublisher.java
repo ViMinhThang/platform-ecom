@@ -4,9 +4,11 @@ import com.ecom.common.event.KafkaTopics;
 import com.ecom.common.event.OrderCreatedEvent;
 import com.ecom.common.event.OrderCreatedEvent.OrderItemEvent;
 import com.ecom.order.entity.OrderGroup;
+import com.ecom.order.entity.OutboxEvent;
+import com.ecom.order.repository.OutboxEventRepository;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -14,28 +16,32 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * L1: plain spring-kafka producer. Key=orderId preserves per-order ordering.
+ * L7: no longer touches Kafka. Persists the event to the outbox table in the
+ * SAME transaction as the order save (caller is @Transactional), so the two
+ * commit atomically. OutboxRelay publishes afterwards.
  */
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class OrderEventPublisher {
 
-    private final KafkaTemplate<String, Object> kafkaTemplate;
+    private final OutboxEventRepository outboxRepository;
+    private final ObjectMapper objectMapper;
 
     public void publishOrderCreated(OrderGroup order) {
-        OrderCreatedEvent event = buildOrderCreatedEvent(order);
-        String key = String.valueOf(order.getId());
-        kafkaTemplate.send(KafkaTopics.ORDER_CREATED, key, event).whenComplete((res, ex) -> {
-            if (ex != null) {
-                log.error("Failed to publish OrderCreatedEvent for order: {}", order.getId(), ex);
-            } else {
-                log.info("Published OrderCreatedEvent: orderId={}, partition={}, offset={}",
-                        order.getId(),
-                        res.getRecordMetadata().partition(),
-                        res.getRecordMetadata().offset());
-            }
-        });
+        try {
+            OrderCreatedEvent event = buildOrderCreatedEvent(order);
+            outboxRepository.save(OutboxEvent.builder()
+                    .topic(KafkaTopics.ORDER_CREATED)
+                    .recordKey(String.valueOf(order.getId()))
+                    .payload(objectMapper.writeValueAsString(event))
+                    .createdAt(LocalDateTime.now())
+                    .published(false)
+                    .build());
+            log.info("Staged OrderCreatedEvent in outbox: orderId={}", order.getId());
+        } catch (Exception e) {
+            throw new IllegalStateException("Failed to stage OrderCreatedEvent for order " + order.getId(), e);
+        }
     }
 
     private OrderCreatedEvent buildOrderCreatedEvent(OrderGroup order) {
