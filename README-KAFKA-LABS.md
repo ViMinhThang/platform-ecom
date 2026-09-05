@@ -30,5 +30,8 @@ docker compose -f docker-compose.yml -f docker-compose.advanced.yml up -d  # L4 
 # order :8085, inventory :8088, notification :8090, analytics :8091 (host-run)
 ```
 
+## Lab console
+`http://localhost:8080/labs.html` — served by the gateway itself (static file, no build, no CORS): mint/drop tokens, per-service health + breaker state, saga viewer (L08), event track + burst-to-429 tester (L06), send-email form, observability links, lab checklist.
+
 ## Prerequisites for full verify
 JDK 21 + Maven (`mvnw` in repo is unix-only; Windows env here has JDK 26, no Maven) — run `./mvnw -pl shared-commons,order,inventory,notification,analytics -am package` on a JDK 21 machine.

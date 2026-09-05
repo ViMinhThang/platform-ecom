@@ -31,7 +31,9 @@ import java.util.List;
 @Component
 public class JwtAuthFilter implements GlobalFilter, Ordered {
 
-    private static final List<String> OPEN_PATHS = List.of("/labs/", "/actuator/");
+    // "/labs" prefix covers /labs/token, /labs.html (lab console, no build).
+    // /labhealth is the console's same-origin health proxy (CORS workaround).
+    private static final List<String> OPEN_PATHS = List.of("/labs", "/actuator/", "/labhealth");
 
     private final SecretKey key;
 

@@ -7,7 +7,7 @@ spring:
         - id: order-service
           uri: lb://order-service
           predicates:
-            - Path=/api/v1/order-groups/**,/api/v1/cart/**,/api/v1/sub-orders/**,/api/v1/admin/orders/**,/api/v1/admin/analytics/**
+            - Path=/api/v1/order-groups/**,/api/v1/cart/**,/api/v1/sub-orders/**,/api/v1/admin/orders/**,/api/v1/admin/analytics/**,/api/v1/sagas/**
         - id: inventory-service
           uri: lb://inventory-service
           predicates:
@@ -20,6 +20,32 @@ spring:
           uri: lb://notification-service
           predicates:
             - Path=/api/v1/notifications/**
+        # Lab console health: same-origin /actuator/health per service
+        # (browser CORS blocks direct :808x fetches). No auth, no quota.
+        - id: order-health
+          uri: lb://order-service
+          predicates:
+            - Path=/labhealth/order/**
+          filters:
+            - SetPath=/actuator/health
+        - id: inventory-health
+          uri: lb://inventory-service
+          predicates:
+            - Path=/labhealth/inventory/**
+          filters:
+            - SetPath=/actuator/health
+        - id: analytics-health
+          uri: lb://analytics-service
+          predicates:
+            - Path=/labhealth/analytics/**
+          filters:
+            - SetPath=/actuator/health
+        - id: notification-health
+          uri: lb://notification-service
+          predicates:
+            - Path=/labhealth/notification/**
+          filters:
+            - SetPath=/actuator/health
 
 # L09: edge-auth + lab rate limit. Secret shared with nothing — the gateway
 # is the only verifier (minted by /labs/token).

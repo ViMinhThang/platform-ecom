@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lab Console — saga learning path</title>
+<!-- Served by the gateway itself (classpath:/static), so every call below is
+     same-origin: no CORS, no build step, no dependency. -->
+<style>
+  :root { color-scheme: dark; --ok: #4ade80; --bad: #f87171; --warn: #fbbf24; }
+  body { font-family: system-ui, sans-serif; background: #111; color: #e5e5e5; max-width: 960px; margin: 0 auto; padding: 16px; }
+  h1 { font-size: 1.4rem; } h2 { font-size: 1.05rem; border-bottom: 1px solid #333; padding-bottom: 4px; }
+  section { background: #1a1a1a; border: 1px solid #333; border-radius: 8px; padding: 12px; margin: 12px 0; }
+  button { background: #2563eb; color: #fff; border: 0; border-radius: 6px; padding: 6px 12px; cursor: pointer; margin: 2px; }
+  button.ghost { background: #333; } button:disabled { opacity: .5; }
+  input, select, textarea { background: #222; color: #eee; border: 1px solid #444; border-radius: 6px; padding: 6px; margin: 2px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 8px; }
+  .card { background: #222; border-radius: 6px; padding: 8px; font-size: .85rem; }
+  .up { color: var(--ok); } .down { color: var(--bad); }
+  pre { background: #0a0a0a; border: 1px solid #333; border-radius: 6px; padding: 8px; overflow: auto; max-height: 260px; font-size: .8rem; }
+  .links a { color: #93c5fd; margin-right: 12px; font-size: .9rem; }
+  details { margin: 4px 0; font-size: .9rem; } summary { cursor: pointer; }
+  code { background: #222; padding: 1px 5px; border-radius: 4px; font-size: .85em; }
+  #token { word-break: break-all; font-size: .75rem; color: var(--warn); }
+</style>
+</head>
+<body>
+<h1>Lab Console <small style="font-weight:normal;color:#888">L00–L10 interactive</small></h1>
+
+<section>
+  <h2>0. Token (L09)</h2>
+  <input id="userId" value="1" size="4" title="subject">
+  <button onclick="mint()">Mint token</button>
+  <button class="ghost" onclick="dropToken()">Drop (test 401)</button>
+  <span id="authState" class="down">no token</span>
+  <div id="token"></div>
+</section>
+
+<section>
+  <h2>1. Health (L09 discovery · L06 breaker state)</h2>
+  <div class="grid" id="health"></div>
+  <label style="font-size:.8rem"><input type="checkbox" id="auto" checked> auto-refresh 5s</label>
+</section>
+
+<section>
+  <h2>2. Saga viewer (L08 · L03)</h2>
+  <input id="orderNo" placeholder="ORD-…" size="16">
+  <button onclick="watchSaga()">Watch</button>
+  <button class="ghost" onclick="listSagas()">List all</button>
+  <pre id="sagaOut">—</pre>
+</section>
+
+<section>
+  <h2>3. Track event + burst (L02 fan-out · L06 bulkhead 429)</h2>
+  <select id="etype">
+    <option>PRODUCT_VIEW</option><option>ADD_TO_CART</option><option>PURCHASE</option>
+    <option>SEARCH</option><option>CHECKOUT_START</option><option>CHECKOUT_COMPLETE</option>
+  </select>
+  <input id="pid" type="number" value="101" title="productId" style="width:80px">
+  <input id="tuid" type="number" value="1" title="userId" style="width:70px">
+  <button onclick="track()">Track 1</button>
+  <input id="burstN" type="number" value="20" title="burst size" style="width:60px">
+  <button onclick="burst()">Burst</button>
+  <pre id="trackOut">—</pre>
+</section>
+
+<section>
+  <h2>4. Send email (L02 · L05 retry · L06 breaker)</h2>
+  <input id="to" placeholder="to@…" size="20"> <input id="subj" value="lab ping" size="14">
+  <input id="ebody" value="hello from the lab console" size="30">
+  <button onclick="sendMail()">Send</button>
+  <pre id="mailOut">—</pre>
+</section>
+
+<section>
+  <h2>5. Observability (L10)</h2>
+  <div class="links">
+    <a href="http://localhost:9080" target="_blank">Kafka-UI</a>
+    <a href="http://localhost:8761" target="_blank">Eureka</a>
+    <a href="http://localhost:16686" target="_blank">Jaeger</a>
+    <a href="http://localhost:9090" target="_blank">Prometheus</a>
+    <a href="http://localhost:3000" target="_blank">Grafana</a>
+  </div>
+</section>
+
+<section>
+  <h2>6. Lab checklist (see docs/kafka/ for full text)</h2>
+  <details><summary>L00 infra</summary><code>docker compose up -d</code> → Kafka-UI :9080 shows cluster.</details>
+  <details><summary>L01 producer→consumer</summary>Create order via API → <code>order-created-topic</code> has keyed record.</details>
+  <details><summary>L02 fan-out</summary>One record, 3 groups consume; stop notification, produce, restart → replay.</details>
+  <details><summary>L03 saga loop</summary>Over-stock order → out-of-stock → cart items deleted.</details>
+  <details><summary>L05 retry</summary>SMTP black hole → 3 attempts in notification log, offset stalls.</details>
+  <details><summary>L06 breaker/bulkhead</summary>Section 3 Burst → mix of 200/429; breaker OPEN in §1 health details.</details>
+  <details><summary>L07 outbox</summary>Stop Kafka, create orders (HTTP 200s), restart → relay drains.</details>
+  <details><summary>L08 saga</summary>Watch §2 walk STARTED→DONE; over-stock order → FAILED + CANCELLED.</details>
+  <details><summary>L09 gateway</summary>Drop token → 401s; mint → routed; kill a service → only its paths fail.</details>
+  <details><summary>L10 chaos</summary><code>docker stop kafka|postgres|inventory</code> → hypothesize, run, compare with Grafana.</details>
+</section>
+
+<script>
+let token = null, sagaTimer = null;
+const $ = id => document.getElementById(id);
+async function api(path, opts = {}) {
+  const h = { 'Content-Type': 'application/json', ...(opts.headers || {}) };
+  if (token && !opts.anon) h['Authorization'] = 'Bearer ' + token;
+  const r = await fetch(path, { ...opts, headers: h });
+  const t = await r.text();
+  let b; try { b = JSON.parse(t); } catch { b = t; }
+  return { status: r.status, body: b && b.data !== undefined ? b.data : b };
+}
+async function mint() {
+  const r = await api('/labs/token?userId=' + encodeURIComponent($('userId').value), { method: 'POST', anon: true });
+  token = r.body.accessToken || null;
+  $('token').textContent = token ? token.slice(0, 60) + '…' : JSON.stringify(r.body);
+  $('authState').textContent = token ? 'token set' : 'mint failed';
+  $('authState').className = token ? 'up' : 'down';
+}
+function dropToken() { token = null; $('token').textContent = ''; $('authState').textContent = 'no token'; $('authState').className = 'down'; }
+const SVCS = [['gateway', '/actuator/health'], ['order', '/labhealth/order/x'], ['inventory', '/labhealth/inventory/x'], ['notification', '/labhealth/notification/x'], ['analytics', '/labhealth/analytics/x']];
+async function health() {
+  $('health').innerHTML = '';
+  for (const [name, url] of SVCS) {
+    const d = document.createElement('div'); d.className = 'card'; d.textContent = name + ' …';
+    $('health').appendChild(d);
+    try {
+      const r = await api(url, { anon: true });
+      const up = r.body && r.body.status === 'UP';
+      let extra = '';
+      const det = r.body && r.body.components;
+      if (det && det.circuitBreakers && det.circuitBreakers.details)
+        extra = '<br>' + Object.entries(det.circuitBreakers.details).map(([k, v]) => k + ':' + (v.details || v.status)).join(' ');
+      d.innerHTML = `<b class="${up ? 'up' : 'down'}">${name} ${up ? 'UP' : 'DOWN'}</b>${extra}`;
+    } catch { d.innerHTML = `<b class="down">${name} DOWN</b>`; }
+  }
+}
+setInterval(() => { if ($('auto').checked) health(); }, 5000); health();
+async function listSagas() { const r = await api('/api/v1/sagas'); $('sagaOut').textContent = JSON.stringify(r.body, null, 1); }
+async function watchSaga() {
+  clearInterval(sagaTimer);
+  const n = $('orderNo').value.trim(); if (!n) return;
+  const poll = async () => { const r = await api('/api/v1/sagas/' + encodeURIComponent(n)); $('sagaOut').textContent = r.status + '\n' + JSON.stringify(r.body, null, 1); };
+  await poll(); sagaTimer = setInterval(poll, 2000);
+}
+async function track() {
+  const b = { eventType: $('etype').value, productId: +$('pid').value, userId: +$('tuid').value, timestamp: Date.now() };
+  const r = await api('/api/v1/analytics/events', { method: 'POST', body: JSON.stringify(b) });
+  $('trackOut').textContent = r.status + ' ' + JSON.stringify(r.body);
+}
+async function burst() {
+  const n = +$('burstN').value || 20, b = { eventType: 'PRODUCT_VIEW', productId: 1, userId: 1, timestamp: Date.now() };
+  const rs = await Promise.all(Array.from({ length: n }, () =>
+    fetch('/api/v1/analytics/events', { method: 'POST', headers: { 'Content-Type': 'application/json', ...(token ? { 'Authorization': 'Bearer ' + token } : {}) }, body: JSON.stringify(b) }).then(r => r.status).catch(() => 'ERR')));
+  const c = rs.reduce((m, s) => (m[s] = (m[s] || 0) + 1, m), {});
+  $('trackOut').textContent = `burst ${n}: ` + JSON.stringify(c) + ' (429 = bulkhead shed, L06)';
+}
+async function sendMail() {
+  const r = await api('/api/v1/notifications/send-email', { method: 'POST',
+    body: JSON.stringify({ to: $('to').value, subject: $('subj').value, body: $('ebody').value }) });
+  $('mailOut').textContent = r.status + ' ' + JSON.stringify(r.body);
+}
+</script>
+</body>
+</html>

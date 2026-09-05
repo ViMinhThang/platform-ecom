@@ -43,7 +43,7 @@ public class LabRateLimitFilter implements GlobalFilter, Ordered {
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
         String path = exchange.getRequest().getPath().value();
-        if (path.startsWith("/labs/") || path.startsWith("/actuator/")) {
+        if (path.startsWith("/labs") || path.startsWith("/actuator/") || path.startsWith("/labhealth")) {
             return chain.filter(exchange);
         }
         String client = clientIp(exchange);
