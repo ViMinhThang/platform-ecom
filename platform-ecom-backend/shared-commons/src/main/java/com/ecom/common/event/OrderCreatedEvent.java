@@ -24,6 +24,7 @@ public class OrderCreatedEvent implements Serializable {
     private Long orderId;
     private String orderNumber;
     private Long userId;
+    private String customerEmail;
     private LocalDateTime createdAt;
     private List<OrderItemEvent> items;
 
@@ -31,6 +32,7 @@ public class OrderCreatedEvent implements Serializable {
     public Long getOrderId() { return orderId; }
     public String getOrderNumber() { return orderNumber; }
     public Long getUserId() { return userId; }
+    public String getCustomerEmail() { return customerEmail; }
     public LocalDateTime getCreatedAt() { return createdAt; }
     public List<OrderItemEvent> getItems() { return items; }
 

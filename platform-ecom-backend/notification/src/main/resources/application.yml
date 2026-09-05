@@ -1,9 +1,49 @@
 spring:
   application:
     name: notification-service
-  config:
-    import: "optional:configserver:http://localhost:8888/"
-  main:
-    allow-bean-definition-overriding: true
-  profiles:
-    active: default
+  mail:
+    host: ${SMTP_HOST:localhost}
+    port: ${SMTP_PORT:587}
+    username: ${SMTP_USERNAME:}
+    password: ${SMTP_PASSWORD:}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+  jackson:
+    serialization:
+      write-dates-as-timestamps: false
+  kafka:
+    bootstrap-servers: ${KAFKA_BROKERS:localhost:9092}
+    consumer:
+      group-id: notification-group
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      auto-offset-reset: earliest
+      properties:
+        spring.json.trusted.packages: "com.ecom.common.event,java.util,java.time"
+        spring.json.use.type.headers: false
+    listener:
+      ack-mode: manual_immediate
+      missing-topics-fatal: false
+
+app:
+  mail:
+    from: ${SMTP_FROM:platform-ecom@no-reply.com}
+    brand-name: ${MAIL_BRAND_NAME:Platform Ecom}
+  web:
+    base-url: ${WEB_BASE_URL:}
+
+server:
+  port: 8090
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus
+logging:
+  level:
+    com.ecom.notification: INFO

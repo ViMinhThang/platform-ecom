@@ -1,66 +1,57 @@
 package com.ecom.inventory.event;
 
+import com.ecom.common.event.KafkaTopics;
 import com.ecom.common.event.LowStockAlertEvent;
 import com.ecom.common.event.OutOfStockEvent;
 import com.ecom.common.event.StockUpdatedEvent;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.cloud.stream.function.StreamBridge;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
 /**
- * Publishes inventory events to Kafka.
+ * L1: plain producers with keys for ordering (key=variantId).
  */
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class InventoryEventPublisher {
 
-    private static final String STOCK_UPDATED_BINDING = "stockUpdated-out-0";
-    private static final String LOW_STOCK_ALERT_BINDING = "lowStockAlert-out-0";
-    private static final String OUT_OF_STOCK_BINDING = "outOfStock-out-0";
+    private final KafkaTemplate<String, Object> kafkaTemplate;
 
-    private final StreamBridge streamBridge;
-
-    /**
-     * Publish stock updated event for product service sync
-     */
     public void publishStockUpdated(StockUpdatedEvent event) {
-        boolean sent = streamBridge.send(STOCK_UPDATED_BINDING, event);
-
-        if (sent) {
-            log.info("Published StockUpdatedEvent: variantId={}, {} -> {}",
-                    event.getVariantId(), event.getPreviousStock(), event.getNewStock());
-        } else {
-            log.error("Failed to publish StockUpdatedEvent for variant: {}", event.getVariantId());
-        }
+        String key = String.valueOf(event.getVariantId());
+        kafkaTemplate.send(KafkaTopics.STOCK_UPDATED, key, event).whenComplete((res, ex) -> {
+            if (ex != null) {
+                log.error("Failed to publish StockUpdatedEvent for variant: {}", event.getVariantId(), ex);
+            } else {
+                log.info("Published StockUpdatedEvent: variantId={}, {} -> {}",
+                        event.getVariantId(), event.getPreviousStock(), event.getNewStock());
+            }
+        });
     }
 
-    /**
-     * Publish low stock alert for notifications
-     */
     public void publishLowStockAlert(LowStockAlertEvent event) {
-        boolean sent = streamBridge.send(LOW_STOCK_ALERT_BINDING, event);
-
-        if (sent) {
-            log.info("Published LowStockAlertEvent: variantId={}, stock={}",
-                    event.getVariantId(), event.getCurrentStock());
-        } else {
-            log.error("Failed to publish LowStockAlertEvent for variant: {}", event.getVariantId());
-        }
+        String key = String.valueOf(event.getVariantId());
+        kafkaTemplate.send(KafkaTopics.LOW_STOCK_ALERT, key, event).whenComplete((res, ex) -> {
+            if (ex != null) {
+                log.error("Failed to publish LowStockAlertEvent for variant: {}", event.getVariantId(), ex);
+            } else {
+                log.info("Published LowStockAlertEvent: variantId={}, stock={}",
+                        event.getVariantId(), event.getCurrentStock());
+            }
+        });
     }
 
-    /**
-     * Publish out of stock event for order service to clear cart items
-     */
     public void publishOutOfStock(OutOfStockEvent event) {
-        boolean sent = streamBridge.send(OUT_OF_STOCK_BINDING, event);
-
-        if (sent) {
-            log.info("Published OutOfStockEvent: productId={}, variantId={}",
-                    event.getProductId(), event.getVariantId());
-        } else {
-            log.error("Failed to publish OutOfStockEvent for variant: {}", event.getVariantId());
-        }
+        String key = String.valueOf(event.getVariantId());
+        kafkaTemplate.send(KafkaTopics.OUT_OF_STOCK, key, event).whenComplete((res, ex) -> {
+            if (ex != null) {
+                log.error("Failed to publish OutOfStockEvent for variant: {}", event.getVariantId(), ex);
+            } else {
+                log.info("Published OutOfStockEvent: productId={}, variantId={}",
+                        event.getProductId(), event.getVariantId());
+            }
+        });
     }
 }

@@ -7,21 +7,13 @@
     <version>0.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>platform-ecom-backend</name>
-    <description>Parent POM for all eCommerce backend services</description>
+    <description>Kafka learning backend: order/inventory saga + notification/analytics fan-out</description>
 
     <modules>
         <module>shared-commons</module>
-        <module>analytics</module>
-        <module>chatbot</module>
-        <module>configserver</module>
-        <module>eureka</module>
-        <module>gateway</module>
-        <module>inventory</module>
         <module>order</module>
-        <module>product</module>
-        <module>promotion</module>
-        <module>review</module>
-        <module>user</module>
+        <module>inventory</module>
         <module>notification</module>
+        <module>analytics</module>
     </modules>
 </project>

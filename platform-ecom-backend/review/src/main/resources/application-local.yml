@@ -1,8 +1,0 @@
-# Local development overrides
-# Use this profile when running locally with: -Dspring.profiles.active=local
-spring:
-  cloud:
-    stream:
-      kafka:
-        binder:
-          brokers: localhost:9093

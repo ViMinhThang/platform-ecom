@@ -5,10 +5,11 @@ import com.ecom.analytics.dto.TrackEventDTO;
 import com.ecom.analytics.entity.UserEvent;
 import com.ecom.analytics.repository.UserEventRepository;
 import com.ecom.analytics.service.EventService;
+import com.ecom.common.event.KafkaTopics;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.cloud.stream.function.StreamBridge;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,12 +26,13 @@ public class EventServiceImpl implements EventService {
 
     private final UserEventRepository userEventRepository;
     private final ModelMapper modelMapper;
-    private final StreamBridge streamBridge;
+    private final KafkaTemplate<String, Object> kafkaTemplate;
 
-    public EventServiceImpl(UserEventRepository userEventRepository, ModelMapper modelMapper, StreamBridge streamBridge) {
+    public EventServiceImpl(UserEventRepository userEventRepository, ModelMapper modelMapper,
+                            KafkaTemplate<String, Object> kafkaTemplate) {
         this.userEventRepository = userEventRepository;
         this.modelMapper = modelMapper;
-        this.streamBridge = streamBridge;
+        this.kafkaTemplate = kafkaTemplate;
     }
 
     @Override
@@ -38,10 +40,11 @@ public class EventServiceImpl implements EventService {
     public void trackEvent(TrackEventDTO eventDTO) {
         UserEvent event = convertToEntity(eventDTO);
         userEventRepository.save(event);
-        
-        // Send to Kafka for real-time processing by recommendation-service
-        streamBridge.send("user-event-out-0", eventDTO);
-        
+
+        // L2: real-time user-event stream (was recommendation-service, now L4 Streams input)
+        String key = eventDTO.getUserId() != null ? String.valueOf(eventDTO.getUserId()) : "anonymous";
+        kafkaTemplate.send(KafkaTopics.USER_EVENT, key, eventDTO);
+
         log.debug("Tracked event: {} for user: {}", event.getEventType(), event.getUserId());
     }
 
@@ -55,12 +58,14 @@ public class EventServiceImpl implements EventService {
                     return convertToEntity(dto);
                 })
                 .collect(Collectors.toList());
-        
+
         userEventRepository.saveAll(events);
-        
-        // Send batch to Kafka
-        batchDTO.getEvents().forEach(dto -> streamBridge.send("user-event-out-0", dto));
-        
+
+        batchDTO.getEvents().forEach(dto -> {
+            String key = dto.getUserId() != null ? String.valueOf(dto.getUserId()) : "anonymous";
+            kafkaTemplate.send(KafkaTopics.USER_EVENT, key, dto);
+        });
+
         log.debug("Tracked batch of {} events", events.size());
     }
 
