@@ -35,6 +35,24 @@ spring:
 server:
   port: 8088
 
+# L05: retry transient DB failures (deadlock/lock-timeout live under
+# TransientDataAccessException). Business outcomes are NOT retried.
+resilience4j:
+  retry:
+    instances:
+      inventoryDb:
+        max-attempts: 3
+        wait-duration: 500ms
+        enable-exponential-backoff: true
+        exponential-backoff-multiplier: 2.0
+        retry-exceptions:
+          - org.springframework.dao.TransientDataAccessException
+          - org.springframework.dao.CannotAcquireLockException
+          - org.springframework.dao.QueryTimeoutException
+        ignore-exceptions:
+          - com.ecom.common.exception.APIException
+          - com.ecom.common.exception.InsufficientStockException
+
 management:
   endpoints:
     web:

@@ -4,6 +4,7 @@ import com.ecom.common.event.OrderCreatedEvent;
 import com.ecom.notification.dto.UserDTO;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
+import io.github.resilience4j.retry.annotation.Retry;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -27,6 +28,14 @@ public class EmailService {
     @Value("${app.web.base-url:}")
     private String webBaseUrl;
 
+    /**
+     * L05: retried on transient SMTP failures only (see application.yml:
+     * retry mailSend). Auth failures are ignored — retrying bad credentials
+     * is pointless. Deadline comes from mail.smtp timeouts below, not a
+     * TimeLimiter: this call is synchronous, and forcing it async just for
+     * a timeout would be over-engineering (see L05 doc).
+     */
+    @Retry(name = "mailSend")
     public void sendOrderConfirmationEmail(UserDTO user, OrderCreatedEvent event) {
         String orderNumber = event != null ? event.getOrderNumber() : null;
         String subject = buildSubject(orderNumber);

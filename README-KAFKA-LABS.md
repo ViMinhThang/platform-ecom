@@ -1,13 +1,19 @@
-# Kafka Learning Path — beginner → advanced
+# Distributed Systems Learning Path — beginner → advanced
 
-Trimmed repo: `order` + `inventory` core saga, `notification` + `analytics` staged fan-out, KRaft + Kafka-UI. No Eureka/Config/Gateway, no frontend/ML.
+Trimmed repo: `order` + `inventory` core saga, `notification` + `analytics` staged fan-out, KRaft + Kafka-UI. No Eureka/Config/Gateway yet (L09), no frontend/ML.
 
 ## Lessons
 - [L00](kafka/L00-infra.md) — KRaft single-broker + UI + slim Postgres ✅
 - [L01](kafka/L01-beginner-producer-consumer.md) — `KafkaTemplate` + `@KafkaListener`, keys, acks ✅ (runtime verify needs JDK 21)
 - [L02](kafka/L02-fanout-groups.md) — 1 topic × 3 groups, rebalance, offsets ✅
-- [L03](kafka/L03-saga-feedback.md) — stock feedback loop, at-least-once ✅ (DLT/idempotency table next)
-- L04 (planned) — 3-broker `docker-compose.advanced.yml`, Schema Registry/Avro, Streams `product-stats-topic`, exactly-once, Micrometer/Prometheus, EmbeddedKafka tests.
+- [L03](kafka/L03-saga-feedback.md) — stock feedback loop, at-least-once ✅ (DLT handler still open)
+- [L04](kafka/L04-advanced.md) — 3-broker overlay, Schema Registry, Streams scaffold ✅ (runtime verify needs JDK 21)
+- [L05](kafka/L05-timeouts-retries.md) — Resilience4j retries, native deadlines ✅ (runtime verify needs JDK 21)
+- L06 (next) — circuit breakers + bulkheads on mail + analytics paths.
+- L07 — transactional outbox + `processed_order_ids` idempotency table.
+- L08 — saga orchestration alongside choreography.
+- L09 — slim gateway (routing + rate limit + JWT) + Eureka. JWT is gateway-validated, `X-User-Id` forwarded; token mint is lab scaffolding, `user/` stays deleted.
+- L10 — OpenTelemetry traces, Grafana dashboards, chaos drills.
 
 ## Run
 ```powershell

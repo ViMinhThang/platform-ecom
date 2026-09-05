@@ -12,6 +12,11 @@ spring:
           auth: true
           starttls:
             enable: true
+          # L05: deadlines via native SMTP timeouts (no TimeLimiter needed
+          # for a synchronous call).
+          connectiontimeout: 5000
+          timeout: 5000
+          writetimeout: 5000
   jackson:
     serialization:
       write-dates-as-timestamps: false
@@ -38,6 +43,21 @@ app:
 
 server:
   port: 8090
+
+# L05: retry transient SMTP sends only. Auth failures are ignored —
+# retrying bad credentials never succeeds.
+resilience4j:
+  retry:
+    instances:
+      mailSend:
+        max-attempts: 3
+        wait-duration: 1s
+        enable-exponential-backoff: true
+        exponential-backoff-multiplier: 2.0
+        retry-exceptions:
+          - org.springframework.mail.MailSendException
+        ignore-exceptions:
+          - jakarta.mail.AuthenticationFailedException
 
 management:
   endpoints:

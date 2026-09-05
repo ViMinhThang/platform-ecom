@@ -14,6 +14,7 @@ import com.ecom.inventory.service.InventoryService;
 import com.ecom.inventory.service.signature.StockReservationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import io.github.resilience4j.retry.annotation.Retry;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -209,7 +210,13 @@ public class InventoryServiceImpl implements InventoryService {
 
     // ==================== Order Processing ====================
 
+    /**
+     * L05: retried on transient DB failures only (see application.yml:
+     * retry inventoryDb, business exceptions ignored). Idempotent via
+     * ORDER/orderNumber dedup above, so a retry re-entry is a no-op.
+     */
     @Override
+    @Retry(name = "inventoryDb")
     @Transactional
     public void processOrderCreated(Long variantId, int quantity, String orderNumber) {
         Inventory inventory = inventoryHelper.findByVariantIdForUpdateOrThrow(variantId);
