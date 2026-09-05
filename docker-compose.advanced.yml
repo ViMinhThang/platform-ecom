@@ -1,6 +1,8 @@
 # Advanced profile: 3-broker KRaft + Schema Registry + Prometheus/Grafana
 # Usage: docker compose -f docker-compose.yml -f docker-compose.advanced.yml up -d
 # L4 labs only. Beginner path uses docker-compose.yml alone.
+# NOTE: kafka-2/kafka-3 blocks stay explicit — Compose replaces (not deep-merges)
+# `environment` on YAML merge, so anchors would silently drop quorum/RF vars.
 services:
   kafka-2:
     container_name: kafka-2

@@ -7,15 +7,11 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.config.TopicBuilder;
 
 /**
- * L1-L3: inventory owns the stock feedback topics.
+ * L1-L3: inventory owns the stock feedback topics + ORDER_CREATED DLT.
+ * ORDER_CREATED itself is owned by order.
  */
 @Configuration
 public class KafkaTopicConfig {
-
-    @Bean
-    public NewTopic orderCreatedTopic() {
-        return TopicBuilder.name(KafkaTopics.ORDER_CREATED).partitions(3).replicas(1).build();
-    }
 
     @Bean
     public NewTopic stockUpdatedTopic() {

@@ -7,15 +7,11 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.config.TopicBuilder;
 
 /**
- * L2-L4: analytics consumes ORDER_CREATED, produces USER_EVENT.
+ * L2-L4: analytics owns USER_EVENT + PRODUCT_STATS.
+ * ORDER_CREATED is owned by order.
  */
 @Configuration
 public class KafkaTopicConfig {
-
-    @Bean
-    public NewTopic orderCreatedTopic() {
-        return TopicBuilder.name(KafkaTopics.ORDER_CREATED).partitions(3).replicas(1).build();
-    }
 
     @Bean
     public NewTopic userEventTopic() {

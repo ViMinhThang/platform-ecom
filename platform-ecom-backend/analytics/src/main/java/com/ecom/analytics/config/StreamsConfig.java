@@ -1,6 +1,8 @@
 package com.ecom.analytics.config;
 
 import com.ecom.common.event.KafkaTopics;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.kstream.Consumed;
@@ -23,8 +25,7 @@ import static org.apache.kafka.streams.StreamsConfig.*;
 /**
  * L4: Kafka Streams — windowed purchase count per product from USER_EVENT.
  * Disabled by default; enable with spring.kafka.streams.auto-startup=true + bootstrap-servers.
- * Input value is JSON TrackEventDTO; demo parses productId via string search to avoid
- * adding a full Serde here. Production: Avro + Schema Registry (see L04 doc).
+ * Production: Avro + Schema Registry (see L04 doc).
  */
 @Configuration
 @EnableKafkaStreams
@@ -40,7 +41,6 @@ public class StreamsConfig {
         props.put(BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
         props.put(DEFAULT_KEY_SERDE_CLASS_CONFIG, Serdes.String().getClass().getName());
         props.put(DEFAULT_VALUE_SERDE_CLASS_CONFIG, Serdes.String().getClass().getName());
-        props.put(COMMIT_INTERVAL_MS_CONFIG, 1000);
         return new KafkaStreamsConfiguration(props);
     }
 
@@ -61,16 +61,14 @@ public class StreamsConfig {
         return events;
     }
 
+    private static final ObjectMapper MAPPER = new ObjectMapper();
+
     private static String extractProductId(String json) {
-        int i = json.indexOf("\"productId\"");
-        if (i < 0) {
+        try {
+            JsonNode node = MAPPER.readTree(json);
+            return node.path("productId").asText("unknown");
+        } catch (Exception e) {
             return "unknown";
         }
-        int c = json.indexOf(':', i);
-        int end = json.indexOf(',', c);
-        if (end < 0) {
-            end = json.indexOf('}', c);
-        }
-        return json.substring(c + 1, end).replaceAll("[^0-9]", "").trim();
     }
 }
