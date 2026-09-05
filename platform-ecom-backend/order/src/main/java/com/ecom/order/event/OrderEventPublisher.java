@@ -6,6 +6,9 @@ import com.ecom.common.event.OrderCreatedEvent.OrderItemEvent;
 import com.ecom.order.entity.OrderGroup;
 import com.ecom.order.entity.OutboxEvent;
 import com.ecom.order.repository.OutboxEventRepository;
+import com.ecom.order.saga.SagaState;
+import com.ecom.order.saga.SagaStateRepository;
+import com.ecom.order.saga.SagaStatus;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,6 +22,7 @@ import java.util.stream.Collectors;
  * L7: no longer touches Kafka. Persists the event to the outbox table in the
  * SAME transaction as the order save (caller is @Transactional), so the two
  * commit atomically. OutboxRelay publishes afterwards.
+ * L08: also seeds the saga STARTED row in the same tx.
  */
 @Slf4j
 @Service
@@ -26,6 +30,7 @@ import java.util.stream.Collectors;
 public class OrderEventPublisher {
 
     private final OutboxEventRepository outboxRepository;
+    private final SagaStateRepository sagaRepository;
     private final ObjectMapper objectMapper;
 
     public void publishOrderCreated(OrderGroup order) {
@@ -37,6 +42,15 @@ public class OrderEventPublisher {
                     .payload(objectMapper.writeValueAsString(event))
                     .createdAt(LocalDateTime.now())
                     .published(false)
+                    .build());
+            sagaRepository.save(SagaState.builder()
+                    .orderId(order.getId())
+                    .orderNumber(order.getGroupNumber())
+                    .status(SagaStatus.STARTED)
+                    .expectedItems((int) event.getItems().stream()
+                            .filter(i -> i.getVariantId() != null).count())
+                    .confirmedItems(0)
+                    .updatedAt(LocalDateTime.now())
                     .build());
             log.info("Staged OrderCreatedEvent in outbox: orderId={}", order.getId());
         } catch (Exception e) {

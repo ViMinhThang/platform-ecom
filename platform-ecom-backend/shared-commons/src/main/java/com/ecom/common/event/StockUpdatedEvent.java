@@ -29,5 +29,10 @@ public class StockUpdatedEvent implements Serializable {
     private String transactionType; // SALE, ADJUSTMENT, RESERVATION, RELEASE
     private String reason;
     private Long performedBy;
+    /**
+     * L08: causing order, when known (order-driven SALE path). Null for
+     * ambient moves (adjustments, reservations) — orchestrator ignores those.
+     */
+    private String orderNumber;
     private LocalDateTime timestamp;
 }

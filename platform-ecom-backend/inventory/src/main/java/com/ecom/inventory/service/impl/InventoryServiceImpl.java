@@ -232,6 +232,11 @@ public class InventoryServiceImpl implements InventoryService {
             throw new APIException(HttpStatus.BAD_REQUEST, "Order quantity must be greater than zero");
         }
         if (previousStock < quantity) {
+            // L08: explicit saga-failure signal. The ambient zero-stock alert
+            // (checkAndAlert below) can't distinguish "sale depleted stock"
+            // from "order failed", so failure gets its own event carrying
+            // the orderNumber. Rethrown: L05 policy ignores it (no retry).
+            transactionHelper.publishOrderFailedEvent(inventory, orderNumber);
             throw new InsufficientStockException(
                     "Insufficient stock for order " + orderNumber + " on variant " + variantId);
         }
@@ -246,7 +251,7 @@ public class InventoryServiceImpl implements InventoryService {
 
         Inventory saved = inventoryRepository.save(inventory);
         transactionHelper.publishStockUpdatedEvent(saved, previousStock, TransactionType.SALE, "Order " + orderNumber,
-                null);
+                null, orderNumber);
         transactionHelper.checkAndAlert(saved);
 
         log.info("Processed order {} for variant {}: {} -> {}", orderNumber, variantId, previousStock, newStock);

@@ -23,5 +23,11 @@ public class OutOfStockEvent implements Serializable {
     private Long productId;
     private Long variantId;
     private String sku;
+    /**
+     * L08: failing order, when this event is an explicit saga-failure signal
+     * (insufficient stock for that order). Null = ambient broadcast
+     * (stock merely hit zero, e.g. after a successful sale).
+     */
+    private String orderNumber;
     private LocalDateTime timestamp;
 }

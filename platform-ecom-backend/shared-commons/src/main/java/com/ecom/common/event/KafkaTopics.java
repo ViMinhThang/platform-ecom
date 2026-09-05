@@ -28,4 +28,7 @@ public final class KafkaTopics {
     public static final String GROUP_NOTIFICATION = "notification-group";
     public static final String GROUP_ANALYTICS = "analytics-group";
     public static final String GROUP_ORDER = "order-service";
+    // L08: orchestrator must NOT share GROUP_ORDER — same topic, but a
+    // separate group so cart-cleanup and saga tracking consume independently.
+    public static final String GROUP_ORDER_SAGA = "order-saga";
 }

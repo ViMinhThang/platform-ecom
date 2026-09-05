@@ -42,6 +42,15 @@ public class InventoryTransactionHelper {
 
     public void publishStockUpdatedEvent(Inventory inventory, int previousStock,
             TransactionType type, String reason, Long performedBy) {
+        publishStockUpdatedEvent(inventory, previousStock, type, reason, performedBy, null);
+    }
+
+    /**
+     * L08: orderNumber overload — only the order-driven path supplies it.
+     * Ambient moves keep null so the orchestrator can tell them apart.
+     */
+    public void publishStockUpdatedEvent(Inventory inventory, int previousStock,
+            TransactionType type, String reason, Long performedBy, String orderNumber) {
         StockUpdatedEvent event = StockUpdatedEvent.builder()
                 .variantId(inventory.getVariantId())
                 .productId(inventory.getProductId())
@@ -52,6 +61,7 @@ public class InventoryTransactionHelper {
                 .transactionType(type.name())
                 .reason(reason)
                 .performedBy(performedBy)
+                .orderNumber(orderNumber)
                 .timestamp(LocalDateTime.now())
                 .build();
 
@@ -95,5 +105,22 @@ public class InventoryTransactionHelper {
             eventPublisher.publishOutOfStock(event);
             log.warn("Out of stock alert for variant {}: availableStock=0", inventory.getVariantId());
         }
+    }
+
+    /**
+     * L08: explicit failure signal for the saga orchestrator — carries the
+     * failing orderNumber, unlike the ambient alert above which stays
+     * order-free (broadcast for cart cleanup).
+     */
+    public void publishOrderFailedEvent(Inventory inventory, String orderNumber) {
+        OutOfStockEvent event = OutOfStockEvent.builder()
+                .productId(inventory.getProductId())
+                .variantId(inventory.getVariantId())
+                .sku(inventory.getSku())
+                .orderNumber(orderNumber)
+                .timestamp(LocalDateTime.now())
+                .build();
+
+        eventPublisher.publishOutOfStock(event);
     }
 }

@@ -11,7 +11,8 @@ Trimmed repo: `order` + `inventory` core saga, `notification` + `analytics` stag
 - [L05](kafka/L05-timeouts-retries.md) — Resilience4j retries, native deadlines ✅ (runtime verify needs JDK 21)
 - [L06](kafka/L06-breakers-bulkheads.md) — breaker on mail, bulkhead on analytics ✅ (runtime verify needs JDK 21)
 - [L07](kafka/L07-outbox.md) — transactional outbox in order, no new idempotency table (existing dedup qualifies) ✅ (runtime verify needs JDK 21)
-- L08 (next) — saga orchestration alongside choreography.
+- [L08](kafka/L08-saga-orchestration.md) — orchestrator beside choreography, correlation IDs + failure signal ✅ (runtime verify needs JDK 21)
+- L09 (next) — slim gateway (routing + rate limit + JWT) + Eureka.
 - L08 — saga orchestration alongside choreography.
 - L09 — slim gateway (routing + rate limit + JWT) + Eureka. JWT is gateway-validated, `X-User-Id` forwarded; token mint is lab scaffolding, `user/` stays deleted.
 - L10 — OpenTelemetry traces, Grafana dashboards, chaos drills.
