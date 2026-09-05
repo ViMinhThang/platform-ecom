@@ -4,6 +4,7 @@ import com.ecom.common.event.OrderCreatedEvent;
 import com.ecom.notification.dto.UserDTO;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import io.github.resilience4j.retry.annotation.Retry;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -34,8 +35,16 @@ public class EmailService {
      * is pointless. Deadline comes from mail.smtp timeouts below, not a
      * TimeLimiter: this call is synchronous, and forcing it async just for
      * a timeout would be over-engineering (see L05 doc).
+     *
+     * L06: circuit breaker around the retry (Retry outer, Breaker inner —
+     * each attempt feeds the breaker). Open breaker fails fast with
+     * CallNotPermittedException instead of hammering a dead SMTP server.
+     * No fallback: the listener rethrows, the offset is not committed,
+     * and the mail is retried after restart. A fallback that acked here
+     * would silently drop order confirmations.
      */
     @Retry(name = "mailSend")
+    @CircuitBreaker(name = "mailSend")
     public void sendOrderConfirmationEmail(UserDTO user, OrderCreatedEvent event) {
         String orderNumber = event != null ? event.getOrderNumber() : null;
         String subject = buildSubject(orderNumber);

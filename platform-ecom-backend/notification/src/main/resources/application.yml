@@ -59,11 +59,32 @@ resilience4j:
         ignore-exceptions:
           - jakarta.mail.AuthenticationFailedException
 
+  circuitbreaker:
+    instances:
+      mailSend:
+        sliding-window-type: COUNT_BASED
+        sliding-window-size: 10
+        minimum-number-of-calls: 5
+        failure-rate-threshold: 50
+        wait-duration-in-open-state: 30s
+        permitted-number-of-calls-in-half-open-state: 3
+        record-exceptions:
+          - org.springframework.mail.MailSendException
+        ignore-exceptions:
+          - jakarta.mail.AuthenticationFailedException
+
 management:
   endpoints:
     web:
       exposure:
         include: health,info,prometheus
+  endpoint:
+    health:
+      # L06 lab visibility (breaker state in /actuator/health); never in prod.
+      show-details: always
+  health:
+    circuitbreakers:
+      enabled: true
 logging:
   level:
     com.ecom.notification: INFO

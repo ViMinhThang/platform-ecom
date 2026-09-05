@@ -9,8 +9,8 @@ Trimmed repo: `order` + `inventory` core saga, `notification` + `analytics` stag
 - [L03](kafka/L03-saga-feedback.md) — stock feedback loop, at-least-once ✅ (DLT handler still open)
 - [L04](kafka/L04-advanced.md) — 3-broker overlay, Schema Registry, Streams scaffold ✅ (runtime verify needs JDK 21)
 - [L05](kafka/L05-timeouts-retries.md) — Resilience4j retries, native deadlines ✅ (runtime verify needs JDK 21)
-- L06 (next) — circuit breakers + bulkheads on mail + analytics paths.
-- L07 — transactional outbox + `processed_order_ids` idempotency table.
+- [L06](kafka/L06-breakers-bulkheads.md) — breaker on mail, bulkhead on analytics ✅ (runtime verify needs JDK 21)
+- L07 (next) — transactional outbox + `processed_order_ids` idempotency table.
 - L08 — saga orchestration alongside choreography.
 - L09 — slim gateway (routing + rate limit + JWT) + Eureka. JWT is gateway-validated, `X-User-Id` forwarded; token mint is lab scaffolding, `user/` stays deleted.
 - L10 — OpenTelemetry traces, Grafana dashboards, chaos drills.

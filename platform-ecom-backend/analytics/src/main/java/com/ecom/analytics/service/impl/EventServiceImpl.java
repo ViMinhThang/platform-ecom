@@ -6,6 +6,7 @@ import com.ecom.analytics.entity.UserEvent;
 import com.ecom.analytics.repository.UserEventRepository;
 import com.ecom.analytics.service.EventService;
 import com.ecom.common.event.KafkaTopics;
+import io.github.resilience4j.bulkhead.annotation.Bulkhead;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,7 +36,14 @@ public class EventServiceImpl implements EventService {
         this.kafkaTemplate = kafkaTemplate;
     }
 
+    /**
+     * L06: semaphore bulkhead caps concurrent track calls so an HTTP burst
+     * can't exhaust the DB pool and starve the Kafka listener (same method
+     * serves both paths). Fail-fast on saturation — see 429 mapping in
+     * EventController. Lab-sized limit; size to the pool in prod.
+     */
     @Override
+    @Bulkhead(name = "analyticsDb")
     @Transactional
     public void trackEvent(TrackEventDTO eventDTO) {
         UserEvent event = convertToEntity(eventDTO);

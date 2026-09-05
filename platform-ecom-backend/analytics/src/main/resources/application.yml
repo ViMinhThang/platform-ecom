@@ -35,8 +35,20 @@ spring:
 server:
   port: 8091
 
+# L06: semaphore bulkhead on trackEvent (HTTP + listener share it).
+# Lab-sized: 10 concurrent, fail fast (max-wait 0) so bursts shed as 429.
+resilience4j:
+  bulkhead:
+    instances:
+      analyticsDb:
+        max-concurrent-calls: 10
+        max-wait-duration: 0
+
 management:
   endpoints:
     web:
       exposure:
         include: health,info,prometheus
+  health:
+    bulkheads:
+      enabled: true
